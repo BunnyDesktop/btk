@@ -2033,7 +2033,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	(btk_text_view_compat_move_focus): chain up using
 	g_signal_chain_from_overridden_handler() instead of the generic
 	g_signal_chain_from_overridden() which needs manual fiddling with
-	millions of GValues.
+	millions of BValues.
 
 2008-07-21  Michael Natterer  <mitch@imendio.com>
 
@@ -3135,7 +3135,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btkaccelgroup.c: Fix warnings from calling
 	g_object_notify() on a BtkAccelGroup without casting to a
-	GObject.
+	BObject.
 
 2008-06-20  Johan Dahlin  <jdahlin@async.com.br>
 
@@ -3743,11 +3743,11 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	Seal BtkCellRenderer.
 
 	* btk/btkcellrenderer.h: seal all member fields.  All member fields are
-	already accessible via GObject properties.
+	already accessible via BObject properties.
 
 2008-04-27 15:56:01 +0200 Kristian Rietveld
 
-	Add "editing" GObject property to BtkCellRenderer.
+	Add "editing" BObject property to BtkCellRenderer.
 
 	* btk/btkcellrenderer.c (btk_cell_renderer_class_init),
 	(btk_cell_renderer_get_property),
@@ -3766,7 +3766,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	Seal BtkCellRendererCombo.
 
 	* btk/btkcellrenderercombo.h: seal all member fields.  The members fields
-	that were not marked as private are already accessible via GObject properties.
+	that were not marked as private are already accessible via BObject properties.
 
 2008-04-27 15:39:41 +0200 Kristian Rietveld
 
@@ -3963,7 +3963,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	Sealed BtkAccelGroup and added
 
-	* btk/btkaccelgroup.[ch]: Added GObject properties for lock_count,
+	* btk/btkaccelgroup.[ch]: Added BObject properties for lock_count,
 	  modifier_mask, acceleratables, n_accels and priv_accels. Added seal
 	  macro for public struct members which should be private.
 
@@ -4032,7 +4032,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btkclist.c:
 	* btk/btkstyle.c (btk_style_finalize):
-	Do not ignore the return value of g_slist_remove.
+	Do not ignore the return value of b_slist_remove.
 	btkstyle.c changes rubberstamped by Owen.
 
 2008-06-19  Johan Dahlin  <jdahlin@async.com.br>
@@ -4324,7 +4324,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* modules/input/btkimcontextmultipress.h
 	* modules/input/btkimcontextthai.h
-	* modules/input/btkimcontextxim.h: use G_TYPE instead of BTK_CHECK
+	* modules/input/btkimcontextxim.h: use B_TYPE instead of BTK_CHECK
 	type checking macros.
 
 2008-06-17  Michael Natterer  <mitch@imendio.com>
@@ -4340,7 +4340,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-06-17  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btkprogress.h: use G_TYPE macros for type checking instead
+	* btk/btkprogress.h: use B_TYPE macros for type checking instead
 	of BTK_CHECK ones because it's the parent class of an undeprecated
 	class and the BTK_CHECK stuff will soon be deprecated.
 
@@ -4468,7 +4468,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btkcellrendereraccel.h
 	* btk/btkiconview.h
-	* btk/btkobject.h: use G_TYPE macros instead of the old BTK_CHECK
+	* btk/btkobject.h: use B_TYPE macros instead of the old BTK_CHECK
 	macros for type checking.
 
 	(btk_object_get_type): change prototype to return GType instead of
@@ -5439,7 +5439,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* examples/btkdial/btkdial.h
-	* modules/input/btkimcontextthai.h: use G_BEGIN/END_DECLS.
+	* modules/input/btkimcontextthai.h: use B_BEGIN/END_DECLS.
 
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
@@ -6688,7 +6688,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	(btk_adjustment_set_property): no need to call g_object_notify()
 	on the set properties.
 
-	Implement GObject::dispatch_properties_changed() and make sure we
+	Implement BObject::dispatch_properties_changed() and make sure we
 	emit "changed" when anything but the "value" property changes.
 
 2008-03-14  Tor Lillqvist  <tml@novell.com>
@@ -7450,7 +7450,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-02-14  Johan Dahlin  <johan@bunny.org>
 
 	* bdk/bdktestutils.h
-	* btk/btktestutils.h: Remove ; trailing G_BEGIN/END_DECLS
+	* btk/btktestutils.h: Remove ; trailing B_BEGIN/END_DECLS
 
 2008-02-13  Richard Hult  <richard@imendio.com>
 
@@ -7561,7 +7561,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btkfilesystemmodel.c:
 	* btk/btkprinter.c:
-	* btk/btkwidget.c: Use g_value_set_static_string() where 
+	* btk/btkwidget.c: Use b_value_set_static_string() where 
 	appropriate.  (#515042, Christian Persch)
 
 2008-02-12  Matthias Clasen  <mclasen@redhat.com>
@@ -8338,7 +8338,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btktreeview.c: (btk_tree_view_set_property):
 	* btk/btkwidget.c: (btk_widget_set_property):
 	* btk/btkwindow.c: (btk_window_set_property):
-	Use G_OBJECT_WARN_INVALID_PROPERTY_ID consistently.
+	Use B_OBJECT_WARN_INVALID_PROPERTY_ID consistently.
 	Fixes #507585
 
 2008-01-06  Johan Dahlin  <johan@bunny.org>

@@ -131,7 +131,7 @@ struct _BtkRcContext
   guint reloading : 1;
 };
 
-#define BTK_RC_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RC_STYLE, BtkRcStylePrivate))
+#define BTK_RC_STYLE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RC_STYLE, BtkRcStylePrivate))
 
 typedef struct _BtkRcStylePrivate BtkRcStylePrivate;
 
@@ -225,7 +225,7 @@ static void        btk_rc_clear_hash_node            (gpointer         key,
 static void        btk_rc_clear_styles               (BtkRcContext    *context);
 static void        btk_rc_add_initial_default_files  (void);
 
-static void        btk_rc_style_finalize             (GObject         *object);
+static void        btk_rc_style_finalize             (BObject         *object);
 static void        btk_rc_style_real_merge           (BtkRcStyle      *dest,
                                                       BtkRcStyle      *src);
 static BtkRcStyle* btk_rc_style_real_create_rc_style (BtkRcStyle      *rc_style);
@@ -634,7 +634,7 @@ btk_rc_get_default_files (void)
 
 static void
 btk_rc_settings_changed (BtkSettings  *settings,
-			 GParamSpec   *pspec,
+			 BParamSpec   *pspec,
 			 BtkRcContext *context)
 {
   gchar *new_theme_name;
@@ -662,7 +662,7 @@ btk_rc_settings_changed (BtkSettings  *settings,
 
 static void
 btk_rc_font_name_changed (BtkSettings  *settings,
-                          GParamSpec   *pspec,
+                          BParamSpec   *pspec,
                           BtkRcContext *context)
 {
   if (!context->reloading)
@@ -671,7 +671,7 @@ btk_rc_font_name_changed (BtkSettings  *settings,
 
 static void
 btk_rc_color_hash_changed (BtkSettings  *settings,
-			   GParamSpec   *pspec,
+			   BParamSpec   *pspec,
 			   BtkRcContext *context)
 {
   GHashTable *old_hash;
@@ -730,7 +730,7 @@ btk_rc_context_get (BtkSettings *settings)
 
       context->default_priority = BTK_PATH_PRIO_RC;
 
-      rc_contexts = g_slist_prepend (rc_contexts, settings->rc_context);
+      rc_contexts = b_slist_prepend (rc_contexts, settings->rc_context);
     }
 
   return settings->rc_context;
@@ -755,7 +755,7 @@ btk_rc_clear_rc_files (BtkRcContext *context)
       list = list->next;
     }
   
-  g_slist_free (context->rc_files);
+  b_slist_free (context->rc_files);
   context->rc_files = NULL;
 }
 
@@ -793,7 +793,7 @@ _btk_rc_context_destroy (BtkSettings *settings)
   g_signal_handlers_disconnect_by_func (settings,
 					btk_rc_color_hash_changed, context);
 
-  rc_contexts = g_slist_remove (rc_contexts, context);
+  rc_contexts = b_slist_remove (rc_contexts, context);
 
   g_free (context);
 
@@ -939,7 +939,7 @@ btk_rc_parse_string (const gchar *rc_string)
   rc_file->mtime = 0;
   rc_file->reload = TRUE;
   
-  global_rc_files = g_slist_append (global_rc_files, rc_file);
+  global_rc_files = b_slist_append (global_rc_files, rc_file);
 
   for (tmp_list = rc_contexts; tmp_list; tmp_list = tmp_list->next)
     btk_rc_context_parse_string (tmp_list->data, rc_string);
@@ -971,7 +971,7 @@ add_to_rc_file_list (GSList     **rc_file_list,
   rc_file->mtime = 0;
   rc_file->reload = reload;
   
-  *rc_file_list = g_slist_append (*rc_file_list, rc_file);
+  *rc_file_list = b_slist_append (*rc_file_list, rc_file);
   
   return rc_file;
 }
@@ -1013,7 +1013,7 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
 
   /* If the file is already being parsed (recursion), do nothing
    */
-  if (g_slist_find (current_files_stack, rc_file))
+  if (b_slist_find (current_files_stack, rc_file))
     return;
 
   if (!g_lstat (rc_file->canonical_name, &statbuf))
@@ -1029,9 +1029,9 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
       /* Temporarily push information for this file on
        * a stack of current files while parsing it.
        */
-      current_files_stack = g_slist_prepend (current_files_stack, rc_file);
+      current_files_stack = b_slist_prepend (current_files_stack, rc_file);
       btk_rc_parse_any (context, filename, fd, NULL);
-      current_files_stack = g_slist_delete_link (current_files_stack,
+      current_files_stack = b_slist_delete_link (current_files_stack,
 						 current_files_stack);
 
       close (fd);
@@ -1130,7 +1130,7 @@ btk_rc_parse (const gchar *filename)
 
 /* Handling of RC styles */
 
-G_DEFINE_TYPE (BtkRcStyle, btk_rc_style, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkRcStyle, btk_rc_style, B_TYPE_OBJECT)
 
 static void
 btk_rc_style_init (BtkRcStyle *style)
@@ -1165,7 +1165,7 @@ btk_rc_style_init (BtkRcStyle *style)
 static void
 btk_rc_style_class_init (BtkRcStyleClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->finalize = btk_rc_style_finalize;
 
@@ -1178,7 +1178,7 @@ btk_rc_style_class_init (BtkRcStyleClass *klass)
 }
 
 static void
-btk_rc_style_finalize (GObject *object)
+btk_rc_style_finalize (BObject *object)
 {
   GSList *tmp_list1, *tmp_list2;
   BtkRcStyle *rc_style;
@@ -1214,7 +1214,7 @@ btk_rc_style_finalize (GObject *object)
           BtkRcStyle *other_style = tmp_list2->data;
 
           if (other_style != rc_style)
-            other_style->rc_style_lists = g_slist_remove_all (other_style->rc_style_lists,
+            other_style->rc_style_lists = b_slist_remove_all (other_style->rc_style_lists,
 							      rc_styles);
           tmp_list2 = tmp_list2->next;
         }
@@ -1222,11 +1222,11 @@ btk_rc_style_finalize (GObject *object)
       /* And from the hash table itself
        */
       g_hash_table_remove (realized_style_ht, rc_styles);
-      g_slist_free (rc_styles);
+      b_slist_free (rc_styles);
 
       tmp_list1 = tmp_list1->next;
     }
-  g_slist_free (rc_style->rc_style_lists);
+  b_slist_free (rc_style->rc_style_lists);
 
   if (rc_style->rc_properties)
     {
@@ -1237,19 +1237,19 @@ btk_rc_style_finalize (GObject *object)
 	  BtkRcProperty *node = &g_array_index (rc_style->rc_properties, BtkRcProperty, i);
 
 	  g_free (node->origin);
-	  g_value_unset (&node->value);
+	  b_value_unset (&node->value);
 	}
       g_array_free (rc_style->rc_properties, TRUE);
       rc_style->rc_properties = NULL;
     }
 
-  g_slist_foreach (rc_style->icon_factories, (GFunc) g_object_unref, NULL);
-  g_slist_free (rc_style->icon_factories);
+  b_slist_foreach (rc_style->icon_factories, (GFunc) g_object_unref, NULL);
+  b_slist_free (rc_style->icon_factories);
 
-  g_slist_foreach (rc_priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
-  g_slist_free (rc_priv->color_hashes);
+  b_slist_foreach (rc_priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
+  b_slist_free (rc_priv->color_hashes);
 
-  G_OBJECT_CLASS (btk_rc_style_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_rc_style_parent_class)->finalize (object);
 }
 
 BtkRcStyle *
@@ -1313,7 +1313,7 @@ _btk_rc_style_unset_rc_property (BtkRcStyle *rc_style,
   if (node != NULL)
     {
       guint index = node - (BtkRcProperty *) rc_style->rc_properties->data;
-      g_value_unset (&node->value);
+      b_value_unset (&node->value);
       g_free (node->origin);
       g_array_remove_index (rc_style->rc_properties, index);
     }
@@ -1338,7 +1338,7 @@ btk_rc_style_unref (BtkRcStyle *rc_style)
 static BtkRcStyle *
 btk_rc_style_real_create_rc_style (BtkRcStyle *style)
 {
-  return g_object_new (G_OBJECT_TYPE (style), NULL);
+  return g_object_new (B_OBJECT_TYPE (style), NULL);
 }
 
 GSList *
@@ -1389,7 +1389,7 @@ insert_rc_property (BtkRcStyle    *style,
 	      new_property = &g_array_index (style->rc_properties, BtkRcProperty, i);
 	      
 	      g_free (new_property->origin);
-	      g_value_unset (&new_property->value);
+	      b_value_unset (&new_property->value);
 	      
 	      *new_property = key;
 	      break;
@@ -1410,8 +1410,8 @@ insert_rc_property (BtkRcStyle    *style,
     }
 
   new_property->origin = g_strdup (property->origin);
-  g_value_init (&new_property->value, G_VALUE_TYPE (&property->value));
-  g_value_copy (&property->value, &new_property->value);
+  b_value_init (&new_property->value, G_VALUE_TYPE (&property->value));
+  b_value_copy (&property->value, &new_property->value);
 }
 
 static void
@@ -1486,7 +1486,7 @@ btk_rc_style_prepend_empty_icon_factory (BtkRcStyle *rc_style)
 {
   BtkIconFactory *factory = btk_icon_factory_new ();
 
-  rc_style->icon_factories = g_slist_prepend (rc_style->icon_factories, factory);
+  rc_style->icon_factories = b_slist_prepend (rc_style->icon_factories, factory);
 }
 
 static void
@@ -1497,18 +1497,18 @@ btk_rc_style_prepend_empty_color_hash (BtkRcStyle *rc_style)
                                                    g_free,
                                                    (GDestroyNotify) bdk_color_free);
 
-  priv->color_hashes = g_slist_prepend (priv->color_hashes, hash);
+  priv->color_hashes = b_slist_prepend (priv->color_hashes, hash);
 }
 
 static void
 btk_rc_style_append_icon_factories (BtkRcStyle *rc_style,
                                     BtkRcStyle *src_style)
 {
-  GSList *concat = g_slist_copy (src_style->icon_factories);
+  GSList *concat = b_slist_copy (src_style->icon_factories);
 
-  g_slist_foreach (concat, (GFunc) g_object_ref, NULL);
+  b_slist_foreach (concat, (GFunc) g_object_ref, NULL);
 
-  rc_style->icon_factories = g_slist_concat (rc_style->icon_factories, concat);
+  rc_style->icon_factories = b_slist_concat (rc_style->icon_factories, concat);
 }
 
 static void
@@ -1517,11 +1517,11 @@ btk_rc_style_append_color_hashes (BtkRcStyle *rc_style,
 {
   BtkRcStylePrivate *priv     = BTK_RC_STYLE_GET_PRIVATE (rc_style);
   BtkRcStylePrivate *src_priv = BTK_RC_STYLE_GET_PRIVATE (src_style);
-  GSList            *concat   = g_slist_copy (src_priv->color_hashes);
+  GSList            *concat   = b_slist_copy (src_priv->color_hashes);
 
-  g_slist_foreach (concat, (GFunc) g_hash_table_ref, NULL);
+  b_slist_foreach (concat, (GFunc) g_hash_table_ref, NULL);
 
-  priv->color_hashes = g_slist_concat (priv->color_hashes, concat);
+  priv->color_hashes = b_slist_concat (priv->color_hashes, concat);
 }
 
 static void
@@ -1570,7 +1570,7 @@ btk_rc_style_copy_icons_and_colors (BtkRcStyle   *rc_style,
     {
       btk_rc_style_prepend_empty_color_hash (rc_style);
 
-      priv->color_hashes = g_slist_append (priv->color_hashes,
+      priv->color_hashes = b_slist_append (priv->color_hashes,
                                            g_hash_table_ref (context->color_hash));
     }
 }
@@ -1610,15 +1610,15 @@ btk_rc_clear_styles (BtkRcContext *context)
     }
 
   btk_rc_free_rc_sets (context->rc_sets_widget);
-  g_slist_free (context->rc_sets_widget);
+  b_slist_free (context->rc_sets_widget);
   context->rc_sets_widget = NULL;
 
   btk_rc_free_rc_sets (context->rc_sets_widget_class);
-  g_slist_free (context->rc_sets_widget_class);
+  b_slist_free (context->rc_sets_widget_class);
   context->rc_sets_widget_class = NULL;
 
   btk_rc_free_rc_sets (context->rc_sets_class);
-  g_slist_free (context->rc_sets_class);
+  b_slist_free (context->rc_sets_class);
   context->rc_sets_class = NULL;
 }
 
@@ -1662,12 +1662,12 @@ btk_rc_clear_realized_style (gpointer key,
     {
       BtkRcStyle *rc_style = tmp_list->data;
       
-      rc_style->rc_style_lists = g_slist_remove_all (rc_style->rc_style_lists,
+      rc_style->rc_style_lists = b_slist_remove_all (rc_style->rc_style_lists,
 						     rc_styles);
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (rc_styles);
+  b_slist_free (rc_styles);
 }
 
 /**
@@ -1885,12 +1885,12 @@ btk_rc_styles_match (GSList       *rc_styles,
       if (rc_set->type == BTK_PATH_WIDGET_CLASS)
         {
           if (_btk_rc_match_widget_class (rc_set->path, path_length, path, path_reversed))
-	    rc_styles = g_slist_append (rc_styles, rc_set);
+	    rc_styles = b_slist_append (rc_styles, rc_set);
         }
       else
         {
           if (g_pattern_match (rc_set->pspec, path_length, path, path_reversed))
-	    rc_styles = g_slist_append (rc_styles, rc_set);
+	    rc_styles = b_slist_append (rc_styles, rc_set);
 	}
     }
 
@@ -1924,7 +1924,7 @@ sort_and_dereference_sets (GSList *styles)
    *
    * Now sort by priority, which has the highest precendence for sort order
    */
-  styles = g_slist_sort (styles, rc_set_compare);
+  styles = b_slist_sort (styles, rc_set_compare);
 
   /* Make styles->data = styles->data->rc_style
    */
@@ -1999,7 +1999,7 @@ btk_rc_get_style (BtkWidget *widget)
     {
       GType type;
 
-      type = G_TYPE_FROM_INSTANCE (widget);
+      type = B_TYPE_FROM_INSTANCE (widget);
       while (type)
 	{
 	  gchar *path;
@@ -2021,10 +2021,10 @@ btk_rc_get_style (BtkWidget *widget)
   
   rc_styles = sort_and_dereference_sets (rc_styles);
   
-  widget_rc_style = g_object_get_qdata (G_OBJECT (widget), rc_style_key_id);
+  widget_rc_style = g_object_get_qdata (B_OBJECT (widget), rc_style_key_id);
 
   if (widget_rc_style)
-    rc_styles = g_slist_prepend (rc_styles, widget_rc_style);
+    rc_styles = b_slist_prepend (rc_styles, widget_rc_style);
 
   if (rc_styles)
     return btk_rc_init_style (context, rc_styles);
@@ -2054,7 +2054,7 @@ btk_rc_get_style (BtkWidget *widget)
  * @class_path: (allow-none): the class path to use when looking up the style,
  *     or %NULL if no matching against the class path should be done.
  * @type: a type that will be used along with parent types of this type
- *     when matching against class styles, or #G_TYPE_NONE
+ *     when matching against class styles, or #B_TYPE_NONE
  *
  * Creates up a #BtkStyle from styles defined in a RC file by providing
  * the raw components used in matching. This function may be useful
@@ -2068,7 +2068,7 @@ btk_rc_get_style (BtkWidget *widget)
  *  btk_widget_class_path (widget, NULL, &class_path, NULL);
  *  btk_rc_get_style_by_paths (btk_widget_get_settings (widget), 
  *                             path, class_path,
- *                             G_OBJECT_TYPE (widget));
+ *                             B_OBJECT_TYPE (widget));
  * ]|
  * 
  * Return value: (transfer none): A style created by matching with the
@@ -2126,7 +2126,7 @@ btk_rc_get_style_by_paths (BtkSettings *settings,
       g_free (path_reversed);
     }
 
-  if (type != G_TYPE_NONE && context->rc_sets_class)
+  if (type != B_TYPE_NONE && context->rc_sets_class)
     {
       while (type)
 	{
@@ -2190,7 +2190,7 @@ btk_rc_add_rc_sets (GSList      *slist,
   
   rc_set->rc_style = rc_style;
   
-  return g_slist_prepend (slist, rc_set);
+  return b_slist_prepend (slist, rc_set);
 }
 
 void
@@ -2442,7 +2442,7 @@ btk_rc_init_style (BtkRcContext *context,
 	  BtkRcStyle *rc_style = tmp_styles->data;
           
 	  if (rc_style->engine_specified ||
-	      G_OBJECT_TYPE (rc_style) != rc_style_type)
+	      B_OBJECT_TYPE (rc_style) != rc_style_type)
 	    {
 	      base_style = rc_style;
 	      break;
@@ -2462,8 +2462,8 @@ btk_rc_init_style (BtkRcContext *context,
 	  proto_style_class->merge (proto_style, rc_style);	  
           
 	  /* Point from each rc_style to the list of styles */
-	  if (!g_slist_find (rc_style->rc_style_lists, rc_styles))
-	    rc_style->rc_style_lists = g_slist_prepend (rc_style->rc_style_lists, rc_styles);
+	  if (!b_slist_find (rc_style->rc_style_lists, rc_styles))
+	    rc_style->rc_style_lists = b_slist_prepend (rc_style->rc_style_lists, rc_styles);
 
           btk_rc_style_append_icon_factories (proto_style, rc_style);
           btk_rc_style_append_color_hashes (proto_style, rc_style);
@@ -2485,7 +2485,7 @@ btk_rc_init_style (BtkRcContext *context,
       g_hash_table_insert (realized_style_ht, rc_styles, style);
     }
   else
-    g_slist_free (rc_styles);
+    b_slist_free (rc_styles);
 
   return style;
 }
@@ -2701,14 +2701,14 @@ btk_rc_parse_assignment (GScanner      *scanner,
     {
     case G_TOKEN_INT:
       g_scanner_get_next_token (scanner);
-      g_value_init (&prop->value, G_TYPE_LONG);
-      g_value_set_long (&prop->value, negate ? -scanner->value.v_int : scanner->value.v_int);
+      b_value_init (&prop->value, B_TYPE_LONG);
+      b_value_set_long (&prop->value, negate ? -scanner->value.v_int : scanner->value.v_int);
       token = G_TOKEN_NONE;
       break;
     case G_TOKEN_FLOAT:
       g_scanner_get_next_token (scanner);
-      g_value_init (&prop->value, G_TYPE_DOUBLE);
-      g_value_set_double (&prop->value, negate ? -scanner->value.v_float : scanner->value.v_float);
+      b_value_init (&prop->value, B_TYPE_DOUBLE);
+      b_value_set_double (&prop->value, negate ? -scanner->value.v_float : scanner->value.v_float);
       token = G_TOKEN_NONE;
       break;
     case G_TOKEN_STRING:
@@ -2717,8 +2717,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
 	token = G_TOKEN_INT;
       else
 	{
-	  g_value_init (&prop->value, G_TYPE_STRING);
-	  g_value_set_string (&prop->value, scanner->value.v_string);
+	  b_value_init (&prop->value, B_TYPE_STRING);
+	  b_value_set_string (&prop->value, scanner->value.v_string);
 	  token = G_TOKEN_NONE;
 	}
       break;
@@ -2755,8 +2755,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
                                                    "%0.4f",
                                                    color.blue / 65535.0));
 
-          g_value_init (&prop->value, G_TYPE_GSTRING);
-          g_value_take_boxed (&prop->value, gstring);
+          b_value_init (&prop->value, B_TYPE_GSTRING);
+          b_value_take_boxed (&prop->value, gstring);
           token = G_TOKEN_NONE;
           break;
         }
@@ -2816,8 +2816,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
 	  if (token == G_TOKEN_NONE)
 	    {
 	      g_string_append_c (gstring, ' ');
-	      g_value_init (&prop->value, G_TYPE_GSTRING);
-	      g_value_take_boxed (&prop->value, gstring);
+	      b_value_init (&prop->value, B_TYPE_GSTRING);
+	      b_value_take_boxed (&prop->value, gstring);
 	    }
 	  else
 	    g_string_free (gstring, TRUE);
@@ -2975,7 +2975,7 @@ btk_rc_parse_statement (BtkRcContext *context,
 	    }
 	  g_free (prop.origin);
 	  if (G_VALUE_TYPE (&prop.value))
-	    g_value_unset (&prop.value);
+	    b_value_unset (&prop.value);
 	  g_free (name);
 	  
 	  return token;
@@ -3207,7 +3207,7 @@ btk_rc_parse_style (BtkRcContext *context,
 		  break;
 		}
 
-	      /* it's important that we do the same canonification as GParamSpecPool here */
+	      /* it's important that we do the same canonification as BParamSpecPool here */
 	      name = g_strdup (scanner->value.v_identifier);
 	      g_strcanon (name, G_CSET_DIGITS "-" G_CSET_a_2_z G_CSET_A_2_Z, '-');
 	      prop.property_name = g_quark_from_string (name);
@@ -3222,7 +3222,7 @@ btk_rc_parse_style (BtkRcContext *context,
 	      
 	      g_free (prop.origin);
 	      if (G_VALUE_TYPE (&prop.value))
-		g_value_unset (&prop.value);
+		b_value_unset (&prop.value);
 	    }
 	  else
 	    {
@@ -3667,7 +3667,7 @@ btk_rc_parse_engine (BtkRcContext *context,
 
       rc_priv = BTK_RC_STYLE_GET_PRIVATE (*rc_style);
 
-      if (G_OBJECT_TYPE (*rc_style) != BTK_TYPE_RC_STYLE)
+      if (B_OBJECT_TYPE (*rc_style) != BTK_TYPE_RC_STYLE)
 	{
 	  new_style = btk_rc_style_new ();
 	  btk_rc_style_real_merge (new_style, *rc_style);
@@ -3700,7 +3700,7 @@ btk_rc_parse_engine (BtkRcContext *context,
 	  
 	  rc_priv = BTK_RC_STYLE_GET_PRIVATE (*rc_style);
 	  new_style = btk_theme_engine_create_rc_style (engine);
-	  g_type_module_unuse (G_TYPE_MODULE (engine));
+	  g_type_module_unuse (B_TYPE_MODULE (engine));
 	  
 	  new_class = BTK_RC_STYLE_GET_CLASS (new_style);
 
@@ -4277,11 +4277,11 @@ btk_rc_parse_path_pattern (BtkRcContext *context,
       rc_set->priority = priority;
 
       if (path_type == BTK_PATH_WIDGET)
-	context->rc_sets_widget = g_slist_prepend (context->rc_sets_widget, rc_set);
+	context->rc_sets_widget = b_slist_prepend (context->rc_sets_widget, rc_set);
       else if (path_type == BTK_PATH_WIDGET_CLASS)
-	context->rc_sets_widget_class = g_slist_prepend (context->rc_sets_widget_class, rc_set);
+	context->rc_sets_widget_class = b_slist_prepend (context->rc_sets_widget_class, rc_set);
       else
-	context->rc_sets_class = g_slist_prepend (context->rc_sets_class, rc_set);
+	context->rc_sets_class = b_slist_prepend (context->rc_sets_class, rc_set);
     }
 
   g_free (pattern);
@@ -4649,7 +4649,7 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
           path_elt->elt.pspec = g_pattern_spec_new (sub_pattern);
           g_free (sub_pattern);
           
-          result = g_slist_prepend (result, path_elt);
+          result = b_slist_prepend (result, path_elt);
         }
       
       path_elt = g_new (PathElt, 1);
@@ -4660,7 +4660,7 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
       path_elt->type = PATH_ELT_UNRESOLVED;
       path_elt->elt.class_name = sub_pattern;
       
-      result = g_slist_prepend (result, path_elt);
+      result = b_slist_prepend (result, path_elt);
       
       current = class_end + 1;
     }
@@ -4672,10 +4672,10 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
       path_elt->type = PATH_ELT_PSPEC;
       path_elt->elt.pspec = g_pattern_spec_new (current);
       
-      result = g_slist_prepend (result, path_elt);
+      result = b_slist_prepend (result, path_elt);
     }
   
-  return g_slist_reverse (result);
+  return b_slist_reverse (result);
 }
 
 static void
@@ -4704,8 +4704,8 @@ free_path_elt (gpointer data,
 void
 _btk_rc_free_widget_class_path (GSList *list)
 {
-  g_slist_foreach (list, free_path_elt, NULL);
-  g_slist_free (list);
+  b_slist_foreach (list, free_path_elt, NULL);
+  b_slist_free (list);
 }
 
 static void
@@ -4728,7 +4728,7 @@ match_class (PathElt *path_elt,
   if (path_elt->type == PATH_ELT_UNRESOLVED)
     {
       type = g_type_from_name (path_elt->elt.class_name);
-      if (type != G_TYPE_INVALID)
+      if (type != B_TYPE_INVALID)
         {
           g_free (path_elt->elt.class_name);
           path_elt->elt.class_type = type;

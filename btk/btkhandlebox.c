@@ -105,14 +105,14 @@ enum {
  *          <--------bin_window-------------------->
  */
 
-static void     btk_handle_box_set_property  (GObject        *object,
+static void     btk_handle_box_set_property  (BObject        *object,
                                               guint           param_id,
-                                              const GValue   *value,
-                                              GParamSpec     *pspec);
-static void     btk_handle_box_get_property  (GObject        *object,
+                                              const BValue   *value,
+                                              BParamSpec     *pspec);
+static void     btk_handle_box_get_property  (BObject        *object,
                                               guint           param_id,
-                                              GValue         *value,
-                                              GParamSpec     *pspec);
+                                              BValue         *value,
+                                              BParamSpec     *pspec);
 static void     btk_handle_box_map           (BtkWidget      *widget);
 static void     btk_handle_box_unmap         (BtkWidget      *widget);
 static void     btk_handle_box_realize       (BtkWidget      *widget);
@@ -150,11 +150,11 @@ G_DEFINE_TYPE (BtkHandleBox, btk_handle_box, BTK_TYPE_BIN)
 static void
 btk_handle_box_class_init (BtkHandleBoxClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = (GObjectClass *) class;
+  bobject_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
   container_class = (BtkContainerClass *) class;
 
@@ -230,21 +230,21 @@ btk_handle_box_class_init (BtkHandleBoxClass *class)
 
   handle_box_signals[SIGNAL_CHILD_ATTACHED] =
     g_signal_new (I_("child-attached"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkHandleBoxClass, child_attached),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_WIDGET);
   handle_box_signals[SIGNAL_CHILD_DETACHED] =
     g_signal_new (I_("child-detached"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkHandleBoxClass, child_detached),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_WIDGET);
 
   g_type_class_add_private (bobject_class, sizeof (BtkHandleBoxPrivate));    
@@ -253,7 +253,7 @@ btk_handle_box_class_init (BtkHandleBoxClass *class)
 static BtkHandleBoxPrivate *
 btk_handle_box_get_private (BtkHandleBox *hb)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (hb, BTK_TYPE_HANDLE_BOX, BtkHandleBoxPrivate);
+  return B_TYPE_INSTANCE_GET_PRIVATE (hb, BTK_TYPE_HANDLE_BOX, BtkHandleBoxPrivate);
 }
 
 static void
@@ -273,10 +273,10 @@ btk_handle_box_init (BtkHandleBox *handle_box)
 }
 
 static void 
-btk_handle_box_set_property (GObject         *object,
+btk_handle_box_set_property (BObject         *object,
 			     guint            prop_id,
-			     const GValue    *value,
-			     GParamSpec      *pspec)
+			     const BValue    *value,
+			     BParamSpec      *pspec)
 {
   BtkHandleBox *handle_box = BTK_HANDLE_BOX (object);
 
@@ -284,29 +284,29 @@ btk_handle_box_set_property (GObject         *object,
     {
     case PROP_SHADOW:
     case PROP_SHADOW_TYPE:
-      btk_handle_box_set_shadow_type (handle_box, g_value_get_enum (value));
+      btk_handle_box_set_shadow_type (handle_box, b_value_get_enum (value));
       break;
     case PROP_HANDLE_POSITION:
-      btk_handle_box_set_handle_position (handle_box, g_value_get_enum (value));
+      btk_handle_box_set_handle_position (handle_box, b_value_get_enum (value));
       break;
     case PROP_SNAP_EDGE:
-      btk_handle_box_set_snap_edge (handle_box, g_value_get_enum (value));
+      btk_handle_box_set_snap_edge (handle_box, b_value_get_enum (value));
       break;
     case PROP_SNAP_EDGE_SET:
-      if (!g_value_get_boolean (value))
+      if (!b_value_get_boolean (value))
 	btk_handle_box_set_snap_edge (handle_box, (BtkPositionType)-1);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_handle_box_get_property (GObject         *object,
+btk_handle_box_get_property (BObject         *object,
 			     guint            prop_id,
-			     GValue          *value,
-			     GParamSpec      *pspec)
+			     BValue          *value,
+			     BParamSpec      *pspec)
 {
   BtkHandleBox *handle_box = BTK_HANDLE_BOX (object);
   
@@ -314,24 +314,24 @@ btk_handle_box_get_property (GObject         *object,
     {
     case PROP_SHADOW:
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, handle_box->shadow_type);
+      b_value_set_enum (value, handle_box->shadow_type);
       break;
     case PROP_HANDLE_POSITION:
-      g_value_set_enum (value, handle_box->handle_position);
+      b_value_set_enum (value, handle_box->handle_position);
       break;
     case PROP_SNAP_EDGE:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
 			(handle_box->snap_edge == -1 ?
 			 BTK_POS_TOP : handle_box->snap_edge));
       break;
     case PROP_SNAP_EDGE_SET:
-      g_value_set_boolean (value, handle_box->snap_edge != -1);
+      b_value_set_boolean (value, handle_box->snap_edge != -1);
       break;
     case PROP_CHILD_DETACHED:
-      g_value_set_boolean (value, handle_box->child_detached);
+      b_value_set_boolean (value, handle_box->child_detached);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -761,7 +761,7 @@ btk_handle_box_set_shadow_type (BtkHandleBox  *handle_box,
   if ((BtkShadowType) handle_box->shadow_type != type)
     {
       handle_box->shadow_type = type;
-      g_object_notify (G_OBJECT (handle_box), "shadow-type");
+      g_object_notify (B_OBJECT (handle_box), "shadow-type");
       btk_widget_queue_resize (BTK_WIDGET (handle_box));
     }
 }
@@ -792,7 +792,7 @@ btk_handle_box_set_handle_position  (BtkHandleBox    *handle_box,
   if ((BtkPositionType) handle_box->handle_position != position)
     {
       handle_box->handle_position = position;
-      g_object_notify (G_OBJECT (handle_box), "handle-position");
+      g_object_notify (B_OBJECT (handle_box), "handle-position");
       btk_widget_queue_resize (BTK_WIDGET (handle_box));
     }
 }
@@ -824,10 +824,10 @@ btk_handle_box_set_snap_edge        (BtkHandleBox    *handle_box,
     {
       handle_box->snap_edge = edge;
       
-      g_object_freeze_notify (G_OBJECT (handle_box));
-      g_object_notify (G_OBJECT (handle_box), "snap-edge");
-      g_object_notify (G_OBJECT (handle_box), "snap-edge-set");
-      g_object_thaw_notify (G_OBJECT (handle_box));
+      g_object_freeze_notify (B_OBJECT (handle_box));
+      g_object_notify (B_OBJECT (handle_box), "snap-edge");
+      g_object_notify (B_OBJECT (handle_box), "snap-edge-set");
+      g_object_thaw_notify (B_OBJECT (handle_box));
     }
 }
 

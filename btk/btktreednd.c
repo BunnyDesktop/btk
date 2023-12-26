@@ -43,7 +43,7 @@ btk_tree_drag_source_get_type (void)
 	NULL
       };
 
-      our_type = g_type_register_static (G_TYPE_INTERFACE, 
+      our_type = g_type_register_static (B_TYPE_INTERFACE, 
 					 I_("BtkTreeDragSource"),
 					 &our_info, 0);
     }
@@ -72,7 +72,7 @@ btk_tree_drag_dest_get_type (void)
 	NULL
       };
 
-      our_type = g_type_register_static (G_TYPE_INTERFACE, I_("BtkTreeDragDest"), &our_info, 0);
+      our_type = g_type_register_static (B_TYPE_INTERFACE, I_("BtkTreeDragDest"), &our_info, 0);
     }
   
   return our_type;

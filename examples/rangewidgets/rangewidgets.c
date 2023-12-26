@@ -39,7 +39,7 @@ static void cb_page_size( BtkAdjustment *get,
     btk_adjustment_set_value (set, CLAMP (set->value,
 					  set->lower,
 					  (set->upper - set->page_size)));
-    g_signal_emit_by_name(G_OBJECT(set), "changed");
+    g_signal_emit_by_name(B_OBJECT(set), "changed");
 }
 
 static void cb_draw_value( BtkToggleButton *button )

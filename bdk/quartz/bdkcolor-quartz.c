@@ -43,7 +43,7 @@ bdk_colormap_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkColormap",
                                             &object_info,
 					    0);

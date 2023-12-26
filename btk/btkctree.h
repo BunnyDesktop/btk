@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CTREE            (btk_ctree_get_type ())
-#define BTK_CTREE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CTREE, BtkCTree))
-#define BTK_CTREE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CTREE, BtkCTreeClass))
-#define BTK_IS_CTREE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CTREE))
-#define BTK_IS_CTREE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CTREE))
-#define BTK_CTREE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CTREE, BtkCTreeClass))
+#define BTK_CTREE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CTREE, BtkCTree))
+#define BTK_CTREE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CTREE, BtkCTreeClass))
+#define BTK_IS_CTREE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CTREE))
+#define BTK_IS_CTREE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CTREE))
+#define BTK_CTREE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CTREE, BtkCTreeClass))
 
 #define BTK_CTREE_ROW(_node_) ((BtkCTreeRow *)(((GList *)(_node_))->data))
 #define BTK_CTREE_NODE(_node_) ((BtkCTreeNode *)((_node_)))

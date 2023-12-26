@@ -32,9 +32,9 @@
 #include "btkalias.h"
 
 #define BTK_PRINTER_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINTER, BtkPrinterPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINTER, BtkPrinterPrivate))
 
-static void btk_printer_finalize     (GObject *object);
+static void btk_printer_finalize     (BObject *object);
 
 struct _BtkPrinterPrivate
 {
@@ -81,22 +81,22 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static void btk_printer_set_property (GObject      *object,
+static void btk_printer_set_property (BObject      *object,
 				      guint         prop_id,
-				      const GValue *value,
-				      GParamSpec   *pspec);
-static void btk_printer_get_property (GObject      *object,
+				      const BValue *value,
+				      BParamSpec   *pspec);
+static void btk_printer_get_property (BObject      *object,
 				      guint         prop_id,
-				      GValue       *value,
-				      GParamSpec   *pspec);
+				      BValue       *value,
+				      BParamSpec   *pspec);
 
-G_DEFINE_TYPE (BtkPrinter, btk_printer, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrinter, btk_printer, B_TYPE_OBJECT)
 
 static void
 btk_printer_class_init (BtkPrinterClass *class)
 {
-  GObjectClass *object_class;
-  object_class = (GObjectClass *) class;
+  BObjectClass *object_class;
+  object_class = (BObjectClass *) class;
 
   object_class->finalize = btk_printer_finalize;
 
@@ -105,63 +105,63 @@ btk_printer_class_init (BtkPrinterClass *class)
 
   g_type_class_add_private (class, sizeof (BtkPrinterPrivate));
 
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_NAME,
                                    g_param_spec_string ("name",
 						        P_("Name"),
 						        P_("Name of the printer"),
 						        "",
 							BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_BACKEND,
                                    g_param_spec_object ("backend",
 						        P_("Backend"),
 						        P_("Backend for the printer"),
 						        BTK_TYPE_PRINT_BACKEND,
 							BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_IS_VIRTUAL,
                                    g_param_spec_boolean ("is-virtual",
 							 P_("Is Virtual"),
 							 P_("FALSE if this represents a real hardware printer"),
 							 FALSE,
 							 BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_ACCEPTS_PDF,
                                    g_param_spec_boolean ("accepts-pdf",
 							 P_("Accepts PDF"),
 							 P_("TRUE if this printer can accept PDF"),
 							 FALSE,
 							 BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_ACCEPTS_PS,
                                    g_param_spec_boolean ("accepts-ps",
 							 P_("Accepts PostScript"),
 							 P_("TRUE if this printer can accept PostScript"),
 							 TRUE,
 							 BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_STATE_MESSAGE,
                                    g_param_spec_string ("state-message",
 						        P_("State Message"),
 						        P_("String giving the current state of the printer"),
 						        "",
 							BTK_PARAM_READABLE));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_LOCATION,
                                    g_param_spec_string ("location",
 						        P_("Location"),
 						        P_("The location of the printer"),
 						        "",
 							BTK_PARAM_READABLE));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_ICON_NAME,
                                    g_param_spec_string ("icon-name",
 						        P_("Icon Name"),
 						        P_("The icon name to use for the printer"),
 						        "",
 							BTK_PARAM_READABLE));
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_JOB_COUNT,
 				   g_param_spec_int ("job-count",
  						     P_("Job Count"),
@@ -180,7 +180,7 @@ btk_printer_class_init (BtkPrinterClass *class)
    *
    * Since: 2.14
    */
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_PAUSED,
                                    g_param_spec_boolean ("paused",
 							 P_("Paused Printer"),
@@ -194,7 +194,7 @@ btk_printer_class_init (BtkPrinterClass *class)
    *
    * Since: 2.14
    */ 
-  g_object_class_install_property (G_OBJECT_CLASS (class),
+  g_object_class_install_property (B_OBJECT_CLASS (class),
                                    PROP_ACCEPTING_JOBS,
                                    g_param_spec_boolean ("accepting-jobs",
 							 P_("Accepting Jobs"),
@@ -215,12 +215,12 @@ btk_printer_class_init (BtkPrinterClass *class)
    */
   signals[DETAILS_ACQUIRED] =
     g_signal_new (I_("details-acquired"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrinterClass, details_acquired),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__BOOLEAN,
-		  G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+		  B_TYPE_NONE, 1, B_TYPE_BOOLEAN);
 }
 
 static void
@@ -248,7 +248,7 @@ btk_printer_init (BtkPrinter *printer)
 }
 
 static void
-btk_printer_finalize (GObject *object)
+btk_printer_finalize (BObject *object)
 {
   BtkPrinter *printer = BTK_PRINTER (object);
   BtkPrinterPrivate *priv = printer->priv;
@@ -262,14 +262,14 @@ btk_printer_finalize (GObject *object)
   if (priv->backend)
     g_object_unref (priv->backend);
 
-  G_OBJECT_CLASS (btk_printer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_parent_class)->finalize (object);
 }
 
 static void
-btk_printer_set_property (GObject         *object,
+btk_printer_set_property (BObject         *object,
 			  guint            prop_id,
-			  const GValue    *value,
-			  GParamSpec      *pspec)
+			  const BValue    *value,
+			  BParamSpec      *pspec)
 {
   BtkPrinter *printer = BTK_PRINTER (object);
   BtkPrinterPrivate *priv = printer->priv;
@@ -277,36 +277,36 @@ btk_printer_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      priv->name = g_value_dup_string (value);
+      priv->name = b_value_dup_string (value);
       break;
     
     case PROP_BACKEND:
-      priv->backend = BTK_PRINT_BACKEND (g_value_dup_object (value));
+      priv->backend = BTK_PRINT_BACKEND (b_value_dup_object (value));
       break;
 
     case PROP_IS_VIRTUAL:
-      priv->is_virtual = g_value_get_boolean (value);
+      priv->is_virtual = b_value_get_boolean (value);
       break;
 
     case PROP_ACCEPTS_PDF:
-      priv->accepts_pdf = g_value_get_boolean (value);
+      priv->accepts_pdf = b_value_get_boolean (value);
       break;
 
     case PROP_ACCEPTS_PS:
-      priv->accepts_ps = g_value_get_boolean (value);
+      priv->accepts_ps = b_value_get_boolean (value);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_printer_get_property (GObject    *object,
+btk_printer_get_property (BObject    *object,
 			  guint       prop_id,
-			  GValue     *value,
-			  GParamSpec *pspec)
+			  BValue     *value,
+			  BParamSpec *pspec)
 {
   BtkPrinter *printer = BTK_PRINTER (object);
   BtkPrinterPrivate *priv = printer->priv;
@@ -315,51 +315,51 @@ btk_printer_get_property (GObject    *object,
     {
     case PROP_NAME:
       if (priv->name)
-	g_value_set_string (value, priv->name);
+	b_value_set_string (value, priv->name);
       else
-	g_value_set_static_string (value, "");
+	b_value_set_static_string (value, "");
       break;
     case PROP_BACKEND:
-      g_value_set_object (value, priv->backend);
+      b_value_set_object (value, priv->backend);
       break;
     case PROP_STATE_MESSAGE:
       if (priv->state_message)
-	g_value_set_string (value, priv->state_message);
+	b_value_set_string (value, priv->state_message);
       else
-	g_value_set_static_string (value, "");
+	b_value_set_static_string (value, "");
       break;
     case PROP_LOCATION:
       if (priv->location)
-	g_value_set_string (value, priv->location);
+	b_value_set_string (value, priv->location);
       else
-	g_value_set_static_string (value, "");
+	b_value_set_static_string (value, "");
       break;
     case PROP_ICON_NAME:
       if (priv->icon_name)
-	g_value_set_string (value, priv->icon_name);
+	b_value_set_string (value, priv->icon_name);
       else
-	g_value_set_static_string (value, "");
+	b_value_set_static_string (value, "");
       break;
     case PROP_JOB_COUNT:
-      g_value_set_int (value, priv->job_count);
+      b_value_set_int (value, priv->job_count);
       break;
     case PROP_IS_VIRTUAL:
-      g_value_set_boolean (value, priv->is_virtual);
+      b_value_set_boolean (value, priv->is_virtual);
       break;
     case PROP_ACCEPTS_PDF:
-      g_value_set_boolean (value, priv->accepts_pdf);
+      b_value_set_boolean (value, priv->accepts_pdf);
       break;
     case PROP_ACCEPTS_PS:
-      g_value_set_boolean (value, priv->accepts_ps);
+      b_value_set_boolean (value, priv->accepts_ps);
       break;
     case PROP_PAUSED:
-      g_value_set_boolean (value, priv->is_paused);
+      b_value_set_boolean (value, priv->is_paused);
       break;
     case PROP_ACCEPTING_JOBS:
-      g_value_set_boolean (value, priv->is_accepting_jobs);
+      b_value_set_boolean (value, priv->is_accepting_jobs);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -381,7 +381,7 @@ btk_printer_new (const gchar     *name,
 		 BtkPrintBackend *backend,
 		 gboolean         virtual_)
 {
-  GObject *result;
+  BObject *result;
   
   result = g_object_new (BTK_TYPE_PRINTER,
 			 "name", name,
@@ -499,7 +499,7 @@ btk_printer_set_state_message (BtkPrinter  *printer,
 
   g_free (priv->state_message);
   priv->state_message = g_strdup (message);
-  g_object_notify (G_OBJECT (printer), "state-message");
+  g_object_notify (B_OBJECT (printer), "state-message");
 
   return TRUE;
 }
@@ -537,7 +537,7 @@ btk_printer_set_location (BtkPrinter  *printer,
 
   g_free (priv->location);
   priv->location = g_strdup (location);
-  g_object_notify (G_OBJECT (printer), "location");
+  g_object_notify (B_OBJECT (printer), "location");
   
   return TRUE;
 }
@@ -572,7 +572,7 @@ btk_printer_set_icon_name (BtkPrinter  *printer,
 
   g_free (priv->icon_name);
   priv->icon_name = g_strdup (icon);
-  g_object_notify (G_OBJECT (printer), "icon-name");
+  g_object_notify (B_OBJECT (printer), "icon-name");
 }
 
 /**
@@ -608,7 +608,7 @@ btk_printer_set_job_count (BtkPrinter *printer,
 
   priv->job_count = count;
   
-  g_object_notify (G_OBJECT (printer), "job-count");
+  g_object_notify (B_OBJECT (printer), "job-count");
   
   return TRUE;
 }
@@ -1122,8 +1122,8 @@ list_added_cb (BtkPrintBackend *backend,
 }
 
 static void
-backend_status_changed (GObject    *object,
-                        GParamSpec *pspec,
+backend_status_changed (BObject    *object,
+                        BParamSpec *pspec,
                         gpointer    data)
 {
   BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);

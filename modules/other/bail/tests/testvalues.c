@@ -13,8 +13,8 @@ static guint id;
 static void _value_change_handler (BatkObject   *obj,
                                    BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
-   GValue *value_back, val;
+  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+   BValue *value_back, val;
 
   value_back = &val;
     
@@ -28,7 +28,7 @@ static void _value_change_handler (BatkObject   *obj,
 	if(G_VALUE_HOLDS_DOUBLE (&values->new_value))
     {
 		g_print( "adjustment value changed : new value: %f\n", 
-		g_value_get_double (&values->new_value));
+		b_value_get_double (&values->new_value));
  	}
 
 	g_print("Now calling the BatkValue interface functions\n");
@@ -36,17 +36,17 @@ static void _value_change_handler (BatkObject   *obj,
   	batk_value_get_current_value (BATK_VALUE(obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_current_value returns %f\n",
-			g_value_get_double (value_back)	);
+			b_value_get_double (value_back)	);
 
   	batk_value_get_maximum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_maximum returns %f\n",
-			g_value_get_double (value_back));
+			b_value_get_double (value_back));
 
   	batk_value_get_minimum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_minimum returns %f\n", 
-			g_value_get_double (value_back));
+			b_value_get_double (value_back));
 	
  
     }
@@ -65,7 +65,7 @@ static void _traverse_children (BatkObject *obj)
     child = batk_object_ref_accessible_child (obj, i);
     _add_handler (child);
     _traverse_children (child);
-    g_object_unref (G_OBJECT (child));
+    g_object_unref (B_OBJECT (child));
   }
 }
 
@@ -103,7 +103,7 @@ static void _add_handler (BatkObject *obj)
 
 static void _set_values (BatkObject *obj) {
 
-  GValue *value_back, val;
+  BValue *value_back, val;
   static gint count = 0;
   gdouble double_value;
 
@@ -128,15 +128,15 @@ static void _set_values (BatkObject *obj) {
 			batk_value_get_current_value(BATK_VALUE(obj), value_back);
 			g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
 			g_print("batk_value_get_current_value returns %f\n", 
-				g_value_get_double( value_back));
+				b_value_get_double( value_back));
 			} 
 	} else {
-		memset (value_back, 0, sizeof (GValue));
-		g_value_init (value_back, G_TYPE_DOUBLE);
-		g_value_set_double (value_back, 10.0);	
+		memset (value_back, 0, sizeof (BValue));
+		b_value_init (value_back, B_TYPE_DOUBLE);
+		b_value_set_double (value_back, 10.0);	
 		if (batk_value_set_current_value (BATK_VALUE (obj), value_back))
 		{
- 			double_value = g_value_get_double (value_back);
+ 			double_value = b_value_get_double (value_back);
   			g_print("batk_value_set_current_value returns %f\n", 
 			double_value);
 		}

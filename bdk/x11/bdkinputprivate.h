@@ -100,7 +100,7 @@ struct _BdkDevicePrivate
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 /* Addition used for extension_events mask */

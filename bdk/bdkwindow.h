@@ -253,11 +253,11 @@ typedef struct _BdkWindowObject BdkWindowObject;
 typedef struct _BdkWindowObjectClass BdkWindowObjectClass;
 
 #define BDK_TYPE_WINDOW              (bdk_window_object_get_type ())
-#define BDK_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW, BdkWindow))
-#define BDK_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW, BdkWindowObjectClass))
-#define BDK_IS_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW))
-#define BDK_IS_WINDOW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW))
-#define BDK_WINDOW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW, BdkWindowObjectClass))
+#define BDK_WINDOW(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW, BdkWindow))
+#define BDK_WINDOW_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW, BdkWindowObjectClass))
+#define BDK_IS_WINDOW(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW))
+#define BDK_IS_WINDOW_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW))
+#define BDK_WINDOW_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW, BdkWindowObjectClass))
 
 #ifndef BDK_DISABLE_DEPRECATED
 #define BDK_WINDOW_OBJECT(object)    ((BdkWindowObject *) BDK_WINDOW (object))

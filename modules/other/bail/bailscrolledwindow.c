@@ -34,8 +34,8 @@ static gint         bail_scrolled_window_get_n_children (BatkObject     *object)
 static BatkObject*   bail_scrolled_window_ref_child      (BatkObject     *obj,
                                                          gint          child);
 static void         bail_scrolled_window_scrollbar_visibility_changed 
-                                                        (GObject       *object,
-                                                         GParamSpec    *pspec,
+                                                        (BObject       *object,
+                                                         BParamSpec    *pspec,
                                                          gpointer      user_data);
 
 G_DEFINE_TYPE (BailScrolledWindow, bail_scrolled_window, BAIL_TYPE_CONTAINER)
@@ -152,8 +152,8 @@ bail_scrolled_window_ref_child (BatkObject *obj,
 }
 
 static void
-bail_scrolled_window_scrollbar_visibility_changed (GObject    *object,
-                                                   GParamSpec *pspec,
+bail_scrolled_window_scrollbar_visibility_changed (BObject    *object,
+                                                   BParamSpec *pspec,
                                                    gpointer   user_data)
 {
   if (!strcmp (pspec->name, "visible"))

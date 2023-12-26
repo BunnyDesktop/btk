@@ -55,10 +55,10 @@ int main( int   argc,
     btk_window_set_title (BTK_WINDOW (window), "Pixmap'd Buttons!");
 
     /* It's a good idea to do this for all windows. */
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
 	              G_CALLBACK (btk_main_quit), NULL);
 
-    g_signal_connect (G_OBJECT (window), "delete-event",
+    g_signal_connect (B_OBJECT (window), "delete-event",
 	 	      G_CALLBACK (btk_main_quit), NULL);
 
     /* Sets the border width of the window. */
@@ -68,7 +68,7 @@ int main( int   argc,
     button = btk_button_new ();
 
     /* Connect the "clicked" signal of the button to our callback */
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (B_OBJECT (button), "clicked",
 		      G_CALLBACK (callback), (gpointer) "cool button");
 
     /* This calls our box creating function */

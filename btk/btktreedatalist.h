@@ -56,9 +56,9 @@ void             _btk_tree_data_list_free           (BtkTreeDataList *list,
 gboolean         _btk_tree_data_list_check_type     (GType            type);
 void             _btk_tree_data_list_node_to_value  (BtkTreeDataList *list,
 						     GType            type,
-						     GValue          *value);
+						     BValue          *value);
 void             _btk_tree_data_list_value_to_node  (BtkTreeDataList *list,
-						     GValue          *value);
+						     BValue          *value);
 
 BtkTreeDataList *_btk_tree_data_list_node_copy      (BtkTreeDataList *list,
                                                      GType            type);

@@ -49,11 +49,11 @@ typedef enum
 GQuark     btk_print_backend_error_quark      (void);
 
 #define BTK_TYPE_PRINT_BACKEND                  (btk_print_backend_get_type ())
-#define BTK_PRINT_BACKEND(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackend))
-#define BTK_PRINT_BACKEND_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
-#define BTK_IS_PRINT_BACKEND(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND))
-#define BTK_IS_PRINT_BACKEND_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND))
-#define BTK_PRINT_BACKEND_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
+#define BTK_PRINT_BACKEND(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackend))
+#define BTK_PRINT_BACKEND_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
+#define BTK_IS_PRINT_BACKEND(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND))
+#define BTK_IS_PRINT_BACKEND_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND))
+#define BTK_PRINT_BACKEND_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
 
 typedef enum 
 {
@@ -64,14 +64,14 @@ typedef enum
 
 struct _BtkPrintBackend
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrintBackendPrivate *priv;
 };
 
 struct _BtkPrintBackendClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Global backend methods: */
   void                   (*request_printer_list)            (BtkPrintBackend        *backend);

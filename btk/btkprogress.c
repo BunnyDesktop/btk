@@ -49,16 +49,16 @@ enum {
 };
 
 
-static void btk_progress_set_property    (GObject          *object,
+static void btk_progress_set_property    (BObject          *object,
 					  guint             prop_id,
-					  const GValue     *value,
-					  GParamSpec       *pspec);
-static void btk_progress_get_property    (GObject          *object,
+					  const BValue     *value,
+					  BParamSpec       *pspec);
+static void btk_progress_get_property    (BObject          *object,
 					  guint             prop_id,
-					  GValue           *value,
-					  GParamSpec       *pspec);
+					  BValue           *value,
+					  BParamSpec       *pspec);
 static void btk_progress_destroy         (BtkObject        *object);
-static void btk_progress_finalize        (GObject          *object);
+static void btk_progress_finalize        (BObject          *object);
 static void btk_progress_realize         (BtkWidget        *widget);
 static gboolean btk_progress_expose      (BtkWidget        *widget,
 				 	  BdkEventExpose   *event);
@@ -75,7 +75,7 @@ G_DEFINE_ABSTRACT_TYPE (BtkProgress, btk_progress, BTK_TYPE_WIDGET)
 static void
 btk_progress_class_init (BtkProgressClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
@@ -130,10 +130,10 @@ btk_progress_class_init (BtkProgressClass *class)
 }
 
 static void
-btk_progress_set_property (GObject      *object,
+btk_progress_set_property (BObject      *object,
 			   guint         prop_id,
-			   const GValue *value,
-			   GParamSpec   *pspec)
+			   const BValue *value,
+			   BParamSpec   *pspec)
 {
   BtkProgress *progress;
   
@@ -142,32 +142,32 @@ btk_progress_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ACTIVITY_MODE:
-      btk_progress_set_activity_mode (progress, g_value_get_boolean (value));
+      btk_progress_set_activity_mode (progress, b_value_get_boolean (value));
       break;
     case PROP_SHOW_TEXT:
-      btk_progress_set_show_text (progress, g_value_get_boolean (value));
+      btk_progress_set_show_text (progress, b_value_get_boolean (value));
       break;
     case PROP_TEXT_XALIGN:
       btk_progress_set_text_alignment (progress,
-				       g_value_get_float (value),
+				       b_value_get_float (value),
 				       progress->y_align);
       break;
     case PROP_TEXT_YALIGN:
       btk_progress_set_text_alignment (progress,
 				       progress->x_align,
-				       g_value_get_float (value));
+				       b_value_get_float (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_progress_get_property (GObject      *object,
+btk_progress_get_property (BObject      *object,
 			   guint         prop_id,
-			   GValue       *value,
-			   GParamSpec   *pspec)
+			   BValue       *value,
+			   BParamSpec   *pspec)
 {
   BtkProgress *progress;
   
@@ -176,19 +176,19 @@ btk_progress_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ACTIVITY_MODE:
-      g_value_set_boolean (value, (progress->activity_mode != FALSE));
+      b_value_set_boolean (value, (progress->activity_mode != FALSE));
       break;
     case PROP_SHOW_TEXT:
-      g_value_set_boolean (value, (progress->show_text != FALSE));
+      b_value_set_boolean (value, (progress->show_text != FALSE));
       break;
     case PROP_TEXT_XALIGN:
-      g_value_set_float (value, progress->x_align);
+      b_value_set_float (value, progress->x_align);
       break;
     case PROP_TEXT_YALIGN:
-      g_value_set_float (value, progress->y_align);
+      b_value_set_float (value, progress->y_align);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -259,7 +259,7 @@ btk_progress_destroy (BtkObject *object)
 }
 
 static void
-btk_progress_finalize (GObject *object)
+btk_progress_finalize (BObject *object)
 {
   BtkProgress *progress = BTK_PROGRESS (object);
 
@@ -268,7 +268,7 @@ btk_progress_finalize (GObject *object)
 
   g_free (progress->format);
 
-  G_OBJECT_CLASS (btk_progress_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_progress_parent_class)->finalize (object);
 }
 
 static gboolean
@@ -608,7 +608,7 @@ btk_progress_set_show_text (BtkProgress *progress,
 
       btk_widget_queue_resize (BTK_WIDGET (progress));
 
-      g_object_notify (G_OBJECT (progress), "show-text");
+      g_object_notify (B_OBJECT (progress), "show-text");
     }
 }
 
@@ -623,19 +623,19 @@ btk_progress_set_text_alignment (BtkProgress *progress,
 
   if (progress->x_align != x_align || progress->y_align != y_align)
     {
-      g_object_freeze_notify (G_OBJECT (progress));
+      g_object_freeze_notify (B_OBJECT (progress));
       if (progress->x_align != x_align)
 	{
 	  progress->x_align = x_align;
-	  g_object_notify (G_OBJECT (progress), "text-xalign");
+	  g_object_notify (B_OBJECT (progress), "text-xalign");
 	}
 
       if (progress->y_align != y_align)
 	{
 	  progress->y_align = y_align;
-	  g_object_notify (G_OBJECT (progress), "text-yalign");
+	  g_object_notify (B_OBJECT (progress), "text-yalign");
 	}
-      g_object_thaw_notify (G_OBJECT (progress));
+      g_object_thaw_notify (B_OBJECT (progress));
 
       if (BTK_WIDGET_DRAWABLE (BTK_WIDGET (progress)))
 	btk_widget_queue_resize (BTK_WIDGET (progress));
@@ -707,7 +707,7 @@ btk_progress_set_activity_mode (BtkProgress *progress,
       if (BTK_WIDGET_DRAWABLE (BTK_WIDGET (progress)))
 	btk_widget_queue_resize (BTK_WIDGET (progress));
 
-      g_object_notify (G_OBJECT (progress), "activity-mode");
+      g_object_notify (B_OBJECT (progress), "activity-mode");
     }
 }
 

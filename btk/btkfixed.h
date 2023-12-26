@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FIXED                  (btk_fixed_get_type ())
-#define BTK_FIXED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FIXED, BtkFixed))
-#define BTK_FIXED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FIXED, BtkFixedClass))
-#define BTK_IS_FIXED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FIXED))
-#define BTK_IS_FIXED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FIXED))
-#define BTK_FIXED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FIXED, BtkFixedClass))
+#define BTK_FIXED(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FIXED, BtkFixed))
+#define BTK_FIXED_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FIXED, BtkFixedClass))
+#define BTK_IS_FIXED(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FIXED))
+#define BTK_IS_FIXED_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FIXED))
+#define BTK_FIXED_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FIXED, BtkFixedClass))
 
 
 typedef struct _BtkFixed        BtkFixed;

@@ -70,7 +70,7 @@ struct _BtkSearchEngineSimplePrivate
 G_DEFINE_TYPE (BtkSearchEngineSimple, _btk_search_engine_simple, BTK_TYPE_SEARCH_ENGINE);
 
 static void
-btk_search_engine_simple_dispose (GObject *object)
+btk_search_engine_simple_dispose (BObject *object)
 {
   BtkSearchEngineSimple *simple;
   BtkSearchEngineSimplePrivate *priv;
@@ -90,7 +90,7 @@ btk_search_engine_simple_dispose (GObject *object)
       priv->active_search = NULL;
     }
   
-  G_OBJECT_CLASS (_btk_search_engine_simple_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_search_engine_simple_parent_class)->dispose (object);
 }
 
 static SearchThreadData *
@@ -350,10 +350,10 @@ btk_search_engine_simple_set_query (BtkSearchEngine *engine,
 static void
 _btk_search_engine_simple_class_init (BtkSearchEngineSimpleClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkSearchEngineClass *engine_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->dispose = btk_search_engine_simple_dispose;
   
   engine_class = BTK_SEARCH_ENGINE_CLASS (class);
@@ -368,7 +368,7 @@ _btk_search_engine_simple_class_init (BtkSearchEngineSimpleClass *class)
 static void
 _btk_search_engine_simple_init (BtkSearchEngineSimple *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimplePrivate);
+  engine->priv = B_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimplePrivate);
 }
 
 BtkSearchEngine *

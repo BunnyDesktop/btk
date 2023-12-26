@@ -47,7 +47,7 @@ btk_tree_sortable_get_type (void)
       };
 
       tree_sortable_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("BtkTreeSortable"),
+	g_type_register_static (B_TYPE_INTERFACE, I_("BtkTreeSortable"),
 				&tree_sortable_info, 0);
 
       g_type_interface_add_prerequisite (tree_sortable_type, BTK_TYPE_TREE_MODEL);
@@ -77,7 +77,7 @@ btk_tree_sortable_base_init (gpointer g_class)
                     G_STRUCT_OFFSET (BtkTreeSortableIface, sort_column_changed),
                     NULL, NULL,
                     _btk_marshal_VOID__VOID,
-                    G_TYPE_NONE, 0);
+                    B_TYPE_NONE, 0);
       initialized = TRUE;
     }
 }

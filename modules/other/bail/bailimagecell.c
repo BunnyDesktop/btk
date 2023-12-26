@@ -25,7 +25,7 @@
 static void      bail_image_cell_class_init          (BailImageCellClass *klass);
 static void      bail_image_cell_init                (BailImageCell      *image_cell);
 
-static void      bail_image_cell_finalize            (GObject            *object);
+static void      bail_image_cell_finalize            (BObject            *object);
 
 /* BatkImage */
 static void      batk_image_interface_init              (BatkImageIface  *iface);
@@ -58,7 +58,7 @@ G_DEFINE_TYPE_WITH_CODE (BailImageCell, bail_image_cell, BAIL_TYPE_RENDERER_CELL
 static void 
 bail_image_cell_class_init (BailImageCellClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS(klass);
 
   bobject_class->finalize = bail_image_cell_finalize;
@@ -70,7 +70,7 @@ bail_image_cell_class_init (BailImageCellClass *klass)
 BatkObject* 
 bail_image_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
 
@@ -96,12 +96,12 @@ bail_image_cell_init (BailImageCell *image_cell)
 
 
 static void
-bail_image_cell_finalize (GObject *object)
+bail_image_cell_finalize (BObject *object)
 {
   BailImageCell *image_cell = BAIL_IMAGE_CELL (object);
 
   g_free (image_cell->image_description);
-  G_OBJECT_CLASS (bail_image_cell_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_image_cell_parent_class)->finalize (object);
 }
 
 static gboolean

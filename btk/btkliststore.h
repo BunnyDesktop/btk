@@ -33,18 +33,18 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_LIST_STORE	       (btk_list_store_get_type ())
-#define BTK_LIST_STORE(obj)	       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST_STORE, BtkListStore))
-#define BTK_LIST_STORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LIST_STORE, BtkListStoreClass))
-#define BTK_IS_LIST_STORE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LIST_STORE))
-#define BTK_IS_LIST_STORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LIST_STORE))
-#define BTK_LIST_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LIST_STORE, BtkListStoreClass))
+#define BTK_LIST_STORE(obj)	       (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST_STORE, BtkListStore))
+#define BTK_LIST_STORE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LIST_STORE, BtkListStoreClass))
+#define BTK_IS_LIST_STORE(obj)	       (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LIST_STORE))
+#define BTK_IS_LIST_STORE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LIST_STORE))
+#define BTK_LIST_STORE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LIST_STORE, BtkListStoreClass))
 
 typedef struct _BtkListStore       BtkListStore;
 typedef struct _BtkListStoreClass  BtkListStoreClass;
 
 struct _BtkListStore
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
   gint GSEAL (stamp);
@@ -64,7 +64,7 @@ struct _BtkListStore
 
 struct _BtkListStoreClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -88,14 +88,14 @@ void          btk_list_store_set_column_types (BtkListStore *list_store,
 void          btk_list_store_set_value        (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       gint          column,
-					       GValue       *value);
+					       BValue       *value);
 void          btk_list_store_set              (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       ...);
 void          btk_list_store_set_valuesv      (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       gint         *columns,
-					       GValue       *values,
+					       BValue       *values,
 					       gint          n_values);
 void          btk_list_store_set_valist       (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
@@ -119,7 +119,7 @@ void          btk_list_store_insert_with_valuesv (BtkListStore *list_store,
 						  BtkTreeIter  *iter,
 						  gint          position,
 						  gint         *columns,
-						  GValue       *values,
+						  BValue       *values,
 						  gint          n_values);
 void          btk_list_store_prepend          (BtkListStore *list_store,
 					       BtkTreeIter  *iter);

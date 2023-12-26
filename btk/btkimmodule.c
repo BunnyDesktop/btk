@@ -67,8 +67,8 @@ typedef struct _BtkIMModule      BtkIMModule;
 typedef struct _BtkIMModuleClass BtkIMModuleClass;
 
 #define BTK_TYPE_IM_MODULE          (btk_im_module_get_type ())
-#define BTK_IM_MODULE(im_module)    (G_TYPE_CHECK_INSTANCE_CAST ((im_module), BTK_TYPE_IM_MODULE, BtkIMModule))
-#define BTK_IS_IM_MODULE(im_module) (G_TYPE_CHECK_INSTANCE_TYPE ((im_module), BTK_TYPE_IM_MODULE))
+#define BTK_IM_MODULE(im_module)    (B_TYPE_CHECK_INSTANCE_CAST ((im_module), BTK_TYPE_IM_MODULE, BtkIMModule))
+#define BTK_IS_IM_MODULE(im_module) (B_TYPE_CHECK_INSTANCE_TYPE ((im_module), BTK_TYPE_IM_MODULE))
 
 struct _BtkIMModule
 {
@@ -101,7 +101,7 @@ static gint n_loaded_contexts = 0;
 static GHashTable *contexts_hash = NULL;
 static GSList *modules_list = NULL;
 
-static GObjectClass *parent_class = NULL;
+static BObjectClass *parent_class = NULL;
 
 static gboolean
 btk_im_module_load (GTypeModule *module)
@@ -164,7 +164,7 @@ btk_im_module_unload (GTypeModule *module)
  * initialization
  */
 static void
-btk_im_module_finalize (GObject *object)
+btk_im_module_finalize (BObject *object)
 {
   BtkIMModule *module = BTK_IM_MODULE (object);
 
@@ -173,15 +173,15 @@ btk_im_module_finalize (GObject *object)
   parent_class->finalize (object);
 }
 
-G_DEFINE_TYPE (BtkIMModule, btk_im_module, G_TYPE_TYPE_MODULE)
+G_DEFINE_TYPE (BtkIMModule, btk_im_module, B_TYPE_TYPE_MODULE)
 
 static void
 btk_im_module_class_init (BtkIMModuleClass *class)
 {
-  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  GTypeModuleClass *module_class = B_TYPE_MODULE_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
-  parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (class));
+  parent_class = B_OBJECT_CLASS (g_type_class_peek_parent (class));
   
   module_class->load = btk_im_module_load;
   module_class->unload = btk_im_module_unload;
@@ -210,7 +210,7 @@ add_module (BtkIMModule *module, GSList *infos)
 {
   GSList *tmp_list = infos;
   gint i = 0;
-  gint n = g_slist_length (infos);
+  gint n = b_slist_length (infos);
   module->contexts = g_new (BtkIMContextInfo *, n);
 
   while (tmp_list)
@@ -230,10 +230,10 @@ add_module (BtkIMModule *module, GSList *infos)
       
       tmp_list = tmp_list->next;
     }
-  g_slist_free (infos);
+  b_slist_free (infos);
   module->n_contexts = i;
 
-  modules_list = g_slist_prepend (modules_list, module);
+  modules_list = b_slist_prepend (modules_list, module);
 }
 
 #ifdef G_OS_WIN32
@@ -299,11 +299,11 @@ add_builtin_module (const gchar             *module_name,
       correct_localedir_prefix ((char **) &info->domain_dirname);
 #endif
       info->default_locales = g_strdup (contexts[i]->default_locales);
-      infos = g_slist_prepend (infos, info);
+      infos = b_slist_prepend (infos, info);
     }
 
   module->builtin = TRUE;
-  g_type_module_set_name (G_TYPE_MODULE (module), module_name);
+  g_type_module_set_name (B_TYPE_MODULE (module), module_name);
   add_module (module, infos);
 
   return module;
@@ -430,7 +430,7 @@ btk_im_module_initialize (void)
 #ifdef G_OS_WIN32
 	  correct_libdir_prefix (&module->path);
 #endif
-	  g_type_module_set_name (G_TYPE_MODULE (module), module->path);
+	  g_type_module_set_name (B_TYPE_MODULE (module), module->path);
 	}
       else
 	{
@@ -464,7 +464,7 @@ btk_im_module_initialize (void)
 	  if (bango_skip_space (&p))
 	    goto context_error;
 
-	  infos = g_slist_prepend (infos, info);
+	  infos = b_slist_prepend (infos, info);
 	  continue;
 
 	context_error:
@@ -482,7 +482,7 @@ btk_im_module_initialize (void)
 	  free_info (tmp_list->data);
 	  tmp_list = tmp_list->next;
 	}
-      g_slist_free (infos);
+      b_slist_free (infos);
 
       g_object_unref (module);
     }
@@ -609,10 +609,10 @@ _btk_im_module_create (const gchar *context_id)
 	}
       else
 	{
-	  if (g_type_module_use (G_TYPE_MODULE (im_module)))
+	  if (g_type_module_use (B_TYPE_MODULE (im_module)))
 	    {
 	      context = im_module->create (context_id);
-	      g_type_module_unuse (G_TYPE_MODULE (im_module));
+	      g_type_module_unuse (B_TYPE_MODULE (im_module));
 	    }
 	  
 	  if (!context)
@@ -713,7 +713,7 @@ _btk_im_module_get_default_context_id (BdkWindow *client_window)
     {
       screen = bdk_window_get_screen (client_window);
       settings = btk_settings_get_for_screen (screen);
-      g_object_get (G_OBJECT (settings), "btk-im-module", &tmp, NULL);
+      g_object_get (B_OBJECT (settings), "btk-im-module", &tmp, NULL);
       if (tmp)
         {
           immodules = g_strsplit(tmp, ":", 0);

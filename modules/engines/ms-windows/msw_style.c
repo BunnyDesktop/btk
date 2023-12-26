@@ -410,7 +410,7 @@ static void
 setup_menu_settings (BtkSettings *settings)
 {
   int menu_delay;
-  GObjectClass *klazz = G_OBJECT_GET_CLASS (G_OBJECT (settings));
+  BObjectClass *klazz = B_OBJECT_GET_CLASS (B_OBJECT (settings));
 
   if (get_windows_version () > WIN95_VERSION)
     {
@@ -504,7 +504,7 @@ sys_color_to_btk_color (XpThemeClass klazz, int id, BdkColor * pcolor)
 
   pcolor->pixel = color;
   pcolor->red = (GetRValue (color) << 8) | GetRValue (color);
-  pcolor->green = (GetGValue (color) << 8) | GetGValue (color);
+  pcolor->green = (GetBValue (color) << 8) | GetBValue (color);
   pcolor->blue = (GetBValue (color) << 8) | GetBValue (color);
 }
 

@@ -87,7 +87,7 @@ bail_sub_menu_item_real_initialize (BatkObject *obj,
 BatkObject*
 bail_sub_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_MENU_ITEM (widget), NULL);
@@ -300,7 +300,7 @@ menu_item_add_btk (BtkContainer *container,
       batk_child = btk_widget_get_accessible (widget);
 
       bail_container = BAIL_CONTAINER (batk_parent);
-      g_object_notify (G_OBJECT (batk_child), "accessible_parent");
+      g_object_notify (B_OBJECT (batk_child), "accessible_parent");
 
       g_list_free (bail_container->children);
       bail_container->children = btk_container_get_children (container);
@@ -332,8 +332,8 @@ menu_item_remove_btk (BtkContainer *container,
       batk_child = btk_widget_get_accessible (widget);
 
       bail_container = BAIL_CONTAINER (batk_parent);
-      g_value_init (&values.old_value, G_TYPE_POINTER);
-      g_value_set_pointer (&values.old_value, batk_parent);
+      b_value_init (&values.old_value, B_TYPE_POINTER);
+      b_value_set_pointer (&values.old_value, batk_parent);
       values.property_name = "accessible-parent";
       g_signal_emit_by_name (batk_child,
                              "property_change::accessible-parent", &values, NULL);

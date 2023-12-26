@@ -47,24 +47,24 @@
 
 
 #define BDK_TYPE_DRAWABLE_IMPL_DIRECTFB       (bdk_drawable_impl_directfb_get_type ())
-#define BDK_DRAWABLE_IMPL_DIRECTFB(object)    (G_TYPE_CHECK_INSTANCE_CAST ((object), \
+#define BDK_DRAWABLE_IMPL_DIRECTFB(object)    (B_TYPE_CHECK_INSTANCE_CAST ((object), \
                                                                            BDK_TYPE_DRAWABLE_IMPL_DIRECTFB, \
                                                                            BdkDrawableImplDirectFB))
-#define BDK_IS_DRAWABLE_IMPL_DIRECTFB(object) (G_TYPE_CHECK_INSTANCE_TYPE ((object), \
+#define BDK_IS_DRAWABLE_IMPL_DIRECTFB(object) (B_TYPE_CHECK_INSTANCE_TYPE ((object), \
                                                                            BDK_TYPE_DRAWABLE_IMPL_DIRECTFB))
 
 #define BDK_TYPE_WINDOW_IMPL_DIRECTFB         (bdk_window_impl_directfb_get_type ())
-#define BDK_WINDOW_IMPL_DIRECTFB(object)      (G_TYPE_CHECK_INSTANCE_CAST ((object), \
+#define BDK_WINDOW_IMPL_DIRECTFB(object)      (B_TYPE_CHECK_INSTANCE_CAST ((object), \
                                                                            BDK_TYPE_WINDOW_IMPL_DIRECTFB, \
                                                                            BdkWindowImplDirectFB))
-#define BDK_IS_WINDOW_IMPL_DIRECTFB(object)   (G_TYPE_CHECK_INSTANCE_TYPE ((object), \
+#define BDK_IS_WINDOW_IMPL_DIRECTFB(object)   (B_TYPE_CHECK_INSTANCE_TYPE ((object), \
                                                                            BDK_TYPE_WINDOW_IMPL_DIRECTFB))
 
 #define BDK_TYPE_PIXMAP_IMPL_DIRECTFB         (bdk_pixmap_impl_directfb_get_type ())
-#define BDK_PIXMAP_IMPL_DIRECTFB(object)      (G_TYPE_CHECK_INSTANCE_CAST ((object), \
+#define BDK_PIXMAP_IMPL_DIRECTFB(object)      (B_TYPE_CHECK_INSTANCE_CAST ((object), \
                                                                            BDK_TYPE_PIXMAP_IMPL_DIRECTFB, \
                                                                            BdkPixmapImplDirectFB))
-#define BDK_IS_PIXMAP_IMPL_DIRECTFB(object)   (G_TYPE_CHECK_INSTANCE_TYPE ((object), \
+#define BDK_IS_PIXMAP_IMPL_DIRECTFB(object)   (B_TYPE_CHECK_INSTANCE_TYPE ((object), \
                                                                            BDK_TYPE_PIXMAP_IMPL_DIRECTFB))
 
 
@@ -214,8 +214,8 @@ typedef struct
 
 
 #define BDK_TYPE_GC_DIRECTFB       (_bdk_gc_directfb_get_type ())
-#define BDK_GC_DIRECTFB(object)    (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_DIRECTFB, BdkGCDirectFB))
-#define BDK_IS_GC_DIRECTFB(object) (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_DIRECTFB))
+#define BDK_GC_DIRECTFB(object)    (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_DIRECTFB, BdkGCDirectFB))
+#define BDK_IS_GC_DIRECTFB(object) (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_DIRECTFB))
 
 typedef struct
 {

@@ -49,11 +49,11 @@ typedef BdkKeymap BdkWin32Keymap;
 typedef struct _BdkWin32KeymapClass BdkWin32KeymapClass;
 
 #define BDK_TYPE_WIN32_KEYMAP              (bdk_win32_keymap_get_type())
-#define BDK_WIN32_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WIN32_KEYMAP, BdkWin32Keymap))
-#define BDK_WIN32_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
-#define BDK_IS_WIN32_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WIN32_KEYMAP))
-#define BDK_IS_WIN32_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WIN32_KEYMAP))
-#define BDK_WIN32_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
+#define BDK_WIN32_KEYMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WIN32_KEYMAP, BdkWin32Keymap))
+#define BDK_WIN32_KEYMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
+#define BDK_IS_WIN32_KEYMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WIN32_KEYMAP))
+#define BDK_IS_WIN32_KEYMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WIN32_KEYMAP))
+#define BDK_WIN32_KEYMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
 
 GType bdk_win32_keymap_get_type (void);
 

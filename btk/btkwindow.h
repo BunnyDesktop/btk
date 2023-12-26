@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_WINDOW			(btk_window_get_type ())
-#define BTK_WINDOW(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WINDOW, BtkWindow))
-#define BTK_WINDOW_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WINDOW, BtkWindowClass))
-#define BTK_IS_WINDOW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_WINDOW))
-#define BTK_IS_WINDOW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WINDOW))
-#define BTK_WINDOW_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WINDOW, BtkWindowClass))
+#define BTK_WINDOW(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WINDOW, BtkWindow))
+#define BTK_WINDOW_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WINDOW, BtkWindowClass))
+#define BTK_IS_WINDOW(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_WINDOW))
+#define BTK_IS_WINDOW_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WINDOW))
+#define BTK_WINDOW_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WINDOW, BtkWindowClass))
 
 
 typedef struct _BtkWindowClass        BtkWindowClass;
@@ -145,22 +145,22 @@ struct _BtkWindowClass
 };
 
 #define BTK_TYPE_WINDOW_GROUP             (btk_window_group_get_type ())
-#define BTK_WINDOW_GROUP(object)          (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_WINDOW_GROUP, BtkWindowGroup))
-#define BTK_WINDOW_GROUP_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WINDOW_GROUP, BtkWindowGroupClass))
-#define BTK_IS_WINDOW_GROUP(object)       (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_WINDOW_GROUP))
-#define BTK_IS_WINDOW_GROUP_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WINDOW_GROUP))
-#define BTK_WINDOW_GROUP_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WINDOW_GROUP, BtkWindowGroupClass))
+#define BTK_WINDOW_GROUP(object)          (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_WINDOW_GROUP, BtkWindowGroup))
+#define BTK_WINDOW_GROUP_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WINDOW_GROUP, BtkWindowGroupClass))
+#define BTK_IS_WINDOW_GROUP(object)       (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_WINDOW_GROUP))
+#define BTK_IS_WINDOW_GROUP_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WINDOW_GROUP))
+#define BTK_WINDOW_GROUP_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WINDOW_GROUP, BtkWindowGroupClass))
 
 struct _BtkWindowGroup
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   GSList *GSEAL (grabs);
 };
 
 struct _BtkWindowGroupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

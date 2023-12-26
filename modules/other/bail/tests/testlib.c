@@ -249,7 +249,7 @@ find_object_by_type (BatkObject *obj,
   if (obj == NULL)
     return NULL;
 
-  typename = g_type_name (G_OBJECT_TYPE (obj));
+  typename = g_type_name (B_OBJECT_TYPE (obj));
   if (strcmp (typename, type) == 0)
      return obj;
 
@@ -263,7 +263,7 @@ find_object_by_type (BatkObject *obj,
       if (child == NULL)
         continue;
 
-      typename = g_type_name (G_OBJECT_TYPE (child));
+      typename = g_type_name (B_OBJECT_TYPE (child));
 
       if (strcmp (typename, type) == 0)
         return child;
@@ -391,7 +391,7 @@ display_children_to_depth (BatkObject *obj,
   else
     g_print("name <NULL>, ");
 
-  typename = g_type_name (G_OBJECT_TYPE (obj));
+  typename = g_type_name (B_OBJECT_TYPE (obj));
   g_print ("typename <%s>\n", typename);
 
   for (i = 0; i < n_children; i++)
@@ -402,7 +402,7 @@ display_children_to_depth (BatkObject *obj,
       if (child != NULL)
         {
           display_children_to_depth (child, to_depth, depth + 1, i);
-          g_object_unref (G_OBJECT (child));
+          g_object_unref (B_OBJECT (child));
         }
     }
 }

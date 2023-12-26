@@ -39,7 +39,7 @@ static void         btk_list_store_drag_source_init(BtkTreeDragSourceIface *ifac
 static void         btk_list_store_drag_dest_init  (BtkTreeDragDestIface   *iface);
 static void         btk_list_store_sortable_init   (BtkTreeSortableIface   *iface);
 static void         btk_list_store_buildable_init  (BtkBuildableIface      *iface);
-static void         btk_list_store_finalize        (GObject           *object);
+static void         btk_list_store_finalize        (BObject           *object);
 static BtkTreeModelFlags btk_list_store_get_flags  (BtkTreeModel      *tree_model);
 static gint         btk_list_store_get_n_columns   (BtkTreeModel      *tree_model);
 static GType        btk_list_store_get_column_type (BtkTreeModel      *tree_model,
@@ -52,7 +52,7 @@ static BtkTreePath *btk_list_store_get_path        (BtkTreeModel      *tree_mode
 static void         btk_list_store_get_value       (BtkTreeModel      *tree_model,
 						    BtkTreeIter       *iter,
 						    gint               column,
-						    GValue            *value);
+						    BValue            *value);
 static gboolean     btk_list_store_iter_next       (BtkTreeModel      *tree_model,
 						    BtkTreeIter       *iter);
 static gboolean     btk_list_store_iter_children   (BtkTreeModel      *tree_model,
@@ -122,17 +122,17 @@ static gboolean btk_list_store_has_default_sort_func (BtkTreeSortable        *so
 /* buildable */
 static gboolean btk_list_store_buildable_custom_tag_start (BtkBuildable  *buildable,
 							   BtkBuilder    *builder,
-							   GObject       *child,
+							   BObject       *child,
 							   const gchar   *tagname,
 							   GMarkupParser *parser,
 							   gpointer      *data);
 static void     btk_list_store_buildable_custom_tag_end (BtkBuildable *buildable,
 							 BtkBuilder   *builder,
-							 GObject      *child,
+							 BObject      *child,
 							 const gchar  *tagname,
 							 gpointer     *data);
 
-G_DEFINE_TYPE_WITH_CODE (BtkListStore, btk_list_store, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkListStore, btk_list_store, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_MODEL,
 						btk_list_store_tree_model_init)
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_DRAG_SOURCE,
@@ -148,9 +148,9 @@ G_DEFINE_TYPE_WITH_CODE (BtkListStore, btk_list_store, G_TYPE_OBJECT,
 static void
 btk_list_store_class_init (BtkListStoreClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
 
   object_class->finalize = btk_list_store_finalize;
 }
@@ -221,10 +221,10 @@ btk_list_store_init (BtkListStore *list_store)
  * @Varargs: all #GType types for the columns, from first to last
  *
  * Creates a new list store as with @n_columns columns each of the types passed
- * in.  Note that only types derived from standard GObject fundamental types 
+ * in.  Note that only types derived from standard BObject fundamental types 
  * are supported. 
  *
- * As an example, <literal>btk_tree_store_new (3, G_TYPE_INT, G_TYPE_STRING,
+ * As an example, <literal>btk_tree_store_new (3, B_TYPE_INT, B_TYPE_STRING,
  * BDK_TYPE_PIXBUF);</literal> will create a new #BtkListStore with three columns, of type
  * int, string and #BdkPixbuf respectively.
  *
@@ -306,7 +306,7 @@ btk_list_store_newv (gint   n_columns,
  * @n_columns: Number of columns for the list store
  * @types: (array length=n_columns): An array length n of #GTypes
  *
- * This function is meant primarily for #GObjects that inherit from #BtkListStore,
+ * This function is meant primarily for #BObjects that inherit from #BtkListStore,
  * and should only be used when constructing a new #BtkListStore.  It will not
  * function after a row has been added, or a method on the #BtkTreeModel
  * interface is called.
@@ -344,7 +344,7 @@ btk_list_store_set_n_columns (BtkListStore *list_store,
 
   list_store->column_headers = g_renew (GType, list_store->column_headers, n_columns);
   for (i = list_store->n_columns; i < n_columns; i++)
-    list_store->column_headers[i] = G_TYPE_INVALID;
+    list_store->column_headers[i] = B_TYPE_INVALID;
   list_store->n_columns = n_columns;
 
   if (list_store->sort_list)
@@ -367,7 +367,7 @@ btk_list_store_set_column_type (BtkListStore *list_store,
 }
 
 static void
-btk_list_store_finalize (GObject *object)
+btk_list_store_finalize (BObject *object)
 {
   BtkListStore *list_store = BTK_LIST_STORE (object);
 
@@ -388,7 +388,7 @@ btk_list_store_finalize (GObject *object)
       list_store->default_sort_data = NULL;
     }
 
-  G_OBJECT_CLASS (btk_list_store_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_list_store_parent_class)->finalize (object);
 }
 
 /* Fulfill the BtkTreeModel requirements */
@@ -415,7 +415,7 @@ btk_list_store_get_column_type (BtkTreeModel *tree_model,
   BtkListStore *list_store = (BtkListStore *) tree_model;
 
   g_return_val_if_fail (index < BTK_LIST_STORE (tree_model)->n_columns, 
-			G_TYPE_INVALID);
+			B_TYPE_INVALID);
 
   list_store->columns_dirty = TRUE;
 
@@ -467,7 +467,7 @@ static void
 btk_list_store_get_value (BtkTreeModel *tree_model,
 			  BtkTreeIter  *iter,
 			  gint          column,
-			  GValue       *value)
+			  BValue       *value)
 {
   BtkListStore *list_store = (BtkListStore *) tree_model;
   BtkTreeDataList *list;
@@ -482,7 +482,7 @@ btk_list_store_get_value (BtkTreeModel *tree_model,
     list = list->next;
 
   if (list == NULL)
-    g_value_init (value, list_store->column_headers[column]);
+    b_value_init (value, list_store->column_headers[column]);
   else
     _btk_tree_data_list_node_to_value (list,
 				       list_store->column_headers[column],
@@ -591,20 +591,20 @@ static gboolean
 btk_list_store_real_set_value (BtkListStore *list_store,
 			       BtkTreeIter  *iter,
 			       gint          column,
-			       GValue       *value,
+			       BValue       *value,
 			       gboolean      sort)
 {
   BtkTreeDataList *list;
   BtkTreeDataList *prev;
   gint old_column = column;
-  GValue real_value = {0, };
+  BValue real_value = {0, };
   gboolean converted = FALSE;
   gboolean retval = FALSE;
 
   if (! g_type_is_a (G_VALUE_TYPE (value), list_store->column_headers[column]))
     {
-      if (! (g_value_type_compatible (G_VALUE_TYPE (value), list_store->column_headers[column]) &&
-	     g_value_type_compatible (list_store->column_headers[column], G_VALUE_TYPE (value))))
+      if (! (b_value_type_compatible (G_VALUE_TYPE (value), list_store->column_headers[column]) &&
+	     b_value_type_compatible (list_store->column_headers[column], G_VALUE_TYPE (value))))
 	{
 	  g_warning ("%s: Unable to convert from %s to %s\n",
 		     B_STRLOC,
@@ -612,13 +612,13 @@ btk_list_store_real_set_value (BtkListStore *list_store,
 		     g_type_name (list_store->column_headers[column]));
 	  return retval;
 	}
-      if (!g_value_transform (value, &real_value))
+      if (!b_value_transform (value, &real_value))
 	{
 	  g_warning ("%s: Unable to make conversion from %s to %s\n",
 		     B_STRLOC,
 		     g_type_name (G_VALUE_TYPE (value)),
 		     g_type_name (list_store->column_headers[column]));
-	  g_value_unset (&real_value);
+	  b_value_unset (&real_value);
 	  return retval;
 	}
       converted = TRUE;
@@ -636,7 +636,7 @@ btk_list_store_real_set_value (BtkListStore *list_store,
 	    _btk_tree_data_list_value_to_node (list, value);
 	  retval = TRUE;
 	  if (converted)
-	    g_value_unset (&real_value);
+	    b_value_unset (&real_value);
          if (sort && BTK_LIST_STORE_IS_SORTED (list_store))
             btk_list_store_sort_iter_changed (list_store, iter, old_column);
 	  return retval;
@@ -674,7 +674,7 @@ btk_list_store_real_set_value (BtkListStore *list_store,
 
   retval = TRUE;
   if (converted)
-    g_value_unset (&real_value);
+    b_value_unset (&real_value);
 
   if (sort && BTK_LIST_STORE_IS_SORTED (list_store))
     btk_list_store_sort_iter_changed (list_store, iter, old_column);
@@ -699,7 +699,7 @@ void
 btk_list_store_set_value (BtkListStore *list_store,
 			  BtkTreeIter  *iter,
 			  gint          column,
-			  GValue       *value)
+			  BValue       *value)
 {
   g_return_if_fail (BTK_IS_LIST_STORE (list_store));
   g_return_if_fail (VALID_ITER (iter, list_store));
@@ -747,7 +747,7 @@ btk_list_store_set_vector_internal (BtkListStore *list_store,
 				    gboolean     *emit_signal,
 				    gboolean     *maybe_need_sort,
 				    gint         *columns,
-				    GValue       *values,
+				    BValue       *values,
 				    gint          n_values)
 {
   gint i;
@@ -789,7 +789,7 @@ btk_list_store_set_valist_internal (BtkListStore *list_store,
 
   while (column != -1)
     {
-      GValue value = { 0, };
+      BValue value = { 0, };
       gchar *error = NULL;
 
       if (column < 0 || column >= list_store->n_columns)
@@ -797,7 +797,7 @@ btk_list_store_set_valist_internal (BtkListStore *list_store,
 	  g_warning ("%s: Invalid column number %d added to iter (remember to end your list of columns with a -1)", B_STRLOC, column);
 	  break;
 	}
-      g_value_init (&value, list_store->column_headers[column]);
+      b_value_init (&value, list_store->column_headers[column]);
 
       G_VALUE_COLLECT (&value, var_args, 0, &error);
       if (error)
@@ -822,7 +822,7 @@ btk_list_store_set_valist_internal (BtkListStore *list_store,
 	  column == list_store->sort_column_id)
 	*maybe_need_sort = TRUE;
 
-      g_value_unset (&value);
+      b_value_unset (&value);
 
       column = va_arg (var_args, gint);
     }
@@ -833,7 +833,7 @@ btk_list_store_set_valist_internal (BtkListStore *list_store,
  * @list_store: A #BtkListStore
  * @iter: A valid #BtkTreeIter for the row being modified
  * @columns: (array length=n_values): an array of column numbers
- * @values: (array length=n_values): an array of GValues
+ * @values: (array length=n_values): an array of BValues
  * @n_values: the length of the @columns and @values arrays
  *
  * A variant of btk_list_store_set_valist() which
@@ -848,7 +848,7 @@ void
 btk_list_store_set_valuesv (BtkListStore *list_store,
 			    BtkTreeIter  *iter,
 			    gint         *columns,
-			    GValue       *values,
+			    BValue       *values,
 			    gint          n_values)
 {
   gboolean emit_signal = FALSE;
@@ -924,11 +924,11 @@ btk_list_store_set_valist (BtkListStore *list_store,
  * The variable argument list should contain integer column numbers,
  * each column number followed by the value to be set.
  * The list is terminated by a -1. For example, to set column 0 with type
- * %G_TYPE_STRING to "Foo", you would write <literal>btk_list_store_set (store, iter,
+ * %B_TYPE_STRING to "Foo", you would write <literal>btk_list_store_set (store, iter,
  * 0, "Foo", -1)</literal>.
  *
- * The value will be referenced by the store if it is a %G_TYPE_OBJECT, and it
- * will be copied if it is a %G_TYPE_STRING or %G_TYPE_BOXED.
+ * The value will be referenced by the store if it is a %B_TYPE_OBJECT, and it
+ * will be copied if it is a %B_TYPE_STRING or %B_TYPE_BOXED.
  **/
 void
 btk_list_store_set (BtkListStore *list_store,
@@ -1974,7 +1974,7 @@ btk_list_store_insert_with_values (BtkListStore *list_store,
  * @iter: (out) (allow-none): An unset #BtkTreeIter to set to the new row, or %NULL.
  * @position: position to insert the new row
  * @columns: (array length=n_values): an array of column numbers
- * @values: (array length=n_values): an array of GValues 
+ * @values: (array length=n_values): an array of BValues 
  * @n_values: the length of the @columns and @values arrays
  * 
  * A variant of btk_list_store_insert_with_values() which
@@ -1989,7 +1989,7 @@ btk_list_store_insert_with_valuesv (BtkListStore *list_store,
 				    BtkTreeIter  *iter,
 				    gint          position,
 				    gint         *columns, 
-				    GValue       *values,
+				    BValue       *values,
 				    gint          n_values)
 {
   BtkTreePath *path;
@@ -2057,10 +2057,10 @@ typedef struct {
 
 typedef struct {
   BtkBuilder *builder;
-  GObject *object;
+  BObject *object;
   GSList *column_type_names;
   GType *column_types;
-  GValue *values;
+  BValue *values;
   gint *colids;
   ColInfo **columns;
   gint last_row;
@@ -2152,7 +2152,7 @@ list_store_start_element (GMarkupParseContext *context,
   else if (strcmp (element_name, "column") == 0)
     for (i = 0; names[i]; i++)
       if (strcmp (names[i], "type") == 0)
-	data->column_type_names = g_slist_prepend (data->column_type_names,
+	data->column_type_names = b_slist_prepend (data->column_type_names,
 						   g_strdup (values[i]));
   else if (strcmp (element_name, "columns") == 0)
     ;
@@ -2190,10 +2190,10 @@ list_store_end_element (GMarkupParseContext *context,
 	  g_free (info->context);
 	  g_slice_free (ColInfo, info);
 	  data->columns[i] = NULL;
-	  g_value_unset (&data->values[i]);
+	  b_value_unset (&data->values[i]);
 	}
       g_free (data->values);
-      data->values = g_new0 (GValue, data->n_columns);
+      data->values = g_new0 (BValue, data->n_columns);
       data->last_row++;
       data->row_column = 0;
     }
@@ -2204,13 +2204,13 @@ list_store_end_element (GMarkupParseContext *context,
       int i;
       GType type;
 
-      data->column_type_names = g_slist_reverse (data->column_type_names);
-      column_types = g_new0 (GType, g_slist_length (data->column_type_names));
+      data->column_type_names = b_slist_reverse (data->column_type_names);
+      column_types = g_new0 (GType, b_slist_length (data->column_type_names));
 
       for (l = data->column_type_names, i = 0; l; l = l->next, i++)
 	{
 	  type = btk_builder_get_type_from_name (data->builder, l->data);
-	  if (type == G_TYPE_INVALID)
+	  if (type == B_TYPE_INVALID)
 	    {
 	      g_warning ("Unknown type %s specified in treemodel %s",
 			 (const gchar*)l->data,
@@ -2300,7 +2300,7 @@ static const GMarkupParser list_store_parser =
 static gboolean
 btk_list_store_buildable_custom_tag_start (BtkBuildable  *buildable,
 					   BtkBuilder    *builder,
-					   GObject       *child,
+					   BObject       *child,
 					   const gchar   *tagname,
 					   GMarkupParser *parser,
 					   gpointer      *data)
@@ -2315,7 +2315,7 @@ btk_list_store_buildable_custom_tag_start (BtkBuildable  *buildable,
 
       parser_data = g_slice_new0 (SubParserData);
       parser_data->builder = builder;
-      parser_data->object = G_OBJECT (buildable);
+      parser_data->object = B_OBJECT (buildable);
       parser_data->column_type_names = NULL;
 
       *parser = list_store_parser;
@@ -2330,8 +2330,8 @@ btk_list_store_buildable_custom_tag_start (BtkBuildable  *buildable,
 
       parser_data = g_slice_new0 (SubParserData);
       parser_data->builder = builder;
-      parser_data->object = G_OBJECT (buildable);
-      parser_data->values = g_new0 (GValue, n_columns);
+      parser_data->object = B_OBJECT (buildable);
+      parser_data->values = g_new0 (BValue, n_columns);
       parser_data->colids = g_new0 (gint, n_columns);
       parser_data->columns = g_new0 (ColInfo*, n_columns);
       parser_data->column_types = BTK_LIST_STORE (buildable)->column_headers;
@@ -2353,7 +2353,7 @@ btk_list_store_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_list_store_buildable_custom_tag_end (BtkBuildable *buildable,
 					 BtkBuilder   *builder,
-					 GObject      *child,
+					 BObject      *child,
 					 const gchar  *tagname,
 					 gpointer     *data)
 {
@@ -2361,7 +2361,7 @@ btk_list_store_buildable_custom_tag_end (BtkBuildable *buildable,
   
   if (strcmp (tagname, "columns") == 0)
     {
-      g_slist_free (sub->column_type_names);
+      b_slist_free (sub->column_type_names);
       g_slice_free (SubParserData, sub);
     }
   else if (strcmp (tagname, "data") == 0)

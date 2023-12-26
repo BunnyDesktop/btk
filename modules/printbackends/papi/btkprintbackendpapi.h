@@ -29,8 +29,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_PAPI            (btk_print_backend_papi_get_type ())
-#define BTK_PRINT_BACKEND_PAPI(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapi))
-#define BTK_IS_PRINT_BACKEND_PAPI(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_PAPI))
+#define BTK_PRINT_BACKEND_PAPI(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapi))
+#define BTK_IS_PRINT_BACKEND_PAPI(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_PAPI))
 
 typedef struct _BtkPrintBackendPapi      BtkPrintBackendPapi;
 

@@ -37,8 +37,8 @@ enum {
   LAST_SIGNAL
 };
 
-static void bdk_display_dispose    (GObject         *object);
-static void bdk_display_finalize   (GObject         *object);
+static void bdk_display_dispose    (BObject         *object);
+static void bdk_display_finalize   (BObject         *object);
 
 
 static void       singlehead_get_pointer (BdkDisplay       *display,
@@ -94,12 +94,12 @@ static const BdkPointerHooks singlehead_default_pointer_hooks = {
 
 static const BdkPointerHooks *singlehead_current_pointer_hooks = &singlehead_default_pointer_hooks;
 
-G_DEFINE_TYPE (BdkDisplay, bdk_display, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDisplay, bdk_display, B_TYPE_OBJECT)
 
 static void
 bdk_display_class_init (BdkDisplayClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   
   object_class->finalize = bdk_display_finalize;
   object_class->dispose = bdk_display_dispose;
@@ -116,20 +116,20 @@ bdk_display_class_init (BdkDisplayClass *class)
    */   
   signals[CLOSED] =
     g_signal_new (g_intern_static_string ("closed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkDisplayClass, closed),
 		  NULL, NULL,
 		  _bdk_marshal_VOID__BOOLEAN,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  1,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_BOOLEAN);
 }
 
 static void
 bdk_display_init (BdkDisplay *display)
 {
-  _bdk_displays = g_slist_prepend (_bdk_displays, display);
+  _bdk_displays = b_slist_prepend (_bdk_displays, display);
 
   display->button_click_time[0] = display->button_click_time[1] = 0;
   display->button_window[0] = display->button_window[1] = NULL;
@@ -144,7 +144,7 @@ bdk_display_init (BdkDisplay *display)
 }
 
 static void
-bdk_display_dispose (GObject *object)
+bdk_display_dispose (BObject *object)
 {
   BdkDisplay *display = BDK_DISPLAY_OBJECT (object);
 
@@ -153,7 +153,7 @@ bdk_display_dispose (GObject *object)
   display->queued_events = NULL;
   display->queued_tail = NULL;
 
-  _bdk_displays = g_slist_remove (_bdk_displays, object);
+  _bdk_displays = b_slist_remove (_bdk_displays, object);
 
   if (bdk_display_get_default() == display)
     {
@@ -165,13 +165,13 @@ bdk_display_dispose (GObject *object)
                                                  NULL);
     }
 
-  G_OBJECT_CLASS (bdk_display_parent_class)->dispose (object);
+  B_OBJECT_CLASS (bdk_display_parent_class)->dispose (object);
 }
 
 static void
-bdk_display_finalize (GObject *object)
+bdk_display_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (bdk_display_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_display_parent_class)->finalize (object);
 }
 
 /**
@@ -193,7 +193,7 @@ bdk_display_close (BdkDisplay *display)
       display->closed = TRUE;
       
       g_signal_emit (display, signals[CLOSED], 0, FALSE);
-      g_object_run_dispose (G_OBJECT (display));
+      g_object_run_dispose (B_OBJECT (display));
       
       g_object_unref (display);
     }
@@ -447,7 +447,7 @@ bdk_set_sm_client_id (const gchar* sm_client_id)
   for (tmp_list = displays; tmp_list; tmp_list = tmp_list->next)
     _bdk_windowing_display_set_sm_client_id (tmp_list->data, sm_client_id);
 
-  g_slist_free (displays);
+  b_slist_free (displays);
 }
 
 /**

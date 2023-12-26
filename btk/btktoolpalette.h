@@ -33,11 +33,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_PALETTE           (btk_tool_palette_get_type ())
-#define BTK_TOOL_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_PALETTE, BtkToolPalette))
-#define BTK_TOOL_PALETTE_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
-#define BTK_IS_TOOL_PALETTE(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
-#define BTK_IS_TOOL_PALETTE_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
-#define BTK_TOOL_PALETTE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
+#define BTK_TOOL_PALETTE(obj)           (B_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_PALETTE, BtkToolPalette))
+#define BTK_TOOL_PALETTE_CLASS(cls)     (B_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
+#define BTK_IS_TOOL_PALETTE(obj)        (B_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
+#define BTK_IS_TOOL_PALETTE_CLASS(obj)  (B_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
+#define BTK_TOOL_PALETTE_GET_CLASS(obj) (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
 
 typedef struct _BtkToolPalette           BtkToolPalette;
 typedef struct _BtkToolPaletteClass      BtkToolPaletteClass;

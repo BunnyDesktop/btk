@@ -49,60 +49,60 @@ enum
 
 static guint signals[LAST_SIGNAL];
 
-G_DEFINE_ABSTRACT_TYPE (BtkSearchEngine, _btk_search_engine, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (BtkSearchEngine, _btk_search_engine, B_TYPE_OBJECT);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
-  G_OBJECT_CLASS (_btk_search_engine_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_search_engine_parent_class)->finalize (object);
 }
 
 static void
 _btk_search_engine_class_init (BtkSearchEngineClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
   
   signals[HITS_ADDED] =
     g_signal_new ("hits-added",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSearchEngineClass, hits_added),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_POINTER);
   
   signals[HITS_SUBTRACTED] =
     g_signal_new ("hits-subtracted",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSearchEngineClass, hits_subtracted),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_POINTER);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_POINTER);
   
   signals[FINISHED] =
     g_signal_new ("finished",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSearchEngineClass, finished),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   signals[ERROR] =
     g_signal_new ("error",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSearchEngineClass, error),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);  
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);  
 }
 
 static void

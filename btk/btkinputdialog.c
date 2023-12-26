@@ -122,7 +122,7 @@ G_DEFINE_TYPE (BtkInputDialog, btk_input_dialog, BTK_TYPE_DIALOG)
 static BtkInputDialogPrivate *
 btk_input_dialog_get_private (BtkInputDialog *input_dialog)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (input_dialog, 
+  return B_TYPE_INSTANCE_GET_PRIVATE (input_dialog, 
 				      BTK_TYPE_INPUT_DIALOG, 
 				      BtkInputDialogPrivate);
 }
@@ -145,7 +145,7 @@ input_dialog_from_widget (BtkWidget *widget)
 static void
 btk_input_dialog_class_init (BtkInputDialogClass *klass)
 {
-  GObjectClass *object_class = (GObjectClass *) klass;
+  BObjectClass *object_class = (BObjectClass *) klass;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)klass;
   
   widget_class->screen_changed = btk_input_dialog_screen_changed;
@@ -155,22 +155,22 @@ btk_input_dialog_class_init (BtkInputDialogClass *klass)
 
   input_dialog_signals[ENABLE_DEVICE] =
     g_signal_new (I_("enable-device"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkInputDialogClass, enable_device),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BDK_TYPE_DEVICE);
 
   input_dialog_signals[DISABLE_DEVICE] =
     g_signal_new (I_("disable-device"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkInputDialogClass, disable_device),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BDK_TYPE_DEVICE);
 
   g_type_class_add_private (object_class, sizeof (BtkInputDialogPrivate));

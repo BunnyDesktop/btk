@@ -90,7 +90,7 @@ static const guint16 btk_compose_ignore[] = {
   BDK_ISO_Level3_Shift
 };
 
-static void     btk_im_context_simple_finalize           (GObject                  *obj);
+static void     btk_im_context_simple_finalize           (BObject                  *obj);
 static gboolean btk_im_context_simple_filter_keypress    (BtkIMContext             *context,
 							  BdkEventKey              *key);
 static void     btk_im_context_simple_reset              (BtkIMContext             *context);
@@ -105,7 +105,7 @@ static void
 btk_im_context_simple_class_init (BtkIMContextSimpleClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   im_context_class->filter_keypress = btk_im_context_simple_filter_keypress;
   im_context_class->reset = btk_im_context_simple_reset;
@@ -119,19 +119,19 @@ btk_im_context_simple_init (BtkIMContextSimple *im_context_simple)
 }
 
 static void
-btk_im_context_simple_finalize (GObject *obj)
+btk_im_context_simple_finalize (BObject *obj)
 {
   BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (obj);
 
   if (context_simple->tables)
     {
-      g_slist_foreach (context_simple->tables, (GFunc)g_free, NULL);
-      g_slist_free (context_simple->tables);
+      b_slist_foreach (context_simple->tables, (GFunc)g_free, NULL);
+      b_slist_free (context_simple->tables);
 
       context_simple->tables = NULL;
     }
 
-  G_OBJECT_CLASS (btk_im_context_simple_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (btk_im_context_simple_parent_class)->finalize (obj);
 }
 
 /** 
@@ -1237,7 +1237,7 @@ btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
   table->max_seq_len = max_seq_len;
   table->n_seqs = n_seqs;
 
-  context_simple->tables = g_slist_prepend (context_simple->tables, table);
+  context_simple->tables = b_slist_prepend (context_simple->tables, table);
 }
 
 #define __BTK_IM_CONTEXT_SIMPLE_C__

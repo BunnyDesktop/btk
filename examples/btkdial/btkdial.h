@@ -29,9 +29,9 @@
 B_BEGIN_DECLS
 
 
-#define BTK_DIAL(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
-#define BTK_DIAL_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, btk_dial_get_type (), BtkDialClass)
-#define BTK_IS_DIAL(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, btk_dial_get_type ())
+#define BTK_DIAL(obj)          B_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
+#define BTK_DIAL_CLASS(klass)  B_TYPE_CHECK_CLASS_CAST (klass, btk_dial_get_type (), BtkDialClass)
+#define BTK_IS_DIAL(obj)       B_TYPE_CHECK_INSTANCE_TYPE (obj, btk_dial_get_type ())
 
 
 typedef struct _BtkDial        BtkDial;

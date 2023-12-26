@@ -202,7 +202,7 @@ btk_drag_get_data (BtkWidget      *widget,
   pasteboard = [dragging_info draggingPasteboard];
 
   info = btk_drag_get_dest_info (context, FALSE);
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
 
   selection_data = _btk_quartz_get_selection_data_from_pasteboard (pasteboard,
 								   target, 0);
@@ -279,14 +279,14 @@ btk_drag_get_dest_info (BdkDragContext *context,
   if (!info_quark)
     info_quark = g_quark_from_static_string ("btk-dest-info");
   
-  info = g_object_get_qdata (G_OBJECT (context), info_quark);
+  info = g_object_get_qdata (B_OBJECT (context), info_quark);
   if (!info && create)
     {
       info = g_new (BtkDragDestInfo, 1);
       info->widget = NULL;
       info->context = context;
       info->dropped = FALSE;
-      g_object_set_qdata_full (G_OBJECT (context), info_quark,
+      g_object_set_qdata_full (B_OBJECT (context), info_quark,
 			       info, btk_drag_dest_info_destroy);
     }
 
@@ -304,12 +304,12 @@ btk_drag_get_source_info (BdkDragContext *context,
   if (!dest_info_quark)
     dest_info_quark = g_quark_from_static_string ("btk-source-info");
   
-  info = g_object_get_qdata (G_OBJECT (context), dest_info_quark);
+  info = g_object_get_qdata (B_OBJECT (context), dest_info_quark);
   if (!info && create)
     {
       info = g_new0 (BtkDragSourceInfo, 1);
       info->context = context;
-      g_object_set_qdata (G_OBJECT (context), dest_info_quark, info);
+      g_object_set_qdata (B_OBJECT (context), dest_info_quark, info);
     }
 
   return info;
@@ -318,7 +318,7 @@ btk_drag_get_source_info (BdkDragContext *context,
 static void
 btk_drag_clear_source_info (BdkDragContext *context)
 {
-  g_object_set_qdata (G_OBJECT (context), dest_info_quark, NULL);
+  g_object_set_qdata (B_OBJECT (context), dest_info_quark, NULL);
 }
 
 BtkWidget *
@@ -505,7 +505,7 @@ btk_drag_dest_set (BtkWidget            *widget,
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  old_site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  old_site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
 
   site = g_new (BtkDragDestSite, 1);
   site->flags = flags;
@@ -531,7 +531,7 @@ btk_drag_dest_set (BtkWidget            *widget,
   g_signal_connect (widget, "hierarchy-changed",
 		    G_CALLBACK (btk_drag_dest_hierarchy_changed), site);
 
-  g_object_set_data_full (G_OBJECT (widget), I_("btk-drag-dest"),
+  g_object_set_data_full (B_OBJECT (widget), I_("btk-drag-dest"),
 			  site, btk_drag_dest_site_destroy);
 }
 
@@ -551,7 +551,7 @@ btk_drag_dest_unset (BtkWidget *widget)
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  old_site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  old_site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   if (old_site)
     {
       g_signal_handlers_disconnect_by_func (widget,
@@ -562,7 +562,7 @@ btk_drag_dest_unset (BtkWidget *widget)
                                             old_site);
     }
 
-  g_object_set_data (G_OBJECT (widget), I_("btk-drag-dest"), NULL);
+  g_object_set_data (B_OBJECT (widget), I_("btk-drag-dest"), NULL);
 }
 
 BtkTargetList*
@@ -572,7 +572,7 @@ btk_drag_dest_get_target_list (BtkWidget *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
   
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
 
   return site ? site->target_list : NULL;  
 }
@@ -585,7 +585,7 @@ btk_drag_dest_set_target_list (BtkWidget      *widget,
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
   
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   
   if (!site)
     {
@@ -656,7 +656,7 @@ prepend_and_ref_widget (BtkWidget *widget,
 {
   GSList **slist_p = data;
 
-  *slist_p = g_slist_prepend (*slist_p, g_object_ref (widget));
+  *slist_p = b_slist_prepend (*slist_p, g_object_ref (widget));
 }
 
 static void
@@ -764,7 +764,7 @@ btk_drag_find_widget (BtkWidget       *widget,
 		btk_drag_find_widget (tmp_list->data, &new_data);
 	      g_object_unref (tmp_list->data);
 	    }
-	  g_slist_free (children);
+	  b_slist_free (children);
 	  
 	  data->found = new_data.found;
 	}
@@ -774,7 +774,7 @@ btk_drag_find_widget (BtkWidget       *widget,
        * a drop site.
        */
       if (!data->found &&
-	  g_object_get_data (G_OBJECT (widget), "btk-drag-dest"))
+	  g_object_get_data (B_OBJECT (widget), "btk-drag-dest"))
 	{
 	  data->found = data->callback (widget,
 					data->context,
@@ -801,7 +801,7 @@ btk_drag_dest_leave (BtkWidget      *widget,
 {
   BtkDragDestSite *site;
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   g_return_if_fail (site != NULL);
 
   if ((site->flags & BTK_DEST_DEFAULT_HIGHLIGHT) && site->have_drag)
@@ -825,7 +825,7 @@ btk_drag_dest_motion (BtkWidget	     *widget,
   BdkDragAction action = 0;
   gboolean retval;
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   g_return_val_if_fail (site != NULL, FALSE);
 
   if (site->track_motion || site->flags & BTK_DEST_DEFAULT_MOTION)
@@ -869,7 +869,7 @@ btk_drag_dest_drop (BtkWidget	     *widget,
   BtkDragDestInfo *info;
   gboolean retval;
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   g_return_val_if_fail (site != NULL, FALSE);
 
   info = btk_drag_get_dest_info (context, FALSE);
@@ -905,7 +905,7 @@ btk_drag_dest_set_track_motion (BtkWidget *widget,
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   
   g_return_if_fail (site != NULL);
 
@@ -919,7 +919,7 @@ btk_drag_dest_get_track_motion (BtkWidget *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
+  site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
 
   if (site)
     return site->track_motion;
@@ -1354,7 +1354,7 @@ btk_drag_source_set (BtkWidget            *widget,
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
 
   btk_widget_add_events (widget,
 			 btk_widget_get_events (widget) |
@@ -1382,7 +1382,7 @@ btk_drag_source_set (BtkWidget            *widget,
 			G_CALLBACK (btk_drag_source_event_cb),
 			site);
       
-      g_object_set_data_full (G_OBJECT (widget),
+      g_object_set_data_full (B_OBJECT (widget),
 			      I_("btk-site-data"), 
 			      site, btk_drag_source_site_destroy);
     }
@@ -1409,14 +1409,14 @@ btk_drag_source_unset (BtkWidget *widget)
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
 
   if (site)
     {
       g_signal_handlers_disconnect_by_func (widget,
 					    btk_drag_source_event_cb,
 					    site);
-      g_object_set_data (G_OBJECT (widget), I_("btk-site-data"), NULL);
+      g_object_set_data (B_OBJECT (widget), I_("btk-site-data"), NULL);
     }
 }
 
@@ -1427,7 +1427,7 @@ btk_drag_source_get_target_list (BtkWidget *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
 
   return site ? site->target_list : NULL;
 
@@ -1441,7 +1441,7 @@ btk_drag_source_set_target_list (BtkWidget     *widget,
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
   if (site == NULL)
     {
       g_warning ("btk_drag_source_set_target_list() requires the widget "
@@ -1573,7 +1573,7 @@ btk_drag_source_set_icon (BtkWidget     *widget,
   g_return_if_fail (BDK_IS_PIXMAP (pixmap));
   g_return_if_fail (!mask || BDK_IS_PIXMAP (mask));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
   
   g_object_ref (colormap);
@@ -1599,7 +1599,7 @@ btk_drag_source_set_icon_pixbuf (BtkWidget   *widget,
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (BDK_IS_PIXBUF (pixbuf));
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL); 
   g_object_ref (pixbuf);
 
@@ -1626,7 +1626,7 @@ btk_drag_source_set_icon_stock (BtkWidget   *widget,
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (stock_id != NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
   
   btk_drag_source_unset_icon (site);
@@ -1654,7 +1654,7 @@ btk_drag_source_set_icon_name (BtkWidget   *widget,
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (icon_name != NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
+  site = g_object_get_data (B_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
 
   btk_drag_source_unset_icon (site);

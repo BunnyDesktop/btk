@@ -127,7 +127,7 @@ gint main( int    argc,
 	btk_container_add (BTK_CONTAINER (btklist), list_item);
 	btk_widget_show (list_item);
 	btk_label_get (BTK_LABEL (label), &string);
-	g_object_set_data (G_OBJECT (list_item), list_item_data_key, string);
+	g_object_set_data (B_OBJECT (list_item), list_item_data_key, string);
     }
     /* Here, we are creating another 5 labels, this time
      * we use btk_list_item_new_with_label() for the creation
@@ -148,7 +148,7 @@ gint main( int    argc,
 	list_item = btk_list_item_new_with_label (buffer);
 	dlist = g_list_prepend (dlist, list_item);
 	btk_widget_show (list_item);
-	g_object_set_data (G_OBJECT (list_item),
+	g_object_set_data (B_OBJECT (list_item),
                            list_item_data_key,
                            "ListItem with integrated Label");
     }
@@ -256,7 +256,7 @@ void sigh_print_selection( BtkWidget *btklist,
     while (dlist) {
 	const gchar *item_data_string;
 
-	item_data_string = g_object_get_data (G_OBJECT (dlist->data),
+	item_data_string = g_object_get_data (B_OBJECT (dlist->data),
 	 				      list_item_data_key);
 	g_print("%s ", item_data_string);
 

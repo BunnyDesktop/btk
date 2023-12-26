@@ -95,7 +95,7 @@ filter_rule_free (FilterRule *rule)
       g_free (rule->u.pattern);
       break;
     case FILTER_RULE_PIXBUF_FORMATS:
-      g_slist_free (rule->u.pixbuf_formats);
+      b_slist_free (rule->u.pixbuf_formats);
       break;
     case FILTER_RULE_AGE:
       break;
@@ -118,7 +118,7 @@ filter_rule_free (FilterRule *rule)
 }
 
 static void
-btk_recent_filter_finalize (GObject *object)
+btk_recent_filter_finalize (BObject *object)
 {
   BtkRecentFilter *filter = BTK_RECENT_FILTER (object);
   
@@ -126,19 +126,19 @@ btk_recent_filter_finalize (GObject *object)
   
   if (filter->rules)
     {
-      g_slist_foreach (filter->rules,
+      b_slist_foreach (filter->rules,
       		       (GFunc) filter_rule_free,
       		       NULL);
-      g_slist_free (filter->rules);
+      b_slist_free (filter->rules);
     }
   
-  G_OBJECT_CLASS (btk_recent_filter_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_recent_filter_parent_class)->finalize (object);
 }
 
 static void
 btk_recent_filter_class_init (BtkRecentFilterClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   
   bobject_class->finalize = btk_recent_filter_finalize;
 }
@@ -247,7 +247,7 @@ recent_filter_add_rule (BtkRecentFilter *filter,
 			FilterRule      *rule)
 {
   filter->needed |= rule->needed;
-  filter->rules = g_slist_append (filter->rules, rule);
+  filter->rules = b_slist_append (filter->rules, rule);
 }
 
 /**

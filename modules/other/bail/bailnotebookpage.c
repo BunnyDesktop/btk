@@ -27,7 +27,7 @@
 
 static void      bail_notebook_page_class_init      (BailNotebookPageClass     *klass);
 static void                  bail_notebook_page_init           (BailNotebookPage *page);
-static void                  bail_notebook_page_finalize       (GObject   *object);
+static void                  bail_notebook_page_finalize       (BObject   *object);
 static void                  bail_notebook_page_label_map_btk  (BtkWidget *widget,
                                                                 gpointer  data);
 
@@ -40,8 +40,8 @@ static gint                  bail_notebook_page_get_index_in_parent
                                                                (BatkObject *accessible);
 static BatkStateSet*          bail_notebook_page_ref_state_set  (BatkObject *accessible);
 
-static gint                  bail_notebook_page_notify          (GObject   *obj,
-                                                                 GParamSpec *pspec,
+static gint                  bail_notebook_page_notify          (BObject   *obj,
+                                                                 BParamSpec *pspec,
                                                                  gpointer   user_data);
 static void                  bail_notebook_page_init_textutil   (BailNotebookPage      *notebook_page,
                                                                  BtkWidget             *label);
@@ -122,7 +122,7 @@ G_DEFINE_TYPE_WITH_CODE (BailNotebookPage, bail_notebook_page, BATK_TYPE_OBJECT,
 static void
 bail_notebook_page_class_init (BailNotebookPageClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   
   class->get_name = bail_notebook_page_get_name;
@@ -167,7 +167,7 @@ BatkObject*
 bail_notebook_page_new (BtkNotebook *notebook, 
                         gint        pagenum)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailNotebookPage *page;
   BtkWidget *child;
@@ -186,7 +186,7 @@ bail_notebook_page_new (BtkNotebook *notebook,
 
   page = BAIL_NOTEBOOK_PAGE (object);
   page->notebook = notebook;
-  g_object_add_weak_pointer (G_OBJECT (page->notebook), (gpointer *)&page->notebook);
+  g_object_add_weak_pointer (B_OBJECT (page->notebook), (gpointer *)&page->notebook);
   page->index = pagenum;
   list = g_list_nth (notebook->children, pagenum);
   page->page = list->data;
@@ -244,8 +244,8 @@ bail_notebook_page_init_textutil (BailNotebookPage *page,
 }
 
 static gint
-bail_notebook_page_notify (GObject    *obj, 
-                           GParamSpec *pspec,
+bail_notebook_page_notify (BObject    *obj, 
+                           BParamSpec *pspec,
                            gpointer   user_data)
 {
   BatkObject *batk_obj = BATK_OBJECT (user_data);
@@ -268,7 +268,7 @@ bail_notebook_page_notify (GObject    *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -279,12 +279,12 @@ bail_notebook_page_notify (GObject    *obj,
 }
 
 static void
-bail_notebook_page_finalize (GObject *object)
+bail_notebook_page_finalize (BObject *object)
 {
   BailNotebookPage *page = BAIL_NOTEBOOK_PAGE (object);
 
   if (page->notebook)
-    g_object_remove_weak_pointer (G_OBJECT (page->notebook), (gpointer *)&page->notebook);
+    g_object_remove_weak_pointer (B_OBJECT (page->notebook), (gpointer *)&page->notebook);
 
   if (page->textutil)
     g_object_unref (page->textutil);
@@ -292,7 +292,7 @@ bail_notebook_page_finalize (GObject *object)
   if (page->notify_child_added_id)
     g_source_remove (page->notify_child_added_id);
 
-  G_OBJECT_CLASS (bail_notebook_page_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_notebook_page_parent_class)->finalize (object);
 }
 
 static const gchar*

@@ -79,7 +79,7 @@ create_model (void)
 {
   BtkListStore *store;
   
-  store = btk_list_store_new (5, BDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  store = btk_list_store_new (5, BDK_TYPE_PIXBUF, B_TYPE_STRING, B_TYPE_INT, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
   return BTK_TREE_MODEL (store);
 }
@@ -364,7 +364,7 @@ do_popup_menu (BtkWidget      *icon_list,
   data = g_new0 (ItemData, 1);
   data->icon_list = icon_view;
   data->path = path;
-  g_object_set_data_full (G_OBJECT (menu), "item-path", data, (GDestroyNotify)free_item_data);
+  g_object_set_data_full (B_OBJECT (menu), "item-path", data, (GDestroyNotify)free_item_data);
 
   menuitem = btk_menu_item_new_with_label ("Activate");
   btk_widget_show (menuitem);
@@ -541,7 +541,7 @@ main (gint argc, gchar **argv)
 					BDK_ACTION_MOVE);
 
 			      
-  prop_editor = create_prop_editor (G_OBJECT (icon_list), 0);
+  prop_editor = create_prop_editor (B_OBJECT (icon_list), 0);
   btk_widget_show_all (prop_editor);
   
   scrolled_window = btk_scrolled_window_new (NULL, NULL);

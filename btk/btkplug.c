@@ -57,11 +57,11 @@
  * </note>
  */
 
-static void            btk_plug_get_property          (GObject     *object,
+static void            btk_plug_get_property          (BObject     *object,
 						       guint        prop_id,
-						       GValue      *value,
-						       GParamSpec  *pspec);
-static void            btk_plug_finalize              (GObject          *object);
+						       BValue      *value,
+						       BParamSpec  *pspec);
+static void            btk_plug_finalize              (BObject          *object);
 static void            btk_plug_realize               (BtkWidget        *widget);
 static void            btk_plug_unrealize             (BtkWidget        *widget);
 static void            btk_plug_show                  (BtkWidget        *widget);
@@ -105,23 +105,23 @@ static guint plug_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (BtkPlug, btk_plug, BTK_TYPE_WINDOW)
 
 static void
-btk_plug_get_property (GObject    *object,
+btk_plug_get_property (BObject    *object,
 		       guint       prop_id,
-		       GValue     *value,
-		       GParamSpec *pspec)
+		       BValue     *value,
+		       BParamSpec *pspec)
 {
   BtkPlug *plug = BTK_PLUG (object);
 
   switch (prop_id)
     {
     case PROP_EMBEDDED:
-      g_value_set_boolean (value, plug->socket_window != NULL);
+      b_value_set_boolean (value, plug->socket_window != NULL);
       break;
     case PROP_SOCKET_WINDOW:
-      g_value_set_object (value, plug->socket_window);
+      b_value_set_object (value, plug->socket_window);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -129,7 +129,7 @@ btk_plug_get_property (GObject    *object,
 static void
 btk_plug_class_init (BtkPlugClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)class;
   BtkWindowClass *window_class = (BtkWindowClass *)class;
   BtkContainerClass *container_class = (BtkContainerClass *)class;
@@ -196,12 +196,12 @@ btk_plug_class_init (BtkPlugClass *class)
    */ 
   plug_signals[EMBEDDED] =
     g_signal_new (I_("embedded"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPlugClass, embedded),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -347,7 +347,7 @@ _btk_plug_add_to_socket (BtkPlug   *plug,
   plug->socket_window = BTK_WIDGET (socket_)->window;
   g_object_ref (plug->socket_window);
   g_signal_emit (plug, plug_signals[EMBEDDED], 0);
-  g_object_notify (G_OBJECT (plug), "embedded");
+  g_object_notify (B_OBJECT (plug), "embedded");
 
   if (btk_widget_get_realized (widget))
     {
@@ -517,7 +517,7 @@ btk_plug_construct_for_display (BtkPlug         *plug,
       if (plug->socket_window) {
 	g_signal_emit (plug, plug_signals[EMBEDDED], 0);
 
-        g_object_notify (G_OBJECT (plug), "embedded");
+        g_object_notify (B_OBJECT (plug), "embedded");
       }
     }
 }
@@ -561,7 +561,7 @@ btk_plug_new_for_display (BdkDisplay	  *display,
 }
 
 static void
-btk_plug_finalize (GObject *object)
+btk_plug_finalize (BObject *object)
 {
   BtkPlug *plug = BTK_PLUG (object);
 
@@ -571,7 +571,7 @@ btk_plug_finalize (GObject *object)
       plug->grabbed_keys = NULL;
     }
   
-  G_OBJECT_CLASS (btk_plug_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_plug_parent_class)->finalize (object);
 }
 
 static void
@@ -585,7 +585,7 @@ btk_plug_unrealize (BtkWidget *widget)
       g_object_unref (plug->socket_window);
       plug->socket_window = NULL;
 
-      g_object_notify (G_OBJECT (widget), "embedded");
+      g_object_notify (B_OBJECT (widget), "embedded");
     }
 
   if (!plug->same_app)

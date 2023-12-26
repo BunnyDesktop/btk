@@ -100,7 +100,7 @@
  * palette = btk_tool_palette_new ();
  * target = btk_drawing_area_new ();
  *
- * g_signal_connect (G_OBJECT (target), "drag-data-received",
+ * g_signal_connect (B_OBJECT (target), "drag-data-received",
  *                   G_CALLBACK (passive_canvas_drag_data_received), NULL);
  * btk_tool_palette_add_drag_dest (BTK_TOOL_PALETTE (palette), target,
  *                                 BTK_DEST_DEFAULT_ALL,
@@ -186,7 +186,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkToolPalette,
 static void
 btk_tool_palette_init (BtkToolPalette *palette)
 {
-  palette->priv = G_TYPE_INSTANCE_GET_PRIVATE (palette,
+  palette->priv = B_TYPE_INSTANCE_GET_PRIVATE (palette,
                                                BTK_TYPE_TOOL_PALETTE,
                                                BtkToolPalettePrivate);
 
@@ -218,87 +218,87 @@ btk_tool_palette_reconfigured (BtkToolPalette *palette)
 }
 
 static void
-btk_tool_palette_set_property (GObject      *object,
+btk_tool_palette_set_property (BObject      *object,
                                guint         prop_id,
-                               const GValue *value,
-                               GParamSpec   *pspec)
+                               const BValue *value,
+                               BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   switch (prop_id)
     {
       case PROP_ICON_SIZE:
-        if ((guint) g_value_get_enum (value) != palette->priv->icon_size)
+        if ((guint) b_value_get_enum (value) != palette->priv->icon_size)
           {
-            palette->priv->icon_size = g_value_get_enum (value);
+            palette->priv->icon_size = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_ICON_SIZE_SET:
-        if ((guint) g_value_get_enum (value) != palette->priv->icon_size)
+        if ((guint) b_value_get_enum (value) != palette->priv->icon_size)
           {
-            palette->priv->icon_size_set = g_value_get_enum (value);
+            palette->priv->icon_size_set = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_ORIENTATION:
-        if ((guint) g_value_get_enum (value) != palette->priv->orientation)
+        if ((guint) b_value_get_enum (value) != palette->priv->orientation)
           {
-            palette->priv->orientation = g_value_get_enum (value);
+            palette->priv->orientation = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_TOOLBAR_STYLE:
-        if ((guint) g_value_get_enum (value) != palette->priv->style)
+        if ((guint) b_value_get_enum (value) != palette->priv->style)
           {
-            palette->priv->style = g_value_get_enum (value);
+            palette->priv->style = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_palette_get_property (GObject    *object,
+btk_tool_palette_get_property (BObject    *object,
                                guint       prop_id,
-                               GValue     *value,
-                               GParamSpec *pspec)
+                               BValue     *value,
+                               BParamSpec *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   switch (prop_id)
     {
       case PROP_ICON_SIZE:
-        g_value_set_enum (value, btk_tool_palette_get_icon_size (palette));
+        b_value_set_enum (value, btk_tool_palette_get_icon_size (palette));
         break;
 
       case PROP_ICON_SIZE_SET:
-        g_value_set_boolean (value, palette->priv->icon_size_set);
+        b_value_set_boolean (value, palette->priv->icon_size_set);
         break;
 
       case PROP_ORIENTATION:
-        g_value_set_enum (value, palette->priv->orientation);
+        b_value_set_enum (value, palette->priv->orientation);
         break;
 
       case PROP_TOOLBAR_STYLE:
-        g_value_set_enum (value, btk_tool_palette_get_style (palette));
+        b_value_set_enum (value, btk_tool_palette_get_style (palette));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_palette_dispose (GObject *object)
+btk_tool_palette_dispose (BObject *object)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
   guint i;
@@ -332,17 +332,17 @@ btk_tool_palette_dispose (GObject *object)
       palette->priv->text_size_group = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_palette_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tool_palette_parent_class)->dispose (object);
 }
 
 static void
-btk_tool_palette_finalize (GObject *object)
+btk_tool_palette_finalize (BObject *object)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   g_ptr_array_free (palette->priv->groups, TRUE);
 
-  G_OBJECT_CLASS (btk_tool_palette_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tool_palette_parent_class)->finalize (object);
 }
 
 static void
@@ -791,8 +791,8 @@ static void
 btk_tool_palette_set_child_property (BtkContainer *container,
                                      BtkWidget    *child,
                                      guint         prop_id,
-                                     const GValue *value,
-                                     GParamSpec   *pspec)
+                                     const BValue *value,
+                                     BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (container);
 
@@ -800,12 +800,12 @@ btk_tool_palette_set_child_property (BtkContainer *container,
     {
       case CHILD_PROP_EXCLUSIVE:
         btk_tool_palette_set_exclusive (palette, BTK_TOOL_ITEM_GROUP (child), 
-          g_value_get_boolean (value));
+          b_value_get_boolean (value));
         break;
 
       case CHILD_PROP_EXPAND:
         btk_tool_palette_set_expand (palette, BTK_TOOL_ITEM_GROUP (child), 
-          g_value_get_boolean (value));
+          b_value_get_boolean (value));
         break;
 
       default:
@@ -818,20 +818,20 @@ static void
 btk_tool_palette_get_child_property (BtkContainer *container,
                                      BtkWidget    *child,
                                      guint         prop_id,
-                                     GValue       *value,
-                                     GParamSpec   *pspec)
+                                     BValue       *value,
+                                     BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (container);
 
   switch (prop_id)
     {
       case CHILD_PROP_EXCLUSIVE:
-        g_value_set_boolean (value, 
+        b_value_set_boolean (value, 
           btk_tool_palette_get_exclusive (palette, BTK_TOOL_ITEM_GROUP (child)));
         break;
 
       case CHILD_PROP_EXPAND:
-        g_value_set_boolean (value, 
+        b_value_set_boolean (value, 
           btk_tool_palette_get_expand (palette, BTK_TOOL_ITEM_GROUP (child)));
         break;
 
@@ -869,7 +869,7 @@ icon_size_change_notify (BtkToolPalette *palette)
 
 static void
 btk_tool_palette_settings_change_notify (BtkSettings      *settings,
-                                         const GParamSpec *pspec,
+                                         const BParamSpec *pspec,
                                          BtkToolPalette   *palette)
 {
   if (strcmp (pspec->name, "btk-toolbar-style") == 0)
@@ -919,7 +919,7 @@ btk_tool_palette_screen_changed (BtkWidget *widget,
 static void
 btk_tool_palette_class_init (BtkToolPaletteClass *cls)
 {
-  GObjectClass      *oclass   = G_OBJECT_CLASS (cls);
+  BObjectClass      *oclass   = B_OBJECT_CLASS (cls);
   BtkWidgetClass    *wclass   = BTK_WIDGET_CLASS (cls);
   BtkContainerClass *cclass   = BTK_CONTAINER_CLASS (cls);
 
@@ -961,12 +961,12 @@ btk_tool_palette_class_init (BtkToolPaletteClass *cls)
    */
   wclass->set_scroll_adjustments_signal =
     g_signal_new ("set-scroll-adjustments",
-                  G_TYPE_FROM_CLASS (oclass),
+                  B_TYPE_FROM_CLASS (oclass),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkToolPaletteClass, set_scroll_adjustments),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_OBJECT,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ADJUSTMENT,
                   BTK_TYPE_ADJUSTMENT);
 
@@ -1100,14 +1100,14 @@ btk_tool_palette_set_icon_size (BtkToolPalette *palette,
   if (!priv->icon_size_set)
     {
       priv->icon_size_set = TRUE;
-      g_object_notify (G_OBJECT (palette), "icon-size-set");
+      g_object_notify (B_OBJECT (palette), "icon-size-set");
     }
 
   if (priv->icon_size == icon_size)
     return;
 
   priv->icon_size = icon_size;
-  g_object_notify (G_OBJECT (palette), "icon-size");
+  g_object_notify (B_OBJECT (palette), "icon-size");
 
   btk_tool_palette_reconfigured (palette);
 
@@ -1154,11 +1154,11 @@ btk_tool_palette_unset_icon_size (BtkToolPalette *palette)
       if (size != palette->priv->icon_size)
       {
         btk_tool_palette_set_icon_size (palette, size);
-        g_object_notify (G_OBJECT (palette), "icon-size");
+        g_object_notify (B_OBJECT (palette), "icon-size");
 	    }
 
       priv->icon_size_set = FALSE;
-      g_object_notify (G_OBJECT (palette), "icon-size-set");
+      g_object_notify (B_OBJECT (palette), "icon-size-set");
     }
 }
 
@@ -1179,7 +1179,7 @@ btk_tool_palette_change_style (BtkToolPalette  *palette,
       btk_tool_palette_reconfigured (palette);
 
       btk_widget_queue_resize (BTK_WIDGET (palette));
-      g_object_notify (G_OBJECT (palette), "toolbar-style");
+      g_object_notify (B_OBJECT (palette), "toolbar-style");
     }
 }
 
@@ -1336,7 +1336,7 @@ btk_tool_palette_set_group_position (BtkToolPalette   *palette,
 
 static void
 btk_tool_palette_group_notify_collapsed (BtkToolItemGroup *group,
-                                         GParamSpec       *pspec,
+                                         BParamSpec       *pspec,
                                          gpointer          data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (data);

@@ -64,7 +64,7 @@ _bdk_init_input_core (BdkDisplay *display)
 }
 
 static void bdk_device_class_init (BdkDeviceClass *klass);
-static void bdk_device_dispose    (GObject        *object);
+static void bdk_device_dispose    (BObject        *object);
 
 static gpointer bdk_device_parent_class = NULL;
 
@@ -88,7 +88,7 @@ bdk_device_get_type (void)
 	  (GInstanceInitFunc) NULL,
 	};
 
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
 					    g_intern_static_string ("BdkDevice"),
 					    &object_info, 0);
     }
@@ -99,7 +99,7 @@ bdk_device_get_type (void)
 static void
 bdk_device_class_init (BdkDeviceClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   bdk_device_parent_class = g_type_class_peek_parent (klass);
 
@@ -107,7 +107,7 @@ bdk_device_class_init (BdkDeviceClass *klass)
 }
 
 static void
-bdk_device_dispose (GObject *object)
+bdk_device_dispose (BObject *object)
 {
   BdkDevicePrivate *bdkdev = (BdkDevicePrivate *) object;
 
@@ -134,7 +134,7 @@ bdk_device_dispose (GObject *object)
       bdkdev->info.axes = NULL;
     }
 
-  G_OBJECT_CLASS (bdk_device_parent_class)->dispose (object);
+  B_OBJECT_CLASS (bdk_device_parent_class)->dispose (object);
 }
 
 /**

@@ -26,7 +26,7 @@ insert_link (BtkTextBuffer *buffer,
                                     "foreground", "blue", 
                                     "underline", BANGO_UNDERLINE_SINGLE, 
                                     NULL);
-  g_object_set_data (G_OBJECT (tag), "page", GINT_TO_POINTER (page));
+  g_object_set_data (B_OBJECT (tag), "page", GINT_TO_POINTER (page));
   btk_text_buffer_insert_with_tags (buffer, iter, text, -1, tag, NULL);
 }
 
@@ -89,7 +89,7 @@ follow_if_link (BtkWidget   *text_view,
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
       BtkTextTag *tag = tagp->data;
-      gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
+      gint page = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (tag), "page"));
 
       if (page != 0)
         {
@@ -99,7 +99,7 @@ follow_if_link (BtkWidget   *text_view,
     }
 
   if (tags) 
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 /* Links can be activated by pressing Enter.
@@ -188,7 +188,7 @@ set_cursor_if_appropriate (BtkTextView    *text_view,
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
       BtkTextTag *tag = tagp->data;
-      gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
+      gint page = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (tag), "page"));
 
       if (page != 0) 
         {
@@ -208,7 +208,7 @@ set_cursor_if_appropriate (BtkTextView    *text_view,
     }
 
   if (tags) 
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 /* Update the cursor image if the pointer moved. 

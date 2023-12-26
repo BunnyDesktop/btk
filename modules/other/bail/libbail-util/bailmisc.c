@@ -174,7 +174,7 @@ bail_misc_add_attribute (BatkAttributeSet *attrib_set,
   BatkAttribute *at = g_malloc (sizeof (BatkAttribute));
   at->name = g_strdup (batk_text_attribute_get_name (attr));
   at->value = value;
-  return_set = g_slist_prepend(attrib_set, at);
+  return_set = b_slist_prepend(attrib_set, at);
   return return_set;
 }
 
@@ -711,7 +711,7 @@ bail_misc_buffer_get_run_attributes (BtkTextBuffer *buffer,
   btk_text_buffer_get_iter_at_offset (buffer, &iter, offset);
 
   tags = btk_text_iter_get_tags (&iter);
-  tags = g_slist_reverse (tags);
+  tags = b_slist_reverse (tags);
 
   temp_tags = tags;
   while (temp_tags && !val_set)
@@ -941,7 +941,7 @@ bail_misc_buffer_get_run_attributes (BtkTextBuffer *buffer,
       at = g_malloc(sizeof(BatkAttribute));
       at->name = g_strdup(batk_text_attribute_get_name (BATK_TEXT_ATTR_SCALE));
       at->value = g_strdup_printf("%g", scale);
-      attrib_set = g_slist_prepend(attrib_set, at);
+      attrib_set = b_slist_prepend(attrib_set, at);
     }
   val_set = FALSE;
 
@@ -1121,6 +1121,6 @@ bail_misc_buffer_get_run_attributes (BtkTextBuffer *buffer,
     }
   val_set = FALSE;
 
-  g_slist_free (tags);
+  b_slist_free (tags);
   return attrib_set;
 }

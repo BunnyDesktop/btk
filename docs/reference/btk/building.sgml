@@ -257,7 +257,7 @@ How to compile BTK+ itself
       </listitem>
       <listitem>
 	<para>
-	  <ulink url="http://live.bunny.org/GObjectIntrospection">bobject-introspection</ulink>
+	  <ulink url="http://live.bunny.org/BObjectIntrospection">bobject-introspection</ulink>
           is a framework for making introspection data available to
           language bindings.
         </para>

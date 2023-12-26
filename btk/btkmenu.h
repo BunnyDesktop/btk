@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_MENU			(btk_menu_get_type ())
-#define BTK_MENU(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU, BtkMenu))
-#define BTK_MENU_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU, BtkMenuClass))
-#define BTK_IS_MENU(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU))
-#define BTK_IS_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU))
-#define BTK_MENU_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU, BtkMenuClass))
+#define BTK_MENU(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU, BtkMenu))
+#define BTK_MENU_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU, BtkMenuClass))
+#define BTK_IS_MENU(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU))
+#define BTK_IS_MENU_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU))
+#define BTK_MENU_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU, BtkMenuClass))
 
 
 typedef struct _BtkMenu	      BtkMenu;

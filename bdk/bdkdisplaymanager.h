@@ -40,15 +40,15 @@ typedef struct _BdkDisplayManager      BdkDisplayManager;
 typedef struct _BdkDisplayManagerClass BdkDisplayManagerClass;
 
 #define BDK_TYPE_DISPLAY_MANAGER              (bdk_display_manager_get_type ())
-#define BDK_DISPLAY_MANAGER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManager))
-#define BDK_DISPLAY_MANAGER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
-#define BDK_IS_DISPLAY_MANAGER(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_MANAGER))
-#define BDK_IS_DISPLAY_MANAGER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_MANAGER))
-#define BDK_DISPLAY_MANAGER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
+#define BDK_DISPLAY_MANAGER(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManager))
+#define BDK_DISPLAY_MANAGER_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
+#define BDK_IS_DISPLAY_MANAGER(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_IS_DISPLAY_MANAGER_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_DISPLAY_MANAGER_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
 
 struct _BdkDisplayManagerClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*display_opened) (BdkDisplayManager *display_manager,
 			  BdkDisplay *display);

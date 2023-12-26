@@ -39,12 +39,12 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BdkKeymap, bdk_keymap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkKeymap, bdk_keymap, B_TYPE_OBJECT)
 
 static void
 bdk_keymap_class_init (BdkKeymapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   /**
    * BdkKeymap::direction-changed:
@@ -57,12 +57,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[DIRECTION_CHANGED] =
     g_signal_new ("direction-changed",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkKeymapClass, direction_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
   /**
    * BdkKeymap::keys-changed:
@@ -75,12 +75,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[KEYS_CHANGED] =
     g_signal_new ("keys-changed",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkKeymapClass, keys_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
 
   /**
@@ -95,12 +95,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[STATE_CHANGED] =
     g_signal_new ("state_changed",
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BdkKeymapClass, state_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 
+                  B_TYPE_NONE, 
                   0);
 }
 

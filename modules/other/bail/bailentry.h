@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_ENTRY                      (bail_entry_get_type ())
-#define BAIL_ENTRY(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ENTRY, BailEntry))
-#define BAIL_ENTRY_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ENTRY, BailEntryClass))
-#define BAIL_IS_ENTRY(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ENTRY))
-#define BAIL_IS_ENTRY_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ENTRY))
-#define BAIL_ENTRY_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ENTRY, BailEntryClass))
+#define BAIL_ENTRY(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ENTRY, BailEntry))
+#define BAIL_ENTRY_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ENTRY, BailEntryClass))
+#define BAIL_IS_ENTRY(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ENTRY))
+#define BAIL_IS_ENTRY_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ENTRY))
+#define BAIL_ENTRY_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ENTRY, BailEntryClass))
 
 typedef struct _BailEntry              BailEntry;
 typedef struct _BailEntryClass         BailEntryClass;

@@ -258,7 +258,7 @@ main (int argc, char *argv[])
   
   btk_init_with_args (&argc, &argv, NULL, entries, NULL, NULL);
 
-  model = BTK_TREE_MODEL (btk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING));
+  model = BTK_TREE_MODEL (btk_list_store_new (2, B_TYPE_INT, B_TYPE_STRING));
   
   test_run ("list store append", 
 	    model, 
@@ -288,7 +288,7 @@ main (int argc, char *argv[])
 
   g_object_unref (model);
   
-  model = BTK_TREE_MODEL (btk_tree_store_new (2, G_TYPE_INT, G_TYPE_STRING));
+  model = BTK_TREE_MODEL (btk_tree_store_new (2, B_TYPE_INT, B_TYPE_STRING));
 
   test_run ("tree store append", 
 	    model, 

@@ -1040,7 +1040,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GParamSpec</span> *
+<span class="returnvalue">BParamSpec</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkWidget.html#btk-widget-class-find-style-property" title="btk_widget_class_find_style_property ()">btk_widget_class_find_style_property</a> <span class="c_punctuation">()</span>
@@ -1048,7 +1048,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GParamSpec</span> **
+<span class="returnvalue">BParamSpec</span> **
 </td>
 <td class="function_name">
 <a class="link" href="BtkWidget.html#btk-widget-class-list-style-properties" title="btk_widget_class_list_style_properties ()">btk_widget_class_list_style_properties</a> <span class="c_punctuation">()</span>
@@ -2315,7 +2315,7 @@
 <pre class="screen">    <a href="/usr/share/btk-doc/html/bobject/bobject-Boxed-Types.html">GBoxed</a>
     <span class="lineart">├──</span> BtkRequisition
     <span class="lineart">╰──</span> BtkSelectionData
-    GObject
+    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> BtkWidget
@@ -2457,7 +2457,7 @@ internal child "accessible" of a <span class="structname">BtkWidget</span>.
 </pre>
 <div class="warning">
 <p><code class="literal">BTK_WIDGET_TYPE</code> has been deprecated since version 2.20 and should not be used in newly-written code.</p>
-<p>Use <code class="function">G_OBJECT_TYPE()</code> instead.</p>
+<p>Use <code class="function">B_OBJECT_TYPE()</code> instead.</p>
 </div>
 <p>Gets the type of a widget.</p>
 <div class="refsect3">
@@ -3225,7 +3225,7 @@ btk_widget_ref (<em class="parameter"><code><a class="link" href="BtkWidget.html
 <p>Adds a reference to a widget. This function is exactly the same
 as calling <code class="function">g_object_ref()</code>, and exists mostly for historical
 reasons. It can still be convenient to avoid casting a widget
-to a <span class="type">GObject</span>, it saves a small amount of typing.</p>
+to a <span class="type">BObject</span>, it saves a small amount of typing.</p>
 <div class="refsect3">
 <a name="btk-widget-ref.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -6857,7 +6857,7 @@ is <code class="literal">TRUE</code>.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_widget_class_install_style_property
                                (<em class="parameter"><code><a class="link" href="BtkWidget.html#BtkWidgetClass" title="struct BtkWidgetClass"><span class="type">BtkWidgetClass</span></a> *klass</code></em>,
-                                <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>);</pre>
 <p>Installs a style property on a widget class. The parser for the
 style property is determined by the value type of <em class="parameter"><code>pspec</code></em>
 .</p>
@@ -6877,7 +6877,7 @@ style property is determined by the value type of <em class="parameter"><code>ps
 </tr>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> for the property</p></td>
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> for the property</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -6890,7 +6890,7 @@ style property is determined by the value type of <em class="parameter"><code>ps
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_widget_class_install_style_property_parser
                                (<em class="parameter"><code><a class="link" href="BtkWidget.html#BtkWidgetClass" title="struct BtkWidgetClass"><span class="type">BtkWidgetClass</span></a> *klass</code></em>,
-                                <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
+                                <em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> parser</code></em>);</pre>
 <p>Installs a style property on a widget class.</p>
 <div class="refsect3">
@@ -6909,7 +6909,7 @@ btk_widget_class_install_style_property_parser
 </tr>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> for the style property</p></td>
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> for the style property</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -6924,7 +6924,7 @@ btk_widget_class_install_style_property_parser
 <hr>
 <div class="refsect2">
 <a name="btk-widget-class-find-style-property"></a><h3>btk_widget_class_find_style_property ()</h3>
-<pre class="programlisting"><span class="returnvalue">GParamSpec</span> *
+<pre class="programlisting"><span class="returnvalue">BParamSpec</span> *
 btk_widget_class_find_style_property (<em class="parameter"><code><a class="link" href="BtkWidget.html#BtkWidgetClass" title="struct BtkWidgetClass"><span class="type">BtkWidgetClass</span></a> *klass</code></em>,
                                       <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>);</pre>
 <p>Finds a style property of a widget class by name.</p>
@@ -6949,7 +6949,7 @@ btk_widget_class_find_style_property (<em class="parameter"><code><a class="link
 </tr>
 <tr>
 <td class="parameter_name"><p>returns</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> of the style property or
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> of the style property or
 <code class="literal">NULL</code> if <em class="parameter"><code>class</code></em>
 has no style property with that name. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
@@ -6962,7 +6962,7 @@ has no style property with that name. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-widget-class-list-style-properties"></a><h3>btk_widget_class_list_style_properties ()</h3>
-<pre class="programlisting"><span class="returnvalue">GParamSpec</span> **
+<pre class="programlisting"><span class="returnvalue">BParamSpec</span> **
 btk_widget_class_list_style_properties
                                (<em class="parameter"><code><a class="link" href="BtkWidget.html#BtkWidgetClass" title="struct BtkWidgetClass"><span class="type">BtkWidgetClass</span></a> *klass</code></em>,
                                 <em class="parameter"><code><span class="type">guint</span> *n_properties</code></em>);</pre>
@@ -6989,7 +6989,7 @@ btk_widget_class_list_style_properties
 <tr>
 <td class="parameter_name"><p>returns</p></td>
 <td class="parameter_description"><p>an newly
-allocated array of <span class="type">GParamSpec</span>*. The array must be freed with
+allocated array of <span class="type">BParamSpec</span>*. The array must be freed with
 <code class="function">g_free()</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_properties][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></td>
 </tr>
@@ -7214,7 +7214,7 @@ return the property values, starting with the location for
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_widget_style_get_property (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                                <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>,
-                               <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Gets the value of a style property of <em class="parameter"><code>widget</code></em>
 .</p>
 <div class="refsect3">
@@ -10666,7 +10666,7 @@ for determining whether an accelerator can be activated.</p>
 <a name="BtkWidget-child-notify"></a><h3>The <code class="literal">“child-notify”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>  *widget,
-               <span class="type">GParamSpec</span> *pspec,
+               <span class="type">BParamSpec</span> *pspec,
                <span class="type">gpointer</span>    user_data)</pre>
 <p>The ::child-notify signal is emitted for each </p>
 child property  that has
@@ -10687,7 +10687,7 @@ child property  that has
 </tr>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> of the changed child property</p></td>
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> of the changed child property</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

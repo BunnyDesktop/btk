@@ -77,14 +77,14 @@
 static void     btk_combo_box_text_buildable_interface_init     (BtkBuildableIface *iface);
 static gboolean btk_combo_box_text_buildable_custom_tag_start   (BtkBuildable     *buildable,
 								 BtkBuilder       *builder,
-								 GObject          *child,
+								 BObject          *child,
 								 const gchar      *tagname,
 								 GMarkupParser    *parser,
 								 gpointer         *data);
 
 static void     btk_combo_box_text_buildable_custom_finished    (BtkBuildable     *buildable,
 								 BtkBuilder       *builder,
-								 GObject          *child,
+								 BObject          *child,
 								 const gchar      *tagname,
 								 gpointer          user_data);
 
@@ -94,14 +94,14 @@ G_DEFINE_TYPE_WITH_CODE (BtkComboBoxText, btk_combo_box_text, BTK_TYPE_COMBO_BOX
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_combo_box_text_buildable_interface_init));
 
-static GObject *
+static BObject *
 btk_combo_box_text_constructor (GType                  type,
                                 guint                  n_construct_properties,
-                                GObjectConstructParam *construct_properties)
+                                BObjectConstructParam *construct_properties)
 {
-  GObject            *object;
+  BObject            *object;
 
-  object = G_OBJECT_CLASS (btk_combo_box_text_parent_class)->constructor
+  object = B_OBJECT_CLASS (btk_combo_box_text_parent_class)->constructor
     (type, n_construct_properties, construct_properties);
 
   if (!btk_combo_box_get_has_entry (BTK_COMBO_BOX (object)))
@@ -123,7 +123,7 @@ btk_combo_box_text_init (BtkComboBoxText *combo_box)
 {
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
   btk_combo_box_set_model (BTK_COMBO_BOX (combo_box), BTK_TREE_MODEL (store));
   g_object_unref (store);
 }
@@ -131,9 +131,9 @@ btk_combo_box_text_init (BtkComboBoxText *combo_box)
 static void
 btk_combo_box_text_class_init (BtkComboBoxTextClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   object_class->constructor = btk_combo_box_text_constructor;
 }
 
@@ -148,7 +148,7 @@ btk_combo_box_text_buildable_interface_init (BtkBuildableIface *iface)
 
 typedef struct {
   BtkBuilder    *builder;
-  GObject       *object;
+  BObject       *object;
   const gchar   *domain;
 
   gchar         *context;
@@ -260,7 +260,7 @@ static const GMarkupParser item_parser =
 static gboolean
 btk_combo_box_text_buildable_custom_tag_start (BtkBuildable     *buildable,
 					       BtkBuilder       *builder,
-					       GObject          *child,
+					       BObject          *child,
 					       const gchar      *tagname,
 					       GMarkupParser    *parser,
 					       gpointer         *data)
@@ -287,7 +287,7 @@ btk_combo_box_text_buildable_custom_tag_start (BtkBuildable     *buildable,
 static void
 btk_combo_box_text_buildable_custom_finished (BtkBuildable *buildable,
 					      BtkBuilder   *builder,
-					      GObject      *child,
+					      BObject      *child,
 					      const gchar  *tagname,
 					      gpointer      user_data)
 {
@@ -374,7 +374,7 @@ btk_combo_box_text_append_text (BtkComboBoxText *combo_box,
     text_column = 0;
 
   column_type = btk_tree_model_get_column_type (BTK_TREE_MODEL (store), text_column);
-  g_return_if_fail (column_type == G_TYPE_STRING);
+  g_return_if_fail (column_type == B_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, text_column, text, -1);
@@ -408,7 +408,7 @@ btk_combo_box_text_insert_text (BtkComboBoxText *combo_box,
   g_return_if_fail (BTK_IS_LIST_STORE (store));
   text_column = btk_combo_box_get_entry_text_column (BTK_COMBO_BOX (combo_box));
   column_type = btk_tree_model_get_column_type (BTK_TREE_MODEL (store), text_column);
-  g_return_if_fail (column_type == G_TYPE_STRING);
+  g_return_if_fail (column_type == B_TYPE_STRING);
 
   btk_list_store_insert (store, &iter, position);
   btk_list_store_set (store, &iter, text_column, text, -1);
@@ -440,7 +440,7 @@ btk_combo_box_text_prepend_text (BtkComboBoxText *combo_box,
 
   text_column = btk_combo_box_get_entry_text_column (BTK_COMBO_BOX (combo_box));
   column_type = btk_tree_model_get_column_type (BTK_TREE_MODEL (store), text_column);
-  g_return_if_fail (column_type == G_TYPE_STRING);
+  g_return_if_fail (column_type == B_TYPE_STRING);
 
   btk_list_store_prepend (store, &iter);
   btk_list_store_set (store, &iter, text_column, text, -1);
@@ -513,7 +513,7 @@ btk_combo_box_text_get_active_text (BtkComboBoxText *combo_box)
       g_return_val_if_fail (BTK_IS_LIST_STORE (model), NULL);
       text_column = btk_combo_box_get_entry_text_column (BTK_COMBO_BOX (combo_box));
       column_type = btk_tree_model_get_column_type (model, text_column);
-      g_return_val_if_fail (column_type == G_TYPE_STRING, NULL);
+      g_return_val_if_fail (column_type == B_TYPE_STRING, NULL);
       btk_tree_model_get (model, &iter, text_column, &text, -1);
     }
 

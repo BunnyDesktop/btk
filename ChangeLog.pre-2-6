@@ -1090,7 +1090,7 @@ Fri Nov 19 14:54:09 2004  Manish Singh  <yosh@gimp.org>
 	* btk/btkuimanager.c: get rid of unnecessary casts.
 
 	* btk/btkfilechooserbutton.c (btk_file_chooser_button_set_property):
-	cast away the const for g_value_set_enum. This is after the g_warning,
+	cast away the const for b_value_set_enum. This is after the g_warning,
 	so this is a hack to begin with.
 
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_set_property):
@@ -1475,8 +1475,8 @@ Thu Nov 11 11:34:32 2004  Jonathan Blandford  <jrb@redhat.com>
 	better.  (#157651, Christian Persch)
 
 	* btk/btktreedatalist.c: Support columns whose declared type is
-	an interface better, by treating them like G_TYPE_OBJECT if
-	the interface types requires G_TYPE_OBJECT.
+	an interface better, by treating them like B_TYPE_OBJECT if
+	the interface types requires B_TYPE_OBJECT.
 
 2004-11-08  Bastien Nocera  <hadess@hadess.net>
 
@@ -2034,7 +2034,7 @@ Fri Oct 22 13:25:25 2004  Owen Taylor  <otaylor@redhat.com>
 2004-10-22  Anders Carlsson  <andersca@bunny.org>
 
 	* btk/btktexttag.c: (btk_text_tag_get_property):
-	BdkBitmap is a GObject, not a boxed type.
+	BdkBitmap is a BObject, not a boxed type.
 	
 Thu Oct 21 15:01:09 2004  Owen Taylor  <otaylor@redhat.com>
 
@@ -3478,7 +3478,7 @@ Sun Aug 22 00:08:44 2004  Matthias Clasen  <maclas@gmx.de>
 	
 	* btk/btkentrycompletion.c 
 	(btk_entry_completion_default_completion_func): Check that 
-	column is of type G_TYPE_STRING before proceeding.
+	column is of type B_TYPE_STRING before proceeding.
 
 Sat Aug 21 23:52:13 2004  Matthias Clasen  <maclas@gmx.de>
 
@@ -4308,7 +4308,7 @@ Sat Jul 31 01:13:01 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkentry.c: 
 	* btk/btkaction.c: Use the canonical form of signal names 
 	after "notify::". Otherwise, no notification arrives. 
-	GObject should have a warning for that, really.  (#148879, 
+	BObject should have a warning for that, really.  (#148879, 
 	Lorenzo Gil Sánchez)
 
 Sat Jul 31 00:42:08 2004  Matthias Clasen  <maclas@gmx.de>
@@ -5392,7 +5392,7 @@ Mon Jul  5 23:47:38 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* btk/btkfilechooserutils.c (delegate_notify): Use
 	the less efficient g_object_interface_find_property () instead
-	of the param_id range check, since the GParamSpecs we're 
+	of the param_id range check, since the BParamSpecs we're 
 	dealing with are the overridden onces on the interface, whose
 	param_id is always zero.  (#145312, Alex Roitman, fix proposed
 	by Owen Taylor)

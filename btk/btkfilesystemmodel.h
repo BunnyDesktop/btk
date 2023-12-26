@@ -28,8 +28,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_SYSTEM_MODEL             (_btk_file_system_model_get_type ())
-#define BTK_FILE_SYSTEM_MODEL(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModel))
-#define BTK_IS_FILE_SYSTEM_MODEL(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SYSTEM_MODEL))
+#define BTK_FILE_SYSTEM_MODEL(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModel))
+#define BTK_IS_FILE_SYSTEM_MODEL(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SYSTEM_MODEL))
 
 typedef struct _BtkFileSystemModel      BtkFileSystemModel;
 
@@ -39,7 +39,7 @@ typedef gboolean (*BtkFileSystemModelGetValue)   (BtkFileSystemModel *model,
                                                   GFile              *file,
                                                   GFileInfo          *info,
                                                   int                 column,
-                                                  GValue             *value,
+                                                  BValue             *value,
                                                   gpointer            user_data);
 
 BtkFileSystemModel *_btk_file_system_model_new              (BtkFileSystemModelGetValue get_func,
@@ -64,7 +64,7 @@ gboolean            _btk_file_system_model_get_iter_for_file(BtkFileSystemModel 
 							     GFile              *file);
 GFile *             _btk_file_system_model_get_file         (BtkFileSystemModel *model,
 							     BtkTreeIter        *iter);
-const GValue *      _btk_file_system_model_get_value        (BtkFileSystemModel *model,
+const BValue *      _btk_file_system_model_get_value        (BtkFileSystemModel *model,
                                                              BtkTreeIter *       iter,
                                                              int                 column);
 

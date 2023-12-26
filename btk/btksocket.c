@@ -114,9 +114,9 @@
 
 /* Forward declararations */
 
-static void     btk_socket_finalize             (GObject          *object);
-static void     btk_socket_notify               (GObject          *object,
-						 GParamSpec       *pspec);
+static void     btk_socket_finalize             (BObject          *object);
+static void     btk_socket_notify               (BObject          *object,
+						 BParamSpec       *pspec);
 static void     btk_socket_realize              (BtkWidget        *widget);
 static void     btk_socket_unrealize            (BtkWidget        *widget);
 static void     btk_socket_size_request         (BtkWidget        *widget,
@@ -166,20 +166,20 @@ static guint socket_signals[LAST_SIGNAL] = { 0 };
 BtkSocketPrivate *
 _btk_socket_get_private (BtkSocket *socket)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (socket, BTK_TYPE_SOCKET, BtkSocketPrivate);
+  return B_TYPE_INSTANCE_GET_PRIVATE (socket, BTK_TYPE_SOCKET, BtkSocketPrivate);
 }
 
 G_DEFINE_TYPE (BtkSocket, btk_socket, BTK_TYPE_CONTAINER)
 
 static void
-btk_socket_finalize (GObject *object)
+btk_socket_finalize (BObject *object)
 {
   BtkSocket *socket = BTK_SOCKET (object);
   
   g_object_unref (socket->accel_group);
   socket->accel_group = NULL;
 
-  G_OBJECT_CLASS (btk_socket_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_socket_parent_class)->finalize (object);
 }
 
 static void
@@ -187,9 +187,9 @@ btk_socket_class_init (BtkSocketClass *class)
 {
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = (GObjectClass *) class;
+  bobject_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -224,12 +224,12 @@ btk_socket_class_init (BtkSocketClass *class)
    */
   socket_signals[PLUG_ADDED] =
     g_signal_new (I_("plug-added"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSocketClass, plug_added),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkSocket::plug-removed:
@@ -243,12 +243,12 @@ btk_socket_class_init (BtkSocketClass *class)
    */
   socket_signals[PLUG_REMOVED] =
     g_signal_new (I_("plug-removed"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSocketClass, plug_removed),
                   _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   g_type_class_add_private (bobject_class, sizeof (BtkSocketPrivate));
 }
@@ -269,7 +269,7 @@ btk_socket_init (BtkSocket *socket)
   socket->active = FALSE;
 
   socket->accel_group = btk_accel_group_new ();
-  g_object_set_data (G_OBJECT (socket->accel_group), I_("btk-socket"), socket);
+  g_object_set_data (B_OBJECT (socket->accel_group), I_("btk-socket"), socket);
 }
 
 /**
@@ -572,14 +572,14 @@ btk_socket_size_allocate (BtkWidget     *widget,
 
 static gboolean
 activate_key (BtkAccelGroup  *accel_group,
-	      GObject        *acceleratable,
+	      BObject        *acceleratable,
 	      guint           accel_key,
 	      BdkModifierType accel_mods,
 	      GrabbedKey     *grabbed_key)
 {
   BdkEvent *bdk_event = btk_get_current_event ();
   
-  BtkSocket *socket = g_object_get_data (G_OBJECT (accel_group), "btk-socket");
+  BtkSocket *socket = g_object_get_data (B_OBJECT (accel_group), "btk-socket");
   gboolean retval = FALSE;
 
   if (bdk_event && bdk_event->type == BDK_KEY_PRESS && socket->plug_window)
@@ -775,8 +775,8 @@ btk_socket_key_event (BtkWidget   *widget,
 }
 
 static void
-btk_socket_notify (GObject    *object,
-		   GParamSpec *pspec)
+btk_socket_notify (BObject    *object,
+		   BParamSpec *pspec)
 {
   if (!strcmp (pspec->name, "is-focus"))
     return;

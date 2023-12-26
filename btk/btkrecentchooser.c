@@ -59,13 +59,13 @@ btk_recent_chooser_get_type (void)
   
   if (!chooser_type)
     {
-      chooser_type = g_type_register_static_simple (G_TYPE_INTERFACE,
+      chooser_type = g_type_register_static_simple (B_TYPE_INTERFACE,
 						    I_("BtkRecentChooser"),
 						    sizeof (BtkRecentChooserIface),
 						    (GClassInitFunc) btk_recent_chooser_class_init,
 						    0, NULL, 0);
       
-      g_type_interface_add_prerequisite (chooser_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (chooser_type, B_TYPE_OBJECT);
     }
   
   return chooser_type;
@@ -74,7 +74,7 @@ btk_recent_chooser_get_type (void)
 static void
 btk_recent_chooser_class_init (gpointer g_iface)
 {
-  GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
+  GType iface_type = B_TYPE_FROM_INTERFACE (g_iface);
 
   quark_btk_related_action        = g_quark_from_static_string (btk_related_action_key);
   quark_btk_use_action_appearance = g_quark_from_static_string (btk_use_action_appearance_key);
@@ -97,7 +97,7 @@ btk_recent_chooser_class_init (gpointer g_iface)
                   G_STRUCT_OFFSET (BtkRecentChooserIface, selection_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
    
   /**
    * BtkRecentChooser::item-activated
@@ -117,7 +117,7 @@ btk_recent_chooser_class_init (gpointer g_iface)
 		  G_STRUCT_OFFSET (BtkRecentChooserIface, item_activated),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkRecentChooser:recent-manager:
@@ -590,7 +590,7 @@ btk_recent_chooser_get_show_tips (BtkRecentChooser *chooser)
 static gboolean
 recent_chooser_has_show_numbers (BtkRecentChooser *chooser)
 {
-  GParamSpec *pspec;
+  BParamSpec *pspec;
   
   /* This is the result of a minor screw up: the "show-numbers" property
    * was removed from the BtkRecentChooser interface, but the accessors
@@ -600,10 +600,10 @@ recent_chooser_has_show_numbers (BtkRecentChooser *chooser)
    * assertion failure using a more graceful warning.  This should really
    * go away as soon as we can break API and remove these accessors.
    */
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (chooser),
+  pspec = g_object_class_find_property (B_OBJECT_GET_CLASS (chooser),
 		  			"show-numbers");
 
-  return (pspec && pspec->value_type == G_TYPE_BOOLEAN);
+  return (pspec && pspec->value_type == B_TYPE_BOOLEAN);
 }
 
 /**
@@ -626,7 +626,7 @@ btk_recent_chooser_set_show_numbers (BtkRecentChooser *chooser,
   if (!recent_chooser_has_show_numbers (chooser))
     {
       g_warning ("Choosers of type `%s' do not support showing numbers",
-		 G_OBJECT_TYPE_NAME (chooser));
+		 B_OBJECT_TYPE_NAME (chooser));
       
       return;
     }
@@ -651,17 +651,17 @@ btk_recent_chooser_set_show_numbers (BtkRecentChooser *chooser,
 gboolean
 btk_recent_chooser_get_show_numbers (BtkRecentChooser *chooser)
 {
-  GParamSpec *pspec;
+  BParamSpec *pspec;
   gboolean show_numbers;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
 
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (chooser),
+  pspec = g_object_class_find_property (B_OBJECT_GET_CLASS (chooser),
 		  			"show-numbers");
-  if (!pspec || pspec->value_type != G_TYPE_BOOLEAN)
+  if (!pspec || pspec->value_type != B_TYPE_BOOLEAN)
     {
       g_warning ("Choosers of type `%s' do not support showing numbers",
-		 G_OBJECT_TYPE_NAME (chooser));
+		 B_OBJECT_TYPE_NAME (chooser));
 
       return FALSE;
     }
@@ -1018,7 +1018,7 @@ btk_recent_chooser_remove_filter (BtkRecentChooser *chooser,
  *
  * Return value: (element-type BtkRecentFilter) (transfer container): A singly linked list
  *   of #BtkRecentFilter objects.  You
- *   should just free the returned list using g_slist_free().
+ *   should just free the returned list using b_slist_free().
  *
  * Since: 2.10
  */
@@ -1047,7 +1047,7 @@ btk_recent_chooser_set_filter (BtkRecentChooser *chooser,
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   
-  g_object_set (G_OBJECT (chooser), "filter", filter, NULL);
+  g_object_set (B_OBJECT (chooser), "filter", filter, NULL);
 }
 
 /**
@@ -1068,7 +1068,7 @@ btk_recent_chooser_get_filter (BtkRecentChooser *chooser)
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), NULL);
   
-  g_object_get (G_OBJECT (chooser), "filter", &filter, NULL);
+  g_object_get (B_OBJECT (chooser), "filter", &filter, NULL);
   
   /* we need this hack because g_object_get() increases the refcount
    * of the returned object; see also btk_file_chooser_get_filter()
@@ -1156,19 +1156,19 @@ _btk_recent_chooser_set_related_action (BtkRecentChooser *recent_chooser,
 {
   BtkAction *prev_action;
 
-  prev_action = g_object_get_qdata (G_OBJECT (recent_chooser), quark_btk_related_action);
+  prev_action = g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_related_action);
 
   if (prev_action == action)
     return;
 
   btk_activatable_do_set_related_action (BTK_ACTIVATABLE (recent_chooser), action);
-  g_object_set_qdata (G_OBJECT (recent_chooser), quark_btk_related_action, action);
+  g_object_set_qdata (B_OBJECT (recent_chooser), quark_btk_related_action, action);
 }
 
 BtkAction *
 _btk_recent_chooser_get_related_action (BtkRecentChooser *recent_chooser)
 {
-  return g_object_get_qdata (G_OBJECT (recent_chooser), quark_btk_related_action);
+  return g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_related_action);
 }
 
 /* The default for use-action-appearance is TRUE, so we try to set the
@@ -1181,13 +1181,13 @@ _btk_recent_chooser_set_use_action_appearance (BtkRecentChooser *recent_chooser,
   BtkAction *action;
   gboolean   use_action_appearance;
 
-  action                = g_object_get_qdata (G_OBJECT (recent_chooser), quark_btk_related_action);
-  use_action_appearance = !GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (recent_chooser), quark_btk_use_action_appearance));
+  action                = g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_related_action);
+  use_action_appearance = !GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
 
   if (use_action_appearance != use_appearance)
     {
 
-      g_object_set_qdata (G_OBJECT (recent_chooser), quark_btk_use_action_appearance, GINT_TO_POINTER (!use_appearance));
+      g_object_set_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance, GINT_TO_POINTER (!use_appearance));
  
       btk_activatable_sync_action_properties (BTK_ACTIVATABLE (recent_chooser), action);
     }
@@ -1196,7 +1196,7 @@ _btk_recent_chooser_set_use_action_appearance (BtkRecentChooser *recent_chooser,
 gboolean
 _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser *recent_chooser)
 {
-  return !GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (recent_chooser), quark_btk_use_action_appearance));
+  return !GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
 }
 
 #define __BTK_RECENT_CHOOSER_C__

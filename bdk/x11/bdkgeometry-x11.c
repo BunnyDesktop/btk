@@ -143,7 +143,7 @@ queue_item_free (BdkWindowQueueItem *item)
 {
   if (item->window)
     {
-      g_object_remove_weak_pointer (G_OBJECT (item->window),
+      g_object_remove_weak_pointer (B_OBJECT (item->window),
 				    (gpointer *)&(item->window));
     }
   
@@ -220,7 +220,7 @@ bdk_window_queue (BdkWindow          *window,
   item->window = window;
   item->serial = NextRequest (BDK_WINDOW_XDISPLAY (window));
   
-  g_object_add_weak_pointer (G_OBJECT (window),
+  g_object_add_weak_pointer (B_OBJECT (window),
 			     (gpointer *)&(item->window));
 
   g_queue_push_tail (display_x11->translate_queue, item);

@@ -140,24 +140,24 @@ enum {
   CHILD_PROP_BOTTOM_ATTACH
 };
 
-static void     btk_menu_set_property      (GObject          *object,
+static void     btk_menu_set_property      (BObject          *object,
 					    guint             prop_id,
-					    const GValue     *value,
-					    GParamSpec       *pspec);
-static void     btk_menu_get_property      (GObject          *object,
+					    const BValue     *value,
+					    BParamSpec       *pspec);
+static void     btk_menu_get_property      (BObject          *object,
 					    guint             prop_id,
-					    GValue           *value,
-					    GParamSpec       *pspec);
+					    BValue           *value,
+					    BParamSpec       *pspec);
 static void     btk_menu_set_child_property(BtkContainer     *container,
                                             BtkWidget        *child,
                                             guint             property_id,
-                                            const GValue     *value,
-                                            GParamSpec       *pspec);
+                                            const BValue     *value,
+                                            BParamSpec       *pspec);
 static void     btk_menu_get_child_property(BtkContainer     *container,
                                             BtkWidget        *child,
                                             guint             property_id,
-                                            GValue           *value,
-                                            GParamSpec       *pspec);
+                                            BValue           *value,
+                                            BParamSpec       *pspec);
 static void     btk_menu_destroy           (BtkObject        *object);
 static void     btk_menu_realize           (BtkWidget        *widget);
 static void     btk_menu_unrealize         (BtkWidget        *widget);
@@ -258,7 +258,7 @@ static guint menu_signals[LAST_SIGNAL] = { 0 };
 static BtkMenuPrivate *
 btk_menu_get_private (BtkMenu *menu)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (menu, BTK_TYPE_MENU, BtkMenuPrivate);
+  return B_TYPE_INSTANCE_GET_PRIVATE (menu, BTK_TYPE_MENU, BtkMenuPrivate);
 }
 
 G_DEFINE_TYPE (BtkMenu, btk_menu, BTK_TYPE_MENU_SHELL)
@@ -281,7 +281,7 @@ attach_info_free (AttachInfo *info)
 static AttachInfo *
 get_attach_info (BtkWidget *child)
 {
-  GObject *object = G_OBJECT (child);
+  BObject *object = B_OBJECT (child);
   AttachInfo *ai = g_object_get_data (object, ATTACH_INFO_KEY);
 
   if (!ai)
@@ -438,7 +438,7 @@ get_effective_child_attach (BtkWidget *child,
 static void
 btk_menu_class_init (BtkMenuClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (class);
@@ -483,12 +483,12 @@ btk_menu_class_init (BtkMenuClass *class)
 
   menu_signals[MOVE_SCROLL] =
     g_signal_new_class_handler (I_("move-scroll"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_menu_real_move_scroll),
                                 NULL, NULL,
                                 _btk_marshal_VOID__ENUM,
-                                G_TYPE_NONE, 1,
+                                B_TYPE_NONE, 1,
                                 BTK_TYPE_SCROLL_TYPE);
 
   /**
@@ -804,23 +804,23 @@ btk_menu_class_init (BtkMenuClass *class)
 
 
 static void
-btk_menu_set_property (GObject      *object,
+btk_menu_set_property (BObject      *object,
 		       guint         prop_id,
-		       const GValue *value,
-		       GParamSpec   *pspec)
+		       const BValue *value,
+		       BParamSpec   *pspec)
 {
   BtkMenu *menu = BTK_MENU (object);
 
   switch (prop_id)
     {
     case PROP_ACTIVE:
-      btk_menu_set_active (menu, g_value_get_int (value));
+      btk_menu_set_active (menu, b_value_get_int (value));
       break;
     case PROP_ACCEL_GROUP:
-      btk_menu_set_accel_group (menu, g_value_get_object (value));
+      btk_menu_set_accel_group (menu, b_value_get_object (value));
       break;
     case PROP_ACCEL_PATH:
-      btk_menu_set_accel_path (menu, g_value_get_string (value));
+      btk_menu_set_accel_path (menu, b_value_get_string (value));
       break;
     case PROP_ATTACH_WIDGET:
       {
@@ -830,65 +830,65 @@ btk_menu_set_property (GObject      *object,
         if (widget)
           btk_menu_detach (menu);
 
-        widget = (BtkWidget*) g_value_get_object (value); 
+        widget = (BtkWidget*) b_value_get_object (value); 
         if (widget)
           btk_menu_attach_to_widget (menu, widget, NULL);
       }
       break;
     case PROP_TEAROFF_STATE:
-      btk_menu_set_tearoff_state (menu, g_value_get_boolean (value));
+      btk_menu_set_tearoff_state (menu, b_value_get_boolean (value));
       break;
     case PROP_TEAROFF_TITLE:
-      btk_menu_set_title (menu, g_value_get_string (value));
+      btk_menu_set_title (menu, b_value_get_string (value));
       break;
     case PROP_MONITOR:
-      btk_menu_set_monitor (menu, g_value_get_int (value));
+      btk_menu_set_monitor (menu, b_value_get_int (value));
       break;
     case PROP_RESERVE_TOGGLE_SIZE:
-      btk_menu_set_reserve_toggle_size (menu, g_value_get_boolean (value));
+      btk_menu_set_reserve_toggle_size (menu, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_menu_get_property (GObject     *object,
+btk_menu_get_property (BObject     *object,
 		       guint        prop_id,
-		       GValue      *value,
-		       GParamSpec  *pspec)
+		       BValue      *value,
+		       BParamSpec  *pspec)
 {
   BtkMenu *menu = BTK_MENU (object);
 
   switch (prop_id)
     {
     case PROP_ACTIVE:
-      g_value_set_int (value, g_list_index (BTK_MENU_SHELL (menu)->children, btk_menu_get_active (menu)));
+      b_value_set_int (value, g_list_index (BTK_MENU_SHELL (menu)->children, btk_menu_get_active (menu)));
       break;
     case PROP_ACCEL_GROUP:
-      g_value_set_object (value, btk_menu_get_accel_group (menu));
+      b_value_set_object (value, btk_menu_get_accel_group (menu));
       break;
     case PROP_ACCEL_PATH:
-      g_value_set_string (value, btk_menu_get_accel_path (menu));
+      b_value_set_string (value, btk_menu_get_accel_path (menu));
       break;
     case PROP_ATTACH_WIDGET:
-      g_value_set_object (value, btk_menu_get_attach_widget (menu));
+      b_value_set_object (value, btk_menu_get_attach_widget (menu));
       break;
     case PROP_TEAROFF_STATE:
-      g_value_set_boolean (value, btk_menu_get_tearoff_state (menu));
+      b_value_set_boolean (value, btk_menu_get_tearoff_state (menu));
       break;
     case PROP_TEAROFF_TITLE:
-      g_value_set_string (value, btk_menu_get_title (menu));
+      b_value_set_string (value, btk_menu_get_title (menu));
       break;
     case PROP_MONITOR:
-      g_value_set_int (value, btk_menu_get_monitor (menu));
+      b_value_set_int (value, btk_menu_get_monitor (menu));
       break;
     case PROP_RESERVE_TOGGLE_SIZE:
-      g_value_set_boolean (value, btk_menu_get_reserve_toggle_size (menu));
+      b_value_set_boolean (value, btk_menu_get_reserve_toggle_size (menu));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -897,8 +897,8 @@ static void
 btk_menu_set_child_property (BtkContainer *container,
                              BtkWidget    *child,
                              guint         property_id,
-                             const GValue *value,
-                             GParamSpec   *pspec)
+                             const BValue *value,
+                             BParamSpec   *pspec)
 {
   BtkMenu *menu = BTK_MENU (container);
   AttachInfo *ai = get_attach_info (child);
@@ -906,16 +906,16 @@ btk_menu_set_child_property (BtkContainer *container,
   switch (property_id)
     {
     case CHILD_PROP_LEFT_ATTACH:
-      ai->left_attach = g_value_get_int (value);
+      ai->left_attach = b_value_get_int (value);
       break;
     case CHILD_PROP_RIGHT_ATTACH:
-      ai->right_attach = g_value_get_int (value);
+      ai->right_attach = b_value_get_int (value);
       break;
     case CHILD_PROP_TOP_ATTACH:
-      ai->top_attach = g_value_get_int (value);	
+      ai->top_attach = b_value_get_int (value);	
       break;
     case CHILD_PROP_BOTTOM_ATTACH:
-      ai->bottom_attach = g_value_get_int (value);
+      ai->bottom_attach = b_value_get_int (value);
       break;
 
     default:
@@ -930,24 +930,24 @@ static void
 btk_menu_get_child_property (BtkContainer *container,
                              BtkWidget    *child,
                              guint         property_id,
-                             GValue       *value,
-                             GParamSpec   *pspec)
+                             BValue       *value,
+                             BParamSpec   *pspec)
 {
   AttachInfo *ai = get_attach_info (child);
 
   switch (property_id)
     {
     case CHILD_PROP_LEFT_ATTACH:
-      g_value_set_int (value, ai->left_attach);
+      b_value_set_int (value, ai->left_attach);
       break;
     case CHILD_PROP_RIGHT_ATTACH:
-      g_value_set_int (value, ai->right_attach);
+      b_value_set_int (value, ai->right_attach);
       break;
     case CHILD_PROP_TOP_ATTACH:
-      g_value_set_int (value, ai->top_attach);
+      b_value_set_int (value, ai->top_attach);
       break;
     case CHILD_PROP_BOTTOM_ATTACH:
-      g_value_set_int (value, ai->bottom_attach);
+      b_value_set_int (value, ai->bottom_attach);
       break;
       
     default:
@@ -1030,7 +1030,7 @@ btk_menu_init (BtkMenu *menu)
   /* Refloat the menu, so that reference counting for the menu isn't
    * affected by it being a child of the toplevel
    */
-  g_object_force_floating (G_OBJECT (menu));
+  g_object_force_floating (B_OBJECT (menu));
   menu->needs_destruction_ref_count = TRUE;
 
   menu->view_window = NULL;
@@ -1069,7 +1069,7 @@ btk_menu_destroy (BtkObject *object)
 
   btk_menu_remove_scroll_timeout (menu);
   
-  data = g_object_get_data (G_OBJECT (object), attach_data_key);
+  data = g_object_get_data (B_OBJECT (object), attach_data_key);
   if (data)
     btk_menu_detach (menu);
   
@@ -1145,7 +1145,7 @@ attach_widget_screen_changed (BtkWidget *attach_widget,
 			      BtkMenu   *menu)
 {
   if (btk_widget_has_screen (attach_widget) &&
-      !g_object_get_data (G_OBJECT (menu), "btk-menu-explicit-screen"))
+      !g_object_get_data (B_OBJECT (menu), "btk-menu-explicit-screen"))
     {
       menu_change_screen (menu, btk_widget_get_screen (attach_widget));
     }
@@ -1165,11 +1165,11 @@ btk_menu_attach_to_widget (BtkMenu	       *menu,
   /* keep this function in sync with btk_widget_set_parent()
    */
   
-  data = g_object_get_data (G_OBJECT (menu), attach_data_key);
+  data = g_object_get_data (B_OBJECT (menu), attach_data_key);
   if (data)
     {
       g_warning ("btk_menu_attach_to_widget(): menu already attached to %s",
-		 g_type_name (G_TYPE_FROM_INSTANCE (data->attach_widget)));
+		 g_type_name (B_TYPE_FROM_INSTANCE (data->attach_widget)));
      return;
     }
   
@@ -1183,13 +1183,13 @@ btk_menu_attach_to_widget (BtkMenu	       *menu,
   attach_widget_screen_changed (attach_widget, NULL, menu);
   
   data->detacher = detacher;
-  g_object_set_data (G_OBJECT (menu), I_(attach_data_key), data);
-  list = g_object_steal_data (G_OBJECT (attach_widget), ATTACHED_MENUS);
+  g_object_set_data (B_OBJECT (menu), I_(attach_data_key), data);
+  list = g_object_steal_data (B_OBJECT (attach_widget), ATTACHED_MENUS);
   if (!g_list_find (list, menu))
     {
       list = g_list_prepend (list, menu);
     }
-  g_object_set_data_full (G_OBJECT (attach_widget), I_(ATTACHED_MENUS), list,
+  g_object_set_data_full (B_OBJECT (attach_widget), I_(ATTACHED_MENUS), list,
                           (GDestroyNotify) g_list_free);
 
   if (btk_widget_get_state (BTK_WIDGET (menu)) != BTK_STATE_NORMAL)
@@ -1202,7 +1202,7 @@ btk_menu_attach_to_widget (BtkMenu	       *menu,
   /* Fallback title for menu comes from attach widget */
   btk_menu_update_title (menu);
 
-  g_object_notify (G_OBJECT (menu), "attach-widget");
+  g_object_notify (B_OBJECT (menu), "attach-widget");
 }
 
 /**
@@ -1220,7 +1220,7 @@ btk_menu_get_attach_widget (BtkMenu *menu)
   
   g_return_val_if_fail (BTK_IS_MENU (menu), NULL);
   
-  data = g_object_get_data (G_OBJECT (menu), attach_data_key);
+  data = g_object_get_data (B_OBJECT (menu), attach_data_key);
   if (data)
     return data->attach_widget;
   return NULL;
@@ -1236,13 +1236,13 @@ btk_menu_detach (BtkMenu *menu)
   
   /* keep this function in sync with btk_widget_unparent()
    */
-  data = g_object_get_data (G_OBJECT (menu), attach_data_key);
+  data = g_object_get_data (B_OBJECT (menu), attach_data_key);
   if (!data)
     {
       g_warning ("btk_menu_detach(): menu is not attached");
       return;
     }
-  g_object_set_data (G_OBJECT (menu), I_(attach_data_key), NULL);
+  g_object_set_data (B_OBJECT (menu), I_(attach_data_key), NULL);
   
   g_signal_handlers_disconnect_by_func (data->attach_widget,
 					(gpointer) attach_widget_screen_changed,
@@ -1250,13 +1250,13 @@ btk_menu_detach (BtkMenu *menu)
 
   if (data->detacher)
     data->detacher (data->attach_widget, menu);
-  list = g_object_steal_data (G_OBJECT (data->attach_widget), ATTACHED_MENUS);
+  list = g_object_steal_data (B_OBJECT (data->attach_widget), ATTACHED_MENUS);
   list = g_list_remove (list, menu);
   if (list)
-    g_object_set_data_full (G_OBJECT (data->attach_widget), I_(ATTACHED_MENUS), list,
+    g_object_set_data_full (B_OBJECT (data->attach_widget), I_(ATTACHED_MENUS), list,
                             (GDestroyNotify) g_list_free);
   else
-    g_object_set_data (G_OBJECT (data->attach_widget), I_(ATTACHED_MENUS), NULL);
+    g_object_set_data (B_OBJECT (data->attach_widget), I_(ATTACHED_MENUS), NULL);
   
   if (btk_widget_get_realized (BTK_WIDGET (menu)))
     btk_widget_unrealize (BTK_WIDGET (menu));
@@ -1286,7 +1286,7 @@ btk_menu_remove (BtkContainer *container,
     }
 
   BTK_CONTAINER_CLASS (btk_menu_parent_class)->remove (container, widget);
-  g_object_set_data (G_OBJECT (widget), I_(ATTACH_INFO_KEY), NULL);
+  g_object_set_data (B_OBJECT (widget), I_(ATTACH_INFO_KEY), NULL);
 
   menu_queue_resize (menu);
 }
@@ -1540,7 +1540,7 @@ btk_menu_popup (BtkMenu		    *menu,
   parent_toplevel = NULL;
   if (parent_menu_shell) 
     parent_toplevel = btk_widget_get_toplevel (parent_menu_shell);
-  else if (!g_object_get_data (G_OBJECT (menu), "btk-menu-explicit-screen"))
+  else if (!g_object_get_data (B_OBJECT (menu), "btk-menu-explicit-screen"))
     {
       BtkWidget *attach_widget = btk_menu_get_attach_widget (menu);
       if (attach_widget)
@@ -2117,7 +2117,7 @@ btk_menu_set_tearoff_state (BtkMenu  *menu,
 	  menu->tearoff_adjustment = NULL;
 	}
 
-      g_object_notify (G_OBJECT (menu), "tearoff-state");
+      g_object_notify (B_OBJECT (menu), "tearoff-state");
     }
 }
 
@@ -2164,7 +2164,7 @@ btk_menu_set_title (BtkMenu     *menu,
   g_free (old_title);
        
   btk_menu_update_title (menu);
-  g_object_notify (G_OBJECT (menu), "tearoff-title");
+  g_object_notify (B_OBJECT (menu), "tearoff-title");
 }
 
 /**
@@ -2361,7 +2361,7 @@ btk_menu_focus (BtkWidget       *widget,
 static BdkWindow *
 menu_grab_transfer_window_get (BtkMenu *menu)
 {
-  BdkWindow *window = g_object_get_data (G_OBJECT (menu), "btk-menu-transfer-window");
+  BdkWindow *window = g_object_get_data (B_OBJECT (menu), "btk-menu-transfer-window");
   if (!window)
     {
       BdkWindowAttr attributes;
@@ -2384,7 +2384,7 @@ menu_grab_transfer_window_get (BtkMenu *menu)
 
       bdk_window_show (window);
 
-      g_object_set_data (G_OBJECT (menu), I_("btk-menu-transfer-window"), window);
+      g_object_set_data (B_OBJECT (menu), I_("btk-menu-transfer-window"), window);
     }
 
   return window;
@@ -2393,12 +2393,12 @@ menu_grab_transfer_window_get (BtkMenu *menu)
 static void
 menu_grab_transfer_window_destroy (BtkMenu *menu)
 {
-  BdkWindow *window = g_object_get_data (G_OBJECT (menu), "btk-menu-transfer-window");
+  BdkWindow *window = g_object_get_data (B_OBJECT (menu), "btk-menu-transfer-window");
   if (window)
     {
       bdk_window_set_user_data (window, NULL);
       bdk_window_destroy (window);
-      g_object_set_data (G_OBJECT (menu), I_("btk-menu-transfer-window"), NULL);
+      g_object_set_data (B_OBJECT (menu), I_("btk-menu-transfer-window"), NULL);
     }
 }
 
@@ -4796,7 +4796,7 @@ btk_menu_reparent (BtkMenu   *menu,
     btk_widget_reparent (BTK_WIDGET (menu), new_parent);
   
   if (was_floating)
-    g_object_force_floating (G_OBJECT (object));
+    g_object_force_floating (B_OBJECT (object));
   else
     g_object_unref (object);
 }
@@ -4833,7 +4833,7 @@ btk_menu_set_screen (BtkMenu   *menu,
   g_return_if_fail (BTK_IS_MENU (menu));
   g_return_if_fail (!screen || BDK_IS_SCREEN (screen));
 
-  g_object_set_data (G_OBJECT (menu), I_("btk-menu-explicit-screen"), screen);
+  g_object_set_data (B_OBJECT (menu), I_("btk-menu-explicit-screen"), screen);
 
   if (screen)
     {
@@ -5302,7 +5302,7 @@ btk_menu_get_for_attach_widget (BtkWidget *widget)
   
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
   
-  list = g_object_get_data (G_OBJECT (widget), ATTACHED_MENUS);
+  list = g_object_get_data (B_OBJECT (widget), ATTACHED_MENUS);
   return list;
 }
 
@@ -5348,7 +5348,7 @@ btk_menu_set_reserve_toggle_size (BtkMenu  *menu,
     {
       priv->no_toggle_size = no_toggle_size;
 
-      g_object_notify (G_OBJECT (menu), "reserve-toggle-size");
+      g_object_notify (B_OBJECT (menu), "reserve-toggle-size");
     }
 }
 

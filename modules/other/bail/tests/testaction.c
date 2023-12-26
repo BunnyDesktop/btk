@@ -22,10 +22,10 @@ _check_object (BatkObject *obj)
     BtkWidget* widget = NULL;
 
     widget = BTK_ACCESSIBLE (obj)->widget;
-    typename = g_type_name (G_OBJECT_TYPE (widget));
+    typename = g_type_name (B_OBJECT_TYPE (widget));
     g_print ("Widget type name: %s\n", typename ? typename : "NULL");
   }
-  typename = g_type_name (G_OBJECT_TYPE (obj));
+  typename = g_type_name (B_OBJECT_TYPE (obj));
   g_print ("Accessible type name: %s\n", typename ? typename : "NULL");
   accessible_name = batk_object_get_name (obj);
   if (accessible_name)

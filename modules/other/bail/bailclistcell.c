@@ -47,7 +47,7 @@ bail_clist_cell_init (BailCListCell *cell)
 BatkObject* 
 bail_clist_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
 
   object = g_object_new (BAIL_TYPE_CLIST_CELL, NULL);

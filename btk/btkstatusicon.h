@@ -34,11 +34,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_STATUS_ICON         (btk_status_icon_get_type ())
-#define BTK_STATUS_ICON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_STATUS_ICON, BtkStatusIcon))
-#define BTK_STATUS_ICON_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST ((k), BTK_TYPE_STATUS_ICON, BtkStatusIconClass))
-#define BTK_IS_STATUS_ICON(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_STATUS_ICON))
-#define BTK_IS_STATUS_ICON_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_STATUS_ICON))
-#define BTK_STATUS_ICON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_STATUS_ICON, BtkStatusIconClass))
+#define BTK_STATUS_ICON(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_STATUS_ICON, BtkStatusIcon))
+#define BTK_STATUS_ICON_CLASS(k)     (B_TYPE_CHECK_CLASS_CAST ((k), BTK_TYPE_STATUS_ICON, BtkStatusIconClass))
+#define BTK_IS_STATUS_ICON(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_STATUS_ICON))
+#define BTK_IS_STATUS_ICON_CLASS(k)  (B_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_STATUS_ICON))
+#define BTK_STATUS_ICON_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_STATUS_ICON, BtkStatusIconClass))
 
 typedef struct _BtkStatusIcon	     BtkStatusIcon;
 typedef struct _BtkStatusIconClass   BtkStatusIconClass;
@@ -46,14 +46,14 @@ typedef struct _BtkStatusIconPrivate BtkStatusIconPrivate;
 
 struct _BtkStatusIcon
 {
-  GObject               parent_instance;
+  BObject               parent_instance;
 
   BtkStatusIconPrivate *GSEAL (priv);
 };
 
 struct _BtkStatusIconClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void     (* activate)             (BtkStatusIcon  *status_icon);
   void     (* popup_menu)           (BtkStatusIcon  *status_icon,

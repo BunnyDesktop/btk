@@ -64,18 +64,18 @@ enum
   PROP_INLINE_SELECTION
 };
 
-#define BTK_ENTRY_COMPLETION_GET_PRIVATE(obj)(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionPrivate))
+#define BTK_ENTRY_COMPLETION_GET_PRIVATE(obj)(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionPrivate))
 
 static void                                                             btk_entry_completion_cell_layout_init    (BtkCellLayoutIface      *iface);
-static void     btk_entry_completion_set_property        (GObject      *object,
+static void     btk_entry_completion_set_property        (BObject      *object,
                                                           guint         prop_id,
-                                                          const GValue *value,
-                                                          GParamSpec   *pspec);
-static void     btk_entry_completion_get_property        (GObject      *object,
+                                                          const BValue *value,
+                                                          BParamSpec   *pspec);
+static void     btk_entry_completion_get_property        (BObject      *object,
                                                           guint         prop_id,
-                                                          GValue       *value,
-                                                          GParamSpec   *pspec);
-static void                                                             btk_entry_completion_finalize            (GObject                 *object);
+                                                          BValue       *value,
+                                                          BParamSpec   *pspec);
+static void                                                             btk_entry_completion_finalize            (BObject                 *object);
 
 static void     btk_entry_completion_pack_start          (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
@@ -152,7 +152,7 @@ static guint entry_completion_signals[LAST_SIGNAL] = { 0 };
 /* BtkBuildable */
 static void     btk_entry_completion_buildable_init      (BtkBuildableIface  *iface);
 
-G_DEFINE_TYPE_WITH_CODE (BtkEntryCompletion, btk_entry_completion, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkEntryCompletion, btk_entry_completion, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_CELL_LAYOUT,
 						btk_entry_completion_cell_layout_init)
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -162,9 +162,9 @@ G_DEFINE_TYPE_WITH_CODE (BtkEntryCompletion, btk_entry_completion, G_TYPE_OBJECT
 static void
 btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
 
   object_class->set_property = btk_entry_completion_set_property;
   object_class->get_property = btk_entry_completion_get_property;
@@ -194,13 +194,13 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
    */
   entry_completion_signals[INSERT_PREFIX] =
     g_signal_new (I_("insert-prefix"),
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkEntryCompletionClass, insert_prefix),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__STRING,
-                  G_TYPE_BOOLEAN, 1,
-                  G_TYPE_STRING);
+                  B_TYPE_BOOLEAN, 1,
+                  B_TYPE_STRING);
 
   /**
    * BtkEntryCompletion::match-selected:
@@ -219,12 +219,12 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
    */
   entry_completion_signals[MATCH_SELECTED] =
     g_signal_new (I_("match-selected"),
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkEntryCompletionClass, match_selected),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__OBJECT_BOXED,
-                  G_TYPE_BOOLEAN, 2,
+                  B_TYPE_BOOLEAN, 2,
                   BTK_TYPE_TREE_MODEL,
                   BTK_TYPE_TREE_ITER);
 
@@ -245,12 +245,12 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
    */
   entry_completion_signals[CURSOR_ON_MATCH] =
     g_signal_new (I_("cursor-on-match"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkEntryCompletionClass, cursor_on_match),
 		  _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__OBJECT_BOXED,
-		  G_TYPE_BOOLEAN, 2,
+		  B_TYPE_BOOLEAN, 2,
 		  BTK_TYPE_TREE_MODEL,
 		  BTK_TYPE_TREE_ITER);
 
@@ -265,13 +265,13 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
    */
   entry_completion_signals[ACTION_ACTIVATED] =
     g_signal_new (I_("action-activated"),
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkEntryCompletionClass, action_activated),
                   NULL, NULL,
                   _btk_marshal_VOID__INT,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_INT);
+                  B_TYPE_NONE, 1,
+                  B_TYPE_INT);
 
   g_object_class_install_property (object_class,
                                    PROP_MODEL,
@@ -473,7 +473,7 @@ btk_entry_completion_init (BtkEntryCompletion *completion)
   btk_widget_set_size_request (BTK_SCROLLED_WINDOW (priv->scrolled_window)->vscrollbar, -1, 0);
 
   /* actions */
-  priv->actions = btk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  priv->actions = btk_list_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
   priv->action_view =
     btk_tree_view_new_with_model (BTK_TREE_MODEL (priv->actions));
@@ -537,10 +537,10 @@ btk_entry_completion_init (BtkEntryCompletion *completion)
 }
 
 static void
-btk_entry_completion_set_property (GObject      *object,
+btk_entry_completion_set_property (BObject      *object,
                                    guint         prop_id,
-                                   const GValue *value,
-                                   GParamSpec   *pspec)
+                                   const BValue *value,
+                                   BParamSpec   *pspec)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (object);
   BtkEntryCompletionPrivate *priv = completion->priv;
@@ -549,95 +549,95 @@ btk_entry_completion_set_property (GObject      *object,
     {
       case PROP_MODEL:
         btk_entry_completion_set_model (completion,
-                                        g_value_get_object (value));
+                                        b_value_get_object (value));
         break;
 
       case PROP_MINIMUM_KEY_LENGTH:
         btk_entry_completion_set_minimum_key_length (completion,
-                                                     g_value_get_int (value));
+                                                     b_value_get_int (value));
         break;
 
       case PROP_TEXT_COLUMN:
-	priv->text_column = g_value_get_int (value);
+	priv->text_column = b_value_get_int (value);
         break;
 
       case PROP_INLINE_COMPLETION:
-	priv->inline_completion = g_value_get_boolean (value);
+	priv->inline_completion = b_value_get_boolean (value);
         break;
 
       case PROP_POPUP_COMPLETION:
-	priv->popup_completion = g_value_get_boolean (value);
+	priv->popup_completion = b_value_get_boolean (value);
         break;
 
       case PROP_POPUP_SET_WIDTH:
-	priv->popup_set_width = g_value_get_boolean (value);
+	priv->popup_set_width = b_value_get_boolean (value);
         break;
 
       case PROP_POPUP_SINGLE_MATCH:
-	priv->popup_single_match = g_value_get_boolean (value);
+	priv->popup_single_match = b_value_get_boolean (value);
         break;
 
       case PROP_INLINE_SELECTION:
-        priv->inline_selection = g_value_get_boolean (value);
+        priv->inline_selection = b_value_get_boolean (value);
         break;
       
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_entry_completion_get_property (GObject    *object,
+btk_entry_completion_get_property (BObject    *object,
                                    guint       prop_id,
-                                   GValue     *value,
-                                   GParamSpec *pspec)
+                                   BValue     *value,
+                                   BParamSpec *pspec)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (object);
 
   switch (prop_id)
     {
       case PROP_MODEL:
-        g_value_set_object (value,
+        b_value_set_object (value,
                             btk_entry_completion_get_model (completion));
         break;
 
       case PROP_MINIMUM_KEY_LENGTH:
-        g_value_set_int (value, btk_entry_completion_get_minimum_key_length (completion));
+        b_value_set_int (value, btk_entry_completion_get_minimum_key_length (completion));
         break;
 
       case PROP_TEXT_COLUMN:
-        g_value_set_int (value, btk_entry_completion_get_text_column (completion));
+        b_value_set_int (value, btk_entry_completion_get_text_column (completion));
         break;
 
       case PROP_INLINE_COMPLETION:
-        g_value_set_boolean (value, btk_entry_completion_get_inline_completion (completion));
+        b_value_set_boolean (value, btk_entry_completion_get_inline_completion (completion));
         break;
 
       case PROP_POPUP_COMPLETION:
-        g_value_set_boolean (value, btk_entry_completion_get_popup_completion (completion));
+        b_value_set_boolean (value, btk_entry_completion_get_popup_completion (completion));
         break;
 
       case PROP_POPUP_SET_WIDTH:
-        g_value_set_boolean (value, btk_entry_completion_get_popup_set_width (completion));
+        b_value_set_boolean (value, btk_entry_completion_get_popup_set_width (completion));
         break;
 
       case PROP_POPUP_SINGLE_MATCH:
-        g_value_set_boolean (value, btk_entry_completion_get_popup_single_match (completion));
+        b_value_set_boolean (value, btk_entry_completion_get_popup_single_match (completion));
         break;
 
       case PROP_INLINE_SELECTION:
-        g_value_set_boolean (value, btk_entry_completion_get_inline_selection (completion));
+        b_value_set_boolean (value, btk_entry_completion_get_inline_selection (completion));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_entry_completion_finalize (GObject *object)
+btk_entry_completion_finalize (BObject *object)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (object);
   BtkEntryCompletionPrivate *priv = completion->priv;
@@ -662,7 +662,7 @@ btk_entry_completion_finalize (GObject *object)
   if (priv->match_notify)
     (* priv->match_notify) (priv->match_data);
 
-  G_OBJECT_CLASS (btk_entry_completion_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_entry_completion_parent_class)->finalize (object);
 }
 
 /* implement cell layout interface */
@@ -778,7 +778,7 @@ btk_entry_completion_default_completion_func (BtkEntryCompletion *completion,
 
   model = btk_tree_model_filter_get_model (completion->priv->filter_model);
 
-  g_return_val_if_fail (btk_tree_model_get_column_type (model, completion->priv->text_column) == G_TYPE_STRING, 
+  g_return_val_if_fail (btk_tree_model_get_column_type (model, completion->priv->text_column) == B_TYPE_STRING, 
 			FALSE);
 
   btk_tree_model_get (model, iter,
@@ -1058,7 +1058,7 @@ btk_entry_completion_set_model (BtkEntryCompletion *completion,
                            BTK_TREE_MODEL (completion->priv->filter_model));
   g_object_unref (completion->priv->filter_model);
 
-  g_object_notify (G_OBJECT (completion), "model");
+  g_object_notify (B_OBJECT (completion), "model");
 
   if (btk_widget_get_visible (completion->priv->popup_window))
     _btk_entry_completion_resize_popup (completion);
@@ -1139,7 +1139,7 @@ btk_entry_completion_set_minimum_key_length (BtkEntryCompletion *completion,
     {
       completion->priv->minimum_key_length = length;
      
-      g_object_notify (G_OBJECT (completion), "minimum-key-length");
+      g_object_notify (B_OBJECT (completion), "minimum-key-length");
     }
 }
 
@@ -1324,7 +1324,7 @@ btk_entry_completion_set_text_column (BtkEntryCompletion *completion,
                                  cell,
                                  "text", column);
 
-  g_object_notify (G_OBJECT (completion), "text-column");
+  g_object_notify (B_OBJECT (completion), "text-column");
 }
 
 /**
@@ -1792,7 +1792,7 @@ btk_entry_completion_set_inline_completion (BtkEntryCompletion *completion,
     {
       completion->priv->inline_completion = inline_completion;
 
-      g_object_notify (G_OBJECT (completion), "inline-completion");
+      g_object_notify (B_OBJECT (completion), "inline-completion");
     }
 }
 
@@ -1836,7 +1836,7 @@ btk_entry_completion_set_popup_completion (BtkEntryCompletion *completion,
     {
       completion->priv->popup_completion = popup_completion;
 
-      g_object_notify (G_OBJECT (completion), "popup-completion");
+      g_object_notify (B_OBJECT (completion), "popup-completion");
     }
 }
 
@@ -1881,7 +1881,7 @@ btk_entry_completion_set_popup_set_width (BtkEntryCompletion *completion,
     {
       completion->priv->popup_set_width = popup_set_width;
 
-      g_object_notify (G_OBJECT (completion), "popup-set-width");
+      g_object_notify (B_OBJECT (completion), "popup-set-width");
     }
 }
 
@@ -1931,7 +1931,7 @@ btk_entry_completion_set_popup_single_match (BtkEntryCompletion *completion,
     {
       completion->priv->popup_single_match = popup_single_match;
 
-      g_object_notify (G_OBJECT (completion), "popup-single-match");
+      g_object_notify (B_OBJECT (completion), "popup-single-match");
     }
 }
 
@@ -1977,7 +1977,7 @@ btk_entry_completion_set_inline_selection (BtkEntryCompletion *completion,
     {
       completion->priv->inline_selection = inline_selection;
 
-      g_object_notify (G_OBJECT (completion), "inline-selection");
+      g_object_notify (B_OBJECT (completion), "inline-selection");
     }
 }
 

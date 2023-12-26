@@ -54,14 +54,14 @@ static void bdk_x11_gc_set_dashes (BdkGC           *gc,
 				   gint8            dash_list[],
 				   gint             n);
 
-static void bdk_gc_x11_finalize   (GObject         *object);
+static void bdk_gc_x11_finalize   (BObject         *object);
 
 G_DEFINE_TYPE (BdkGCX11, _bdk_gc_x11, BDK_TYPE_GC)
 
 static void
 _bdk_gc_x11_class_init (BdkGCX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   object_class->finalize = bdk_gc_x11_finalize;
@@ -77,13 +77,13 @@ _bdk_gc_x11_init (BdkGCX11 *gc)
 }
 
 static void
-bdk_gc_x11_finalize (GObject *object)
+bdk_gc_x11_finalize (BObject *object)
 {
   BdkGCX11 *x11_gc = BDK_GC_X11 (object);
   
   XFreeGC (BDK_GC_XDISPLAY (x11_gc), BDK_GC_XGC (x11_gc));
 
-  G_OBJECT_CLASS (_bdk_gc_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_gc_x11_parent_class)->finalize (object);
 }
 
 

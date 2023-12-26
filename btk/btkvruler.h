@@ -51,11 +51,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_VRULER            (btk_vruler_get_type ())
-#define BTK_VRULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VRULER, BtkVRuler))
-#define BTK_VRULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VRULER, BtkVRulerClass))
-#define BTK_IS_VRULER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VRULER))
-#define BTK_IS_VRULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VRULER))
-#define BTK_VRULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VRULER, BtkVRulerClass))
+#define BTK_VRULER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VRULER, BtkVRuler))
+#define BTK_VRULER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VRULER, BtkVRulerClass))
+#define BTK_IS_VRULER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VRULER))
+#define BTK_IS_VRULER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VRULER))
+#define BTK_VRULER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VRULER, BtkVRulerClass))
 
 
 typedef struct _BtkVRuler       BtkVRuler;

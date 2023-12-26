@@ -78,8 +78,8 @@ btk_type_class (BtkType type)
   static GQuark quark_static_class = 0;
   gpointer class;
 
-  if (!G_TYPE_IS_ENUM (type) && !G_TYPE_IS_FLAGS (type))
-    g_return_val_if_fail (G_TYPE_IS_OBJECT (type), NULL);
+  if (!B_TYPE_IS_ENUM (type) && !B_TYPE_IS_FLAGS (type))
+    g_return_val_if_fail (B_TYPE_IS_OBJECT (type), NULL);
 
   /* ok, this is a bit ugly, GLib reference counts classes,
    * and btk_type_class() used to always return static classes.
@@ -147,7 +147,7 @@ btk_identifier_get_type (void)
   if (our_type == 0)
     {
       GTypeInfo tinfo = { 0, };
-      our_type = g_type_register_static (G_TYPE_STRING, I_("BtkIdentifier"), &tinfo, 0);
+      our_type = g_type_register_static (B_TYPE_STRING, I_("BtkIdentifier"), &tinfo, 0);
     }
 
   return our_type;
@@ -158,7 +158,7 @@ btk_type_enum_get_values (BtkType enum_type)
 {
   GEnumClass *class;
 
-  g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);
+  g_return_val_if_fail (B_TYPE_IS_ENUM (enum_type), NULL);
   
   class = btk_type_class (enum_type);
   
@@ -170,7 +170,7 @@ btk_type_flags_get_values (BtkType flags_type)
 {
   GFlagsClass *class;
 
-  g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
+  g_return_val_if_fail (B_TYPE_IS_FLAGS (flags_type), NULL);
 
   class = btk_type_class (flags_type);
 
@@ -184,7 +184,7 @@ btk_type_enum_find_value (BtkType      enum_type,
   BtkEnumValue *value;
   GEnumClass *class;
 
-  g_return_val_if_fail (G_TYPE_IS_ENUM (enum_type), NULL);
+  g_return_val_if_fail (B_TYPE_IS_ENUM (enum_type), NULL);
   g_return_val_if_fail (value_name != NULL, NULL);
 
   class = btk_type_class (enum_type);
@@ -202,7 +202,7 @@ btk_type_flags_find_value (BtkType      flags_type,
   BtkFlagValue *value;
   GFlagsClass *class;
 
-  g_return_val_if_fail (G_TYPE_IS_FLAGS (flags_type), NULL);
+  g_return_val_if_fail (B_TYPE_IS_FLAGS (flags_type), NULL);
   g_return_val_if_fail (value_name != NULL, NULL);
 
   class = btk_type_class (flags_type);

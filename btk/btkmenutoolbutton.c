@@ -36,7 +36,7 @@
 #include "btkalias.h"
 
 
-#define BTK_MENU_TOOL_BUTTON_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonPrivate))
+#define BTK_MENU_TOOL_BUTTON_GET_PRIVATE(object)(B_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonPrivate))
 
 struct _BtkMenuToolButtonPrivate
 {
@@ -55,7 +55,7 @@ static int  menu_deactivate_cb              (BtkMenuShell           *menu_shell,
 static void btk_menu_tool_button_buildable_interface_init (BtkBuildableIface   *iface);
 static void btk_menu_tool_button_buildable_add_child      (BtkBuildable        *buildable,
 							   BtkBuilder          *builder,
-							   GObject             *child,
+							   BObject             *child,
 							   const gchar         *type);
 
 enum
@@ -170,41 +170,41 @@ btk_menu_tool_button_state_changed (BtkWidget    *widget,
 }
 
 static void
-btk_menu_tool_button_set_property (GObject      *object,
+btk_menu_tool_button_set_property (BObject      *object,
                                    guint         prop_id,
-                                   const GValue *value,
-                                   GParamSpec   *pspec)
+                                   const BValue *value,
+                                   BParamSpec   *pspec)
 {
   BtkMenuToolButton *button = BTK_MENU_TOOL_BUTTON (object);
 
   switch (prop_id)
     {
     case PROP_MENU:
-      btk_menu_tool_button_set_menu (button, g_value_get_object (value));
+      btk_menu_tool_button_set_menu (button, b_value_get_object (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_menu_tool_button_get_property (GObject    *object,
+btk_menu_tool_button_get_property (BObject    *object,
                                    guint       prop_id,
-                                   GValue     *value,
-                                   GParamSpec *pspec)
+                                   BValue     *value,
+                                   BParamSpec *pspec)
 {
   BtkMenuToolButton *button = BTK_MENU_TOOL_BUTTON (object);
 
   switch (prop_id)
     {
     case PROP_MENU:
-      g_value_set_object (value, button->priv->menu);
+      b_value_set_object (value, button->priv->menu);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -212,12 +212,12 @@ btk_menu_tool_button_get_property (GObject    *object,
 static void
 btk_menu_tool_button_class_init (BtkMenuToolButtonClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkObjectClass *btk_object_class;
   BtkWidgetClass *widget_class;
   BtkToolItemClass *toolitem_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   btk_object_class = (BtkObjectClass *)klass;
   widget_class = (BtkWidgetClass *)klass;
   toolitem_class = (BtkToolItemClass *)klass;
@@ -243,12 +243,12 @@ btk_menu_tool_button_class_init (BtkMenuToolButtonClass *klass)
    */
   signals[SHOW_MENU] =
     g_signal_new (I_("show-menu"),
-                  G_OBJECT_CLASS_TYPE (klass),
+                  B_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (BtkMenuToolButtonClass, show_menu),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_MENU,
@@ -454,7 +454,7 @@ btk_menu_tool_button_destroy (BtkObject *object)
 static void
 btk_menu_tool_button_buildable_add_child (BtkBuildable *buildable,
 					  BtkBuilder   *builder,
-					  GObject      *child,
+					  BObject      *child,
 					  const gchar  *type)
 {
   if (type && strcmp (type, "menu") == 0)
@@ -602,7 +602,7 @@ btk_menu_tool_button_set_menu (BtkMenuToolButton *button,
        btk_widget_set_sensitive (priv->arrow_button, FALSE);
     }
 
-  g_object_notify (G_OBJECT (button), "menu");
+  g_object_notify (B_OBJECT (button), "menu");
 }
 
 /**

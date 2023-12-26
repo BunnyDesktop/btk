@@ -8,7 +8,7 @@ create_model (void)
   BtkTreeIter iter;
   BtkTreeIter parent;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
 
   btk_tree_store_insert_with_values (store, &parent, NULL, 0,
 				     0, "Applications", -1);

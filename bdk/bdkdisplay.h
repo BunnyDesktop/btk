@@ -37,11 +37,11 @@ typedef struct _BdkDisplayClass BdkDisplayClass;
 typedef struct _BdkDisplayPointerHooks BdkDisplayPointerHooks;
 
 #define BDK_TYPE_DISPLAY              (bdk_display_get_type ())
-#define BDK_DISPLAY_OBJECT(object)    (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY, BdkDisplay))
-#define BDK_DISPLAY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY, BdkDisplayClass))
-#define BDK_IS_DISPLAY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY))
-#define BDK_IS_DISPLAY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY))
-#define BDK_DISPLAY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY, BdkDisplayClass))
+#define BDK_DISPLAY_OBJECT(object)    (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY, BdkDisplay))
+#define BDK_DISPLAY_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY, BdkDisplayClass))
+#define BDK_IS_DISPLAY(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY))
+#define BDK_IS_DISPLAY_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY))
+#define BDK_DISPLAY_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY, BdkDisplayClass))
 
 /* Tracks information about the keyboard grab on this display */
 typedef struct
@@ -72,7 +72,7 @@ typedef struct
 
 struct _BdkDisplay
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< private >*/
   GList *GSEAL (queued_events);
@@ -107,7 +107,7 @@ struct _BdkDisplay
 
 struct _BdkDisplayClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   const gchar *              (*get_display_name)   (BdkDisplay *display);
   gint			     (*get_n_screens)      (BdkDisplay *display);

@@ -45,7 +45,7 @@ text_tag_enqueue (BtkTextTag *tag,
                   gpointer    data)
 {
   GSList **slist_p = data;
-  *slist_p = g_slist_prepend (*slist_p, tag);
+  *slist_p = b_slist_prepend (*slist_p, tag);
 }
 
 static const gchar *example_text =
@@ -77,7 +77,7 @@ setup_buffer (BtkTextBuffer *buffer)
   btk_text_tag_table_foreach (ttable, text_tag_enqueue, &slist);
   for (node = slist; node; node = node->next)
     btk_text_tag_table_remove (ttable, node->data);
-  g_slist_free (slist);
+  b_slist_free (slist);
 
   /* create new tags */
   for (i = 0; i < tcount; i++)

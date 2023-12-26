@@ -40,9 +40,9 @@
 
 typedef struct _BtkPrintBackendLprClass BtkPrintBackendLprClass;
 
-#define BTK_PRINT_BACKEND_LPR_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLprClass))
-#define BTK_IS_PRINT_BACKEND_LPR_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_LPR))
-#define BTK_PRINT_BACKEND_LPR_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLprClass))
+#define BTK_PRINT_BACKEND_LPR_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLprClass))
+#define BTK_IS_PRINT_BACKEND_LPR_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_LPR))
+#define BTK_PRINT_BACKEND_LPR_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLprClass))
 
 #define _LPR_MAX_CHUNK_SIZE 8192
 
@@ -58,7 +58,7 @@ struct _BtkPrintBackendLpr
   BtkPrintBackend parent_instance;
 };
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 static void                 btk_print_backend_lpr_class_init      (BtkPrintBackendLprClass *class);
 static void                 btk_print_backend_lpr_init            (BtkPrintBackendLpr      *impl);

@@ -30,10 +30,10 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTIVATABLE            (btk_activatable_get_type ())
-#define BTK_ACTIVATABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
-#define BTK_ACTIVATABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
-#define BTK_IS_ACTIVATABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTIVATABLE))
-#define BTK_ACTIVATABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
+#define BTK_ACTIVATABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
+#define BTK_ACTIVATABLE_CLASS(obj)      (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
+#define BTK_IS_ACTIVATABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTIVATABLE))
+#define BTK_ACTIVATABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
 
 
 typedef struct _BtkActivatable      BtkActivatable; /* Dummy typedef */

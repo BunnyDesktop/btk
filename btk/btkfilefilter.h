@@ -30,8 +30,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_FILTER              (btk_file_filter_get_type ())
-#define BTK_FILE_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
-#define BTK_IS_FILE_FILTER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_FILTER))
+#define BTK_FILE_FILTER(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
+#define BTK_IS_FILE_FILTER(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_FILTER))
 
 typedef struct _BtkFileFilter     BtkFileFilter;
 typedef struct _BtkFileFilterInfo BtkFileFilterInfo;

@@ -36,11 +36,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_GAMMA_CURVE            (btk_gamma_curve_get_type ())
-#define BTK_GAMMA_CURVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurve))
-#define BTK_GAMMA_CURVE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
-#define BTK_IS_GAMMA_CURVE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_GAMMA_CURVE))
-#define BTK_IS_GAMMA_CURVE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_GAMMA_CURVE))
-#define BTK_GAMMA_CURVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
+#define BTK_GAMMA_CURVE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurve))
+#define BTK_GAMMA_CURVE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
+#define BTK_IS_GAMMA_CURVE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_GAMMA_CURVE))
+#define BTK_IS_GAMMA_CURVE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_GAMMA_CURVE))
+#define BTK_GAMMA_CURVE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
 
 typedef struct _BtkGammaCurve		BtkGammaCurve;
 typedef struct _BtkGammaCurveClass	BtkGammaCurveClass;

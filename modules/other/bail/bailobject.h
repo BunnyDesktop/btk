@@ -25,25 +25,25 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_OBJECT                  (bail_object_get_type ())
-#define BAIL_OBJECT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_OBJECT, BailObject)
-#define BAIL_OBJECT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_OBJECT, BailObjectlass))
-#define BAIL_IS_OBJECT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_OBJECT))
-#define BAIL_IS_OBJECT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_OBJECT))
-#define BAIL_OBJECT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_OBJECT, BailObjectlass))
+#define BAIL_OBJECT(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_OBJECT, BailObject)
+#define BAIL_OBJECT_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_OBJECT, BailObjectlass))
+#define BAIL_IS_OBJECT(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_OBJECT))
+#define BAIL_IS_OBJECT_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_OBJECT))
+#define BAIL_OBJECT_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_OBJECT, BailObjectlass))
 
 typedef struct _BailObject                 BailObject;
 typedef struct _BailObjectClass            BailObjectClass;
 
 struct _BailObject
 {
-  BatkGObjectAccessible parent;
+  BatkBObjectAccessible parent;
 };
 
 GType bail_object_get_type (void);
 
 struct _BailObjectClass
 {
-  BatkGObjectAccessibleClass parent_class;
+  BatkBObjectAccessibleClass parent_class;
 };
 
 B_END_DECLS

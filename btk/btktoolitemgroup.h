@@ -32,11 +32,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_ITEM_GROUP           (btk_tool_item_group_get_type ())
-#define BTK_TOOL_ITEM_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroup))
-#define BTK_TOOL_ITEM_GROUP_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
-#define BTK_IS_TOOL_ITEM_GROUP(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
-#define BTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
-#define BTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
+#define BTK_TOOL_ITEM_GROUP(obj)           (B_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroup))
+#define BTK_TOOL_ITEM_GROUP_CLASS(cls)     (B_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
+#define BTK_IS_TOOL_ITEM_GROUP(obj)        (B_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (B_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
 
 typedef struct _BtkToolItemGroup        BtkToolItemGroup;
 typedef struct _BtkToolItemGroupClass   BtkToolItemGroupClass;

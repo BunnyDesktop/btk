@@ -49,7 +49,7 @@ static void bdk_win32_gc_set_dashes (BdkGC           *gc,
 				     gint             n);
 
 static void bdk_gc_win32_class_init (BdkGCWin32Class *klass);
-static void bdk_gc_win32_finalize   (GObject         *object);
+static void bdk_gc_win32_finalize   (BObject         *object);
 
 static gpointer parent_class = NULL;
 
@@ -84,7 +84,7 @@ _bdk_gc_win32_get_type (void)
 static void
 bdk_gc_win32_class_init (BdkGCWin32Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -97,7 +97,7 @@ bdk_gc_win32_class_init (BdkGCWin32Class *klass)
 }
 
 static void
-bdk_gc_win32_finalize (GObject *object)
+bdk_gc_win32_finalize (BObject *object)
 {
   BdkGCWin32 *win32_gc = BDK_GC_WIN32 (object);
   
@@ -109,7 +109,7 @@ bdk_gc_win32_finalize (GObject *object)
   
   g_free (win32_gc->pen_dashes);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void

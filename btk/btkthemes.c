@@ -124,7 +124,7 @@ btk_theme_engine_unload (GTypeModule *module)
 static void
 btk_theme_engine_class_init (BtkThemeEngineClass *class)
 {
-  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
+  GTypeModuleClass *module_class = B_TYPE_MODULE_CLASS (class);
 
   module_class->load = btk_theme_engine_load;
   module_class->unload = btk_theme_engine_unload;
@@ -150,7 +150,7 @@ btk_theme_engine_get_type (void)
       };
 
       theme_engine_type =
-	g_type_register_static (G_TYPE_TYPE_MODULE, I_("BtkThemeEngine"),
+	g_type_register_static (B_TYPE_TYPE_MODULE, I_("BtkThemeEngine"),
 				&theme_engine_info, 0);
     }
   
@@ -172,13 +172,13 @@ btk_theme_engine_get (const gchar *name)
   if (!result)
     {
       result = g_object_new (BTK_TYPE_THEME_ENGINE, NULL);
-      g_type_module_set_name (G_TYPE_MODULE (result), name);
+      g_type_module_set_name (B_TYPE_MODULE (result), name);
       result->name = g_strdup (name);
 
       g_hash_table_insert (engine_hash, result->name, result);
     }
 
-  if (!g_type_module_use (G_TYPE_MODULE (result)))
+  if (!g_type_module_use (B_TYPE_MODULE (result)))
     return NULL;
 
   return result;

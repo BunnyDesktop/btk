@@ -54,19 +54,19 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static void btk_text_mark_set_property (GObject         *object,
+static void btk_text_mark_set_property (BObject         *object,
 				        guint            prop_id,
-					const GValue    *value,
-					GParamSpec      *pspec);
-static void btk_text_mark_get_property (GObject         *object,
+					const BValue    *value,
+					BParamSpec      *pspec);
+static void btk_text_mark_get_property (BObject         *object,
 					guint            prop_id,
-					GValue          *value,
-					GParamSpec      *pspec);
-static void btk_text_mark_finalize     (GObject         *object);
+					BValue          *value,
+					BParamSpec      *pspec);
+static void btk_text_mark_finalize     (BObject         *object);
 
 static BtkTextLineSegment *btk_mark_segment_new (BtkTextMark *mark_obj);
 
-G_DEFINE_TYPE (BtkTextMark, btk_text_mark, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextMark, btk_text_mark, B_TYPE_OBJECT)
 
 enum {
   PROP_0,
@@ -77,7 +77,7 @@ enum {
 static void
 btk_text_mark_class_init (BtkTextMarkClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_text_mark_finalize;
   object_class->set_property = btk_text_mark_set_property;
@@ -107,7 +107,7 @@ btk_text_mark_init (BtkTextMark *mark)
 }
 
 static void
-btk_text_mark_finalize (GObject *obj)
+btk_text_mark_finalize (BObject *obj)
 {
   BtkTextMark *mark;
   BtkTextLineSegment *seg;
@@ -130,14 +130,14 @@ btk_text_mark_finalize (GObject *obj)
     }
 
   /* chain parent_class' handler */
-  G_OBJECT_CLASS (btk_text_mark_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (btk_text_mark_parent_class)->finalize (obj);
 }
 
 static void
-btk_text_mark_set_property (GObject      *object,
+btk_text_mark_set_property (BObject      *object,
 			    guint         prop_id,
-			    const GValue *value,
-			    GParamSpec   *pspec)
+			    const BValue *value,
+			    BParamSpec   *pspec)
 {
   gchar *tmp;
   BtkTextMark *mark = BTK_TEXT_MARK (object);
@@ -147,42 +147,42 @@ btk_text_mark_set_property (GObject      *object,
     {
     case PROP_NAME:
       tmp = seg->body.mark.name;
-      seg->body.mark.name = g_value_dup_string (value);
+      seg->body.mark.name = b_value_dup_string (value);
       g_free (tmp);
       break;
 
     case PROP_LEFT_GRAVITY:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
 	seg->type = &btk_text_left_mark_type;
       else
 	seg->type = &btk_text_right_mark_type;
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
 static void
-btk_text_mark_get_property (GObject    *object,
+btk_text_mark_get_property (BObject    *object,
 			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+			    BValue     *value,
+			    BParamSpec *pspec)
 {
   BtkTextMark *mark = BTK_TEXT_MARK (object);
 
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, btk_text_mark_get_name (mark));
+      b_value_set_string (value, btk_text_mark_get_name (mark));
       break;
 
     case PROP_LEFT_GRAVITY:
-      g_value_set_boolean (value, btk_text_mark_get_left_gravity (mark));
+      b_value_set_boolean (value, btk_text_mark_get_left_gravity (mark));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 

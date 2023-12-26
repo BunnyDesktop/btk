@@ -40,10 +40,10 @@ static guint signals[LAST_SIGNAL] = { 0 };
 /* ugly side-effect of aliasing */
 #undef btk_printer_option_set
 
-G_DEFINE_TYPE (BtkPrinterOptionSet, btk_printer_option_set, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrinterOptionSet, btk_printer_option_set, B_TYPE_OBJECT)
 
 static void
-btk_printer_option_set_finalize (GObject *object)
+btk_printer_option_set_finalize (BObject *object)
 {
   BtkPrinterOptionSet *set = BTK_PRINTER_OPTION_SET (object);
 
@@ -51,7 +51,7 @@ btk_printer_option_set_finalize (GObject *object)
   g_ptr_array_foreach (set->array, (GFunc)g_object_unref, NULL);
   g_ptr_array_free (set->array, TRUE);
   
-  G_OBJECT_CLASS (btk_printer_option_set_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_option_set_parent_class)->finalize (object);
 }
 
 static void
@@ -64,18 +64,18 @@ btk_printer_option_set_init (BtkPrinterOptionSet *set)
 static void
 btk_printer_option_set_class_init (BtkPrinterOptionSetClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
 
   bobject_class->finalize = btk_printer_option_set_finalize;
 
   signals[CHANGED] =
     g_signal_new ("changed",
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrinterOptionSetClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 

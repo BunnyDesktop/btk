@@ -40,11 +40,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTION            (btk_action_get_type ())
-#define BTK_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION, BtkAction))
-#define BTK_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACTION, BtkActionClass))
-#define BTK_IS_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION))
-#define BTK_IS_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACTION))
-#define BTK_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_ACTION, BtkActionClass))
+#define BTK_ACTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION, BtkAction))
+#define BTK_ACTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACTION, BtkActionClass))
+#define BTK_IS_ACTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION))
+#define BTK_IS_ACTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACTION))
+#define BTK_ACTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_ACTION, BtkActionClass))
 
 typedef struct _BtkAction      BtkAction;
 typedef struct _BtkActionClass BtkActionClass;
@@ -52,7 +52,7 @@ typedef struct _BtkActionPrivate BtkActionPrivate;
 
 struct _BtkAction
 {
-  GObject object;
+  BObject object;
 
   /*< private >*/
 
@@ -61,7 +61,7 @@ struct _BtkAction
 
 struct _BtkActionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* activation signal */
   void       (* activate)           (BtkAction    *action);

@@ -30,11 +30,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_SIZE_GROUP            (btk_size_group_get_type ())
-#define BTK_SIZE_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
-#define BTK_SIZE_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
-#define BTK_IS_SIZE_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SIZE_GROUP))
-#define BTK_IS_SIZE_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SIZE_GROUP))
-#define BTK_SIZE_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
+#define BTK_SIZE_GROUP(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
+#define BTK_SIZE_GROUP_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
+#define BTK_IS_SIZE_GROUP(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SIZE_GROUP))
+#define BTK_IS_SIZE_GROUP_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SIZE_GROUP))
+#define BTK_SIZE_GROUP_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
 
 
 typedef struct _BtkSizeGroup       BtkSizeGroup;
@@ -42,7 +42,7 @@ typedef struct _BtkSizeGroupClass  BtkSizeGroupClass;
 
 struct _BtkSizeGroup
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /* <private> */
   GSList *GSEAL (widgets);
@@ -58,7 +58,7 @@ struct _BtkSizeGroup
 
 struct _BtkSizeGroupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

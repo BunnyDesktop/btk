@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_BUTTON            (btk_file_chooser_button_get_type ())
-#define BTK_FILE_CHOOSER_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButton))
-#define BTK_FILE_CHOOSER_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
-#define BTK_IS_FILE_CHOOSER_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON))
-#define BTK_IS_FILE_CHOOSER_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON))
-#define BTK_FILE_CHOOSER_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
+#define BTK_FILE_CHOOSER_BUTTON(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButton))
+#define BTK_FILE_CHOOSER_BUTTON_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
+#define BTK_IS_FILE_CHOOSER_BUTTON(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON))
+#define BTK_IS_FILE_CHOOSER_BUTTON_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON))
+#define BTK_FILE_CHOOSER_BUTTON_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
 
 typedef struct _BtkFileChooserButton        BtkFileChooserButton;
 typedef struct _BtkFileChooserButtonPrivate BtkFileChooserButtonPrivate;

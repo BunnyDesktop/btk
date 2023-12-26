@@ -369,7 +369,7 @@ bdk_property_delete (BdkWindow *window,
 gboolean
 bdk_screen_get_setting (BdkScreen   *screen,
                         const gchar *name,
-                        GValue      *value)
+                        BValue      *value)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
@@ -379,45 +379,45 @@ bdk_screen_get_setting (BdkScreen   *screen,
    */
   if (strcmp ("btk-theme-name", name) == 0) 
     {
-      g_value_set_string (value, "ms-windows");
+      b_value_set_string (value, "ms-windows");
     }
   else if (strcmp ("btk-double-click-time", name) == 0)
     {
       gint i = GetDoubleClickTime ();
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-double-click-distance", name) == 0)
     {
       gint i = MAX(GetSystemMetrics (SM_CXDOUBLECLK), GetSystemMetrics (SM_CYDOUBLECLK));
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-dnd-drag-threshold", name) == 0)
     {
       gint i = MAX(GetSystemMetrics (SM_CXDRAG), GetSystemMetrics (SM_CYDRAG));
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-split-cursor", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : FALSE\n", name));
-      g_value_set_boolean (value, FALSE);
+      b_value_set_boolean (value, FALSE);
       return TRUE;
     }
   else if (strcmp ("btk-alternative-button-order", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : TRUE\n", name));
-      g_value_set_boolean (value, TRUE);
+      b_value_set_boolean (value, TRUE);
       return TRUE;
     }
   else if (strcmp ("btk-alternative-sort-arrows", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : TRUE\n", name));
-      g_value_set_boolean (value, TRUE);
+      b_value_set_boolean (value, TRUE);
       return TRUE;
     }
 #if 0
@@ -447,7 +447,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
             {
               char* s = g_strdup_printf ("%s %d", ncm.lfMenuFont.lfFaceName, nHeight);
               BDK_NOTE(MISC, g_print("bdk_screen_get_setting(%s) : %s\n", name, s));
-              g_value_set_string (value, s);
+              b_value_set_string (value, s);
 
               g_free(s);
               return TRUE;

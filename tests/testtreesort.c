@@ -141,7 +141,7 @@ main (int argc, char *argv[])
   btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window), BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
   btk_box_pack_start (BTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
 
-  model = btk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+  model = btk_tree_store_new (NUM_COLUMNS, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_INT);
 
 /*
   smodel = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (model));
@@ -150,7 +150,7 @@ main (int argc, char *argv[])
   tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
 
   btk_tree_view_set_search_entry (BTK_TREE_VIEW (tree_view), BTK_ENTRY (entry));
-  g_object_set_data (G_OBJECT (tree_view), "my-search-entry", entry);
+  g_object_set_data (B_OBJECT (tree_view), "my-search-entry", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (switch_search_method), tree_view);
 

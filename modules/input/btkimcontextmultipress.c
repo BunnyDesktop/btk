@@ -38,12 +38,12 @@ typedef struct
 }
 KeySequence;
 
-static GObjectClass *im_context_multipress_parent_class = NULL;
+static BObjectClass *im_context_multipress_parent_class = NULL;
 static GType         im_context_multipress_type = 0;
 
 static void im_context_multipress_class_init (BtkImContextMultipressClass *klass);
 static void im_context_multipress_init (BtkImContextMultipress *self);
-static void im_context_multipress_finalize (GObject *obj);
+static void im_context_multipress_finalize (BObject *obj);
 
 static void load_config (BtkImContextMultipress *self);
 
@@ -118,7 +118,7 @@ im_context_multipress_class_init (BtkImContextMultipressClass *klass)
   im_context_class->reset = &vfunc_reset;
   im_context_class->get_preedit_string = &vfunc_get_preedit_string;
 
-  G_OBJECT_CLASS (klass)->finalize = &im_context_multipress_finalize;
+  B_OBJECT_CLASS (klass)->finalize = &im_context_multipress_finalize;
 }
 
 static void
@@ -130,7 +130,7 @@ im_context_multipress_init (BtkImContextMultipress *self)
 }
 
 static void
-im_context_multipress_finalize (GObject *obj)
+im_context_multipress_finalize (BObject *obj)
 {
   BtkImContextMultipress *self;
 

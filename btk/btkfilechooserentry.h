@@ -27,8 +27,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_ENTRY    (_btk_file_chooser_entry_get_type ())
-#define BTK_FILE_CHOOSER_ENTRY(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntry))
-#define BTK_IS_FILE_CHOOSER_ENTRY(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY))
+#define BTK_FILE_CHOOSER_ENTRY(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntry))
+#define BTK_IS_FILE_CHOOSER_ENTRY(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY))
 
 typedef struct _BtkFileChooserEntry      BtkFileChooserEntry;
 

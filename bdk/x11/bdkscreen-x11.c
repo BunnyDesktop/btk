@@ -51,8 +51,8 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
-static void         bdk_screen_x11_dispose     (GObject		  *object);
-static void         bdk_screen_x11_finalize    (GObject		  *object);
+static void         bdk_screen_x11_dispose     (BObject		  *object);
+static void         bdk_screen_x11_finalize    (BObject		  *object);
 static void	    init_randr_support	       (BdkScreen	  *screen);
 static void	    deinit_multihead           (BdkScreen         *screen);
 
@@ -79,19 +79,19 @@ struct _BdkX11Monitor
 static void
 _bdk_screen_x11_class_init (BdkScreenX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->dispose = bdk_screen_x11_dispose;
   object_class->finalize = bdk_screen_x11_finalize;
 
   signals[WINDOW_MANAGER_CHANGED] =
     g_signal_new (g_intern_static_string ("window_manager_changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BdkScreenX11Class, window_manager_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 }
 
@@ -273,7 +273,7 @@ bdk_screen_set_default_colormap (BdkScreen   *screen,
 }
 
 static void
-bdk_screen_x11_dispose (GObject *object)
+bdk_screen_x11_dispose (BObject *object)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
 
@@ -300,7 +300,7 @@ bdk_screen_x11_dispose (GObject *object)
   if (screen_x11->root_window)
     _bdk_window_destroy (screen_x11->root_window, TRUE);
 
-  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_screen_x11_parent_class)->dispose (object);
 
   screen_x11->xdisplay = NULL;
   screen_x11->xscreen = NULL;
@@ -310,7 +310,7 @@ bdk_screen_x11_dispose (GObject *object)
 }
 
 static void
-bdk_screen_x11_finalize (GObject *object)
+bdk_screen_x11_finalize (BObject *object)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
   gint          i;
@@ -333,7 +333,7 @@ bdk_screen_x11_finalize (GObject *object)
 
   deinit_multihead (BDK_SCREEN (object));
   
-  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_screen_x11_parent_class)->finalize (object);
 }
 
 /**

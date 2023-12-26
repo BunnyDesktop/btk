@@ -35,7 +35,7 @@ static void _check_children (BatkObject *obj)
     if (j != 1)
      g_print ("*** inconsistency between parent and children %d %d ***\n",
               1, j);       
-    g_object_unref (G_OBJECT (child));
+    g_object_unref (B_OBJECT (child));
   }
 
   child = batk_object_ref_accessible_child (obj, 0);
@@ -54,9 +54,9 @@ static void _check_children (BatkObject *obj)
     grand_child = batk_object_ref_accessible_child (child, i);
     name = batk_object_get_name (grand_child);
     g_print ("Index: %d Name: %s\n", i, name ? name : "<NULL>");
-    g_object_unref (G_OBJECT (grand_child));
+    g_object_unref (B_OBJECT (grand_child));
   }
-  g_object_unref (G_OBJECT (child));
+  g_object_unref (B_OBJECT (child));
 }
   
 static void _test_selection (BatkObject *obj)
@@ -70,7 +70,7 @@ static void _test_selection (BatkObject *obj)
 
   list = batk_object_ref_accessible_child (obj, 0);
   n_children = batk_object_get_n_accessible_children (list); 
-  g_object_unref (G_OBJECT (list));
+  g_object_unref (B_OBJECT (list));
 
   batk_selection_add_selection (BATK_SELECTION (obj), n_children - 1);
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -165,7 +165,7 @@ static gint _close_combo_list (gpointer data)
 
   list = batk_object_ref_accessible_child (obj, 0);
   n_children = batk_object_get_n_accessible_children (list); 
-  g_object_unref (G_OBJECT (list));
+  g_object_unref (B_OBJECT (list));
 
   batk_selection_add_selection (BATK_SELECTION (obj), n_children - 1);
 

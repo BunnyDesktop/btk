@@ -29,11 +29,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_ACCEL            (btk_cell_renderer_accel_get_type ())
-#define BTK_CELL_RENDERER_ACCEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccel))
-#define BTK_CELL_RENDERER_ACCEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
-#define BTK_IS_CELL_RENDERER_ACCEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_ACCEL))
-#define BTK_IS_CELL_RENDERER_ACCEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_ACCEL))
-#define BTK_CELL_RENDERER_ACCEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
+#define BTK_CELL_RENDERER_ACCEL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccel))
+#define BTK_CELL_RENDERER_ACCEL_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
+#define BTK_IS_CELL_RENDERER_ACCEL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_ACCEL))
+#define BTK_IS_CELL_RENDERER_ACCEL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_ACCEL))
+#define BTK_CELL_RENDERER_ACCEL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
 
 typedef struct _BtkCellRendererAccel      BtkCellRendererAccel;
 typedef struct _BtkCellRendererAccelClass BtkCellRendererAccelClass;

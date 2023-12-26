@@ -66,7 +66,7 @@
 
 #include "btkalias.h"
 
-#define BTK_ASSISTANT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_ASSISTANT, BtkAssistantPrivate))
+#define BTK_ASSISTANT_GET_PRIVATE(o) (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_ASSISTANT, BtkAssistantPrivate))
 
 #define HEADER_SPACING 12
 #define ACTION_AREA_SPACING 12
@@ -135,29 +135,29 @@ static void     btk_assistant_forall             (BtkContainer      *container,
 static void     btk_assistant_set_child_property (BtkContainer      *container,
 						  BtkWidget         *child,
 						  guint              property_id,
-						  const GValue      *value,
-						  GParamSpec        *pspec);
+						  const BValue      *value,
+						  BParamSpec        *pspec);
 static void     btk_assistant_get_child_property (BtkContainer      *container,
 						  BtkWidget         *child,
 						  guint              property_id,
-						  GValue            *value,
-						  GParamSpec        *pspec);
+						  BValue            *value,
+						  BParamSpec        *pspec);
 
 static BatkObject *btk_assistant_get_accessible   (BtkWidget         *widget);
 
 static void       btk_assistant_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject   *btk_assistant_buildable_get_internal_child (BtkBuildable  *buildable,
+static BObject   *btk_assistant_buildable_get_internal_child (BtkBuildable  *buildable,
                                                               BtkBuilder    *builder,
                                                               const gchar   *childname);
 static gboolean   btk_assistant_buildable_custom_tag_start   (BtkBuildable  *buildable,
                                                               BtkBuilder    *builder,
-                                                              GObject       *child,
+                                                              BObject       *child,
                                                               const gchar   *tagname,
                                                               GMarkupParser *parser,
                                                               gpointer      *data);
 static void       btk_assistant_buildable_custom_finished    (BtkBuildable  *buildable,
                                                               BtkBuilder    *builder,
-                                                              GObject       *child,
+                                                              BObject       *child,
                                                               const gchar   *tagname,
                                                               gpointer       user_data);
 
@@ -194,12 +194,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkAssistant, btk_assistant, BTK_TYPE_WINDOW,
 static void
 btk_assistant_class_init (BtkAssistantClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class   = (GObjectClass *) class;
+  bobject_class   = (BObjectClass *) class;
   object_class    = (BtkObjectClass *) class;
   widget_class    = (BtkWidgetClass *) class;
   container_class = (BtkContainerClass *) class;
@@ -232,12 +232,12 @@ btk_assistant_class_init (BtkAssistantClass *class)
    */
   signals[CANCEL] =
     g_signal_new (I_("cancel"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkAssistantClass, cancel),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
     
   /**
    * BtkAssistant::prepare:
@@ -252,12 +252,12 @@ btk_assistant_class_init (BtkAssistantClass *class)
    */
   signals[PREPARE] =
     g_signal_new (I_("prepare"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkAssistantClass, prepare),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, BTK_TYPE_WIDGET);
+		  B_TYPE_NONE, 1, BTK_TYPE_WIDGET);
 
   /**
    * BtkAssistant::apply:
@@ -277,12 +277,12 @@ btk_assistant_class_init (BtkAssistantClass *class)
    */
   signals[APPLY] =
     g_signal_new (I_("apply"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkAssistantClass, apply),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkAssistant::close:
@@ -296,12 +296,12 @@ btk_assistant_class_init (BtkAssistantClass *class)
    */
   signals[CLOSE] =
     g_signal_new (I_("close"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkAssistantClass, close),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("header-padding",
@@ -669,7 +669,7 @@ compute_next_step (BtkAssistant *assistant)
 
   if (next_page >= 0 && next_page < n_pages)
     {
-      priv->visited_pages = g_slist_prepend (priv->visited_pages, page_info);
+      priv->visited_pages = b_slist_prepend (priv->visited_pages, page_info);
       set_current_page (assistant, g_list_nth_data (priv->pages, next_page));
 
       return TRUE;
@@ -728,7 +728,7 @@ on_assistant_back (BtkWidget    *widget,
 
       priv->visited_pages = priv->visited_pages->next;
       page_info = (BtkAssistantPage *) page_node->data;
-      g_slist_free_1 (page_node);
+      b_slist_free_1 (page_node);
     }
   while (page_info->type == BTK_ASSISTANT_PAGE_PROGRESS ||
 	 !btk_widget_get_visible (page_info->page));
@@ -850,17 +850,17 @@ btk_assistant_init (BtkAssistant *assistant)
   priv->forward_function_data = assistant;
   priv->forward_data_destroy = NULL;
 
-  g_signal_connect (G_OBJECT (assistant->close), "clicked",
+  g_signal_connect (B_OBJECT (assistant->close), "clicked",
 		    G_CALLBACK (on_assistant_close), assistant);
-  g_signal_connect (G_OBJECT (assistant->apply), "clicked",
+  g_signal_connect (B_OBJECT (assistant->apply), "clicked",
 		    G_CALLBACK (on_assistant_apply), assistant);
-  g_signal_connect (G_OBJECT (assistant->forward), "clicked",
+  g_signal_connect (B_OBJECT (assistant->forward), "clicked",
 		    G_CALLBACK (on_assistant_forward), assistant);
-  g_signal_connect (G_OBJECT (assistant->back), "clicked",
+  g_signal_connect (B_OBJECT (assistant->back), "clicked",
 		    G_CALLBACK (on_assistant_back), assistant);
-  g_signal_connect (G_OBJECT (assistant->cancel), "clicked",
+  g_signal_connect (B_OBJECT (assistant->cancel), "clicked",
 		    G_CALLBACK (on_assistant_cancel), assistant);
-  g_signal_connect (G_OBJECT (assistant->last), "clicked",
+  g_signal_connect (B_OBJECT (assistant->last), "clicked",
 		    G_CALLBACK (on_assistant_last), assistant);
 }
 
@@ -868,30 +868,30 @@ static void
 btk_assistant_set_child_property (BtkContainer    *container,
 				  BtkWidget       *child,
 				  guint            property_id,
-				  const GValue    *value,
-				  GParamSpec      *pspec)
+				  const BValue    *value,
+				  BParamSpec      *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_PAGE_TYPE:
       btk_assistant_set_page_type (BTK_ASSISTANT (container), child,
-				   g_value_get_enum (value));
+				   b_value_get_enum (value));
       break;
     case CHILD_PROP_PAGE_TITLE:
       btk_assistant_set_page_title (BTK_ASSISTANT (container), child,
-				    g_value_get_string (value));
+				    b_value_get_string (value));
       break;
     case CHILD_PROP_PAGE_HEADER_IMAGE:
       btk_assistant_set_page_header_image (BTK_ASSISTANT (container), child,
-					   g_value_get_object (value));
+					   b_value_get_object (value));
       break;
     case CHILD_PROP_PAGE_SIDEBAR_IMAGE:
       btk_assistant_set_page_side_image (BTK_ASSISTANT (container), child,
-					 g_value_get_object (value));
+					 b_value_get_object (value));
       break;
     case CHILD_PROP_PAGE_COMPLETE:
       btk_assistant_set_page_complete (BTK_ASSISTANT (container), child,
-				       g_value_get_boolean (value));
+				       b_value_get_boolean (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -903,29 +903,29 @@ static void
 btk_assistant_get_child_property (BtkContainer *container,
 				  BtkWidget    *child,
 				  guint         property_id,
-				  GValue       *value,
-				  GParamSpec   *pspec)
+				  BValue       *value,
+				  BParamSpec   *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_PAGE_TYPE:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
 			btk_assistant_get_page_type (BTK_ASSISTANT (container), child));
       break;
     case CHILD_PROP_PAGE_TITLE:
-      g_value_set_string (value,
+      b_value_set_string (value,
 			  btk_assistant_get_page_title (BTK_ASSISTANT (container), child));
       break;
     case CHILD_PROP_PAGE_HEADER_IMAGE:
-      g_value_set_object (value,
+      b_value_set_object (value,
 			  btk_assistant_get_page_header_image (BTK_ASSISTANT (container), child));
       break;
     case CHILD_PROP_PAGE_SIDEBAR_IMAGE:
-      g_value_set_object (value,
+      b_value_set_object (value,
 			  btk_assistant_get_page_side_image (BTK_ASSISTANT (container), child));
       break;
     case CHILD_PROP_PAGE_COMPLETE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
 			   btk_assistant_get_page_complete (BTK_ASSISTANT (container), child));
       break;
     default:
@@ -936,7 +936,7 @@ btk_assistant_get_child_property (BtkContainer *container,
 
 static void
 on_page_notify_visibility (BtkWidget  *widget,
-			   GParamSpec *arg,
+			   BParamSpec *arg,
 			   gpointer    data)
 {
   BtkAssistant *assistant = BTK_ASSISTANT (data);
@@ -980,7 +980,7 @@ remove_page (BtkAssistant *assistant,
     }
 
   priv->pages = g_list_remove_link (priv->pages, element);
-  priv->visited_pages = g_slist_remove_all (priv->visited_pages, page_info);
+  priv->visited_pages = b_slist_remove_all (priv->visited_pages, page_info);
 
   g_signal_handlers_disconnect_by_func (page_info->page, on_page_notify_visibility, assistant);
   btk_widget_unparent (page_info->page);
@@ -1039,7 +1039,7 @@ btk_assistant_destroy (BtkObject *object)
 
   if (priv->visited_pages)
     {
-      g_slist_free (priv->visited_pages);
+      b_slist_free (priv->visited_pages);
       priv->visited_pages = NULL;
     }
 
@@ -1326,7 +1326,7 @@ btk_assistant_unmap (BtkWidget *widget)
       btk_widget_is_drawable (priv->current_page->page))
     btk_widget_unmap (priv->current_page->page);
 
-  g_slist_free (priv->visited_pages);
+  b_slist_free (priv->visited_pages);
   priv->visited_pages = NULL;
   priv->current_page  = NULL;
 
@@ -1610,7 +1610,7 @@ btk_assistant_set_current_page (BtkAssistant *assistant,
    * initial page is != to 0
    */
   if (btk_widget_get_mapped (BTK_WIDGET (assistant)))
-    priv->visited_pages = g_slist_prepend (priv->visited_pages,
+    priv->visited_pages = b_slist_prepend (priv->visited_pages,
 					   priv->current_page);
 
   set_current_page (assistant, page);
@@ -1751,7 +1751,7 @@ btk_assistant_insert_page (BtkAssistant *assistant,
   page_info->page  = page;
   page_info->title = btk_label_new (NULL);
 
-  g_signal_connect (G_OBJECT (page), "notify::visible",
+  g_signal_connect (B_OBJECT (page), "notify::visible",
 		    G_CALLBACK (on_page_notify_visibility), assistant);
 
   btk_misc_set_alignment (BTK_MISC (page_info->title), 0.,0.5);
@@ -2302,7 +2302,7 @@ btk_assistant_commit (BtkAssistant *assistant)
 {
   g_return_if_fail (BTK_IS_ASSISTANT (assistant));
 
-  g_slist_free (assistant->priv->visited_pages);
+  b_slist_free (assistant->priv->visited_pages);
   assistant->priv->visited_pages = NULL;
 
   assistant->priv->committed = TRUE;
@@ -2416,7 +2416,7 @@ btk_assistant_accessible_get_type (void)
 }
 
 static BatkObject *
-btk_assistant_accessible_new (GObject *obj)
+btk_assistant_accessible_new (BObject *obj)
 {
   BatkObject *accessible;
 
@@ -2435,7 +2435,7 @@ btk_assistant_accessible_factory_get_accessible_type (void)
 }
 
 static BatkObject*
-btk_assistant_accessible_factory_create_accessible (GObject *obj)
+btk_assistant_accessible_factory_create_accessible (BObject *obj)
 {
   return btk_assistant_accessible_new (obj);
 }
@@ -2512,13 +2512,13 @@ btk_assistant_buildable_interface_init (BtkBuildableIface *iface)
   iface->custom_finished = btk_assistant_buildable_custom_finished;
 }
 
-static GObject *
+static BObject *
 btk_assistant_buildable_get_internal_child (BtkBuildable *buildable,
                                             BtkBuilder   *builder,
                                             const gchar  *childname)
 {
     if (strcmp (childname, "action_area") == 0)
-      return G_OBJECT (BTK_ASSISTANT (buildable)->priv->action_area);
+      return B_OBJECT (BTK_ASSISTANT (buildable)->priv->action_area);
 
     return parent_buildable_iface->get_internal_child (buildable,
                                                        builder,
@@ -2528,7 +2528,7 @@ btk_assistant_buildable_get_internal_child (BtkBuildable *buildable,
 gboolean
 btk_assistant_buildable_custom_tag_start (BtkBuildable  *buildable,
                                           BtkBuilder    *builder,
-                                          GObject       *child,
+                                          BObject       *child,
                                           const gchar   *tagname,
                                           GMarkupParser *parser,
                                           gpointer      *data)
@@ -2540,7 +2540,7 @@ btk_assistant_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_assistant_buildable_custom_finished (BtkBuildable *buildable,
                                          BtkBuilder   *builder,
-                                         GObject      *child,
+                                         BObject      *child,
                                          const gchar  *tagname,
                                          gpointer      user_data)
 {

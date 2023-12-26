@@ -55,7 +55,7 @@ key_hash_clear_keycode (gpointer key,
 			gpointer data)
 {
   GSList *keys = value;
-  g_slist_free (keys);
+  b_slist_free (keys);
 }
 
 static void
@@ -73,7 +73,7 @@ key_hash_insert_entry (BtkKeyHash      *key_hash,
     {
       GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
 					      GUINT_TO_POINTER (entry->keys[i].keycode));
-      old_keys = g_slist_prepend (old_keys, entry);
+      old_keys = b_slist_prepend (old_keys, entry);
       g_hash_table_insert (key_hash->keycode_hash,
 			   GUINT_TO_POINTER (entry->keys[i].keycode),
 			   old_keys);
@@ -246,7 +246,7 @@ _btk_key_hash_remove_entry (BtkKeyHash *key_hash,
 	      GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
 						      GUINT_TO_POINTER (entry->keys[i].keycode));
 	      
-	      GSList *new_keys = g_slist_remove (old_keys, entry);
+	      GSList *new_keys = b_slist_remove (old_keys, entry);
 	      if (new_keys != old_keys)
 		{
 		  if (new_keys)
@@ -304,7 +304,7 @@ lookup_result_compare (gconstpointer a,
 static GSList *
 sort_lookup_results (GSList *slist)
 {
-  return g_slist_sort (slist, lookup_result_compare);
+  return b_slist_sort (slist, lookup_result_compare);
 }
 
 static gint
@@ -325,7 +325,7 @@ lookup_result_compare_by_keyval (gconstpointer a,
 static GSList *
 sort_lookup_results_by_keyval (GSList *slist)
 {
-  return g_slist_sort (slist, lookup_result_compare_by_keyval);
+  return b_slist_sort (slist, lookup_result_compare_by_keyval);
 }
 
 /* Return true if keyval is defined in keyboard group
@@ -459,12 +459,12 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
 
 		  if (!have_exact)
 		    {
-		      g_slist_free (results);
+		      b_slist_free (results);
 		      results = NULL;
 		    }
 
 		  have_exact = TRUE;
-		  results = g_slist_prepend (results, entry);
+		  results = b_slist_prepend (results, entry);
 		}
 
 	      if (!have_exact)
@@ -480,7 +480,7 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
 			  BTK_NOTE (KEYBINDINGS,
 				    g_message ("  found group = %d, level = %d",
 					       entry->keys[i].group, entry->keys[i].level));
-			  results = g_slist_prepend (results, entry);
+			  results = b_slist_prepend (results, entry);
 			  break;
 			}
 		    }
@@ -509,7 +509,7 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
               oldkeyval = keyhashentry->keyval;
               if (keyval_in_group (key_hash->keymap, oldkeyval, group))
                 {
-       	          g_slist_free (results);
+       	          b_slist_free (results);
        	          return NULL;
                 }
             }
@@ -564,7 +564,7 @@ _btk_key_hash_lookup_keyval (BtkKeyHash     *key_hash,
 	  BtkKeyHashEntry *entry = entries->data;
 
 	  if (entry->keyval == keyval && entry->modifiers == modifiers)
-	    results = g_slist_prepend (results, entry);
+	    results = b_slist_prepend (results, entry);
 
 	  entries = entries->next;
 	}

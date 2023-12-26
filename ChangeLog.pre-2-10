@@ -5113,7 +5113,7 @@ Thu Mar  9 14:29:43 2006  Tim Janik  <timj@btk.org>
 2006-03-08  Michael Natterer  <mitch@imendio.com>
 
 	* tests/prop-editor.c (unichar_changed): zero-initialize the
-	GValue before calling g_value_init().
+	BValue before calling b_value_init().
 
 2006-03-08  Michael Natterer  <mitch@imendio.com>
 
@@ -7077,7 +7077,7 @@ Tue Dec  6 10:32:17 2005  Tim Janik  <timj@btk.org>
 Wed Nov 23 18:55:47 2005  Tim Janik  <timj@imendio.com>
 
 	* btk/btkobject.[hc]: deprecated floating/sink API and implemented it
-	in terms of the GObject floating/sink API.
+	in terms of the BObject floating/sink API.
 
 	* btk/btkaboutdialog.c:
 	* btk/btkaction.c:
@@ -7109,7 +7109,7 @@ Wed Nov 23 18:55:47 2005  Tim Janik  <timj@imendio.com>
 	* btk/btkviewport.c:
 	* btk/btkwidget.c:
 	* btk/btkwindow.c:
-	ported to use GObject's g_object_ref_sink().
+	ported to use BObject's g_object_ref_sink().
 
 	* btk/btkcolorsel.c:
 	* btk/btkfilechooserdefault.c:
@@ -7846,7 +7846,7 @@ Tue Nov  1 16:18:24 2005  Tim Janik  <timj@imendio.com>
 	some missing g_object_notify().
 
 	(btk_cell_renderer_pixbuf_get_property): simplified calls to
-	g_value_set_object().
+	b_value_set_object().
 
 	(btk_cell_renderer_pixbuf_create_stock_pixbuf)
 	(btk_cell_renderer_pixbuf_create_named_icon_pixbuf): added

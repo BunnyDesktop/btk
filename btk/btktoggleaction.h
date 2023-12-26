@@ -40,11 +40,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TOGGLE_ACTION            (btk_toggle_action_get_type ())
-#define BTK_TOGGLE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleAction))
-#define BTK_TOGGLE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
-#define BTK_IS_TOGGLE_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_ACTION))
-#define BTK_IS_TOGGLE_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_ACTION))
-#define BTK_TOGGLE_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
+#define BTK_TOGGLE_ACTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleAction))
+#define BTK_TOGGLE_ACTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
+#define BTK_IS_TOGGLE_ACTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_ACTION))
+#define BTK_IS_TOGGLE_ACTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_ACTION))
+#define BTK_TOGGLE_ACTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
 
 typedef struct _BtkToggleAction        BtkToggleAction;
 typedef struct _BtkToggleActionPrivate BtkToggleActionPrivate;

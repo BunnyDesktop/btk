@@ -69,15 +69,15 @@ static guint curve_type_changed_signal = 0;
 /* forward declarations: */
 static void btk_curve_class_init   (BtkCurveClass *class);
 static void btk_curve_init         (BtkCurve      *curve);
-static void btk_curve_get_property  (GObject              *object,
+static void btk_curve_get_property  (BObject              *object,
 				     guint                 param_id,
-				     GValue               *value,
-				     GParamSpec           *pspec);
-static void btk_curve_set_property  (GObject              *object,
+				     BValue               *value,
+				     BParamSpec           *pspec);
+static void btk_curve_set_property  (BObject              *object,
 				     guint                 param_id,
-				     const GValue         *value,
-				     GParamSpec           *pspec);
-static void btk_curve_finalize     (GObject       *object);
+				     const BValue         *value,
+				     BParamSpec           *pspec);
+static void btk_curve_finalize     (BObject       *object);
 static gint btk_curve_graph_events (BtkWidget     *widget, 
 				    BdkEvent      *event, 
 				    BtkCurve      *c);
@@ -112,7 +112,7 @@ btk_curve_get_type (void)
 static void
 btk_curve_class_init (BtkCurveClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   
   parent_class = g_type_class_peek_parent (class);
   
@@ -168,12 +168,12 @@ btk_curve_class_init (BtkCurveClass *class)
 
   curve_type_changed_signal =
     g_signal_new (I_("curve-type-changed"),
-		   G_OBJECT_CLASS_TYPE (bobject_class),
+		   B_OBJECT_CLASS_TYPE (bobject_class),
 		   G_SIGNAL_RUN_FIRST,
 		   G_STRUCT_OFFSET (BtkCurveClass, curve_type_changed),
 		   NULL, NULL,
 		   _btk_marshal_VOID__VOID,
-		   G_TYPE_NONE, 0);
+		   B_TYPE_NONE, 0);
 }
 
 static void
@@ -206,67 +206,67 @@ btk_curve_init (BtkCurve *curve)
 }
 
 static void
-btk_curve_set_property (GObject              *object,
+btk_curve_set_property (BObject              *object,
 			guint                 prop_id,
-			const GValue         *value,
-			GParamSpec           *pspec)
+			const BValue         *value,
+			BParamSpec           *pspec)
 {
   BtkCurve *curve = BTK_CURVE (object);
   
   switch (prop_id)
     {
     case PROP_CURVE_TYPE:
-      btk_curve_set_curve_type (curve, g_value_get_enum (value));
+      btk_curve_set_curve_type (curve, b_value_get_enum (value));
       break;
     case PROP_MIN_X:
-      btk_curve_set_range (curve, g_value_get_float (value), curve->max_x,
+      btk_curve_set_range (curve, b_value_get_float (value), curve->max_x,
 			   curve->min_y, curve->max_y);
       break;
     case PROP_MAX_X:
-      btk_curve_set_range (curve, curve->min_x, g_value_get_float (value),
+      btk_curve_set_range (curve, curve->min_x, b_value_get_float (value),
 			   curve->min_y, curve->max_y);
       break;	
     case PROP_MIN_Y:
       btk_curve_set_range (curve, curve->min_x, curve->max_x,
-			   g_value_get_float (value), curve->max_y);
+			   b_value_get_float (value), curve->max_y);
       break;
     case PROP_MAX_Y:
       btk_curve_set_range (curve, curve->min_x, curve->max_x,
-			   curve->min_y, g_value_get_float (value));
+			   curve->min_y, b_value_get_float (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_curve_get_property (GObject              *object,
+btk_curve_get_property (BObject              *object,
 			guint                 prop_id,
-			GValue               *value,
-			GParamSpec           *pspec)
+			BValue               *value,
+			BParamSpec           *pspec)
 {
   BtkCurve *curve = BTK_CURVE (object);
 
   switch (prop_id)
     {
     case PROP_CURVE_TYPE:
-      g_value_set_enum (value, curve->curve_type);
+      b_value_set_enum (value, curve->curve_type);
       break;
     case PROP_MIN_X:
-      g_value_set_float (value, curve->min_x);
+      b_value_set_float (value, curve->min_x);
       break;
     case PROP_MAX_X:
-      g_value_set_float (value, curve->max_x);
+      b_value_set_float (value, curve->max_x);
       break;
     case PROP_MIN_Y:
-      g_value_set_float (value, curve->min_y);
+      b_value_set_float (value, curve->min_y);
       break;
     case PROP_MAX_Y:
-      g_value_set_float (value, curve->max_y);
+      b_value_set_float (value, curve->max_y);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -714,7 +714,7 @@ btk_curve_set_curve_type (BtkCurve *c, BtkCurveType new_type)
 	  btk_curve_interpolate (c, width, height);
 	}
       g_signal_emit (c, curve_type_changed_signal, 0);
-      g_object_notify (G_OBJECT (c), "curve-type");
+      g_object_notify (B_OBJECT (c), "curve-type");
       btk_curve_draw (c, width, height);
     }
 }
@@ -787,7 +787,7 @@ btk_curve_reset (BtkCurve *c)
   if (old_type != BTK_CURVE_TYPE_SPLINE)
     {
        g_signal_emit (c, curve_type_changed_signal, 0);
-       g_object_notify (G_OBJECT (c), "curve-type");
+       g_object_notify (B_OBJECT (c), "curve-type");
     }
 }
 
@@ -830,24 +830,24 @@ btk_curve_set_range (BtkCurve *curve,
                      gfloat    min_y,
                      gfloat    max_y)
 {
-  g_object_freeze_notify (G_OBJECT (curve));
+  g_object_freeze_notify (B_OBJECT (curve));
   if (curve->min_x != min_x) {
      curve->min_x = min_x;
-     g_object_notify (G_OBJECT (curve), "min-x");
+     g_object_notify (B_OBJECT (curve), "min-x");
   }
   if (curve->max_x != max_x) {
      curve->max_x = max_x;
-     g_object_notify (G_OBJECT (curve), "max-x");
+     g_object_notify (B_OBJECT (curve), "max-x");
   }
   if (curve->min_y != min_y) {
      curve->min_y = min_y;
-     g_object_notify (G_OBJECT (curve), "min-y");
+     g_object_notify (B_OBJECT (curve), "min-y");
   }
   if (curve->max_y != max_y) {
      curve->max_y = max_y;
-     g_object_notify (G_OBJECT (curve), "max-y");
+     g_object_notify (B_OBJECT (curve), "max-y");
   }
-  g_object_thaw_notify (G_OBJECT (curve));
+  g_object_thaw_notify (B_OBJECT (curve));
 
   btk_curve_size_graph (curve);
   btk_curve_reset_vector (curve);
@@ -891,7 +891,7 @@ btk_curve_set_vector (BtkCurve *c, int veclen, gfloat vector[])
   if (old_type != BTK_CURVE_TYPE_FREE)
     {
        g_signal_emit (c, curve_type_changed_signal, 0);
-       g_object_notify (G_OBJECT (c), "curve-type");
+       g_object_notify (B_OBJECT (c), "curve-type");
     }
 
   btk_curve_draw (c, c->num_points, height);
@@ -1021,7 +1021,7 @@ btk_curve_new (void)
 }
 
 static void
-btk_curve_finalize (GObject *object)
+btk_curve_finalize (BObject *object)
 {
   BtkCurve *curve;
 
@@ -1033,7 +1033,7 @@ btk_curve_finalize (GObject *object)
   g_free (curve->point);
   g_free (curve->ctlpoint);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 #define __BTK_CURVE_C__

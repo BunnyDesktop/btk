@@ -62,25 +62,25 @@ enum {
   LAST_SIGNAL
 };
 
-static void     btk_paned_set_property          (GObject          *object,
+static void     btk_paned_set_property          (BObject          *object,
 						 guint             prop_id,
-						 const GValue     *value,
-						 GParamSpec       *pspec);
-static void     btk_paned_get_property          (GObject          *object,
+						 const BValue     *value,
+						 BParamSpec       *pspec);
+static void     btk_paned_get_property          (BObject          *object,
 						 guint             prop_id,
-						 GValue           *value,
-						 GParamSpec       *pspec);
+						 BValue           *value,
+						 BParamSpec       *pspec);
 static void     btk_paned_set_child_property    (BtkContainer     *container,
                                                  BtkWidget        *child,
                                                  guint             property_id,
-                                                 const GValue     *value,
-                                                 GParamSpec       *pspec);
+                                                 const BValue     *value,
+                                                 BParamSpec       *pspec);
 static void     btk_paned_get_child_property    (BtkContainer     *container,
                                                  BtkWidget        *child,
                                                  guint             property_id,
-                                                 GValue           *value,
-                                                 GParamSpec       *pspec);
-static void     btk_paned_finalize              (GObject          *object);
+                                                 BValue           *value,
+                                                 BParamSpec       *pspec);
+static void     btk_paned_finalize              (BObject          *object);
 
 static void     btk_paned_size_request          (BtkWidget        *widget,
                                                  BtkRequisition   *requisition);
@@ -184,13 +184,13 @@ add_move_binding (BtkBindingSet   *binding_set,
 static void
 btk_paned_class_init (BtkPanedClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
   BtkPanedClass *paned_class;
   BtkBindingSet *binding_set;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
   container_class = (BtkContainerClass *) class;
   paned_class = (BtkPanedClass *) class;
@@ -344,13 +344,13 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals [CYCLE_CHILD_FOCUS] =
     g_signal_new (I_("cycle-child-focus"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkPanedClass, cycle_child_focus),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__BOOLEAN,
-		  G_TYPE_BOOLEAN, 1,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_BOOLEAN, 1,
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkPaned::toggle-handle-focus:
@@ -367,12 +367,12 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals [TOGGLE_HANDLE_FOCUS] =
     g_signal_new (I_("toggle-handle-focus"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkPanedClass, toggle_handle_focus),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   /**
    * BtkPaned::move-handle:
@@ -388,12 +388,12 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals[MOVE_HANDLE] =
     g_signal_new (I_("move-handle"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkPanedClass, move_handle),
                   NULL, NULL,
                   _btk_marshal_BOOLEAN__ENUM,
-                  G_TYPE_BOOLEAN, 1,
+                  B_TYPE_BOOLEAN, 1,
                   BTK_TYPE_SCROLL_TYPE);
 
   /**
@@ -412,13 +412,13 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals [CYCLE_HANDLE_FOCUS] =
     g_signal_new (I_("cycle-handle-focus"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkPanedClass, cycle_handle_focus),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__BOOLEAN,
-		  G_TYPE_BOOLEAN, 1,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_BOOLEAN, 1,
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkPaned::accept-position:
@@ -435,12 +435,12 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals [ACCEPT_POSITION] =
     g_signal_new (I_("accept-position"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkPanedClass, accept_position),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   /**
    * BtkPaned::cancel-position:
@@ -458,12 +458,12 @@ btk_paned_class_init (BtkPanedClass *class)
    */
   signals [CANCEL_POSITION] =
     g_signal_new (I_("cancel-position"),
-		  G_TYPE_FROM_CLASS (object_class),
+		  B_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkPanedClass, cancel_position),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   binding_set = btk_binding_set_by_class (class);
 
@@ -471,22 +471,22 @@ btk_paned_class_init (BtkPanedClass *class)
   btk_binding_entry_add_signal (binding_set,
                                 BDK_F6, 0,
                                 "cycle-child-focus", 1, 
-                                G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_F6, BDK_SHIFT_MASK,
 				"cycle-child-focus", 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_BOOLEAN, TRUE);
 
   /* F8 and friends */
   btk_binding_entry_add_signal (binding_set,
 				BDK_F8, 0,
 				"cycle-handle-focus", 1,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_BOOLEAN, FALSE);
  
   btk_binding_entry_add_signal (binding_set,
 				BDK_F8, BDK_SHIFT_MASK,
 				"cycle-handle-focus", 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_BOOLEAN, TRUE);
  
   add_tab_bindings (binding_set, 0);
   add_tab_bindings (binding_set, BDK_CONTROL_MASK);
@@ -553,7 +553,7 @@ btk_paned_child_type (BtkContainer *container)
   if (!BTK_PANED (container)->child1 || !BTK_PANED (container)->child2)
     return BTK_TYPE_WIDGET;
   else
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 }
 
 static void
@@ -567,7 +567,7 @@ btk_paned_init (BtkPaned *paned)
    */
   btk_widget_set_redraw_on_allocate (BTK_WIDGET (paned), FALSE);
 
-  paned->priv = G_TYPE_INSTANCE_GET_PRIVATE (paned, BTK_TYPE_PANED, BtkPanedPrivate);
+  paned->priv = B_TYPE_INSTANCE_GET_PRIVATE (paned, BTK_TYPE_PANED, BtkPanedPrivate);
 
   paned->priv->orientation = BTK_ORIENTATION_HORIZONTAL;
   paned->cursor_type = BDK_SB_H_DOUBLE_ARROW;
@@ -597,17 +597,17 @@ btk_paned_init (BtkPaned *paned)
 }
 
 static void
-btk_paned_set_property (GObject        *object,
+btk_paned_set_property (BObject        *object,
 			guint           prop_id,
-			const GValue   *value,
-			GParamSpec     *pspec)
+			const BValue   *value,
+			BParamSpec     *pspec)
 {
   BtkPaned *paned = BTK_PANED (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      paned->priv->orientation = g_value_get_enum (value);
+      paned->priv->orientation = b_value_get_enum (value);
       paned->orientation = !paned->priv->orientation;
 
       if (paned->priv->orientation == BTK_ORIENTATION_HORIZONTAL)
@@ -620,45 +620,45 @@ btk_paned_set_property (GObject        *object,
       btk_widget_queue_resize (BTK_WIDGET (paned));
       break;
     case PROP_POSITION:
-      btk_paned_set_position (paned, g_value_get_int (value));
+      btk_paned_set_position (paned, b_value_get_int (value));
       break;
     case PROP_POSITION_SET:
-      paned->position_set = g_value_get_boolean (value);
+      paned->position_set = b_value_get_boolean (value);
       btk_widget_queue_resize_no_redraw (BTK_WIDGET (paned));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_paned_get_property (GObject        *object,
+btk_paned_get_property (BObject        *object,
 			guint           prop_id,
-			GValue         *value,
-			GParamSpec     *pspec)
+			BValue         *value,
+			BParamSpec     *pspec)
 {
   BtkPaned *paned = BTK_PANED (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, paned->priv->orientation);
+      b_value_set_enum (value, paned->priv->orientation);
       break;
     case PROP_POSITION:
-      g_value_set_int (value, paned->child1_size);
+      b_value_set_int (value, paned->child1_size);
       break;
     case PROP_POSITION_SET:
-      g_value_set_boolean (value, paned->position_set);
+      b_value_set_boolean (value, paned->position_set);
       break;
     case PROP_MIN_POSITION:
-      g_value_set_int (value, paned->min_position);
+      b_value_set_int (value, paned->min_position);
       break;
     case PROP_MAX_POSITION:
-      g_value_set_int (value, paned->max_position);
+      b_value_set_int (value, paned->max_position);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -667,15 +667,15 @@ static void
 btk_paned_set_child_property (BtkContainer    *container,
 			      BtkWidget       *child,
 			      guint            property_id,
-			      const GValue    *value,
-			      GParamSpec      *pspec)
+			      const BValue    *value,
+			      BParamSpec      *pspec)
 {
   BtkPaned *paned = BTK_PANED (container);
   gboolean old_value, new_value;
 
   g_assert (child == paned->child1 || child == paned->child2);
 
-  new_value = g_value_get_boolean (value);
+  new_value = b_value_get_boolean (value);
   switch (property_id)
     {
     case CHILD_PROP_RESIZE:
@@ -715,8 +715,8 @@ static void
 btk_paned_get_child_property (BtkContainer *container,
 			      BtkWidget    *child,
 			      guint         property_id,
-			      GValue       *value,
-			      GParamSpec   *pspec)
+			      BValue       *value,
+			      BParamSpec   *pspec)
 {
   BtkPaned *paned = BTK_PANED (container);
 
@@ -726,15 +726,15 @@ btk_paned_get_child_property (BtkContainer *container,
     {
     case CHILD_PROP_RESIZE:
       if (child == paned->child1)
-	g_value_set_boolean (value, paned->child1_resize);
+	b_value_set_boolean (value, paned->child1_resize);
       else
-	g_value_set_boolean (value, paned->child2_resize);
+	b_value_set_boolean (value, paned->child2_resize);
       break;
     case CHILD_PROP_SHRINK:
       if (child == paned->child1)
-	g_value_set_boolean (value, paned->child1_shrink);
+	b_value_set_boolean (value, paned->child1_shrink);
       else
-	g_value_set_boolean (value, paned->child2_shrink);
+	b_value_set_boolean (value, paned->child2_shrink);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -743,14 +743,14 @@ btk_paned_get_child_property (BtkContainer *container,
 }
 
 static void
-btk_paned_finalize (GObject *object)
+btk_paned_finalize (BObject *object)
 {
   BtkPaned *paned = BTK_PANED (object);
   
   btk_paned_set_saved_focus (paned, NULL);
   btk_paned_set_first_paned (paned, NULL);
 
-  G_OBJECT_CLASS (btk_paned_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_paned_parent_class)->finalize (object);
 }
 
 static void
@@ -1492,14 +1492,14 @@ void
 btk_paned_set_position (BtkPaned *paned,
 			gint      position)
 {
-  GObject *object;
+  BObject *object;
   
   g_return_if_fail (BTK_IS_PANED (paned));
 
   if (paned->child1_size == position)
     return;
 
-  object = G_OBJECT (paned);
+  object = B_OBJECT (paned);
   
   if (position >= 0)
     {
@@ -1637,14 +1637,14 @@ btk_paned_calc_position (BtkPaned *paned,
   if (paned->child2)
     btk_widget_set_child_visible (paned->child2, paned->child1_size != allocation); 
 
-  g_object_freeze_notify (G_OBJECT (paned));
+  g_object_freeze_notify (B_OBJECT (paned));
   if (paned->child1_size != old_position)
-    g_object_notify (G_OBJECT (paned), "position");
+    g_object_notify (B_OBJECT (paned), "position");
   if (paned->min_position != old_min_position)
-    g_object_notify (G_OBJECT (paned), "min-position");
+    g_object_notify (B_OBJECT (paned), "min-position");
   if (paned->max_position != old_max_position)
-    g_object_notify (G_OBJECT (paned), "max-position");
-  g_object_thaw_notify (G_OBJECT (paned));
+    g_object_notify (B_OBJECT (paned), "max-position");
+  g_object_thaw_notify (B_OBJECT (paned));
 
   paned->last_allocation = allocation;
 }
@@ -1653,13 +1653,13 @@ static void
 btk_paned_set_saved_focus (BtkPaned *paned, BtkWidget *widget)
 {
   if (paned->priv->saved_focus)
-    g_object_remove_weak_pointer (G_OBJECT (paned->priv->saved_focus),
+    g_object_remove_weak_pointer (B_OBJECT (paned->priv->saved_focus),
 				  (gpointer *)&(paned->priv->saved_focus));
 
   paned->priv->saved_focus = widget;
 
   if (paned->priv->saved_focus)
-    g_object_add_weak_pointer (G_OBJECT (paned->priv->saved_focus),
+    g_object_add_weak_pointer (B_OBJECT (paned->priv->saved_focus),
 			       (gpointer *)&(paned->priv->saved_focus));
 }
 
@@ -1667,13 +1667,13 @@ static void
 btk_paned_set_first_paned (BtkPaned *paned, BtkPaned *first_paned)
 {
   if (paned->priv->first_paned)
-    g_object_remove_weak_pointer (G_OBJECT (paned->priv->first_paned),
+    g_object_remove_weak_pointer (B_OBJECT (paned->priv->first_paned),
 				  (gpointer *)&(paned->priv->first_paned));
 
   paned->priv->first_paned = first_paned;
 
   if (paned->priv->first_paned)
-    g_object_add_weak_pointer (G_OBJECT (paned->priv->first_paned),
+    g_object_add_weak_pointer (B_OBJECT (paned->priv->first_paned),
 			       (gpointer *)&(paned->priv->first_paned));
 }
 
@@ -1681,13 +1681,13 @@ static void
 btk_paned_set_last_child1_focus (BtkPaned *paned, BtkWidget *widget)
 {
   if (paned->last_child1_focus)
-    g_object_remove_weak_pointer (G_OBJECT (paned->last_child1_focus),
+    g_object_remove_weak_pointer (B_OBJECT (paned->last_child1_focus),
 				  (gpointer *)&(paned->last_child1_focus));
 
   paned->last_child1_focus = widget;
 
   if (paned->last_child1_focus)
-    g_object_add_weak_pointer (G_OBJECT (paned->last_child1_focus),
+    g_object_add_weak_pointer (B_OBJECT (paned->last_child1_focus),
 			       (gpointer *)&(paned->last_child1_focus));
 }
 
@@ -1695,13 +1695,13 @@ static void
 btk_paned_set_last_child2_focus (BtkPaned *paned, BtkWidget *widget)
 {
   if (paned->last_child2_focus)
-    g_object_remove_weak_pointer (G_OBJECT (paned->last_child2_focus),
+    g_object_remove_weak_pointer (B_OBJECT (paned->last_child2_focus),
 				  (gpointer *)&(paned->last_child2_focus));
 
   paned->last_child2_focus = widget;
 
   if (paned->last_child2_focus)
-    g_object_add_weak_pointer (G_OBJECT (paned->last_child2_focus),
+    g_object_add_weak_pointer (B_OBJECT (paned->last_child2_focus),
 			       (gpointer *)&(paned->last_child2_focus));
 }
 

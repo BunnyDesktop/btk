@@ -172,7 +172,7 @@ struct _BtkNotebookPage
   gulong notify_visible_handler;
 };
 
-#define BTK_NOTEBOOK_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_NOTEBOOK, BtkNotebookPrivate))
+#define BTK_NOTEBOOK_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_NOTEBOOK, BtkNotebookPrivate))
 
 typedef struct _BtkNotebookPrivate BtkNotebookPrivate;
 
@@ -237,14 +237,14 @@ static void     btk_notebook_remove_tab_label    (BtkNotebook      *notebook,
 
 /*** BtkObject Methods ***/
 static void btk_notebook_destroy             (BtkObject        *object);
-static void btk_notebook_set_property	     (GObject         *object,
+static void btk_notebook_set_property	     (BObject         *object,
 					      guint            prop_id,
-					      const GValue    *value,
-					      GParamSpec      *pspec);
-static void btk_notebook_get_property	     (GObject         *object,
+					      const BValue    *value,
+					      BParamSpec      *pspec);
+static void btk_notebook_get_property	     (BObject         *object,
 					      guint            prop_id,
-					      GValue          *value,
-					      GParamSpec      *pspec);
+					      BValue          *value,
+					      BParamSpec      *pspec);
 
 /*** BtkWidget Methods ***/
 static void btk_notebook_map                 (BtkWidget        *widget);
@@ -322,13 +322,13 @@ static void btk_notebook_drag_data_received  (BtkWidget        *widget,
 static void btk_notebook_set_child_property  (BtkContainer     *container,
 					      BtkWidget        *child,
 					      guint             property_id,
-					      const GValue     *value,
-					      GParamSpec       *pspec);
+					      const BValue     *value,
+					      BParamSpec       *pspec);
 static void btk_notebook_get_child_property  (BtkContainer     *container,
 					      BtkWidget        *child,
 					      guint             property_id,
-					      GValue           *value,
-					      GParamSpec       *pspec);
+					      BValue           *value,
+					      BParamSpec       *pspec);
 static void btk_notebook_add                 (BtkContainer     *container,
 					      BtkWidget        *widget);
 static void btk_notebook_remove              (BtkContainer     *container,
@@ -447,7 +447,7 @@ static void do_detach_tab  (BtkNotebook *from,
 static void btk_notebook_buildable_init           (BtkBuildableIface *iface);
 static void btk_notebook_buildable_add_child      (BtkBuildable *buildable,
 						   BtkBuilder   *builder,
-						   GObject      *child,
+						   BObject      *child,
 						   const gchar  *type);
 
 static BtkNotebookWindowCreationFunc window_creation_hook = NULL;
@@ -499,24 +499,24 @@ add_reorder_bindings (BtkBindingSet    *binding_set,
   btk_binding_entry_add_signal (binding_set, keysym, BDK_MOD1_MASK,
 				"reorder_tab", 2,
 				BTK_TYPE_DIRECTION_TYPE, direction,
-				G_TYPE_BOOLEAN, move_to_last);
+				B_TYPE_BOOLEAN, move_to_last);
   btk_binding_entry_add_signal (binding_set, keypad_keysym, BDK_MOD1_MASK,
 				"reorder_tab", 2,
 				BTK_TYPE_DIRECTION_TYPE, direction,
-				G_TYPE_BOOLEAN, move_to_last);
+				B_TYPE_BOOLEAN, move_to_last);
 }
 
 static gboolean
 btk_object_handled_accumulator (GSignalInvocationHint *ihint,
-                                GValue                *return_accu,
-                                const GValue          *handler_return,
+                                BValue                *return_accu,
+                                const BValue          *handler_return,
                                 gpointer               dummy)
 {
   gboolean continue_emission;
-  GObject *object;
+  BObject *object;
 
-  object = g_value_get_object (handler_return);
-  g_value_set_object (return_accu, object);
+  object = b_value_get_object (handler_return);
+  b_value_set_object (return_accu, object);
   continue_emission = !object;
 
   return continue_emission;
@@ -525,7 +525,7 @@ btk_object_handled_accumulator (GSignalInvocationHint *ihint,
 static void
 btk_notebook_class_init (BtkNotebookClass *class)
 {
-  GObjectClass   *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass   *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (class);
@@ -871,60 +871,60 @@ btk_notebook_class_init (BtkNotebookClass *class)
 
   notebook_signals[SWITCH_PAGE] =
     g_signal_new (I_("switch-page"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkNotebookClass, switch_page),
 		  NULL, NULL,
 		  _btk_marshal_VOID__POINTER_UINT,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_POINTER,
-		  G_TYPE_UINT);
+		  B_TYPE_NONE, 2,
+		  B_TYPE_POINTER,
+		  B_TYPE_UINT);
   notebook_signals[FOCUS_TAB] = 
     g_signal_new (I_("focus-tab"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkNotebookClass, focus_tab),
                   NULL, NULL,
                   _btk_marshal_BOOLEAN__ENUM,
-                  G_TYPE_BOOLEAN, 1,
+                  B_TYPE_BOOLEAN, 1,
                   BTK_TYPE_NOTEBOOK_TAB);
   notebook_signals[SELECT_PAGE] = 
     g_signal_new (I_("select-page"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkNotebookClass, select_page),
                   NULL, NULL,
                   _btk_marshal_BOOLEAN__BOOLEAN,
-                  G_TYPE_BOOLEAN, 1,
-                  G_TYPE_BOOLEAN);
+                  B_TYPE_BOOLEAN, 1,
+                  B_TYPE_BOOLEAN);
   notebook_signals[CHANGE_CURRENT_PAGE] = 
     g_signal_new (I_("change-current-page"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkNotebookClass, change_current_page),
                   NULL, NULL,
                   _btk_marshal_BOOLEAN__INT,
-                  G_TYPE_BOOLEAN, 1,
-                  G_TYPE_INT);
+                  B_TYPE_BOOLEAN, 1,
+                  B_TYPE_INT);
   notebook_signals[MOVE_FOCUS_OUT] =
     g_signal_new (I_("move-focus-out"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkNotebookClass, move_focus_out),
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM,
-                  G_TYPE_NONE, 1,
+                  B_TYPE_NONE, 1,
                   BTK_TYPE_DIRECTION_TYPE);
   notebook_signals[REORDER_TAB] =
     g_signal_new (I_("reorder-tab"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkNotebookClass, reorder_tab),
                   NULL, NULL,
                   _btk_marshal_BOOLEAN__ENUM_BOOLEAN,
-                  G_TYPE_BOOLEAN, 2,
+                  B_TYPE_BOOLEAN, 2,
                   BTK_TYPE_DIRECTION_TYPE,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_BOOLEAN);
   /**
    * BtkNotebook::page-reordered:
    * @notebook: the #BtkNotebook
@@ -938,13 +938,13 @@ btk_notebook_class_init (BtkNotebookClass *class)
    **/
   notebook_signals[PAGE_REORDERED] =
     g_signal_new (I_("page-reordered"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_UINT,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
 		  BTK_TYPE_WIDGET,
-		  G_TYPE_UINT);
+		  B_TYPE_UINT);
   /**
    * BtkNotebook::page-removed:
    * @notebook: the #BtkNotebook
@@ -958,13 +958,13 @@ btk_notebook_class_init (BtkNotebookClass *class)
    **/
   notebook_signals[PAGE_REMOVED] =
     g_signal_new (I_("page-removed"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_UINT,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
 		  BTK_TYPE_WIDGET,
-		  G_TYPE_UINT);
+		  B_TYPE_UINT);
   /**
    * BtkNotebook::page-added:
    * @notebook: the #BtkNotebook
@@ -978,13 +978,13 @@ btk_notebook_class_init (BtkNotebookClass *class)
    **/
   notebook_signals[PAGE_ADDED] =
     g_signal_new (I_("page-added"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_UINT,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
 		  BTK_TYPE_WIDGET,
-		  G_TYPE_UINT);
+		  B_TYPE_UINT);
 
   /**
    * BtkNotebook::create-window:
@@ -1012,23 +1012,23 @@ btk_notebook_class_init (BtkNotebookClass *class)
    */
   notebook_signals[CREATE_WINDOW] = 
     g_signal_new (I_("create-window"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkNotebookClass, create_window),
                   btk_object_handled_accumulator, NULL,
                   _btk_marshal_OBJECT__OBJECT_INT_INT,
                   BTK_TYPE_NOTEBOOK, 3,
-                  BTK_TYPE_WIDGET, G_TYPE_INT, G_TYPE_INT);
+                  BTK_TYPE_WIDGET, B_TYPE_INT, B_TYPE_INT);
  
   binding_set = btk_binding_set_by_class (class);
   btk_binding_entry_add_signal (binding_set,
                                 BDK_space, 0,
                                 "select-page", 1, 
-                                G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set,
                                 BDK_KP_Space, 0,
                                 "select-page", 1, 
-                                G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_BOOLEAN, FALSE);
   
   btk_binding_entry_add_signal (binding_set,
                                 BDK_Home, 0,
@@ -1050,20 +1050,20 @@ btk_notebook_class_init (BtkNotebookClass *class)
   btk_binding_entry_add_signal (binding_set,
                                 BDK_Page_Up, BDK_CONTROL_MASK,
                                 "change-current-page", 1,
-                                G_TYPE_INT, -1);
+                                B_TYPE_INT, -1);
   btk_binding_entry_add_signal (binding_set,
                                 BDK_Page_Down, BDK_CONTROL_MASK,
                                 "change-current-page", 1,
-                                G_TYPE_INT, 1);
+                                B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set,
                                 BDK_Page_Up, BDK_CONTROL_MASK | BDK_MOD1_MASK,
                                 "change-current-page", 1,
-                                G_TYPE_INT, -1);
+                                B_TYPE_INT, -1);
   btk_binding_entry_add_signal (binding_set,
                                 BDK_Page_Down, BDK_CONTROL_MASK | BDK_MOD1_MASK,
                                 "change-current-page", 1,
-                                G_TYPE_INT, 1);
+                                B_TYPE_INT, 1);
 
   add_arrow_bindings (binding_set, BDK_Up, BTK_DIR_UP);
   add_arrow_bindings (binding_set, BDK_Down, BTK_DIR_DOWN);
@@ -1137,7 +1137,7 @@ btk_notebook_init (BtkNotebook *notebook)
 		     notebook_targets, G_N_ELEMENTS (notebook_targets),
                      BDK_ACTION_MOVE);
 
-  g_signal_connect (G_OBJECT (notebook), "drag-failed",
+  g_signal_connect (B_OBJECT (notebook), "drag-failed",
 		    G_CALLBACK (btk_notebook_drag_failed), NULL);
 
   btk_drag_dest_set_track_motion (BTK_WIDGET (notebook), TRUE);
@@ -1152,7 +1152,7 @@ btk_notebook_buildable_init (BtkBuildableIface *iface)
 static void
 btk_notebook_buildable_add_child (BtkBuildable  *buildable,
 				  BtkBuilder    *builder,
-				  GObject       *child,
+				  BObject       *child,
 				  const gchar   *type)
 {
   BtkNotebook *notebook = BTK_NOTEBOOK (buildable);
@@ -1535,10 +1535,10 @@ btk_notebook_destroy (BtkObject *object)
 }
 
 static void
-btk_notebook_set_property (GObject         *object,
+btk_notebook_set_property (BObject         *object,
 			   guint            prop_id,
-			   const GValue    *value,
-			   GParamSpec      *pspec)
+			   const BValue    *value,
+			   BParamSpec      *pspec)
 {
   BtkNotebook *notebook;
 
@@ -1547,58 +1547,58 @@ btk_notebook_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_SHOW_TABS:
-      btk_notebook_set_show_tabs (notebook, g_value_get_boolean (value));
+      btk_notebook_set_show_tabs (notebook, b_value_get_boolean (value));
       break;
     case PROP_SHOW_BORDER:
-      btk_notebook_set_show_border (notebook, g_value_get_boolean (value));
+      btk_notebook_set_show_border (notebook, b_value_get_boolean (value));
       break;
     case PROP_SCROLLABLE:
-      btk_notebook_set_scrollable (notebook, g_value_get_boolean (value));
+      btk_notebook_set_scrollable (notebook, b_value_get_boolean (value));
       break;
     case PROP_ENABLE_POPUP:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
 	btk_notebook_popup_enable (notebook);
       else
 	btk_notebook_popup_disable (notebook);
       break;
     case PROP_HOMOGENEOUS:
-      btk_notebook_set_homogeneous_tabs_internal (notebook, g_value_get_boolean (value));
+      btk_notebook_set_homogeneous_tabs_internal (notebook, b_value_get_boolean (value));
       break;  
     case PROP_PAGE:
-      btk_notebook_set_current_page (notebook, g_value_get_int (value));
+      btk_notebook_set_current_page (notebook, b_value_get_int (value));
       break;
     case PROP_TAB_POS:
-      btk_notebook_set_tab_pos (notebook, g_value_get_enum (value));
+      btk_notebook_set_tab_pos (notebook, b_value_get_enum (value));
       break;
     case PROP_TAB_BORDER:
-      btk_notebook_set_tab_border_internal (notebook, g_value_get_uint (value));
+      btk_notebook_set_tab_border_internal (notebook, b_value_get_uint (value));
       break;
     case PROP_TAB_HBORDER:
-      btk_notebook_set_tab_hborder_internal (notebook, g_value_get_uint (value));
+      btk_notebook_set_tab_hborder_internal (notebook, b_value_get_uint (value));
       break;
     case PROP_TAB_VBORDER:
-      btk_notebook_set_tab_vborder_internal (notebook, g_value_get_uint (value));
+      btk_notebook_set_tab_vborder_internal (notebook, b_value_get_uint (value));
       break;
     case PROP_GROUP_ID:
-      btk_notebook_set_group_id (notebook, g_value_get_int (value));
+      btk_notebook_set_group_id (notebook, b_value_get_int (value));
       break;
     case PROP_GROUP:
-      btk_notebook_set_group (notebook, g_value_get_pointer (value));
+      btk_notebook_set_group (notebook, b_value_get_pointer (value));
       break;
     case PROP_GROUP_NAME:
-      btk_notebook_set_group_name (notebook, g_value_get_string (value));
+      btk_notebook_set_group_name (notebook, b_value_get_string (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_notebook_get_property (GObject         *object,
+btk_notebook_get_property (BObject         *object,
 			   guint            prop_id,
-			   GValue          *value,
-			   GParamSpec      *pspec)
+			   BValue          *value,
+			   BParamSpec      *pspec)
 {
   BtkNotebook *notebook;
   BtkNotebookPrivate *priv;
@@ -1609,43 +1609,43 @@ btk_notebook_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_SHOW_TABS:
-      g_value_set_boolean (value, notebook->show_tabs);
+      b_value_set_boolean (value, notebook->show_tabs);
       break;
     case PROP_SHOW_BORDER:
-      g_value_set_boolean (value, notebook->show_border);
+      b_value_set_boolean (value, notebook->show_border);
       break;
     case PROP_SCROLLABLE:
-      g_value_set_boolean (value, notebook->scrollable);
+      b_value_set_boolean (value, notebook->scrollable);
       break;
     case PROP_ENABLE_POPUP:
-      g_value_set_boolean (value, notebook->menu != NULL);
+      b_value_set_boolean (value, notebook->menu != NULL);
       break;
     case PROP_HOMOGENEOUS:
-      g_value_set_boolean (value, notebook->homogeneous);
+      b_value_set_boolean (value, notebook->homogeneous);
       break;
     case PROP_PAGE:
-      g_value_set_int (value, btk_notebook_get_current_page (notebook));
+      b_value_set_int (value, btk_notebook_get_current_page (notebook));
       break;
     case PROP_TAB_POS:
-      g_value_set_enum (value, notebook->tab_pos);
+      b_value_set_enum (value, notebook->tab_pos);
       break;
     case PROP_TAB_HBORDER:
-      g_value_set_uint (value, notebook->tab_hborder);
+      b_value_set_uint (value, notebook->tab_hborder);
       break;
     case PROP_TAB_VBORDER:
-      g_value_set_uint (value, notebook->tab_vborder);
+      b_value_set_uint (value, notebook->tab_vborder);
       break;
     case PROP_GROUP_ID:
-      g_value_set_int (value, btk_notebook_get_group_id (notebook));
+      b_value_set_int (value, btk_notebook_get_group_id (notebook));
       break;
     case PROP_GROUP:
-      g_value_set_pointer (value, priv->group);
+      b_value_set_pointer (value, priv->group);
       break;
     case PROP_GROUP_NAME:
-      g_value_set_string (value, btk_notebook_get_group_name (notebook));
+      b_value_set_string (value, btk_notebook_get_group_name (notebook));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -3135,7 +3135,7 @@ check_threshold (BtkNotebook *notebook,
   
   widget = BTK_WIDGET (notebook);
   settings = btk_widget_get_settings (BTK_WIDGET (notebook));
-  g_object_get (G_OBJECT (settings), "btk-dnd-drag-threshold", &dnd_threshold, NULL);
+  g_object_get (B_OBJECT (settings), "btk-dnd-drag-threshold", &dnd_threshold, NULL);
 
   /* we want a large threshold */
   dnd_threshold *= DND_THRESHOLD_MULTIPLIER;
@@ -3427,7 +3427,7 @@ btk_notebook_drag_begin (BtkWidget        *widget,
 			       priv->detached_tab->allocation.height);
   g_object_unref (tab_label);
 
-  g_signal_connect (G_OBJECT (priv->dnd_window), "expose-event",
+  g_signal_connect (B_OBJECT (priv->dnd_window), "expose-event",
 		    G_CALLBACK (on_drag_icon_expose), notebook);
 
   btk_drag_set_icon_widget (context, priv->dnd_window, -2, -2);
@@ -3779,8 +3779,8 @@ static void
 btk_notebook_set_child_property (BtkContainer    *container,
 				 BtkWidget       *child,
 				 guint            property_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec)
+				 const BValue    *value,
+				 BParamSpec      *pspec)
 {
   gboolean expand;
   gboolean fill;
@@ -3797,21 +3797,21 @@ btk_notebook_set_child_property (BtkContainer    *container,
        * we need to set the associated label
        */
       btk_notebook_set_tab_label_text (BTK_NOTEBOOK (container), child,
-				       g_value_get_string (value));
+				       b_value_get_string (value));
       break;
     case CHILD_PROP_MENU_LABEL:
       btk_notebook_set_menu_label_text (BTK_NOTEBOOK (container), child,
-					g_value_get_string (value));
+					b_value_get_string (value));
       break;
     case CHILD_PROP_POSITION:
       btk_notebook_reorder_child (BTK_NOTEBOOK (container), child,
-				  g_value_get_int (value));
+				  b_value_get_int (value));
       break;
     case CHILD_PROP_TAB_EXPAND:
       btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (container), child,
 					    &expand, &fill, &pack_type);
       btk_notebook_set_tab_label_packing (BTK_NOTEBOOK (container), child,
-					  g_value_get_boolean (value),
+					  b_value_get_boolean (value),
 					  fill, pack_type);
       break;
     case CHILD_PROP_TAB_FILL:
@@ -3819,7 +3819,7 @@ btk_notebook_set_child_property (BtkContainer    *container,
 					    &expand, &fill, &pack_type);
       btk_notebook_set_tab_label_packing (BTK_NOTEBOOK (container), child,
 					  expand,
-					  g_value_get_boolean (value),
+					  b_value_get_boolean (value),
 					  pack_type);
       break;
     case CHILD_PROP_TAB_PACK:
@@ -3827,15 +3827,15 @@ btk_notebook_set_child_property (BtkContainer    *container,
 					    &expand, &fill, &pack_type);
       btk_notebook_set_tab_label_packing (BTK_NOTEBOOK (container), child,
 					  expand, fill,
-					  g_value_get_enum (value));
+					  b_value_get_enum (value));
       break;
     case CHILD_PROP_REORDERABLE:
       btk_notebook_set_tab_reorderable (BTK_NOTEBOOK (container), child,
-					g_value_get_boolean (value));
+					b_value_get_boolean (value));
       break;
     case CHILD_PROP_DETACHABLE:
       btk_notebook_set_tab_detachable (BTK_NOTEBOOK (container), child,
-				       g_value_get_boolean (value));
+				       b_value_get_boolean (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -3847,8 +3847,8 @@ static void
 btk_notebook_get_child_property (BtkContainer    *container,
 				 BtkWidget       *child,
 				 guint            property_id,
-				 GValue          *value,
-				 GParamSpec      *pspec)
+				 BValue          *value,
+				 BParamSpec      *pspec)
 {
   GList *list;
   BtkNotebook *notebook;
@@ -3874,42 +3874,42 @@ btk_notebook_get_child_property (BtkContainer    *container,
       label = btk_notebook_get_tab_label (notebook, child);
 
       if (BTK_IS_LABEL (label))
-	g_value_set_string (value, BTK_LABEL (label)->label);
+	b_value_set_string (value, BTK_LABEL (label)->label);
       else
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       break;
     case CHILD_PROP_MENU_LABEL:
       label = btk_notebook_get_menu_label (notebook, child);
 
       if (BTK_IS_LABEL (label))
-	g_value_set_string (value, BTK_LABEL (label)->label);
+	b_value_set_string (value, BTK_LABEL (label)->label);
       else
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       break;
     case CHILD_PROP_POSITION:
-      g_value_set_int (value, g_list_position (notebook->children, list));
+      b_value_set_int (value, g_list_position (notebook->children, list));
       break;
     case CHILD_PROP_TAB_EXPAND:
 	btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (container), child,
 					      &expand, NULL, NULL);
-	g_value_set_boolean (value, expand);
+	b_value_set_boolean (value, expand);
       break;
     case CHILD_PROP_TAB_FILL:
 	btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (container), child,
 					      NULL, &fill, NULL);
-	g_value_set_boolean (value, fill);
+	b_value_set_boolean (value, fill);
       break;
     case CHILD_PROP_TAB_PACK:
 	btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (container), child,
 					      NULL, NULL, &pack_type);
-	g_value_set_enum (value, pack_type);
+	b_value_set_enum (value, pack_type);
       break;
     case CHILD_PROP_REORDERABLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
 			   btk_notebook_get_tab_reorderable (BTK_NOTEBOOK (container), child));
       break;
     case CHILD_PROP_DETACHABLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
 			   btk_notebook_get_tab_detachable (BTK_NOTEBOOK (container), child));
       break;
     default:
@@ -4242,10 +4242,10 @@ btk_notebook_set_focus_child (BtkContainer *container,
 		  BtkNotebookPage *page = list->data;
 	      
 		  if (page->last_focus_child)
-		    g_object_remove_weak_pointer (G_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
+		    g_object_remove_weak_pointer (B_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
 		  
 		  page->last_focus_child = BTK_WINDOW (toplevel)->focus_widget;
-		  g_object_add_weak_pointer (G_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
+		  g_object_add_weak_pointer (B_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
 	      
 		  break;
 		}
@@ -4332,7 +4332,7 @@ btk_notebook_child_type (BtkContainer     *container)
  */
 static void
 page_visible_cb (BtkWidget  *page,
-                 GParamSpec *arg,
+                 BParamSpec *arg,
                  gpointer    data)
 {
   BtkNotebook *notebook = (BtkNotebook *) data;
@@ -4715,7 +4715,7 @@ btk_notebook_real_remove (BtkNotebook *notebook,
 
   if (page->last_focus_child)
     {
-      g_object_remove_weak_pointer (G_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
+      g_object_remove_weak_pointer (B_OBJECT (page->last_focus_child), (gpointer *)&page->last_focus_child);
       page->last_focus_child = NULL;
     }
   
@@ -6176,7 +6176,7 @@ btk_notebook_real_switch_page (BtkNotebook     *notebook,
   
   btk_notebook_update_tab_states (notebook);
   btk_widget_queue_resize (BTK_WIDGET (notebook));
-  g_object_notify (G_OBJECT (notebook), "page");
+  g_object_notify (B_OBJECT (notebook), "page");
 }
 
 /* Private BtkNotebook Page Switch Functions:
@@ -6370,7 +6370,7 @@ btk_notebook_set_homogeneous_tabs_internal (BtkNotebook *notebook,
   notebook->homogeneous = homogeneous;
   btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-  g_object_notify (G_OBJECT (notebook), "homogeneous");
+  g_object_notify (B_OBJECT (notebook), "homogeneous");
 }
 
 static void
@@ -6384,10 +6384,10 @@ btk_notebook_set_tab_border_internal (BtkNotebook *notebook,
       btk_widget_get_visible (BTK_WIDGET (notebook)))
     btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-  g_object_freeze_notify (G_OBJECT (notebook));
-  g_object_notify (G_OBJECT (notebook), "tab-hborder");
-  g_object_notify (G_OBJECT (notebook), "tab-vborder");
-  g_object_thaw_notify (G_OBJECT (notebook));
+  g_object_freeze_notify (B_OBJECT (notebook));
+  g_object_notify (B_OBJECT (notebook), "tab-hborder");
+  g_object_notify (B_OBJECT (notebook), "tab-vborder");
+  g_object_thaw_notify (B_OBJECT (notebook));
 }
 
 static void
@@ -6403,7 +6403,7 @@ btk_notebook_set_tab_hborder_internal (BtkNotebook *notebook,
       btk_widget_get_visible (BTK_WIDGET (notebook)))
     btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-  g_object_notify (G_OBJECT (notebook), "tab-hborder");
+  g_object_notify (B_OBJECT (notebook), "tab-hborder");
 }
 
 static void
@@ -6419,7 +6419,7 @@ btk_notebook_set_tab_vborder_internal (BtkNotebook *notebook,
       btk_widget_get_visible (BTK_WIDGET (notebook)))
     btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-  g_object_notify (G_OBJECT (notebook), "tab-vborder");
+  g_object_notify (B_OBJECT (notebook), "tab-vborder");
 }
 
 /* Public BtkNotebook Page Insert/Remove Methods :
@@ -6903,7 +6903,7 @@ btk_notebook_set_show_border (BtkNotebook *notebook,
       if (btk_widget_get_visible (BTK_WIDGET (notebook)))
 	btk_widget_queue_resize (BTK_WIDGET (notebook));
       
-      g_object_notify (G_OBJECT (notebook), "show-border");
+      g_object_notify (B_OBJECT (notebook), "show-border");
     }
 }
 
@@ -6983,7 +6983,7 @@ btk_notebook_set_show_tabs (BtkNotebook *notebook,
 
   btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-  g_object_notify (G_OBJECT (notebook), "show-tabs");
+  g_object_notify (B_OBJECT (notebook), "show-tabs");
 }
 
 /**
@@ -7024,7 +7024,7 @@ btk_notebook_set_tab_pos (BtkNotebook     *notebook,
 	btk_widget_queue_resize (BTK_WIDGET (notebook));
     }
 
-  g_object_notify (G_OBJECT (notebook), "tab-pos");
+  g_object_notify (B_OBJECT (notebook), "tab-pos");
 }
 
 /**
@@ -7134,7 +7134,7 @@ btk_notebook_set_scrollable (BtkNotebook *notebook,
       if (btk_widget_get_visible (BTK_WIDGET (notebook)))
 	btk_widget_queue_resize (BTK_WIDGET (notebook));
 
-      g_object_notify (G_OBJECT (notebook), "scrollable");
+      g_object_notify (B_OBJECT (notebook), "scrollable");
     }
 }
 
@@ -7227,7 +7227,7 @@ btk_notebook_popup_enable (BtkNotebook *notebook)
 			     BTK_WIDGET (notebook),
 			     btk_notebook_menu_detacher);
 
-  g_object_notify (G_OBJECT (notebook), "enable-popup");
+  g_object_notify (B_OBJECT (notebook), "enable-popup");
 }
 
 /**
@@ -7248,7 +7248,7 @@ btk_notebook_popup_disable  (BtkNotebook *notebook)
 			 (BtkCallback) btk_notebook_menu_label_unparent, NULL);
   btk_widget_destroy (notebook->menu);
 
-  g_object_notify (G_OBJECT (notebook), "enable-popup");
+  g_object_notify (B_OBJECT (notebook), "enable-popup");
 }
 
 /* Public BtkNotebook Page Properties Functions:
@@ -7823,7 +7823,7 @@ btk_notebook_set_group (BtkNotebook *notebook,
   if (priv->group != group)
     {
       priv->group = group;
-      g_object_notify (G_OBJECT (notebook), "group");
+      g_object_notify (B_OBJECT (notebook), "group");
     }
 }
 
@@ -7850,7 +7850,7 @@ btk_notebook_set_group_name (BtkNotebook *notebook,
 
   group = (gpointer)g_intern_string (group_name);
   btk_notebook_set_group (notebook, group);
-  g_object_notify (G_OBJECT (notebook), "group-name");
+  g_object_notify (B_OBJECT (notebook), "group-name");
 }
 
 /**

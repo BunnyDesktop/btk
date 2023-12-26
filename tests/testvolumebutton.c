@@ -65,7 +65,7 @@ show_error (gpointer data)
                                    BTK_MESSAGE_INFO,
                                    BTK_BUTTONS_CLOSE,
                                    "This should have unbroken the grab");
-  g_signal_connect (G_OBJECT (dialog),
+  g_signal_connect (B_OBJECT (dialog),
                     "response",
                     G_CALLBACK (response_cb), NULL);
   btk_widget_show (dialog);
@@ -90,7 +90,7 @@ main (int    argc,
   button2 = btk_volume_button_new ();
   box = btk_hbox_new (FALSE, 0);
 
-  g_signal_connect (G_OBJECT (button), "value-changed",
+  g_signal_connect (B_OBJECT (button), "value-changed",
                     G_CALLBACK (value_changed),
                     NULL);
 
@@ -101,10 +101,10 @@ main (int    argc,
   button3 = btk_button_new_with_label ("Toggle orientation");
   btk_container_add (BTK_CONTAINER (box), button3);
 
-  g_signal_connect (G_OBJECT (button3), "clicked",
+  g_signal_connect (B_OBJECT (button3), "clicked",
                     G_CALLBACK (toggle_orientation),
                     button);
-  g_signal_connect (G_OBJECT (button3), "clicked",
+  g_signal_connect (B_OBJECT (button3), "clicked",
                     G_CALLBACK (toggle_orientation),
                     button2);
 

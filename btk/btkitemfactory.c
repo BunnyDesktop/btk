@@ -74,7 +74,7 @@ struct _BtkIFCBData
 
 /* --- prototypes --- */
 static void	btk_item_factory_destroy		(BtkObject	      *object);
-static void	btk_item_factory_finalize		(GObject	      *object);
+static void	btk_item_factory_finalize		(BObject	      *object);
 
 
 /* --- static variables --- */
@@ -103,7 +103,7 @@ G_DEFINE_TYPE (BtkItemFactory, btk_item_factory, BTK_TYPE_OBJECT)
 static void
 btk_item_factory_class_init (BtkItemFactoryClass  *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
 
   bobject_class->finalize = btk_item_factory_finalize;
@@ -198,9 +198,9 @@ static void
 btk_item_factory_item_remove_widget (BtkWidget		*widget,
 				     BtkItemFactoryItem *item)
 {
-  item->widgets = g_slist_remove (item->widgets, widget);
-  g_object_set_qdata (G_OBJECT (widget), quark_item_factory, NULL);
-  g_object_set_qdata (G_OBJECT (widget), quark_item_path, NULL);
+  item->widgets = b_slist_remove (item->widgets, widget);
+  g_object_set_qdata (B_OBJECT (widget), quark_item_factory, NULL);
+  g_object_set_qdata (B_OBJECT (widget), quark_item_path, NULL);
 }
 
 /**
@@ -252,7 +252,7 @@ btk_item_factory_add_foreign (BtkWidget      *accel_widget,
       g_hash_table_insert (class->item_ht, item->path, item);
     }
 
-  item->widgets = g_slist_prepend (item->widgets, accel_widget);
+  item->widgets = b_slist_prepend (item->widgets, accel_widget);
   g_signal_connect (accel_widget,
 		    "destroy",
 		    G_CALLBACK (btk_item_factory_item_remove_widget),
@@ -260,22 +260,22 @@ btk_item_factory_add_foreign (BtkWidget      *accel_widget,
 
   /* set the item path for the widget
    */
-  g_object_set_qdata (G_OBJECT (accel_widget), quark_item_path, item->path);
+  g_object_set_qdata (B_OBJECT (accel_widget), quark_item_path, item->path);
   btk_widget_set_name (accel_widget, item->path);
   if (accel_group)
     {
       g_object_ref (accel_group);
-      g_object_set_qdata_full (G_OBJECT (accel_widget),
+      g_object_set_qdata_full (B_OBJECT (accel_widget),
 			       quark_accel_group,
 			       accel_group,
 			       g_object_unref);
     }
   else
-    g_object_set_qdata (G_OBJECT (accel_widget), quark_accel_group, NULL);
+    g_object_set_qdata (B_OBJECT (accel_widget), quark_accel_group, NULL);
 
   /* install defined accelerators
    */
-  if (g_signal_lookup ("activate", G_TYPE_FROM_INSTANCE (accel_widget)))
+  if (g_signal_lookup ("activate", B_TYPE_FROM_INSTANCE (accel_widget)))
     {
       if (accel_group)
 	{
@@ -330,7 +330,7 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
       data->func_data = callback_data;
       data->callback_action = callback_action;
 
-      g_object_weak_ref (G_OBJECT (widget),
+      g_object_weak_ref (B_OBJECT (widget),
 			 (GWeakNotify) ifactory_cb_data_free,
 			 data);
       g_signal_connect (widget,
@@ -342,8 +342,8 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
   /* link the widget into its item-entry
    * and keep back pointer on both the item factory and the widget
    */
-  g_object_set_qdata (G_OBJECT (widget), quark_action, GUINT_TO_POINTER (callback_action));
-  g_object_set_qdata (G_OBJECT (widget), quark_item_factory, ifactory);
+  g_object_set_qdata (B_OBJECT (widget), quark_action, GUINT_TO_POINTER (callback_action));
+  g_object_set_qdata (B_OBJECT (widget), quark_item_factory, ifactory);
   if (accelerator)
     btk_accelerator_parse (accelerator, &keyval, &mods);
   else
@@ -358,8 +358,8 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
 
   g_return_if_fail (item != NULL);
 
-  if (!g_slist_find (ifactory->items, item))
-    ifactory->items = g_slist_prepend (ifactory->items, item);
+  if (!b_slist_find (ifactory->items, item))
+    ifactory->items = b_slist_prepend (ifactory->items, item);
 }
 
 /**
@@ -495,14 +495,14 @@ btk_item_factory_destroy (BtkObject *object)
 	if (g_object_get_qdata (link->data, quark_item_factory) == ifactory)
 	  g_object_set_qdata (link->data, quark_item_factory, NULL);
     }
-  g_slist_free (ifactory->items);
+  b_slist_free (ifactory->items);
   ifactory->items = NULL;
 
   BTK_OBJECT_CLASS (btk_item_factory_parent_class)->destroy (object);
 }
 
 static void
-btk_item_factory_finalize (GObject *object)
+btk_item_factory_finalize (BObject *object)
 {
   BtkItemFactory *ifactory = BTK_ITEM_FACTORY (object);
 
@@ -515,7 +515,7 @@ btk_item_factory_finalize (GObject *object)
   if (ifactory->translate_notify)
     ifactory->translate_notify (ifactory->translate_data);
   
-  G_OBJECT_CLASS (btk_item_factory_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_item_factory_parent_class)->finalize (object);
 }
 
 /**
@@ -534,13 +534,13 @@ btk_item_factory_from_widget (BtkWidget	       *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  ifactory = g_object_get_qdata (G_OBJECT (widget), quark_item_factory);
+  ifactory = g_object_get_qdata (B_OBJECT (widget), quark_item_factory);
 
   if (ifactory == NULL && BTK_IS_MENU_ITEM (widget) &&
       BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
       BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
-      ifactory = g_object_get_qdata (G_OBJECT (menu), quark_item_factory);
+      ifactory = g_object_get_qdata (B_OBJECT (menu), quark_item_factory);
     }
 
   return ifactory;
@@ -567,13 +567,13 @@ btk_item_factory_path_from_widget (BtkWidget	    *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  path = g_object_get_qdata (G_OBJECT (widget), quark_item_path);
+  path = g_object_get_qdata (B_OBJECT (widget), quark_item_path);
 
   if (path == NULL && BTK_IS_MENU_ITEM (widget) &&
       BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
       BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
-      path = g_object_get_qdata (G_OBJECT (menu), quark_item_path);
+      path = g_object_get_qdata (B_OBJECT (menu), quark_item_path);
     }
 
   return path;
@@ -1263,7 +1263,7 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
 	  BtkWidget *widget;
 
 	  widget = slist->data;
-	  widget_list = g_slist_prepend (widget_list, widget);
+	  widget_list = b_slist_prepend (widget_list, widget);
 	  g_object_ref (widget);
 	}
 
@@ -1275,7 +1275,7 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
 	  btk_widget_destroy (widget);
 	  g_object_unref (widget);
 	}
-      g_slist_free (widget_list);
+      b_slist_free (widget_list);
     }
 }
 
@@ -1410,7 +1410,7 @@ btk_item_factory_popup_data_from_widget (BtkWidget *widget)
 
   ifactory = btk_item_factory_from_widget (widget);
   if (ifactory)
-    return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
+    return g_object_get_qdata (B_OBJECT (ifactory), quark_popup_data);
 
   return NULL;
 }
@@ -1431,7 +1431,7 @@ btk_item_factory_popup_data (BtkItemFactory *ifactory)
 {
   g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
 
-  return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
+  return g_object_get_qdata (B_OBJECT (ifactory), quark_popup_data);
 }
 
 static void
@@ -1441,7 +1441,7 @@ ifactory_delete_popup_data (BtkObject	   *object,
   g_signal_handlers_disconnect_by_func (object,
 					ifactory_delete_popup_data,
 					ifactory);
-  g_object_set_qdata (G_OBJECT (ifactory), quark_popup_data, NULL);
+  g_object_set_qdata (B_OBJECT (ifactory), quark_popup_data, NULL);
 }
 
 /**
@@ -1521,12 +1521,12 @@ btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (BTK_IS_MENU (ifactory->widget));
   
-  mpos = g_object_get_qdata (G_OBJECT (ifactory->widget), quark_if_menu_pos);
+  mpos = g_object_get_qdata (B_OBJECT (ifactory->widget), quark_if_menu_pos);
   
   if (!mpos)
     {
       mpos = g_new0 (MenuPos, 1);
-      g_object_set_qdata_full (G_OBJECT (ifactory->widget),
+      g_object_set_qdata_full (B_OBJECT (ifactory->widget),
 			       quark_if_menu_pos,
 			       mpos,
 			       g_free);
@@ -1537,7 +1537,7 @@ btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
   
   if (popup_data != NULL)
     {
-      g_object_set_qdata_full (G_OBJECT (ifactory),
+      g_object_set_qdata_full (B_OBJECT (ifactory),
 			       quark_popup_data,
 			       popup_data,
 			       destroy);

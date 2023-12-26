@@ -52,7 +52,7 @@
  * node structures have the same size, determined at runtime, depending on the number of columns that were passed
  * to _btk_file_system_model_new() or _btk_file_system_model_new_for_directory() (that is, the size of a node is
  * not sizeof (FileModelNode), but rather model->node_size).  The last field in the FileModelNode structure,
- * node->values[], is an array of GValue, used to hold the data for those columns.
+ * node->values[], is an array of BValue, used to hold the data for those columns.
  *
  * The model stores an array of FileModelNode structures in model->files.  This is a GArray where each element is
  * model->node_size bytes in size (the model computes that node size when initializing itself).  There are
@@ -146,12 +146,12 @@ struct _FileModelNode
   guint                 filtered_out :1;/* if the file is currently filtered out (i.e. it didn't pass the filters) */
   guint                 frozen_add :1;  /* true if the model was frozen and the entry has not been added yet */
 
-  GValue                values[1];      /* actually n_columns values */
+  BValue                values[1];      /* actually n_columns values */
 };
 
 struct _BtkFileSystemModel
 {
-  GObject               parent_instance;
+  BObject               parent_instance;
 
   GFile *               dir;            /* directory that's displayed */
   guint                 dir_thaw_source;/* GSource id for unfreezing the model */
@@ -194,13 +194,13 @@ struct _BtkFileSystemModel
   guint                 filter_folders :1;/* whether filter applies to folders */
 };
 
-#define BTK_FILE_SYSTEM_MODEL_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
-#define BTK_IS_FILE_SYSTEM_MODEL_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SYSTEM_MODEL))
-#define BTK_FILE_SYSTEM_MODEL_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
+#define BTK_FILE_SYSTEM_MODEL_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
+#define BTK_IS_FILE_SYSTEM_MODEL_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SYSTEM_MODEL))
+#define BTK_FILE_SYSTEM_MODEL_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
 
 struct _BtkFileSystemModelClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Signals */
 
@@ -507,7 +507,7 @@ btk_file_system_model_get_column_type (BtkTreeModel *tree_model,
 {
   BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   
-  g_return_val_if_fail (i >= 0 && (guint) i < model->n_columns, G_TYPE_NONE);
+  g_return_val_if_fail (i >= 0 && (guint) i < model->n_columns, B_TYPE_NONE);
 
   return model->column_types[i];
 }
@@ -606,10 +606,10 @@ static void
 btk_file_system_model_get_value (BtkTreeModel *tree_model,
 				 BtkTreeIter  *iter,
 				 gint          column,
-				 GValue       *value)
+				 BValue       *value)
 {
   BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
-  const GValue *original;
+  const BValue *original;
   
   g_return_if_fail ((guint) column < model->n_columns);
   g_return_if_fail (ITER_IS_VALID (model, iter));
@@ -617,11 +617,11 @@ btk_file_system_model_get_value (BtkTreeModel *tree_model,
   original = _btk_file_system_model_get_value (model, iter, column);
   if (original)
     {
-      g_value_init (value, G_VALUE_TYPE (original));
-      g_value_copy (original, value);
+      b_value_init (value, G_VALUE_TYPE (original));
+      b_value_copy (original, value);
     }
   else
-    g_value_init (value, model->column_types[column]);
+    b_value_init (value, model->column_types[column]);
 }
 
 static gboolean
@@ -1013,7 +1013,7 @@ static guint file_system_model_signals[LAST_SIGNAL] = { 0 };
 
 
 
-G_DEFINE_TYPE_WITH_CODE (BtkFileSystemModel, _btk_file_system_model, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkFileSystemModel, _btk_file_system_model, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_MODEL,
 						btk_file_system_model_iface_init)
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_SORTABLE,
@@ -1022,7 +1022,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkFileSystemModel, _btk_file_system_model, G_TYPE_OBJE
 						drag_source_iface_init))
 
 static void
-btk_file_system_model_dispose (GObject *object)
+btk_file_system_model_dispose (BObject *object)
 {
   BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (object);
 
@@ -1036,12 +1036,12 @@ btk_file_system_model_dispose (GObject *object)
   if (model->dir_monitor)
     g_file_monitor_cancel (model->dir_monitor);
 
-  G_OBJECT_CLASS (_btk_file_system_model_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_file_system_model_parent_class)->dispose (object);
 }
 
 
 static void
-btk_file_system_model_finalize (GObject *object)
+btk_file_system_model_finalize (BObject *object)
 {
   BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (object);
   guint i;
@@ -1057,8 +1057,8 @@ btk_file_system_model_finalize (GObject *object)
         g_object_unref (node->info);
 
       for (v = 0; v < model->n_columns; v++)
-	if (G_VALUE_TYPE (&node->values[v]) != G_TYPE_INVALID)
-	  g_value_unset (&node->values[v]);
+	if (G_VALUE_TYPE (&node->values[v]) != B_TYPE_INVALID)
+	  b_value_unset (&node->values[v]);
     }
   g_array_free (model->files, TRUE);
 
@@ -1078,25 +1078,25 @@ btk_file_system_model_finalize (GObject *object)
   if (model->default_sort_destroy)
     model->default_sort_destroy (model->default_sort_data);
 
-  G_OBJECT_CLASS (_btk_file_system_model_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_file_system_model_parent_class)->finalize (object);
 }
 
 static void
 _btk_file_system_model_class_init (BtkFileSystemModelClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   bobject_class->finalize = btk_file_system_model_finalize;
   bobject_class->dispose = btk_file_system_model_dispose;
 
   file_system_model_signals[FINISHED_LOADING] =
     g_signal_new (I_("finished-loading"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkFileSystemModelClass, finished_loading),
 		  NULL, NULL,
 		  _btk_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 1, G_TYPE_POINTER);
+		  B_TYPE_NONE, 1, B_TYPE_POINTER);
 }
 
 static void
@@ -1116,7 +1116,7 @@ _btk_file_system_model_init (BtkFileSystemModel *model)
 /*** API ***/
 
 static void
-btk_file_system_model_closed_enumerator (GObject *object, GAsyncResult *res, gpointer data)
+btk_file_system_model_closed_enumerator (BObject *object, GAsyncResult *res, gpointer data)
 {
   g_file_enumerator_close_finish (G_FILE_ENUMERATOR (object), res, NULL);
 }
@@ -1133,7 +1133,7 @@ thaw_func (gpointer data)
 }
 
 static void
-btk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer data)
+btk_file_system_model_got_files (BObject *object, GAsyncResult *res, gpointer data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (object);
   BtkFileSystemModel *model = data;
@@ -1211,7 +1211,7 @@ btk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
 }
 
 static void
-btk_file_system_model_query_done (GObject *     object,
+btk_file_system_model_query_done (BObject *     object,
                                   GAsyncResult *res,
                                   gpointer      data)
 {
@@ -1273,7 +1273,7 @@ btk_file_system_model_monitor_change (GFileMonitor *      monitor,
 }
 
 static void
-btk_file_system_model_got_enumerator (GObject *dir, GAsyncResult *res, gpointer data)
+btk_file_system_model_got_enumerator (BObject *dir, GAsyncResult *res, gpointer data)
 {
   BtkFileSystemModel *model = data;
   GFileEnumerator *enumerator;
@@ -1326,7 +1326,7 @@ btk_file_system_model_set_n_columns (BtkFileSystemModel *model,
   model->n_columns = n_columns;
   model->column_types = g_slice_alloc (sizeof (GType) * n_columns);
 
-  model->node_size = sizeof (FileModelNode) + sizeof (GValue) * (n_columns - 1); /* minus 1 because FileModelNode.values[] has a default size of 1 */
+  model->node_size = sizeof (FileModelNode) + sizeof (BValue) * (n_columns - 1); /* minus 1 because FileModelNode.values[] has a default size of 1 */
 
   for (i = 0; i < (guint) n_columns; i++)
     {
@@ -1717,7 +1717,7 @@ _btk_file_system_model_get_file (BtkFileSystemModel *model,
  * Returns: a pointer to the actual value as stored in @model or %NULL
  *          if no value available yet.
  **/
-const GValue *
+const BValue *
 _btk_file_system_model_get_value (BtkFileSystemModel *model,
                                   BtkTreeIter *       iter,
                                   int                 column)
@@ -1731,7 +1731,7 @@ _btk_file_system_model_get_value (BtkFileSystemModel *model,
     
   if (!G_VALUE_TYPE (&node->values[column]))
     {
-      g_value_init (&node->values[column], model->column_types[column]);
+      b_value_init (&node->values[column], model->column_types[column]);
       if (!model->get_func (model, 
                             node->file, 
                             node->info, 
@@ -1739,7 +1739,7 @@ _btk_file_system_model_get_value (BtkFileSystemModel *model,
                             &node->values[column],
                             model->get_data))
         {
-          g_value_unset (&node->values[column]);
+          b_value_unset (&node->values[column]);
           return NULL;
         }
     }
@@ -1960,7 +1960,7 @@ _btk_file_system_model_update_file (BtkFileSystemModel *model,
   for (i = 0; i < model->n_columns; i++)
     {
       if (G_VALUE_TYPE (&node->values[i]))
-        g_value_unset (&node->values[i]);
+        b_value_unset (&node->values[i]);
     }
 
   if (node->visible)
@@ -2096,7 +2096,7 @@ _btk_file_system_model_clear_cache (BtkFileSystemModel *model,
           if (!G_VALUE_TYPE (&node->values[column]))
             continue;
           
-          g_value_unset (&node->values[column]);
+          b_value_unset (&node->values[column]);
           changed = TRUE;
         }
 

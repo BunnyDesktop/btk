@@ -38,15 +38,15 @@
 #undef DEBUG_TOOLTIP
 
 
-#define BTK_TOOLTIP_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOLTIP, BtkTooltipClass))
-#define BTK_IS_TOOLTIP_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOLTIP))
-#define BTK_TOOLTIP_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOLTIP, BtkTooltipClass))
+#define BTK_TOOLTIP_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOLTIP, BtkTooltipClass))
+#define BTK_IS_TOOLTIP_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOLTIP))
+#define BTK_TOOLTIP_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOLTIP, BtkTooltipClass))
 
 typedef struct _BtkTooltipClass   BtkTooltipClass;
 
 struct _BtkTooltip
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkWidget *window;
   BtkWidget *alignment;
@@ -78,7 +78,7 @@ struct _BtkTooltip
 
 struct _BtkTooltipClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 #define BTK_TOOLTIP_VISIBLE(tooltip) ((tooltip)->current_window && btk_widget_get_visible (BTK_WIDGET((tooltip)->current_window)))
@@ -86,7 +86,7 @@ struct _BtkTooltipClass
 
 static void       btk_tooltip_class_init           (BtkTooltipClass *klass);
 static void       btk_tooltip_init                 (BtkTooltip      *tooltip);
-static void       btk_tooltip_dispose              (GObject         *object);
+static void       btk_tooltip_dispose              (BObject         *object);
 
 static void       btk_tooltip_window_style_set     (BtkTooltip      *tooltip);
 static gboolean   btk_tooltip_paint_window         (BtkTooltip      *tooltip);
@@ -100,14 +100,14 @@ static void       btk_tooltip_set_last_window      (BtkTooltip      *tooltip,
 static void       update_shape                     (BtkTooltip      *tooltip);
 
 
-G_DEFINE_TYPE (BtkTooltip, btk_tooltip, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkTooltip, btk_tooltip, B_TYPE_OBJECT);
 
 static void
 btk_tooltip_class_init (BtkTooltipClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = G_OBJECT_CLASS (klass);
+  object_class = B_OBJECT_CLASS (klass);
 
   object_class->dispose = btk_tooltip_dispose;
 }
@@ -213,7 +213,7 @@ btk_tooltip_init (BtkTooltip *tooltip)
 }
 
 static void
-btk_tooltip_dispose (GObject *object)
+btk_tooltip_dispose (BObject *object)
 {
   BtkTooltip *tooltip = BTK_TOOLTIP (object);
 
@@ -244,7 +244,7 @@ btk_tooltip_dispose (GObject *object)
       tooltip->window = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tooltip_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tooltip_parent_class)->dispose (object);
 }
 
 /* public API */
@@ -974,7 +974,7 @@ tooltip_browse_mode_expired (gpointer data)
   tooltip->browse_mode_timeout_id = 0;
 
   /* destroy tooltip */
-  g_object_set_data (G_OBJECT (btk_widget_get_display (tooltip->window)),
+  g_object_set_data (B_OBJECT (btk_widget_get_display (tooltip->window)),
 		     "bdk-display-current-tooltip", NULL);
 
   return FALSE;
@@ -985,7 +985,7 @@ btk_tooltip_display_closed (BdkDisplay *display,
 			    gboolean    was_error,
 			    BtkTooltip *tooltip)
 {
-  g_object_set_data (G_OBJECT (display), "bdk-display-current-tooltip", NULL);
+  g_object_set_data (B_OBJECT (display), "bdk-display-current-tooltip", NULL);
 }
 
 static void
@@ -996,13 +996,13 @@ btk_tooltip_set_last_window (BtkTooltip *tooltip,
     return;
 
   if (tooltip->last_window)
-    g_object_remove_weak_pointer (G_OBJECT (tooltip->last_window),
+    g_object_remove_weak_pointer (B_OBJECT (tooltip->last_window),
 				  (gpointer *) &tooltip->last_window);
 
   tooltip->last_window = window;
 
   if (window)
-    g_object_add_weak_pointer (G_OBJECT (tooltip->last_window),
+    g_object_add_weak_pointer (B_OBJECT (tooltip->last_window),
 			       (gpointer *) &tooltip->last_window);
 }
 
@@ -1175,7 +1175,7 @@ btk_tooltip_show_tooltip (BdkDisplay *display)
   gboolean has_tooltip;
   gboolean return_value = FALSE;
 
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   if (tooltip->keyboard_mode_enabled)
@@ -1309,7 +1309,7 @@ tooltip_popup_timeout (gpointer data)
   BtkTooltip *tooltip;
 
   display = BDK_DISPLAY_OBJECT (data);
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   /* This usually does not happen.  However, it does occur in language
@@ -1332,7 +1332,7 @@ btk_tooltip_start_delay (BdkDisplay *display)
   BtkTooltip *tooltip;
   BtkSettings *settings;
 
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   if (!tooltip || BTK_TOOLTIP_VISIBLE (tooltip))
@@ -1364,7 +1364,7 @@ _btk_tooltip_focus_in (BtkWidget *widget)
 
   /* Get current tooltip for this display */
   display = btk_widget_get_display (widget);
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   /* Check if keyboard mode is enabled at this moment */
@@ -1404,7 +1404,7 @@ _btk_tooltip_focus_out (BtkWidget *widget)
 
   /* Get current tooltip for this display */
   display = btk_widget_get_display (widget);
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   if (!tooltip || !tooltip->keyboard_mode_enabled)
@@ -1426,13 +1426,13 @@ _btk_tooltip_toggle_keyboard_mode (BtkWidget *widget)
   BtkTooltip *tooltip;
 
   display = btk_widget_get_display (widget);
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   if (!tooltip)
     {
       tooltip = g_object_new (BTK_TYPE_TOOLTIP, NULL);
-      g_object_set_data_full (G_OBJECT (display),
+      g_object_set_data_full (B_OBJECT (display),
 			      "bdk-display-current-tooltip",
 			      tooltip, g_object_unref);
       g_signal_connect (display, "closed",
@@ -1467,7 +1467,7 @@ _btk_tooltip_hide (BtkWidget *widget)
   BtkTooltip *tooltip;
 
   display = btk_widget_get_display (widget);
-  tooltip = g_object_get_data (G_OBJECT (display),
+  tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
 
   if (!tooltip || !BTK_TOOLTIP_VISIBLE (tooltip) || !tooltip->tooltip_widget)
@@ -1514,7 +1514,7 @@ _btk_tooltip_handle_event (BdkEvent *event)
   /* Returns coordinates relative to has_tooltip_widget's allocation. */
   has_tooltip_widget = find_topmost_widget_coords_from_event (event, &x, &y);
   display = bdk_window_get_display (event->any.window);
-  current_tooltip = g_object_get_data (G_OBJECT (display),
+  current_tooltip = g_object_get_data (B_OBJECT (display),
 				       "bdk-display-current-tooltip");
 
   if (current_tooltip)
@@ -1617,7 +1617,7 @@ _btk_tooltip_handle_event (BdkEvent *event)
 	  {
 	    /* Need a new tooltip for this display */
 	    current_tooltip = g_object_new (BTK_TYPE_TOOLTIP, NULL);
-	    g_object_set_data_full (G_OBJECT (display),
+	    g_object_set_data_full (B_OBJECT (display),
 				    "bdk-display-current-tooltip",
 				    current_tooltip, g_object_unref);
 	    g_signal_connect (display, "closed",

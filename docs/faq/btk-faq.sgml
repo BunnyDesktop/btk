@@ -1610,10 +1610,10 @@ int main(int argc, char *argv[])
    */
   window = btk_window_new(BTK_WINDOW_TOPLEVEL);
 
-  g_signal_connect(G_OBJECT (window), "delete_event",
+  g_signal_connect(B_OBJECT (window), "delete_event",
 		     G_CALLBACK(delete_event), NULL);
           
-  g_signal_connect(G_OBJECT (window), "destroy",
+  g_signal_connect(B_OBJECT (window), "destroy",
 		     G_CALLBACK(destroy), NULL);
 
 #if (BTK_MAJOR_VERSION == 1) &amp;&amp; (BTK_MINOR_VERSION == 0)
@@ -1625,7 +1625,7 @@ int main(int argc, char *argv[])
   /* add a button to do something useful */
   button = btk_button_new_with_label("Fork me!");
           
-  g_signal_connect(G_OBJECT (button), "clicked",
+  g_signal_connect(B_OBJECT (button), "clicked",
 		     G_CALLBACK(fork_me), NULL);
 
   btk_container_add(BTK_CONTAINER(window), button);
@@ -1757,14 +1757,14 @@ signal_handler_event(BtkWidget *widget, BdkEventButton *event, gpointer func_dat
 {
   /* button init stuff */     
 
-  g_signal_connect(G_OBJECT(button),
+  g_signal_connect(B_OBJECT(button),
                      "button_press_event",
                      G_CALLBACK(signal_handler_event),
                      NULL);
 
   /* and/or */
 
-  g_signal_connect(G_OBJECT(button),
+  g_signal_connect(B_OBJECT(button),
                      "button_release_event",
                      G_CALLBACK(signal_handler_event),
                      NULL);
@@ -2011,9 +2011,9 @@ common way to do this, as it provides a powerful interface to
 connect objects and data.</para>
 
 <programlisting role="C">
-void g_object_set_data(GObject *object, const gchar *key, gpointer data);
+void g_object_set_data(BObject *object, const gchar *key, gpointer data);
 
-gpointer g_object_get_data(GObject *object, const gchar *key);
+gpointer g_object_get_data(BObject *object, const gchar *key);
 </programlisting>
 
 <para>Since a short example is better than any lengthy speech:</para>
@@ -2022,10 +2022,10 @@ gpointer g_object_get_data(GObject *object, const gchar *key);
 struct my_struct	p1,p2,*result;
 BtkWidget		*w;
 
-g_object_set_data(G_OBJECT(w),"p1 data",(gpointer)&amp;p1);
-g_object_set_data(G_OBJECT(w),"p2 data",(gpointer)&amp;p2);
+g_object_set_data(B_OBJECT(w),"p1 data",(gpointer)&amp;p1);
+g_object_set_data(B_OBJECT(w),"p2 data",(gpointer)&amp;p2);
 
-result = g_object_get_data(G_OBJECT(w),"p1 data");
+result = g_object_get_data(B_OBJECT(w),"p1 data");
 </programlisting>
 
 <para>The <literal>btk_object_set_user_data()</literal> and
@@ -2892,15 +2892,15 @@ void insert_text_handler (BtkEntry    *entry,
   }
   
   if (count > 0) {
-    g_signal_handlers_block_by_func (G_OBJECT (editable),
+    g_signal_handlers_block_by_func (B_OBJECT (editable),
                                      G_CALLBACK (insert_text_handler),
                                      data);
     btk_editable_insert_text (editable, result, count, position);
-    g_signal_handlers_unblock_by_func (G_OBJECT (editable),
+    g_signal_handlers_unblock_by_func (B_OBJECT (editable),
                                        G_CALLBACK (insert_text_handler),
                                        data);
   }
-  g_signal_stop_emission_by_name (G_OBJECT (editable), "insert_text");
+  g_signal_stop_emission_by_name (B_OBJECT (editable), "insert_text");
 
   g_free (result);
 }
@@ -2916,12 +2916,12 @@ int main (int   argc,
   /* create a new window */
   window = btk_window_new(BTK_WINDOW_TOPLEVEL);
   btk_window_set_title(BTK_WINDOW (window), "BTK Entry");
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
                     G_CALLBACK (btk_main_quit),
                     NULL);
 
   entry = btk_entry_new();
-  g_signal_connect(G_OBJECT(entry), "insert_text",
+  g_signal_connect(B_OBJECT(entry), "insert_text",
 		     G_CALLBACK(insert_text_handler),
 		     NULL);
   btk_container_add(BTK_CONTAINER (window), entry);
@@ -3219,9 +3219,9 @@ list = g_list_remove(list, &amp;array[4]);
 
 <para>The same code is usable with singly linked lists (GSList
 objects) by replacing g_list_* functions with the relevant
-g_slist_* ones (g_slist_append,  g_slist_remove, ...). Just
+b_slist_* ones (b_slist_append,  b_slist_remove, ...). Just
 remember that since you can't go backward in a singly linked
-list, there is no g_slist_first function - you'll need to keep
+list, there is no b_slist_first function - you'll need to keep
 a  reference on the first node of the list.</para>
 
 <!-- Some Examples might be useful here! NF -->

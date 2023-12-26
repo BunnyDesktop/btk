@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_NOTEBOOK                   (bail_notebook_get_type ())
-#define BAIL_NOTEBOOK(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_NOTEBOOK, BailNotebook))
-#define BAIL_NOTEBOOK_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
-#define BAIL_IS_NOTEBOOK(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK))
-#define BAIL_IS_NOTEBOOK_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK))
-#define BAIL_NOTEBOOK_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
+#define BAIL_NOTEBOOK(obj)                   (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_NOTEBOOK, BailNotebook))
+#define BAIL_NOTEBOOK_CLASS(klass)           (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
+#define BAIL_IS_NOTEBOOK(obj)                (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK))
+#define BAIL_IS_NOTEBOOK_CLASS(klass)        (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK))
+#define BAIL_NOTEBOOK_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
 
 typedef struct _BailNotebook              BailNotebook;
 typedef struct _BailNotebookClass         BailNotebookClass;

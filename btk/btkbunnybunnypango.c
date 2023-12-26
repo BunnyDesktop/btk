@@ -28,11 +28,11 @@
 #include "btkintl.h"
 
 #define BTK_TYPE_FILL_LAYOUT_RENDERER            (_btk_fill_layout_renderer_get_type())
-#define BTK_FILL_LAYOUT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRenderer))
-#define BTK_IS_FILL_LAYOUT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_FILL_LAYOUT_RENDERER))
-#define BTK_FILL_LAYOUT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
-#define BTK_IS_FILL_LAYOUT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER))
-#define BTK_FILL_LAYOUT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
+#define BTK_FILL_LAYOUT_RENDERER(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRenderer))
+#define BTK_IS_FILL_LAYOUT_RENDERER(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_FILL_LAYOUT_RENDERER))
+#define BTK_FILL_LAYOUT_RENDERER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
+#define BTK_IS_FILL_LAYOUT_RENDERER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER))
+#define BTK_FILL_LAYOUT_RENDERER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
 
 typedef struct _BtkFillLayoutRenderer      BtkFillLayoutRenderer;
 typedef struct _BtkFillLayoutRendererClass BtkFillLayoutRendererClass;
@@ -178,9 +178,9 @@ btk_fill_layout_renderer_draw_shape (BangoRenderer   *renderer,
 }
 
 static void
-btk_fill_layout_renderer_finalize (GObject *object)
+btk_fill_layout_renderer_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (_btk_fill_layout_renderer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_fill_layout_renderer_parent_class)->finalize (object);
 }
 
 static void
@@ -191,7 +191,7 @@ _btk_fill_layout_renderer_init (BtkFillLayoutRenderer *renderer)
 static void
 _btk_fill_layout_renderer_class_init (BtkFillLayoutRendererClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   

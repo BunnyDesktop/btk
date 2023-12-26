@@ -151,18 +151,18 @@ struct _BtkStatusIconPrivate
   guint         visible : 1;
 };
 
-static GObject* btk_status_icon_constructor      (GType                  type,
+static BObject* btk_status_icon_constructor      (GType                  type,
                                                   guint                  n_construct_properties,
-                                                  GObjectConstructParam *construct_params);
-static void     btk_status_icon_finalize         (GObject        *object);
-static void     btk_status_icon_set_property     (GObject        *object,
+                                                  BObjectConstructParam *construct_params);
+static void     btk_status_icon_finalize         (BObject        *object);
+static void     btk_status_icon_set_property     (BObject        *object,
 						  guint           prop_id,
-						  const GValue   *value,
-						  GParamSpec     *pspec);
-static void     btk_status_icon_get_property     (GObject        *object,
+						  const BValue   *value,
+						  BParamSpec     *pspec);
+static void     btk_status_icon_get_property     (BObject        *object,
 						  guint           prop_id,
-						  GValue         *value,
-					          GParamSpec     *pspec);
+						  BValue         *value,
+					          BParamSpec     *pspec);
 
 #ifdef BDK_WINDOWING_X11
 static void     btk_status_icon_size_allocate    (BtkStatusIcon  *status_icon,
@@ -191,12 +191,12 @@ static void     btk_status_icon_disable_blinking (BtkStatusIcon  *status_icon);
 static void     btk_status_icon_reset_image_data (BtkStatusIcon  *status_icon);
 static void     btk_status_icon_update_image    (BtkStatusIcon *status_icon);
 
-G_DEFINE_TYPE (BtkStatusIcon, btk_status_icon, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkStatusIcon, btk_status_icon, B_TYPE_OBJECT)
 
 static void
 btk_status_icon_class_init (BtkStatusIconClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *) class;
+  BObjectClass *bobject_class = (BObjectClass *) class;
 
   bobject_class->constructor  = btk_status_icon_constructor;
   bobject_class->finalize     = btk_status_icon_finalize;
@@ -253,7 +253,7 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
                                    g_param_spec_object ("gicon",
                                                         P_("GIcon"),
                                                         P_("The GIcon being displayed"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
 
   g_object_class_install_property (bobject_class,
@@ -448,13 +448,13 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [ACTIVATE_SIGNAL] =
     g_signal_new (I_("activate"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, activate),
 		  NULL,
 		  NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
 
   /**
@@ -479,16 +479,16 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [POPUP_MENU_SIGNAL] =
     g_signal_new (I_("popup-menu"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, popup_menu),
 		  NULL,
 		  NULL,
 		  _btk_marshal_VOID__UINT_UINT,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  2,
-		  G_TYPE_UINT,
-		  G_TYPE_UINT);
+		  B_TYPE_UINT,
+		  B_TYPE_UINT);
 
   /**
    * BtkStatusIcon::size-changed:
@@ -505,15 +505,15 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [SIZE_CHANGED_SIGNAL] =
     g_signal_new (I_("size-changed"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, size_changed),
 		  g_signal_accumulator_true_handled,
 		  NULL,
 		  _btk_marshal_BOOLEAN__INT,
-		  G_TYPE_BOOLEAN,
+		  B_TYPE_BOOLEAN,
 		  1,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /**
    * BtkStatusIcon::button-press-event:
@@ -533,12 +533,12 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [BUTTON_PRESS_EVENT_SIGNAL] =
     g_signal_new (I_("button_press_event"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, button_press_event),
 		  g_signal_accumulator_true_handled, NULL,
 		  _btk_marshal_BOOLEAN__BOXED,
-		  G_TYPE_BOOLEAN, 1,
+		  B_TYPE_BOOLEAN, 1,
 		  BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
@@ -559,12 +559,12 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [BUTTON_RELEASE_EVENT_SIGNAL] =
     g_signal_new (I_("button_release_event"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, button_release_event),
 		  g_signal_accumulator_true_handled, NULL,
 		  _btk_marshal_BOOLEAN__BOXED,
-		  G_TYPE_BOOLEAN, 1,
+		  B_TYPE_BOOLEAN, 1,
 		  BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
@@ -583,12 +583,12 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals[SCROLL_EVENT_SIGNAL] =
     g_signal_new (I_("scroll_event"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, scroll_event),
 		  g_signal_accumulator_true_handled, NULL,
 		  _btk_marshal_BOOLEAN__BOXED,
-		  G_TYPE_BOOLEAN, 1,
+		  B_TYPE_BOOLEAN, 1,
 		  BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
@@ -623,15 +623,15 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
    */
   status_icon_signals [QUERY_TOOLTIP_SIGNAL] =
     g_signal_new (I_("query_tooltip"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkStatusIconClass, query_tooltip),
 		  g_signal_accumulator_true_handled, NULL,
 		  _btk_marshal_BOOLEAN__INT_INT_BOOLEAN_OBJECT,
-		  G_TYPE_BOOLEAN, 4,
-		  G_TYPE_INT,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN,
+		  B_TYPE_BOOLEAN, 4,
+		  B_TYPE_INT,
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN,
 		  BTK_TYPE_TOOLTIP);
 
   g_type_class_add_private (class, sizeof (BtkStatusIconPrivate));
@@ -856,7 +856,7 @@ btk_status_icon_init (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
 
-  priv = G_TYPE_INSTANCE_GET_PRIVATE (status_icon, BTK_TYPE_STATUS_ICON,
+  priv = B_TYPE_INSTANCE_GET_PRIVATE (status_icon, BTK_TYPE_STATUS_ICON,
 				      BtkStatusIconPrivate);
   status_icon->priv = priv;
   
@@ -951,7 +951,7 @@ btk_status_icon_init (BtkStatusIcon *status_icon)
       priv->nid.hWnd = NULL;
     }
 
-  status_icons = g_slist_append (status_icons, status_icon);
+  status_icons = b_slist_append (status_icons, status_icon);
 
 #endif
 	
@@ -970,18 +970,18 @@ btk_status_icon_init (BtkStatusIcon *status_icon)
 #endif 
 }
 
-static GObject*
+static BObject*
 btk_status_icon_constructor (GType                  type,
                              guint                  n_construct_properties,
-                             GObjectConstructParam *construct_params)
+                             BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
 #ifdef BDK_WINDOWING_X11
   BtkStatusIcon *status_icon;
   BtkStatusIconPrivate *priv;
 #endif
 
-  object = G_OBJECT_CLASS (btk_status_icon_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_status_icon_parent_class)->constructor (type,
                                                                        n_construct_properties,
                                                                        construct_params);
 
@@ -997,7 +997,7 @@ btk_status_icon_constructor (GType                  type,
 }
 
 static void
-btk_status_icon_finalize (GObject *object)
+btk_status_icon_finalize (BObject *object)
 {
   BtkStatusIcon *status_icon = BTK_STATUS_ICON (object);
   BtkStatusIconPrivate *priv = status_icon->priv;
@@ -1042,7 +1042,7 @@ btk_status_icon_finalize (GObject *object)
 
   btk_widget_destroy (priv->dummy_widget);
 
-  status_icons = g_slist_remove (status_icons, status_icon);
+  status_icons = b_slist_remove (status_icons, status_icon);
 #endif
 	
 #ifdef BDK_WINDOWING_QUARTZ
@@ -1052,66 +1052,66 @@ btk_status_icon_finalize (GObject *object)
   g_free (priv->tooltip_text);
 #endif
 
-  G_OBJECT_CLASS (btk_status_icon_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_status_icon_parent_class)->finalize (object);
 }
 
 static void
-btk_status_icon_set_property (GObject      *object,
+btk_status_icon_set_property (BObject      *object,
 			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+			      const BValue *value,
+			      BParamSpec   *pspec)
 {
   BtkStatusIcon *status_icon = BTK_STATUS_ICON (object);
 
   switch (prop_id)
     {
     case PROP_PIXBUF:
-      btk_status_icon_set_from_pixbuf (status_icon, g_value_get_object (value));
+      btk_status_icon_set_from_pixbuf (status_icon, b_value_get_object (value));
       break;
     case PROP_FILE:
-      btk_status_icon_set_from_file (status_icon, g_value_get_string (value));
+      btk_status_icon_set_from_file (status_icon, b_value_get_string (value));
       break;
     case PROP_STOCK:
-      btk_status_icon_set_from_stock (status_icon, g_value_get_string (value));
+      btk_status_icon_set_from_stock (status_icon, b_value_get_string (value));
       break;
     case PROP_ICON_NAME:
-      btk_status_icon_set_from_icon_name (status_icon, g_value_get_string (value));
+      btk_status_icon_set_from_icon_name (status_icon, b_value_get_string (value));
       break;
     case PROP_GICON:
-      btk_status_icon_set_from_gicon (status_icon, g_value_get_object (value));
+      btk_status_icon_set_from_gicon (status_icon, b_value_get_object (value));
       break;
     case PROP_SCREEN:
-      btk_status_icon_set_screen (status_icon, g_value_get_object (value));
+      btk_status_icon_set_screen (status_icon, b_value_get_object (value));
       break;
     case PROP_BLINKING:
-      btk_status_icon_set_blinking (status_icon, g_value_get_boolean (value));
+      btk_status_icon_set_blinking (status_icon, b_value_get_boolean (value));
       break;
     case PROP_VISIBLE:
-      btk_status_icon_set_visible (status_icon, g_value_get_boolean (value));
+      btk_status_icon_set_visible (status_icon, b_value_get_boolean (value));
       break;
     case PROP_HAS_TOOLTIP:
-      btk_status_icon_set_has_tooltip (status_icon, g_value_get_boolean (value));
+      btk_status_icon_set_has_tooltip (status_icon, b_value_get_boolean (value));
       break;
     case PROP_TOOLTIP_TEXT:
-      btk_status_icon_set_tooltip_text (status_icon, g_value_get_string (value));
+      btk_status_icon_set_tooltip_text (status_icon, b_value_get_string (value));
       break;
     case PROP_TOOLTIP_MARKUP:
-      btk_status_icon_set_tooltip_markup (status_icon, g_value_get_string (value));
+      btk_status_icon_set_tooltip_markup (status_icon, b_value_get_string (value));
       break;
     case PROP_TITLE:
-      btk_status_icon_set_title (status_icon, g_value_get_string (value));
+      btk_status_icon_set_title (status_icon, b_value_get_string (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_status_icon_get_property (GObject    *object,
+btk_status_icon_get_property (BObject    *object,
 			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+			      BValue     *value,
+			      BParamSpec *pspec)
 {
   BtkStatusIcon *status_icon = BTK_STATUS_ICON (object);
   BtkStatusIconPrivate *priv = status_icon->priv;
@@ -1126,68 +1126,68 @@ btk_status_icon_get_property (GObject    *object,
     {
     case PROP_PIXBUF:
       if (priv->storage_type != BTK_IMAGE_PIXBUF)
-	g_value_set_object (value, NULL);
+	b_value_set_object (value, NULL);
       else
-	g_value_set_object (value, btk_status_icon_get_pixbuf (status_icon));
+	b_value_set_object (value, btk_status_icon_get_pixbuf (status_icon));
       break;
     case PROP_STOCK:
       if (priv->storage_type != BTK_IMAGE_STOCK)
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       else
-	g_value_set_string (value, btk_status_icon_get_stock (status_icon));
+	b_value_set_string (value, btk_status_icon_get_stock (status_icon));
       break;
     case PROP_ICON_NAME:
       if (priv->storage_type != BTK_IMAGE_ICON_NAME)
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       else
-	g_value_set_string (value, btk_status_icon_get_icon_name (status_icon));
+	b_value_set_string (value, btk_status_icon_get_icon_name (status_icon));
       break;
     case PROP_GICON:
       if (priv->storage_type != BTK_IMAGE_GICON)
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       else
-        g_value_set_object (value, btk_status_icon_get_gicon (status_icon));
+        b_value_set_object (value, btk_status_icon_get_gicon (status_icon));
       break;
     case PROP_STORAGE_TYPE:
-      g_value_set_enum (value, btk_status_icon_get_storage_type (status_icon));
+      b_value_set_enum (value, btk_status_icon_get_storage_type (status_icon));
       break;
     case PROP_SIZE:
-      g_value_set_int (value, btk_status_icon_get_size (status_icon));
+      b_value_set_int (value, btk_status_icon_get_size (status_icon));
       break;
     case PROP_SCREEN:
-      g_value_set_object (value, btk_status_icon_get_screen (status_icon));
+      b_value_set_object (value, btk_status_icon_get_screen (status_icon));
       break;
     case PROP_BLINKING:
-      g_value_set_boolean (value, btk_status_icon_get_blinking (status_icon));
+      b_value_set_boolean (value, btk_status_icon_get_blinking (status_icon));
       break;
     case PROP_VISIBLE:
-      g_value_set_boolean (value, btk_status_icon_get_visible (status_icon));
+      b_value_set_boolean (value, btk_status_icon_get_visible (status_icon));
       break;
     case PROP_EMBEDDED:
-      g_value_set_boolean (value, btk_status_icon_is_embedded (status_icon));
+      b_value_set_boolean (value, btk_status_icon_is_embedded (status_icon));
       break;
     case PROP_ORIENTATION:
 #ifdef BDK_WINDOWING_X11
-      g_value_set_enum (value, _btk_tray_icon_get_orientation (BTK_TRAY_ICON (status_icon->priv->tray_icon)));
+      b_value_set_enum (value, _btk_tray_icon_get_orientation (BTK_TRAY_ICON (status_icon->priv->tray_icon)));
 #endif
 #ifdef BDK_WINDOWING_WIN32
-      g_value_set_enum (value, status_icon->priv->orientation);
+      b_value_set_enum (value, status_icon->priv->orientation);
 #endif
       break;
     case PROP_HAS_TOOLTIP:
-      g_value_set_boolean (value, btk_status_icon_get_has_tooltip (status_icon));
+      b_value_set_boolean (value, btk_status_icon_get_has_tooltip (status_icon));
       break;
     case PROP_TOOLTIP_TEXT:
-      g_value_set_string (value, btk_status_icon_get_tooltip_text (status_icon));
+      b_value_set_string (value, btk_status_icon_get_tooltip_text (status_icon));
       break;
     case PROP_TOOLTIP_MARKUP:
-      g_value_set_string (value, btk_status_icon_get_tooltip_markup (status_icon));
+      b_value_set_string (value, btk_status_icon_get_tooltip_markup (status_icon));
       break;
     case PROP_TITLE:
-      g_value_set_string (value, btk_status_icon_get_title (status_icon));
+      b_value_set_string (value, btk_status_icon_get_title (status_icon));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1700,7 +1700,7 @@ btk_status_icon_size_allocate (BtkStatusIcon *status_icon,
     {
       priv->size = size;
 
-      g_object_notify (G_OBJECT (status_icon), "size");
+      g_object_notify (B_OBJECT (status_icon), "size");
 
       if (!emit_size_changed_signal (status_icon, size))
 	btk_status_icon_update_image (status_icon);
@@ -1715,7 +1715,7 @@ btk_status_icon_screen_changed (BtkStatusIcon *status_icon,
 
   if (btk_widget_get_screen (priv->tray_icon) != old_screen)
     {
-      g_object_notify (G_OBJECT (status_icon), "screen");
+      g_object_notify (B_OBJECT (status_icon), "screen");
     }
 }
 
@@ -1726,13 +1726,13 @@ btk_status_icon_screen_changed (BtkStatusIcon *status_icon,
 static void
 btk_status_icon_embedded_changed (BtkStatusIcon *status_icon)
 {
-  g_object_notify (G_OBJECT (status_icon), "embedded");
+  g_object_notify (B_OBJECT (status_icon), "embedded");
 }
 
 static void
 btk_status_icon_orientation_changed (BtkStatusIcon *status_icon)
 {
-  g_object_notify (G_OBJECT (status_icon), "orientation");
+  g_object_notify (B_OBJECT (status_icon), "orientation");
 }
 
 static gboolean
@@ -1840,21 +1840,21 @@ btk_status_icon_reset_image_data (BtkStatusIcon *status_icon)
       if (priv->image_data.pixbuf)
 	g_object_unref (priv->image_data.pixbuf);
       priv->image_data.pixbuf = NULL;
-      g_object_notify (G_OBJECT (status_icon), "pixbuf");
+      g_object_notify (B_OBJECT (status_icon), "pixbuf");
       break;
 
     case BTK_IMAGE_STOCK:
       g_free (priv->image_data.stock_id);
       priv->image_data.stock_id = NULL;
 
-      g_object_notify (G_OBJECT (status_icon), "stock");
+      g_object_notify (B_OBJECT (status_icon), "stock");
       break;
       
     case BTK_IMAGE_ICON_NAME:
       g_free (priv->image_data.icon_name);
       priv->image_data.icon_name = NULL;
 
-      g_object_notify (G_OBJECT (status_icon), "icon-name");
+      g_object_notify (B_OBJECT (status_icon), "icon-name");
       break;
 
     case BTK_IMAGE_GICON:
@@ -1862,7 +1862,7 @@ btk_status_icon_reset_image_data (BtkStatusIcon *status_icon)
         g_object_unref (priv->image_data.gicon);
       priv->image_data.gicon = NULL;
 
-      g_object_notify (G_OBJECT (status_icon), "gicon");
+      g_object_notify (B_OBJECT (status_icon), "gicon");
       break;
 
     case BTK_IMAGE_EMPTY:
@@ -1873,7 +1873,7 @@ btk_status_icon_reset_image_data (BtkStatusIcon *status_icon)
   }
 
   priv->storage_type = BTK_IMAGE_EMPTY;
-  g_object_notify (G_OBJECT (status_icon), "storage-type");
+  g_object_notify (B_OBJECT (status_icon), "storage-type");
 }
 
 static void
@@ -1883,36 +1883,36 @@ btk_status_icon_set_image (BtkStatusIcon *status_icon,
 {
   BtkStatusIconPrivate *priv = status_icon->priv;
 
-  g_object_freeze_notify (G_OBJECT (status_icon));
+  g_object_freeze_notify (B_OBJECT (status_icon));
 
   btk_status_icon_reset_image_data (status_icon);
 
   priv->storage_type = storage_type;
-  g_object_notify (G_OBJECT (status_icon), "storage-type");
+  g_object_notify (B_OBJECT (status_icon), "storage-type");
 
   switch (storage_type) 
     {
     case BTK_IMAGE_PIXBUF:
       priv->image_data.pixbuf = (BdkPixbuf *)data;
-      g_object_notify (G_OBJECT (status_icon), "pixbuf");
+      g_object_notify (B_OBJECT (status_icon), "pixbuf");
       break;
     case BTK_IMAGE_STOCK:
       priv->image_data.stock_id = g_strdup ((const gchar *)data);
-      g_object_notify (G_OBJECT (status_icon), "stock");
+      g_object_notify (B_OBJECT (status_icon), "stock");
       break;
     case BTK_IMAGE_ICON_NAME:
       priv->image_data.icon_name = g_strdup ((const gchar *)data);
-      g_object_notify (G_OBJECT (status_icon), "icon-name");
+      g_object_notify (B_OBJECT (status_icon), "icon-name");
       break;
     case BTK_IMAGE_GICON:
       priv->image_data.gicon = (GIcon *)data;
-      g_object_notify (G_OBJECT (status_icon), "gicon");
+      g_object_notify (B_OBJECT (status_icon), "gicon");
       break;
     default:
       g_warning ("Image type %u not handled by BtkStatusIcon", storage_type);
     }
 
-  g_object_thaw_notify (G_OBJECT (status_icon));
+  g_object_thaw_notify (B_OBJECT (status_icon));
 
   btk_status_icon_update_image (status_icon);
 }
@@ -2364,7 +2364,7 @@ btk_status_icon_set_visible (BtkStatusIcon *status_icon,
       [priv->status_item setVisible:visible];
       QUARTZ_POOL_RELEASE;
 #endif
-      g_object_notify (G_OBJECT (status_icon), "visible");
+      g_object_notify (B_OBJECT (status_icon), "visible");
     }
 }
 
@@ -2424,7 +2424,7 @@ btk_status_icon_set_blinking (BtkStatusIcon *status_icon,
       else
 	btk_status_icon_disable_blinking (status_icon);
 
-      g_object_notify (G_OBJECT (status_icon), "blinking");
+      g_object_notify (B_OBJECT (status_icon), "blinking");
     }
 }
 
@@ -2989,7 +2989,7 @@ btk_status_icon_set_title (BtkStatusIcon *status_icon,
   priv->title = g_strdup (title);
 #endif
 
-  g_object_notify (G_OBJECT (status_icon), "title");
+  g_object_notify (B_OBJECT (status_icon), "title");
 }
 
 /**

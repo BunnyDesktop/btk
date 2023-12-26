@@ -126,7 +126,7 @@ static gboolean btk_old_editable_get_selection_bounds (BtkEditable *editable,
 static void     btk_old_editable_set_position        (BtkEditable *editable,
 						      gint         position);
 static gint     btk_old_editable_get_position        (BtkEditable *editable);
-static void     btk_old_editable_finalize            (GObject     *object);
+static void     btk_old_editable_finalize            (BObject     *object);
 
 static guint editable_signals[LAST_SIGNAL] = { 0 };
 
@@ -137,11 +137,11 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkOldEditable, btk_old_editable, BTK_TYPE_WID
 static void
 btk_old_editable_class_init (BtkOldEditableClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
@@ -376,11 +376,11 @@ btk_old_editable_init (BtkOldEditable *old_editable)
 }
 
 static void
-btk_old_editable_finalize (GObject *object)
+btk_old_editable_finalize (BObject *object)
 {
   btk_selection_clear_targets (BTK_WIDGET (object), BDK_SELECTION_PRIMARY);
 
-  G_OBJECT_CLASS (btk_old_editable_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_old_editable_parent_class)->finalize (object);
 }
 
 static void
@@ -687,7 +687,7 @@ old_editable_text_received_cb (BtkClipboard *clipboard,
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (data);
 
   btk_old_editable_paste_received (old_editable, text, TRUE);
-  g_object_unref (G_OBJECT (old_editable));
+  g_object_unref (B_OBJECT (old_editable));
 }
 
 /**
@@ -807,7 +807,7 @@ btk_old_editable_real_paste_clipboard (BtkOldEditable *old_editable)
   BtkClipboard *clipboard = btk_widget_get_clipboard (BTK_WIDGET (old_editable), 
 						      BDK_SELECTION_CLIPBOARD);
 
-  g_object_ref (G_OBJECT (old_editable));
+  g_object_ref (B_OBJECT (old_editable));
   btk_clipboard_request_text (clipboard, old_editable_text_received_cb, old_editable);
 }
 

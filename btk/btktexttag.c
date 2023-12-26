@@ -142,24 +142,24 @@ enum {
 
   LAST_ARG
 };
-static void btk_text_tag_finalize     (GObject         *object);
-static void btk_text_tag_set_property (GObject         *object,
+static void btk_text_tag_finalize     (BObject         *object);
+static void btk_text_tag_set_property (BObject         *object,
                                        guint            prop_id,
-                                       const GValue    *value,
-                                       GParamSpec      *pspec);
-static void btk_text_tag_get_property (GObject         *object,
+                                       const BValue    *value,
+                                       BParamSpec      *pspec);
+static void btk_text_tag_get_property (BObject         *object,
                                        guint            prop_id,
-                                       GValue          *value,
-                                       GParamSpec      *pspec);
+                                       BValue          *value,
+                                       BParamSpec      *pspec);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BtkTextTag, btk_text_tag, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextTag, btk_text_tag, B_TYPE_OBJECT)
 
 static void
 btk_text_tag_class_init (BtkTextTagClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->set_property = btk_text_tag_set_property;
   object_class->get_property = btk_text_tag_get_property;
@@ -687,14 +687,14 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
    */
   signals[EVENT] =
     g_signal_new (I_("event"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextTagClass, event),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__OBJECT_BOXED_BOXED,
-                  G_TYPE_BOOLEAN,
+                  B_TYPE_BOOLEAN,
                   3,
-                  G_TYPE_OBJECT,
+                  B_TYPE_OBJECT,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE,
                   BTK_TYPE_TEXT_ITER);
 }
@@ -725,7 +725,7 @@ btk_text_tag_new (const gchar *name)
 }
 
 static void
-btk_text_tag_finalize (GObject *object)
+btk_text_tag_finalize (BObject *object)
 {
   BtkTextTag *text_tag;
 
@@ -744,7 +744,7 @@ btk_text_tag_finalize (GObject *object)
   g_free (text_tag->name);
   text_tag->name = NULL;
 
-  G_OBJECT_CLASS (btk_text_tag_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_tag_parent_class)->finalize (object);
 }
 
 static void
@@ -755,7 +755,7 @@ set_bg_color (BtkTextTag *tag, BdkColor *color)
       if (!tag->bg_color_set)
         {
           tag->bg_color_set = TRUE;
-          g_object_notify (G_OBJECT (tag), "background-set");
+          g_object_notify (B_OBJECT (tag), "background-set");
         }
       
       tag->values->appearance.bg_color = *color;
@@ -765,7 +765,7 @@ set_bg_color (BtkTextTag *tag, BdkColor *color)
       if (tag->bg_color_set)
         {
           tag->bg_color_set = FALSE;
-          g_object_notify (G_OBJECT (tag), "background-set");
+          g_object_notify (B_OBJECT (tag), "background-set");
         }
     }
 }
@@ -778,7 +778,7 @@ set_fg_color (BtkTextTag *tag, BdkColor *color)
       if (!tag->fg_color_set)
         {
           tag->fg_color_set = TRUE;
-          g_object_notify (G_OBJECT (tag), "foreground-set");
+          g_object_notify (B_OBJECT (tag), "foreground-set");
         }
       tag->values->appearance.fg_color = *color;
     }
@@ -787,7 +787,7 @@ set_fg_color (BtkTextTag *tag, BdkColor *color)
       if (tag->fg_color_set)
         {
           tag->fg_color_set = FALSE;
-          g_object_notify (G_OBJECT (tag), "foreground-set");
+          g_object_notify (B_OBJECT (tag), "foreground-set");
         }
     }
 }
@@ -800,7 +800,7 @@ set_pg_bg_color (BtkTextTag *tag, BdkColor *color)
       if (!tag->pg_bg_color_set)
         {
           tag->pg_bg_color_set = TRUE;
-          g_object_notify (G_OBJECT (tag), "paragraph-background-set");
+          g_object_notify (B_OBJECT (tag), "paragraph-background-set");
         }
       else
 	bdk_color_free (tag->values->pg_bg_color);
@@ -812,7 +812,7 @@ set_pg_bg_color (BtkTextTag *tag, BdkColor *color)
       if (tag->pg_bg_color_set)
         {
           tag->pg_bg_color_set = FALSE;
-          g_object_notify (G_OBJECT (tag), "paragraph-background-set");
+          g_object_notify (B_OBJECT (tag), "paragraph-background-set");
 	  bdk_color_free (tag->values->pg_bg_color);
         }
 
@@ -883,7 +883,7 @@ set_font_desc_fields (BangoFontDescription *desc,
 }
 
 static void
-notify_set_changed (GObject       *object,
+notify_set_changed (BObject       *object,
 		    BangoFontMask  changed_mask)
 {
   if (changed_mask & BANGO_FONT_MASK_FAMILY)
@@ -901,7 +901,7 @@ notify_set_changed (GObject       *object,
 }
 
 static void
-notify_fields_changed (GObject       *object,
+notify_fields_changed (BObject       *object,
 		       BangoFontMask  changed_mask)
 {
   if (changed_mask & BANGO_FONT_MASK_FAMILY)
@@ -922,7 +922,7 @@ static void
 set_font_description (BtkTextTag           *text_tag,
                       BangoFontDescription *font_desc)
 {
-  GObject *object = G_OBJECT (text_tag);
+  BObject *object = B_OBJECT (text_tag);
   BangoFontDescription *new_font_desc;
   BangoFontMask old_mask, new_mask, changed_mask, set_changed_mask;
   
@@ -979,10 +979,10 @@ btk_text_tag_ensure_font (BtkTextTag *text_tag)
 }
 
 static void
-btk_text_tag_set_property (GObject      *object,
+btk_text_tag_set_property (BObject      *object,
                            guint         prop_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
+                           const BValue *value,
+                           BParamSpec   *pspec)
 {
   BtkTextTag *text_tag;
   gboolean size_changed = FALSE;
@@ -995,19 +995,19 @@ btk_text_tag_set_property (GObject      *object,
     {
     case PROP_NAME:
       g_return_if_fail (text_tag->name == NULL);
-      text_tag->name = g_value_dup_string (value);
+      text_tag->name = b_value_dup_string (value);
       break;
 
     case PROP_BACKGROUND:
       {
         BdkColor color;
 
-        if (!g_value_get_string (value))
+        if (!b_value_get_string (value))
           set_bg_color (text_tag, NULL);       /* reset to background_set to FALSE */
-        else if (bdk_color_parse (g_value_get_string (value), &color))
+        else if (bdk_color_parse (b_value_get_string (value), &color))
           set_bg_color (text_tag, &color);
         else
-          g_warning ("Don't know color `%s'", g_value_get_string (value));
+          g_warning ("Don't know color `%s'", b_value_get_string (value));
 
         g_object_notify (object, "background-bdk");
       }
@@ -1017,12 +1017,12 @@ btk_text_tag_set_property (GObject      *object,
       {
         BdkColor color;
 
-        if (!g_value_get_string (value))
+        if (!b_value_get_string (value))
           set_fg_color (text_tag, NULL);       /* reset to foreground_set to FALSE */
-        else if (bdk_color_parse (g_value_get_string (value), &color))
+        else if (bdk_color_parse (b_value_get_string (value), &color))
           set_fg_color (text_tag, &color);
         else
-          g_warning ("Don't know color `%s'", g_value_get_string (value));
+          g_warning ("Don't know color `%s'", b_value_get_string (value));
 
         g_object_notify (object, "foreground-bdk");
       }
@@ -1030,7 +1030,7 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_BACKGROUND_BDK:
       {
-        BdkColor *color = g_value_get_boxed (value);
+        BdkColor *color = b_value_get_boxed (value);
 
         set_bg_color (text_tag, color);
       }
@@ -1038,7 +1038,7 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_FOREGROUND_BDK:
       {
-        BdkColor *color = g_value_get_boxed (value);
+        BdkColor *color = b_value_get_boxed (value);
 
         set_fg_color (text_tag, color);
       }
@@ -1046,7 +1046,7 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_BACKGROUND_STIPPLE:
       {
-        BdkBitmap *bitmap = g_value_get_object (value);
+        BdkBitmap *bitmap = b_value_get_object (value);
 
         text_tag->bg_stipple_set = TRUE;
         g_object_notify (object, "background-stipple-set");
@@ -1066,7 +1066,7 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_FOREGROUND_STIPPLE:
       {
-        BdkBitmap *bitmap = g_value_get_object (value);
+        BdkBitmap *bitmap = b_value_get_object (value);
 
         text_tag->fg_stipple_set = TRUE;
         g_object_notify (object, "foreground-stipple-set");
@@ -1089,7 +1089,7 @@ btk_text_tag_set_property (GObject      *object,
         BangoFontDescription *font_desc = NULL;
         const gchar *name;
 
-        name = g_value_get_string (value);
+        name = b_value_get_string (value);
 
         if (name)
           font_desc = bango_font_description_from_string (name);
@@ -1106,7 +1106,7 @@ btk_text_tag_set_property (GObject      *object,
       {
         BangoFontDescription *font_desc;
 
-        font_desc = g_value_get_boxed (value);
+        font_desc = b_value_get_boxed (value);
 
         set_font_description (text_tag, font_desc);
 
@@ -1131,32 +1131,32 @@ btk_text_tag_set_property (GObject      *object,
 	  {
 	  case PROP_FAMILY:
 	    bango_font_description_set_family (text_tag->values->font,
-					       g_value_get_string (value));
+					       b_value_get_string (value));
 	    break;
 	  case PROP_STYLE:
 	    bango_font_description_set_style (text_tag->values->font,
-					      g_value_get_enum (value));
+					      b_value_get_enum (value));
 	    break;
 	  case PROP_VARIANT:
 	    bango_font_description_set_variant (text_tag->values->font,
-						g_value_get_enum (value));
+						b_value_get_enum (value));
 	    break;
 	  case PROP_WEIGHT:
 	    bango_font_description_set_weight (text_tag->values->font,
-					       g_value_get_int (value));
+					       b_value_get_int (value));
 	    break;
 	  case PROP_STRETCH:
 	    bango_font_description_set_stretch (text_tag->values->font,
-						g_value_get_enum (value));
+						b_value_get_enum (value));
 	    break;
 	  case PROP_SIZE:
 	    bango_font_description_set_size (text_tag->values->font,
-					     g_value_get_int (value));
+					     b_value_get_int (value));
 	    g_object_notify (object, "size-points");
 	    break;
 	  case PROP_SIZE_POINTS:
 	    bango_font_description_set_size (text_tag->values->font,
-					     g_value_get_double (value) * BANGO_SCALE);
+					     b_value_get_double (value) * BANGO_SCALE);
 	    g_object_notify (object, "size");
 	    break;
 	  }
@@ -1170,7 +1170,7 @@ btk_text_tag_set_property (GObject      *object,
       }
       
     case PROP_SCALE:
-      text_tag->values->font_scale = g_value_get_double (value);
+      text_tag->values->font_scale = b_value_get_double (value);
       text_tag->scale_set = TRUE;
       g_object_notify (object, "scale-set");
       size_changed = TRUE;
@@ -1178,98 +1178,98 @@ btk_text_tag_set_property (GObject      *object,
       
     case PROP_PIXELS_ABOVE_LINES:
       text_tag->pixels_above_lines_set = TRUE;
-      text_tag->values->pixels_above_lines = g_value_get_int (value);
+      text_tag->values->pixels_above_lines = b_value_get_int (value);
       g_object_notify (object, "pixels-above-lines-set");
       size_changed = TRUE;
       break;
 
     case PROP_PIXELS_BELOW_LINES:
       text_tag->pixels_below_lines_set = TRUE;
-      text_tag->values->pixels_below_lines = g_value_get_int (value);
+      text_tag->values->pixels_below_lines = b_value_get_int (value);
       g_object_notify (object, "pixels-below-lines-set");
       size_changed = TRUE;
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
       text_tag->pixels_inside_wrap_set = TRUE;
-      text_tag->values->pixels_inside_wrap = g_value_get_int (value);
+      text_tag->values->pixels_inside_wrap = b_value_get_int (value);
       g_object_notify (object, "pixels-inside-wrap-set");
       size_changed = TRUE;
       break;
 
     case PROP_EDITABLE:
       text_tag->editable_set = TRUE;
-      text_tag->values->editable = g_value_get_boolean (value);
+      text_tag->values->editable = b_value_get_boolean (value);
       g_object_notify (object, "editable-set");
       break;
 
     case PROP_WRAP_MODE:
       text_tag->wrap_mode_set = TRUE;
-      text_tag->values->wrap_mode = g_value_get_enum (value);
+      text_tag->values->wrap_mode = b_value_get_enum (value);
       g_object_notify (object, "wrap-mode-set");
       size_changed = TRUE;
       break;
 
     case PROP_JUSTIFICATION:
       text_tag->justification_set = TRUE;
-      text_tag->values->justification = g_value_get_enum (value);
+      text_tag->values->justification = b_value_get_enum (value);
       g_object_notify (object, "justification-set");
       size_changed = TRUE;
       break;
 
     case PROP_DIRECTION:
-      text_tag->values->direction = g_value_get_enum (value);
+      text_tag->values->direction = b_value_get_enum (value);
       break;
 
     case PROP_LEFT_MARGIN:
       text_tag->left_margin_set = TRUE;
-      text_tag->values->left_margin = g_value_get_int (value);
+      text_tag->values->left_margin = b_value_get_int (value);
       g_object_notify (object, "left-margin-set");
       size_changed = TRUE;
       break;
 
     case PROP_INDENT:
       text_tag->indent_set = TRUE;
-      text_tag->values->indent = g_value_get_int (value);
+      text_tag->values->indent = b_value_get_int (value);
       g_object_notify (object, "indent-set");
       size_changed = TRUE;
       break;
 
     case PROP_STRIKETHROUGH:
       text_tag->strikethrough_set = TRUE;
-      text_tag->values->appearance.strikethrough = g_value_get_boolean (value);
+      text_tag->values->appearance.strikethrough = b_value_get_boolean (value);
       g_object_notify (object, "strikethrough-set");
       break;
 
     case PROP_RIGHT_MARGIN:
       text_tag->right_margin_set = TRUE;
-      text_tag->values->right_margin = g_value_get_int (value);
+      text_tag->values->right_margin = b_value_get_int (value);
       g_object_notify (object, "right-margin-set");
       size_changed = TRUE;
       break;
 
     case PROP_UNDERLINE:
       text_tag->underline_set = TRUE;
-      text_tag->values->appearance.underline = g_value_get_enum (value);
+      text_tag->values->appearance.underline = b_value_get_enum (value);
       g_object_notify (object, "underline-set");
       break;
 
     case PROP_RISE:
       text_tag->rise_set = TRUE;
-      text_tag->values->appearance.rise = g_value_get_int (value);
+      text_tag->values->appearance.rise = b_value_get_int (value);
       g_object_notify (object, "rise-set");
       size_changed = TRUE;      
       break;
 
     case PROP_BACKGROUND_FULL_HEIGHT:
       text_tag->bg_full_height_set = TRUE;
-      text_tag->values->bg_full_height = g_value_get_boolean (value);
+      text_tag->values->bg_full_height = b_value_get_boolean (value);
       g_object_notify (object, "background-full-height-set");
       break;
 
     case PROP_LANGUAGE:
       text_tag->language_set = TRUE;
-      text_tag->values->language = bango_language_from_string (g_value_get_string (value));
+      text_tag->values->language = bango_language_from_string (b_value_get_string (value));
       g_object_notify (object, "language-set");
       break;
 
@@ -1281,7 +1281,7 @@ btk_text_tag_set_property (GObject      *object,
 
       /* FIXME I'm not sure if this is a memleak or not */
       text_tag->values->tabs =
-        bango_tab_array_copy (g_value_get_boxed (value));
+        bango_tab_array_copy (b_value_get_boxed (value));
 
       g_object_notify (object, "tabs-set");
       
@@ -1290,7 +1290,7 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_INVISIBLE:
       text_tag->invisible_set = TRUE;
-      text_tag->values->invisible = g_value_get_boolean (value);
+      text_tag->values->invisible = b_value_get_boolean (value);
       g_object_notify (object, "invisible-set");
       size_changed = TRUE;
       break;
@@ -1299,12 +1299,12 @@ btk_text_tag_set_property (GObject      *object,
       {
         BdkColor color;
 
-        if (!g_value_get_string (value))
+        if (!b_value_get_string (value))
           set_pg_bg_color (text_tag, NULL);       /* reset to paragraph_background_set to FALSE */
-        else if (bdk_color_parse (g_value_get_string (value), &color))
+        else if (bdk_color_parse (b_value_get_string (value), &color))
           set_pg_bg_color (text_tag, &color);
         else
-          g_warning ("Don't know color `%s'", g_value_get_string (value));
+          g_warning ("Don't know color `%s'", b_value_get_string (value));
 
         g_object_notify (object, "paragraph-background-bdk");
       }
@@ -1312,14 +1312,14 @@ btk_text_tag_set_property (GObject      *object,
 
     case PROP_PARAGRAPH_BACKGROUND_BDK:
       {
-        BdkColor *color = g_value_get_boxed (value);
+        BdkColor *color = b_value_get_boxed (value);
 
         set_pg_bg_color (text_tag, color);
       }
       break;
 
     case PROP_ACCUMULATIVE_MARGIN:
-      text_tag->accumulative_margin = g_value_get_boolean (value);
+      text_tag->accumulative_margin = b_value_get_boolean (value);
       g_object_notify (object, "accumulative-margin");
       size_changed = TRUE;
       break;
@@ -1327,15 +1327,15 @@ btk_text_tag_set_property (GObject      *object,
       /* Whether the value should be used... */
 
     case PROP_BACKGROUND_SET:
-      text_tag->bg_color_set = g_value_get_boolean (value);
+      text_tag->bg_color_set = b_value_get_boolean (value);
       break;
 
     case PROP_FOREGROUND_SET:
-      text_tag->fg_color_set = g_value_get_boolean (value);
+      text_tag->fg_color_set = b_value_get_boolean (value);
       break;
 
     case PROP_BACKGROUND_STIPPLE_SET:
-      text_tag->bg_stipple_set = g_value_get_boolean (value);
+      text_tag->bg_stipple_set = b_value_get_boolean (value);
       if (!text_tag->bg_stipple_set &&
           text_tag->values->appearance.bg_stipple)
         {
@@ -1345,7 +1345,7 @@ btk_text_tag_set_property (GObject      *object,
       break;
 
     case PROP_FOREGROUND_STIPPLE_SET:
-      text_tag->fg_stipple_set = g_value_get_boolean (value);
+      text_tag->fg_stipple_set = b_value_get_boolean (value);
       if (!text_tag->fg_stipple_set &&
           text_tag->values->appearance.fg_stipple)
         {
@@ -1360,7 +1360,7 @@ btk_text_tag_set_property (GObject      *object,
     case PROP_WEIGHT_SET:
     case PROP_STRETCH_SET:
     case PROP_SIZE_SET:
-      if (!g_value_get_boolean (value))
+      if (!b_value_get_boolean (value))
 	{
 	  if (text_tag->values->font)
 	    bango_font_description_unset_fields (text_tag->values->font,
@@ -1373,97 +1373,97 @@ btk_text_tag_set_property (GObject      *object,
 	  btk_text_tag_ensure_font (text_tag);
 	  changed_mask = set_font_desc_fields (text_tag->values->font,
 					       get_property_font_set_mask (prop_id));
-	  notify_fields_changed (G_OBJECT (text_tag), changed_mask);
+	  notify_fields_changed (B_OBJECT (text_tag), changed_mask);
 	}
       break;
 
     case PROP_SCALE_SET:
-      text_tag->scale_set = g_value_get_boolean (value);
+      text_tag->scale_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
       
     case PROP_PIXELS_ABOVE_LINES_SET:
-      text_tag->pixels_above_lines_set = g_value_get_boolean (value);
+      text_tag->pixels_above_lines_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_PIXELS_BELOW_LINES_SET:
-      text_tag->pixels_below_lines_set = g_value_get_boolean (value);
+      text_tag->pixels_below_lines_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_PIXELS_INSIDE_WRAP_SET:
-      text_tag->pixels_inside_wrap_set = g_value_get_boolean (value);
+      text_tag->pixels_inside_wrap_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_EDITABLE_SET:
-      text_tag->editable_set = g_value_get_boolean (value);
+      text_tag->editable_set = b_value_get_boolean (value);
       break;
 
     case PROP_WRAP_MODE_SET:
-      text_tag->wrap_mode_set = g_value_get_boolean (value);
+      text_tag->wrap_mode_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_JUSTIFICATION_SET:
-      text_tag->justification_set = g_value_get_boolean (value);
+      text_tag->justification_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
       
     case PROP_LEFT_MARGIN_SET:
-      text_tag->left_margin_set = g_value_get_boolean (value);
+      text_tag->left_margin_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_INDENT_SET:
-      text_tag->indent_set = g_value_get_boolean (value);
+      text_tag->indent_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_STRIKETHROUGH_SET:
-      text_tag->strikethrough_set = g_value_get_boolean (value);
+      text_tag->strikethrough_set = b_value_get_boolean (value);
       break;
 
     case PROP_RIGHT_MARGIN_SET:
-      text_tag->right_margin_set = g_value_get_boolean (value);
+      text_tag->right_margin_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_UNDERLINE_SET:
-      text_tag->underline_set = g_value_get_boolean (value);
+      text_tag->underline_set = b_value_get_boolean (value);
       break;
 
     case PROP_RISE_SET:
-      text_tag->rise_set = g_value_get_boolean (value);
+      text_tag->rise_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_BACKGROUND_FULL_HEIGHT_SET:
-      text_tag->bg_full_height_set = g_value_get_boolean (value);
+      text_tag->bg_full_height_set = b_value_get_boolean (value);
       break;
 
     case PROP_LANGUAGE_SET:
-      text_tag->language_set = g_value_get_boolean (value);
+      text_tag->language_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_TABS_SET:
-      text_tag->tabs_set = g_value_get_boolean (value);
+      text_tag->tabs_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
 
     case PROP_INVISIBLE_SET:
-      text_tag->invisible_set = g_value_get_boolean (value);
+      text_tag->invisible_set = b_value_get_boolean (value);
       size_changed = TRUE;
       break;
       
     case PROP_PARAGRAPH_BACKGROUND_SET:
-      text_tag->pg_bg_color_set = g_value_get_boolean (value);
+      text_tag->pg_bg_color_set = b_value_get_boolean (value);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 
@@ -1484,10 +1484,10 @@ btk_text_tag_set_property (GObject      *object,
 }
 
 static void
-btk_text_tag_get_property (GObject      *object,
+btk_text_tag_get_property (BObject      *object,
                            guint         prop_id,
-                           GValue       *value,
-                           GParamSpec   *pspec)
+                           BValue       *value,
+                           BParamSpec   *pspec)
 {
   BtkTextTag *tag;
 
@@ -1496,25 +1496,25 @@ btk_text_tag_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, tag->name);
+      b_value_set_string (value, tag->name);
       break;
 
     case PROP_BACKGROUND_BDK:
-      g_value_set_boxed (value, &tag->values->appearance.bg_color);
+      b_value_set_boxed (value, &tag->values->appearance.bg_color);
       break;
 
     case PROP_FOREGROUND_BDK:
-      g_value_set_boxed (value, &tag->values->appearance.fg_color);
+      b_value_set_boxed (value, &tag->values->appearance.fg_color);
       break;
 
     case PROP_BACKGROUND_STIPPLE:
       if (tag->bg_stipple_set)
-        g_value_set_object (value, tag->values->appearance.bg_stipple);
+        b_value_set_object (value, tag->values->appearance.bg_stipple);
       break;
 
     case PROP_FOREGROUND_STIPPLE:
       if (tag->fg_stipple_set)
-        g_value_set_object (value, tag->values->appearance.fg_stipple);
+        b_value_set_object (value, tag->values->appearance.fg_stipple);
       break;
 
     case PROP_FONT:
@@ -1524,13 +1524,13 @@ btk_text_tag_get_property (GObject      *object,
 	  btk_text_tag_ensure_font (tag);
 	  
 	  str = bango_font_description_to_string (tag->values->font);
-          g_value_take_string (value, str);
+          b_value_take_string (value, str);
         }
       break;
 
     case PROP_FONT_DESC:
       btk_text_tag_ensure_font (tag);
-      g_value_set_boxed (value, tag->values->font);
+      b_value_set_boxed (value, tag->values->font);
       break;
 
     case PROP_FAMILY:
@@ -1544,130 +1544,130 @@ btk_text_tag_get_property (GObject      *object,
       switch (prop_id)
 	{
 	case PROP_FAMILY:
-	  g_value_set_string (value, bango_font_description_get_family (tag->values->font));
+	  b_value_set_string (value, bango_font_description_get_family (tag->values->font));
 	  break;
 	  
 	case PROP_STYLE:
-	  g_value_set_enum (value, bango_font_description_get_style (tag->values->font));
+	  b_value_set_enum (value, bango_font_description_get_style (tag->values->font));
 	  break;
 	  
 	case PROP_VARIANT:
-	  g_value_set_enum (value, bango_font_description_get_variant (tag->values->font));
+	  b_value_set_enum (value, bango_font_description_get_variant (tag->values->font));
 	  break;
 	  
 	case PROP_WEIGHT:
-	  g_value_set_int (value, bango_font_description_get_weight (tag->values->font));
+	  b_value_set_int (value, bango_font_description_get_weight (tag->values->font));
 	  break;
 	  
 	case PROP_STRETCH:
-	  g_value_set_enum (value, bango_font_description_get_stretch (tag->values->font));
+	  b_value_set_enum (value, bango_font_description_get_stretch (tag->values->font));
 	  break;
 	  
 	case PROP_SIZE:
-	  g_value_set_int (value, bango_font_description_get_size (tag->values->font));
+	  b_value_set_int (value, bango_font_description_get_size (tag->values->font));
 	  break;
 	  
 	case PROP_SIZE_POINTS:
-	  g_value_set_double (value, ((double)bango_font_description_get_size (tag->values->font)) / (double)BANGO_SCALE);
+	  b_value_set_double (value, ((double)bango_font_description_get_size (tag->values->font)) / (double)BANGO_SCALE);
 	  break;
 	}
       break;
       
     case PROP_SCALE:
-      g_value_set_double (value, tag->values->font_scale);
+      b_value_set_double (value, tag->values->font_scale);
       break;
       
     case PROP_PIXELS_ABOVE_LINES:
-      g_value_set_int (value,  tag->values->pixels_above_lines);
+      b_value_set_int (value,  tag->values->pixels_above_lines);
       break;
 
     case PROP_PIXELS_BELOW_LINES:
-      g_value_set_int (value,  tag->values->pixels_below_lines);
+      b_value_set_int (value,  tag->values->pixels_below_lines);
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
-      g_value_set_int (value,  tag->values->pixels_inside_wrap);
+      b_value_set_int (value,  tag->values->pixels_inside_wrap);
       break;
 
     case PROP_EDITABLE:
-      g_value_set_boolean (value, tag->values->editable);
+      b_value_set_boolean (value, tag->values->editable);
       break;
 
     case PROP_WRAP_MODE:
-      g_value_set_enum (value, tag->values->wrap_mode);
+      b_value_set_enum (value, tag->values->wrap_mode);
       break;
 
     case PROP_JUSTIFICATION:
-      g_value_set_enum (value, tag->values->justification);
+      b_value_set_enum (value, tag->values->justification);
       break;
 
     case PROP_DIRECTION:
-      g_value_set_enum (value, tag->values->direction);
+      b_value_set_enum (value, tag->values->direction);
       break;
       
     case PROP_LEFT_MARGIN:
-      g_value_set_int (value,  tag->values->left_margin);
+      b_value_set_int (value,  tag->values->left_margin);
       break;
 
     case PROP_INDENT:
-      g_value_set_int (value,  tag->values->indent);
+      b_value_set_int (value,  tag->values->indent);
       break;
 
     case PROP_STRIKETHROUGH:
-      g_value_set_boolean (value, tag->values->appearance.strikethrough);
+      b_value_set_boolean (value, tag->values->appearance.strikethrough);
       break;
 
     case PROP_RIGHT_MARGIN:
-      g_value_set_int (value, tag->values->right_margin);
+      b_value_set_int (value, tag->values->right_margin);
       break;
 
     case PROP_UNDERLINE:
-      g_value_set_enum (value, tag->values->appearance.underline);
+      b_value_set_enum (value, tag->values->appearance.underline);
       break;
 
     case PROP_RISE:
-      g_value_set_int (value, tag->values->appearance.rise);
+      b_value_set_int (value, tag->values->appearance.rise);
       break;
 
     case PROP_BACKGROUND_FULL_HEIGHT:
-      g_value_set_boolean (value, tag->values->bg_full_height);
+      b_value_set_boolean (value, tag->values->bg_full_height);
       break;
 
     case PROP_LANGUAGE:
-      g_value_set_string (value, bango_language_to_string (tag->values->language));
+      b_value_set_string (value, bango_language_to_string (tag->values->language));
       break;
 
     case PROP_TABS:
       if (tag->values->tabs)
-        g_value_set_boxed (value, tag->values->tabs);
+        b_value_set_boxed (value, tag->values->tabs);
       break;
 
     case PROP_INVISIBLE:
-      g_value_set_boolean (value, tag->values->invisible);
+      b_value_set_boolean (value, tag->values->invisible);
       break;
       
     case PROP_PARAGRAPH_BACKGROUND_BDK:
-      g_value_set_boxed (value, tag->values->pg_bg_color);
+      b_value_set_boxed (value, tag->values->pg_bg_color);
       break;
 
     case PROP_ACCUMULATIVE_MARGIN:
-      g_value_set_boolean (value, tag->accumulative_margin);
+      b_value_set_boolean (value, tag->accumulative_margin);
       break;
 
     case PROP_BACKGROUND_SET:
-      g_value_set_boolean (value, tag->bg_color_set);
+      b_value_set_boolean (value, tag->bg_color_set);
       break;
 
     case PROP_FOREGROUND_SET:
-      g_value_set_boolean (value, tag->fg_color_set);
+      b_value_set_boolean (value, tag->fg_color_set);
       break;
 
     case PROP_BACKGROUND_STIPPLE_SET:
-      g_value_set_boolean (value, tag->bg_stipple_set);
+      b_value_set_boolean (value, tag->bg_stipple_set);
       break;
 
     case PROP_FOREGROUND_STIPPLE_SET:
-      g_value_set_boolean (value, tag->fg_stipple_set);
+      b_value_set_boolean (value, tag->fg_stipple_set);
       break;
 
     case PROP_FAMILY_SET:
@@ -1679,81 +1679,81 @@ btk_text_tag_get_property (GObject      *object,
       {
 	BangoFontMask set_mask = tag->values->font ? bango_font_description_get_set_fields (tag->values->font) : 0;
 	BangoFontMask test_mask = get_property_font_set_mask (prop_id);
-	g_value_set_boolean (value, (set_mask & test_mask) != 0);
+	b_value_set_boolean (value, (set_mask & test_mask) != 0);
 
 	break;
       }
 
     case PROP_SCALE_SET:
-      g_value_set_boolean (value, tag->scale_set);
+      b_value_set_boolean (value, tag->scale_set);
       break;
       
     case PROP_PIXELS_ABOVE_LINES_SET:
-      g_value_set_boolean (value, tag->pixels_above_lines_set);
+      b_value_set_boolean (value, tag->pixels_above_lines_set);
       break;
 
     case PROP_PIXELS_BELOW_LINES_SET:
-      g_value_set_boolean (value, tag->pixels_below_lines_set);
+      b_value_set_boolean (value, tag->pixels_below_lines_set);
       break;
 
     case PROP_PIXELS_INSIDE_WRAP_SET:
-      g_value_set_boolean (value, tag->pixels_inside_wrap_set);
+      b_value_set_boolean (value, tag->pixels_inside_wrap_set);
       break;
 
     case PROP_EDITABLE_SET:
-      g_value_set_boolean (value, tag->editable_set);
+      b_value_set_boolean (value, tag->editable_set);
       break;
 
     case PROP_WRAP_MODE_SET:
-      g_value_set_boolean (value, tag->wrap_mode_set);
+      b_value_set_boolean (value, tag->wrap_mode_set);
       break;
 
     case PROP_JUSTIFICATION_SET:
-      g_value_set_boolean (value, tag->justification_set);
+      b_value_set_boolean (value, tag->justification_set);
       break;
       
     case PROP_LEFT_MARGIN_SET:
-      g_value_set_boolean (value, tag->left_margin_set);
+      b_value_set_boolean (value, tag->left_margin_set);
       break;
 
     case PROP_INDENT_SET:
-      g_value_set_boolean (value, tag->indent_set);
+      b_value_set_boolean (value, tag->indent_set);
       break;
 
     case PROP_STRIKETHROUGH_SET:
-      g_value_set_boolean (value, tag->strikethrough_set);
+      b_value_set_boolean (value, tag->strikethrough_set);
       break;
 
     case PROP_RIGHT_MARGIN_SET:
-      g_value_set_boolean (value, tag->right_margin_set);
+      b_value_set_boolean (value, tag->right_margin_set);
       break;
 
     case PROP_UNDERLINE_SET:
-      g_value_set_boolean (value, tag->underline_set);
+      b_value_set_boolean (value, tag->underline_set);
       break;
 
     case PROP_RISE_SET:
-      g_value_set_boolean (value, tag->rise_set);
+      b_value_set_boolean (value, tag->rise_set);
       break;
 
     case PROP_BACKGROUND_FULL_HEIGHT_SET:
-      g_value_set_boolean (value, tag->bg_full_height_set);
+      b_value_set_boolean (value, tag->bg_full_height_set);
       break;
 
     case PROP_LANGUAGE_SET:
-      g_value_set_boolean (value, tag->language_set);
+      b_value_set_boolean (value, tag->language_set);
       break;
 
     case PROP_TABS_SET:
-      g_value_set_boolean (value, tag->tabs_set);
+      b_value_set_boolean (value, tag->tabs_set);
       break;
 
     case PROP_INVISIBLE_SET:
-      g_value_set_boolean (value, tag->invisible_set);
+      b_value_set_boolean (value, tag->invisible_set);
       break;
       
     case PROP_PARAGRAPH_BACKGROUND_SET:
-      g_value_set_boolean (value, tag->pg_bg_color_set);
+      b_value_set_boolean (value, tag->pg_bg_color_set);
       break;
 
     case PROP_BACKGROUND:
@@ -1761,7 +1761,7 @@ btk_text_tag_get_property (GObject      *object,
     case PROP_PARAGRAPH_BACKGROUND:
       g_warning ("'foreground', 'background' and 'paragraph_background' properties are not readable, use 'foreground_bdk', 'background_bdk' and 'paragraph_background_bdk'");
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1865,7 +1865,7 @@ btk_text_tag_set_priority (BtkTextTag *tag,
  **/
 gboolean
 btk_text_tag_event (BtkTextTag        *tag,
-                    GObject           *event_object,
+                    BObject           *event_object,
                     BdkEvent          *event,
                     const BtkTextIter *iter)
 {

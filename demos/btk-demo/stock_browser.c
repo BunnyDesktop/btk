@@ -121,10 +121,10 @@ create_model (void)
   GSList *ids;
   GSList *tmp_list;
   
-  store = btk_list_store_new (2, STOCK_ITEM_INFO_TYPE, G_TYPE_STRING);
+  store = btk_list_store_new (2, STOCK_ITEM_INFO_TYPE, B_TYPE_STRING);
 
   ids = btk_stock_list_ids ();
-  ids = g_slist_sort (ids, (GCompareFunc) strcmp);
+  ids = b_slist_sort (ids, (GCompareFunc) strcmp);
   tmp_list = ids;
   while (tmp_list != NULL)
     {
@@ -217,11 +217,11 @@ create_model (void)
       if (info.small_icon)
         g_object_unref (info.small_icon);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
   
-  g_slist_foreach (ids, (GFunc)g_free, NULL);
-  g_slist_free (ids);
+  b_slist_foreach (ids, (GFunc)g_free, NULL);
+  b_slist_free (ids);
 
   return BTK_TREE_MODEL (store);
 }
@@ -267,7 +267,7 @@ selection_changed (BtkTreeSelection *selection)
   BtkTreeIter iter;
   
   treeview = btk_tree_selection_get_tree_view (selection);
-  display = g_object_get_data (G_OBJECT (treeview), "stock-display");
+  display = g_object_get_data (B_OBJECT (treeview), "stock-display");
 
   if (btk_tree_selection_get_selected (selection, &model, &iter))
     {
@@ -499,7 +499,7 @@ do_stock_browser (BtkWidget *do_widget)
       btk_container_add (BTK_CONTAINER (frame), vbox);
 
       display = g_new (StockItemDisplay, 1);
-      g_object_set_data_full (G_OBJECT (treeview),
+      g_object_set_data_full (B_OBJECT (treeview),
                               "stock-display",
                               display,
                               g_free); /* free display with treeview */

@@ -34,8 +34,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION             (btk_printer_option_get_type ())
-#define BTK_PRINTER_OPTION(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION, BtkPrinterOption))
-#define BTK_IS_PRINTER_OPTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION))
+#define BTK_PRINTER_OPTION(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION, BtkPrinterOption))
+#define BTK_IS_PRINTER_OPTION(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION))
 
 typedef struct _BtkPrinterOption       BtkPrinterOption;
 typedef struct _BtkPrinterOptionClass  BtkPrinterOptionClass;
@@ -58,7 +58,7 @@ typedef enum {
 
 struct _BtkPrinterOption
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   char *name;
   char *display_text;
@@ -78,7 +78,7 @@ struct _BtkPrinterOption
 
 struct _BtkPrinterOptionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*changed) (BtkPrinterOption *option);
 

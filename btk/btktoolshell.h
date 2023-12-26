@@ -36,9 +36,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_SHELL            (btk_tool_shell_get_type ())
-#define BTK_TOOL_SHELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShell))
-#define BTK_IS_TOOL_SHELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOL_SHELL))
-#define BTK_TOOL_SHELL_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShellIface))
+#define BTK_TOOL_SHELL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShell))
+#define BTK_IS_TOOL_SHELL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOL_SHELL))
+#define BTK_TOOL_SHELL_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShellIface))
 
 typedef struct _BtkToolShell           BtkToolShell; /* dummy typedef */
 typedef struct _BtkToolShellIface      BtkToolShellIface;

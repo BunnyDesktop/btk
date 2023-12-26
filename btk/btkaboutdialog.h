@@ -34,11 +34,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ABOUT_DIALOG            (btk_about_dialog_get_type ())
-#define BTK_ABOUT_DIALOG(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialog))
-#define BTK_ABOUT_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogClass))
-#define BTK_IS_ABOUT_DIALOG(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ABOUT_DIALOG))
-#define BTK_IS_ABOUT_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ABOUT_DIALOG))
-#define BTK_ABOUT_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogClass))
+#define BTK_ABOUT_DIALOG(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialog))
+#define BTK_ABOUT_DIALOG_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogClass))
+#define BTK_IS_ABOUT_DIALOG(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ABOUT_DIALOG))
+#define BTK_IS_ABOUT_DIALOG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ABOUT_DIALOG))
+#define BTK_ABOUT_DIALOG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogClass))
 
 typedef struct _BtkAboutDialog        BtkAboutDialog;
 typedef struct _BtkAboutDialogClass   BtkAboutDialogClass;

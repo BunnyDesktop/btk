@@ -34,18 +34,18 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_TREE_STORE			(btk_tree_store_get_type ())
-#define BTK_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_STORE, BtkTreeStore))
-#define BTK_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
-#define BTK_IS_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_STORE))
-#define BTK_IS_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_STORE))
-#define BTK_TREE_STORE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
+#define BTK_TREE_STORE(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_STORE, BtkTreeStore))
+#define BTK_TREE_STORE_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
+#define BTK_IS_TREE_STORE(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_STORE))
+#define BTK_IS_TREE_STORE_CLASS(klass)		(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_STORE))
+#define BTK_TREE_STORE_GET_CLASS(obj)		(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
 
 typedef struct _BtkTreeStore       BtkTreeStore;
 typedef struct _BtkTreeStoreClass  BtkTreeStoreClass;
 
 struct _BtkTreeStore
 {
-  GObject parent;
+  BObject parent;
 
   gint GSEAL (stamp);
   gpointer GSEAL (root);
@@ -63,7 +63,7 @@ struct _BtkTreeStore
 
 struct _BtkTreeStoreClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -87,14 +87,14 @@ void          btk_tree_store_set_column_types (BtkTreeStore *tree_store,
 void          btk_tree_store_set_value        (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       gint          column,
-					       GValue       *value);
+					       BValue       *value);
 void          btk_tree_store_set              (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       ...);
 void          btk_tree_store_set_valuesv      (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       gint         *columns,
-					       GValue       *values,
+					       BValue       *values,
 					       gint          n_values);
 void          btk_tree_store_set_valist       (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
@@ -123,7 +123,7 @@ void          btk_tree_store_insert_with_valuesv (BtkTreeStore *tree_store,
 						  BtkTreeIter  *parent,
 						  gint          position,
 						  gint         *columns,
-						  GValue       *values,
+						  BValue       *values,
 						  gint          n_values);
 void          btk_tree_store_prepend          (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,

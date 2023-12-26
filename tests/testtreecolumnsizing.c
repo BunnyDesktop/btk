@@ -40,11 +40,11 @@ create_model (void)
   BtkListStore *store;
 
   store = btk_list_store_new (5,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING);
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING);
 
   for (i = 0; i < N_ROWS; i++)
     {

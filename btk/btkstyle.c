@@ -50,11 +50,11 @@
 /* --- typedefs & structures --- */
 typedef struct {
   GType       widget_type;
-  GParamSpec *pspec;
-  GValue      value;
+  BParamSpec *pspec;
+  BValue      value;
 } PropertyValue;
 
-#define BTK_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_STYLE, BtkStylePrivate))
+#define BTK_STYLE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_STYLE, BtkStylePrivate))
 
 typedef struct _BtkStylePrivate BtkStylePrivate;
 
@@ -63,7 +63,7 @@ struct _BtkStylePrivate {
 };
 
 /* --- prototypes --- */
-static void	 btk_style_finalize		(GObject	*object);
+static void	 btk_style_finalize		(BObject	*object);
 static void	 btk_style_realize		(BtkStyle	*style,
 						 BdkColormap	*colormap);
 static void      btk_style_real_realize        (BtkStyle	*style);
@@ -372,7 +372,7 @@ static const BdkColor btk_default_active_base =    { 0, BTK_VERY_DARK_GRAY };
 static guint realize_signal = 0;
 static guint unrealize_signal = 0;
 
-G_DEFINE_TYPE (BtkStyle, btk_style, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkStyle, btk_style, B_TYPE_OBJECT)
 
 /* --- functions --- */
 
@@ -490,7 +490,7 @@ btk_style_init (BtkStyle *style)
 static void
 btk_style_class_init (BtkStyleClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->finalize = btk_style_finalize;
 
@@ -539,12 +539,12 @@ btk_style_class_init (BtkStyleClass *klass)
    * Since: 2.4
    */
   realize_signal = g_signal_new (I_("realize"),
-				 G_TYPE_FROM_CLASS (object_class),
+				 B_TYPE_FROM_CLASS (object_class),
 				 G_SIGNAL_RUN_FIRST,
 				 G_STRUCT_OFFSET (BtkStyleClass, realize),
 				 NULL, NULL,
 				 _btk_marshal_VOID__VOID,
-				 G_TYPE_NONE, 0);
+				 B_TYPE_NONE, 0);
   /**
    * BtkStyle::unrealize:
    * @style: the object which received the signal
@@ -557,12 +557,12 @@ btk_style_class_init (BtkStyleClass *klass)
    * Since: 2.4
    */
   unrealize_signal = g_signal_new (I_("unrealize"),
-				   G_TYPE_FROM_CLASS (object_class),
+				   B_TYPE_FROM_CLASS (object_class),
 				   G_SIGNAL_RUN_FIRST,
 				   G_STRUCT_OFFSET (BtkStyleClass, unrealize),
 				   NULL, NULL,
 				   _btk_marshal_VOID__VOID,
-				   G_TYPE_NONE, 0);
+				   B_TYPE_NONE, 0);
 }
 
 static void
@@ -577,7 +577,7 @@ clear_property_cache (BtkStyle *style)
 	  PropertyValue *node = &g_array_index (style->property_cache, PropertyValue, i);
 
 	  g_param_spec_unref (node->pspec);
-	  g_value_unset (&node->value);
+	  b_value_unset (&node->value);
 	}
       g_array_free (style->property_cache, TRUE);
       style->property_cache = NULL;
@@ -585,7 +585,7 @@ clear_property_cache (BtkStyle *style)
 }
 
 static void
-btk_style_finalize (GObject *object)
+btk_style_finalize (BObject *object)
 {
   BtkStyle *style = BTK_STYLE (object);
   BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
@@ -604,7 +604,7 @@ btk_style_finalize (GObject *object)
   if (style->styles)
     {
       if (style->styles->data != style)
-        style->styles = g_slist_remove (style->styles, style);
+        style->styles = b_slist_remove (style->styles, style);
       else
         {
           GSList *tmp_list = style->styles->next;
@@ -614,15 +614,15 @@ btk_style_finalize (GObject *object)
               BTK_STYLE (tmp_list->data)->styles = style->styles->next;
               tmp_list = tmp_list->next;
             }
-          g_slist_free_1 (style->styles);
+          b_slist_free_1 (style->styles);
         }
     }
 
-  g_slist_foreach (style->icon_factories, (GFunc) g_object_unref, NULL);
-  g_slist_free (style->icon_factories);
+  b_slist_foreach (style->icon_factories, (GFunc) g_object_unref, NULL);
+  b_slist_free (style->icon_factories);
 
-  g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
-  g_slist_free (priv->color_hashes);
+  b_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
+  b_slist_free (priv->color_hashes);
 
   bango_font_description_free (style->font_desc);
   
@@ -635,7 +635,7 @@ btk_style_finalize (GObject *object)
   if (style->rc_style)
     g_object_unref (style->rc_style);
 
-  G_OBJECT_CLASS (btk_style_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_style_parent_class)->finalize (object);
 }
 
 
@@ -674,7 +674,7 @@ btk_style_duplicate (BtkStyle *style)
    * style, we append it to the list to avoid having 
    * to update the existing ones. 
    */
-  style->styles = g_slist_append (style->styles, new_style);
+  style->styles = b_slist_append (style->styles, new_style);
   new_style->styles = style->styles;  
   
   return new_style;
@@ -730,7 +730,7 @@ btk_style_attach (BtkStyle  *style,
   colormap = bdk_drawable_get_colormap (window);
   
   if (!style->styles)
-    style->styles = g_slist_append (NULL, style);
+    style->styles = b_slist_append (NULL, style);
   
   styles = style->styles;
   while (styles)
@@ -896,7 +896,7 @@ btk_style_lookup_icon_set (BtkStyle   *style,
       if (icon_set)
         return icon_set;
       
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   return btk_icon_factory_lookup_default (stock_id);
@@ -1642,7 +1642,7 @@ btk_style_set_background (BtkStyle    *style,
 static BtkStyle *
 btk_style_real_clone (BtkStyle *style)
 {
-  return g_object_new (G_OBJECT_TYPE (style), NULL);
+  return g_object_new (B_OBJECT_TYPE (style), NULL);
 }
 
 static void
@@ -1689,15 +1689,15 @@ btk_style_real_copy (BtkStyle *style,
   if (src->rc_style)
     g_object_ref (src->rc_style);
 
-  g_slist_foreach (style->icon_factories, (GFunc) g_object_unref, NULL);
-  g_slist_free (style->icon_factories);
-  style->icon_factories = g_slist_copy (src->icon_factories);
-  g_slist_foreach (style->icon_factories, (GFunc) g_object_ref, NULL);
+  b_slist_foreach (style->icon_factories, (GFunc) g_object_unref, NULL);
+  b_slist_free (style->icon_factories);
+  style->icon_factories = b_slist_copy (src->icon_factories);
+  b_slist_foreach (style->icon_factories, (GFunc) g_object_ref, NULL);
 
-  g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
-  g_slist_free (priv->color_hashes);
-  priv->color_hashes = g_slist_copy (src_priv->color_hashes);
-  g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
+  b_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
+  b_slist_free (priv->color_hashes);
+  priv->color_hashes = b_slist_copy (src_priv->color_hashes);
+  b_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
 
   /* don't copy, just clear cache */
   clear_property_cache (style);
@@ -1733,11 +1733,11 @@ btk_style_real_init_from_rc (BtkStyle   *style,
   if (rc_style->ythickness >= 0)
     style->ythickness = rc_style->ythickness;
 
-  style->icon_factories = g_slist_copy (rc_style->icon_factories);
-  g_slist_foreach (style->icon_factories, (GFunc) g_object_ref, NULL);
+  style->icon_factories = b_slist_copy (rc_style->icon_factories);
+  b_slist_foreach (style->icon_factories, (GFunc) g_object_ref, NULL);
 
-  priv->color_hashes = g_slist_copy (_btk_rc_style_get_color_hashes (rc_style));
-  g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
+  priv->color_hashes = b_slist_copy (_btk_rc_style_get_color_hashes (rc_style));
+  b_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
 }
 
 static gint
@@ -1758,7 +1758,7 @@ style_property_values_cmp (gconstpointer bsearch_node1,
  * @style: a #BtkStyle
  * @widget_type: the #GType of a descendant of #BtkWidget
  * @property_name: the name of the style property to get
- * @value: a #GValue where the value of the property being
+ * @value: a #BValue where the value of the property being
  *     queried will be stored
  *
  * Queries the value of a style property corresponding to a
@@ -1770,12 +1770,12 @@ void
 btk_style_get_style_property (BtkStyle     *style,
                               GType        widget_type,
                               const gchar *property_name,
-                              GValue      *value)
+                              BValue      *value)
 {
   BtkWidgetClass *klass;
-  GParamSpec *pspec;
+  BParamSpec *pspec;
   BtkRcPropertyParser parser;
-  const GValue *peek_value;
+  const BValue *peek_value;
 
   klass = g_type_class_ref (widget_type);
   pspec = btk_widget_class_find_style_property (klass, property_name);
@@ -1796,9 +1796,9 @@ btk_style_get_style_property (BtkStyle     *style,
   peek_value = _btk_style_peek_property_value (style, widget_type, pspec, parser);
 
   if (G_VALUE_TYPE (value) == G_PARAM_SPEC_VALUE_TYPE (pspec))
-    g_value_copy (peek_value, value);
-  else if (g_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
-    g_value_transform (peek_value, value);
+    b_value_copy (peek_value, value);
+  else if (b_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
+    b_value_transform (peek_value, value);
   else
     g_warning ("can't retrieve style property `%s' of type `%s' as value of type `%s'",
                pspec->name,
@@ -1836,9 +1836,9 @@ btk_style_get_valist (BtkStyle    *style,
   property_name = first_property_name;
   while (property_name)
     {
-      GParamSpec *pspec;
+      BParamSpec *pspec;
       BtkRcPropertyParser parser;
-      const GValue *peek_value;
+      const BValue *peek_value;
       gchar *error;
 
       pspec = btk_widget_class_find_style_property (klass, property_name);
@@ -1897,10 +1897,10 @@ btk_style_get (BtkStyle    *style,
   va_end (var_args);
 }
 
-const GValue*
+const BValue*
 _btk_style_peek_property_value (BtkStyle           *style,
 				GType               widget_type,
-				GParamSpec         *pspec,
+				BParamSpec         *pspec,
 				BtkRcPropertyParser parser)
 {
   PropertyValue *pcache, key = { 0, NULL, { 0, } };
@@ -1937,7 +1937,7 @@ _btk_style_peek_property_value (BtkStyle           *style,
 
   /* cache miss, initialize value type, then set contents */
   g_param_spec_ref (pcache->pspec);
-  g_value_init (&pcache->value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  b_value_init (&pcache->value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
   /* value provided by rc style? */
   if (style->rc_style)
@@ -5197,15 +5197,15 @@ get_insensitive_layout (BdkDrawable *drawable,
               if (need_stipple)
                 break;
           
-              tmp_list = g_slist_next (tmp_list);
+              tmp_list = b_slist_next (tmp_list);
             }
 
           br = range_new (run->item->offset, run->item->offset + run->item->length);
       
           if (need_stipple)
-            stippled_ranges = g_slist_prepend (stippled_ranges, br);
+            stippled_ranges = b_slist_prepend (stippled_ranges, br);
           else
-            embossed_ranges = g_slist_prepend (embossed_ranges, br);
+            embossed_ranges = b_slist_prepend (embossed_ranges, br);
         }
     }
   while (bango_layout_iter_next_run (iter));
@@ -5239,10 +5239,10 @@ get_insensitive_layout (BdkDrawable *drawable,
 
       g_free (br);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  g_slist_free (embossed_ranges);
+  b_slist_free (embossed_ranges);
   
   tmp_list = stippled_ranges;
   while (tmp_list != NULL)
@@ -5272,10 +5272,10 @@ get_insensitive_layout (BdkDrawable *drawable,
 
       g_free (br);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  g_slist_free (stippled_ranges);
+  b_slist_free (stippled_ranges);
   
   if (stipple)
     g_object_unref (stipple);
@@ -6967,7 +6967,7 @@ style_unrealize_cursor_gcs (BtkStyle *style)
 {
   CursorInfo *
   
-  cursor_info = g_object_get_data (G_OBJECT (style), "btk-style-cursor-info");
+  cursor_info = g_object_get_data (B_OBJECT (style), "btk-style-cursor-info");
   if (cursor_info)
     {
       if (cursor_info->primary_gc)
@@ -6977,7 +6977,7 @@ style_unrealize_cursor_gcs (BtkStyle *style)
 	btk_gc_release (cursor_info->secondary_gc);
       
       g_free (cursor_info);
-      g_object_set_data (G_OBJECT (style), I_("btk-style-cursor-info"), NULL);
+      g_object_set_data (B_OBJECT (style), I_("btk-style-cursor-info"), NULL);
     }
 }
 
@@ -7011,14 +7011,14 @@ get_insertion_cursor_gc (BtkWidget *widget,
 {
   CursorInfo *cursor_info;
 
-  cursor_info = g_object_get_data (G_OBJECT (widget->style), "btk-style-cursor-info");
+  cursor_info = g_object_get_data (B_OBJECT (widget->style), "btk-style-cursor-info");
   if (!cursor_info)
     {
       cursor_info = g_new (CursorInfo, 1);
-      g_object_set_data (G_OBJECT (widget->style), I_("btk-style-cursor-info"), cursor_info);
+      g_object_set_data (B_OBJECT (widget->style), I_("btk-style-cursor-info"), cursor_info);
       cursor_info->primary_gc = NULL;
       cursor_info->secondary_gc = NULL;
-      cursor_info->for_type = G_TYPE_INVALID;
+      cursor_info->for_type = B_TYPE_INVALID;
     }
 
   /* We have to keep track of the type because btk_widget_style_get()
@@ -7027,9 +7027,9 @@ get_insertion_cursor_gc (BtkWidget *widget,
    * BtkEntry::cursor-color = "red" in a style will modify the cursor
    * color for entries but not for text view.
    */
-  if (cursor_info->for_type != G_OBJECT_TYPE (widget))
+  if (cursor_info->for_type != B_OBJECT_TYPE (widget))
     {
-      cursor_info->for_type = G_OBJECT_TYPE (widget);
+      cursor_info->for_type = B_OBJECT_TYPE (widget);
       if (cursor_info->primary_gc)
 	{
 	  btk_gc_release (cursor_info->primary_gc);

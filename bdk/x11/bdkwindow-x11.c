@@ -110,7 +110,7 @@ static void     move_to_current_desktop           (BdkWindow *window);
 static BdkColormap* bdk_window_impl_x11_get_colormap (BdkDrawable *drawable);
 static void         bdk_window_impl_x11_set_colormap (BdkDrawable *drawable,
 						      BdkColormap *cmap);
-static void        bdk_window_impl_x11_finalize   (GObject            *object);
+static void        bdk_window_impl_x11_finalize   (BObject            *object);
 static void        bdk_window_impl_iface_init     (BdkWindowImplIface *iface);
 
 #define WINDOW_IS_TOPLEVEL_OR_FOREIGN(window) \
@@ -171,7 +171,7 @@ _bdk_x11_window_get_toplevel (BdkWindow *window)
 static void
 bdk_window_impl_x11_class_init (BdkWindowImplX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   object_class->finalize = bdk_window_impl_x11_finalize;
@@ -181,7 +181,7 @@ bdk_window_impl_x11_class_init (BdkWindowImplX11Class *klass)
 }
 
 static void
-bdk_window_impl_x11_finalize (GObject *object)
+bdk_window_impl_x11_finalize (BObject *object)
 {
   BdkWindowObject *wrapper;
   BdkDrawableImplX11 *draw_impl;
@@ -210,7 +210,7 @@ bdk_window_impl_x11_finalize (GObject *object)
   if (window_impl->cursor)
     bdk_cursor_unref (window_impl->cursor);
 
-  G_OBJECT_CLASS (bdk_window_impl_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_window_impl_x11_parent_class)->finalize (object);
 }
 
 static void
@@ -3943,7 +3943,7 @@ bdk_window_set_icon (BdkWindow *window,
 static gboolean
 bdk_window_icon_name_set (BdkWindow *window)
 {
-  return GPOINTER_TO_UINT (g_object_get_qdata (G_OBJECT (window),
+  return GPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (window),
 					       g_quark_from_static_string ("bdk-icon-name-set")));
 }
 
@@ -3975,7 +3975,7 @@ bdk_window_set_icon_name (BdkWindow   *window,
 
   display = bdk_drawable_get_display (window);
 
-  g_object_set_qdata (G_OBJECT (window), g_quark_from_static_string ("bdk-icon-name-set"),
+  g_object_set_qdata (B_OBJECT (window), g_quark_from_static_string ("bdk-icon-name-set"),
                       GUINT_TO_POINTER (name != NULL));
 
   if (name != NULL)
@@ -4965,14 +4965,14 @@ get_move_resize_data (BdkDisplay *display,
   if (!move_resize_quark)
     move_resize_quark = g_quark_from_static_string ("bdk-window-moveresize");
   
-  mv_resize = g_object_get_qdata (G_OBJECT (display), move_resize_quark);
+  mv_resize = g_object_get_qdata (B_OBJECT (display), move_resize_quark);
 
   if (!mv_resize && create)
     {
       mv_resize = g_new0 (MoveResizeData, 1);
       mv_resize->display = display;
       
-      g_object_set_qdata (G_OBJECT (display), move_resize_quark, mv_resize);
+      g_object_set_qdata (B_OBJECT (display), move_resize_quark, mv_resize);
     }
 
   return mv_resize;

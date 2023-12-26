@@ -49,7 +49,7 @@
 				 *    unrelated code portions otherwise
 				 */
 
-#define BTK_SCALE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SCALE, BtkScalePrivate))
+#define BTK_SCALE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SCALE, BtkScalePrivate))
 
 typedef struct _BtkScalePrivate BtkScalePrivate;
 
@@ -82,14 +82,14 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-static void     btk_scale_set_property            (GObject        *object,
+static void     btk_scale_set_property            (BObject        *object,
                                                    guint           prop_id,
-                                                   const GValue   *value,
-                                                   GParamSpec     *pspec);
-static void     btk_scale_get_property            (GObject        *object,
+                                                   const BValue   *value,
+                                                   BParamSpec     *pspec);
+static void     btk_scale_get_property            (BObject        *object,
                                                    guint           prop_id,
-                                                   GValue         *value,
-                                                   GParamSpec     *pspec);
+                                                   BValue         *value,
+                                                   BParamSpec     *pspec);
 static void     btk_scale_size_request            (BtkWidget      *widget,
                                                    BtkRequisition *requisition);
 static void     btk_scale_style_set               (BtkWidget      *widget,
@@ -104,7 +104,7 @@ static void     btk_scale_get_mark_label_size     (BtkScale        *scale,
                                                    gint            *count2,
                                                    gint            *width2,
                                                    gint            *height2);
-static void     btk_scale_finalize                (GObject        *object);
+static void     btk_scale_finalize                (BObject        *object);
 static void     btk_scale_screen_changed          (BtkWidget      *widget,
                                                    BdkScreen      *old_screen);
 static gboolean btk_scale_expose                  (BtkWidget      *widget,
@@ -115,13 +115,13 @@ static void     btk_scale_real_get_layout_offsets (BtkScale       *scale,
 static void     btk_scale_buildable_interface_init   (BtkBuildableIface *iface);
 static gboolean btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
                                                       BtkBuilder    *builder,
-                                                      GObject       *child,
+                                                      BObject       *child,
                                                       const gchar   *tagname,
                                                       GMarkupParser *parser,
                                                       gpointer      *data);
 static void     btk_scale_buildable_custom_finished  (BtkBuildable  *buildable,
                                                       BtkBuilder    *builder,
-                                                      GObject       *child,
+                                                      BObject       *child,
                                                       const gchar   *tagname,
                                                       gpointer       user_data);
 
@@ -145,8 +145,8 @@ compare_marks (gconstpointer a, gconstpointer b, gpointer data)
 }
 
 static void
-btk_scale_notify (GObject    *object,
-                  GParamSpec *pspec)
+btk_scale_notify (BObject    *object,
+                  BParamSpec *pspec)
 {
   if (strcmp (pspec->name, "orientation") == 0)
     {
@@ -162,11 +162,11 @@ btk_scale_notify (GObject    *object,
       gint i, n;
       gdouble *values;
 
-      priv->marks = g_slist_sort_with_data (priv->marks,
+      priv->marks = b_slist_sort_with_data (priv->marks,
                                             compare_marks,
                                             GINT_TO_POINTER (btk_range_get_inverted (BTK_RANGE (object))));
 
-      n = g_slist_length (priv->marks);
+      n = b_slist_length (priv->marks);
       values = g_new (gdouble, n);
       for (m = priv->marks, i = 0; m; m = m->next, i++)
         {
@@ -179,22 +179,22 @@ btk_scale_notify (GObject    *object,
       g_free (values);
     }
 
-  if (G_OBJECT_CLASS (btk_scale_parent_class)->notify)
-    G_OBJECT_CLASS (btk_scale_parent_class)->notify (object, pspec);
+  if (B_OBJECT_CLASS (btk_scale_parent_class)->notify)
+    B_OBJECT_CLASS (btk_scale_parent_class)->notify (object, pspec);
 }
 
 
 static gboolean
 single_string_accumulator (GSignalInvocationHint *ihint,
-                           GValue                *return_accu,
-                           const GValue          *handler_return,
+                           BValue                *return_accu,
+                           const BValue          *handler_return,
                            gpointer               dummy)
 {
   gboolean continue_emission;
   const gchar *str;
   
-  str = g_value_get_string (handler_return);
-  g_value_set_string (return_accu, str);
+  str = b_value_get_string (handler_return);
+  b_value_set_string (return_accu, str);
   continue_emission = str == NULL;
   
   return continue_emission;
@@ -209,12 +209,12 @@ single_string_accumulator (GSignalInvocationHint *ihint,
 static void
 btk_scale_class_init (BtkScaleClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkWidgetClass *widget_class;
   BtkRangeClass  *range_class;
   BtkBindingSet  *binding_set;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   range_class = (BtkRangeClass*) class;
   widget_class = (BtkWidgetClass*) class;
   
@@ -261,13 +261,13 @@ btk_scale_class_init (BtkScaleClass *class)
    */
   signals[FORMAT_VALUE] =
     g_signal_new (I_("format-value"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkScaleClass, format_value),
                   single_string_accumulator, NULL,
                   _btk_marshal_STRING__DOUBLE,
-                  G_TYPE_STRING, 1,
-                  G_TYPE_DOUBLE);
+                  B_TYPE_STRING, 1,
+                  B_TYPE_DOUBLE);
 
   g_object_class_install_property (bobject_class,
                                    PROP_DIGITS,
@@ -457,10 +457,10 @@ btk_scale_init (BtkScale *scale)
 }
 
 static void
-btk_scale_set_property (GObject      *object,
+btk_scale_set_property (BObject      *object,
 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkScale *scale;
 
@@ -469,25 +469,25 @@ btk_scale_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_DIGITS:
-      btk_scale_set_digits (scale, g_value_get_int (value));
+      btk_scale_set_digits (scale, b_value_get_int (value));
       break;
     case PROP_DRAW_VALUE:
-      btk_scale_set_draw_value (scale, g_value_get_boolean (value));
+      btk_scale_set_draw_value (scale, b_value_get_boolean (value));
       break;
     case PROP_VALUE_POS:
-      btk_scale_set_value_pos (scale, g_value_get_enum (value));
+      btk_scale_set_value_pos (scale, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_scale_get_property (GObject      *object,
+btk_scale_get_property (BObject      *object,
 			guint         prop_id,
-			GValue       *value,
-			GParamSpec   *pspec)
+			BValue       *value,
+			BParamSpec   *pspec)
 {
   BtkScale *scale;
 
@@ -496,16 +496,16 @@ btk_scale_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_DIGITS:
-      g_value_set_int (value, scale->digits);
+      b_value_set_int (value, scale->digits);
       break;
     case PROP_DRAW_VALUE:
-      g_value_set_boolean (value, scale->draw_value);
+      b_value_set_boolean (value, scale->draw_value);
       break;
     case PROP_VALUE_POS:
-      g_value_set_enum (value, scale->value_pos);
+      b_value_set_enum (value, scale->value_pos);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -624,7 +624,7 @@ btk_scale_set_digits (BtkScale *scale,
       _btk_scale_clear_layout (scale);
       btk_widget_queue_resize (BTK_WIDGET (scale));
 
-      g_object_notify (G_OBJECT (scale), "digits");
+      g_object_notify (B_OBJECT (scale), "digits");
     }
 }
 
@@ -672,7 +672,7 @@ btk_scale_set_draw_value (BtkScale *scale,
 
       btk_widget_queue_resize (BTK_WIDGET (scale));
 
-      g_object_notify (G_OBJECT (scale), "draw-value");
+      g_object_notify (B_OBJECT (scale), "draw-value");
     }
 }
 
@@ -717,7 +717,7 @@ btk_scale_set_value_pos (BtkScale        *scale,
       if (btk_widget_get_visible (widget) && btk_widget_get_mapped (widget))
 	btk_widget_queue_resize (widget);
 
-      g_object_notify (G_OBJECT (scale), "value-pos");
+      g_object_notify (B_OBJECT (scale), "value-pos");
     }
 }
 
@@ -1300,14 +1300,14 @@ _btk_scale_format_value (BtkScale *scale,
 }
 
 static void
-btk_scale_finalize (GObject *object)
+btk_scale_finalize (BObject *object)
 {
   BtkScale *scale = BTK_SCALE (object);
 
   _btk_scale_clear_layout (scale);
   btk_scale_clear_marks (scale);
 
-  G_OBJECT_CLASS (btk_scale_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_scale_parent_class)->finalize (object);
 }
 
 /**
@@ -1420,8 +1420,8 @@ btk_scale_clear_marks (BtkScale *scale)
 
   g_return_if_fail (BTK_IS_SCALE (scale));
 
-  g_slist_foreach (priv->marks, (GFunc)btk_scale_mark_free, NULL);
-  g_slist_free (priv->marks);
+  b_slist_foreach (priv->marks, (GFunc)btk_scale_mark_free, NULL);
+  b_slist_free (priv->marks);
   priv->marks = NULL;
 
   _btk_range_set_stop_values (BTK_RANGE (scale), NULL, 0);
@@ -1470,13 +1470,13 @@ btk_scale_add_mark (BtkScale        *scale,
   mark->markup = g_strdup (markup);
   mark->position = position;
  
-  priv->marks = g_slist_insert_sorted_with_data (priv->marks, mark,
+  priv->marks = b_slist_insert_sorted_with_data (priv->marks, mark,
                                                  (GCompareFunc) compare_marks,
                                                  GINT_TO_POINTER (
                                                    btk_range_get_inverted (BTK_RANGE (scale)) 
                                                    ));
 
-  n = g_slist_length (priv->marks);
+  n = b_slist_length (priv->marks);
   values = g_new (gdouble, n);
   for (m = priv->marks, i = 0; m; m = m->next, i++)
     {
@@ -1563,22 +1563,22 @@ marks_start_element (GMarkupParseContext *context,
             msg_context = values[i];
           else if (strcmp (names[i], "value") == 0)
             {
-              GValue gvalue = { 0, };
+              BValue gvalue = { 0, };
 
-              if (!btk_builder_value_from_string_type (parser_data->builder, G_TYPE_DOUBLE, values[i], &gvalue, error))
+              if (!btk_builder_value_from_string_type (parser_data->builder, B_TYPE_DOUBLE, values[i], &gvalue, error))
                 return;
 
-              value = g_value_get_double (&gvalue);
+              value = b_value_get_double (&gvalue);
               has_value = TRUE;
             }
           else if (strcmp (names[i], "position") == 0)
             {
-              GValue gvalue = { 0, };
+              BValue gvalue = { 0, };
 
               if (!btk_builder_value_from_string_type (parser_data->builder, BTK_TYPE_POSITION_TYPE, values[i], &gvalue, error))
                 return;
 
-              position = g_value_get_enum (&gvalue);
+              position = b_value_get_enum (&gvalue);
             }
           else
             {
@@ -1617,7 +1617,7 @@ marks_start_element (GMarkupParseContext *context,
       mark->context = g_strdup (msg_context);
       mark->translatable = translatable;
 
-      parser_data->marks = g_slist_prepend (parser_data->marks, mark);
+      parser_data->marks = b_slist_prepend (parser_data->marks, mark);
     }
   else
     {
@@ -1662,7 +1662,7 @@ static const GMarkupParser marks_parser =
 static gboolean
 btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
                                       BtkBuilder    *builder,
-                                      GObject       *child,
+                                      BObject       *child,
                                       const gchar   *tagname,
                                       GMarkupParser *parser,
                                       gpointer      *data)
@@ -1690,7 +1690,7 @@ btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_scale_buildable_custom_finished (BtkBuildable *buildable,
                                      BtkBuilder   *builder,
-                                     GObject      *child,
+                                     BObject      *child,
                                      const gchar  *tagname,
                                      gpointer      user_data)
 {
@@ -1720,7 +1720,7 @@ btk_scale_buildable_custom_finished (BtkBuildable *buildable,
           mark_data_free (mdata);
         }
 
-      g_slist_free (marks_data->marks);
+      b_slist_free (marks_data->marks);
       g_slice_free (MarksSubparserData, marks_data);
     }
 }

@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_DIALOG             (btk_file_chooser_dialog_get_type ())
-#define BTK_FILE_CHOOSER_DIALOG(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialog))
-#define BTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
-#define BTK_IS_FILE_CHOOSER_DIALOG(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG))
-#define BTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG))
-#define BTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
+#define BTK_FILE_CHOOSER_DIALOG(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialog))
+#define BTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
+#define BTK_IS_FILE_CHOOSER_DIALOG(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
 
 typedef struct _BtkFileChooserDialog        BtkFileChooserDialog;
 typedef struct _BtkFileChooserDialogPrivate BtkFileChooserDialogPrivate;

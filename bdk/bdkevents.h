@@ -558,7 +558,7 @@ void bdk_add_client_message_filter (BdkAtom       message_type,
 				    gpointer      data);
 
 gboolean bdk_setting_get (const gchar *name,
-			  GValue      *value); 
+			  BValue      *value); 
 #endif /* BDK_MULTIHEAD_SAFE */
 
 B_END_DECLS

@@ -249,7 +249,7 @@ main (int argc, char **argv)
 
   btk_init (&argc, &argv);
 
-  model = btk_list_store_new (1, G_TYPE_STRING);
+  model = btk_list_store_new (1, B_TYPE_STRING);
   contents = g_array_new (FALSE, FALSE, sizeof (char));
   
   dialog = btk_dialog_new_with_buttons ("BtkComboBox model changes",

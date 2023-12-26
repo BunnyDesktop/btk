@@ -39,7 +39,7 @@ static void free_object_info (ObjectInfo *info);
 static inline void
 state_push (ParserData *data, gpointer info)
 {
-  data->stack = g_slist_prepend (data->stack, info);
+  data->stack = b_slist_prepend (data->stack, info);
 }
 
 static inline gpointer
@@ -60,7 +60,7 @@ state_pop (ParserData *data)
     return NULL;
 
   old = data->stack->data;
-  data->stack = g_slist_delete_link (data->stack, data->stack);
+  data->stack = b_slist_delete_link (data->stack, data->stack);
   return old;
 }
 #define state_peek_info(data, st) ((st*)state_peek(data))
@@ -180,19 +180,19 @@ _btk_builder_boolean_from_string (const gchar  *string,
   return retval;
 }
 
-static GObject *
+static BObject *
 builder_construct (ParserData  *data,
                    ObjectInfo  *object_info,
 		   GError     **error)
 {
-  GObject *object;
+  BObject *object;
 
   g_assert (object_info != NULL);
 
   if (object_info->object)
     return object_info->object;
 
-  object_info->properties = g_slist_reverse (object_info->properties);
+  object_info->properties = b_slist_reverse (object_info->properties);
 
   object = _btk_builder_construct (data->builder, object_info, error);
   if (!object)
@@ -219,7 +219,7 @@ _get_type_by_symbol (const gchar* symbol)
     return NULL;
   
   type = func ();
-  if (type == G_TYPE_INVALID)
+  if (type == B_TYPE_INVALID)
     return NULL;
 
   return g_strdup (g_type_name (type));
@@ -417,10 +417,10 @@ static void
 free_object_info (ObjectInfo *info)
 {
   /* Do not free the signal items, which BtkBuilder takes ownership of */
-  g_slist_free (info->signals);
-  g_slist_foreach (info->properties,
+  b_slist_free (info->signals);
+  b_slist_foreach (info->properties,
                    (GFunc)free_property_info, NULL);
-  g_slist_free (info->properties);
+  b_slist_free (info->properties);
   g_free (info->constructor);
   g_free (info->class_name);
   g_free (info->id);
@@ -680,8 +680,8 @@ parse_interface (ParserData   *data,
 }
 
 static SubParser *
-create_subparser (GObject       *object,
-		  GObject       *child,
+create_subparser (BObject       *object,
+		  BObject       *child,
 		  const gchar   *element_name,
 		  GMarkupParser *parser,
 		  gpointer       user_data)
@@ -752,7 +752,7 @@ subparser_end (GMarkupParseContext *context,
   g_free (data->subparser->parser);
       
   if (BTK_BUILDABLE_GET_IFACE (data->subparser->object)->custom_finished)
-    data->custom_finalizers = g_slist_prepend (data->custom_finalizers,
+    data->custom_finalizers = b_slist_prepend (data->custom_finalizers,
 					       data->subparser);
   else
     free_subparser (data->subparser);
@@ -771,8 +771,8 @@ parse_custom (GMarkupParseContext *context,
   CommonInfo* parent_info;
   GMarkupParser parser;
   gpointer subparser_data;
-  GObject *object;
-  GObject *child;
+  BObject *object;
+  BObject *child;
 
   parent_info = state_peek_info (data, CommonInfo);
   if (!parent_info)
@@ -783,7 +783,7 @@ parse_custom (GMarkupParseContext *context,
       ObjectInfo* object_info = (ObjectInfo*)parent_info;
       if (!object_info->object)
 	{
-	  object_info->properties = g_slist_reverse (object_info->properties);
+	  object_info->properties = b_slist_reverse (object_info->properties);
 	  object_info->object = _btk_builder_construct (data->builder,
 							object_info,
 							error);
@@ -989,7 +989,7 @@ end_element (GMarkupParseContext *context,
 
       if (BTK_IS_BUILDABLE (object_info->object) &&
           BTK_BUILDABLE_GET_IFACE (object_info->object)->parser_finished)
-        data->finalizers = g_slist_prepend (data->finalizers, object_info->object);
+        data->finalizers = b_slist_prepend (data->finalizers, object_info->object);
       _btk_builder_add_signals (data->builder, object_info->signals);
 
       free_object_info (object_info);
@@ -1018,7 +1018,7 @@ end_element (GMarkupParseContext *context,
             }
 
           object_info->properties =
-            g_slist_prepend (object_info->properties, prop_info);
+            b_slist_prepend (object_info->properties, prop_info);
         }
       else
         g_assert_not_reached ();
@@ -1037,7 +1037,7 @@ end_element (GMarkupParseContext *context,
       ObjectInfo *object_info = (ObjectInfo*)state_peek_info (data, CommonInfo);
       signal_info->object_name = g_strdup (object_info->id);
       object_info->signals =
-        g_slist_prepend (object_info->signals, signal_info);
+        b_slist_prepend (object_info->signals, signal_info);
     }
   else if (strcmp (element_name, "placeholder") == 0)
     {
@@ -1145,7 +1145,7 @@ _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
       data->inside_requested_object = FALSE;
       for (i = 0; requested_objs[i]; ++i)
         {
-          data->requested_objects = g_slist_prepend (data->requested_objects,
+          data->requested_objects = b_slist_prepend (data->requested_objects,
                                                      g_strdup (requested_objs[i]));	
         }
     }
@@ -1165,7 +1165,7 @@ _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
   _btk_builder_finish (builder);
 
   /* Custom parser_finished */
-  data->custom_finalizers = g_slist_reverse (data->custom_finalizers);
+  data->custom_finalizers = b_slist_reverse (data->custom_finalizers);
   for (l = data->custom_finalizers; l; l = l->next)
     {
       SubParser *sub = (SubParser*)l->data;
@@ -1178,7 +1178,7 @@ _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
     }
   
   /* Common parser_finished, for all created objects */
-  data->finalizers = g_slist_reverse (data->finalizers);
+  data->finalizers = b_slist_reverse (data->finalizers);
   for (l = data->finalizers; l; l = l->next)
     {
       BtkBuildable *buildable = (BtkBuildable*)l->data;
@@ -1187,13 +1187,13 @@ _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
 
  out:
 
-  g_slist_foreach (data->stack, (GFunc)free_info, NULL);
-  g_slist_free (data->stack);
-  g_slist_foreach (data->custom_finalizers, (GFunc)free_subparser, NULL);
-  g_slist_free (data->custom_finalizers);
-  g_slist_free (data->finalizers);
-  g_slist_foreach (data->requested_objects, (GFunc) g_free, NULL);
-  g_slist_free (data->requested_objects);
+  b_slist_foreach (data->stack, (GFunc)free_info, NULL);
+  b_slist_free (data->stack);
+  b_slist_foreach (data->custom_finalizers, (GFunc)free_subparser, NULL);
+  b_slist_free (data->custom_finalizers);
+  b_slist_free (data->finalizers);
+  b_slist_foreach (data->requested_objects, (GFunc) g_free, NULL);
+  b_slist_free (data->requested_objects);
   g_free (data->domain);
   g_hash_table_destroy (data->object_ids);
   g_markup_parse_context_free (data->ctx);

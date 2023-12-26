@@ -417,8 +417,8 @@ btk_target_list_add_image_targets (BtkTargetList *list,
       name = bdk_pixbuf_format_get_name (fmt);
       if (strcmp (name, "png") == 0)
 	{
-	  formats = g_slist_delete_link (formats, f);
-	  formats = g_slist_prepend (formats, fmt);
+	  formats = b_slist_delete_link (formats, f);
+	  formats = b_slist_prepend (formats, fmt);
 
 	  g_free (name);
 
@@ -444,7 +444,7 @@ btk_target_list_add_image_targets (BtkTargetList *list,
       g_strfreev (mimes);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
 }
 
 /**
@@ -786,7 +786,7 @@ btk_selection_target_list_get (BtkWidget    *widget,
   GList *tmp_list;
   GList *lists;
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -802,7 +802,7 @@ btk_selection_target_list_get (BtkWidget    *widget,
   sellist->list = btk_target_list_new (NULL, 0);
 
   lists = g_list_prepend (lists, sellist);
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), lists);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), lists);
 
   return sellist->list;
 }
@@ -814,7 +814,7 @@ btk_selection_target_list_remove (BtkWidget    *widget)
   GList *tmp_list;
   GList *lists;
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -828,7 +828,7 @@ btk_selection_target_list_remove (BtkWidget    *widget)
     }
 
   g_list_free (lists);
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), NULL);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), NULL);
 }
 
 /**
@@ -850,7 +850,7 @@ btk_selection_clear_targets (BtkWidget *widget,
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (selection != BDK_NONE);
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -868,7 +868,7 @@ btk_selection_clear_targets (BtkWidget *widget,
       tmp_list = tmp_list->next;
     }
   
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), lists);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), lists);
 }
 
 /**
@@ -1645,7 +1645,7 @@ btk_selection_data_set_pixbuf (BtkSelectionData *selection_data,
 	      g_free (type);
 	      g_free (str);
 	      g_strfreev (mimes);
-	      g_slist_free (formats);
+	      b_slist_free (formats);
 
 	      return result;
 	    }
@@ -1654,7 +1654,7 @@ btk_selection_data_set_pixbuf (BtkSelectionData *selection_data,
       g_strfreev (mimes);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
  
   return FALSE;
 }

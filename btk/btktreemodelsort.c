@@ -115,15 +115,15 @@ enum {
 static void btk_tree_model_sort_tree_model_init       (BtkTreeModelIface     *iface);
 static void btk_tree_model_sort_tree_sortable_init    (BtkTreeSortableIface  *iface);
 static void btk_tree_model_sort_drag_source_init      (BtkTreeDragSourceIface*iface);
-static void btk_tree_model_sort_finalize              (GObject               *object);
-static void btk_tree_model_sort_set_property          (GObject               *object,
+static void btk_tree_model_sort_finalize              (BObject               *object);
+static void btk_tree_model_sort_set_property          (BObject               *object,
 						       guint                  prop_id,
-						       const GValue          *value,
-						       GParamSpec            *pspec);
-static void btk_tree_model_sort_get_property          (GObject               *object,
+						       const BValue          *value,
+						       BParamSpec            *pspec);
+static void btk_tree_model_sort_get_property          (BObject               *object,
 						       guint                  prop_id,
-						       GValue                *value,
-						       GParamSpec            *pspec);
+						       BValue                *value,
+						       BParamSpec            *pspec);
 
 /* our signal handlers */
 static void btk_tree_model_sort_row_changed           (BtkTreeModel          *model,
@@ -160,7 +160,7 @@ static BtkTreePath *btk_tree_model_sort_get_path           (BtkTreeModel        
 static void         btk_tree_model_sort_get_value          (BtkTreeModel          *tree_model,
                                                             BtkTreeIter           *iter,
                                                             gint                   column,
-                                                            GValue                *value);
+                                                            BValue                *value);
 static gboolean     btk_tree_model_sort_iter_next          (BtkTreeModel          *tree_model,
                                                             BtkTreeIter           *iter);
 static gboolean     btk_tree_model_sort_iter_children      (BtkTreeModel          *tree_model,
@@ -241,7 +241,7 @@ static BtkTreePath *btk_real_tree_model_sort_convert_child_path_to_path (BtkTree
 									 gboolean          build_levels);
 
 
-G_DEFINE_TYPE_WITH_CODE (BtkTreeModelSort, btk_tree_model_sort, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkTreeModelSort, btk_tree_model_sort, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_MODEL,
 						btk_tree_model_sort_tree_model_init)
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_SORTABLE,
@@ -262,9 +262,9 @@ btk_tree_model_sort_init (BtkTreeModelSort *tree_model_sort)
 static void
 btk_tree_model_sort_class_init (BtkTreeModelSortClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
 
   object_class->set_property = btk_tree_model_sort_set_property;
   object_class->get_property = btk_tree_model_sort_get_property;
@@ -340,9 +340,9 @@ btk_tree_model_sort_new_with_model (BtkTreeModel *child_model)
   return retval;
 }
 
-/* GObject callbacks */
+/* BObject callbacks */
 static void
-btk_tree_model_sort_finalize (GObject *object)
+btk_tree_model_sort_finalize (BObject *object)
 {
   BtkTreeModelSort *tree_model_sort = (BtkTreeModelSort *) object;
 
@@ -366,43 +366,43 @@ btk_tree_model_sort_finalize (GObject *object)
 
 
   /* must chain up */
-  G_OBJECT_CLASS (btk_tree_model_sort_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tree_model_sort_parent_class)->finalize (object);
 }
 
 static void
-btk_tree_model_sort_set_property (GObject      *object,
+btk_tree_model_sort_set_property (BObject      *object,
 				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+				  const BValue *value,
+				  BParamSpec   *pspec)
 {
   BtkTreeModelSort *tree_model_sort = BTK_TREE_MODEL_SORT (object);
 
   switch (prop_id)
     {
     case PROP_MODEL:
-      btk_tree_model_sort_set_model (tree_model_sort, g_value_get_object (value));
+      btk_tree_model_sort_set_model (tree_model_sort, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_tree_model_sort_get_property (GObject    *object,
+btk_tree_model_sort_get_property (BObject    *object,
 				  guint       prop_id,
-				  GValue     *value,
-				  GParamSpec *pspec)
+				  BValue     *value,
+				  BParamSpec *pspec)
 {
   BtkTreeModelSort *tree_model_sort = BTK_TREE_MODEL_SORT (object);
 
   switch (prop_id)
     {
     case PROP_MODEL:
-      g_value_set_object (value, btk_tree_model_sort_get_model(tree_model_sort));
+      b_value_set_object (value, btk_tree_model_sort_get_model(tree_model_sort));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -918,7 +918,7 @@ btk_tree_model_sort_get_column_type (BtkTreeModel *tree_model,
 {
   BtkTreeModelSort *tree_model_sort = (BtkTreeModelSort *) tree_model;
 
-  g_return_val_if_fail (tree_model_sort->child_model != NULL, G_TYPE_INVALID);
+  g_return_val_if_fail (tree_model_sort->child_model != NULL, B_TYPE_INVALID);
 
   return btk_tree_model_get_column_type (tree_model_sort->child_model, index);
 }
@@ -1001,7 +1001,7 @@ static void
 btk_tree_model_sort_get_value (BtkTreeModel *tree_model,
 			       BtkTreeIter  *iter,
 			       gint          column,
-			       GValue       *value)
+			       BValue       *value)
 {
   BtkTreeModelSort *tree_model_sort = (BtkTreeModelSort *) tree_model;
   BtkTreeIter child_iter;

@@ -32,11 +32,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ENTRY_COMPLETION            (btk_entry_completion_get_type ())
-#define BTK_ENTRY_COMPLETION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletion))
-#define BTK_ENTRY_COMPLETION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionClass))
-#define BTK_IS_ENTRY_COMPLETION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY_COMPLETION))
-#define BTK_IS_ENTRY_COMPLETION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY_COMPLETION))
-#define BTK_ENTRY_COMPLETION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionClass))
+#define BTK_ENTRY_COMPLETION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletion))
+#define BTK_ENTRY_COMPLETION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionClass))
+#define BTK_IS_ENTRY_COMPLETION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY_COMPLETION))
+#define BTK_IS_ENTRY_COMPLETION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY_COMPLETION))
+#define BTK_ENTRY_COMPLETION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletionClass))
 
 typedef struct _BtkEntryCompletion            BtkEntryCompletion;
 typedef struct _BtkEntryCompletionClass       BtkEntryCompletionClass;
@@ -50,7 +50,7 @@ typedef gboolean (* BtkEntryCompletionMatchFunc) (BtkEntryCompletion *completion
 
 struct _BtkEntryCompletion
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< private >*/
   BtkEntryCompletionPrivate *GSEAL (priv);
@@ -58,7 +58,7 @@ struct _BtkEntryCompletion
 
 struct _BtkEntryCompletionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   gboolean (* match_selected)   (BtkEntryCompletion *completion,
                                  BtkTreeModel       *model,

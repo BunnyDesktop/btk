@@ -55,7 +55,7 @@ _btk_win32_embed_push_message (MSG *msg)
 
   *message = *msg;
 
-  current_messages = g_slist_prepend (current_messages, message);
+  current_messages = b_slist_prepend (current_messages, message);
 }
 
 void
@@ -63,7 +63,7 @@ _btk_win32_embed_pop_message (void)
 {
   MSG *message = current_messages->data;
 
-  current_messages = g_slist_delete_link (current_messages, current_messages);
+  current_messages = b_slist_delete_link (current_messages, current_messages);
 
   g_free (message);
 }

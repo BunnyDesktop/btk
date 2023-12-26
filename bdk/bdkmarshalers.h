@@ -15,36 +15,36 @@ B_BEGIN_DECLS
 /* VOID:POINTER,POINTER,POINTER (./bdkmarshalers.list:3) */
 extern
 void _bdk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
-                                                 GValue       *return_value,
+                                                 BValue       *return_value,
                                                  guint         n_param_values,
-                                                 const GValue *param_values,
+                                                 const BValue *param_values,
                                                  gpointer      invocation_hint,
                                                  gpointer      marshal_data);
 
 /* OBJECT:VOID (./bdkmarshalers.list:4) */
 extern
 void _bdk_marshal_OBJECT__VOID (GClosure     *closure,
-                                GValue       *return_value,
+                                BValue       *return_value,
                                 guint         n_param_values,
-                                const GValue *param_values,
+                                const BValue *param_values,
                                 gpointer      invocation_hint,
                                 gpointer      marshal_data);
 
 /* OBJECT:DOUBLE,DOUBLE (./bdkmarshalers.list:5) */
 extern
 void _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
-                                         GValue       *return_value,
+                                         BValue       *return_value,
                                          guint         n_param_values,
-                                         const GValue *param_values,
+                                         const BValue *param_values,
                                          gpointer      invocation_hint,
                                          gpointer      marshal_data);
 
 /* VOID:DOUBLE,DOUBLE,POINTER,POINTER (./bdkmarshalers.list:6) */
 extern
 void _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER (GClosure     *closure,
-                                                       GValue       *return_value,
+                                                       BValue       *return_value,
                                                        guint         n_param_values,
-                                                       const GValue *param_values,
+                                                       const BValue *param_values,
                                                        gpointer      invocation_hint,
                                                        gpointer      marshal_data);
 

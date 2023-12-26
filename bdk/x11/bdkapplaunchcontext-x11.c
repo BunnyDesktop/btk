@@ -163,8 +163,8 @@ free_startup_timeout (void *data)
 
   std = data;
 
-  g_slist_foreach (std->contexts, (GFunc) free_startup_notification_data, NULL);
-  g_slist_free (std->contexts);
+  b_slist_foreach (std->contexts, (GFunc) free_startup_notification_data, NULL);
+  b_slist_free (std->contexts);
 
   if (std->timeout_id != 0)
     {
@@ -205,7 +205,7 @@ startup_timeout (void *data)
 
       if (elapsed >= STARTUP_TIMEOUT_LENGTH)
         {
-          std->contexts = g_slist_remove (std->contexts, sn_data);
+          std->contexts = b_slist_remove (std->contexts, sn_data);
           end_startup_notification (sn_data->display, sn_data->startup_id);
           free_startup_notification_data (sn_data);
         }
@@ -234,7 +234,7 @@ add_startup_timeout (BdkScreen  *screen,
   StartupTimeoutData *data;
   StartupNotificationData *sn_data;
 
-  data = g_object_get_data (G_OBJECT (screen), "appinfo-startup-data");
+  data = g_object_get_data (B_OBJECT (screen), "appinfo-startup-data");
 
   if (data == NULL)
     {
@@ -242,7 +242,7 @@ add_startup_timeout (BdkScreen  *screen,
       data->contexts = NULL;
       data->timeout_id = 0;
 
-      g_object_set_data_full (G_OBJECT (screen), "appinfo-startup-data",
+      g_object_set_data_full (B_OBJECT (screen), "appinfo-startup-data",
                               data, free_startup_timeout);
     }
 
@@ -251,7 +251,7 @@ add_startup_timeout (BdkScreen  *screen,
   sn_data->startup_id = g_strdup (startup_id);
   g_get_current_time (&sn_data->time);
 
-  data->contexts = g_slist_prepend (data->contexts, sn_data);
+  data->contexts = b_slist_prepend (data->contexts, sn_data);
 
   if (data->timeout_id == 0)
     data->timeout_id = g_timeout_add_seconds (STARTUP_TIMEOUT_LENGTH_SECONDS,
@@ -420,7 +420,7 @@ _bdk_windowing_launch_failed (GAppLaunchContext *context,
   else
     screen = bdk_display_get_default_screen (bdk_display_get_default ());
 
-  data = g_object_get_data (G_OBJECT (screen), "appinfo-startup-data");
+  data = g_object_get_data (B_OBJECT (screen), "appinfo-startup-data");
 
   if (data)
     {
@@ -429,7 +429,7 @@ _bdk_windowing_launch_failed (GAppLaunchContext *context,
           sn_data = l->data;
           if (strcmp (startup_notify_id, sn_data->startup_id) == 0)
             {
-              data->contexts = g_slist_remove (data->contexts, sn_data);
+              data->contexts = b_slist_remove (data->contexts, sn_data);
               end_startup_notification (sn_data->display, sn_data->startup_id);
               free_startup_notification_data (sn_data);
 

@@ -52,7 +52,7 @@ create_model (gboolean constant)
 	BtkTreeIter iter;
 	BtkListStore *store;
 
-	store = btk_list_store_new (1, G_TYPE_STRING);
+	store = btk_list_store_new (1, B_TYPE_STRING);
 
 	for (i = 0; i < N_ROWS; i++) {
 		btk_list_store_append (store, &iter);
@@ -73,7 +73,7 @@ create_big_model (gboolean constant)
 	BtkTreeIter iter;
 	BtkListStore *store;
 
-	store = btk_list_store_new (1, G_TYPE_STRING);
+	store = btk_list_store_new (1, B_TYPE_STRING);
 
 	for (i = 0; i < BIG_N_ROWS; i++) {
 		btk_list_store_append (store, &iter);
@@ -166,7 +166,7 @@ scroll_fixture_single_setup (ScrollFixture *fixture,
 	BtkTreeStore *store;
 	BtkTreeIter iter, child;
 
-	store = btk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, B_TYPE_STRING);
 
 	btk_tree_store_append (store, &iter, NULL);
 	btk_tree_store_set (store, &iter, 0, "Foo", -1);
@@ -187,7 +187,7 @@ scroll_fixture_tree_setup (ScrollFixture *fixture,
 	BtkTreeIter iter, child;
 	int i;
 
-	store = btk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, B_TYPE_STRING);
 
 	btk_tree_store_append (store, &iter, NULL);
 	btk_tree_store_set (store, &iter, 0, "Root node", -1);
@@ -761,7 +761,7 @@ scroll_new_row (ScrollFixture *fixture,
 	column = btk_tree_view_get_column (BTK_TREE_VIEW (fixture->tree_view), 0);
 	renderers = btk_cell_layout_get_cells (BTK_CELL_LAYOUT (column));
 
-	g_signal_connect (G_OBJECT (renderers->data), "editing-started",
+	g_signal_connect (B_OBJECT (renderers->data), "editing-started",
 			  G_CALLBACK (scroll_new_row_editing_started),
 			  &editable);
 
@@ -895,7 +895,7 @@ test_bug359231 (void)
 	g_test_bug ("359231");
 
 	/* Create model (BtkTreeStore in this case) */
-	store = btk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, B_TYPE_STRING);
 
 	btk_tree_store_append (store, &iter, NULL);
 	btk_tree_store_set (store, &iter, 0, "Foo", -1);

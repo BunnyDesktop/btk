@@ -30,34 +30,34 @@
 
 typedef struct _BtkPrintSettingsClass BtkPrintSettingsClass;
 
-#define BTK_IS_PRINT_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_SETTINGS))
-#define BTK_PRINT_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
-#define BTK_PRINT_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
+#define BTK_IS_PRINT_SETTINGS_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_SETTINGS))
+#define BTK_PRINT_SETTINGS_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
+#define BTK_PRINT_SETTINGS_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
 
 struct _BtkPrintSettings
 {
-  GObject parent_instance;
+  BObject parent_instance;
   
   GHashTable *hash;
 };
 
 struct _BtkPrintSettingsClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 #define KEYFILE_GROUP_NAME "Print Settings"
 
-G_DEFINE_TYPE (BtkPrintSettings, btk_print_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintSettings, btk_print_settings, B_TYPE_OBJECT)
 
 static void
-btk_print_settings_finalize (GObject *object)
+btk_print_settings_finalize (BObject *object)
 {
   BtkPrintSettings *settings = BTK_PRINT_SETTINGS (object);
 
   g_hash_table_destroy (settings->hash);
 
-  G_OBJECT_CLASS (btk_print_settings_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_print_settings_parent_class)->finalize (object);
 }
 
 static void
@@ -70,7 +70,7 @@ btk_print_settings_init (BtkPrintSettings *settings)
 static void
 btk_print_settings_class_init (BtkPrintSettingsClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
 
   bobject_class->finalize = btk_print_settings_finalize;
 }

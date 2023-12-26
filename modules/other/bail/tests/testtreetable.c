@@ -6,7 +6,7 @@
  */
 static gboolean state_change_watch  (GSignalInvocationHint *ihint,
                                      guint                  n_param_values,
-                                     const GValue          *param_values,
+                                     const BValue          *param_values,
                                      gpointer               data);
 
 static void _check_table             (BatkObject         *in_obj);
@@ -30,22 +30,22 @@ static gboolean editing_cell = FALSE;
 static gboolean 
 state_change_watch (GSignalInvocationHint *ihint,
                     guint                  n_param_values,
-                    const GValue          *param_values,
+                    const BValue          *param_values,
                     gpointer               data)
 {
-  GObject *object;
+  BObject *object;
   gboolean state_set;
   const gchar *state_name;
   BatkStateType state_type;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BATK_IS_OBJECT (object), FALSE);
 
-  state_name = g_value_get_string (param_values + 1);
-  state_set = g_value_get_boolean (param_values + 2);
+  state_name = b_value_get_string (param_values + 1);
+  state_set = b_value_get_boolean (param_values + 2);
 
   g_print ("Object type: %s state: %s set: %d\n", 
-           g_type_name (G_OBJECT_TYPE (object)), state_name, state_set);
+           g_type_name (B_OBJECT_TYPE (object)), state_name, state_set);
   state_type = batk_state_type_for_name (state_name);
   if (state_type == BATK_STATE_EXPANDED)
     {
@@ -82,7 +82,7 @@ _check_table (BatkObject *in_obj)
   role[0] = BATK_ROLE_TABLE;
   role[1] = BATK_ROLE_TREE_TABLE;
   
-  g_print ("focus event for: %s\n", g_type_name (G_OBJECT_TYPE (in_obj)));
+  g_print ("focus event for: %s\n", g_type_name (B_OBJECT_TYPE (in_obj)));
 
   _check_cell_actions (in_obj);
 
@@ -99,12 +99,12 @@ _check_table (BatkObject *in_obj)
   if (obj != table_obj)
     {
       table_obj = obj;
-      g_print("Found %s table\n", g_type_name (G_OBJECT_TYPE (obj)));
-      g_signal_connect (G_OBJECT (obj),
+      g_print("Found %s table\n", g_type_name (B_OBJECT_TYPE (obj)));
+      g_signal_connect (B_OBJECT (obj),
                         "row_inserted",
                         G_CALLBACK (row_inserted),
                         NULL);
-      g_signal_connect (G_OBJECT (obj),
+      g_signal_connect (B_OBJECT (obj),
                         "row_deleted",
                         G_CALLBACK (row_deleted),
                         NULL);
@@ -411,19 +411,19 @@ _runtest (BatkObject *obj)
           if (parent)
             {
               index = batk_object_get_index_in_parent (header);
-              g_print ("Parent: %s index: %d\n", G_OBJECT_TYPE_NAME (parent), index);
+              g_print ("Parent: %s index: %d\n", B_OBJECT_TYPE_NAME (parent), index);
               child = batk_object_ref_accessible_child (parent, 0);
-              g_print ("Child: %s %p\n", G_OBJECT_TYPE_NAME (child), child);
+              g_print ("Child: %s %p\n", B_OBJECT_TYPE_NAME (child), child);
               if (index >= 0)
                 {
                   child = batk_object_ref_accessible_child (parent, index);
-                  g_print ("Index: %d child: %s\n", index, G_OBJECT_TYPE_NAME (child));
+                  g_print ("Index: %d child: %s\n", index, B_OBJECT_TYPE_NAME (child));
                   g_object_unref (child);
                 }
             }
           else
             g_print ("Parent of header is NULL\n");
-          g_print ("%s %s %s\n", G_OBJECT_TYPE_NAME (header), name ? name: "<null>", batk_role_get_name (role));
+          g_print ("%s %s %s\n", B_OBJECT_TYPE_NAME (header), name ? name: "<null>", batk_role_get_name (role));
         }
     }
 }

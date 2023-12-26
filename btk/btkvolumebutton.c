@@ -102,15 +102,15 @@ btk_volume_button_init (BtkVolumeButton *button)
   btk_scale_button_set_icons (sbutton, icons);
 
   adj = btk_adjustment_new (0., 0., 1., 0.02, 0.2, 0.);
-  g_object_set (G_OBJECT (button),
+  g_object_set (B_OBJECT (button),
 		"adjustment", adj,
 		"size", BTK_ICON_SIZE_SMALL_TOOLBAR,
 		"has-tooltip", TRUE,
 	       	NULL);
 
-  g_signal_connect (G_OBJECT (button), "query-tooltip",
+  g_signal_connect (B_OBJECT (button), "query-tooltip",
 		    G_CALLBACK (cb_query_tooltip), NULL);
-  g_signal_connect (G_OBJECT (button), "value-changed",
+  g_signal_connect (B_OBJECT (button), "value-changed",
 		    G_CALLBACK (cb_value_changed), NULL);
 }
 
@@ -128,7 +128,7 @@ btk_volume_button_init (BtkVolumeButton *button)
 BtkWidget *
 btk_volume_button_new (void)
 {
-  GObject *button;
+  BObject *button;
   button = g_object_new (BTK_TYPE_VOLUME_BUTTON, NULL);
   return BTK_WIDGET (button);
 }

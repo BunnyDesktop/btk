@@ -42,11 +42,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_SPIN_BUTTON                  (btk_spin_button_get_type ())
-#define BTK_SPIN_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
-#define BTK_SPIN_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
-#define BTK_IS_SPIN_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPIN_BUTTON))
-#define BTK_IS_SPIN_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SPIN_BUTTON))
-#define BTK_SPIN_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
+#define BTK_SPIN_BUTTON(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
+#define BTK_SPIN_BUTTON_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
+#define BTK_IS_SPIN_BUTTON(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPIN_BUTTON))
+#define BTK_IS_SPIN_BUTTON_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SPIN_BUTTON))
+#define BTK_SPIN_BUTTON_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
 
 #define BTK_INPUT_ERROR -1
 

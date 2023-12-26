@@ -187,13 +187,13 @@ enum {
 /* BtkCList Methods */
 static void     btk_clist_class_init  (BtkCListClass         *klass);
 static void     btk_clist_init        (BtkCList              *clist);
-static GObject* btk_clist_constructor (GType                  type,
+static BObject* btk_clist_constructor (GType                  type,
 				       guint                  n_construct_properties,
-				       GObjectConstructParam *construct_params);
+				       BObjectConstructParam *construct_params);
 
 /* BtkObject Methods */
 static void btk_clist_destroy  (BtkObject *object);
-static void btk_clist_finalize (GObject   *object);
+static void btk_clist_finalize (BObject   *object);
 static void btk_clist_set_arg  (BtkObject *object,
 				BtkArg    *arg,
 				guint      arg_id);
@@ -500,7 +500,7 @@ btk_clist_get_type (void)
 static void
 btk_clist_class_init (BtkCListClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
@@ -1080,12 +1080,12 @@ btk_clist_init (BtkCList *clist)
 }
 
 /* Constructor */
-static GObject*
+static BObject*
 btk_clist_constructor (GType                  type,
 		       guint                  n_construct_properties,
-		       GObjectConstructParam *construct_properties)
+		       BObjectConstructParam *construct_properties)
 {
-  GObject *object = G_OBJECT_CLASS (parent_class)->constructor (type,
+  BObject *object = B_OBJECT_CLASS (parent_class)->constructor (type,
 								n_construct_properties,
 								construct_properties);
   BtkCList *clist = BTK_CLIST (object);
@@ -4416,7 +4416,7 @@ btk_clist_destroy (BtkObject *object)
 }
 
 static void
-btk_clist_finalize (GObject *object)
+btk_clist_finalize (BObject *object)
 {
   BtkCList *clist;
 
@@ -4426,7 +4426,7 @@ btk_clist_finalize (GObject *object)
 
   columns_delete (clist);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* BTKWIDGET

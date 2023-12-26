@@ -36,7 +36,7 @@ get_model (void)
   if (store)
     return (BtkTreeModel *) g_object_ref (store);
 
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, 0, "One", -1);

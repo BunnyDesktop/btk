@@ -7,11 +7,11 @@
 #include <btk/btk.h>
 
 #define BTK_TYPE_ROTATED_BIN              (btk_rotated_bin_get_type ())
-#define BTK_ROTATED_BIN(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ROTATED_BIN, BtkRotatedBin))
-#define BTK_ROTATED_BIN_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ROTATED_BIN, BtkRotatedBinClass))
-#define BTK_IS_ROTATED_BIN(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ROTATED_BIN))
-#define BTK_IS_ROTATED_BIN_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ROTATED_BIN))
-#define BTK_ROTATED_BIN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ROTATED_BIN, BtkRotatedBinClass))
+#define BTK_ROTATED_BIN(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ROTATED_BIN, BtkRotatedBin))
+#define BTK_ROTATED_BIN_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ROTATED_BIN, BtkRotatedBinClass))
+#define BTK_IS_ROTATED_BIN(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ROTATED_BIN))
+#define BTK_IS_ROTATED_BIN_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ROTATED_BIN))
+#define BTK_ROTATED_BIN_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ROTATED_BIN, BtkRotatedBinClass))
 
 typedef struct _BtkRotatedBin   BtkRotatedBin;
 typedef struct _BtkRotatedBinClass  BtkRotatedBinClass;
@@ -308,7 +308,7 @@ btk_rotated_bin_child_type (BtkContainer *container)
   BtkRotatedBin *bin = BTK_ROTATED_BIN (container);
 
   if (bin->child)
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 
   return BTK_TYPE_WIDGET;
 }

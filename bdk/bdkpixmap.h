@@ -40,11 +40,11 @@ typedef struct _BdkPixmapObject BdkPixmapObject;
 typedef struct _BdkPixmapObjectClass BdkPixmapObjectClass;
 
 #define BDK_TYPE_PIXMAP              (bdk_pixmap_get_type ())
-#define BDK_PIXMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP, BdkPixmap))
-#define BDK_PIXMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
-#define BDK_IS_PIXMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP))
-#define BDK_IS_PIXMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP))
-#define BDK_PIXMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_PIXMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP, BdkPixmap))
+#define BDK_PIXMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_IS_PIXMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP))
+#define BDK_IS_PIXMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP))
+#define BDK_PIXMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
 #define BDK_PIXMAP_OBJECT(object)    ((BdkPixmapObject *) BDK_PIXMAP (object))
 
 struct _BdkPixmapObject

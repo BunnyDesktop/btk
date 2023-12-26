@@ -88,7 +88,7 @@ static GQuark          quark_capslock_feedback = 0;
 
 typedef struct _BtkEntryPrivate BtkEntryPrivate;
 
-#define BTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY, BtkEntryPrivate))
+#define BTK_ENTRY_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY, BtkEntryPrivate))
 
 typedef struct
 {
@@ -235,21 +235,21 @@ typedef enum
   DISPLAY_BLANK         /* In invisible mode, nothing shown at all */
 } DisplayMode;
 
-/* GObject, BtkObject methods
+/* BObject, BtkObject methods
  */
 static void   btk_entry_editable_init        (BtkEditableClass     *iface);
 static void   btk_entry_cell_editable_init   (BtkCellEditableIface *iface);
-static void   btk_entry_set_property         (GObject          *object,
+static void   btk_entry_set_property         (BObject          *object,
                                               guint             prop_id,
-                                              const GValue     *value,
-                                              GParamSpec       *pspec);
-static void   btk_entry_get_property         (GObject          *object,
+                                              const BValue     *value,
+                                              BParamSpec       *pspec);
+static void   btk_entry_get_property         (BObject          *object,
                                               guint             prop_id,
-                                              GValue           *value,
-                                              GParamSpec       *pspec);
-static void   btk_entry_finalize             (GObject          *object);
+                                              BValue           *value,
+                                              BParamSpec       *pspec);
+static void   btk_entry_finalize             (BObject          *object);
 static void   btk_entry_destroy              (BtkObject        *object);
-static void   btk_entry_dispose              (GObject          *object);
+static void   btk_entry_dispose              (BObject          *object);
 
 /* BtkWidget methods
  */
@@ -483,7 +483,7 @@ static void         btk_entry_completion_changed       (BtkWidget          *entr
 							gpointer            user_data);
 static gboolean     check_completion_callback          (BtkEntryCompletion *completion);
 static void         clear_completion_callback          (BtkEntry           *entry,
-							GParamSpec         *pspec);
+							BParamSpec         *pspec);
 static gboolean     accept_completion_callback         (BtkEntry           *entry);
 static void         completion_insert_text_callback    (BtkEntry           *entry,
 							const gchar        *text,
@@ -510,13 +510,13 @@ static void         buffer_deleted_text                (BtkEntryBuffer *buffer,
                                                         guint           n_chars,
                                                         BtkEntry       *entry);
 static void         buffer_notify_text                 (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_notify_length               (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_notify_max_length           (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_connect_signals             (BtkEntry       *entry);
 static void         buffer_disconnect_signals          (BtkEntry       *entry);
@@ -540,22 +540,22 @@ add_move_binding (BtkBindingSet  *binding_set,
   
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, FALSE);
 
   /* Selection-extending version */
   btk_binding_entry_add_signal (binding_set, keyval, modmask | BDK_SHIFT_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, TRUE);
 }
 
 static void
 btk_entry_class_init (BtkEntryClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class;
   BtkObjectClass *btk_object_class;
   BtkBindingSet *binding_set;
@@ -989,7 +989,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                    g_param_spec_object ("primary-icon-gicon",
                                                         P_("Primary GIcon"),
                                                         P_("GIcon for primary icon"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
   
   /**
@@ -1004,7 +1004,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                    g_param_spec_object ("secondary-icon-gicon",
                                                         P_("Secondary GIcon"),
                                                         P_("GIcon for secondary icon"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
   
   /**
@@ -1281,12 +1281,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[POPULATE_POPUP] =
     g_signal_new (I_("populate-popup"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkEntryClass, populate_popup),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU);
   
  /* Action signals */
@@ -1306,12 +1306,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ACTIVATE] =
     g_signal_new (I_("activate"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   widget_class->activate_signal = signals[ACTIVATE];
 
   /**
@@ -1343,15 +1343,15 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[MOVE_CURSOR] = 
     g_signal_new (I_("move-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, move_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT_BOOLEAN,
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_MOVEMENT_STEP,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkEntry::insert-at-cursor:
@@ -1367,13 +1367,13 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[INSERT_AT_CURSOR] = 
     g_signal_new (I_("insert-at-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, insert_at_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
 
   /**
    * BtkEntry::delete-from-cursor:
@@ -1395,14 +1395,14 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[DELETE_FROM_CURSOR] = 
     g_signal_new (I_("delete-from-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, delete_from_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_DELETE_TYPE,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /**
    * BtkEntry::backspace:
@@ -1417,12 +1417,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[BACKSPACE] =
     g_signal_new (I_("backspace"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, backspace),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::cut-clipboard:
@@ -1437,12 +1437,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[CUT_CLIPBOARD] =
     g_signal_new (I_("cut-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, cut_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::copy-clipboard:
@@ -1457,12 +1457,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[COPY_CLIPBOARD] =
     g_signal_new (I_("copy-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, copy_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::paste-clipboard:
@@ -1478,12 +1478,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[PASTE_CLIPBOARD] =
     g_signal_new (I_("paste-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, paste_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::toggle-overwrite:
@@ -1497,12 +1497,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[TOGGLE_OVERWRITE] =
     g_signal_new (I_("toggle-overwrite"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, toggle_overwrite),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::icon-press:
@@ -1517,12 +1517,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ICON_PRESS] =
     g_signal_new (I_("icon-press"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM_BOXED,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ENTRY_ICON_POSITION,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
@@ -1539,12 +1539,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ICON_RELEASE] =
     g_signal_new (I_("icon-release"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM_BOXED,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ENTRY_ICON_POSITION,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -1561,13 +1561,13 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[PREEDIT_CHANGED] =
     g_signal_new_class_handler (I_("preedit-changed"),
-                                G_OBJECT_CLASS_TYPE (bobject_class),
+                                B_OBJECT_CLASS_TYPE (bobject_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 NULL,
                                 NULL, NULL,
                                 _btk_marshal_VOID__STRING,
-                                G_TYPE_NONE, 1,
-                                G_TYPE_STRING);
+                                B_TYPE_NONE, 1,
+                                B_TYPE_STRING);
 
 
   /*
@@ -1630,36 +1630,36 @@ btk_entry_class_init (BtkEntryClass *class)
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);  
+                                B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);  
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);  
+                                B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);  
   /* Unselect all 
    */
   btk_binding_entry_add_signal (binding_set, BDK_backslash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_VISUAL_POSITIONS,
-                                G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_VISUAL_POSITIONS,
-                                G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
 
   /* Activate
    */
@@ -1673,13 +1673,13 @@ btk_entry_class_init (BtkEntryClass *class)
   /* Deleting text */
   btk_binding_entry_add_signal (binding_set, BDK_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, 0,
 				"backspace", 0);
@@ -1690,18 +1690,18 @@ btk_entry_class_init (BtkEntryClass *class)
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, -1);
 
   /* Cut/copy/paste */
 
@@ -1780,10 +1780,10 @@ btk_entry_cell_editable_init (BtkCellEditableIface *iface)
 }
 
 static void
-btk_entry_set_property (GObject         *object,
+btk_entry_set_property (BObject         *object,
                         guint            prop_id,
-                        const GValue    *value,
-                        GParamSpec      *pspec)
+                        const BValue    *value,
+                        BParamSpec      *pspec)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (object);
   BtkEntry *entry = BTK_ENTRY (object);
@@ -1792,12 +1792,12 @@ btk_entry_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_BUFFER:
-      btk_entry_set_buffer (entry, g_value_get_object (value));
+      btk_entry_set_buffer (entry, b_value_get_object (value));
       break;
 
     case PROP_EDITABLE:
       {
-        gboolean new_value = g_value_get_boolean (value);
+        gboolean new_value = b_value_get_boolean (value);
 
       	if (new_value != entry->editable)
 	  {
@@ -1823,192 +1823,192 @@ btk_entry_set_property (GObject         *object,
       break;
 
     case PROP_MAX_LENGTH:
-      btk_entry_set_max_length (entry, g_value_get_int (value));
+      btk_entry_set_max_length (entry, b_value_get_int (value));
       break;
       
     case PROP_VISIBILITY:
-      btk_entry_set_visibility (entry, g_value_get_boolean (value));
+      btk_entry_set_visibility (entry, b_value_get_boolean (value));
       break;
 
     case PROP_HAS_FRAME:
-      btk_entry_set_has_frame (entry, g_value_get_boolean (value));
+      btk_entry_set_has_frame (entry, b_value_get_boolean (value));
       break;
 
     case PROP_INNER_BORDER:
-      btk_entry_set_inner_border (entry, g_value_get_boxed (value));
+      btk_entry_set_inner_border (entry, b_value_get_boxed (value));
       break;
 
     case PROP_INVISIBLE_CHAR:
-      btk_entry_set_invisible_char (entry, g_value_get_uint (value));
+      btk_entry_set_invisible_char (entry, b_value_get_uint (value));
       break;
 
     case PROP_ACTIVATES_DEFAULT:
-      btk_entry_set_activates_default (entry, g_value_get_boolean (value));
+      btk_entry_set_activates_default (entry, b_value_get_boolean (value));
       break;
 
     case PROP_WIDTH_CHARS:
-      btk_entry_set_width_chars (entry, g_value_get_int (value));
+      btk_entry_set_width_chars (entry, b_value_get_int (value));
       break;
 
     case PROP_TEXT:
-      btk_entry_set_text (entry, g_value_get_string (value));
+      btk_entry_set_text (entry, b_value_get_string (value));
       break;
 
     case PROP_XALIGN:
-      btk_entry_set_alignment (entry, g_value_get_float (value));
+      btk_entry_set_alignment (entry, b_value_get_float (value));
       break;
 
     case PROP_TRUNCATE_MULTILINE:
-      entry->truncate_multiline = g_value_get_boolean (value);
+      entry->truncate_multiline = b_value_get_boolean (value);
       break;
 
     case PROP_SHADOW_TYPE:
-      priv->shadow_type = g_value_get_enum (value);
+      priv->shadow_type = b_value_get_enum (value);
       break;
 
     case PROP_OVERWRITE_MODE:
-      btk_entry_set_overwrite_mode (entry, g_value_get_boolean (value));
+      btk_entry_set_overwrite_mode (entry, b_value_get_boolean (value));
       break;
 
     case PROP_INVISIBLE_CHAR_SET:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
         priv->invisible_char_set = TRUE;
       else
         btk_entry_unset_invisible_char (entry);
       break;
 
     case PROP_CAPS_LOCK_WARNING:
-      priv->caps_lock_warning = g_value_get_boolean (value);
+      priv->caps_lock_warning = b_value_get_boolean (value);
       break;
 
     case PROP_PROGRESS_FRACTION:
-      btk_entry_set_progress_fraction (entry, g_value_get_double (value));
+      btk_entry_set_progress_fraction (entry, b_value_get_double (value));
       break;
 
     case PROP_PROGRESS_PULSE_STEP:
-      btk_entry_set_progress_pulse_step (entry, g_value_get_double (value));
+      btk_entry_set_progress_pulse_step (entry, b_value_get_double (value));
       break;
 
     case PROP_PIXBUF_PRIMARY:
       btk_entry_set_icon_from_pixbuf (entry,
                                       BTK_ENTRY_ICON_PRIMARY,
-                                      g_value_get_object (value));
+                                      b_value_get_object (value));
       break;
 
     case PROP_PIXBUF_SECONDARY:
       btk_entry_set_icon_from_pixbuf (entry,
                                       BTK_ENTRY_ICON_SECONDARY,
-                                      g_value_get_object (value));
+                                      b_value_get_object (value));
       break;
 
     case PROP_STOCK_PRIMARY:
       btk_entry_set_icon_from_stock (entry,
                                      BTK_ENTRY_ICON_PRIMARY,
-                                     g_value_get_string (value));
+                                     b_value_get_string (value));
       break;
 
     case PROP_STOCK_SECONDARY:
       btk_entry_set_icon_from_stock (entry,
                                      BTK_ENTRY_ICON_SECONDARY,
-                                     g_value_get_string (value));
+                                     b_value_get_string (value));
       break;
 
     case PROP_ICON_NAME_PRIMARY:
       btk_entry_set_icon_from_icon_name (entry,
                                          BTK_ENTRY_ICON_PRIMARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_ICON_NAME_SECONDARY:
       btk_entry_set_icon_from_icon_name (entry,
                                          BTK_ENTRY_ICON_SECONDARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_GICON_PRIMARY:
       btk_entry_set_icon_from_gicon (entry,
                                      BTK_ENTRY_ICON_PRIMARY,
-                                     g_value_get_object (value));
+                                     b_value_get_object (value));
       break;
 
     case PROP_GICON_SECONDARY:
       btk_entry_set_icon_from_gicon (entry,
                                      BTK_ENTRY_ICON_SECONDARY,
-                                     g_value_get_object (value));
+                                     b_value_get_object (value));
       break;
 
     case PROP_ACTIVATABLE_PRIMARY:
       btk_entry_set_icon_activatable (entry,
                                       BTK_ENTRY_ICON_PRIMARY,
-                                      g_value_get_boolean (value));
+                                      b_value_get_boolean (value));
       break;
 
     case PROP_ACTIVATABLE_SECONDARY:
       btk_entry_set_icon_activatable (entry,
                                       BTK_ENTRY_ICON_SECONDARY,
-                                      g_value_get_boolean (value));
+                                      b_value_get_boolean (value));
       break;
 
     case PROP_SENSITIVE_PRIMARY:
       btk_entry_set_icon_sensitive (entry,
                                     BTK_ENTRY_ICON_PRIMARY,
-                                    g_value_get_boolean (value));
+                                    b_value_get_boolean (value));
       break;
 
     case PROP_SENSITIVE_SECONDARY:
       btk_entry_set_icon_sensitive (entry,
                                     BTK_ENTRY_ICON_SECONDARY,
-                                    g_value_get_boolean (value));
+                                    b_value_get_boolean (value));
       break;
 
     case PROP_TOOLTIP_TEXT_PRIMARY:
       btk_entry_set_icon_tooltip_text (entry,
                                        BTK_ENTRY_ICON_PRIMARY,
-                                       g_value_get_string (value));
+                                       b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_TEXT_SECONDARY:
       btk_entry_set_icon_tooltip_text (entry,
                                        BTK_ENTRY_ICON_SECONDARY,
-                                       g_value_get_string (value));
+                                       b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_MARKUP_PRIMARY:
       btk_entry_set_icon_tooltip_markup (entry,
                                          BTK_ENTRY_ICON_PRIMARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_MARKUP_SECONDARY:
       btk_entry_set_icon_tooltip_markup (entry,
                                          BTK_ENTRY_ICON_SECONDARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_IM_MODULE:
       g_free (priv->im_module);
-      priv->im_module = g_value_dup_string (value);
+      priv->im_module = b_value_dup_string (value);
       if (BTK_IS_IM_MULTICONTEXT (entry->im_context))
         btk_im_multicontext_set_context_id (BTK_IM_MULTICONTEXT (entry->im_context), priv->im_module);
       break;
 
     case PROP_EDITING_CANCELED:
-      entry->editing_canceled = g_value_get_boolean (value);
+      entry->editing_canceled = b_value_get_boolean (value);
       break;
 
     case PROP_SCROLL_OFFSET:
     case PROP_CURSOR_POSITION:
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_entry_get_property (GObject         *object,
+btk_entry_get_property (BObject         *object,
                         guint            prop_id,
-                        GValue          *value,
-                        GParamSpec      *pspec)
+                        BValue          *value,
+                        BParamSpec      *pspec)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (object);
   BtkEntry *entry = BTK_ENTRY (object);
@@ -2016,204 +2016,204 @@ btk_entry_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_BUFFER:
-      g_value_set_object (value, btk_entry_get_buffer (entry));
+      b_value_set_object (value, btk_entry_get_buffer (entry));
       break;
 
     case PROP_CURSOR_POSITION:
-      g_value_set_int (value, entry->current_pos);
+      b_value_set_int (value, entry->current_pos);
       break;
 
     case PROP_SELECTION_BOUND:
-      g_value_set_int (value, entry->selection_bound);
+      b_value_set_int (value, entry->selection_bound);
       break;
 
     case PROP_EDITABLE:
-      g_value_set_boolean (value, entry->editable);
+      b_value_set_boolean (value, entry->editable);
       break;
 
     case PROP_MAX_LENGTH:
-      g_value_set_int (value, btk_entry_buffer_get_max_length (get_buffer (entry)));
+      b_value_set_int (value, btk_entry_buffer_get_max_length (get_buffer (entry)));
       break;
 
     case PROP_VISIBILITY:
-      g_value_set_boolean (value, entry->visible);
+      b_value_set_boolean (value, entry->visible);
       break;
 
     case PROP_HAS_FRAME:
-      g_value_set_boolean (value, entry->has_frame);
+      b_value_set_boolean (value, entry->has_frame);
       break;
 
     case PROP_INNER_BORDER:
-      g_value_set_boxed (value, btk_entry_get_inner_border (entry));
+      b_value_set_boxed (value, btk_entry_get_inner_border (entry));
       break;
 
     case PROP_INVISIBLE_CHAR:
-      g_value_set_uint (value, entry->invisible_char);
+      b_value_set_uint (value, entry->invisible_char);
       break;
 
     case PROP_ACTIVATES_DEFAULT:
-      g_value_set_boolean (value, entry->activates_default);
+      b_value_set_boolean (value, entry->activates_default);
       break;
 
     case PROP_WIDTH_CHARS:
-      g_value_set_int (value, entry->width_chars);
+      b_value_set_int (value, entry->width_chars);
       break;
 
     case PROP_SCROLL_OFFSET:
-      g_value_set_int (value, entry->scroll_offset);
+      b_value_set_int (value, entry->scroll_offset);
       break;
 
     case PROP_TEXT:
-      g_value_set_string (value, btk_entry_get_text (entry));
+      b_value_set_string (value, btk_entry_get_text (entry));
       break;
 
     case PROP_XALIGN:
-      g_value_set_float (value, btk_entry_get_alignment (entry));
+      b_value_set_float (value, btk_entry_get_alignment (entry));
       break;
 
     case PROP_TRUNCATE_MULTILINE:
-      g_value_set_boolean (value, entry->truncate_multiline);
+      b_value_set_boolean (value, entry->truncate_multiline);
       break;
 
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, priv->shadow_type);
+      b_value_set_enum (value, priv->shadow_type);
       break;
 
     case PROP_OVERWRITE_MODE:
-      g_value_set_boolean (value, entry->overwrite_mode);
+      b_value_set_boolean (value, entry->overwrite_mode);
       break;
 
     case PROP_TEXT_LENGTH:
-      g_value_set_uint (value, btk_entry_buffer_get_length (get_buffer (entry)));
+      b_value_set_uint (value, btk_entry_buffer_get_length (get_buffer (entry)));
       break;
 
     case PROP_INVISIBLE_CHAR_SET:
-      g_value_set_boolean (value, priv->invisible_char_set);
+      b_value_set_boolean (value, priv->invisible_char_set);
       break;
 
     case PROP_IM_MODULE:
-      g_value_set_string (value, priv->im_module);
+      b_value_set_string (value, priv->im_module);
       break;
 
     case PROP_CAPS_LOCK_WARNING:
-      g_value_set_boolean (value, priv->caps_lock_warning);
+      b_value_set_boolean (value, priv->caps_lock_warning);
       break;
 
     case PROP_PROGRESS_FRACTION:
-      g_value_set_double (value, priv->progress_fraction);
+      b_value_set_double (value, priv->progress_fraction);
       break;
 
     case PROP_PROGRESS_PULSE_STEP:
-      g_value_set_double (value, priv->progress_pulse_fraction);
+      b_value_set_double (value, priv->progress_pulse_fraction);
       break;
 
     case PROP_PIXBUF_PRIMARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_pixbuf (entry,
                                                      BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_PIXBUF_SECONDARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_pixbuf (entry,
                                                      BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_STOCK_PRIMARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_stock (entry,
                                                     BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_STOCK_SECONDARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_stock (entry,
                                                     BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_ICON_NAME_PRIMARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_name (entry,
                                                    BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_ICON_NAME_SECONDARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_name (entry,
                                                    BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_GICON_PRIMARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_gicon (entry,
                                                     BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_GICON_SECONDARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_gicon (entry,
                                                     BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_STORAGE_TYPE_PRIMARY:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_entry_get_icon_storage_type (entry, 
                                                          BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_STORAGE_TYPE_SECONDARY:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_entry_get_icon_storage_type (entry, 
                                                          BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_ACTIVATABLE_PRIMARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_activatable (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_ACTIVATABLE_SECONDARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_activatable (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_SENSITIVE_PRIMARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_sensitive (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_SENSITIVE_SECONDARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_sensitive (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_TOOLTIP_TEXT_PRIMARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_text (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_TOOLTIP_TEXT_SECONDARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_text (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_TOOLTIP_MARKUP_PRIMARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_markup (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_TOOLTIP_MARKUP_SECONDARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_markup (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_EDITING_CANCELED:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            entry->editing_canceled);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -2380,7 +2380,7 @@ begin_change (BtkEntry *entry)
 
   priv->change_count++;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 }
 
 static void
@@ -2391,7 +2391,7 @@ end_change (BtkEntry *entry)
  
   g_return_if_fail (priv->change_count > 0);
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 
   priv->change_count--;
 
@@ -2442,7 +2442,7 @@ btk_entry_destroy (BtkObject *object)
 }
 
 static void
-btk_entry_dispose (GObject *object)
+btk_entry_dispose (BObject *object)
 {
   BtkEntry *entry = BTK_ENTRY (object);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -2465,11 +2465,11 @@ btk_entry_dispose (GObject *object)
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
   g_signal_handlers_disconnect_by_func (keymap, keymap_direction_changed, entry);
 
-  G_OBJECT_CLASS (btk_entry_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_entry_parent_class)->dispose (object);
 }
 
 static void
-btk_entry_finalize (GObject *object)
+btk_entry_finalize (BObject *object)
 {
   BtkEntry *entry = BTK_ENTRY (object);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -2504,7 +2504,7 @@ btk_entry_finalize (GObject *object)
 
   g_free (priv->im_module);
 
-  G_OBJECT_CLASS (btk_entry_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_entry_parent_class)->finalize (object);
 }
 
 static DisplayMode
@@ -2570,7 +2570,7 @@ btk_entry_get_display_text (BtkEntry *entry,
        * character visible.
        */
 
-      password_hint = g_object_get_qdata (G_OBJECT (entry), quark_password_hint);
+      password_hint = g_object_get_qdata (B_OBJECT (entry), quark_password_hint);
       for (i = start_pos; i < end_pos; ++i)
         {
           if (password_hint && i == password_hint->position)
@@ -2824,7 +2824,7 @@ btk_entry_unrealize (BtkWidget *widget)
   btk_im_context_set_client_window (entry->im_context, NULL);
 
   clipboard = btk_widget_get_clipboard (widget, BDK_SELECTION_PRIMARY);
-  if (btk_clipboard_get_owner (clipboard) == G_OBJECT (entry))
+  if (btk_clipboard_get_owner (clipboard) == B_OBJECT (entry))
     btk_clipboard_clear (clipboard);
   
   if (entry->text_area)
@@ -3063,7 +3063,7 @@ _btk_entry_effective_inner_border (BtkEntry  *entry,
 {
   BtkBorder *tmp_border;
 
-  tmp_border = g_object_get_qdata (G_OBJECT (entry), quark_inner_border);
+  tmp_border = g_object_get_qdata (B_OBJECT (entry), quark_inner_border);
 
   if (tmp_border)
     {
@@ -4605,12 +4605,12 @@ buffer_inserted_text (BtkEntryBuffer *buffer,
 
       if (password_hint_timeout > 0)
         {
-          BtkEntryPasswordHint *password_hint = g_object_get_qdata (G_OBJECT (entry),
+          BtkEntryPasswordHint *password_hint = g_object_get_qdata (B_OBJECT (entry),
                                                                     quark_password_hint);
           if (!password_hint)
             {
               password_hint = g_slice_new0 (BtkEntryPasswordHint);
-              g_object_set_qdata_full (G_OBJECT (entry), quark_password_hint, password_hint,
+              g_object_set_qdata_full (B_OBJECT (entry), quark_password_hint, password_hint,
                                        (GDestroyNotify)btk_entry_password_hint_free);
             }
 
@@ -4649,7 +4649,7 @@ buffer_deleted_text (BtkEntryBuffer *buffer,
   /* Disable the password hint if one exists. */
   if (!entry->visible)
     {
-      BtkEntryPasswordHint *password_hint = g_object_get_qdata (G_OBJECT (entry),
+      BtkEntryPasswordHint *password_hint = g_object_get_qdata (B_OBJECT (entry),
                                                                 quark_password_hint);
       if (password_hint)
         {
@@ -4663,7 +4663,7 @@ buffer_deleted_text (BtkEntryBuffer *buffer,
 
 static void
 buffer_notify_text (BtkEntryBuffer *buffer,
-                    GParamSpec     *spec,
+                    BParamSpec     *spec,
                     BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
@@ -4671,29 +4671,29 @@ buffer_notify_text (BtkEntryBuffer *buffer,
 
   btk_entry_recompute (entry);
   emit_changed (entry);
-  g_object_notify (G_OBJECT (entry), "text");
+  g_object_notify (B_OBJECT (entry), "text");
 }
 
 static void
 buffer_notify_length (BtkEntryBuffer *buffer,
-                      GParamSpec     *spec,
+                      BParamSpec     *spec,
                       BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
   entry->text_length = btk_entry_buffer_get_length (buffer);
 
-  g_object_notify (G_OBJECT (entry), "text-length");
+  g_object_notify (B_OBJECT (entry), "text-length");
 }
 
 static void
 buffer_notify_max_length (BtkEntryBuffer *buffer,
-                          GParamSpec     *spec,
+                          BParamSpec     *spec,
                           BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
   entry->text_max_length = btk_entry_buffer_get_max_length (buffer);
 
-  g_object_notify (G_OBJECT (entry), "max-length");
+  g_object_notify (B_OBJECT (entry), "max-length");
 }
 
 static void
@@ -5284,7 +5284,7 @@ btk_entry_set_positions (BtkEntry *entry,
 {
   gboolean changed = FALSE;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
   
   if (current_pos != -1 &&
       entry->current_pos != current_pos)
@@ -5292,7 +5292,7 @@ btk_entry_set_positions (BtkEntry *entry,
       entry->current_pos = current_pos;
       changed = TRUE;
 
-      g_object_notify (G_OBJECT (entry), "cursor-position");
+      g_object_notify (B_OBJECT (entry), "cursor-position");
     }
 
   if (selection_bound != -1 &&
@@ -5301,10 +5301,10 @@ btk_entry_set_positions (BtkEntry *entry,
       entry->selection_bound = selection_bound;
       changed = TRUE;
       
-      g_object_notify (G_OBJECT (entry), "selection-bound");
+      g_object_notify (B_OBJECT (entry), "selection-bound");
     }
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 
   if (changed) 
     {
@@ -6061,7 +6061,7 @@ btk_entry_adjust_scroll (BtkEntry *entry)
       entry->scroll_offset += weak_xoffset - text_area_width;
     }
 
-  g_object_notify (G_OBJECT (entry), "scroll-offset");
+  g_object_notify (B_OBJECT (entry), "scroll-offset");
 }
 
 static void
@@ -6073,7 +6073,7 @@ btk_entry_move_adjustments (BtkEntry *entry)
   gint char_width;
   BtkAdjustment *adjustment;
 
-  adjustment = g_object_get_qdata (G_OBJECT (entry), quark_cursor_hadjustment);
+  adjustment = g_object_get_qdata (B_OBJECT (entry), quark_cursor_hadjustment);
   if (!adjustment)
     return;
 
@@ -6436,12 +6436,12 @@ btk_entry_update_primary_selection (BtkEntry *entry)
   if (btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &start, &end))
     {
       if (!btk_clipboard_set_with_owner (clipboard, targets, n_targets,
-					 primary_get_cb, primary_clear_cb, G_OBJECT (entry)))
+					 primary_get_cb, primary_clear_cb, B_OBJECT (entry)))
 	primary_clear_cb (clipboard, entry);
     }
   else
     {
-      if (btk_clipboard_get_owner (clipboard) == G_OBJECT (entry))
+      if (btk_clipboard_get_owner (clipboard) == B_OBJECT (entry))
 	btk_clipboard_clear (clipboard);
     }
 
@@ -6459,7 +6459,7 @@ btk_entry_clear (BtkEntry             *entry,
   if (!icon_info || icon_info->storage_type == BTK_IMAGE_EMPTY)
     return;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   /* Explicitly check, as the pointer may become invalidated
    * during destruction.
@@ -6476,21 +6476,21 @@ btk_entry_clear (BtkEntry             *entry,
   switch (icon_info->storage_type)
     {
     case BTK_IMAGE_PIXBUF:
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-pixbuf" : "secondary-icon-pixbuf");
       break;
 
     case BTK_IMAGE_STOCK:
       g_free (icon_info->stock_id);
       icon_info->stock_id = NULL;
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-stock" : "secondary-icon-stock");
       break;
 
     case BTK_IMAGE_ICON_NAME:
       g_free (icon_info->icon_name);
       icon_info->icon_name = NULL;
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-name" : "secondary-icon-name");
       break;
 
@@ -6500,7 +6500,7 @@ btk_entry_clear (BtkEntry             *entry,
           g_object_unref (icon_info->gicon);
           icon_info->gicon = NULL;
         }
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-gicon" : "secondary-icon-gicon");
       break;
 
@@ -6510,10 +6510,10 @@ btk_entry_clear (BtkEntry             *entry,
     }
 
   icon_info->storage_type = BTK_IMAGE_EMPTY;
-  g_object_notify (G_OBJECT (entry),
+  g_object_notify (B_OBJECT (entry),
                    icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-storage-type" : "secondary-icon-storage-type");
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 static void
@@ -6737,7 +6737,7 @@ btk_entry_set_buffer (BtkEntry       *entry,
                       BtkEntryBuffer *buffer)
 {
   BtkEntryPrivate *priv;
-  GObject *obj;
+  BObject *obj;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -6771,7 +6771,7 @@ btk_entry_set_buffer (BtkEntry       *entry,
       entry->text_max_length = btk_entry_buffer_get_max_length (priv->buffer);
     }
 
-  obj = G_OBJECT (entry);
+  obj = B_OBJECT (entry);
   g_object_freeze_notify (obj);
   g_object_notify (obj, "buffer");
   g_object_notify (obj, "text");
@@ -6951,7 +6951,7 @@ btk_entry_set_visibility (BtkEntry *entry,
     {
       entry->visible = visible;
 
-      g_object_notify (G_OBJECT (entry), "visibility");
+      g_object_notify (B_OBJECT (entry), "visibility");
       btk_entry_recompute (entry);
     }
 }
@@ -6999,14 +6999,14 @@ btk_entry_set_invisible_char (BtkEntry *entry,
   if (!priv->invisible_char_set)
     {
       priv->invisible_char_set = TRUE;
-      g_object_notify (G_OBJECT (entry), "invisible-char-set");
+      g_object_notify (B_OBJECT (entry), "invisible-char-set");
     }
 
   if (ch == entry->invisible_char)
     return;
 
   entry->invisible_char = ch;
-  g_object_notify (G_OBJECT (entry), "invisible-char");
+  g_object_notify (B_OBJECT (entry), "invisible-char");
   btk_entry_recompute (entry);  
 }
 
@@ -7057,10 +7057,10 @@ btk_entry_unset_invisible_char (BtkEntry *entry)
   if (entry->invisible_char != ch)
     {
       entry->invisible_char = ch;
-      g_object_notify (G_OBJECT (entry), "invisible-char");
+      g_object_notify (B_OBJECT (entry), "invisible-char");
     }
 
-  g_object_notify (G_OBJECT (entry), "invisible-char-set");
+  g_object_notify (B_OBJECT (entry), "invisible-char-set");
   btk_entry_recompute (entry);
 }
 
@@ -7104,7 +7104,7 @@ btk_entry_set_overwrite_mode (BtkEntry *entry,
   
   btk_entry_toggle_overwrite (entry);
 
-  g_object_notify (G_OBJECT (entry), "overwrite-mode");
+  g_object_notify (B_OBJECT (entry), "overwrite-mode");
 }
 
 /**
@@ -7269,7 +7269,7 @@ btk_entry_set_activates_default (BtkEntry *entry,
   if (setting != entry->activates_default)
     {
       entry->activates_default = setting;
-      g_object_notify (G_OBJECT (entry), "activates-default");
+      g_object_notify (B_OBJECT (entry), "activates-default");
     }
 }
 
@@ -7309,7 +7309,7 @@ btk_entry_set_width_chars (BtkEntry *entry,
   if (entry->width_chars != n_chars)
     {
       entry->width_chars = n_chars;
-      g_object_notify (G_OBJECT (entry), "width-chars");
+      g_object_notify (B_OBJECT (entry), "width-chars");
       btk_widget_queue_resize (BTK_WIDGET (entry));
     }
 }
@@ -7350,7 +7350,7 @@ btk_entry_set_has_frame (BtkEntry *entry,
 
   btk_widget_queue_resize (BTK_WIDGET (entry));
   entry->has_frame = setting;
-  g_object_notify (G_OBJECT (entry), "has-frame");
+  g_object_notify (B_OBJECT (entry), "has-frame");
 }
 
 /**
@@ -7394,13 +7394,13 @@ btk_entry_set_inner_border (BtkEntry        *entry,
   btk_widget_queue_resize (BTK_WIDGET (entry));
 
   if (border)
-    g_object_set_qdata_full (G_OBJECT (entry), quark_inner_border,
+    g_object_set_qdata_full (B_OBJECT (entry), quark_inner_border,
                              btk_border_copy (border),
                              (GDestroyNotify) btk_border_free);
   else
-    g_object_set_qdata (G_OBJECT (entry), quark_inner_border, NULL);
+    g_object_set_qdata (B_OBJECT (entry), quark_inner_border, NULL);
 
-  g_object_notify (G_OBJECT (entry), "inner-border");
+  g_object_notify (B_OBJECT (entry), "inner-border");
 }
 
 /**
@@ -7419,7 +7419,7 @@ btk_entry_get_inner_border (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  return g_object_get_qdata (G_OBJECT (entry), quark_inner_border);
+  return g_object_get_qdata (B_OBJECT (entry), quark_inner_border);
 }
 
 /**
@@ -7601,7 +7601,7 @@ btk_entry_set_alignment (BtkEntry *entry, gfloat xalign)
 
       btk_entry_recompute (entry);
 
-      g_object_notify (G_OBJECT (entry), "xalign");
+      g_object_notify (B_OBJECT (entry), "xalign");
     }
 }
 
@@ -7655,7 +7655,7 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   if (pixbuf)
     g_object_ref (pixbuf);
@@ -7669,13 +7669,13 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-pixbuf");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-pixbuf");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-pixbuf");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-pixbuf");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7687,7 +7687,7 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7720,7 +7720,7 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   btk_widget_ensure_style (BTK_WIDGET (entry));
 
@@ -7736,13 +7736,13 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-stock");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-stock");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-stock");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-stock");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7754,7 +7754,7 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7790,7 +7790,7 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   btk_widget_ensure_style (BTK_WIDGET (entry));
 
@@ -7806,13 +7806,13 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-name");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-name");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-name");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-name");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7824,7 +7824,7 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7858,7 +7858,7 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   /* need to ref before clearing */
   if (icon)
@@ -7873,13 +7873,13 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-gicon");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-gicon");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-gicon");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-gicon");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7891,7 +7891,7 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7929,7 +7929,7 @@ btk_entry_set_icon_activatable (BtkEntry             *entry,
       if (btk_widget_get_realized (BTK_WIDGET (entry)))
         update_cursors (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-activatable" : "secondary-icon-activatable");
     }
 }
@@ -8136,7 +8136,7 @@ btk_entry_set_icon_sensitive (BtkEntry             *entry,
 
       btk_widget_queue_draw (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-sensitive" : "secondary-icon-sensitive");
     }
 }
@@ -8608,7 +8608,7 @@ static void
 activate_cb (BtkWidget *menuitem,
 	     BtkEntry  *entry)
 {
-  const gchar *signal = g_object_get_data (G_OBJECT (menuitem), "btk-signal");
+  const gchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (entry, signal);
 }
 
@@ -8630,7 +8630,7 @@ append_action_signal (BtkEntry     *entry,
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (activate_cb), entry);
 
@@ -9705,7 +9705,7 @@ check_completion_callback (BtkEntryCompletion *completion)
 
 static void
 clear_completion_callback (BtkEntry   *entry,
-			   GParamSpec *pspec)
+			   BParamSpec *pspec)
 {
   BtkEntryCompletion *completion = btk_entry_get_completion (entry);
 
@@ -9749,7 +9749,7 @@ completion_insert_text_callback (BtkEntry           *entry,
       g_source_set_priority (completion->priv->check_completion_idle, G_PRIORITY_HIGH);
       g_source_set_closure (completion->priv->check_completion_idle,
 			    g_cclosure_new_object (G_CALLBACK (check_completion_callback),
-						   G_OBJECT (completion)));
+						   B_OBJECT (completion)));
       g_source_attach (completion->priv->check_completion_idle, NULL);
     }
 }
@@ -9852,7 +9852,7 @@ btk_entry_set_completion (BtkEntry           *entry,
 
   if (!completion)
     {
-      g_object_set_data (G_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), NULL);
+      g_object_set_data (B_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), NULL);
       return;
     }
 
@@ -9861,7 +9861,7 @@ btk_entry_set_completion (BtkEntry           *entry,
 
   connect_completion_signals (entry, completion);    
   completion->priv->entry = BTK_WIDGET (entry);
-  g_object_set_data (G_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), completion);
+  g_object_set_data (B_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), completion);
 }
 
 /**
@@ -9882,7 +9882,7 @@ btk_entry_get_completion (BtkEntry *entry)
 
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  completion = BTK_ENTRY_COMPLETION (g_object_get_data (G_OBJECT (entry),
+  completion = BTK_ENTRY_COMPLETION (g_object_get_data (B_OBJECT (entry),
                                      BTK_ENTRY_COMPLETION_KEY));
 
   return completion;
@@ -9915,7 +9915,7 @@ btk_entry_set_cursor_hadjustment (BtkEntry      *entry,
   if (adjustment)
     g_object_ref (adjustment);
 
-  g_object_set_qdata_full (G_OBJECT (entry), 
+  g_object_set_qdata_full (B_OBJECT (entry), 
                            quark_cursor_hadjustment,
                            adjustment, 
                            g_object_unref);
@@ -9938,7 +9938,7 @@ btk_entry_get_cursor_hadjustment (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  return g_object_get_qdata (G_OBJECT (entry), quark_cursor_hadjustment);
+  return g_object_get_qdata (B_OBJECT (entry), quark_cursor_hadjustment);
 }
 
 /**
@@ -9990,7 +9990,7 @@ btk_entry_set_progress_fraction (BtkEntry *entry,
     }
 
   if (fraction != old_fraction)
-    g_object_notify (G_OBJECT (entry), "progress-fraction");
+    g_object_notify (B_OBJECT (entry), "progress-fraction");
 }
 
 /**
@@ -10044,7 +10044,7 @@ btk_entry_set_progress_pulse_step (BtkEntry *entry,
 
       btk_widget_queue_draw (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry), "progress-pulse-step");
+      g_object_notify (B_OBJECT (entry), "progress-pulse-step");
     }
 }
 

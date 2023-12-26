@@ -1662,7 +1662,7 @@ bdk_screen_broadcast_client_message (BdkScreen *screen,
 gboolean
 bdk_screen_get_setting (BdkScreen   *screen,
 			const gchar *name,
-			GValue      *value)
+			BValue      *value)
 {
   if (strcmp (name, "btk-double-click-time") == 0)
     {
@@ -1682,7 +1682,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
 
       BDK_QUARTZ_RELEASE_POOL;
 
-      g_value_set_int (value, t * 1000);
+      b_value_set_int (value, t * 1000);
 
       return TRUE;
     }
@@ -1705,7 +1705,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
        * get the views font size programmatically.
        */
       str = g_strdup_printf ("%s 12", [name UTF8String]);
-      g_value_set_string (value, str);
+      b_value_set_string (value, str);
       g_free (str);
 
       BDK_QUARTZ_RELEASE_POOL;
@@ -1719,7 +1719,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
       BOOL setting = [[NSUserDefaults standardUserDefaults] boolForKey:@"AppleScrollerPagingBehavior"];
 
       /* If the Apple property is YES, it means "warp" */
-      g_value_set_boolean (value, setting == YES);
+      b_value_set_boolean (value, setting == YES);
 
       BDK_QUARTZ_RELEASE_POOL;
 

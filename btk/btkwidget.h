@@ -134,11 +134,11 @@ typedef enum
  * Macros for testing whether `widget' or `klass' are of type BTK_TYPE_WIDGET.
  */
 #define BTK_TYPE_WIDGET			  (btk_widget_get_type ())
-#define BTK_WIDGET(widget)		  (G_TYPE_CHECK_INSTANCE_CAST ((widget), BTK_TYPE_WIDGET, BtkWidget))
-#define BTK_WIDGET_CLASS(klass)		  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WIDGET, BtkWidgetClass))
-#define BTK_IS_WIDGET(widget)		  (G_TYPE_CHECK_INSTANCE_TYPE ((widget), BTK_TYPE_WIDGET))
-#define BTK_IS_WIDGET_CLASS(klass)	  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WIDGET))
-#define BTK_WIDGET_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WIDGET, BtkWidgetClass))
+#define BTK_WIDGET(widget)		  (B_TYPE_CHECK_INSTANCE_CAST ((widget), BTK_TYPE_WIDGET, BtkWidget))
+#define BTK_WIDGET_CLASS(klass)		  (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WIDGET, BtkWidgetClass))
+#define BTK_IS_WIDGET(widget)		  (B_TYPE_CHECK_INSTANCE_TYPE ((widget), BTK_TYPE_WIDGET))
+#define BTK_IS_WIDGET_CLASS(klass)	  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WIDGET))
+#define BTK_WIDGET_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WIDGET, BtkWidgetClass))
 
 /* Macros for extracting various fields from BtkWidget and BtkWidgetClass.
  */
@@ -149,7 +149,7 @@ typedef enum
  *
  * Gets the type of a widget.
  *
- * Deprecated: 2.20: Use G_OBJECT_TYPE() instead.
+ * Deprecated: 2.20: Use B_OBJECT_TYPE() instead.
  */
 #define BTK_WIDGET_TYPE(wid)		  (BTK_OBJECT_TYPE (wid))
 #endif
@@ -632,7 +632,7 @@ struct _BtkWidgetClass
   /* seldomly overidden */
   void (*dispatch_child_properties_changed) (BtkWidget   *widget,
 					     guint        n_pspecs,
-					     GParamSpec **pspecs);
+					     BParamSpec **pspecs);
 
   /* basics */
   void (* show)		       (BtkWidget        *widget);
@@ -660,7 +660,7 @@ struct _BtkWidgetClass
   void (* grab_notify)         (BtkWidget        *widget,
 				gboolean          was_grabbed);
   void (* child_notify)        (BtkWidget	 *widget,
-				GParamSpec       *pspec);
+				BParamSpec       *pspec);
   
   /* Mnemonics */
   gboolean (* mnemonic_activate) (BtkWidget    *widget,
@@ -1216,17 +1216,17 @@ void	     btk_widget_pop_colormap	     (void);
 /* widget style properties
  */
 void btk_widget_class_install_style_property        (BtkWidgetClass     *klass,
-						     GParamSpec         *pspec);
+						     BParamSpec         *pspec);
 void btk_widget_class_install_style_property_parser (BtkWidgetClass     *klass,
-						     GParamSpec         *pspec,
+						     BParamSpec         *pspec,
 						     BtkRcPropertyParser parser);
-GParamSpec*  btk_widget_class_find_style_property   (BtkWidgetClass     *klass,
+BParamSpec*  btk_widget_class_find_style_property   (BtkWidgetClass     *klass,
 						     const gchar        *property_name);
-GParamSpec** btk_widget_class_list_style_properties (BtkWidgetClass     *klass,
+BParamSpec** btk_widget_class_list_style_properties (BtkWidgetClass     *klass,
 						     guint              *n_properties);
 void btk_widget_style_get_property (BtkWidget	     *widget,
 				    const gchar    *property_name,
-				    GValue	     *value);
+				    BValue	     *value);
 void btk_widget_style_get_valist   (BtkWidget	     *widget,
 				    const gchar    *first_property_name,
 				    va_list         var_args);

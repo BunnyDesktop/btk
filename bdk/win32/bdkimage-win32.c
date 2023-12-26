@@ -37,7 +37,7 @@ static gpointer parent_class = NULL;
 static void bdk_win32_image_destroy (BdkImage      *image);
 static void bdk_image_init          (BdkImage      *image);
 static void bdk_image_class_init    (BdkImageClass *klass);
-static void bdk_image_finalize      (GObject       *object);
+static void bdk_image_finalize      (BObject       *object);
 
 GType
 bdk_image_get_type (void)
@@ -59,7 +59,7 @@ bdk_image_get_type (void)
         (GInstanceInitFunc) bdk_image_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkImage",
                                             &object_info, 0);
     }
@@ -76,7 +76,7 @@ bdk_image_init (BdkImage *image)
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -84,13 +84,13 @@ bdk_image_class_init (BdkImageClass *klass)
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image = BDK_IMAGE (object);
 
   bdk_win32_image_destroy (image);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 void

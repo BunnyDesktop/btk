@@ -36,7 +36,7 @@ static void     remember_previous_char (BtkIMContextThai *context_thai,
                                         gunichar new_char);
 #endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 GType btk_type_im_context_thai = 0;
 

@@ -32,11 +32,11 @@ B_BEGIN_DECLS
 #define BTK_ENTRY_BUFFER_MAX_SIZE        G_MAXUSHORT
 
 #define BTK_TYPE_ENTRY_BUFFER            (btk_entry_buffer_get_type ())
-#define BTK_ENTRY_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBuffer))
-#define BTK_ENTRY_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
-#define BTK_IS_ENTRY_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY_BUFFER))
-#define BTK_IS_ENTRY_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY_BUFFER))
-#define BTK_ENTRY_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
+#define BTK_ENTRY_BUFFER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBuffer))
+#define BTK_ENTRY_BUFFER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
+#define BTK_IS_ENTRY_BUFFER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY_BUFFER))
+#define BTK_IS_ENTRY_BUFFER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY_BUFFER))
+#define BTK_ENTRY_BUFFER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
 
 typedef struct _BtkEntryBuffer            BtkEntryBuffer;
 typedef struct _BtkEntryBufferClass       BtkEntryBufferClass;
@@ -44,7 +44,7 @@ typedef struct _BtkEntryBufferPrivate     BtkEntryBufferPrivate;
 
 struct _BtkEntryBuffer
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< private >*/
   BtkEntryBufferPrivate *priv;
@@ -52,7 +52,7 @@ struct _BtkEntryBuffer
 
 struct _BtkEntryBufferClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Signals */
 

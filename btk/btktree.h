@@ -39,11 +39,11 @@ B_BEGIN_DECLS
 /* #define TREE_DEBUG */
 
 #define BTK_TYPE_TREE                  (btk_tree_get_type ())
-#define BTK_TREE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE, BtkTree))
-#define BTK_TREE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE, BtkTreeClass))
-#define BTK_IS_TREE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE))
-#define BTK_IS_TREE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE))
-#define BTK_TREE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE, BtkTreeClass))
+#define BTK_TREE(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE, BtkTree))
+#define BTK_TREE_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE, BtkTreeClass))
+#define BTK_IS_TREE(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE))
+#define BTK_IS_TREE_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE))
+#define BTK_TREE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE, BtkTreeClass))
 
 
 #define BTK_IS_ROOT_TREE(obj)   ((BtkObject*) BTK_TREE(obj)->root_tree == (BtkObject*)obj)

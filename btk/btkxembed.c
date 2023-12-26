@@ -56,7 +56,7 @@ _btk_xembed_push_message (XEvent *xevent)
   message->data1 = xevent->xclient.data.l[3];
   message->data2 = xevent->xclient.data.l[4];
 
-  current_messages = g_slist_prepend (current_messages, message);
+  current_messages = b_slist_prepend (current_messages, message);
 }
 
 /**
@@ -68,7 +68,7 @@ void
 _btk_xembed_pop_message (void)
 {
   BtkXEmbedMessage *message = current_messages->data;
-  current_messages = g_slist_delete_link (current_messages, current_messages);
+  current_messages = b_slist_delete_link (current_messages, current_messages);
   g_slice_free (BtkXEmbedMessage, message);
 }
 

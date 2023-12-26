@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_VIEW                (btk_cell_view_get_type ())
-#define BTK_CELL_VIEW(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
-#define BTK_CELL_VIEW_CLASS(vtable)       (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
-#define BTK_IS_CELL_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_VIEW))
-#define BTK_IS_CELL_VIEW_CLASS(vtable)    (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_CELL_VIEW))
-#define BTK_CELL_VIEW_GET_CLASS(inst)     (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
+#define BTK_CELL_VIEW(obj)                (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
+#define BTK_CELL_VIEW_CLASS(vtable)       (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
+#define BTK_IS_CELL_VIEW(obj)             (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_VIEW))
+#define BTK_IS_CELL_VIEW_CLASS(vtable)    (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_CELL_VIEW))
+#define BTK_CELL_VIEW_GET_CLASS(inst)     (B_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
 
 typedef struct _BtkCellView             BtkCellView;
 typedef struct _BtkCellViewClass        BtkCellViewClass;

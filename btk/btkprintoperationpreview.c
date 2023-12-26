@@ -49,10 +49,10 @@ btk_print_operation_preview_get_type (void)
       };
 
       print_operation_preview_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("BtkPrintOperationPreview"),
+	g_type_register_static (B_TYPE_INTERFACE, I_("BtkPrintOperationPreview"),
 				&print_operation_preview_info, 0);
 
-      g_type_interface_add_prerequisite (print_operation_preview_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (print_operation_preview_type, B_TYPE_OBJECT);
     }
 
   return print_operation_preview_type;
@@ -81,7 +81,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
 		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, ready),
 		    NULL, NULL,
 		    g_cclosure_marshal_VOID__OBJECT,
-		    G_TYPE_NONE, 1,
+		    B_TYPE_NONE, 1,
 		    BTK_TYPE_PRINT_CONTEXT);
 
       /**
@@ -103,7 +103,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
 		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, got_page_size),
 		    NULL, NULL,
 		    _btk_marshal_VOID__OBJECT_OBJECT,
-		    G_TYPE_NONE, 2,
+		    B_TYPE_NONE, 2,
 		    BTK_TYPE_PRINT_CONTEXT,
 		    BTK_TYPE_PAGE_SETUP);
 

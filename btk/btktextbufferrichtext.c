@@ -86,17 +86,17 @@ btk_text_buffer_register_serialize_format (BtkTextBuffer              *buffer,
   g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', BDK_NONE);
   g_return_val_if_fail (function != NULL, BDK_NONE);
 
-  formats = g_object_steal_qdata (G_OBJECT (buffer), serialize_quark ());
+  formats = g_object_steal_qdata (B_OBJECT (buffer), serialize_quark ());
 
   formats = register_format (formats, mime_type,
                              (gpointer) function,
                              user_data, user_data_destroy,
                              &atom);
 
-  g_object_set_qdata_full (G_OBJECT (buffer), serialize_quark (),
+  g_object_set_qdata_full (B_OBJECT (buffer), serialize_quark (),
                            formats, (GDestroyNotify) free_format_list);
 
-  g_object_notify (G_OBJECT (buffer), "copy-target-list");
+  g_object_notify (B_OBJECT (buffer), "copy-target-list");
 
   return atom;
 }
@@ -184,17 +184,17 @@ btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffe
   g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', BDK_NONE);
   g_return_val_if_fail (function != NULL, BDK_NONE);
 
-  formats = g_object_steal_qdata (G_OBJECT (buffer), deserialize_quark ());
+  formats = g_object_steal_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   formats = register_format (formats, mime_type,
                              (gpointer) function,
                              user_data, user_data_destroy,
                              &atom);
 
-  g_object_set_qdata_full (G_OBJECT (buffer), deserialize_quark (),
+  g_object_set_qdata_full (B_OBJECT (buffer), deserialize_quark (),
                            formats, (GDestroyNotify) free_format_list);
 
-  g_object_notify (G_OBJECT (buffer), "paste-target-list");
+  g_object_notify (B_OBJECT (buffer), "paste-target-list");
 
   return atom;
 }
@@ -258,14 +258,14 @@ btk_text_buffer_unregister_serialize_format (BtkTextBuffer *buffer,
   g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (format != BDK_NONE);
 
-  formats = g_object_steal_qdata (G_OBJECT (buffer), serialize_quark ());
+  formats = g_object_steal_qdata (B_OBJECT (buffer), serialize_quark ());
 
   formats = unregister_format (formats, format);
 
-  g_object_set_qdata_full (G_OBJECT (buffer), serialize_quark (),
+  g_object_set_qdata_full (B_OBJECT (buffer), serialize_quark (),
                            formats, (GDestroyNotify) free_format_list);
 
-  g_object_notify (G_OBJECT (buffer), "copy-target-list");
+  g_object_notify (B_OBJECT (buffer), "copy-target-list");
 }
 
 /**
@@ -288,14 +288,14 @@ btk_text_buffer_unregister_deserialize_format (BtkTextBuffer *buffer,
   g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (format != BDK_NONE);
 
-  formats = g_object_steal_qdata (G_OBJECT (buffer), deserialize_quark ());
+  formats = g_object_steal_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   formats = unregister_format (formats, format);
 
-  g_object_set_qdata_full (G_OBJECT (buffer), deserialize_quark (),
+  g_object_set_qdata_full (B_OBJECT (buffer), deserialize_quark (),
                            formats, (GDestroyNotify) free_format_list);
 
-  g_object_notify (G_OBJECT (buffer), "paste-target-list");
+  g_object_notify (B_OBJECT (buffer), "paste-target-list");
 }
 
 /**
@@ -336,7 +336,7 @@ btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer *buffer,
   g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (format != BDK_NONE);
 
-  formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
+  formats = g_object_get_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
     {
@@ -379,7 +379,7 @@ btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer *buffer,
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), FALSE);
   g_return_val_if_fail (format != BDK_NONE, FALSE);
 
-  formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
+  formats = g_object_get_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
     {
@@ -423,7 +423,7 @@ btk_text_buffer_get_serialize_formats (BtkTextBuffer *buffer,
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), NULL);
   g_return_val_if_fail (n_formats != NULL, NULL);
 
-  formats = g_object_get_qdata (G_OBJECT (buffer), serialize_quark ());
+  formats = g_object_get_qdata (B_OBJECT (buffer), serialize_quark ());
 
   return get_formats (formats, n_formats);
 }
@@ -451,7 +451,7 @@ btk_text_buffer_get_deserialize_formats (BtkTextBuffer *buffer,
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), NULL);
   g_return_val_if_fail (n_formats != NULL, NULL);
 
-  formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
+  formats = g_object_get_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   return get_formats (formats, n_formats);
 }
@@ -497,7 +497,7 @@ btk_text_buffer_serialize (BtkTextBuffer     *register_buffer,
 
   *length = 0;
 
-  formats = g_object_get_qdata (G_OBJECT (register_buffer),
+  formats = g_object_get_qdata (B_OBJECT (register_buffer),
                                 serialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
@@ -557,7 +557,7 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
   g_return_val_if_fail (length > 0, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  formats = g_object_get_qdata (G_OBJECT (register_buffer),
+  formats = g_object_get_qdata (B_OBJECT (register_buffer),
                                 deserialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
@@ -587,13 +587,13 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
             {
               BtkTextTag *tag = list->data;
 
-              list = g_slist_next (list);
+              list = b_slist_next (list);
 
               /*  If a tag begins at the insertion point, ignore it
                *  because it doesn't affect the pasted text
                */
               if (btk_text_iter_begins_tag (iter, tag))
-                split_tags = g_slist_remove (split_tags, tag);
+                split_tags = b_slist_remove (split_tags, tag);
             }
 
           if (split_tags)
@@ -606,7 +606,7 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
               right_start = btk_text_buffer_create_mark (content_buffer,
                                                          NULL, iter, FALSE);
 
-              for (list = split_tags; list; list = g_slist_next (list))
+              for (list = split_tags; list; list = b_slist_next (list))
                 {
                   BtkTextTag  *tag             = list->data;
                   BtkTextIter *backward_toggle = btk_text_iter_copy (iter);
@@ -626,8 +626,8 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
                                                            forward_toggle,
                                                            TRUE);
 
-                  left_start_list = g_slist_prepend (left_start_list, left_start);
-                  right_end_list = g_slist_prepend (right_end_list, right_end);
+                  left_start_list = b_slist_prepend (left_start_list, left_start);
+                  right_end_list = b_slist_prepend (right_end_list, right_end);
 
                   btk_text_buffer_remove_tag (content_buffer, tag,
                                               backward_toggle,
@@ -637,8 +637,8 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
                   btk_text_iter_free (backward_toggle);
                 }
 
-              left_start_list = g_slist_reverse (left_start_list);
-              right_end_list = g_slist_reverse (right_end_list);
+              left_start_list = b_slist_reverse (left_start_list);
+              right_end_list = b_slist_reverse (right_end_list);
             }
 
           success = function (register_buffer, content_buffer,
@@ -671,9 +671,9 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
                      left_list = left_start_list,
                      right_list = right_end_list;
                    list && left_list && right_list;
-                   list = g_slist_next (list),
-                     left_list = g_slist_next (left_list),
-                     right_list = g_slist_next (right_list))
+                   list = b_slist_next (list),
+                     left_list = b_slist_next (left_list),
+                     right_list = b_slist_next (right_list))
                 {
                   BtkTextTag  *tag        = list->data;
                   BtkTextMark *left_start = left_list->data;
@@ -698,9 +698,9 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
               btk_text_buffer_delete_mark (content_buffer, left_end);
               btk_text_buffer_delete_mark (content_buffer, right_start);
 
-              g_slist_free (split_tags);
-              g_slist_free (left_start_list);
-              g_slist_free (right_end_list);
+              b_slist_free (split_tags);
+              b_slist_free (left_start_list);
+              b_slist_free (right_end_list);
             }
 
           return success;

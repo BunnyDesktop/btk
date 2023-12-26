@@ -219,8 +219,8 @@ void       btk_propagate_event     (BtkWidget         *widget,
 				    BdkEvent          *event);
 
 gboolean _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
-                                   GValue                *return_accu,
-                                   const GValue          *handler_return,
+                                   BValue                *return_accu,
+                                   const BValue          *handler_return,
                                    gpointer               dummy);
 
 gchar *_btk_get_lc_ctype (void);

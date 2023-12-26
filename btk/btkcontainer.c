@@ -68,14 +68,14 @@ static void     btk_container_base_class_finalize  (BtkContainerClass *klass);
 static void     btk_container_class_init           (BtkContainerClass *klass);
 static void     btk_container_init                 (BtkContainer      *container);
 static void     btk_container_destroy              (BtkObject         *object);
-static void     btk_container_set_property         (GObject         *object,
+static void     btk_container_set_property         (BObject         *object,
 						    guint            prop_id,
-						    const GValue    *value,
-						    GParamSpec      *pspec);
-static void     btk_container_get_property         (GObject         *object,
+						    const BValue    *value,
+						    BParamSpec      *pspec);
+static void     btk_container_get_property         (BObject         *object,
 						    guint            prop_id,
-						    GValue          *value,
-						    GParamSpec      *pspec);
+						    BValue          *value,
+						    BParamSpec      *pspec);
 static void     btk_container_add_unimplemented    (BtkContainer      *container,
 						    BtkWidget         *widget);
 static void     btk_container_remove_unimplemented (BtkContainer      *container,
@@ -105,17 +105,17 @@ static gchar* btk_container_child_default_composite_name (BtkContainer *containe
 static void btk_container_buildable_init           (BtkBuildableIface *iface);
 static void btk_container_buildable_add_child      (BtkBuildable *buildable,
 						    BtkBuilder   *builder,
-						    GObject      *child,
+						    BObject      *child,
 						    const gchar  *type);
 static gboolean btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
 							  BtkBuilder    *builder,
-							  GObject       *child,
+							  BObject       *child,
 							  const gchar   *tagname,
 							  GMarkupParser *parser,
 							  gpointer      *data);
 static void    btk_container_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
-						       GObject      *child,
+						       BObject      *child,
 						       const gchar  *tagname,
 						       gpointer     *data);
 
@@ -128,8 +128,8 @@ static guint                 hadjustment_key_id = 0;
 static GSList	            *container_resize_queue = NULL;
 static guint                 container_signals[LAST_SIGNAL] = { 0 };
 static BtkWidgetClass       *parent_class = NULL;
-extern GParamSpecPool       *_btk_widget_child_property_pool;
-extern GObjectNotifyContext *_btk_widget_child_property_notify_context;
+extern BParamSpecPool       *_btk_widget_child_property_pool;
+extern BObjectNotifyContext *_btk_widget_child_property_notify_context;
 static BtkBuildableIface    *parent_buildable_iface;
 
 
@@ -164,7 +164,7 @@ btk_container_get_type (void)
 
       container_type =
 	g_type_register_static (BTK_TYPE_WIDGET, I_("BtkContainer"), 
-				&container_info, G_TYPE_FLAG_ABSTRACT);
+				&container_info, B_TYPE_FLAG_ABSTRACT);
 
       g_type_add_interface_static (container_type,
 				   BTK_TYPE_BUILDABLE,
@@ -188,10 +188,10 @@ btk_container_base_class_finalize (BtkContainerClass *class)
 {
   GList *list, *node;
 
-  list = g_param_spec_pool_list_owned (_btk_widget_child_property_pool, G_OBJECT_CLASS_TYPE (class));
+  list = g_param_spec_pool_list_owned (_btk_widget_child_property_pool, B_OBJECT_CLASS_TYPE (class));
   for (node = list; node; node = node->next)
     {
-      GParamSpec *pspec = node->data;
+      BParamSpec *pspec = node->data;
 
       g_param_spec_pool_remove (_btk_widget_child_property_pool, pspec);
       PARAM_SPEC_SET_PARAM_ID (pspec, 0);
@@ -203,7 +203,7 @@ btk_container_base_class_finalize (BtkContainerClass *class)
 static void
 btk_container_class_init (BtkContainerClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
@@ -258,38 +258,38 @@ btk_container_class_init (BtkContainerClass *class)
 						      BTK_PARAM_WRITABLE));
   container_signals[ADD] =
     g_signal_new (I_("add"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkContainerClass, add),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_WIDGET);
   container_signals[REMOVE] =
     g_signal_new (I_("remove"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkContainerClass, remove),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_WIDGET);
   container_signals[CHECK_RESIZE] =
     g_signal_new (I_("check-resize"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkContainerClass, check_resize),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   container_signals[SET_FOCUS_CHILD] =
     g_signal_new (I_("set-focus-child"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkContainerClass, set_focus_child),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_WIDGET);
 }
 
@@ -305,7 +305,7 @@ btk_container_buildable_init (BtkBuildableIface *iface)
 static void
 btk_container_buildable_add_child (BtkBuildable  *buildable,
 				   BtkBuilder    *builder,
-				   GObject       *child,
+				   BObject       *child,
 				   const gchar   *type)
 {
   if (type)
@@ -318,7 +318,7 @@ btk_container_buildable_add_child (BtkBuildable  *buildable,
     }
   else
     g_warning ("Cannot add an object of type %s to a container of type %s", 
-	       g_type_name (G_OBJECT_TYPE (child)), g_type_name (G_OBJECT_TYPE (buildable)));
+	       g_type_name (B_OBJECT_TYPE (child)), g_type_name (B_OBJECT_TYPE (buildable)));
 }
 
 static void
@@ -328,23 +328,23 @@ btk_container_buildable_set_child_property (BtkContainer *container,
 					    gchar        *name,
 					    const gchar  *value)
 {
-  GParamSpec *pspec;
-  GValue gvalue = { 0, };
+  BParamSpec *pspec;
+  BValue gvalue = { 0, };
   GError *error = NULL;
   
   pspec = btk_container_class_find_child_property
-    (G_OBJECT_GET_CLASS (container), name);
+    (B_OBJECT_GET_CLASS (container), name);
   if (!pspec)
     {
       g_warning ("%s does not have a property called %s",
-		 g_type_name (G_OBJECT_TYPE (container)), name);
+		 g_type_name (B_OBJECT_TYPE (container)), name);
       return;
     }
 
   if (!btk_builder_value_from_string (builder, pspec, value, &gvalue, &error))
     {
       g_warning ("Could not read property %s:%s with value %s of type %s: %s",
-		 g_type_name (G_OBJECT_TYPE (container)),
+		 g_type_name (B_OBJECT_TYPE (container)),
 		 name,
 		 value,
 		 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
@@ -354,7 +354,7 @@ btk_container_buildable_set_child_property (BtkContainer *container,
     }
 
   btk_container_child_set_property (container, child, name, &gvalue);
-  g_value_unset (&gvalue);
+  b_value_unset (&gvalue);
 }
 
 typedef struct {
@@ -454,7 +454,7 @@ static const GMarkupParser attributes_parser =
 static gboolean
 btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
-					  GObject       *child,
+					  BObject       *child,
 					  const gchar   *tagname,
 					  GMarkupParser *parser,
 					  gpointer      *data)
@@ -484,7 +484,7 @@ btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_container_buildable_custom_tag_end (BtkBuildable *buildable,
 					BtkBuilder   *builder,
-					GObject      *child,
+					BObject      *child,
 					const gchar  *tagname,
 					gpointer     *data)
 {
@@ -507,7 +507,7 @@ btk_container_buildable_custom_tag_end (BtkBuildable *buildable,
  *
  * Returns the type of the children supported by the container.
  *
- * Note that this may return %G_TYPE_NONE to indicate that no more
+ * Note that this may return %B_TYPE_NONE to indicate that no more
  * children can be added, e.g. for a #BtkPaned which already has two 
  * children.
  *
@@ -525,7 +525,7 @@ btk_container_child_type (BtkContainer *container)
   if (class->child_type)
     slot = class->child_type (container);
   else
-    slot = G_TYPE_NONE;
+    slot = B_TYPE_NONE;
 
   return slot;
 }
@@ -534,8 +534,8 @@ btk_container_child_type (BtkContainer *container)
 static inline void
 container_get_child_property (BtkContainer *container,
 			      BtkWidget    *child,
-			      GParamSpec   *pspec,
-			      GValue       *value)
+			      BParamSpec   *pspec,
+			      BValue       *value)
 {
   BtkContainerClass *class = g_type_class_peek (pspec->owner_type);
   
@@ -545,16 +545,16 @@ container_get_child_property (BtkContainer *container,
 static inline void
 container_set_child_property (BtkContainer       *container,
 			      BtkWidget		 *child,
-			      GParamSpec         *pspec,
-			      const GValue       *value,
-			      GObjectNotifyQueue *nqueue)
+			      BParamSpec         *pspec,
+			      const BValue       *value,
+			      BObjectNotifyQueue *nqueue)
 {
-  GValue tmp_value = { 0, };
+  BValue tmp_value = { 0, };
   BtkContainerClass *class = g_type_class_peek (pspec->owner_type);
 
   /* provide a copy to work from, convert (if necessary) and validate */
-  g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-  if (!g_value_transform (value, &tmp_value))
+  b_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  if (!b_value_transform (value, &tmp_value))
     g_warning ("unable to set child property `%s' of type `%s' from value of type `%s'",
 	       pspec->name,
 	       g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
@@ -573,9 +573,9 @@ container_set_child_property (BtkContainer       *container,
   else
     {
       class->set_child_property (container, child, PARAM_SPEC_PARAM_ID (pspec), &tmp_value, pspec);
-      g_object_notify_queue_add (G_OBJECT (child), nqueue, pspec);
+      g_object_notify_queue_add (B_OBJECT (child), nqueue, pspec);
     }
-  g_value_unset (&tmp_value);
+  b_value_unset (&tmp_value);
 }
 
 /**
@@ -606,19 +606,19 @@ btk_container_child_get_valist (BtkContainer *container,
   name = first_property_name;
   while (name)
     {
-      GValue value = { 0, };
-      GParamSpec *pspec;
+      BValue value = { 0, };
+      BParamSpec *pspec;
       gchar *error;
 
       pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool,
 					name,
-					G_OBJECT_TYPE (container),
+					B_OBJECT_TYPE (container),
 					TRUE);
       if (!pspec)
 	{
 	  g_warning ("%s: container class `%s' has no child property named `%s'",
 		     B_STRLOC,
-		     G_OBJECT_TYPE_NAME (container),
+		     B_OBJECT_TYPE_NAME (container),
 		     name);
 	  break;
 	}
@@ -627,20 +627,20 @@ btk_container_child_get_valist (BtkContainer *container,
 	  g_warning ("%s: child property `%s' of container class `%s' is not readable",
 		     B_STRLOC,
 		     pspec->name,
-		     G_OBJECT_TYPE_NAME (container));
+		     B_OBJECT_TYPE_NAME (container));
 	  break;
 	}
-      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      b_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       container_get_child_property (container, child, pspec, &value);
       G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
 	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
-	  g_value_unset (&value);
+	  b_value_unset (&value);
 	  break;
 	}
-      g_value_unset (&value);
+      b_value_unset (&value);
       name = va_arg (var_args, gchar*);
     }
 
@@ -661,9 +661,9 @@ void
 btk_container_child_get_property (BtkContainer *container,
 				  BtkWidget    *child,
 				  const gchar  *property_name,
-				  GValue       *value)
+				  BValue       *value)
 {
-  GParamSpec *pspec;
+  BParamSpec *pspec;
 
   g_return_if_fail (BTK_IS_CONTAINER (container));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -674,29 +674,29 @@ btk_container_child_get_property (BtkContainer *container,
   g_object_ref (container);
   g_object_ref (child);
   pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool, property_name,
-				    G_OBJECT_TYPE (container), TRUE);
+				    B_OBJECT_TYPE (container), TRUE);
   if (!pspec)
     g_warning ("%s: container class `%s' has no child property named `%s'",
 	       B_STRLOC,
-	       G_OBJECT_TYPE_NAME (container),
+	       B_OBJECT_TYPE_NAME (container),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_READABLE))
     g_warning ("%s: child property `%s' of container class `%s' is not readable",
 	       B_STRLOC,
 	       pspec->name,
-	       G_OBJECT_TYPE_NAME (container));
+	       B_OBJECT_TYPE_NAME (container));
   else
     {
-      GValue *prop_value, tmp_value = { 0, };
+      BValue *prop_value, tmp_value = { 0, };
 
       /* auto-conversion of the callers value type
        */
       if (G_VALUE_TYPE (value) == G_PARAM_SPEC_VALUE_TYPE (pspec))
 	{
-	  g_value_reset (value);
+	  b_value_reset (value);
 	  prop_value = value;
 	}
-      else if (!g_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
+      else if (!b_value_type_transformable (G_PARAM_SPEC_VALUE_TYPE (pspec), G_VALUE_TYPE (value)))
 	{
 	  g_warning ("can't retrieve child property `%s' of type `%s' as value of type `%s'",
 		     pspec->name,
@@ -708,14 +708,14 @@ btk_container_child_get_property (BtkContainer *container,
 	}
       else
 	{
-	  g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+	  b_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 	  prop_value = &tmp_value;
 	}
       container_get_child_property (container, child, pspec, prop_value);
       if (prop_value != value)
 	{
-	  g_value_transform (prop_value, value);
-	  g_value_unset (&tmp_value);
+	  b_value_transform (prop_value, value);
+	  b_value_unset (&tmp_value);
 	}
     }
   g_object_unref (child);
@@ -738,7 +738,7 @@ btk_container_child_set_valist (BtkContainer *container,
 				const gchar  *first_property_name,
 				va_list       var_args)
 {
-  GObjectNotifyQueue *nqueue;
+  BObjectNotifyQueue *nqueue;
   const gchar *name;
 
   g_return_if_fail (BTK_IS_CONTAINER (container));
@@ -748,21 +748,21 @@ btk_container_child_set_valist (BtkContainer *container,
   g_object_ref (container);
   g_object_ref (child);
 
-  nqueue = g_object_notify_queue_freeze (G_OBJECT (child), _btk_widget_child_property_notify_context);
+  nqueue = g_object_notify_queue_freeze (B_OBJECT (child), _btk_widget_child_property_notify_context);
   name = first_property_name;
   while (name)
     {
-      GValue value = { 0, };
+      BValue value = { 0, };
       gchar *error = NULL;
-      GParamSpec *pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool,
+      BParamSpec *pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool,
 						    name,
-						    G_OBJECT_TYPE (container),
+						    B_OBJECT_TYPE (container),
 						    TRUE);
       if (!pspec)
 	{
 	  g_warning ("%s: container class `%s' has no child property named `%s'",
 		     B_STRLOC,
-		     G_OBJECT_TYPE_NAME (container),
+		     B_OBJECT_TYPE_NAME (container),
 		     name);
 	  break;
 	}
@@ -771,10 +771,10 @@ btk_container_child_set_valist (BtkContainer *container,
 	  g_warning ("%s: child property `%s' of container class `%s' is not writable",
 		     B_STRLOC,
 		     pspec->name,
-		     G_OBJECT_TYPE_NAME (container));
+		     B_OBJECT_TYPE_NAME (container));
 	  break;
 	}
-      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      b_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       G_VALUE_COLLECT (&value, var_args, 0, &error);
       if (error)
 	{
@@ -787,10 +787,10 @@ btk_container_child_set_valist (BtkContainer *container,
 	  break;
 	}
       container_set_child_property (container, child, pspec, &value, nqueue);
-      g_value_unset (&value);
+      b_value_unset (&value);
       name = va_arg (var_args, gchar*);
     }
-  g_object_notify_queue_thaw (G_OBJECT (child), nqueue);
+  g_object_notify_queue_thaw (B_OBJECT (child), nqueue);
 
   g_object_unref (container);
   g_object_unref (child);
@@ -809,10 +809,10 @@ void
 btk_container_child_set_property (BtkContainer *container,
 				  BtkWidget    *child,
 				  const gchar  *property_name,
-				  const GValue *value)
+				  const BValue *value)
 {
-  GObjectNotifyQueue *nqueue;
-  GParamSpec *pspec;
+  BObjectNotifyQueue *nqueue;
+  BParamSpec *pspec;
 
   g_return_if_fail (BTK_IS_CONTAINER (container));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -823,24 +823,24 @@ btk_container_child_set_property (BtkContainer *container,
   g_object_ref (container);
   g_object_ref (child);
 
-  nqueue = g_object_notify_queue_freeze (G_OBJECT (child), _btk_widget_child_property_notify_context);
+  nqueue = g_object_notify_queue_freeze (B_OBJECT (child), _btk_widget_child_property_notify_context);
   pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool, property_name,
-				    G_OBJECT_TYPE (container), TRUE);
+				    B_OBJECT_TYPE (container), TRUE);
   if (!pspec)
     g_warning ("%s: container class `%s' has no child property named `%s'",
 	       B_STRLOC,
-	       G_OBJECT_TYPE_NAME (container),
+	       B_OBJECT_TYPE_NAME (container),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_WRITABLE))
     g_warning ("%s: child property `%s' of container class `%s' is not writable",
 	       B_STRLOC,
 	       pspec->name,
-	       G_OBJECT_TYPE_NAME (container));
+	       B_OBJECT_TYPE_NAME (container));
   else
     {
       container_set_child_property (container, child, pspec, value, nqueue);
     }
-  g_object_notify_queue_thaw (G_OBJECT (child), nqueue);
+  g_object_notify_queue_thaw (B_OBJECT (child), nqueue);
   g_object_unref (container);
   g_object_unref (child);
 }
@@ -943,14 +943,14 @@ btk_container_child_get (BtkContainer      *container,
  * btk_container_class_install_child_property:
  * @cclass: a #BtkContainerClass
  * @property_id: the id for the property
- * @pspec: the #GParamSpec for the property
+ * @pspec: the #BParamSpec for the property
  * 
  * Installs a child property on a container class. 
  **/
 void
 btk_container_class_install_child_property (BtkContainerClass *cclass,
 					    guint              property_id,
-					    GParamSpec        *pspec)
+					    BParamSpec        *pspec)
 {
   g_return_if_fail (BTK_IS_CONTAINER_CLASS (cclass));
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
@@ -963,30 +963,30 @@ btk_container_class_install_child_property (BtkContainerClass *cclass,
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     g_return_if_fail ((pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)) == 0);
 
-  if (g_param_spec_pool_lookup (_btk_widget_child_property_pool, pspec->name, G_OBJECT_CLASS_TYPE (cclass), FALSE))
+  if (g_param_spec_pool_lookup (_btk_widget_child_property_pool, pspec->name, B_OBJECT_CLASS_TYPE (cclass), FALSE))
     {
       g_warning (B_STRLOC ": class `%s' already contains a child property named `%s'",
-		 G_OBJECT_CLASS_NAME (cclass),
+		 B_OBJECT_CLASS_NAME (cclass),
 		 pspec->name);
       return;
     }
   g_param_spec_ref (pspec);
   g_param_spec_sink (pspec);
   PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
-  g_param_spec_pool_insert (_btk_widget_child_property_pool, pspec, G_OBJECT_CLASS_TYPE (cclass));
+  g_param_spec_pool_insert (_btk_widget_child_property_pool, pspec, B_OBJECT_CLASS_TYPE (cclass));
 }
 
 /**
  * btk_container_class_find_child_property:
  * @cclass: (type BtkContainerClass): a #BtkContainerClass
  * @property_name: the name of the child property to find
- * @returns: (transfer none): the #GParamSpec of the child property or
+ * @returns: (transfer none): the #BParamSpec of the child property or
  *           %NULL if @class has no child property with that name.
  *
  * Finds a child property of a container class by name.
  */
-GParamSpec*
-btk_container_class_find_child_property (GObjectClass *cclass,
+BParamSpec*
+btk_container_class_find_child_property (BObjectClass *cclass,
 					 const gchar  *property_name)
 {
   g_return_val_if_fail (BTK_IS_CONTAINER_CLASS (cclass), NULL);
@@ -994,7 +994,7 @@ btk_container_class_find_child_property (GObjectClass *cclass,
 
   return g_param_spec_pool_lookup (_btk_widget_child_property_pool,
 				   property_name,
-				   G_OBJECT_CLASS_TYPE (cclass),
+				   B_OBJECT_CLASS_TYPE (cclass),
 				   TRUE);
 }
 
@@ -1003,22 +1003,22 @@ btk_container_class_find_child_property (GObjectClass *cclass,
  * @cclass: (type BtkContainerClass): a #BtkContainerClass
  * @n_properties: location to return the number of child properties found
  * @returns: (array length=n_properties) (transfer container):  a newly 
- *           allocated %NULL-terminated array of #GParamSpec*. 
+ *           allocated %NULL-terminated array of #BParamSpec*. 
  *           The array must be freed with g_free().
  *
  * Returns all child properties of a container class.
  */
-GParamSpec**
-btk_container_class_list_child_properties (GObjectClass *cclass,
+BParamSpec**
+btk_container_class_list_child_properties (BObjectClass *cclass,
 					   guint        *n_properties)
 {
-  GParamSpec **pspecs;
+  BParamSpec **pspecs;
   guint n;
 
   g_return_val_if_fail (BTK_IS_CONTAINER_CLASS (cclass), NULL);
 
   pspecs = g_param_spec_pool_list (_btk_widget_child_property_pool,
-				   G_OBJECT_CLASS_TYPE (cclass),
+				   B_OBJECT_CLASS_TYPE (cclass),
 				   &n);
   if (n_properties)
     *n_properties = n;
@@ -1030,14 +1030,14 @@ static void
 btk_container_add_unimplemented (BtkContainer     *container,
 				 BtkWidget        *widget)
 {
-  g_warning ("BtkContainerClass::add not implemented for `%s'", g_type_name (G_TYPE_FROM_INSTANCE (container)));
+  g_warning ("BtkContainerClass::add not implemented for `%s'", g_type_name (B_TYPE_FROM_INSTANCE (container)));
 }
 
 static void
 btk_container_remove_unimplemented (BtkContainer     *container,
 				    BtkWidget        *widget)
 {
-  g_warning ("BtkContainerClass::remove not implemented for `%s'", g_type_name (G_TYPE_FROM_INSTANCE (container)));
+  g_warning ("BtkContainerClass::remove not implemented for `%s'", g_type_name (B_TYPE_FROM_INSTANCE (container)));
 }
 
 static void
@@ -1076,48 +1076,48 @@ btk_container_destroy (BtkObject *object)
 }
 
 static void
-btk_container_set_property (GObject         *object,
+btk_container_set_property (BObject         *object,
 			    guint            prop_id,
-			    const GValue    *value,
-			    GParamSpec      *pspec)
+			    const BValue    *value,
+			    BParamSpec      *pspec)
 {
   BtkContainer *container = BTK_CONTAINER (object);
 
   switch (prop_id)
     {
     case PROP_BORDER_WIDTH:
-      btk_container_set_border_width (container, g_value_get_uint (value));
+      btk_container_set_border_width (container, b_value_get_uint (value));
       break;
     case PROP_RESIZE_MODE:
-      btk_container_set_resize_mode (container, g_value_get_enum (value));
+      btk_container_set_resize_mode (container, b_value_get_enum (value));
       break;
     case PROP_CHILD:
-      btk_container_add (container, BTK_WIDGET (g_value_get_object (value)));
+      btk_container_add (container, BTK_WIDGET (b_value_get_object (value)));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_container_get_property (GObject         *object,
+btk_container_get_property (BObject         *object,
 			    guint            prop_id,
-			    GValue          *value,
-			    GParamSpec      *pspec)
+			    BValue          *value,
+			    BParamSpec      *pspec)
 {
   BtkContainer *container = BTK_CONTAINER (object);
   
   switch (prop_id)
     {
     case PROP_BORDER_WIDTH:
-      g_value_set_uint (value, container->border_width);
+      b_value_set_uint (value, container->border_width);
       break;
     case PROP_RESIZE_MODE:
-      g_value_set_enum (value, container->resize_mode);
+      b_value_set_enum (value, container->resize_mode);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1148,7 +1148,7 @@ btk_container_set_border_width (BtkContainer *container,
   if (container->border_width != border_width)
     {
       container->border_width = border_width;
-      g_object_notify (G_OBJECT (container), "border-width");
+      g_object_notify (B_OBJECT (container), "border-width");
       
       if (btk_widget_get_realized (BTK_WIDGET (container)))
 	btk_widget_queue_resize (BTK_WIDGET (container));
@@ -1199,9 +1199,9 @@ btk_container_add (BtkContainer *container,
                  "type %s, but the widget is already inside a container of type %s, "
                  "the BTK+ FAQ at http://library.bunny.org/devel/btk-faq/stable/ "
                  "explains how to reparent a widget.",
-                 g_type_name (G_OBJECT_TYPE (widget)),
-                 g_type_name (G_OBJECT_TYPE (container)),
-                 g_type_name (G_OBJECT_TYPE (widget->parent)));
+                 g_type_name (B_OBJECT_TYPE (widget)),
+                 g_type_name (B_OBJECT_TYPE (container)),
+                 g_type_name (B_OBJECT_TYPE (widget->parent)));
       return;
     }
 
@@ -1246,7 +1246,7 @@ _btk_container_dequeue_resize_handler (BtkContainer *container)
   g_return_if_fail (BTK_IS_CONTAINER (container));
   g_return_if_fail (BTK_CONTAINER_RESIZE_PENDING (container));
 
-  container_resize_queue = g_slist_remove (container_resize_queue, container);
+  container_resize_queue = b_slist_remove (container_resize_queue, container);
   BTK_PRIVATE_UNSET_FLAG (container, BTK_RESIZE_PENDING);
 }
 
@@ -1279,7 +1279,7 @@ btk_container_set_resize_mode (BtkContainer  *container,
       container->resize_mode = resize_mode;
       
       btk_widget_queue_resize (BTK_WIDGET (container));
-      g_object_notify (G_OBJECT (container), "resize-mode");
+      g_object_notify (B_OBJECT (container), "resize-mode");
     }
 }
 
@@ -1351,7 +1351,7 @@ btk_container_idle_sizer (gpointer data)
       slist = container_resize_queue;
       container_resize_queue = slist->next;
       widget = slist->data;
-      g_slist_free_1 (slist);
+      b_slist_free_1 (slist);
 
       BTK_PRIVATE_UNSET_FLAG (widget, BTK_RESIZE_PENDING);
       btk_container_check_resize (BTK_CONTAINER (widget));
@@ -1400,7 +1400,7 @@ _btk_container_queue_resize (BtkContainer *container)
 		    bdk_threads_add_idle_full (BTK_PRIORITY_RESIZE,
 				     btk_container_idle_sizer,
 				     NULL, NULL);
-		  container_resize_queue = g_slist_prepend (container_resize_queue, resize_container);
+		  container_resize_queue = b_slist_prepend (container_resize_queue, resize_container);
 		}
 	      break;
 
@@ -1551,12 +1551,12 @@ btk_container_foreach_unmarshal (BtkWidget *child,
   
   /* first argument */
   args[0].name = NULL;
-  args[0].type = G_TYPE_FROM_INSTANCE (child);
+  args[0].type = B_TYPE_FROM_INSTANCE (child);
   BTK_VALUE_OBJECT (args[0]) = BTK_OBJECT (child);
   
   /* location for return value */
   args[1].name = NULL;
-  args[1].type = G_TYPE_NONE;
+  args[1].type = B_TYPE_NONE;
   
   fdata->callback (fdata->container, fdata->callback_data, 1, args);
 }
@@ -1694,7 +1694,7 @@ btk_container_child_default_composite_name (BtkContainer *container,
 			&data);
   
   name = g_strdup_printf ("%s-%u",
-			  g_type_name (G_TYPE_FROM_INSTANCE (child)),
+			  g_type_name (B_TYPE_FROM_INSTANCE (child)),
 			  data.index);
 
   return name;
@@ -1719,7 +1719,7 @@ _btk_container_child_composite_name (BtkContainer *container,
       if (!quark_composite_name)
 	quark_composite_name = g_quark_from_static_string ("btk-composite-name");
 
-      name = g_object_get_qdata (G_OBJECT (child), quark_composite_name);
+      name = g_object_get_qdata (B_OBJECT (child), quark_composite_name);
       if (!name)
 	{
 	  BtkContainerClass *class;
@@ -1763,8 +1763,8 @@ btk_container_real_set_focus_child (BtkContainer     *container,
       BtkWidget *focus_child;
       gint x, y;
 
-      hadj = g_object_get_qdata (G_OBJECT (container), hadjustment_key_id);   
-      vadj = g_object_get_qdata (G_OBJECT (container), vadjustment_key_id);
+      hadj = g_object_get_qdata (B_OBJECT (container), hadjustment_key_id);   
+      vadj = g_object_get_qdata (B_OBJECT (container), vadjustment_key_id);
       if (hadj || vadj) 
 	{
 	  focus_child = container->focus_child;
@@ -1793,7 +1793,7 @@ btk_container_real_set_focus_child (BtkContainer     *container,
 static GList*
 get_focus_chain (BtkContainer *container)
 {
-  return g_object_get_data (G_OBJECT (container), "btk-container-focus-chain");
+  return g_object_get_data (B_OBJECT (container), "btk-container-focus-chain");
 }
 
 /* same as btk_container_get_children, except it includes internals
@@ -2346,7 +2346,7 @@ chain_widget_destroyed (BtkWidget *widget,
   
   container = BTK_CONTAINER (user_data);
 
-  chain = g_object_get_data (G_OBJECT (container),
+  chain = g_object_get_data (B_OBJECT (container),
                              "btk-container-focus-chain");
 
   chain = g_list_remove (chain, widget);
@@ -2355,7 +2355,7 @@ chain_widget_destroyed (BtkWidget *widget,
                                         chain_widget_destroyed,
                                         user_data);
   
-  g_object_set_data (G_OBJECT (container),
+  g_object_set_data (B_OBJECT (container),
                      I_("btk-container-focus-chain"),
                      chain);  
 }
@@ -2413,7 +2413,7 @@ btk_container_set_focus_chain (BtkContainer *container,
 
   chain = g_list_reverse (chain);
   
-  g_object_set_data (G_OBJECT (container),
+  g_object_set_data (B_OBJECT (container),
                      I_("btk-container-focus-chain"),
                      chain);
 }
@@ -2474,7 +2474,7 @@ btk_container_unset_focus_chain (BtkContainer  *container)
       
       container->has_focus_chain = FALSE;
       
-      g_object_set_data (G_OBJECT (container), 
+      g_object_set_data (B_OBJECT (container), 
                          I_("btk-container-focus-chain"),
                          NULL);
 
@@ -2519,7 +2519,7 @@ btk_container_set_focus_vadjustment (BtkContainer  *container,
   if (adjustment)
     g_object_ref (adjustment);
 
-  g_object_set_qdata_full (G_OBJECT (container),
+  g_object_set_qdata_full (B_OBJECT (container),
 			   vadjustment_key_id,
 			   adjustment,
 			   g_object_unref);
@@ -2542,7 +2542,7 @@ btk_container_get_focus_vadjustment (BtkContainer *container)
     
   g_return_val_if_fail (BTK_IS_CONTAINER (container), NULL);
 
-  vadjustment = g_object_get_qdata (G_OBJECT (container), vadjustment_key_id);
+  vadjustment = g_object_get_qdata (B_OBJECT (container), vadjustment_key_id);
 
   return vadjustment;
 }
@@ -2574,7 +2574,7 @@ btk_container_set_focus_hadjustment (BtkContainer  *container,
   if (adjustment)
     g_object_ref (adjustment);
 
-  g_object_set_qdata_full (G_OBJECT (container),
+  g_object_set_qdata_full (B_OBJECT (container),
 			   hadjustment_key_id,
 			   adjustment,
 			   g_object_unref);
@@ -2597,7 +2597,7 @@ btk_container_get_focus_hadjustment (BtkContainer *container)
 
   g_return_val_if_fail (BTK_IS_CONTAINER (container), NULL);
 
-  hadjustment = g_object_get_qdata (G_OBJECT (container), hadjustment_key_id);
+  hadjustment = g_object_get_qdata (B_OBJECT (container), hadjustment_key_id);
 
   return hadjustment;
 }

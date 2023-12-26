@@ -63,17 +63,17 @@ typedef struct _BtkTextBTree BtkTextBTree;
 typedef struct _BtkTextLogAttrCache BtkTextLogAttrCache;
 
 #define BTK_TYPE_TEXT_BUFFER            (btk_text_buffer_get_type ())
-#define BTK_TEXT_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBuffer))
-#define BTK_TEXT_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_BUFFER, BtkTextBufferClass))
-#define BTK_IS_TEXT_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_BUFFER))
-#define BTK_IS_TEXT_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_BUFFER))
-#define BTK_TEXT_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBufferClass))
+#define BTK_TEXT_BUFFER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBuffer))
+#define BTK_TEXT_BUFFER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_BUFFER, BtkTextBufferClass))
+#define BTK_IS_TEXT_BUFFER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_BUFFER))
+#define BTK_IS_TEXT_BUFFER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_BUFFER))
+#define BTK_TEXT_BUFFER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBufferClass))
 
 typedef struct _BtkTextBufferClass BtkTextBufferClass;
 
 struct _BtkTextBuffer
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkTextTagTable *GSEAL (tag_table);
   BtkTextBTree *GSEAL (btree);
@@ -93,7 +93,7 @@ struct _BtkTextBuffer
 
 struct _BtkTextBufferClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (* insert_text)     (BtkTextBuffer *buffer,
                             BtkTextIter *pos,

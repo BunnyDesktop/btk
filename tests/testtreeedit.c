@@ -59,10 +59,10 @@ create_model (void)
   btk_widget_destroy (blah);
   
   model = btk_tree_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING,
-			      G_TYPE_BOOLEAN,
+			      B_TYPE_STRING,
+			      B_TYPE_BOOLEAN,
 			      BDK_TYPE_PIXBUF,
-			      G_TYPE_INT);
+			      B_TYPE_INT);
 
   for (i = 0; model_strings[i].string != NULL; i++)
     {

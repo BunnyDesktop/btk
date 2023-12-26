@@ -48,7 +48,7 @@
 
 static void bdk_pixmap_impl_directfb_init       (BdkPixmapImplDirectFB      *pixmap);
 static void bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass);
-static void bdk_pixmap_impl_directfb_finalize   (GObject                    *object);
+static void bdk_pixmap_impl_directfb_finalize   (BObject                    *object);
 
 
 static gpointer parent_class = NULL;
@@ -74,7 +74,7 @@ bdk_pixmap_impl_directfb_init (BdkPixmapImplDirectFB *impl)
 static void
 bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -82,10 +82,10 @@ bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass)
 }
 
 static void
-bdk_pixmap_impl_directfb_finalize (GObject *object)
+bdk_pixmap_impl_directfb_finalize (BObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 BdkPixmap *

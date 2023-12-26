@@ -40,11 +40,11 @@ B_BEGIN_DECLS
 
 /* --- type macros --- */
 #define BTK_TYPE_ACCEL_GROUP              (btk_accel_group_get_type ())
-#define BTK_ACCEL_GROUP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ACCEL_GROUP, BtkAccelGroup))
-#define BTK_ACCEL_GROUP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCEL_GROUP, BtkAccelGroupClass))
-#define BTK_IS_ACCEL_GROUP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ACCEL_GROUP))
-#define BTK_IS_ACCEL_GROUP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCEL_GROUP))
-#define BTK_ACCEL_GROUP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCEL_GROUP, BtkAccelGroupClass))
+#define BTK_ACCEL_GROUP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ACCEL_GROUP, BtkAccelGroup))
+#define BTK_ACCEL_GROUP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCEL_GROUP, BtkAccelGroupClass))
+#define BTK_IS_ACCEL_GROUP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ACCEL_GROUP))
+#define BTK_IS_ACCEL_GROUP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCEL_GROUP))
+#define BTK_ACCEL_GROUP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCEL_GROUP, BtkAccelGroupClass))
 
 
 /* --- accel flags --- */
@@ -62,7 +62,7 @@ typedef struct _BtkAccelGroupClass BtkAccelGroupClass;
 typedef struct _BtkAccelKey        BtkAccelKey;
 typedef struct _BtkAccelGroupEntry BtkAccelGroupEntry;
 typedef gboolean (*BtkAccelGroupActivate) (BtkAccelGroup  *accel_group,
-					   GObject        *acceleratable,
+					   BObject        *acceleratable,
 					   guint           keyval,
 					   BdkModifierType modifier);
 
@@ -85,7 +85,7 @@ typedef gboolean (*BtkAccelGroupFindFunc) (BtkAccelKey    *key,
  */
 struct _BtkAccelGroup
 {
-  GObject             parent;
+  BObject             parent;
 
   guint               GSEAL (lock_count);
   BdkModifierType     GSEAL (modifier_mask);
@@ -96,7 +96,7 @@ struct _BtkAccelGroup
 
 struct _BtkAccelGroupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void	(*accel_changed)	(BtkAccelGroup	*accel_group,
 				 guint           keyval,
@@ -141,20 +141,20 @@ gboolean       btk_accel_group_disconnect_key	  (BtkAccelGroup  *accel_group,
 						   BdkModifierType accel_mods);
 gboolean       btk_accel_group_activate           (BtkAccelGroup   *accel_group,
                                                    GQuark	   accel_quark,
-                                                   GObject	  *acceleratable,
+                                                   BObject	  *acceleratable,
                                                    guint	   accel_key,
                                                    BdkModifierType accel_mods);
 
 
 /* --- BtkActivatable glue --- */
 void		_btk_accel_group_attach		(BtkAccelGroup	*accel_group,
-						 GObject	*object);
+						 BObject	*object);
 void		_btk_accel_group_detach		(BtkAccelGroup	*accel_group,
-						 GObject	*object);
-gboolean        btk_accel_groups_activate      	(GObject	*object,
+						 BObject	*object);
+gboolean        btk_accel_groups_activate      	(BObject	*object,
 						 guint		 accel_key,
 						 BdkModifierType accel_mods);
-GSList*	        btk_accel_groups_from_object    (GObject	*object);
+GSList*	        btk_accel_groups_from_object    (BObject	*object);
 BtkAccelKey*	btk_accel_group_find		(BtkAccelGroup	      *accel_group,
 						 BtkAccelGroupFindFunc find_func,
 						 gpointer              data);

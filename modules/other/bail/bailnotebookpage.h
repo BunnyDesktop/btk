@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_NOTEBOOK_PAGE            (bail_notebook_page_get_type ())
-#define BAIL_NOTEBOOK_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
-#define BAIL_NOTEBOOK_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
-#define BAIL_IS_NOTEBOOK_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK_PAGE))
-#define BAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK_PAGE))
-#define BAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
+#define BAIL_NOTEBOOK_PAGE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
+#define BAIL_NOTEBOOK_PAGE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
+#define BAIL_IS_NOTEBOOK_PAGE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
 
 typedef struct _BailNotebookPage                      BailNotebookPage;
 typedef struct _BailNotebookPageClass                 BailNotebookPageClass;

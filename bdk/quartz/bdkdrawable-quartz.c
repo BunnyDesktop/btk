@@ -457,7 +457,7 @@ bdk_quartz_draw_drawable (BdkDrawable *drawable,
     src_impl = BDK_DRAWABLE_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (src)->impl);
   else
     {
-      g_warning ("Unsupported source %s", G_OBJECT_TYPE_NAME (src));
+      g_warning ("Unsupported source %s", B_OBJECT_TYPE_NAME (src));
       return;
     }
 
@@ -748,20 +748,20 @@ bdk_quartz_draw_image (BdkDrawable     *drawable,
 }
 
 static void
-bdk_drawable_impl_quartz_finalize (GObject *object)
+bdk_drawable_impl_quartz_finalize (BObject *object)
 {
   BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (object);
 
   if (impl->colormap)
     g_object_unref (impl->colormap);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_drawable_impl_quartz_class_init (BdkDrawableImplQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
@@ -828,7 +828,7 @@ bdk_quartz_drawable_get_context (BdkDrawable *drawable,
   if (!BDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context)
     {
       g_warning ("%s doesn't implement BdkDrawableImplQuartzClass::get_context()",
-                 G_OBJECT_TYPE_NAME (drawable));
+                 B_OBJECT_TYPE_NAME (drawable));
       return NULL;
     }
 

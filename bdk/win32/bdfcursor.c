@@ -161,7 +161,7 @@ gchar *fname;
 				nfi->hotx = 0 - dx;
 				nfi->hoty = 0 - dy;
 
-				fonts = g_slist_append(fonts, nfi);
+				fonts = b_slist_append(fonts, nfi);
 			}
 			else if (startbitmap)
 			{
@@ -279,7 +279,7 @@ static void compose_cursors_from_fonts()
 {
 	GSList *l;
 
-	for (l = g_slist_copy (fonts); l; l = g_slist_delete_link (l,l))
+	for (l = b_slist_copy (fonts); l; l = b_slist_delete_link (l,l))
 	{
 		font_info_t *fi = l->data;
 		gchar *name;
@@ -287,12 +287,12 @@ static void compose_cursors_from_fonts()
 
 		name = g_strconcat(fi->name, "_mask", NULL);
 
-		if ((ml = g_slist_find_custom(fonts, name,
+		if ((ml = b_slist_find_custom(fonts, name,
 			(GCompareFunc) font_info_compare)))
 		{
-			cursors = g_slist_append(cursors, gen_cursor(l->data, ml->data));
-			fonts = g_slist_remove(fonts, l->data);
-			fonts = g_slist_remove(fonts, ml->data);
+			cursors = b_slist_append(cursors, gen_cursor(l->data, ml->data));
+			fonts = b_slist_remove(fonts, l->data);
+			fonts = b_slist_remove(fonts, ml->data);
 		}
 
 		g_free(name);

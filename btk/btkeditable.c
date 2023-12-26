@@ -50,7 +50,7 @@ btk_editable_get_type (void)
 	NULL,			    /* base_finalize */
       };
 
-      editable_type = g_type_register_static (G_TYPE_INTERFACE, I_("BtkEditable"),
+      editable_type = g_type_register_static (B_TYPE_INTERFACE, I_("BtkEditable"),
 					      &editable_info, 0);
     }
 
@@ -89,10 +89,10 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, insert_text),
 		    NULL, NULL,
 		    _btk_marshal_VOID__STRING_INT_POINTER,
-		    G_TYPE_NONE, 3,
-		    G_TYPE_STRING,
-		    G_TYPE_INT,
-		    G_TYPE_POINTER);
+		    B_TYPE_NONE, 3,
+		    B_TYPE_STRING,
+		    B_TYPE_INT,
+		    B_TYPE_POINTER);
 
       /**
        * BtkEditable::delete-text:
@@ -116,9 +116,9 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, delete_text),
 		    NULL, NULL,
 		    _btk_marshal_VOID__INT_INT,
-		    G_TYPE_NONE, 2,
-		    G_TYPE_INT,
-		    G_TYPE_INT);
+		    B_TYPE_NONE, 2,
+		    B_TYPE_INT,
+		    B_TYPE_INT);
       /**
        * BtkEditable::changed:
        * @editable: the object which received the signal
@@ -138,7 +138,7 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, changed),
 		    NULL, NULL,
 		    _btk_marshal_VOID__VOID,
-		    G_TYPE_NONE, 0);
+		    B_TYPE_NONE, 0);
 
       initialized = TRUE;
     }

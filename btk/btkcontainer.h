@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CONTAINER              (btk_container_get_type ())
-#define BTK_CONTAINER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CONTAINER, BtkContainer))
-#define BTK_CONTAINER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CONTAINER, BtkContainerClass))
-#define BTK_IS_CONTAINER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CONTAINER))
-#define BTK_IS_CONTAINER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CONTAINER))
-#define BTK_CONTAINER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CONTAINER, BtkContainerClass))
+#define BTK_CONTAINER(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CONTAINER, BtkContainer))
+#define BTK_CONTAINER_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CONTAINER, BtkContainerClass))
+#define BTK_IS_CONTAINER(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CONTAINER))
+#define BTK_IS_CONTAINER_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CONTAINER))
+#define BTK_CONTAINER_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CONTAINER, BtkContainerClass))
 
 #define BTK_IS_RESIZE_CONTAINER(widget) (BTK_IS_CONTAINER (widget) && ((BtkContainer*) (widget))->resize_mode != BTK_RESIZE_PARENT)
 
@@ -87,13 +87,13 @@ struct _BtkContainerClass
   void    (*set_child_property) (BtkContainer    *container,
 				 BtkWidget       *child,
 				 guint            property_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec);
+				 const BValue    *value,
+				 BParamSpec      *pspec);
   void    (*get_child_property) (BtkContainer    *container,
                                  BtkWidget       *child,
 				 guint            property_id,
-				 GValue          *value,
-				 GParamSpec      *pspec);
+				 BValue          *value,
+				 BParamSpec      *pspec);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -168,10 +168,10 @@ GType   btk_container_child_type	   (BtkContainer     *container);
 
 void         btk_container_class_install_child_property (BtkContainerClass *cclass,
 							 guint		    property_id,
-							 GParamSpec	   *pspec);
-GParamSpec*  btk_container_class_find_child_property	(GObjectClass	   *cclass,
+							 BParamSpec	   *pspec);
+BParamSpec*  btk_container_class_find_child_property	(BObjectClass	   *cclass,
 							 const gchar	   *property_name);
-GParamSpec** btk_container_class_list_child_properties	(GObjectClass	   *cclass,
+BParamSpec** btk_container_class_list_child_properties	(BObjectClass	   *cclass,
 							 guint		   *n_properties);
 void         btk_container_add_with_properties		(BtkContainer	   *container,
 							 BtkWidget	   *widget,
@@ -196,14 +196,14 @@ void         btk_container_child_get_valist		(BtkContainer	   *container,
 void	     btk_container_child_set_property		(BtkContainer	   *container,
 							 BtkWidget	   *child,
 							 const gchar	   *property_name,
-							 const GValue	   *value);
+							 const BValue	   *value);
 void	     btk_container_child_get_property		(BtkContainer	   *container,
 							 BtkWidget	   *child,
 							 const gchar	   *property_name,
-							 GValue		   *value);
+							 BValue		   *value);
 
 #define BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID(object, property_id, pspec) \
-    G_OBJECT_WARN_INVALID_PSPEC ((object), "child property id", (property_id), (pspec))
+    B_OBJECT_WARN_INVALID_PSPEC ((object), "child property id", (property_id), (pspec))
 
 
 void    btk_container_forall		     (BtkContainer *container,

@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_LABEL                      (bail_label_get_type ())
-#define BAIL_LABEL(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LABEL, BailLabel))
-#define BAIL_LABEL_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LABEL, BailLabelClass))
-#define BAIL_IS_LABEL(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LABEL))
-#define BAIL_IS_LABEL_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LABEL))
-#define BAIL_LABEL_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LABEL, BailLabelClass))
+#define BAIL_LABEL(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LABEL, BailLabel))
+#define BAIL_LABEL_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LABEL, BailLabelClass))
+#define BAIL_IS_LABEL(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LABEL))
+#define BAIL_IS_LABEL_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LABEL))
+#define BAIL_LABEL_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LABEL, BailLabelClass))
 
 typedef struct _BailLabel              BailLabel;
 typedef struct _BailLabelClass         BailLabelClass;

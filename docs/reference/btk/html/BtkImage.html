@@ -409,7 +409,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkImage.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -533,7 +533,7 @@ on the image, such as button clicks, place the image inside a
 
   <span class="n">btk_container_add</span> <span class="p">(</span><span class="n">BTK_CONTAINER</span> <span class="p">(</span><span class="n">event_box</span><span class="p">),</span> <span class="n">image</span><span class="p">);</span>
 
-  <span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">G_OBJECT</span> <span class="p">(</span><span class="n">event_box</span><span class="p">),</span>
+  <span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">B_OBJECT</span> <span class="p">(</span><span class="n">event_box</span><span class="p">),</span>
                     <span class="s">&quot;button_press_event&quot;</span><span class="p">,</span>
                     <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">button_press_callback</span><span class="p">),</span>
                     <span class="n">image</span><span class="p">);</span>

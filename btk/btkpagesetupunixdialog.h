@@ -29,11 +29,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PAGE_SETUP_UNIX_DIALOG                  (btk_page_setup_unix_dialog_get_type ())
-#define BTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialog))
-#define BTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
-#define BTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define BTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define BTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
+#define BTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialog))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
 
 
 typedef struct _BtkPageSetupUnixDialog         BtkPageSetupUnixDialog;

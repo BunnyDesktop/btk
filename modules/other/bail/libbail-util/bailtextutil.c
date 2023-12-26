@@ -40,7 +40,7 @@
 static void bail_text_util_class_init      (BailTextUtilClass *klass);
 
 static void bail_text_util_init            (BailTextUtil      *textutil);
-static void bail_text_util_finalize        (GObject           *object);
+static void bail_text_util_finalize        (BObject           *object);
 
 
 static void get_bango_text_offsets         (BangoLayout         *layout,
@@ -52,7 +52,7 @@ static void get_bango_text_offsets         (BangoLayout         *layout,
                                             gint                *end_offset,
                                             BtkTextIter         *start_iter,
                                             BtkTextIter         *end_iter);
-static GObjectClass *parent_class = NULL;
+static BObjectClass *parent_class = NULL;
 
 GType
 bail_text_util_get_type(void)
@@ -75,7 +75,7 @@ bail_text_util_get_type(void)
         NULL, /* value table */
       };
 
-      type = g_type_register_static (G_TYPE_OBJECT, "BailTextUtil", &tinfo, 0);
+      type = g_type_register_static (B_TYPE_OBJECT, "BailTextUtil", &tinfo, 0);
     }
   return type;
 }
@@ -102,7 +102,7 @@ bail_text_util_init (BailTextUtil *textutil)
 static void
 bail_text_util_class_init (BailTextUtilClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -110,14 +110,14 @@ bail_text_util_class_init (BailTextUtilClass *klass)
 }
 
 static void
-bail_text_util_finalize (GObject *object)
+bail_text_util_finalize (BObject *object)
 {
   BailTextUtil *textutil = BAIL_TEXT_UTIL (object);
 
   if (textutil->buffer)
     g_object_unref (textutil->buffer);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /**

@@ -31,11 +31,11 @@ typedef struct _MswStyleClass MswStyleClass;
 extern GType msw_type_style;
 
 #define MSW_TYPE_STYLE              msw_type_style
-#define MSW_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MSW_TYPE_STYLE, MswStyle))
-#define MSW_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MSW_TYPE_STYLE, MswStyleClass))
-#define MSW_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MSW_TYPE_STYLE))
-#define MSW_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), MSW_TYPE_STYLE))
-#define MSW_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), MSW_TYPE_STYLE, MswStyleClass))
+#define MSW_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), MSW_TYPE_STYLE, MswStyle))
+#define MSW_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), MSW_TYPE_STYLE, MswStyleClass))
+#define MSW_IS_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), MSW_TYPE_STYLE))
+#define MSW_IS_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), MSW_TYPE_STYLE))
+#define MSW_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), MSW_TYPE_STYLE, MswStyleClass))
 
 struct _MswStyle
 {

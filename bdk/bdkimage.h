@@ -56,15 +56,15 @@ typedef enum
 typedef struct _BdkImageClass BdkImageClass;
 
 #define BDK_TYPE_IMAGE              (bdk_image_get_type ())
-#define BDK_IMAGE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_IMAGE, BdkImage))
-#define BDK_IMAGE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_IMAGE, BdkImageClass))
-#define BDK_IS_IMAGE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_IMAGE))
-#define BDK_IS_IMAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_IMAGE))
-#define BDK_IMAGE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_IMAGE, BdkImageClass))
+#define BDK_IMAGE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_IMAGE, BdkImage))
+#define BDK_IMAGE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_IMAGE, BdkImageClass))
+#define BDK_IS_IMAGE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_IMAGE))
+#define BDK_IS_IMAGE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_IMAGE))
+#define BDK_IMAGE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_IMAGE, BdkImageClass))
 
 struct _BdkImage
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
   
@@ -87,7 +87,7 @@ struct _BdkImage
 
 struct _BdkImageClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 GType     bdk_image_get_type   (void) B_GNUC_CONST;

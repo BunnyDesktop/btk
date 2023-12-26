@@ -302,7 +302,7 @@
 </div>
 <div class="refsect1">
 <a name="btk2-Keyboard-Accelerators.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkAccelGroup
 </pre>
 </div>
@@ -466,7 +466,7 @@ pass a static string, you can save some memory by interning it first with
 <a name="BtkAccelGroupActivate"></a><h3>BtkAccelGroupActivate ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 <span class="c_punctuation">(</span>*BtkAccelGroupActivate<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelGroup"><span class="type">BtkAccelGroup</span></a> *accel_group</code></em>,
-                          <em class="parameter"><code><span class="type">GObject</span> *acceleratable</code></em>,
+                          <em class="parameter"><code><span class="type">BObject</span> *acceleratable</code></em>,
                           <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifier</code></em>);</pre>
 </div>
@@ -618,7 +618,7 @@ btk_accel_group_query (<em class="parameter"><code><a class="link" href="btk2-Ke
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 btk_accel_group_activate (<em class="parameter"><code><a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelGroup"><span class="type">BtkAccelGroup</span></a> *accel_group</code></em>,
                           <em class="parameter"><code><span class="type">GQuark</span> accel_quark</code></em>,
-                          <em class="parameter"><code><span class="type">GObject</span> *acceleratable</code></em>,
+                          <em class="parameter"><code><span class="type">BObject</span> *acceleratable</code></em>,
                           <em class="parameter"><code><span class="type">guint</span> accel_key</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods</code></em>);</pre>
 <p>Finds the first accelerator in <em class="parameter"><code>accel_group</code></em>
@@ -648,7 +648,7 @@ activates it.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>acceleratable</p></td>
-<td class="parameter_description"><p>the <span class="type">GObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a>, on which
+<td class="parameter_description"><p>the <span class="type">BObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a>, on which
 to activate the accelerator.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -817,7 +817,7 @@ btk_accel_group_get_modifier_mask (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="btk-accel-groups-activate"></a><h3>btk_accel_groups_activate ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_accel_groups_activate (<em class="parameter"><code><span class="type">GObject</span> *object</code></em>,
+btk_accel_groups_activate (<em class="parameter"><code><span class="type">BObject</span> *object</code></em>,
                            <em class="parameter"><code><span class="type">guint</span> accel_key</code></em>,
                            <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods</code></em>);</pre>
 <p>Finds the first accelerator in any <a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelGroup"><span class="type">BtkAccelGroup</span></a> attached
@@ -837,7 +837,7 @@ activates that accelerator.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>object</p></td>
-<td class="parameter_description"><p>the <span class="type">GObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a>, on which
+<td class="parameter_description"><p>the <span class="type">BObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a>, on which
 to activate the accelerator.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -863,7 +863,7 @@ to activate the accelerator.</p></td>
 <div class="refsect2">
 <a name="btk-accel-groups-from-object"></a><h3>btk_accel_groups_from_object ()</h3>
 <pre class="programlisting"><span class="returnvalue">GSList</span> *
-btk_accel_groups_from_object (<em class="parameter"><code><span class="type">GObject</span> *object</code></em>);</pre>
+btk_accel_groups_from_object (<em class="parameter"><code><span class="type">BObject</span> *object</code></em>);</pre>
 <p>Gets a list of all accel groups which are attached to <em class="parameter"><code>object</code></em>
 .</p>
 <div class="refsect3">
@@ -876,7 +876,7 @@ btk_accel_groups_from_object (<em class="parameter"><code><span class="type">GOb
 </colgroup>
 <tbody><tr>
 <td class="parameter_name"><p>object</p></td>
-<td class="parameter_description"><p>a <span class="type">GObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a></p></td>
+<td class="parameter_description"><p>a <span class="type">BObject</span>, usually a <a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr></tbody>
 </table></div>
@@ -1214,7 +1214,7 @@ btk_accelerator_get_default_mod_mask (<em class="parameter"><code><span class="t
 <a name="BtkAccelGroup-accel-activate"></a><h3>The <code class="literal">“accel-activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 user_function (<a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelGroup"><span class="type">BtkAccelGroup</span></a>  *accel_group,
-               <span class="type">GObject</span>        *acceleratable,
+               <span class="type">BObject</span>        *acceleratable,
                <span class="type">guint</span>           keyval,
                <a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifier,
                <span class="type">gpointer</span>        user_data)</pre>

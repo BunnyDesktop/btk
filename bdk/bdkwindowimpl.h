@@ -32,9 +32,9 @@
 B_BEGIN_DECLS
 
 #define BDK_TYPE_WINDOW_IMPL           (bdk_window_impl_get_type ())
-#define BDK_WINDOW_IMPL(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
-#define BDK_IS_WINDOW_IMPL(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_WINDOW_IMPL))
-#define BDK_WINDOW_IMPL_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImplIface))
+#define BDK_WINDOW_IMPL(obj)           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
+#define BDK_IS_WINDOW_IMPL(obj)        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_WINDOW_IMPL))
+#define BDK_WINDOW_IMPL_GET_IFACE(obj) (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImplIface))
 
 typedef struct _BdkWindowImpl       BdkWindowImpl;      /* dummy */
 typedef struct _BdkWindowImplIface  BdkWindowImplIface;

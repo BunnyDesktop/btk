@@ -53,13 +53,13 @@ static GType btk_fixed_child_type   (BtkContainer     *container);
 static void btk_fixed_set_child_property (BtkContainer *container,
                                           BtkWidget    *child,
                                           guint         property_id,
-                                          const GValue *value,
-                                          GParamSpec   *pspec);
+                                          const BValue *value,
+                                          BParamSpec   *pspec);
 static void btk_fixed_get_child_property (BtkContainer *container,
                                           BtkWidget    *child,
                                           guint         property_id,
-                                          GValue       *value,
-                                          GParamSpec   *pspec);
+                                          BValue       *value,
+                                          BParamSpec   *pspec);
 
 G_DEFINE_TYPE (BtkFixed, btk_fixed, BTK_TYPE_CONTAINER)
 
@@ -220,22 +220,22 @@ static void
 btk_fixed_set_child_property (BtkContainer    *container,
                               BtkWidget       *child,
                               guint            property_id,
-                              const GValue    *value,
-                              GParamSpec      *pspec)
+                              const BValue    *value,
+                              BParamSpec      *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_X:
       btk_fixed_move_internal (BTK_FIXED (container),
                                child,
-                               TRUE, g_value_get_int (value),
+                               TRUE, b_value_get_int (value),
                                FALSE, 0);
       break;
     case CHILD_PROP_Y:
       btk_fixed_move_internal (BTK_FIXED (container),
                                child,
                                FALSE, 0,
-                               TRUE, g_value_get_int (value));
+                               TRUE, b_value_get_int (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -247,8 +247,8 @@ static void
 btk_fixed_get_child_property (BtkContainer *container,
                               BtkWidget    *child,
                               guint         property_id,
-                              GValue       *value,
-                              GParamSpec   *pspec)
+                              BValue       *value,
+                              BParamSpec   *pspec)
 {
   BtkFixedChild *fixed_child;
 
@@ -257,10 +257,10 @@ btk_fixed_get_child_property (BtkContainer *container,
   switch (property_id)
     {
     case CHILD_PROP_X:
-      g_value_set_int (value, fixed_child->x);
+      b_value_set_int (value, fixed_child->x);
       break;
     case CHILD_PROP_Y:
-      g_value_set_int (value, fixed_child->y);
+      b_value_set_int (value, fixed_child->y);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);

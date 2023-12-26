@@ -457,7 +457,7 @@ scaled_from_pixdata (guchar *pixdata,
     {
       dest = bdk_pixbuf_scale_simple (src, new_w, new_h, BDK_INTERP_BILINEAR);
 
-      g_object_unref (G_OBJECT (src));
+      g_object_unref (B_OBJECT (src));
     }
   else
     {

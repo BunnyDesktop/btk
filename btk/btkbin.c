@@ -83,7 +83,7 @@ btk_bin_child_type (BtkContainer *container)
   if (!BTK_BIN (container)->child)
     return BTK_TYPE_WIDGET;
   else
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 }
 
 static void
@@ -97,10 +97,10 @@ btk_bin_add (BtkContainer *container,
       g_warning ("Attempting to add a widget with type %s to a %s, "
                  "but as a BtkBin subclass a %s can only contain one widget at a time; "
                  "it already contains a widget of type %s",
-                 g_type_name (G_OBJECT_TYPE (child)),
-                 g_type_name (G_OBJECT_TYPE (bin)),
-                 g_type_name (G_OBJECT_TYPE (bin)),
-                 g_type_name (G_OBJECT_TYPE (bin->child)));
+                 g_type_name (B_OBJECT_TYPE (child)),
+                 g_type_name (B_OBJECT_TYPE (bin)),
+                 g_type_name (B_OBJECT_TYPE (bin)),
+                 g_type_name (B_OBJECT_TYPE (bin->child)));
       return;
     }
 

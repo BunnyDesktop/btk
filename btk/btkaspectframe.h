@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ASPECT_FRAME            (btk_aspect_frame_get_type ())
-#define BTK_ASPECT_FRAME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrame))
-#define BTK_ASPECT_FRAME_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
-#define BTK_IS_ASPECT_FRAME(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ASPECT_FRAME))
-#define BTK_IS_ASPECT_FRAME_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ASPECT_FRAME))
-#define BTK_ASPECT_FRAME_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
+#define BTK_ASPECT_FRAME(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrame))
+#define BTK_ASPECT_FRAME_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
+#define BTK_IS_ASPECT_FRAME(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ASPECT_FRAME))
+#define BTK_IS_ASPECT_FRAME_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ASPECT_FRAME))
+#define BTK_ASPECT_FRAME_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
 
 
 typedef struct _BtkAspectFrame       BtkAspectFrame;

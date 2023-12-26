@@ -100,9 +100,9 @@ from functions?
 <answer>
 
 <para>
-See the documentation for #GObject and #BtkObject. For #GObject note 
+See the documentation for #BObject and #BtkObject. For #BObject note 
 specifically g_object_ref() and g_object_unref(). #BtkObject is a subclass 
-of #GObject so the same points apply, except that it has a "floating" state 
+of #BObject so the same points apply, except that it has a "floating" state 
 (explained in its documentation).
 </para>
 
@@ -910,7 +910,7 @@ set_up_new_columns (BtkTreeView *myview)
   BtkListStore *mycolumns;
 
   /* Create the data model and associate it with the given TreeView */
-  mycolumns = btk_list_store_new (N_COLUMNS, G_TYPE_DOUBLE);
+  mycolumns = btk_list_store_new (N_COLUMNS, B_TYPE_DOUBLE);
   btk_tree_view_set_model (myview, BTK_TREE_MODEL (mycolumns));
 
   /* Create a BtkCellRendererText */

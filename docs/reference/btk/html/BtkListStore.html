@@ -227,7 +227,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkListStore.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkListStore
 </pre>
 </div>
@@ -254,9 +254,9 @@ btk_list_store_new (<em class="parameter"><code><span class="type">gint</span> n
                     <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new list store as with <em class="parameter"><code>n_columns</code></em>
  columns each of the types passed
-in.  Note that only types derived from standard GObject fundamental types 
+in.  Note that only types derived from standard BObject fundamental types 
 are supported. </p>
-<p>As an example, <code class="literal">btk_tree_store_new (3, G_TYPE_INT, G_TYPE_STRING,
+<p>As an example, <code class="literal">btk_tree_store_new (3, B_TYPE_INT, B_TYPE_STRING,
 BDK_TYPE_PIXBUF);</code> will create a new <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> with three columns, of type
 int, string and <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> respectively.</p>
 <div class="refsect3">
@@ -328,7 +328,7 @@ btk_list_store_newv (<em class="parameter"><code><span class="type">gint</span> 
 btk_list_store_set_column_types (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                                  <em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
                                  <em class="parameter"><code><span class="type">GType</span> *types</code></em>);</pre>
-<p>This function is meant primarily for <span class="type">GObjects</span> that inherit from <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a>,
+<p>This function is meant primarily for <span class="type">BObjects</span> that inherit from <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a>,
 and should only be used when constructing a new <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a>.  It will not
 function after a row has been added, or a method on the <a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a>
 interface is called.</p>
@@ -372,10 +372,10 @@ btk_list_store_set (<em class="parameter"><code><a class="link" href="BtkListSto
 The variable argument list should contain integer column numbers,
 each column number followed by the value to be set.
 The list is terminated by a -1. For example, to set column 0 with type
-<code class="literal">G_TYPE_STRING</code> to "Foo", you would write <code class="literal">btk_list_store_set (store, iter,
+<code class="literal">B_TYPE_STRING</code> to "Foo", you would write <code class="literal">btk_list_store_set (store, iter,
 0, "Foo", -1)</code>.</p>
-<p>The value will be referenced by the store if it is a <code class="literal">G_TYPE_OBJECT</code>, and it
-will be copied if it is a <code class="literal">G_TYPE_STRING</code> or <code class="literal">G_TYPE_BOXED</code>.</p>
+<p>The value will be referenced by the store if it is a <code class="literal">B_TYPE_OBJECT</code>, and it
+will be copied if it is a <code class="literal">B_TYPE_STRING</code> or <code class="literal">B_TYPE_BOXED</code>.</p>
 <div class="refsect3">
 <a name="btk-list-store-set.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -448,7 +448,7 @@ bindings.</p>
 btk_list_store_set_value (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                           <em class="parameter"><code><span class="type">gint</span> column</code></em>,
-                          <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Sets the data in the cell specified by <em class="parameter"><code>iter</code></em>
  and <em class="parameter"><code>column</code></em>
 .
@@ -495,7 +495,7 @@ column.</p>
 btk_list_store_set_valuesv (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                             <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
-                            <em class="parameter"><code><span class="type">GValue</span> *values</code></em>,
+                            <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
                             <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkListStore.html#btk-list-store-set-valist" title="btk_list_store_set_valist ()"><code class="function">btk_list_store_set_valist()</code></a> which
 takes the columns and values as two arrays, instead of
@@ -528,7 +528,7 @@ change is not known until run-time.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>values</p></td>
-<td class="parameter_description"><p>an array of GValues. </p></td>
+<td class="parameter_description"><p>an array of BValues. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_values]</span></td>
 </tr>
 <tr>
@@ -789,7 +789,7 @@ btk_list_store_insert_with_valuesv (<em class="parameter"><code><a class="link" 
                                     <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                                     <em class="parameter"><code><span class="type">gint</span> position</code></em>,
                                     <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
-                                    <em class="parameter"><code><span class="type">GValue</span> *values</code></em>,
+                                    <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
                                     <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkListStore.html#btk-list-store-insert-with-values" title="btk_list_store_insert_with_values ()"><code class="function">btk_list_store_insert_with_values()</code></a> which
 takes the columns and values as two arrays, instead of
@@ -826,7 +826,7 @@ language-bindings.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>values</p></td>
-<td class="parameter_description"><p>an array of GValues. </p></td>
+<td class="parameter_description"><p>an array of BValues. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_values]</span></td>
 </tr>
 <tr>

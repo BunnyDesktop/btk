@@ -75,7 +75,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GObject</span> *
+<span class="returnvalue">BObject</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuildable.html#btk-buildable-construct-child" title="btk_buildable_construct_child ()">btk_buildable_construct_child</a> <span class="c_punctuation">()</span>
@@ -115,7 +115,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GObject</span> *
+<span class="returnvalue">BObject</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuildable.html#btk-buildable-get-internal-child" title="btk_buildable_get_internal_child ()">btk_buildable_get_internal_child</a> <span class="c_punctuation">()</span>
@@ -153,7 +153,7 @@
 <a name="BtkBuildable.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 BtkBuildable requires
- GObject.</p>
+ BObject.</p>
 </div>
 <div class="refsect1">
 <a name="BtkBuildable.implementations"></a><h2>Known Implementations</h2>
@@ -249,7 +249,7 @@ BtkBuilder UI definition<p>used to construct the <em class="parameter"><code>bui
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_buildable_add_child (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                          <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                         <em class="parameter"><code><span class="type">GObject</span> *child</code></em>,
+                         <em class="parameter"><code><span class="type">BObject</span> *child</code></em>,
                          <em class="parameter"><code>const <span class="type">gchar</span> *type</code></em>);</pre>
 <p>Adds a child to <em class="parameter"><code>buildable</code></em>
 . <em class="parameter"><code>type</code></em>
@@ -296,7 +296,7 @@ describing how the child should be added.</p>
 btk_buildable_set_buildable_property (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                                       <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
                                       <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
-                                      <em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+                                      <em class="parameter"><code>const <span class="type">BValue</span> *value</code></em>);</pre>
 <p>Sets the property name <em class="parameter"><code>name</code></em>
  to <em class="parameter"><code>value</code></em>
  on the <em class="parameter"><code>buildable</code></em>
@@ -338,7 +338,7 @@ btk_buildable_set_buildable_property (<em class="parameter"><code><a class="link
 <hr>
 <div class="refsect2">
 <a name="btk-buildable-construct-child"></a><h3>btk_buildable_construct_child ()</h3>
-<pre class="programlisting"><span class="returnvalue">GObject</span> *
+<pre class="programlisting"><span class="returnvalue">BObject</span> *
 btk_buildable_construct_child (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                                <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
                                <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
@@ -387,7 +387,7 @@ specified in the UI definition.</p>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 btk_buildable_custom_tag_start (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                                <em class="parameter"><code><span class="type">GObject</span> *child</code></em>,
+                                <em class="parameter"><code><span class="type">BObject</span> *child</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *tagname</code></em>,
                                 <em class="parameter"><code><span class="type">GMarkupParser</span> *parser</code></em>,
                                 <em class="parameter"><code><span class="type">gpointer</span> *data</code></em>);</pre>
@@ -448,7 +448,7 @@ if it doesn't.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_buildable_custom_tag_end (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                              <em class="parameter"><code><span class="type">GObject</span> *child</code></em>,
+                              <em class="parameter"><code><span class="type">BObject</span> *child</code></em>,
                               <em class="parameter"><code>const <span class="type">gchar</span> *tagname</code></em>,
                               <em class="parameter"><code><span class="type">gpointer</span> *data</code></em>);</pre>
 <p>This is called at the end of each custom element handled by 
@@ -498,7 +498,7 @@ the buildable.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_buildable_custom_finished (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                                <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                               <em class="parameter"><code><span class="type">GObject</span> *child</code></em>,
+                               <em class="parameter"><code><span class="type">BObject</span> *child</code></em>,
                                <em class="parameter"><code>const <span class="type">gchar</span> *tagname</code></em>,
                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 <p>This is similar to <a class="link" href="BtkBuildable.html#btk-buildable-parser-finished" title="btk_buildable_parser_finished ()"><code class="function">btk_buildable_parser_finished()</code></a> but is
@@ -581,7 +581,7 @@ is called on a builder.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-buildable-get-internal-child"></a><h3>btk_buildable_get_internal_child ()</h3>
-<pre class="programlisting"><span class="returnvalue">GObject</span> *
+<pre class="programlisting"><span class="returnvalue">BObject</span> *
 btk_buildable_get_internal_child (<em class="parameter"><code><a class="link" href="BtkBuildable.html" title="BtkBuildable"><span class="type">BtkBuildable</span></a> *buildable</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
                                   <em class="parameter"><code>const <span class="type">gchar</span> *childname</code></em>);</pre>
@@ -641,35 +641,35 @@ btk_buildable_get_internal_child (<em class="parameter"><code><a class="link" hr
   const gchar * (* get_name)               (BtkBuildable  *buildable);
   void          (* add_child)              (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
+					    BObject       *child,
 					    const gchar   *type);
   void          (* set_buildable_property) (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
 					    const gchar   *name,
-					    const GValue  *value);
-  GObject *     (* construct_child)        (BtkBuildable  *buildable,
+					    const BValue  *value);
+  BObject *     (* construct_child)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
 					    const gchar   *name);
   gboolean      (* custom_tag_start)       (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
+					    BObject       *child,
 					    const gchar   *tagname,
 					    GMarkupParser *parser,
 					    gpointer      *data);
   void          (* custom_tag_end)         (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
+					    BObject       *child,
 					    const gchar   *tagname,
 					    gpointer      *data);
   void          (* custom_finished)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
+					    BObject       *child,
 					    const gchar   *tagname,
 					    gpointer       data);
   void          (* parser_finished)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder);
 
-  GObject *     (* get_internal_child)     (BtkBuildable  *buildable,
+  BObject *     (* get_internal_child)     (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
 					    const gchar   *childname);
 };

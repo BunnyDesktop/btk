@@ -34,11 +34,11 @@ B_BEGIN_DECLS
 #define BTK_TYPE_RECENT_INFO			(btk_recent_info_get_type ())
 
 #define BTK_TYPE_RECENT_MANAGER			(btk_recent_manager_get_type ())
-#define BTK_RECENT_MANAGER(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManager))
-#define BTK_IS_RECENT_MANAGER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_MANAGER))
-#define BTK_RECENT_MANAGER_CLASS(klass) 	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerClass))
-#define BTK_IS_RECENT_MANAGER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_MANAGER))
-#define BTK_RECENT_MANAGER_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerClass))
+#define BTK_RECENT_MANAGER(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManager))
+#define BTK_IS_RECENT_MANAGER(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_MANAGER))
+#define BTK_RECENT_MANAGER_CLASS(klass) 	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerClass))
+#define BTK_IS_RECENT_MANAGER_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_MANAGER))
+#define BTK_RECENT_MANAGER_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerClass))
 
 typedef struct _BtkRecentInfo		BtkRecentInfo;
 typedef struct _BtkRecentData		BtkRecentData;
@@ -84,7 +84,7 @@ struct _BtkRecentData
 struct _BtkRecentManager
 {
   /*< private >*/
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkRecentManagerPrivate *GSEAL (priv);
 };
@@ -92,7 +92,7 @@ struct _BtkRecentManager
 struct _BtkRecentManagerClass
 {
   /*< private >*/
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*changed) (BtkRecentManager *manager);
 

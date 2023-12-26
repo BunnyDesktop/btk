@@ -32,10 +32,10 @@ struct _BtkQueryPrivate
   GList *mime_types;
 };
 
-G_DEFINE_TYPE (BtkQuery, _btk_query, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkQuery, _btk_query, B_TYPE_OBJECT);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
   BtkQuery *query;
   
@@ -43,15 +43,15 @@ finalize (GObject *object)
   
   g_free (query->priv->text);
 
-  G_OBJECT_CLASS (_btk_query_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_query_parent_class)->finalize (object);
 }
 
 static void
 _btk_query_class_init (BtkQueryClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
 
   g_type_class_add_private (bobject_class, sizeof (BtkQueryPrivate));  
@@ -60,7 +60,7 @@ _btk_query_class_init (BtkQueryClass *class)
 static void
 _btk_query_init (BtkQuery *query)
 {
-  query->priv = G_TYPE_INSTANCE_GET_PRIVATE (query, BTK_TYPE_QUERY, BtkQueryPrivate);
+  query->priv = B_TYPE_INSTANCE_GET_PRIVATE (query, BTK_TYPE_QUERY, BtkQueryPrivate);
 }
 
 BtkQuery *

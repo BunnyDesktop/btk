@@ -37,11 +37,11 @@ B_BEGIN_DECLS
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PROGRESS_C__) || defined (__BTK_PROGRESS_BAR_C__)
 
 #define BTK_TYPE_PROGRESS            (btk_progress_get_type ())
-#define BTK_PROGRESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS, BtkProgress))
-#define BTK_PROGRESS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS, BtkProgressClass))
-#define BTK_IS_PROGRESS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS))
-#define BTK_IS_PROGRESS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS))
-#define BTK_PROGRESS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS, BtkProgressClass))
+#define BTK_PROGRESS(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS, BtkProgress))
+#define BTK_PROGRESS_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS, BtkProgressClass))
+#define BTK_IS_PROGRESS(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS))
+#define BTK_IS_PROGRESS_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS))
+#define BTK_PROGRESS_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS, BtkProgressClass))
 
 #endif /* !BTK_DISABLE_DEPRECATED */
 

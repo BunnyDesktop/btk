@@ -43,7 +43,7 @@
 #include "btkalias.h"
 
 
-#define BTK_TEXT_BUFFER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBufferPrivate))
+#define BTK_TEXT_BUFFER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_BUFFER, BtkTextBufferPrivate))
 
 typedef struct _BtkTextBufferPrivate BtkTextBufferPrivate;
 
@@ -101,7 +101,7 @@ enum {
   PROP_PASTE_TARGET_LIST
 };
 
-static void btk_text_buffer_finalize   (GObject            *object);
+static void btk_text_buffer_finalize   (BObject            *object);
 
 static void btk_text_buffer_real_insert_text           (BtkTextBuffer     *buffer,
                                                         BtkTextIter       *iter,
@@ -141,23 +141,23 @@ static void btk_text_buffer_free_target_lists     (BtkTextBuffer *buffer);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static void btk_text_buffer_set_property (GObject         *object,
+static void btk_text_buffer_set_property (BObject         *object,
 				          guint            prop_id,
-				          const GValue    *value,
-				          GParamSpec      *pspec);
-static void btk_text_buffer_get_property (GObject         *object,
+				          const BValue    *value,
+				          BParamSpec      *pspec);
+static void btk_text_buffer_get_property (BObject         *object,
 				          guint            prop_id,
-				          GValue          *value,
-				          GParamSpec      *pspec);
-static void btk_text_buffer_notify       (GObject         *object,
-                                          GParamSpec      *pspec);
+				          BValue          *value,
+				          BParamSpec      *pspec);
+static void btk_text_buffer_notify       (BObject         *object,
+                                          BParamSpec      *pspec);
 
-G_DEFINE_TYPE (BtkTextBuffer, btk_text_buffer, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextBuffer, btk_text_buffer, B_TYPE_OBJECT)
 
 static void
 btk_text_buffer_class_init (BtkTextBufferClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_text_buffer_finalize;
   object_class->set_property = btk_text_buffer_set_property;
@@ -285,16 +285,16 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[INSERT_TEXT] =
     g_signal_new (I_("insert-text"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, insert_text),
                   NULL, NULL,
                   _btk_marshal_VOID__BOXED_STRING_INT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   3,
                   BTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE,
-                  G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
-                  G_TYPE_INT);
+                  B_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE,
+                  B_TYPE_INT);
 
   /**
    * BtkTextBuffer::insert-pixbuf:
@@ -314,12 +314,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[INSERT_PIXBUF] =
     g_signal_new (I_("insert-pixbuf"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, insert_pixbuf),
                   NULL, NULL,
                   _btk_marshal_VOID__BOXED_OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   2,
                   BTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE,
                   BDK_TYPE_PIXBUF);
@@ -344,12 +344,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[INSERT_CHILD_ANCHOR] =
     g_signal_new (I_("insert-child-anchor"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, insert_child_anchor),
                   NULL, NULL,
                   _btk_marshal_VOID__BOXED_OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   2,
                   BTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE,
                   BTK_TYPE_TEXT_CHILD_ANCHOR);
@@ -374,12 +374,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[DELETE_RANGE] =
     g_signal_new (I_("delete-range"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, delete_range),
                   NULL, NULL,
                   _btk_marshal_VOID__BOXED_BOXED,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   2,
                   BTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE,
                   BTK_TYPE_TEXT_ITER | G_SIGNAL_TYPE_STATIC_SCOPE);
@@ -393,12 +393,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[CHANGED] =
     g_signal_new (I_("changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,                   
                   G_STRUCT_OFFSET (BtkTextBufferClass, changed),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /**
@@ -413,12 +413,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[MODIFIED_CHANGED] =
     g_signal_new (I_("modified-changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, modified_changed),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /**
@@ -436,12 +436,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[MARK_SET] =
     g_signal_new (I_("mark-set"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,                   
                   G_STRUCT_OFFSET (BtkTextBufferClass, mark_set),
                   NULL, NULL,
                   _btk_marshal_VOID__BOXED_OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   2,
                   BTK_TYPE_TEXT_ITER,
                   BTK_TYPE_TEXT_MARK);
@@ -459,12 +459,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */
   signals[MARK_DELETED] =
     g_signal_new (I_("mark-deleted"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,                   
                   G_STRUCT_OFFSET (BtkTextBufferClass, mark_deleted),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   1,
                   BTK_TYPE_TEXT_MARK);
 
@@ -489,12 +489,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */ 
   signals[APPLY_TAG] =
     g_signal_new (I_("apply-tag"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, apply_tag),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_BOXED_BOXED,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   3,
                   BTK_TYPE_TEXT_TAG,
                   BTK_TYPE_TEXT_ITER,
@@ -520,12 +520,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */ 
   signals[REMOVE_TAG] =
     g_signal_new (I_("remove-tag"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, remove_tag),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_BOXED_BOXED,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   3,
                   BTK_TYPE_TEXT_TAG,
                   BTK_TYPE_TEXT_ITER,
@@ -548,12 +548,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */ 
   signals[BEGIN_USER_ACTION] =
     g_signal_new (I_("begin-user-action"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,                   
                   G_STRUCT_OFFSET (BtkTextBufferClass, begin_user_action),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
    /**
@@ -574,12 +574,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */ 
   signals[END_USER_ACTION] =
     g_signal_new (I_("end-user-action"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,                   
                   G_STRUCT_OFFSET (BtkTextBufferClass, end_user_action),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
    /**
@@ -594,12 +594,12 @@ btk_text_buffer_class_init (BtkTextBufferClass *klass)
    */ 
   signals[PASTE_DONE] =
     g_signal_new (I_("paste-done"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextBufferClass, paste_done),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   1,
                   BTK_TYPE_CLIPBOARD);
 
@@ -642,10 +642,10 @@ get_table (BtkTextBuffer *buffer)
 }
 
 static void
-btk_text_buffer_set_property (GObject         *object,
+btk_text_buffer_set_property (BObject         *object,
                               guint            prop_id,
-                              const GValue    *value,
-                              GParamSpec      *pspec)
+                              const BValue    *value,
+                              BParamSpec      *pspec)
 {
   BtkTextBuffer *text_buffer;
 
@@ -654,25 +654,25 @@ btk_text_buffer_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_TAG_TABLE:
-      set_table (text_buffer, g_value_get_object (value));
+      set_table (text_buffer, b_value_get_object (value));
       break;
 
     case PROP_TEXT:
       btk_text_buffer_set_text (text_buffer,
-				g_value_get_string (value), -1);
+				b_value_get_string (value), -1);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_text_buffer_get_property (GObject         *object,
+btk_text_buffer_get_property (BObject         *object,
                               guint            prop_id,
-                              GValue          *value,
-                              GParamSpec      *pspec)
+                              BValue          *value,
+                              BParamSpec      *pspec)
 {
   BtkTextBuffer *text_buffer;
   BtkTextIter iter;
@@ -682,7 +682,7 @@ btk_text_buffer_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_TAG_TABLE:
-      g_value_set_object (value, get_table (text_buffer));
+      b_value_set_object (value, get_table (text_buffer));
       break;
 
     case PROP_TEXT:
@@ -692,39 +692,39 @@ btk_text_buffer_get_property (GObject         *object,
         btk_text_buffer_get_start_iter (text_buffer, &start);
         btk_text_buffer_get_end_iter (text_buffer, &end);
 
-        g_value_take_string (value,
+        b_value_take_string (value,
                             btk_text_buffer_get_text (text_buffer,
                                                       &start, &end, FALSE));
         break;
       }
 
     case PROP_HAS_SELECTION:
-      g_value_set_boolean (value, text_buffer->has_selection);
+      b_value_set_boolean (value, text_buffer->has_selection);
       break;
 
     case PROP_CURSOR_POSITION:
       btk_text_buffer_get_iter_at_mark (text_buffer, &iter, 
     				        btk_text_buffer_get_insert (text_buffer));
-      g_value_set_int (value, btk_text_iter_get_offset (&iter));
+      b_value_set_int (value, btk_text_iter_get_offset (&iter));
       break;
 
     case PROP_COPY_TARGET_LIST:
-      g_value_set_boxed (value, btk_text_buffer_get_copy_target_list (text_buffer));
+      b_value_set_boxed (value, btk_text_buffer_get_copy_target_list (text_buffer));
       break;
 
     case PROP_PASTE_TARGET_LIST:
-      g_value_set_boxed (value, btk_text_buffer_get_paste_target_list (text_buffer));
+      b_value_set_boxed (value, btk_text_buffer_get_paste_target_list (text_buffer));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_text_buffer_notify (GObject    *object,
-                        GParamSpec *pspec)
+btk_text_buffer_notify (BObject    *object,
+                        BParamSpec *pspec)
 {
   if (!strcmp (pspec->name, "copy-target-list") ||
       !strcmp (pspec->name, "paste-target-list"))
@@ -752,7 +752,7 @@ btk_text_buffer_new (BtkTextTagTable *table)
 }
 
 static void
-btk_text_buffer_finalize (GObject *object)
+btk_text_buffer_finalize (BObject *object)
 {
   BtkTextBuffer *buffer;
 
@@ -780,7 +780,7 @@ btk_text_buffer_finalize (GObject *object)
 
   btk_text_buffer_free_target_lists (buffer);
 
-  G_OBJECT_CLASS (btk_text_buffer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_buffer_parent_class)->finalize (object);
 }
 
 static BtkTextBTree*
@@ -847,7 +847,7 @@ btk_text_buffer_set_text (BtkTextBuffer *buffer,
       btk_text_buffer_insert (buffer, &start, text, len);
     }
   
-  g_object_notify (G_OBJECT (buffer), "text");
+  g_object_notify (B_OBJECT (buffer), "text");
 }
 
  
@@ -868,7 +868,7 @@ btk_text_buffer_real_insert_text (BtkTextBuffer *buffer,
   _btk_text_btree_insert (iter, text, len);
 
   g_signal_emit (buffer, signals[CHANGED], 0);
-  g_object_notify (G_OBJECT (buffer), "cursor-position");
+  g_object_notify (B_OBJECT (buffer), "cursor-position");
 }
 
 static void
@@ -1303,9 +1303,9 @@ insert_range_not_inside_self (BtkTextBuffer     *buffer,
                                      &start_iter,
                                      iter);
           
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
-      g_slist_free (tags);
+      b_slist_free (tags);
 
       range_start = range_end;
     }
@@ -1589,11 +1589,11 @@ btk_text_buffer_real_delete_range (BtkTextBuffer *buffer,
   if (has_selection != buffer->has_selection)
     {
       buffer->has_selection = has_selection;
-      g_object_notify (G_OBJECT (buffer), "has-selection");
+      g_object_notify (B_OBJECT (buffer), "has-selection");
     }
 
   g_signal_emit (buffer, signals[CHANGED], 0);
-  g_object_notify (G_OBJECT (buffer), "cursor-position");
+  g_object_notify (B_OBJECT (buffer), "cursor-position");
 }
 
 static void
@@ -2466,7 +2466,7 @@ btk_text_buffer_create_tag (BtkTextBuffer *buffer,
   if (first_property_name)
     {
       va_start (list, first_property_name);
-      g_object_set_valist (G_OBJECT (tag), first_property_name, list);
+      g_object_set_valist (B_OBJECT (tag), first_property_name, list);
       va_end (list);
     }
   
@@ -2533,12 +2533,12 @@ btk_text_buffer_real_mark_set (BtkTextBuffer     *buffer,
       if (has_selection != buffer->has_selection)
         {
           buffer->has_selection = has_selection;
-          g_object_notify (G_OBJECT (buffer), "has-selection");
+          g_object_notify (B_OBJECT (buffer), "has-selection");
         }
     }
     
     if (mark == insert)
-      g_object_notify (G_OBJECT (buffer), "cursor-position");
+      g_object_notify (B_OBJECT (buffer), "cursor-position");
 }
 
 static void
@@ -2763,16 +2763,16 @@ btk_text_buffer_remove_all_tags (BtkTextBuffer     *buffer,
       tmp_list2 = toggled;
       while (tmp_list2 != NULL)
         {
-          tags = g_slist_prepend (tags, tmp_list2->data);
+          tags = b_slist_prepend (tags, tmp_list2->data);
 
-          tmp_list2 = g_slist_next (tmp_list2);
+          tmp_list2 = b_slist_next (tmp_list2);
         }
 
-      g_slist_free (toggled);
+      b_slist_free (toggled);
     }
   
   /* Sort the list */
-  tags = g_slist_sort (tags, pointer_cmp);
+  tags = b_slist_sort (tags, pointer_cmp);
 
   /* Strip duplicates */
   tag = NULL;
@@ -2789,7 +2789,7 @@ btk_text_buffer_remove_all_tags (BtkTextBuffer     *buffer,
 
           tmp_list->next = NULL;
 
-          g_slist_free (tmp_list);
+          b_slist_free (tmp_list);
 
           tmp_list = next;
           /* prev is unchanged */
@@ -2803,7 +2803,7 @@ btk_text_buffer_remove_all_tags (BtkTextBuffer     *buffer,
         }
     }
 
-  g_slist_foreach (tags, (GFunc) g_object_ref, NULL);
+  b_slist_foreach (tags, (GFunc) g_object_ref, NULL);
   
   tmp_list = tags;
   while (tmp_list != NULL)
@@ -2815,9 +2815,9 @@ btk_text_buffer_remove_all_tags (BtkTextBuffer     *buffer,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_foreach (tags, (GFunc) g_object_unref, NULL);
+  b_slist_foreach (tags, (GFunc) g_object_unref, NULL);
   
-  g_slist_free (tags);
+  b_slist_free (tags);
 }
 
 
@@ -3171,9 +3171,9 @@ create_clipboard_contents_buffer (BtkTextBuffer *buffer)
 
   contents = btk_text_buffer_new (btk_text_buffer_get_tag_table (buffer));
 
-  g_object_set_data (G_OBJECT (contents), I_("btk-text-buffer-clipboard-source"),
+  g_object_set_data (B_OBJECT (contents), I_("btk-text-buffer-clipboard-source"),
                      buffer);
-  g_object_set_data (G_OBJECT (contents), I_("btk-text-buffer-clipboard"),
+  g_object_set_data (B_OBJECT (contents), I_("btk-text-buffer-clipboard"),
                      GINT_TO_POINTER (1));
 
   /*  Ref the source buffer as long as the clipboard contents buffer
@@ -3181,7 +3181,7 @@ create_clipboard_contents_buffer (BtkTextBuffer *buffer)
    *  See http://bugzilla.bunny.org/show_bug.cgi?id=339195
    */
   g_object_ref (buffer);
-  g_object_weak_ref (G_OBJECT (contents), (GWeakNotify) g_object_unref, buffer);
+  g_object_weak_ref (B_OBJECT (contents), (GWeakNotify) g_object_unref, buffer);
 
   return contents;
 }
@@ -3215,7 +3215,7 @@ clipboard_get_contents_cb (BtkClipboard     *clipboard,
       guint8 *str;
       gsize   len;
 
-      clipboard_source_buffer = g_object_get_data (G_OBJECT (contents),
+      clipboard_source_buffer = g_object_get_data (B_OBJECT (contents),
                                                    "btk-text-buffer-clipboard-source");
 
       btk_text_buffer_get_bounds (contents, &start, &end);
@@ -3559,7 +3559,7 @@ clipboard_clipboard_buffer_received (BtkClipboard     *clipboard,
     {
       BtkTextIter start, end;
 
-      if (g_object_get_data (G_OBJECT (src_buffer), "btk-text-buffer-clipboard"))
+      if (g_object_get_data (B_OBJECT (src_buffer), "btk-text-buffer-clipboard"))
 	{
 	  btk_text_buffer_get_bounds (src_buffer, &start, &end);
 
@@ -3623,7 +3623,7 @@ update_selection_clipboards (BtkTextBuffer *buffer)
        */
       if (!btk_text_buffer_get_selection_bounds (buffer, &start, &end))
 	{
-	  if (btk_clipboard_get_owner (clipboard) == G_OBJECT (buffer))
+	  if (btk_clipboard_get_owner (clipboard) == B_OBJECT (buffer))
 	    btk_clipboard_clear (clipboard);
 	}
       else
@@ -3636,7 +3636,7 @@ update_selection_clipboards (BtkTextBuffer *buffer)
                                              priv->n_copy_target_entries,
 					     clipboard_get_selection_cb,
 					     clipboard_clear_selection_cb,
-					     G_OBJECT (buffer)))
+					     B_OBJECT (buffer)))
 	    clipboard_clear_selection_cb (clipboard, buffer);
 	}
 
@@ -3691,7 +3691,7 @@ btk_text_buffer_add_selection_clipboard (BtkTextBuffer *buffer,
       selection_clipboard->clipboard = clipboard;
       selection_clipboard->ref_count = 1;
 
-      buffer->selection_clipboards = g_slist_prepend (buffer->selection_clipboards, selection_clipboard);
+      buffer->selection_clipboards = b_slist_prepend (buffer->selection_clipboards, selection_clipboard);
     }
 }
 
@@ -3719,10 +3719,10 @@ btk_text_buffer_remove_selection_clipboard (BtkTextBuffer *buffer,
   selection_clipboard->ref_count--;
   if (selection_clipboard->ref_count == 0)
     {
-      if (btk_clipboard_get_owner (selection_clipboard->clipboard) == G_OBJECT (buffer))
+      if (btk_clipboard_get_owner (selection_clipboard->clipboard) == B_OBJECT (buffer))
 	btk_clipboard_clear (selection_clipboard->clipboard);
 
-      buffer->selection_clipboards = g_slist_remove (buffer->selection_clipboards,
+      buffer->selection_clipboards = b_slist_remove (buffer->selection_clipboards,
                                                      selection_clipboard);
       
       g_free (selection_clipboard);
@@ -3732,8 +3732,8 @@ btk_text_buffer_remove_selection_clipboard (BtkTextBuffer *buffer,
 static void
 remove_all_selection_clipboards (BtkTextBuffer *buffer)
 {
-  g_slist_foreach (buffer->selection_clipboards, (GFunc)g_free, NULL);
-  g_slist_free (buffer->selection_clipboards);
+  b_slist_foreach (buffer->selection_clipboards, (GFunc)g_free, NULL);
+  b_slist_free (buffer->selection_clipboards);
   buffer->selection_clipboards = NULL;
 }
 

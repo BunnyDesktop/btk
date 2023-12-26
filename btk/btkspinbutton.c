@@ -74,16 +74,16 @@ enum
 };
 
 static void btk_spin_button_editable_init  (BtkEditableClass   *iface);
-static void btk_spin_button_finalize       (GObject            *object);
+static void btk_spin_button_finalize       (BObject            *object);
 static void btk_spin_button_destroy        (BtkObject          *object);
-static void btk_spin_button_set_property   (GObject         *object,
+static void btk_spin_button_set_property   (BObject         *object,
 					    guint            prop_id,
-					    const GValue    *value,
-					    GParamSpec      *pspec);
-static void btk_spin_button_get_property   (GObject         *object,
+					    const BValue    *value,
+					    BParamSpec      *pspec);
+static void btk_spin_button_get_property   (BObject         *object,
 					    guint            prop_id,
-					    GValue          *value,
-					    GParamSpec      *pspec);
+					    BValue          *value,
+					    BParamSpec      *pspec);
 static void btk_spin_button_map            (BtkWidget          *widget);
 static void btk_spin_button_unmap          (BtkWidget          *widget);
 static void btk_spin_button_realize        (BtkWidget          *widget);
@@ -163,7 +163,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkSpinButton, btk_spin_button, BTK_TYPE_ENTRY,
 static void
 btk_spin_button_class_init (BtkSpinButtonClass *class)
 {
-  GObjectClass     *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass     *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass   *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass   *widget_class = BTK_WIDGET_CLASS (class);
   BtkEntryClass    *entry_class = BTK_ENTRY_CLASS (class);
@@ -283,13 +283,13 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
 						  btk_rc_property_parse_enum);
   spinbutton_signals[INPUT] =
     g_signal_new (I_("input"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSpinButtonClass, input),
 		  NULL, NULL,
 		  _btk_marshal_INT__POINTER,
-		  G_TYPE_INT, 1,
-		  G_TYPE_POINTER);
+		  B_TYPE_INT, 1,
+		  B_TYPE_POINTER);
 
   /**
    * BtkSpinButton::output:
@@ -321,21 +321,21 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
    */
   spinbutton_signals[OUTPUT] =
     g_signal_new (I_("output"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSpinButtonClass, output),
 		  _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   spinbutton_signals[VALUE_CHANGED] =
     g_signal_new (I_("value-changed"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSpinButtonClass, value_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkSpinButton::wrapped:
@@ -348,22 +348,22 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
    */
   spinbutton_signals[WRAPPED] =
     g_signal_new (I_("wrapped"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSpinButtonClass, wrapped),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /* Action signals */
   spinbutton_signals[CHANGE_VALUE] =
     g_signal_new (I_("change-value"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkSpinButtonClass, change_value),
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM,
-                  G_TYPE_NONE, 1,
+                  B_TYPE_NONE, 1,
                   BTK_TYPE_SCROLL_TYPE);
   
   binding_set = btk_binding_set_by_class (class);
@@ -385,10 +385,10 @@ btk_spin_button_editable_init (BtkEditableClass *iface)
 }
 
 static void
-btk_spin_button_set_property (GObject      *object,
+btk_spin_button_set_property (BObject      *object,
 			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+			      const BValue *value,
+			      BParamSpec   *pspec)
 {
   BtkSpinButton *spin_button = BTK_SPIN_BUTTON (object);
 
@@ -397,7 +397,7 @@ btk_spin_button_set_property (GObject      *object,
       BtkAdjustment *adjustment;
 
     case PROP_ADJUSTMENT:
-      adjustment = BTK_ADJUSTMENT (g_value_get_object (value));
+      adjustment = BTK_ADJUSTMENT (b_value_get_object (value));
       if (!adjustment)
 	adjustment = (BtkAdjustment*) btk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
       btk_spin_button_set_adjustment (spin_button, adjustment);
@@ -405,72 +405,72 @@ btk_spin_button_set_property (GObject      *object,
     case PROP_CLIMB_RATE:
       btk_spin_button_configure (spin_button,
 				 spin_button->adjustment,
-				 g_value_get_double (value),
+				 b_value_get_double (value),
 				 spin_button->digits);
       break;
     case PROP_DIGITS:
       btk_spin_button_configure (spin_button,
 				 spin_button->adjustment,
 				 spin_button->climb_rate,
-				 g_value_get_uint (value));
+				 b_value_get_uint (value));
       break;
     case PROP_SNAP_TO_TICKS:
-      btk_spin_button_set_snap_to_ticks (spin_button, g_value_get_boolean (value));
+      btk_spin_button_set_snap_to_ticks (spin_button, b_value_get_boolean (value));
       break;
     case PROP_NUMERIC:
-      btk_spin_button_set_numeric (spin_button, g_value_get_boolean (value));
+      btk_spin_button_set_numeric (spin_button, b_value_get_boolean (value));
       break;
     case PROP_WRAP:
-      btk_spin_button_set_wrap (spin_button, g_value_get_boolean (value));
+      btk_spin_button_set_wrap (spin_button, b_value_get_boolean (value));
       break;
     case PROP_UPDATE_POLICY:
-      btk_spin_button_set_update_policy (spin_button, g_value_get_enum (value));
+      btk_spin_button_set_update_policy (spin_button, b_value_get_enum (value));
       break;
     case PROP_VALUE:
-      btk_spin_button_set_value (spin_button, g_value_get_double (value));
+      btk_spin_button_set_value (spin_button, b_value_get_double (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_spin_button_get_property (GObject      *object,
+btk_spin_button_get_property (BObject      *object,
 			      guint         prop_id,
-			      GValue       *value,
-			      GParamSpec   *pspec)
+			      BValue       *value,
+			      BParamSpec   *pspec)
 {
   BtkSpinButton *spin_button = BTK_SPIN_BUTTON (object);
 
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      g_value_set_object (value, spin_button->adjustment);
+      b_value_set_object (value, spin_button->adjustment);
       break;
     case PROP_CLIMB_RATE:
-      g_value_set_double (value, spin_button->climb_rate);
+      b_value_set_double (value, spin_button->climb_rate);
       break;
     case PROP_DIGITS:
-      g_value_set_uint (value, spin_button->digits);
+      b_value_set_uint (value, spin_button->digits);
       break;
     case PROP_SNAP_TO_TICKS:
-      g_value_set_boolean (value, spin_button->snap_to_ticks);
+      b_value_set_boolean (value, spin_button->snap_to_ticks);
       break;
     case PROP_NUMERIC:
-      g_value_set_boolean (value, spin_button->numeric);
+      b_value_set_boolean (value, spin_button->numeric);
       break;
     case PROP_WRAP:
-      g_value_set_boolean (value, spin_button->wrap);
+      b_value_set_boolean (value, spin_button->wrap);
       break;
     case PROP_UPDATE_POLICY:
-      g_value_set_enum (value, spin_button->update_policy);
+      b_value_set_enum (value, spin_button->update_policy);
       break;
      case PROP_VALUE:
-       g_value_set_double (value, spin_button->adjustment->value);
+       b_value_set_double (value, spin_button->adjustment->value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -499,11 +499,11 @@ btk_spin_button_init (BtkSpinButton *spin_button)
 }
 
 static void
-btk_spin_button_finalize (GObject *object)
+btk_spin_button_finalize (BObject *object)
 {
   btk_spin_button_set_adjustment (BTK_SPIN_BUTTON (object), NULL);
   
-  G_OBJECT_CLASS (btk_spin_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_spin_button_parent_class)->finalize (object);
 }
 
 static void
@@ -1289,7 +1289,7 @@ btk_spin_button_value_changed (BtkAdjustment *adjustment,
 
   btk_widget_queue_draw (BTK_WIDGET (spin_button));
   
-  g_object_notify (G_OBJECT (spin_button), "value");
+  g_object_notify (B_OBJECT (spin_button), "value");
 }
 
 static void
@@ -1664,19 +1664,19 @@ btk_spin_button_configure (BtkSpinButton  *spin_button,
   else
     adjustment = spin_button->adjustment;
 
-  g_object_freeze_notify (G_OBJECT (spin_button));
+  g_object_freeze_notify (B_OBJECT (spin_button));
   if (spin_button->digits != digits) 
     {
       spin_button->digits = digits;
-      g_object_notify (G_OBJECT (spin_button), "digits");
+      g_object_notify (B_OBJECT (spin_button), "digits");
     }
 
   if (spin_button->climb_rate != climb_rate)
     {
       spin_button->climb_rate = climb_rate;
-      g_object_notify (G_OBJECT (spin_button), "climb-rate");
+      g_object_notify (B_OBJECT (spin_button), "climb-rate");
     }
-  g_object_thaw_notify (G_OBJECT (spin_button));
+  g_object_thaw_notify (B_OBJECT (spin_button));
 
   btk_adjustment_value_changed (adjustment);
 }
@@ -1811,7 +1811,7 @@ btk_spin_button_set_adjustment (BtkSpinButton *spin_button,
       btk_widget_queue_resize (BTK_WIDGET (spin_button));
     }
 
-  g_object_notify (G_OBJECT (spin_button), "adjustment");
+  g_object_notify (B_OBJECT (spin_button), "adjustment");
 }
 
 /**
@@ -1848,7 +1848,7 @@ btk_spin_button_set_digits (BtkSpinButton *spin_button,
     {
       spin_button->digits = digits;
       btk_spin_button_value_changed (spin_button->adjustment, spin_button);
-      g_object_notify (G_OBJECT (spin_button), "digits");
+      g_object_notify (B_OBJECT (spin_button), "digits");
       
       /* since lower/upper may have changed */
       btk_widget_queue_resize (BTK_WIDGET (spin_button));
@@ -2044,7 +2044,7 @@ btk_spin_button_set_update_policy (BtkSpinButton             *spin_button,
   if (spin_button->update_policy != policy)
     {
       spin_button->update_policy = policy;
-      g_object_notify (G_OBJECT (spin_button), "update-policy");
+      g_object_notify (B_OBJECT (spin_button), "update-policy");
     }
 }
 
@@ -2084,7 +2084,7 @@ btk_spin_button_set_numeric (BtkSpinButton  *spin_button,
   if (spin_button->numeric != numeric)
     {
        spin_button->numeric = numeric;
-       g_object_notify (G_OBJECT (spin_button), "numeric");
+       g_object_notify (B_OBJECT (spin_button), "numeric");
     }
 }
 
@@ -2125,7 +2125,7 @@ btk_spin_button_set_wrap (BtkSpinButton  *spin_button,
     {
        spin_button->wrap = (wrap != 0);
   
-       g_object_notify (G_OBJECT (spin_button), "wrap");
+       g_object_notify (B_OBJECT (spin_button), "wrap");
     }
 }
 
@@ -2201,7 +2201,7 @@ btk_spin_button_set_snap_to_ticks (BtkSpinButton *spin_button,
       if (new_val && BTK_ENTRY (spin_button)->editable)
 	btk_spin_button_update (spin_button);
       
-      g_object_notify (G_OBJECT (spin_button), "snap-to-ticks");
+      g_object_notify (B_OBJECT (spin_button), "snap-to-ticks");
     }
 }
 

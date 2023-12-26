@@ -65,11 +65,11 @@
 
 
 /* --- prototypes --- */
-static void btk_accel_group_finalize     (GObject    *object);
-static void btk_accel_group_get_property (GObject    *object,
+static void btk_accel_group_finalize     (BObject    *object);
+static void btk_accel_group_get_property (BObject    *object,
                                           guint       param_id,
-                                          GValue     *value,
-                                          GParamSpec *pspec);
+                                          BValue     *value,
+                                          BParamSpec *pspec);
 static void accel_closure_invalidate     (gpointer    data,
                                           GClosure   *closure);
 
@@ -92,13 +92,13 @@ enum {
   PROP_MODIFIER_MASK,
 };
 
-G_DEFINE_TYPE (BtkAccelGroup, btk_accel_group, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkAccelGroup, btk_accel_group, B_TYPE_OBJECT)
 
 /* --- functions --- */
 static void
 btk_accel_group_class_init (BtkAccelGroupClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
 
   quark_acceleratable_groups = g_quark_from_static_string ("btk-acceleratable-accel-groups");
 
@@ -138,14 +138,14 @@ btk_accel_group_class_init (BtkAccelGroupClass *class)
    */
   signal_accel_activate =
     g_signal_new (I_("accel-activate"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_DETAILED,
 		  0,
 		  _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__OBJECT_UINT_FLAGS,
-		  G_TYPE_BOOLEAN, 3,
-		  G_TYPE_OBJECT,
-		  G_TYPE_UINT,
+		  B_TYPE_BOOLEAN, 3,
+		  B_TYPE_OBJECT,
+		  B_TYPE_UINT,
 		  BDK_TYPE_MODIFIER_TYPE);
   /**
    * BtkAccelGroup::accel-changed:
@@ -163,19 +163,19 @@ btk_accel_group_class_init (BtkAccelGroupClass *class)
    */
   signal_accel_changed =
     g_signal_new (I_("accel-changed"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
 		  G_STRUCT_OFFSET (BtkAccelGroupClass, accel_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__UINT_FLAGS_BOXED,
-		  G_TYPE_NONE, 3,
-		  G_TYPE_UINT,
+		  B_TYPE_NONE, 3,
+		  B_TYPE_UINT,
 		  BDK_TYPE_MODIFIER_TYPE,
-		  G_TYPE_CLOSURE);
+		  B_TYPE_CLOSURE);
 }
 
 static void
-btk_accel_group_finalize (GObject *object)
+btk_accel_group_finalize (BObject *object)
 {
   BtkAccelGroup *accel_group = BTK_ACCEL_GROUP (object);
   guint i;
@@ -198,27 +198,27 @@ btk_accel_group_finalize (GObject *object)
 
   g_free (accel_group->priv_accels);
 
-  G_OBJECT_CLASS (btk_accel_group_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_accel_group_parent_class)->finalize (object);
 }
 
 static void
-btk_accel_group_get_property (GObject    *object,
+btk_accel_group_get_property (BObject    *object,
                               guint       param_id,
-                              GValue     *value,
-                              GParamSpec *pspec)
+                              BValue     *value,
+                              BParamSpec *pspec)
 {
   BtkAccelGroup *accel_group = BTK_ACCEL_GROUP (object);
 
   switch (param_id)
     {
     case PROP_IS_LOCKED:
-      g_value_set_boolean (value, accel_group->lock_count > 0);
+      b_value_set_boolean (value, accel_group->lock_count > 0);
       break;
     case PROP_MODIFIER_MASK:
-      g_value_set_flags (value, accel_group->modifier_mask);
+      b_value_set_flags (value, accel_group->modifier_mask);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -286,7 +286,7 @@ btk_accel_group_get_modifier_mask (BtkAccelGroup *accel_group)
 
 static void
 accel_group_weak_ref_detach (GSList  *free_list,
-			     GObject *stale_object)
+			     BObject *stale_object)
 {
   GSList *slist;
   
@@ -295,31 +295,31 @@ accel_group_weak_ref_detach (GSList  *free_list,
       BtkAccelGroup *accel_group;
       
       accel_group = slist->data;
-      accel_group->acceleratables = g_slist_remove (accel_group->acceleratables, stale_object);
+      accel_group->acceleratables = b_slist_remove (accel_group->acceleratables, stale_object);
       g_object_unref (accel_group);
     }
-  g_slist_free (free_list);
+  b_slist_free (free_list);
   g_object_set_qdata (stale_object, quark_acceleratable_groups, NULL);
 }
 
 void
 _btk_accel_group_attach (BtkAccelGroup *accel_group,
-			 GObject       *object)
+			 BObject       *object)
 {
   GSList *slist;
   
   g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (g_slist_find (accel_group->acceleratables, object) == NULL);
+  g_return_if_fail (b_slist_find (accel_group->acceleratables, object) == NULL);
   
   g_object_ref (accel_group);
-  accel_group->acceleratables = g_slist_prepend (accel_group->acceleratables, object);
+  accel_group->acceleratables = b_slist_prepend (accel_group->acceleratables, object);
   slist = g_object_get_qdata (object, quark_acceleratable_groups);
   if (slist)
     g_object_weak_unref (object,
 			 (GWeakNotify) accel_group_weak_ref_detach,
 			 slist);
-  slist = g_slist_prepend (slist, accel_group);
+  slist = b_slist_prepend (slist, accel_group);
   g_object_set_qdata (object, quark_acceleratable_groups, slist);
   g_object_weak_ref (object,
 		     (GWeakNotify) accel_group_weak_ref_detach,
@@ -328,20 +328,20 @@ _btk_accel_group_attach (BtkAccelGroup *accel_group,
 
 void
 _btk_accel_group_detach (BtkAccelGroup *accel_group,
-			 GObject       *object)
+			 BObject       *object)
 {
   GSList *slist;
   
   g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (G_IS_OBJECT (object));
-  g_return_if_fail (g_slist_find (accel_group->acceleratables, object) != NULL);
+  g_return_if_fail (b_slist_find (accel_group->acceleratables, object) != NULL);
   
-  accel_group->acceleratables = g_slist_remove (accel_group->acceleratables, object);
+  accel_group->acceleratables = b_slist_remove (accel_group->acceleratables, object);
   slist = g_object_get_qdata (object, quark_acceleratable_groups);
   g_object_weak_unref (object,
 		       (GWeakNotify) accel_group_weak_ref_detach,
 		       slist);
-  slist = g_slist_remove (slist, accel_group);
+  slist = b_slist_remove (slist, accel_group);
   g_object_set_qdata (object, quark_acceleratable_groups, slist);
   if (slist)
     g_object_weak_ref (object,
@@ -352,14 +352,14 @@ _btk_accel_group_detach (BtkAccelGroup *accel_group,
 
 /**
  * btk_accel_groups_from_object:
- * @object:        a #GObject, usually a #BtkWindow
+ * @object:        a #BObject, usually a #BtkWindow
  *
  * Gets a list of all accel groups which are attached to @object.
  *
  * Returns: (element-type BtkAccelGroup) (transfer none): a list of all accel groups which are attached to @object
  */
 GSList*
-btk_accel_groups_from_object (GObject *object)
+btk_accel_groups_from_object (BObject *object)
 {
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   
@@ -426,7 +426,7 @@ btk_accel_group_lock (BtkAccelGroup *accel_group)
 
   if (accel_group->lock_count == 1) {
     /* State change from unlocked to locked */
-    g_object_notify (G_OBJECT (accel_group), "is-locked");
+    g_object_notify (B_OBJECT (accel_group), "is-locked");
   }
 }
 
@@ -446,7 +446,7 @@ btk_accel_group_unlock (BtkAccelGroup *accel_group)
 
   if (accel_group->lock_count < 1) {
     /* State change from locked to unlocked */
-    g_object_notify (G_OBJECT (accel_group), "is-locked");
+    g_object_notify (B_OBJECT (accel_group), "is-locked");
   }
 }
 
@@ -751,7 +751,7 @@ btk_accel_group_disconnect_key (BtkAccelGroup  *accel_group,
     {
       GClosure *closure = g_closure_ref (entries[n].closure);
 
-      clist = g_slist_prepend (clist, closure);
+      clist = b_slist_prepend (clist, closure);
     }
 
   for (slist = clist; slist; slist = slist->next)
@@ -761,7 +761,7 @@ btk_accel_group_disconnect_key (BtkAccelGroup  *accel_group,
       removed_one |= btk_accel_group_disconnect (accel_group, closure);
       g_closure_unref (closure);
     }
-  g_slist_free (clist);
+  b_slist_free (clist);
 
   g_object_unref (accel_group);
 
@@ -784,7 +784,7 @@ _btk_accel_group_reconnect (BtkAccelGroup *accel_group,
       {
 	GClosure *closure = g_closure_ref (accel_group->priv_accels[i].closure);
 
-	clist = g_slist_prepend (clist, closure);
+	clist = b_slist_prepend (clist, closure);
       }
 
   for (slist = clist; slist; slist = slist->next)
@@ -795,7 +795,7 @@ _btk_accel_group_reconnect (BtkAccelGroup *accel_group,
       btk_accel_group_connect_by_path (accel_group, g_quark_to_string (accel_path_quark), closure);
       g_closure_unref (closure);
     }
-  g_slist_free (clist);
+  b_slist_free (clist);
 
   g_object_unref (accel_group);
 }
@@ -864,7 +864,7 @@ btk_accel_group_from_accel_closure (GClosure *closure)
  * btk_accel_group_activate:
  * @accel_group:   a #BtkAccelGroup
  * @accel_quark:   the quark for the accelerator name
- * @acceleratable: the #GObject, usually a #BtkWindow, on which
+ * @acceleratable: the #BObject, usually a #BtkWindow, on which
  *                 to activate the accelerator.
  * @accel_key:     accelerator keyval from a key event
  * @accel_mods:    keyboard state mask from a key event
@@ -878,7 +878,7 @@ btk_accel_group_from_accel_closure (GClosure *closure)
 gboolean
 btk_accel_group_activate (BtkAccelGroup   *accel_group,
                           GQuark	   accel_quark,
-                          GObject	  *acceleratable,
+                          BObject	  *acceleratable,
                           guint	           accel_key,
                           BdkModifierType  accel_mods)
 {
@@ -896,7 +896,7 @@ btk_accel_group_activate (BtkAccelGroup   *accel_group,
 
 /**
  * btk_accel_groups_activate:
- * @object:        the #GObject, usually a #BtkWindow, on which
+ * @object:        the #BObject, usually a #BtkWindow, on which
  *                 to activate the accelerator.
  * @accel_key:     accelerator keyval from a key event
  * @accel_mods:    keyboard state mask from a key event
@@ -908,7 +908,7 @@ btk_accel_group_activate (BtkAccelGroup   *accel_group,
  * Returns: %TRUE if an accelerator was activated and handled this keypress
  */
 gboolean
-btk_accel_groups_activate (GObject	  *object,
+btk_accel_groups_activate (BObject	  *object,
 			   guint	   accel_key,
 			   BdkModifierType accel_mods)
 {

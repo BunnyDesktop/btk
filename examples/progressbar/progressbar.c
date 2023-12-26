@@ -110,7 +110,7 @@ int main( int   argc,
     pdata->window = btk_window_new (BTK_WINDOW_TOPLEVEL);
     btk_window_set_resizable (BTK_WINDOW (pdata->window), TRUE);
 
-    g_signal_connect (G_OBJECT (pdata->window), "destroy",
+    g_signal_connect (B_OBJECT (pdata->window), "destroy",
 	              G_CALLBACK (destroy_progress),
                       (gpointer) pdata);
     btk_window_set_title (BTK_WINDOW (pdata->window), "BtkProgressBar");
@@ -150,7 +150,7 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 0, 1,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
 		      5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_show_text),
                       (gpointer) pdata);
     btk_widget_show (check);
@@ -160,7 +160,7 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 1, 2,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
                       5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_activity_mode),
                       (gpointer) pdata);
     btk_widget_show (check);
@@ -170,16 +170,16 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 2, 3,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
                       5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_orientation),
                       (gpointer) pdata);
     btk_widget_show (check);
 
     /* Add a button to exit the program */
     button = btk_button_new_with_label ("close");
-    g_signal_connect_swapped (G_OBJECT (button), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button), "clicked",
                               G_CALLBACK (btk_widget_destroy),
-                              G_OBJECT (pdata->window));
+                              B_OBJECT (pdata->window));
     btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 
     /* This makes it so the button is the default. */

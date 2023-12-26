@@ -85,7 +85,7 @@ filter_changed (BtkRecentChooserDialog *dialog,
 
 static void
 notify_multiple_cb (BtkWidget  *dialog,
-		    GParamSpec *pspec,
+		    BParamSpec *pspec,
 		    BtkWidget  *button)
 {
   gboolean multiple;
@@ -172,7 +172,7 @@ main (int   argc,
 
   btk_widget_show_all (dialog);
 
-  prop_editor = create_prop_editor (G_OBJECT (dialog), BTK_TYPE_RECENT_CHOOSER);
+  prop_editor = create_prop_editor (B_OBJECT (dialog), BTK_TYPE_RECENT_CHOOSER);
 
   control_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 

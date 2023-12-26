@@ -35,14 +35,14 @@ static BatkObject*            bail_expander_ref_child        (BatkObject        
                                                              gint              i);
 
 static BatkStateSet*          bail_expander_ref_state_set    (BatkObject         *obj);
-static void                  bail_expander_real_notify_btk  (GObject           *obj,
-                                                             GParamSpec        *pspec);
+static void                  bail_expander_real_notify_btk  (BObject           *obj,
+                                                             BParamSpec        *pspec);
 static void                  bail_expander_map_btk          (BtkWidget         *widget,
                                                              gpointer          data);
 
 static void                  bail_expander_real_initialize  (BatkObject         *obj,
                                                              gpointer          data);
-static void                  bail_expander_finalize         (GObject           *object);
+static void                  bail_expander_finalize         (BObject           *object);
 static void                  bail_expander_init_textutil    (BailExpander      *expander,
                                                              BtkExpander       *widget);
 static const gchar*          bail_expander_get_full_text    (BtkExpander       *widget);
@@ -119,7 +119,7 @@ G_DEFINE_TYPE_WITH_CODE (BailExpander, bail_expander, BAIL_TYPE_CONTAINER,
 static void
 bail_expander_class_init (BailExpanderClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -279,8 +279,8 @@ bail_expander_map_btk (BtkWidget *widget,
 }
 
 static void
-bail_expander_real_notify_btk (GObject    *obj,
-                               GParamSpec *pspec)
+bail_expander_real_notify_btk (BObject    *obj,
+                               BParamSpec *pspec)
 {
   BatkObject* batk_obj;
   BtkExpander *expander;
@@ -305,7 +305,7 @@ bail_expander_real_notify_btk (GObject    *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -874,7 +874,7 @@ bail_expander_get_character_at_offset (BatkText *text,
 }
 
 static void
-bail_expander_finalize (GObject *object)
+bail_expander_finalize (BObject *object)
 {
   BailExpander *expander = BAIL_EXPANDER (object);
 
@@ -888,5 +888,5 @@ bail_expander_finalize (GObject *object)
   if (expander->textutil)
     g_object_unref (expander->textutil);
 
-  G_OBJECT_CLASS (bail_expander_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_expander_parent_class)->finalize (object);
 }

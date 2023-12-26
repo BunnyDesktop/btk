@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_COMBO                      (bail_combo_get_type ())
-#define BAIL_COMBO(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO, BailCombo))
-#define BAIL_COMBO_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO, BailComboClass))
-#define BAIL_IS_COMBO(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO))
-#define BAIL_IS_COMBO_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO))
-#define BAIL_COMBO_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO, BailComboClass))
+#define BAIL_COMBO(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO, BailCombo))
+#define BAIL_COMBO_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO, BailComboClass))
+#define BAIL_IS_COMBO(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO))
+#define BAIL_IS_COMBO_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO))
+#define BAIL_COMBO_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO, BailComboClass))
 
 typedef struct _BailCombo              BailCombo;
 typedef struct _BailComboClass         BailComboClass;

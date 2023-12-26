@@ -68,7 +68,7 @@ delete_event_cb (BtkWidget *editor,
 
 static void
 properties_button_clicked_cb (BtkWidget *button,
-			      GObject   *entry)
+			      BObject   *entry)
 {
   BtkWidget *editor;
 
@@ -76,7 +76,7 @@ properties_button_clicked_cb (BtkWidget *button,
 
   if (editor == NULL)
     {
-      editor = create_prop_editor (G_OBJECT (entry), G_TYPE_INVALID);
+      editor = create_prop_editor (B_OBJECT (entry), B_TYPE_INVALID);
       btk_container_set_border_width (BTK_CONTAINER (editor), 12);
       btk_window_set_transient_for (BTK_WINDOW (editor),
 				    BTK_WINDOW (btk_widget_get_toplevel (button)));
@@ -208,7 +208,7 @@ chooser_current_folder_changed_cb (BtkFileChooser *chooser,
   folder = btk_file_chooser_get_current_folder_uri (chooser);
   filename = btk_file_chooser_get_uri (chooser);
   g_message ("%s::current-folder-changed\n\tFolder: `%s'\n\tFilename: `%s'\nDone.\n",
-	     G_OBJECT_TYPE_NAME (chooser), folder, filename);
+	     B_OBJECT_TYPE_NAME (chooser), folder, filename);
   g_free (folder);
   g_free (filename);
 }
@@ -221,7 +221,7 @@ chooser_selection_changed_cb (BtkFileChooser *chooser,
 
   filename = btk_file_chooser_get_uri (chooser);
   g_message ("%s::selection-changed\n\tSelection:`%s'\nDone.\n",
-	     G_OBJECT_TYPE_NAME (chooser), filename);
+	     B_OBJECT_TYPE_NAME (chooser), filename);
   g_free (filename);
 }
 
@@ -234,7 +234,7 @@ chooser_file_activated_cb (BtkFileChooser *chooser,
   folder = btk_file_chooser_get_current_folder_uri (chooser);
   filename = btk_file_chooser_get_uri (chooser);
   g_message ("%s::file-activated\n\tFolder: `%s'\n\tFilename: `%s'\nDone.\n",
-	     G_OBJECT_TYPE_NAME (chooser), folder, filename);
+	     B_OBJECT_TYPE_NAME (chooser), folder, filename);
   g_free (folder);
   g_free (filename);
 }
@@ -249,7 +249,7 @@ chooser_update_preview_cb (BtkFileChooser *chooser,
   if (filename != NULL)
     {
       g_message ("%s::update-preview\n\tPreview Filename: `%s'\nDone.\n",
-		 G_OBJECT_TYPE_NAME (chooser), filename);
+		 B_OBJECT_TYPE_NAME (chooser), filename);
       g_free (filename);
     }
 }

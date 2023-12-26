@@ -445,7 +445,7 @@ scratch_image_info_display_closed (BdkDisplay          *display,
                                         scratch_image_info_display_closed,
                                         image_info);
 
-  scratch_image_infos = g_slist_remove (scratch_image_infos, image_info);
+  scratch_image_infos = b_slist_remove (scratch_image_infos, image_info);
 
   for (i = 0; i < image_info->n_images; i++)
     g_object_unref (image_info->static_image[i]);
@@ -504,7 +504,7 @@ scratch_image_info_for_depth (BdkScreen *screen,
   image_info->tile_x = BDK_SCRATCH_IMAGE_WIDTH;
   image_info->tile_y1 = image_info->tile_y2 = BDK_SCRATCH_IMAGE_HEIGHT;
 
-  scratch_image_infos = g_slist_prepend (scratch_image_infos, image_info);
+  scratch_image_infos = b_slist_prepend (scratch_image_infos, image_info);
 
   return image_info;
 }

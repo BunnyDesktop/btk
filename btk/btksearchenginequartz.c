@@ -21,7 +21,7 @@
 
 #include "btksearchenginequartz.h"
 
-/* This file is a mixture of an objective-C object and a GObject,
+/* This file is a mixture of an objective-C object and a BObject,
  * so be careful to not confuse yourself.
  */
 
@@ -45,7 +45,7 @@
 @end
 
 
-/* Definition of GObject */
+/* Definition of BObject */
 struct _BtkSearchEngineQuartzPrivate
 {
   BtkQuery *query;
@@ -125,10 +125,10 @@ G_DEFINE_TYPE (BtkSearchEngineQuartz, _btk_search_engine_quartz, BTK_TYPE_SEARCH
 
 @end
 
-/* Implementation of the GObject */
+/* Implementation of the BObject */
 
 static void
-btk_search_engine_quartz_finalize (GObject *object)
+btk_search_engine_quartz_finalize (BObject *object)
 {
   BtkSearchEngineQuartz *quartz;
 
@@ -149,7 +149,7 @@ btk_search_engine_quartz_finalize (GObject *object)
       quartz->priv->query = NULL;
     }
 
-  G_OBJECT_CLASS (_btk_search_engine_quartz_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_search_engine_quartz_parent_class)->finalize (object);
 }
 
 static void
@@ -219,10 +219,10 @@ btk_search_engine_quartz_set_query (BtkSearchEngine *engine,
 static void
 _btk_search_engine_quartz_class_init (BtkSearchEngineQuartzClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkSearchEngineClass *engine_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = btk_search_engine_quartz_finalize;
   
   engine_class = BTK_SEARCH_ENGINE_CLASS (class);
@@ -239,7 +239,7 @@ _btk_search_engine_quartz_init (BtkSearchEngineQuartz *engine)
 {
   QUARTZ_POOL_ALLOC;
 
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_QUARTZ, BtkSearchEngineQuartzPrivate);
+  engine->priv = B_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_QUARTZ, BtkSearchEngineQuartzPrivate);
 
   engine->priv->ns_query = [[NSMetadataQuery alloc] init];
   engine->priv->receiver = [[ResultReceiver alloc] init];

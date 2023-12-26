@@ -119,9 +119,9 @@ from functions?
 <td align="left" valign="top"></td>
 <td align="left" valign="top">
 <p>
-See the documentation for <span class="type">GObject</span> and <a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a>. For <span class="type">GObject</span> note 
+See the documentation for <span class="type">BObject</span> and <a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a>. For <span class="type">BObject</span> note 
 specifically <code class="function">g_object_ref()</code> and <code class="function">g_object_unref()</code>. <a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> is a subclass 
-of <span class="type">GObject</span> so the same points apply, except that it has a "floating" state 
+of <span class="type">BObject</span> so the same points apply, except that it has a "floating" state 
 (explained in its documentation).
 </p>
 <p>
@@ -1263,7 +1263,7 @@ The following example demonstrates this:
   <span class="n">BtkListStore</span> <span class="o">*</span><span class="n">mycolumns</span><span class="p">;</span>
 
   <span class="cm">/* Create the data model and associate it with the given TreeView */</span>
-  <span class="n">mycolumns</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="n">N_COLUMNS</span><span class="p">,</span> <span class="n">G_TYPE_DOUBLE</span><span class="p">);</span>
+  <span class="n">mycolumns</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="n">N_COLUMNS</span><span class="p">,</span> <span class="n">B_TYPE_DOUBLE</span><span class="p">);</span>
   <span class="n">btk_tree_view_set_model</span> <span class="p">(</span><span class="n">myview</span><span class="p">,</span> <span class="n">BTK_TREE_MODEL</span> <span class="p">(</span><span class="n">mycolumns</span><span class="p">));</span>
 
   <span class="cm">/* Create a BtkCellRendererText */</span>

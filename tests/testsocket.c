@@ -72,7 +72,7 @@ static void
 socket_destroyed (BtkWidget *widget,
 		  Socket    *socket)
 {
-  sockets = g_slist_remove (sockets, socket);
+  sockets = b_slist_remove (sockets, socket);
   g_free (socket);
 }
 
@@ -121,7 +121,7 @@ create_socket (void)
   btk_container_add (BTK_CONTAINER (socket->frame), label);
   btk_widget_show (label);
 
-  sockets = g_slist_prepend (sockets, socket);
+  sockets = b_slist_prepend (sockets, socket);
 
 
   g_signal_connect (socket->socket, "destroy",

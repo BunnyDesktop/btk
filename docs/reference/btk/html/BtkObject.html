@@ -304,7 +304,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkObject.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> BtkObject
             <span class="lineart">├──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -533,11 +533,11 @@ btk_object_remove_no_notify_by_id (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="BTK-OBJECT-TYPE:CAPS"></a><h3>BTK_OBJECT_TYPE</h3>
-<pre class="programlisting">#define BTK_OBJECT_TYPE                   G_OBJECT_TYPE
+<pre class="programlisting">#define BTK_OBJECT_TYPE                   B_OBJECT_TYPE
 </pre>
 <div class="warning">
 <p><code class="literal">BTK_OBJECT_TYPE</code> has been deprecated since version 2.20 and should not be used in newly-written code.</p>
-<p>Use <code class="function">G_OBJECT_TYPE()</code> instead.</p>
+<p>Use <code class="function">B_OBJECT_TYPE()</code> instead.</p>
 </div>
 <p>Gets the type of an object.</p>
 <div class="refsect3">
@@ -559,11 +559,11 @@ btk_object_remove_no_notify_by_id (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="BTK-OBJECT-TYPE-NAME:CAPS"></a><h3>BTK_OBJECT_TYPE_NAME</h3>
-<pre class="programlisting">#define BTK_OBJECT_TYPE_NAME              G_OBJECT_TYPE_NAME
+<pre class="programlisting">#define BTK_OBJECT_TYPE_NAME              B_OBJECT_TYPE_NAME
 </pre>
 <div class="warning">
 <p><code class="literal">BTK_OBJECT_TYPE_NAME</code> has been deprecated since version 2.20 and should not be used in newly-written code.</p>
-<p>Use <code class="function">G_OBJECT_TYPE_NAME()</code> instead.</p>
+<p>Use <code class="function">B_OBJECT_TYPE_NAME()</code> instead.</p>
 </div>
 <p>Gets the name of an object's type.</p>
 <div class="refsect3">

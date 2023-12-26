@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION_WIDGET                  (btk_printer_option_widget_get_type ())
-#define BTK_PRINTER_OPTION_WIDGET(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidget))
-#define BTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
-#define BTK_IS_PRINTER_OPTION_WIDGET(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET))
-#define BTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET))
-#define BTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
+#define BTK_PRINTER_OPTION_WIDGET(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidget))
+#define BTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
+#define BTK_IS_PRINTER_OPTION_WIDGET(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
 
 
 typedef struct _BtkPrinterOptionWidget         BtkPrinterOptionWidget;

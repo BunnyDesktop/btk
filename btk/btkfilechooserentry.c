@@ -39,9 +39,9 @@
 
 typedef struct _BtkFileChooserEntryClass BtkFileChooserEntryClass;
 
-#define BTK_FILE_CHOOSER_ENTRY_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
-#define BTK_IS_FILE_CHOOSER_ENTRY_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY))
-#define BTK_FILE_CHOOSER_ENTRY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
+#define BTK_FILE_CHOOSER_ENTRY_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
+#define BTK_IS_FILE_CHOOSER_ENTRY_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY))
+#define BTK_FILE_CHOOSER_ENTRY_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
 
 struct _BtkFileChooserEntryClass
 {
@@ -74,8 +74,8 @@ enum
   N_COLUMNS
 };
 
-static void     btk_file_chooser_entry_finalize       (GObject          *object);
-static void     btk_file_chooser_entry_dispose        (GObject          *object);
+static void     btk_file_chooser_entry_finalize       (BObject          *object);
+static void     btk_file_chooser_entry_dispose        (BObject          *object);
 static void     btk_file_chooser_entry_grab_focus     (BtkWidget        *widget);
 static gboolean btk_file_chooser_entry_tab_handler    (BtkWidget *widget,
 						       BdkEventKey *event);
@@ -122,14 +122,14 @@ btk_file_chooser_entry_get_completion_text (BtkFileChooserEntry *chooser_entry)
 }
 
 static void
-btk_file_chooser_entry_dispatch_properties_changed (GObject     *object,
+btk_file_chooser_entry_dispatch_properties_changed (BObject     *object,
                                                     guint        n_pspecs,
-                                                    GParamSpec **pspecs)
+                                                    BParamSpec **pspecs)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
   guint i;
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
 
   /* Don't do this during or after disposal */
   if (btk_widget_get_parent (BTK_WIDGET (object)) != NULL)
@@ -154,7 +154,7 @@ btk_file_chooser_entry_dispatch_properties_changed (GObject     *object,
 static void
 _btk_file_chooser_entry_class_init (BtkFileChooserEntryClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
   bobject_class->finalize = btk_file_chooser_entry_finalize;
@@ -214,7 +214,7 @@ _btk_file_chooser_entry_init (BtkFileChooserEntry *chooser_entry)
 }
 
 static void
-btk_file_chooser_entry_finalize (GObject *object)
+btk_file_chooser_entry_finalize (BObject *object)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
 
@@ -227,17 +227,17 @@ btk_file_chooser_entry_finalize (GObject *object)
   g_free (chooser_entry->dir_part);
   g_free (chooser_entry->file_part);
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->finalize (object);
 }
 
 static void
-btk_file_chooser_entry_dispose (GObject *object)
+btk_file_chooser_entry_dispose (BObject *object)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
 
   set_completion_folder (chooser_entry, NULL, NULL);
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispose (object);
 }
 
 /* Match functions for the BtkEntryCompletion */
@@ -488,7 +488,7 @@ completion_store_set (BtkFileSystemModel  *model,
                       GFile               *file,
                       GFileInfo           *info,
                       int                  column,
-                      GValue              *value,
+                      BValue              *value,
                       gpointer             data)
 {
   BtkFileChooserEntry *chooser_entry = data;
@@ -505,7 +505,7 @@ completion_store_set (BtkFileSystemModel  *model,
       if (_btk_file_info_consider_as_directory (info))
         suffix = G_DIR_SEPARATOR_S;
 
-      g_value_take_string (value,
+      b_value_take_string (value,
 			   g_strconcat (prefix,
 					g_file_info_get_display_name (info),
 					suffix,
@@ -529,8 +529,8 @@ populate_completion_store (BtkFileChooserEntry *chooser_entry)
                                                 completion_store_set,
                                                 chooser_entry,
                                                 N_COLUMNS,
-                                                G_TYPE_STRING,
-                                                G_TYPE_STRING));
+                                                B_TYPE_STRING,
+                                                B_TYPE_STRING));
   g_signal_connect (chooser_entry->completion_store, "finished-loading",
 		    G_CALLBACK (finished_loading_cb), chooser_entry);
 

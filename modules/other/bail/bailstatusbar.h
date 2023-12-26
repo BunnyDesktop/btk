@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_STATUSBAR                  (bail_statusbar_get_type ())
-#define BAIL_STATUSBAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_STATUSBAR, BailStatusbar))
-#define BAIL_STATUSBAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
-#define BAIL_IS_STATUSBAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_STATUSBAR))
-#define BAIL_IS_STATUSBAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_STATUSBAR))
-#define BAIL_STATUSBAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
+#define BAIL_STATUSBAR(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_STATUSBAR, BailStatusbar))
+#define BAIL_STATUSBAR_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
+#define BAIL_IS_STATUSBAR(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_STATUSBAR))
+#define BAIL_IS_STATUSBAR_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_STATUSBAR))
+#define BAIL_STATUSBAR_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
 
 typedef struct _BailStatusbar              BailStatusbar;
 typedef struct _BailStatusbarClass         BailStatusbarClass;

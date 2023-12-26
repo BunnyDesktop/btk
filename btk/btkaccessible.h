@@ -30,11 +30,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ACCESSIBLE                  (btk_accessible_get_type ())
-#define BTK_ACCESSIBLE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACCESSIBLE, BtkAccessible))
-#define BTK_ACCESSIBLE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCESSIBLE, BtkAccessibleClass))
-#define BTK_IS_ACCESSIBLE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACCESSIBLE))
-#define BTK_IS_ACCESSIBLE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCESSIBLE))
-#define BTK_ACCESSIBLE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCESSIBLE, BtkAccessibleClass))
+#define BTK_ACCESSIBLE(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACCESSIBLE, BtkAccessible))
+#define BTK_ACCESSIBLE_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCESSIBLE, BtkAccessibleClass))
+#define BTK_IS_ACCESSIBLE(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACCESSIBLE))
+#define BTK_IS_ACCESSIBLE_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCESSIBLE))
+#define BTK_ACCESSIBLE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCESSIBLE, BtkAccessibleClass))
 
 typedef struct _BtkAccessible                BtkAccessible;
 typedef struct _BtkAccessibleClass           BtkAccessibleClass;

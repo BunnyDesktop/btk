@@ -132,7 +132,7 @@ static int object = 0;
 static int object_after = 0;
 
 void /* exported for BtkBuilder */
-signal_normal (BtkWindow *window, GParamSpec spec)
+signal_normal (BtkWindow *window, BParamSpec spec)
 {
   g_assert (BTK_IS_WINDOW (window));
   g_assert (normal == 0);
@@ -142,7 +142,7 @@ signal_normal (BtkWindow *window, GParamSpec spec)
 }
 
 void /* exported for BtkBuilder */
-signal_after (BtkWindow *window, GParamSpec spec)
+signal_after (BtkWindow *window, BParamSpec spec)
 {
   g_assert (BTK_IS_WINDOW (window));
   g_assert (normal == 1);
@@ -152,7 +152,7 @@ signal_after (BtkWindow *window, GParamSpec spec)
 }
 
 void /* exported for BtkBuilder */
-signal_object (BtkButton *button, GParamSpec spec)
+signal_object (BtkButton *button, BParamSpec spec)
 {
   g_assert (BTK_IS_BUTTON (button));
   g_assert (object == 0);
@@ -162,7 +162,7 @@ signal_object (BtkButton *button, GParamSpec spec)
 }
 
 void /* exported for BtkBuilder */
-signal_object_after (BtkButton *button, GParamSpec spec)
+signal_object_after (BtkButton *button, BParamSpec spec)
 {
   g_assert (BTK_IS_BUTTON (button));
   g_assert (object == 1);
@@ -172,28 +172,28 @@ signal_object_after (BtkButton *button, GParamSpec spec)
 }
 
 void /* exported for BtkBuilder */
-signal_first (BtkButton *button, GParamSpec spec)
+signal_first (BtkButton *button, BParamSpec spec)
 {
   g_assert (normal == 0);
   normal = 10;
 }
 
 void /* exported for BtkBuilder */
-signal_second (BtkButton *button, GParamSpec spec)
+signal_second (BtkButton *button, BParamSpec spec)
 {
   g_assert (normal == 10);
   normal = 20;
 }
 
 void /* exported for BtkBuilder */
-signal_extra (BtkButton *button, GParamSpec spec)
+signal_extra (BtkButton *button, BParamSpec spec)
 {
   g_assert (normal == 20);
   normal = 30;
 }
 
 void /* exported for BtkBuilder */
-signal_extra2 (BtkButton *button, GParamSpec spec)
+signal_extra2 (BtkButton *button, BParamSpec spec)
 {
   g_assert (normal == 30);
   normal = 40;
@@ -203,7 +203,7 @@ static void
 test_connect_signals (void)
 {
   BtkBuilder *builder;
-  GObject *window;
+  BObject *window;
   const gchar buffer[] =
     "<interface>"
     "  <object class=\"BtkButton\" id=\"button\"/>"
@@ -303,8 +303,8 @@ static void
 test_uimanager_simple (void)
 {
   BtkBuilder *builder;
-  GObject *window, *uimgr, *menubar;
-  GObject *menu, *label;
+  BObject *window, *uimgr, *menubar;
+  BObject *menu, *label;
   GList *children;
   const gchar buffer[] =
     "<interface>"
@@ -355,7 +355,7 @@ test_uimanager_simple (void)
   g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
   
-  label = G_OBJECT (BTK_BIN (menu)->child);
+  label = B_OBJECT (BTK_BIN (menu)->child);
   g_assert (BTK_IS_LABEL (label));
   g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
 
@@ -483,36 +483,36 @@ test_sizegroup (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *sizegroup;
+  BObject *sizegroup;
   GSList *widgets;
 
   builder = builder_new_from_string (buffer1, -1, NULL);
   sizegroup = btk_builder_get_object (builder, "sizegroup1");
   widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
-  g_assert (g_slist_length (widgets) == 2);
-  g_slist_free (widgets);
+  g_assert (b_slist_length (widgets) == 2);
+  b_slist_free (widgets);
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
   sizegroup = btk_builder_get_object (builder, "sizegroup1");
   widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
-  g_assert (g_slist_length (widgets) == 0);
-  g_slist_free (widgets);
+  g_assert (b_slist_length (widgets) == 0);
+  b_slist_free (widgets);
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer3, -1, NULL);
   sizegroup = btk_builder_get_object (builder, "sizegroup1");
   widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
-  g_assert (g_slist_length (widgets) == 2);
-  g_slist_free (widgets);
+  g_assert (b_slist_length (widgets) == 2);
+  b_slist_free (widgets);
   sizegroup = btk_builder_get_object (builder, "sizegroup2");
   widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
-  g_assert (g_slist_length (widgets) == 2);
-  g_slist_free (widgets);
+  g_assert (b_slist_length (widgets) == 2);
+  b_slist_free (widgets);
 
 #if 0
   {
-    GObject *window;
+    BObject *window;
     window = btk_builder_get_object (builder, "window1");
     btk_widget_destroy (BTK_WIDGET (window));
   }
@@ -580,7 +580,7 @@ test_list_store (void)
     "  </object>"
     "</interface>";
   BtkBuilder *builder;
-  GObject *store;
+  BObject *store;
   BtkTreeIter iter;
   gchar *surname, *lastname;
   int age;
@@ -588,16 +588,16 @@ test_list_store (void)
   builder = builder_new_from_string (buffer1, -1, NULL);
   store = btk_builder_get_object (builder, "liststore1");
   g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 2);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == B_TYPE_UINT);
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer2, -1, NULL);
   store = btk_builder_get_object (builder, "liststore1");
   g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 3);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == G_TYPE_INT);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == B_TYPE_INT);
   
   g_assert (btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter) == TRUE);
   btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
@@ -633,9 +633,9 @@ test_list_store (void)
   builder = builder_new_from_string (buffer3, -1, NULL);
   store = btk_builder_get_object (builder, "liststore1");
   g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 3);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == G_TYPE_INT);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == B_TYPE_INT);
   
   g_assert (btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter) == TRUE);
   btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
@@ -692,13 +692,13 @@ test_tree_store (void)
     "  </object>"
     "</interface>";
   BtkBuilder *builder;
-  GObject *store;
+  BObject *store;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   store = btk_builder_get_object (builder, "treestore1");
   g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 2);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == B_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == B_TYPE_UINT);
   
   g_object_unref (builder);
 }
@@ -764,7 +764,7 @@ test_types (void)
     "  <object type-func=\"xxx_invalid_get_type_function\" id=\"window\"/>"
     "</interface>";
   BtkBuilder *builder;
-  GObject *window;
+  BObject *window;
   GError *error;
 
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -807,7 +807,7 @@ test_spin_button (void)
     "<property name=\"adjustment\">adjustment1</property>"
     "</object>"
     "</interface>";
-  GObject *obj;
+  BObject *obj;
   BtkAdjustment *adjustment;
   gdouble value;
   
@@ -861,7 +861,7 @@ test_notebook (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *notebook;
+  BObject *notebook;
   BtkWidget *label;
 
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -903,7 +903,7 @@ test_construct_only_property (void)
     "    <property name=\"tag-table\">tagtable1</property>"
     "  </object>"
     "</interface>";
-  GObject *widget, *tagtable, *textbuffer;
+  BObject *widget, *tagtable, *textbuffer;
   BtkWindowType type;
   
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -949,14 +949,14 @@ test_object_properties (void)
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window2\"/>"
     "</interface>";
-  GObject *label, *spinbutton, *window;
+  BObject *label, *spinbutton, *window;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   label = btk_builder_get_object (builder, "label1");
   g_assert (label != NULL);
   spinbutton = btk_builder_get_object (builder, "spinbutton1");
   g_assert (spinbutton != NULL);
-  g_assert (spinbutton == (GObject*)btk_label_get_mnemonic_widget (BTK_LABEL (label)));
+  g_assert (spinbutton == (BObject*)btk_label_get_mnemonic_widget (BTK_LABEL (label)));
 
   btk_builder_add_from_string (builder, buffer2, -1, NULL);
   window = btk_builder_get_object (builder, "window2");
@@ -997,8 +997,8 @@ test_children (void)
     "  </object>"
     "</interface>";
 
-  GObject *window, *button;
-  GObject *dialog, *vbox, *action_area;
+  BObject *window, *button;
+  BObject *dialog, *vbox, *action_area;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
   window = btk_builder_get_object (builder, "window1");
@@ -1063,7 +1063,7 @@ test_child_properties (void)
     "  </object>"
     "</interface>";
 
-  GObject *label, *vbox;
+  BObject *label, *vbox;
   BtkPackType pack_type;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
@@ -1140,10 +1140,10 @@ test_treeview_column (void)
     "  </child>"
     "</object>"
     "</interface>";
-  GObject *window, *treeview;
+  BObject *window, *treeview;
   BtkTreeViewColumn *column;
   GList *renderers;
-  GObject *renderer;
+  BObject *renderer;
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -1217,7 +1217,7 @@ test_icon_view (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *window, *iconview, *renderer;
+  BObject *window, *iconview, *renderer;
   gchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -1281,7 +1281,7 @@ test_combo_box (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *window, *combobox, *renderer;
+  BObject *window, *combobox, *renderer;
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -1354,7 +1354,7 @@ test_combo_box_entry (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *window, *combobox, *renderer;
+  BObject *window, *combobox, *renderer;
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -1414,11 +1414,11 @@ test_cell_view (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *cellview;
-  GObject *model, *window;
+  BObject *cellview;
+  BObject *model, *window;
   BtkTreePath *path;
   GList *renderers;
-  GObject *renderer;
+  BObject *renderer;
   gchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
@@ -1481,9 +1481,9 @@ test_dialog (void)
     "  </object>"
     "</interface>";
 
-  GObject *dialog1;
-  GObject *button_ok;
-  GObject *button_cancel;
+  BObject *dialog1;
+  BObject *button_ok;
+  BObject *button_cancel;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
   dialog1 = btk_builder_get_object (builder, "dialog1");
@@ -1513,8 +1513,8 @@ test_message_dialog (void)
     "  </object>"
     "</interface>";
 
-  GObject *dialog1;
-  GObject *expander;
+  BObject *dialog1;
+  BObject *expander;
 
   builder = builder_new_from_string (buffer1, -1, NULL);
   dialog1 = btk_builder_get_object (builder, "dialog1");
@@ -1551,9 +1551,9 @@ test_accelerators (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *window1;
+  BObject *window1;
   GSList *accel_groups;
-  GObject *accel_group;
+  BObject *accel_group;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   window1 = btk_builder_get_object (builder, "window1");
@@ -1561,8 +1561,8 @@ test_accelerators (void)
   g_assert (BTK_IS_WINDOW (window1));
 
   accel_groups = btk_accel_groups_from_object (window1);
-  g_assert (g_slist_length (accel_groups) == 1);
-  accel_group = g_slist_nth_data (accel_groups, 0);
+  g_assert (b_slist_length (accel_groups) == 1);
+  accel_group = b_slist_nth_data (accel_groups, 0);
   g_assert (accel_group);
 
   btk_widget_destroy (BTK_WIDGET (window1));
@@ -1574,8 +1574,8 @@ test_accelerators (void)
   g_assert (BTK_IS_WINDOW (window1));
 
   accel_groups = btk_accel_groups_from_object (window1);
-  g_assert (g_slist_length (accel_groups) == 1);
-  accel_group = g_slist_nth_data (accel_groups, 0);
+  g_assert (b_slist_length (accel_groups) == 1);
+  accel_group = b_slist_nth_data (accel_groups, 0);
   g_assert (accel_group);
 
   btk_widget_destroy (BTK_WIDGET (window1));
@@ -1637,7 +1637,7 @@ test_widget (void)
     "  </object>"
     "</interface>";
   BtkBuilder *builder;
-  GObject *window1, *button1, *label1;
+  BObject *window1, *button1, *label1;
   BatkObject *accessible;
   BatkRelationSet *relation_set;
   BatkRelation *relation;
@@ -1675,7 +1675,7 @@ test_widget (void)
   g_return_if_fail (batk_relation_get_relation_type (relation) != BATK_RELATION_LABELLED_BY);
   g_object_unref (relation_set);
 
-  g_object_get (G_OBJECT (accessible), "accessible-name", &name, NULL);
+  g_object_get (B_OBJECT (accessible), "accessible-name", &name, NULL);
   g_return_if_fail (strcmp (name, "A Label") == 0);
   g_free (name);
   
@@ -1698,7 +1698,7 @@ test_window (void)
     "  </object>"
    "</interface>";
   BtkBuilder *builder;
-  GObject *window1;
+  BObject *window1;
   gchar *title;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
@@ -1718,114 +1718,114 @@ test_window (void)
 static void
 test_value_from_string (void)
 {
-  GValue value = { 0 };
+  BValue value = { 0 };
   GError *error = NULL;
   BtkBuilder *builder;
 
   builder = btk_builder_new ();
   
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_STRING, "test", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_STRING, "test", &value, &error));
   g_assert (G_VALUE_HOLDS_STRING (&value));
-  g_assert (strcmp (g_value_get_string (&value), "test") == 0);
-  g_value_unset (&value);
+  g_assert (strcmp (b_value_get_string (&value), "test") == 0);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "true", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "true", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == TRUE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == TRUE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "false", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "false", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == FALSE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == FALSE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yes", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "yes", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == TRUE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == TRUE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "no", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "no", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == FALSE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == FALSE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "0", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "0", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == FALSE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == FALSE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "1", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "1", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == TRUE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == TRUE);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "tRuE", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "tRuE", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-  g_assert (g_value_get_boolean (&value) == TRUE);
-  g_value_unset (&value);
+  g_assert (b_value_get_boolean (&value) == TRUE);
+  b_value_unset (&value);
   
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "blaurgh", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "blaurgh", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yess", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "yess", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "trueee", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "trueee", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, "", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_INT, "12345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_INT, "12345", &value, &error));
   g_assert (G_VALUE_HOLDS_INT (&value));
-  g_assert (g_value_get_int (&value) == 12345);
-  g_value_unset (&value);
+  g_assert (b_value_get_int (&value) == 12345);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_LONG, "9912345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_LONG, "9912345", &value, &error));
   g_assert (G_VALUE_HOLDS_LONG (&value));
-  g_assert (g_value_get_long (&value) == 9912345);
-  g_value_unset (&value);
+  g_assert (b_value_get_long (&value) == 9912345);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_UINT, "2345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_UINT, "2345", &value, &error));
   g_assert (G_VALUE_HOLDS_UINT (&value));
-  g_assert (g_value_get_uint (&value) == 2345);
-  g_value_unset (&value);
+  g_assert (b_value_get_uint (&value) == 2345);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "1.454", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_FLOAT, "1.454", &value, &error));
   g_assert (G_VALUE_HOLDS_FLOAT (&value));
-  g_assert (fabs (g_value_get_float (&value) - 1.454) < 0.00001);
-  g_value_unset (&value);
+  g_assert (fabs (b_value_get_float (&value) - 1.454) < 0.00001);
+  b_value_unset (&value);
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "abc", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_FLOAT, "abc", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
 
-  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_INT, "/-+,abc", &value, &error) == FALSE);
-  g_value_unset (&value);
+  g_assert (btk_builder_value_from_string_type (builder, B_TYPE_INT, "/-+,abc", &value, &error) == FALSE);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
@@ -1834,11 +1834,11 @@ test_value_from_string (void)
 
   g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "toplevel", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_ENUM (&value));
-  g_assert (g_value_get_enum (&value) == BTK_WINDOW_TOPLEVEL);
-  g_value_unset (&value);
+  g_assert (b_value_get_enum (&value) == BTK_WINDOW_TOPLEVEL);
+  b_value_unset (&value);
 
   g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "sliff", &value, &error) == FALSE);
-  g_value_unset (&value);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
@@ -1847,16 +1847,16 @@ test_value_from_string (void)
   
   g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WIDGET_FLAGS, "mapped", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));
-  g_assert (g_value_get_flags (&value) == BTK_MAPPED);
-  g_value_unset (&value);
+  g_assert (b_value_get_flags (&value) == BTK_MAPPED);
+  b_value_unset (&value);
 
   g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WIDGET_FLAGS, "BTK_VISIBLE | BTK_REALIZED", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));
-  g_assert (g_value_get_flags (&value) == (BTK_VISIBLE | BTK_REALIZED));
-  g_value_unset (&value);
+  g_assert (b_value_get_flags (&value) == (BTK_VISIBLE | BTK_REALIZED));
+  b_value_unset (&value);
   
   g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "foobar", &value, &error) == FALSE);
-  g_value_unset (&value);
+  b_value_unset (&value);
   g_assert (g_error_matches (error,
                              BTK_BUILDER_ERROR,
                              BTK_BUILDER_ERROR_INVALID_VALUE));
@@ -1870,7 +1870,7 @@ static gboolean model_freed = FALSE;
 
 static void
 model_weakref (gpointer data,
-               GObject *model)
+               BObject *model)
 {
   model_freed = TRUE;
 }
@@ -1902,7 +1902,7 @@ test_reference_counting (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GObject *window, *treeview, *model;
+  BObject *window, *treeview, *model;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
   window = btk_builder_get_object (builder, "window1");
@@ -1970,7 +1970,7 @@ test_icon_factory (void)
     "</interface>";
   GError *error = NULL;
 #endif  
-  GObject *factory;
+  BObject *factory;
   BtkIconSet *icon_set;
   BtkIconSource *icon_source;
   BtkWidget *image;
@@ -1995,7 +1995,7 @@ test_icon_factory (void)
 
   icon_set = btk_icon_factory_lookup (BTK_ICON_FACTORY (factory), "sliff");
   g_assert (icon_set != NULL);
-  g_assert (g_slist_length (icon_set->sources) == 2);
+  g_assert (b_slist_length (icon_set->sources) == 2);
 
   icon_source = icon_set->sources->data;
   g_assert (btk_icon_source_get_direction (icon_source) == BTK_TEXT_DIR_RTL);
@@ -2105,7 +2105,7 @@ test_bango_attributes (void)
     "  </object>"
     "</interface>";
 
-  GObject *label;
+  BObject *label;
   GError  *error = NULL;
   BangoAttrList *attrs, *filtered;
   
@@ -2180,10 +2180,10 @@ test_add_objects (void)
   BtkBuilder *builder;
   GError *error;
   gint ret;
-  GObject *obj;
+  BObject *obj;
   BtkUIManager *manager;
   BtkWidget *menubar;
-  GObject *menu, *label;
+  BObject *menu, *label;
   GList *children;
   gchar *objects[2] = {"mainbox", NULL};
   gchar *objects2[3] = {"mainbox", "window2", NULL};
@@ -2295,7 +2295,7 @@ test_add_objects (void)
   g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
  
-  label = G_OBJECT (BTK_BIN (menu)->child);
+  label = B_OBJECT (BTK_BIN (menu)->child);
   g_assert (label != NULL);
   g_assert (BTK_IS_LABEL (label));
   g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
@@ -2322,7 +2322,7 @@ test_add_objects (void)
   g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
  
-  label = G_OBJECT (BTK_BIN (menu)->child);
+  label = B_OBJECT (BTK_BIN (menu)->child);
   g_assert (label != NULL);
   g_assert (BTK_IS_LABEL (label));
   g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
@@ -2501,7 +2501,7 @@ test_file (const gchar *filename)
   objects = btk_builder_get_objects (builder);
   for (l = objects; l; l = l->next)
     {
-      GObject *obj = (GObject*)l->data;
+      BObject *obj = (BObject*)l->data;
 
       if (BTK_IS_DIALOG (obj))
 	{
@@ -2531,7 +2531,7 @@ test_message_area (void)
 {
   BtkBuilder *builder;
   GError *error;
-  GObject *obj, *obj1;
+  BObject *obj, *obj1;
   const gchar buffer[] =
     "<interface>"
     "  <object class=\"BtkInfoBar\" id=\"infobar1\">"

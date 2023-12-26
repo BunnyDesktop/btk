@@ -64,13 +64,13 @@ get_load_context (BtkWidget *image)
 {
   LoadContext *lc;
 
-  lc = g_object_get_data (G_OBJECT (image), "lc");
+  lc = g_object_get_data (B_OBJECT (image), "lc");
 
   if (lc == NULL)
     {
       lc = g_new0 (LoadContext, 1);
 
-      g_object_set_data_full (G_OBJECT (image),        
+      g_object_set_data_full (B_OBJECT (image),        
                               "lc",
                               lc,
                               destroy_context);

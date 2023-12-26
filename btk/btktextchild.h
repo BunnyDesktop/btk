@@ -46,22 +46,22 @@ typedef struct _BtkTextChildAnchor      BtkTextChildAnchor;
 typedef struct _BtkTextChildAnchorClass BtkTextChildAnchorClass;
 
 #define BTK_TYPE_TEXT_CHILD_ANCHOR              (btk_text_child_anchor_get_type ())
-#define BTK_TEXT_CHILD_ANCHOR(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchor))
-#define BTK_TEXT_CHILD_ANCHOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchorClass))
-#define BTK_IS_TEXT_CHILD_ANCHOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_CHILD_ANCHOR))
-#define BTK_IS_TEXT_CHILD_ANCHOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_CHILD_ANCHOR))
-#define BTK_TEXT_CHILD_ANCHOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchorClass))
+#define BTK_TEXT_CHILD_ANCHOR(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchor))
+#define BTK_TEXT_CHILD_ANCHOR_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchorClass))
+#define BTK_IS_TEXT_CHILD_ANCHOR(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_CHILD_ANCHOR))
+#define BTK_IS_TEXT_CHILD_ANCHOR_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_CHILD_ANCHOR))
+#define BTK_TEXT_CHILD_ANCHOR_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_CHILD_ANCHOR, BtkTextChildAnchorClass))
 
 struct _BtkTextChildAnchor
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   gpointer GSEAL (segment);
 };
 
 struct _BtkTextChildAnchorClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

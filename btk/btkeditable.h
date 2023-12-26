@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_EDITABLE             (btk_editable_get_type ())
-#define BTK_EDITABLE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EDITABLE, BtkEditable))
-#define BTK_EDITABLE_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_EDITABLE, BtkEditableClass))
-#define BTK_IS_EDITABLE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EDITABLE))
-#define BTK_IS_EDITABLE_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_EDITABLE))
-#define BTK_EDITABLE_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_EDITABLE, BtkEditableClass))
+#define BTK_EDITABLE(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EDITABLE, BtkEditable))
+#define BTK_EDITABLE_CLASS(vtable)    (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_EDITABLE, BtkEditableClass))
+#define BTK_IS_EDITABLE(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EDITABLE))
+#define BTK_IS_EDITABLE_CLASS(vtable) (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_EDITABLE))
+#define BTK_EDITABLE_GET_CLASS(inst)  (B_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_EDITABLE, BtkEditableClass))
 
 typedef struct _BtkEditable       BtkEditable;         /* Dummy typedef */
 typedef struct _BtkEditableClass  BtkEditableClass;

@@ -77,7 +77,7 @@ enum {
   PROP_ACTIVATABLE_USE_ACTION_APPEARANCE
 };
 
-#define BTK_BUTTON_GET_PRIVATE(o)       (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_BUTTON, BtkButtonPrivate))
+#define BTK_BUTTON_GET_PRIVATE(o)       (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_BUTTON, BtkButtonPrivate))
 typedef struct _BtkButtonPrivate BtkButtonPrivate;
 
 struct _BtkButtonPrivate
@@ -95,15 +95,15 @@ struct _BtkButtonPrivate
 };
 
 static void btk_button_destroy        (BtkObject          *object);
-static void btk_button_dispose        (GObject            *object);
-static void btk_button_set_property   (GObject            *object,
+static void btk_button_dispose        (BObject            *object);
+static void btk_button_set_property   (BObject            *object,
                                        guint               prop_id,
-                                       const GValue       *value,
-                                       GParamSpec         *pspec);
-static void btk_button_get_property   (GObject            *object,
+                                       const BValue       *value,
+                                       BParamSpec         *pspec);
+static void btk_button_get_property   (BObject            *object,
                                        guint               prop_id,
-                                       GValue             *value,
-                                       GParamSpec         *pspec);
+                                       BValue             *value,
+                                       BParamSpec         *pspec);
 static void btk_button_screen_changed (BtkWidget          *widget,
 				       BdkScreen          *previous_screen);
 static void btk_button_realize (BtkWidget * widget);
@@ -138,9 +138,9 @@ static GType btk_button_child_type    (BtkContainer       *container);
 static void btk_button_finish_activate (BtkButton         *button,
 					gboolean           do_it);
 
-static GObject*	btk_button_constructor (GType                  type,
+static BObject*	btk_button_constructor (GType                  type,
 					guint                  n_construct_properties,
-					GObjectConstructParam *construct_params);
+					BObjectConstructParam *construct_params);
 static void btk_button_construct_child (BtkButton             *button);
 static void btk_button_state_changed   (BtkWidget             *widget,
 					BtkStateType           previous_state);
@@ -168,12 +168,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkButton, btk_button, BTK_TYPE_BIN,
 static void
 btk_button_class_init (BtkButtonClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   object_class = (BtkObjectClass*) klass;
   widget_class = (BtkWidgetClass*) klass;
   container_class = (BtkContainerClass*) klass;
@@ -336,12 +336,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */ 
   button_signals[PRESSED] =
     g_signal_new (I_("pressed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkButtonClass, pressed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkButton::released:
@@ -353,12 +353,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */ 
   button_signals[RELEASED] =
     g_signal_new (I_("released"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkButtonClass, released),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkButton::clicked:
@@ -368,12 +368,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */ 
   button_signals[CLICKED] =
     g_signal_new (I_("clicked"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkButtonClass, clicked),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkButton::enter:
@@ -385,12 +385,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */ 
   button_signals[ENTER] =
     g_signal_new (I_("enter"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkButtonClass, enter),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkButton::leave:
@@ -402,12 +402,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */ 
   button_signals[LEAVE] =
     g_signal_new (I_("leave"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkButtonClass, leave),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkButton::activate:
@@ -420,12 +420,12 @@ btk_button_class_init (BtkButtonClass *klass)
    */
   button_signals[ACTIVATE] =
     g_signal_new (I_("activate"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkButtonClass, activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   widget_class->activate_signal = button_signals[ACTIVATE];
 
   /**
@@ -565,15 +565,15 @@ btk_button_destroy (BtkObject *object)
   BTK_OBJECT_CLASS (btk_button_parent_class)->destroy (object);
 }
 
-static GObject*
+static BObject*
 btk_button_constructor (GType                  type,
 			guint                  n_construct_properties,
-			GObjectConstructParam *construct_params)
+			BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
   BtkButton *button;
 
-  object = G_OBJECT_CLASS (btk_button_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_button_parent_class)->constructor (type,
                                                                   n_construct_properties,
                                                                   construct_params);
 
@@ -593,7 +593,7 @@ btk_button_child_type  (BtkContainer     *container)
   if (!BTK_BIN (container)->child)
     return BTK_TYPE_WIDGET;
   else
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 }
 
 static void
@@ -629,7 +629,7 @@ btk_button_add (BtkContainer *container,
 }
 
 static void 
-btk_button_dispose (GObject *object)
+btk_button_dispose (BObject *object)
 {
   BtkButton *button = BTK_BUTTON (object);
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (button);
@@ -639,14 +639,14 @@ btk_button_dispose (GObject *object)
       btk_activatable_do_set_related_action (BTK_ACTIVATABLE (button), NULL);
       priv->action = NULL;
     }
-  G_OBJECT_CLASS (btk_button_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_button_parent_class)->dispose (object);
 }
 
 static void
-btk_button_set_property (GObject         *object,
+btk_button_set_property (BObject         *object,
                          guint            prop_id,
-                         const GValue    *value,
-                         GParamSpec      *pspec)
+                         const BValue    *value,
+                         BParamSpec      *pspec)
 {
   BtkButton *button = BTK_BUTTON (object);
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (button);
@@ -654,49 +654,49 @@ btk_button_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      btk_button_set_label (button, g_value_get_string (value));
+      btk_button_set_label (button, b_value_get_string (value));
       break;
     case PROP_IMAGE:
-      btk_button_set_image (button, (BtkWidget *) g_value_get_object (value));
+      btk_button_set_image (button, (BtkWidget *) b_value_get_object (value));
       break;
     case PROP_RELIEF:
-      btk_button_set_relief (button, g_value_get_enum (value));
+      btk_button_set_relief (button, b_value_get_enum (value));
       break;
     case PROP_USE_UNDERLINE:
-      btk_button_set_use_underline (button, g_value_get_boolean (value));
+      btk_button_set_use_underline (button, b_value_get_boolean (value));
       break;
     case PROP_USE_STOCK:
-      btk_button_set_use_stock (button, g_value_get_boolean (value));
+      btk_button_set_use_stock (button, b_value_get_boolean (value));
       break;
     case PROP_FOCUS_ON_CLICK:
-      btk_button_set_focus_on_click (button, g_value_get_boolean (value));
+      btk_button_set_focus_on_click (button, b_value_get_boolean (value));
       break;
     case PROP_XALIGN:
-      btk_button_set_alignment (button, g_value_get_float (value), priv->yalign);
+      btk_button_set_alignment (button, b_value_get_float (value), priv->yalign);
       break;
     case PROP_YALIGN:
-      btk_button_set_alignment (button, priv->xalign, g_value_get_float (value));
+      btk_button_set_alignment (button, priv->xalign, b_value_get_float (value));
       break;
     case PROP_IMAGE_POSITION:
-      btk_button_set_image_position (button, g_value_get_enum (value));
+      btk_button_set_image_position (button, b_value_get_enum (value));
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      btk_button_set_related_action (button, g_value_get_object (value));
+      btk_button_set_related_action (button, b_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE:
-      btk_button_set_use_action_appearance (button, g_value_get_boolean (value));
+      btk_button_set_use_action_appearance (button, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_button_get_property (GObject         *object,
+btk_button_get_property (BObject         *object,
                          guint            prop_id,
-                         GValue          *value,
-                         GParamSpec      *pspec)
+                         BValue          *value,
+                         BParamSpec      *pspec)
 {
   BtkButton *button = BTK_BUTTON (object);
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (button);
@@ -704,40 +704,40 @@ btk_button_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      g_value_set_string (value, button->label_text);
+      b_value_set_string (value, button->label_text);
       break;
     case PROP_IMAGE:
-      g_value_set_object (value, (GObject *)priv->image);
+      b_value_set_object (value, (BObject *)priv->image);
       break;
     case PROP_RELIEF:
-      g_value_set_enum (value, btk_button_get_relief (button));
+      b_value_set_enum (value, btk_button_get_relief (button));
       break;
     case PROP_USE_UNDERLINE:
-      g_value_set_boolean (value, button->use_underline);
+      b_value_set_boolean (value, button->use_underline);
       break;
     case PROP_USE_STOCK:
-      g_value_set_boolean (value, button->use_stock);
+      b_value_set_boolean (value, button->use_stock);
       break;
     case PROP_FOCUS_ON_CLICK:
-      g_value_set_boolean (value, button->focus_on_click);
+      b_value_set_boolean (value, button->focus_on_click);
       break;
     case PROP_XALIGN:
-      g_value_set_float (value, priv->xalign);
+      b_value_set_float (value, priv->xalign);
       break;
     case PROP_YALIGN:
-      g_value_set_float (value, priv->yalign);
+      b_value_set_float (value, priv->yalign);
       break;
     case PROP_IMAGE_POSITION:
-      g_value_set_enum (value, priv->image_position);
+      b_value_set_enum (value, priv->image_position);
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      g_value_set_object (value, priv->action);
+      b_value_set_object (value, priv->action);
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE:
-      g_value_set_boolean (value, priv->use_action_appearance);
+      b_value_set_boolean (value, priv->use_action_appearance);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1140,7 +1140,7 @@ btk_button_set_relief (BtkButton *button,
   if (newrelief != button->relief) 
     {
        button->relief = newrelief;
-       g_object_notify (G_OBJECT (button), "relief");
+       g_object_notify (B_OBJECT (button), "relief");
        btk_widget_queue_draw (BTK_WIDGET (button));
     }
 }
@@ -1815,7 +1815,7 @@ btk_button_set_label (BtkButton   *button,
   
   btk_button_construct_child (button);
   
-  g_object_notify (G_OBJECT (button), "label");
+  g_object_notify (B_OBJECT (button), "label");
 }
 
 /**
@@ -1861,7 +1861,7 @@ btk_button_set_use_underline (BtkButton *button,
   
       btk_button_construct_child (button);
       
-      g_object_notify (G_OBJECT (button), "use-underline");
+      g_object_notify (B_OBJECT (button), "use-underline");
     }
 }
 
@@ -1905,7 +1905,7 @@ btk_button_set_use_stock (BtkButton *button,
   
       btk_button_construct_child (button);
       
-      g_object_notify (G_OBJECT (button), "use-stock");
+      g_object_notify (B_OBJECT (button), "use-stock");
     }
 }
 
@@ -1951,7 +1951,7 @@ btk_button_set_focus_on_click (BtkButton *button,
     {
       button->focus_on_click = focus_on_click;
       
-      g_object_notify (G_OBJECT (button), "focus-on-click");
+      g_object_notify (B_OBJECT (button), "focus-on-click");
     }
 }
 
@@ -2005,10 +2005,10 @@ btk_button_set_alignment (BtkButton *button,
 
   maybe_set_alignment (button, BTK_BIN (button)->child);
 
-  g_object_freeze_notify (G_OBJECT (button));
-  g_object_notify (G_OBJECT (button), "xalign");
-  g_object_notify (G_OBJECT (button), "yalign");
-  g_object_thaw_notify (G_OBJECT (button));
+  g_object_freeze_notify (B_OBJECT (button));
+  g_object_notify (B_OBJECT (button), "xalign");
+  g_object_notify (B_OBJECT (button), "yalign");
+  g_object_thaw_notify (B_OBJECT (button));
 }
 
 /**
@@ -2150,7 +2150,7 @@ btk_button_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
 
   show_image_connection = 
-    GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (settings), 
+    GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
 					 "btk-button-connection"));
   
   if (show_image_connection)
@@ -2159,7 +2159,7 @@ btk_button_screen_changed (BtkWidget *widget,
   show_image_connection =
     g_signal_connect (settings, "notify::btk-button-images",
 		      G_CALLBACK (btk_button_setting_changed), NULL);
-  g_object_set_data (G_OBJECT (settings), 
+  g_object_set_data (B_OBJECT (settings), 
 		     I_("btk-button-connection"),
 		     GUINT_TO_POINTER (show_image_connection));
 
@@ -2230,7 +2230,7 @@ btk_button_set_image (BtkButton *button,
 
   btk_button_construct_child (button);
 
-  g_object_notify (G_OBJECT (button), "image");
+  g_object_notify (B_OBJECT (button), "image");
 }
 
 /**
@@ -2285,7 +2285,7 @@ btk_button_set_image_position (BtkButton       *button,
 
       btk_button_construct_child (button);
 
-      g_object_notify (G_OBJECT (button), "image-position");
+      g_object_notify (B_OBJECT (button), "image-position");
     }
 }
 

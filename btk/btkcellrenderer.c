@@ -25,19 +25,19 @@
 #include "btktreeprivate.h"
 #include "btkalias.h"
 
-static void btk_cell_renderer_get_property  (GObject              *object,
+static void btk_cell_renderer_get_property  (BObject              *object,
 					     guint                 param_id,
-					     GValue               *value,
-					     GParamSpec           *pspec);
-static void btk_cell_renderer_set_property  (GObject              *object,
+					     BValue               *value,
+					     BParamSpec           *pspec);
+static void btk_cell_renderer_set_property  (BObject              *object,
 					     guint                 param_id,
-					     const GValue         *value,
-					     GParamSpec           *pspec);
+					     const BValue         *value,
+					     BParamSpec           *pspec);
 static void set_cell_bg_color               (BtkCellRenderer      *cell,
 					     BdkColor             *color);
 
 
-#define BTK_CELL_RENDERER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRendererPrivate))
+#define BTK_CELL_RENDERER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRendererPrivate))
 
 typedef struct _BtkCellRendererPrivate BtkCellRendererPrivate;
 struct _BtkCellRendererPrivate
@@ -96,7 +96,7 @@ btk_cell_renderer_init (BtkCellRenderer *cell)
 static void
 btk_cell_renderer_class_init (BtkCellRendererClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
 
   object_class->get_property = btk_cell_renderer_get_property;
   object_class->set_property = btk_cell_renderer_set_property;
@@ -118,12 +118,12 @@ btk_cell_renderer_class_init (BtkCellRendererClass *class)
    */
   cell_renderer_signals[EDITING_CANCELED] =
     g_signal_new (I_("editing-canceled"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCellRendererClass, editing_canceled),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkCellRenderer::editing-started:
@@ -162,14 +162,14 @@ btk_cell_renderer_class_init (BtkCellRendererClass *class)
    */
   cell_renderer_signals[EDITING_STARTED] =
     g_signal_new (I_("editing-started"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCellRendererClass, editing_started),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_STRING,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_CELL_EDITABLE,
-		  G_TYPE_STRING);
+		  B_TYPE_STRING);
 
   g_object_class_install_property (object_class,
 				   PROP_MODE,
@@ -307,10 +307,10 @@ btk_cell_renderer_class_init (BtkCellRendererClass *class)
 }
 
 static void
-btk_cell_renderer_get_property (GObject     *object,
+btk_cell_renderer_get_property (BObject     *object,
 				guint        param_id,
-				GValue      *value,
-				GParamSpec  *pspec)
+				BValue      *value,
+				BParamSpec  *pspec)
 {
   BtkCellRenderer *cell = BTK_CELL_RENDERER (object);
   BtkCellRendererPrivate *priv = BTK_CELL_RENDERER_GET_PRIVATE (object);
@@ -318,40 +318,40 @@ btk_cell_renderer_get_property (GObject     *object,
   switch (param_id)
     {
     case PROP_MODE:
-      g_value_set_enum (value, cell->mode);
+      b_value_set_enum (value, cell->mode);
       break;
     case PROP_VISIBLE:
-      g_value_set_boolean (value, cell->visible);
+      b_value_set_boolean (value, cell->visible);
       break;
     case PROP_SENSITIVE:
-      g_value_set_boolean (value, cell->sensitive);
+      b_value_set_boolean (value, cell->sensitive);
       break;
     case PROP_EDITING:
-      g_value_set_boolean (value, cell->editing);
+      b_value_set_boolean (value, cell->editing);
       break;
     case PROP_XALIGN:
-      g_value_set_float (value, cell->xalign);
+      b_value_set_float (value, cell->xalign);
       break;
     case PROP_YALIGN:
-      g_value_set_float (value, cell->yalign);
+      b_value_set_float (value, cell->yalign);
       break;
     case PROP_XPAD:
-      g_value_set_uint (value, cell->xpad);
+      b_value_set_uint (value, cell->xpad);
       break;
     case PROP_YPAD:
-      g_value_set_uint (value, cell->ypad);
+      b_value_set_uint (value, cell->ypad);
       break;
     case PROP_WIDTH:
-      g_value_set_int (value, cell->width);
+      b_value_set_int (value, cell->width);
       break;
     case PROP_HEIGHT:
-      g_value_set_int (value, cell->height);
+      b_value_set_int (value, cell->height);
       break;
     case PROP_IS_EXPANDER:
-      g_value_set_boolean (value, cell->is_expander);
+      b_value_set_boolean (value, cell->is_expander);
       break;
     case PROP_IS_EXPANDED:
-      g_value_set_boolean (value, cell->is_expanded);
+      b_value_set_boolean (value, cell->is_expanded);
       break;
     case PROP_CELL_BACKGROUND_BDK:
       {
@@ -361,88 +361,88 @@ btk_cell_renderer_get_property (GObject     *object,
 	color.green = priv->cell_background.green;
 	color.blue = priv->cell_background.blue;
 
-	g_value_set_boxed (value, &color);
+	b_value_set_boxed (value, &color);
       }
       break;
     case PROP_CELL_BACKGROUND_SET:
-      g_value_set_boolean (value, cell->cell_background_set);
+      b_value_set_boolean (value, cell->cell_background_set);
       break;
     case PROP_CELL_BACKGROUND:
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 
 }
 
 static void
-btk_cell_renderer_set_property (GObject      *object,
+btk_cell_renderer_set_property (BObject      *object,
 				guint         param_id,
-				const GValue *value,
-				GParamSpec   *pspec)
+				const BValue *value,
+				BParamSpec   *pspec)
 {
   BtkCellRenderer *cell = BTK_CELL_RENDERER (object);
 
   switch (param_id)
     {
     case PROP_MODE:
-      cell->mode = g_value_get_enum (value);
+      cell->mode = b_value_get_enum (value);
       break;
     case PROP_VISIBLE:
-      cell->visible = g_value_get_boolean (value);
+      cell->visible = b_value_get_boolean (value);
       break;
     case PROP_SENSITIVE:
-      cell->sensitive = g_value_get_boolean (value);
+      cell->sensitive = b_value_get_boolean (value);
       break;
     case PROP_EDITING:
-      cell->editing = g_value_get_boolean (value);
+      cell->editing = b_value_get_boolean (value);
       break;
     case PROP_XALIGN:
-      cell->xalign = g_value_get_float (value);
+      cell->xalign = b_value_get_float (value);
       break;
     case PROP_YALIGN:
-      cell->yalign = g_value_get_float (value);
+      cell->yalign = b_value_get_float (value);
       break;
     case PROP_XPAD:
-      cell->xpad = g_value_get_uint (value);
+      cell->xpad = b_value_get_uint (value);
       break;
     case PROP_YPAD:
-      cell->ypad = g_value_get_uint (value);
+      cell->ypad = b_value_get_uint (value);
       break;
     case PROP_WIDTH:
-      cell->width = g_value_get_int (value);
+      cell->width = b_value_get_int (value);
       break;
     case PROP_HEIGHT:
-      cell->height = g_value_get_int (value);
+      cell->height = b_value_get_int (value);
       break;
     case PROP_IS_EXPANDER:
-      cell->is_expander = g_value_get_boolean (value);
+      cell->is_expander = b_value_get_boolean (value);
       break;
     case PROP_IS_EXPANDED:
-      cell->is_expanded = g_value_get_boolean (value);
+      cell->is_expanded = b_value_get_boolean (value);
       break;
     case PROP_CELL_BACKGROUND:
       {
 	BdkColor color;
 
-	if (!g_value_get_string (value))
+	if (!b_value_get_string (value))
 	  set_cell_bg_color (cell, NULL);
-	else if (bdk_color_parse (g_value_get_string (value), &color))
+	else if (bdk_color_parse (b_value_get_string (value), &color))
 	  set_cell_bg_color (cell, &color);
 	else
-	  g_warning ("Don't know color `%s'", g_value_get_string (value));
+	  g_warning ("Don't know color `%s'", b_value_get_string (value));
 
 	g_object_notify (object, "cell-background-bdk");
       }
       break;
     case PROP_CELL_BACKGROUND_BDK:
-      set_cell_bg_color (cell, g_value_get_boxed (value));
+      set_cell_bg_color (cell, b_value_get_boxed (value));
       break;
     case PROP_CELL_BACKGROUND_SET:
-      cell->cell_background_set = g_value_get_boolean (value);
+      cell->cell_background_set = b_value_get_boolean (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -458,7 +458,7 @@ set_cell_bg_color (BtkCellRenderer *cell,
       if (!cell->cell_background_set)
         {
 	  cell->cell_background_set = TRUE;
-	  g_object_notify (G_OBJECT (cell), "cell-background-set");
+	  g_object_notify (B_OBJECT (cell), "cell-background-set");
 	}
 
       priv->cell_background.red = color->red;
@@ -470,7 +470,7 @@ set_cell_bg_color (BtkCellRenderer *cell,
       if (cell->cell_background_set)
         {
 	  cell->cell_background_set = FALSE;
-	  g_object_notify (G_OBJECT (cell), "cell-background-set");
+	  g_object_notify (B_OBJECT (cell), "cell-background-set");
 	}
     }
 }
@@ -697,21 +697,21 @@ btk_cell_renderer_set_fixed_size (BtkCellRenderer *cell,
 
   if ((width != cell->width) || (height != cell->height))
     {
-      g_object_freeze_notify (G_OBJECT (cell));
+      g_object_freeze_notify (B_OBJECT (cell));
 
       if (width != cell->width)
         {
           cell->width = width;
-          g_object_notify (G_OBJECT (cell), "width");
+          g_object_notify (B_OBJECT (cell), "width");
         }
 
       if (height != cell->height)
         {
           cell->height = height;
-          g_object_notify (G_OBJECT (cell), "height");
+          g_object_notify (B_OBJECT (cell), "height");
         }
 
-      g_object_thaw_notify (G_OBJECT (cell));
+      g_object_thaw_notify (B_OBJECT (cell));
     }
 }
 
@@ -757,21 +757,21 @@ btk_cell_renderer_set_alignment (BtkCellRenderer *cell,
 
   if ((xalign != cell->xalign) || (yalign != cell->yalign))
     {
-      g_object_freeze_notify (G_OBJECT (cell));
+      g_object_freeze_notify (B_OBJECT (cell));
 
       if (xalign != cell->xalign)
         {
           cell->xalign = xalign;
-          g_object_notify (G_OBJECT (cell), "xalign");
+          g_object_notify (B_OBJECT (cell), "xalign");
         }
 
       if (yalign != cell->yalign)
         {
           cell->yalign = yalign;
-          g_object_notify (G_OBJECT (cell), "yalign");
+          g_object_notify (B_OBJECT (cell), "yalign");
         }
 
-      g_object_thaw_notify (G_OBJECT (cell));
+      g_object_thaw_notify (B_OBJECT (cell));
     }
 }
 
@@ -818,21 +818,21 @@ btk_cell_renderer_set_padding (BtkCellRenderer *cell,
 
   if ((xpad != cell->xpad) || (ypad != cell->ypad))
     {
-      g_object_freeze_notify (G_OBJECT (cell));
+      g_object_freeze_notify (B_OBJECT (cell));
 
       if (xpad != cell->xpad)
         {
           cell->xpad = xpad;
-          g_object_notify (G_OBJECT (cell), "xpad");
+          g_object_notify (B_OBJECT (cell), "xpad");
         }
 
       if (ypad != cell->ypad)
         {
           cell->ypad = ypad;
-          g_object_notify (G_OBJECT (cell), "ypad");
+          g_object_notify (B_OBJECT (cell), "ypad");
         }
 
-      g_object_thaw_notify (G_OBJECT (cell));
+      g_object_thaw_notify (B_OBJECT (cell));
     }
 }
 
@@ -877,7 +877,7 @@ btk_cell_renderer_set_visible (BtkCellRenderer *cell,
   if (cell->visible != visible)
     {
       cell->visible = visible ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (cell), "visible");
+      g_object_notify (B_OBJECT (cell), "visible");
     }
 }
 
@@ -917,7 +917,7 @@ btk_cell_renderer_set_sensitive (BtkCellRenderer *cell,
   if (cell->sensitive != sensitive)
     {
       cell->sensitive = sensitive ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (cell), "sensitive");
+      g_object_notify (B_OBJECT (cell), "sensitive");
     }
 }
 

@@ -33,10 +33,10 @@ static BatkObject*   bail_statusbar_ref_child           (BatkObject          *ob
 static void         bail_statusbar_real_initialize     (BatkObject          *obj,
                                                         gpointer           data);
 
-static gint         bail_statusbar_notify              (GObject            *obj,
-                                                        GParamSpec         *pspec,
+static gint         bail_statusbar_notify              (BObject            *obj,
+                                                        BParamSpec         *pspec,
                                                         gpointer           user_data);
-static void         bail_statusbar_finalize            (GObject            *object);
+static void         bail_statusbar_finalize            (BObject            *object);
 static void         bail_statusbar_init_textutil       (BailStatusbar      *statusbar,
                                                         BtkWidget          *label);
 
@@ -94,7 +94,7 @@ G_DEFINE_TYPE_WITH_CODE (BailStatusbar, bail_statusbar, BAIL_TYPE_CONTAINER,
 static void
 bail_statusbar_class_init (BailStatusbarClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailContainerClass *container_class;
 
@@ -227,8 +227,8 @@ bail_statusbar_real_initialize (BatkObject *obj,
 }
 
 static gint
-bail_statusbar_notify (GObject    *obj, 
-                       GParamSpec *pspec,
+bail_statusbar_notify (BObject    *obj, 
+                       BParamSpec *pspec,
                        gpointer   user_data)
 {
   BatkObject *batk_obj = BATK_OBJECT (user_data);
@@ -251,7 +251,7 @@ bail_statusbar_notify (GObject    *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -277,7 +277,7 @@ bail_statusbar_init_textutil (BailStatusbar *statusbar,
 }
 
 static void
-bail_statusbar_finalize (GObject *object)
+bail_statusbar_finalize (BObject *object)
 {
   BailStatusbar *statusbar = BAIL_STATUSBAR (object);
 
@@ -285,7 +285,7 @@ bail_statusbar_finalize (GObject *object)
     {
       g_object_unref (statusbar->textutil);
     }
-  G_OBJECT_CLASS (bail_statusbar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_statusbar_parent_class)->finalize (object);
 }
 
 /* batktext.h */

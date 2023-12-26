@@ -279,7 +279,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 		    BTK_NOTE (PLUGSOCKET, g_message ("BtkPlug: calling btk_plug_send_delete_event()"));
 		    _btk_plug_send_delete_event (widget);
 
-		    g_object_notify (G_OBJECT (plug), "embedded");
+		    g_object_notify (B_OBJECT (plug), "embedded");
 		  }
 	      }
 	    else
@@ -318,7 +318,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 	    if (!was_embedded)
 	      g_signal_emit_by_name (plug, "embedded");
 
-	    g_object_notify (G_OBJECT (plug), "embedded");
+	    g_object_notify (B_OBJECT (plug), "embedded");
 	  }
 
       done:

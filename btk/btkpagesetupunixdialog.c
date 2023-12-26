@@ -100,9 +100,9 @@ enum {
 G_DEFINE_TYPE (BtkPageSetupUnixDialog, btk_page_setup_unix_dialog, BTK_TYPE_DIALOG)
 
 #define BTK_PAGE_SETUP_UNIX_DIALOG_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogPrivate))
 
-static void btk_page_setup_unix_dialog_finalize  (GObject                *object);
+static void btk_page_setup_unix_dialog_finalize  (BObject                *object);
 static void populate_dialog                      (BtkPageSetupUnixDialog *dialog);
 static void fill_paper_sizes_from_printer        (BtkPageSetupUnixDialog *dialog,
 						  BtkPrinter             *printer);
@@ -137,10 +137,10 @@ static const gchar const common_paper_sizes[][16] = {
 static void
 btk_page_setup_unix_dialog_class_init (BtkPageSetupUnixDialogClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
 
   object_class->finalize = btk_page_setup_unix_dialog_finalize;
@@ -160,8 +160,8 @@ btk_page_setup_unix_dialog_init (BtkPageSetupUnixDialog *dialog)
   priv->print_backends = NULL;
 
   priv->printer_list = btk_list_store_new (PRINTER_LIST_N_COLS,
-						   G_TYPE_STRING,
-						   G_TYPE_OBJECT);
+						   B_TYPE_STRING,
+						   B_TYPE_OBJECT);
 
   btk_list_store_append (priv->printer_list, &iter);
   tmp = g_strdup_printf ("<b>%s</b>\n%s", _("Any Printer"), _("For portable documents"));
@@ -172,10 +172,10 @@ btk_page_setup_unix_dialog_init (BtkPageSetupUnixDialog *dialog)
   g_free (tmp);
 
   priv->page_setup_list = btk_list_store_new (PAGE_SETUP_LIST_N_COLS,
-						      G_TYPE_OBJECT,
-						      G_TYPE_BOOLEAN);
+						      B_TYPE_OBJECT,
+						      B_TYPE_BOOLEAN);
 
-  priv->custom_paper_list = btk_list_store_new (1, G_TYPE_OBJECT);
+  priv->custom_paper_list = btk_list_store_new (1, B_TYPE_OBJECT);
   _btk_print_load_custom_papers (priv->custom_paper_list);
 
   populate_dialog (dialog);
@@ -193,7 +193,7 @@ btk_page_setup_unix_dialog_init (BtkPageSetupUnixDialog *dialog)
 }
 
 static void
-btk_page_setup_unix_dialog_finalize (GObject *object)
+btk_page_setup_unix_dialog_finalize (BObject *object)
 {
   BtkPageSetupUnixDialog *dialog = BTK_PAGE_SETUP_UNIX_DIALOG (object);
   BtkPageSetupUnixDialogPrivate *priv = dialog->priv;
@@ -251,7 +251,7 @@ btk_page_setup_unix_dialog_finalize (GObject *object)
   g_list_free (priv->print_backends);
   priv->print_backends = NULL;
 
-  G_OBJECT_CLASS (btk_page_setup_unix_dialog_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_page_setup_unix_dialog_parent_class)->finalize (object);
 }
 
 static void
@@ -280,7 +280,7 @@ printer_added_cb (BtkPrintBackend        *backend,
                       PRINTER_LIST_COL_PRINTER, printer,
                       -1);
 
-  g_object_set_data_full (G_OBJECT (printer),
+  g_object_set_data_full (B_OBJECT (printer),
 			  "btk-print-tree-iter",
                           btk_tree_iter_copy (&iter),
                           (GDestroyNotify) btk_tree_iter_free);
@@ -304,7 +304,7 @@ printer_removed_cb (BtkPrintBackend        *backend,
   BtkPageSetupUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter *iter;
 
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
   btk_list_store_remove (BTK_LIST_STORE (priv->printer_list), iter);
 }
 
@@ -319,7 +319,7 @@ printer_status_cb (BtkPrintBackend        *backend,
   gchar *str;
   const gchar *location;
   
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
 
   location = btk_printer_get_location (printer);
   if (location == NULL)
@@ -344,17 +344,17 @@ printer_list_initialize (BtkPageSetupUnixDialog *dialog,
   g_signal_connect_object (print_backend, 
 			   "printer-added", 
 			   (GCallback) printer_added_cb, 
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend, 
 			   "printer-removed", 
 			   (GCallback) printer_removed_cb, 
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend, 
 			   "printer-status-changed", 
 			   (GCallback) printer_status_cb, 
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   list = btk_print_backend_get_printer_list (print_backend);
 

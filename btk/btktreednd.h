@@ -30,9 +30,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_DRAG_SOURCE            (btk_tree_drag_source_get_type ())
-#define BTK_TREE_DRAG_SOURCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_DRAG_SOURCE, BtkTreeDragSource))
-#define BTK_IS_TREE_DRAG_SOURCE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_DRAG_SOURCE))
-#define BTK_TREE_DRAG_SOURCE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_DRAG_SOURCE, BtkTreeDragSourceIface))
+#define BTK_TREE_DRAG_SOURCE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_DRAG_SOURCE, BtkTreeDragSource))
+#define BTK_IS_TREE_DRAG_SOURCE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_DRAG_SOURCE))
+#define BTK_TREE_DRAG_SOURCE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_DRAG_SOURCE, BtkTreeDragSourceIface))
 
 typedef struct _BtkTreeDragSource      BtkTreeDragSource; /* Dummy typedef */
 typedef struct _BtkTreeDragSourceIface BtkTreeDragSourceIface;
@@ -72,9 +72,9 @@ gboolean btk_tree_drag_source_drag_data_get    (BtkTreeDragSource *drag_source,
                                                 BtkSelectionData  *selection_data);
 
 #define BTK_TYPE_TREE_DRAG_DEST            (btk_tree_drag_dest_get_type ())
-#define BTK_TREE_DRAG_DEST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_DRAG_DEST, BtkTreeDragDest))
-#define BTK_IS_TREE_DRAG_DEST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_DRAG_DEST))
-#define BTK_TREE_DRAG_DEST_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_DRAG_DEST, BtkTreeDragDestIface))
+#define BTK_TREE_DRAG_DEST(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_DRAG_DEST, BtkTreeDragDest))
+#define BTK_IS_TREE_DRAG_DEST(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_DRAG_DEST))
+#define BTK_TREE_DRAG_DEST_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_DRAG_DEST, BtkTreeDragDestIface))
 
 typedef struct _BtkTreeDragDest      BtkTreeDragDest; /* Dummy typedef */
 typedef struct _BtkTreeDragDestIface BtkTreeDragDestIface;

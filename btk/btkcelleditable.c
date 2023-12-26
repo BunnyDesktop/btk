@@ -65,7 +65,7 @@ btk_cell_editable_default_init (BtkCellEditableInterface *iface)
                 G_STRUCT_OFFSET (BtkCellEditableIface, editing_done),
                 NULL, NULL,
                 _btk_marshal_VOID__VOID,
-                G_TYPE_NONE, 0);
+                B_TYPE_NONE, 0);
 
   /**
    * BtkCellEditable::remove-widget:
@@ -89,7 +89,7 @@ btk_cell_editable_default_init (BtkCellEditableInterface *iface)
                 G_STRUCT_OFFSET (BtkCellEditableIface, remove_widget),
                 NULL, NULL,
                 _btk_marshal_VOID__VOID,
-                G_TYPE_NONE, 0);
+                B_TYPE_NONE, 0);
 }
 
 /**

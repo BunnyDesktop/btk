@@ -64,9 +64,9 @@
 
 typedef struct _BtkPrintBackendCupsClass BtkPrintBackendCupsClass;
 
-#define BTK_PRINT_BACKEND_CUPS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
-#define BTK_IS_PRINT_BACKEND_CUPS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_CUPS))
-#define BTK_PRINT_BACKEND_CUPS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
+#define BTK_PRINT_BACKEND_CUPS_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
+#define BTK_IS_PRINT_BACKEND_CUPS_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_CUPS))
+#define BTK_PRINT_BACKEND_CUPS_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
 
 #define _CUPS_MAX_ATTEMPTS 10 
 #define _CUPS_MAX_CHUNK_SIZE 8192
@@ -154,12 +154,12 @@ struct _BtkPrintBackendCups
 #endif
 };
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 static void                 btk_print_backend_cups_class_init      (BtkPrintBackendCupsClass          *class);
 static void                 btk_print_backend_cups_init            (BtkPrintBackendCups               *impl);
-static void                 btk_print_backend_cups_finalize        (GObject                           *object);
-static void                 btk_print_backend_cups_dispose         (GObject                           *object);
+static void                 btk_print_backend_cups_finalize        (BObject                           *object);
+static void                 btk_print_backend_cups_dispose         (BObject                           *object);
 static void                 cups_get_printer_list                  (BtkPrintBackend                   *print_backend);
 static void                 cups_get_default_printer               (BtkPrintBackendCups               *print_backend);
 static void                 cups_get_local_default_printer         (BtkPrintBackendCups               *print_backend);
@@ -320,7 +320,7 @@ btk_print_backend_cups_new (void)
 static void
 btk_print_backend_cups_class_init (BtkPrintBackendCupsClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_CLASS (class);
 
   backend_parent_class = g_type_class_peek_parent (class);
@@ -791,7 +791,7 @@ btk_print_backend_cups_init (BtkPrintBackendCups *backend_cups)
 }
 
 static void
-btk_print_backend_cups_finalize (GObject *object)
+btk_print_backend_cups_finalize (BObject *object)
 {
   BtkPrintBackendCups *backend_cups;
   
@@ -824,7 +824,7 @@ btk_print_backend_cups_finalize (GObject *object)
 }
 
 static void
-btk_print_backend_cups_dispose (GObject *object)
+btk_print_backend_cups_dispose (BObject *object)
 {
   BtkPrintBackendCups *backend_cups;
 #ifdef HAVE_CUPS_API_1_6
@@ -1658,7 +1658,7 @@ typedef struct {
 
 static void
 job_object_died	(gpointer  user_data,
-		 GObject  *where_the_object_was)
+		 BObject  *where_the_object_was)
 {
   CupsJobPollData *data = user_data;
   data->job = NULL;
@@ -1668,7 +1668,7 @@ static void
 cups_job_poll_data_free (CupsJobPollData *data)
 {
   if (data->job)
-    g_object_weak_unref (G_OBJECT (data->job), job_object_died, data);
+    g_object_weak_unref (B_OBJECT (data->job), job_object_died, data);
     
   g_free (data);
 }
@@ -1812,7 +1812,7 @@ cups_begin_polling_info (BtkPrintBackendCups *print_backend,
   data->job_id = job_id;
   data->counter = 0;
 
-  g_object_weak_ref (G_OBJECT (job), job_object_died, data);
+  g_object_weak_ref (B_OBJECT (job), job_object_died, data);
 
   cups_request_job_info (data);
 }
@@ -2602,7 +2602,7 @@ typedef struct
 } AvahiConnectionTestData;
 
 static void
-avahi_connection_test_cb (GObject      *source_object,
+avahi_connection_test_cb (BObject      *source_object,
                           GAsyncResult *res,
                           gpointer      user_data)
 {
@@ -2637,7 +2637,7 @@ avahi_connection_test_cb (GObject      *source_object,
 }
 
 static void
-avahi_service_resolver_cb (GObject      *source_object,
+avahi_service_resolver_cb (BObject      *source_object,
                            GAsyncResult *res,
                            gpointer      user_data)
 {
@@ -2840,7 +2840,7 @@ avahi_service_browser_signal_handler (GDBusConnection *connection,
 }
 
 static void
-avahi_service_browser_new_cb (GObject      *source_object,
+avahi_service_browser_new_cb (BObject      *source_object,
                               GAsyncResult *res,
                               gpointer      user_data)
 {
@@ -2901,7 +2901,7 @@ avahi_service_browser_new_cb (GObject      *source_object,
 }
 
 static void
-avahi_create_browsers (GObject      *source_object,
+avahi_create_browsers (BObject      *source_object,
                        GAsyncResult *res,
                        gpointer      user_data)
 {

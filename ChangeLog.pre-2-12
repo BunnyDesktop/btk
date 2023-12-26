@@ -400,7 +400,7 @@
 	that you need to unref the returned BdkPixbuf. (#484132,
 	Christian Persch)
 
-	(build_recent_info): Use g_slist_prepend() when building
+	(build_recent_info): Use b_slist_prepend() when building
 	the applications list.
 
 2007-10-10  Emmanuele Bassi  <ebassi@bunny.org>
@@ -964,7 +964,7 @@ Wed Sep  5 14:15:17 2007  Tim Janik  <timj@imendio.com>
 2007-09-04  Johan Dahlin  <jdahlin@async.com.br>
 
 	* btk/btk-builder-convert (BtkBuilderConverter._parse): Do not remove 
-	empty properties, since we do not know the default GParamSpec values.
+	empty properties, since we do not know the default BParamSpec values.
 	#472981 (Carlos Garnacho)
 
 	* btk/btk-builder-convert (BtkBuilder._packing_prop_to_child_attr):
@@ -1472,7 +1472,7 @@ Fri Aug 17 11:36:29 2007  Tim Janik  <timj@imendio.com>
 2007-07-19  Matthias Clasen  <mclasen@redhat.com>
 
 	* btk/btktextview.c (btk_text_view_compat_move_focus): 
-	Initialized GValues before unsetting them.  (#457720)
+	Initialized BValues before unsetting them.  (#457720)
 
 2007-07-19  Kristian Rietveld  <kris@imendio.com>
 
@@ -2684,7 +2684,7 @@ Fri Jun 22 00:34:34 2007  Tim Janik  <timj@btk.org>
 
 2007-06-15  Johan Dahlin  <jdahlin@async.com.br>
 
-	* btk/btkuimanager.c: Base class should be GObject, not BtkObject.
+	* btk/btkuimanager.c: Base class should be BObject, not BtkObject.
 
 2007-06-15  Matthias Clasen  <mclasen@redhat.com>
 
@@ -3119,7 +3119,7 @@ Fri Jun 22 00:34:34 2007  Tim Janik  <timj@btk.org>
 	* btk/btkscalebutton.[ch]: Fix some coding style bits.
 
 	(btk_scale_button_dispose), (btk_scale_button_class_init),
-	(btk_scale_button_init): Use the GObject private data API instead
+	(btk_scale_button_init): Use the BObject private data API instead
 	of allocating the private structure ourselves.
 
 	(btk_scale_button_dispose), (btk_scale_button_finalize): Free
@@ -4931,7 +4931,7 @@ Wed May  2 11:35:45 2007  Tim Janik  <timj@imendio.com>
 	* btk/btkcombobox.c (btk_combo_box_cell_layout_reorder): 
 	* btk/btkfilesystemmodel.c (got_root_folder_cb):
 	(get_children_folder_cb): Plug memory leaks caused by wrong 
-	use of g_slist_remove_link().  (#405515, Nicolas Peninguy)
+	use of b_slist_remove_link().  (#405515, Nicolas Peninguy)
 
 2007-04-28  Matthias Clasen  <mclasen@redhat.com>
 	
@@ -5621,7 +5621,7 @@ Wed May  2 11:35:45 2007  Tim Janik  <timj@imendio.com>
 
 	* btk/btkrecentchooser.c (btk_recent_chooser_type_init): Relax the
 	prerequisite for the BtkRecentChooser interface implementations,
-	from BtkObject to GObject.
+	from BtkObject to BObject.
 
 	(btk_recent_chooser_class_init): Use BTK_PARAM_* instead of
 	G_PARAM_*
@@ -8696,7 +8696,7 @@ Mon Sep 11 14:22:39 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkfilechooserdefault.c (shortcuts_add_current_folder): free
 	volume in case we retrieved it but don't pass it on to insert_path,
 	(shortcuts_model_create): change the column type for the handles
-	to pointer instead of GObject so our handle ref counting is not
+	to pointer instead of BObject so our handle ref counting is not
 	disturbed,
 	(show_and_select_paths_finished_loading): don't forget to unref
 	the dialog.

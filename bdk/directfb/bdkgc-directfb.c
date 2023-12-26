@@ -58,7 +58,7 @@ static void bdk_directfb_gc_set_dashes (BdkGC           *gc,
                                         gint             n);
 
 
-static void bdk_gc_directfb_finalize   (GObject            *object);
+static void bdk_gc_directfb_finalize   (BObject            *object);
 
 G_DEFINE_TYPE (BdkGCDirectFB, _bdk_gc_directfb, BDK_TYPE_GC)
 
@@ -70,7 +70,7 @@ _bdk_gc_directfb_init (BdkGCDirectFB *directfb_gc)
 static void
 _bdk_gc_directfb_class_init (BdkGCDirectFBClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass   *gc_class     = BDK_GC_CLASS (klass);
 
   object_class->finalize = bdk_gc_directfb_finalize;
@@ -81,7 +81,7 @@ _bdk_gc_directfb_class_init (BdkGCDirectFBClass *klass)
 }
 
 static void
-bdk_gc_directfb_finalize (GObject *object)
+bdk_gc_directfb_finalize (BObject *object)
 {
   BdkGCDirectFB *directfb_gc = BDK_GC_DIRECTFB (object);
 
@@ -94,7 +94,7 @@ bdk_gc_directfb_finalize (GObject *object)
   if (directfb_gc->values.tile)
     g_object_unref (directfb_gc->values.tile);
 
-  G_OBJECT_CLASS (_bdk_gc_directfb_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_gc_directfb_parent_class)->finalize (object);
 }
 
 

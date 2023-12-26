@@ -49,11 +49,11 @@ B_BEGIN_DECLS
  */
 
 #define BTK_TYPE_COLOR_BUTTON             (btk_color_button_get_type ())
-#define BTK_COLOR_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButton))
-#define BTK_COLOR_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
-#define BTK_IS_COLOR_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_BUTTON))
-#define BTK_IS_COLOR_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_BUTTON))
-#define BTK_COLOR_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
+#define BTK_COLOR_BUTTON(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButton))
+#define BTK_COLOR_BUTTON_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
+#define BTK_IS_COLOR_BUTTON(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_BUTTON))
+#define BTK_IS_COLOR_BUTTON_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_BUTTON))
+#define BTK_COLOR_BUTTON_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
 
 typedef struct _BtkColorButton          BtkColorButton;
 typedef struct _BtkColorButtonClass     BtkColorButtonClass;

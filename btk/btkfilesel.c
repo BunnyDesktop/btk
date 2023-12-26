@@ -372,15 +372,15 @@ static gint compare_cmpl_dir(const void* a, const void* b);
 static void update_cmpl(PossibleCompletion* poss,
 			CompletionState* cmpl_state);
 
-static void btk_file_selection_set_property  (GObject         *object,
+static void btk_file_selection_set_property  (BObject         *object,
 					      guint            prop_id,
-					      const GValue    *value,
-					      GParamSpec      *pspec);
-static void btk_file_selection_get_property  (GObject         *object,
+					      const BValue    *value,
+					      BParamSpec      *pspec);
+static void btk_file_selection_get_property  (BObject         *object,
 					      guint            prop_id,
-					      GValue          *value,
-					      GParamSpec      *pspec);
-static void btk_file_selection_finalize      (GObject               *object);
+					      BValue          *value,
+					      BParamSpec      *pspec);
+static void btk_file_selection_finalize      (BObject               *object);
 static void btk_file_selection_destroy       (BtkObject             *object);
 static void btk_file_selection_map           (BtkWidget             *widget);
 static gint btk_file_selection_key_press     (BtkWidget             *widget,
@@ -508,11 +508,11 @@ G_DEFINE_TYPE (BtkFileSelection, btk_file_selection, BTK_TYPE_DIALOG)
 static void
 btk_file_selection_class_init (BtkFileSelectionClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
@@ -545,10 +545,10 @@ btk_file_selection_class_init (BtkFileSelectionClass *class)
   widget_class->map = btk_file_selection_map;
 }
 
-static void btk_file_selection_set_property (GObject         *object,
+static void btk_file_selection_set_property (BObject         *object,
 					     guint            prop_id,
-					     const GValue    *value,
-					     GParamSpec      *pspec)
+					     const BValue    *value,
+					     BParamSpec      *pspec)
 {
   BtkFileSelection *filesel;
 
@@ -558,27 +558,27 @@ static void btk_file_selection_set_property (GObject         *object,
     {
     case PROP_FILENAME:
       btk_file_selection_set_filename (filesel,
-                                       g_value_get_string (value));
+                                       b_value_get_string (value));
       break;
     case PROP_SHOW_FILEOPS:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
 	 btk_file_selection_show_fileop_buttons (filesel);
       else
 	 btk_file_selection_hide_fileop_buttons (filesel);
       break;
     case PROP_SELECT_MULTIPLE:
-      btk_file_selection_set_select_multiple (filesel, g_value_get_boolean (value));
+      btk_file_selection_set_select_multiple (filesel, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static void btk_file_selection_get_property (GObject         *object,
+static void btk_file_selection_get_property (BObject         *object,
 					     guint            prop_id,
-					     GValue          *value,
-					     GParamSpec      *pspec)
+					     BValue          *value,
+					     BParamSpec      *pspec)
 {
   BtkFileSelection *filesel;
 
@@ -587,7 +587,7 @@ static void btk_file_selection_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_FILENAME:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_file_selection_get_filename(filesel));
       break;
 
@@ -595,15 +595,15 @@ static void btk_file_selection_get_property (GObject         *object,
       /* This is a little bit hacky, but doing otherwise would require
        * adding a field to the object.
        */
-      g_value_set_boolean (value, (filesel->fileop_c_dir && 
+      b_value_set_boolean (value, (filesel->fileop_c_dir && 
 				   filesel->fileop_del_file &&
 				   filesel->fileop_ren_file));
       break;
     case PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, btk_file_selection_get_select_multiple (filesel));
+      b_value_set_boolean (value, btk_file_selection_get_select_multiple (filesel));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -687,7 +687,7 @@ btk_file_selection_init (BtkFileSelection *filesel)
   
   /* The directories list */
 
-  model = btk_list_store_new (1, G_TYPE_STRING);
+  model = btk_list_store_new (1, B_TYPE_STRING);
   filesel->dir_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
 
@@ -723,7 +723,7 @@ btk_file_selection_init (BtkFileSelection *filesel)
   btk_widget_show (scrolled_win);
 
   /* The files list */
-  model = btk_list_store_new (1, G_TYPE_STRING);
+  model = btk_list_store_new (1, B_TYPE_STRING);
   filesel->file_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
 
@@ -839,7 +839,7 @@ dnd_really_drop  (BtkWidget *dialog, gint response_id, BtkFileSelection *fs)
   
   if (response_id == BTK_RESPONSE_YES)
     {
-      filename = g_object_get_data (G_OBJECT (dialog), "btk-fs-dnd-filename");
+      filename = g_object_get_data (B_OBJECT (dialog), "btk-fs-dnd-filename");
 
       btk_file_selection_set_filename (fs, filename);
     }
@@ -906,7 +906,7 @@ filenames_dropped (BtkWidget        *widget,
 					 "Are you sure that you want to select it?"), filename_utf8, hostname);
       g_free (filename_utf8);
 
-      g_object_set_data_full (G_OBJECT (dialog), I_("btk-fs-dnd-filename"), g_strdup (filename), g_free);
+      g_object_set_data_full (B_OBJECT (dialog), I_("btk-fs-dnd-filename"), g_strdup (filename), g_free);
       
       g_signal_connect_data (dialog, "response",
 			     (GCallback) dnd_really_drop, 
@@ -1050,7 +1050,7 @@ btk_file_selection_show_fileop_buttons (BtkFileSelection *filesel)
   
   btk_file_selection_update_fileops (filesel);
   
-  g_object_notify (G_OBJECT (filesel), "show-fileops");
+  g_object_notify (B_OBJECT (filesel), "show-fileops");
 }
 
 void       
@@ -1075,7 +1075,7 @@ btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel)
       btk_widget_destroy (filesel->fileop_c_dir);
       filesel->fileop_c_dir = NULL;
     }
-  g_object_notify (G_OBJECT (filesel), "show-fileops");
+  g_object_notify (B_OBJECT (filesel), "show-fileops");
 }
 
 
@@ -1129,7 +1129,7 @@ btk_file_selection_set_filename (BtkFileSelection *filesel,
   if (filesel->selection_entry)
     btk_entry_set_text (BTK_ENTRY (filesel->selection_entry), name);
   g_free (buf);
-  g_object_notify (G_OBJECT (filesel), "filename");
+  g_object_notify (B_OBJECT (filesel), "filename");
 
   g_free (filename_utf8);
 }
@@ -1256,13 +1256,13 @@ btk_file_selection_map (BtkWidget *widget)
 }
 
 static void
-btk_file_selection_finalize (GObject *object)
+btk_file_selection_finalize (BObject *object)
 {
   BtkFileSelection *filesel = BTK_FILE_SELECTION (object);
 
   g_free (filesel->fileop_file);
 
-  G_OBJECT_CLASS (btk_file_selection_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_file_selection_parent_class)->finalize (object);
 }
 
 /* Begin file operations callbacks */
@@ -2185,7 +2185,7 @@ btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
     {
       btk_tree_selection_set_mode (sel, mode);
 
-      g_object_notify (G_OBJECT (filesel), "select-multiple");
+      g_object_notify (B_OBJECT (filesel), "select-multiple");
     }
 }
 

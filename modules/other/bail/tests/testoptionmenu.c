@@ -106,7 +106,7 @@ _check_object (BatkObject *obj)
       else if (BTK_IS_ACCESSIBLE (obj))
         {
           BtkWidget *widget = BTK_ACCESSIBLE (obj)->widget;
-          g_print ("Type: %s\n", g_type_name (G_OBJECT_TYPE (widget)));
+          g_print ("Type: %s\n", g_type_name (B_OBJECT_TYPE (widget)));
         } 
       if (role == BATK_ROLE_TABLE)
         {
@@ -121,7 +121,7 @@ _check_object (BatkObject *obj)
 
               header = batk_table_get_column_header (BATK_TABLE (obj), i);
               g_print ("header: %s %s\n", 
-                           g_type_name (G_OBJECT_TYPE (header)),
+                           g_type_name (B_OBJECT_TYPE (header)),
                            batk_object_get_name (header));
             }
         }

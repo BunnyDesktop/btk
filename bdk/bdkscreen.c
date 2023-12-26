@@ -29,16 +29,16 @@
 #include "bdkintl.h"
 #include "bdkalias.h"
 
-static void bdk_screen_dispose      (GObject        *object);
-static void bdk_screen_finalize     (GObject        *object);
-static void bdk_screen_set_property (GObject        *object,
+static void bdk_screen_dispose      (BObject        *object);
+static void bdk_screen_finalize     (BObject        *object);
+static void bdk_screen_set_property (BObject        *object,
 				     guint           prop_id,
-				     const GValue   *value,
-				     GParamSpec     *pspec);
-static void bdk_screen_get_property (GObject        *object,
+				     const BValue   *value,
+				     BParamSpec     *pspec);
+static void bdk_screen_get_property (BObject        *object,
 				     guint           prop_id,
-				     GValue         *value,
-				     GParamSpec     *pspec);
+				     BValue         *value,
+				     BParamSpec     *pspec);
 
 enum
 {
@@ -57,12 +57,12 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BdkScreen, bdk_screen, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkScreen, bdk_screen, B_TYPE_OBJECT)
 
 static void
 bdk_screen_class_init (BdkScreenClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->dispose = bdk_screen_dispose;
   object_class->finalize = bdk_screen_finalize;
@@ -99,12 +99,12 @@ bdk_screen_class_init (BdkScreenClass *klass)
    */
   signals[SIZE_CHANGED] =
     g_signal_new (g_intern_static_string ("size-changed"),
-                  G_OBJECT_CLASS_TYPE (klass),
+                  B_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BdkScreenClass, size_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /**
@@ -118,12 +118,12 @@ bdk_screen_class_init (BdkScreenClass *klass)
    */
   signals[COMPOSITED_CHANGED] =
     g_signal_new (g_intern_static_string ("composited-changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkScreenClass, composited_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
 	
   /**
@@ -140,12 +140,12 @@ bdk_screen_class_init (BdkScreenClass *klass)
    */
   signals[MONITORS_CHANGED] =
     g_signal_new (g_intern_static_string ("monitors-changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkScreenClass, monitors_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
 }
 
@@ -156,7 +156,7 @@ bdk_screen_init (BdkScreen *screen)
 }
 
 static void
-bdk_screen_dispose (GObject *object)
+bdk_screen_dispose (BObject *object)
 {
   BdkScreen *screen = BDK_SCREEN (object);
   gint i;
@@ -176,18 +176,18 @@ bdk_screen_dispose (GObject *object)
         }
     }
 
-  G_OBJECT_CLASS (bdk_screen_parent_class)->dispose (object);
+  B_OBJECT_CLASS (bdk_screen_parent_class)->dispose (object);
 }
 
 static void
-bdk_screen_finalize (GObject *object)
+bdk_screen_finalize (BObject *object)
 {
   BdkScreen *screen = BDK_SCREEN (object);
 
   if (screen->font_options)
       bairo_font_options_destroy (screen->font_options);
 
-  G_OBJECT_CLASS (bdk_screen_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_screen_parent_class)->finalize (object);
 }
 
 void 
@@ -198,7 +198,7 @@ _bdk_screen_close (BdkScreen *screen)
   if (!screen->closed)
     {
       screen->closed = TRUE;
-      g_object_run_dispose (G_OBJECT (screen));
+      g_object_run_dispose (B_OBJECT (screen));
     }
 }
 
@@ -424,7 +424,7 @@ bdk_screen_set_font_options (BdkScreen                  *screen,
       else
         screen->font_options = NULL;
 
-      g_object_notify (G_OBJECT (screen), "font-options");
+      g_object_notify (B_OBJECT (screen), "font-options");
     }
 }
 
@@ -473,7 +473,7 @@ bdk_screen_set_resolution (BdkScreen *screen,
     {
       screen->resolution = dpi;
 
-      g_object_notify (G_OBJECT (screen), "resolution");
+      g_object_notify (B_OBJECT (screen), "resolution");
     }
 }
 
@@ -498,45 +498,45 @@ bdk_screen_get_resolution (BdkScreen *screen)
 }
 
 static void
-bdk_screen_get_property (GObject      *object,
+bdk_screen_get_property (BObject      *object,
 			 guint         prop_id,
-			 GValue       *value,
-			 GParamSpec   *pspec)
+			 BValue       *value,
+			 BParamSpec   *pspec)
 {
   BdkScreen *screen = BDK_SCREEN (object);
 
   switch (prop_id)
     {
     case PROP_FONT_OPTIONS:
-      g_value_set_pointer (value, (gpointer) bdk_screen_get_font_options (screen));
+      b_value_set_pointer (value, (gpointer) bdk_screen_get_font_options (screen));
       break;
     case PROP_RESOLUTION:
-      g_value_set_double (value, bdk_screen_get_resolution (screen));
+      b_value_set_double (value, bdk_screen_get_resolution (screen));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-bdk_screen_set_property (GObject      *object,
+bdk_screen_set_property (BObject      *object,
 			 guint         prop_id,
-			 const GValue *value,
-			 GParamSpec   *pspec)
+			 const BValue *value,
+			 BParamSpec   *pspec)
 {
   BdkScreen *screen = BDK_SCREEN (object);
 
   switch (prop_id)
     {
     case PROP_FONT_OPTIONS:
-      bdk_screen_set_font_options (screen, g_value_get_pointer (value));
+      bdk_screen_set_font_options (screen, b_value_get_pointer (value));
       break;
     case PROP_RESOLUTION:
-      bdk_screen_set_resolution (screen, g_value_get_double (value));
+      bdk_screen_set_resolution (screen, b_value_get_double (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

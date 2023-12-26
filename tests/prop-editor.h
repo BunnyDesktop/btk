@@ -24,7 +24,7 @@
 
 B_BEGIN_DECLS
 
-BtkWidget *create_prop_editor (GObject   *object,
+BtkWidget *create_prop_editor (BObject   *object,
 			       GType      type);
 
 B_END_DECLS

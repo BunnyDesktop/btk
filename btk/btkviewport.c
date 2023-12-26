@@ -58,16 +58,16 @@ enum {
 };
 
 
-static void btk_viewport_finalize                 (GObject          *object);
+static void btk_viewport_finalize                 (BObject          *object);
 static void btk_viewport_destroy                  (BtkObject        *object);
-static void btk_viewport_set_property             (GObject         *object,
+static void btk_viewport_set_property             (BObject         *object,
 						   guint            prop_id,
-						   const GValue    *value,
-						   GParamSpec      *pspec);
-static void btk_viewport_get_property             (GObject         *object,
+						   const BValue    *value,
+						   BParamSpec      *pspec);
+static void btk_viewport_get_property             (BObject         *object,
 						   guint            prop_id,
-						   GValue          *value,
-						   GParamSpec      *pspec);
+						   BValue          *value,
+						   BParamSpec      *pspec);
 static void btk_viewport_set_scroll_adjustments	  (BtkViewport	    *viewport,
 						   BtkAdjustment    *hadjustment,
 						   BtkAdjustment    *vadjustment);
@@ -94,12 +94,12 @@ static void
 btk_viewport_class_init (BtkViewportClass *class)
 {
   BtkObjectClass *object_class;
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
   object_class = (BtkObjectClass*) class;
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -155,21 +155,21 @@ btk_viewport_class_init (BtkViewportClass *class)
    */
   widget_class->set_scroll_adjustments_signal =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkViewportClass, set_scroll_adjustments),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT,
 		  BTK_TYPE_ADJUSTMENT);
 }
 
 static void
-btk_viewport_set_property (GObject         *object,
+btk_viewport_set_property (BObject         *object,
 			   guint            prop_id,
-			   const GValue    *value,
-			   GParamSpec      *pspec)
+			   const BValue    *value,
+			   BParamSpec      *pspec)
 {
   BtkViewport *viewport;
 
@@ -178,25 +178,25 @@ btk_viewport_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      btk_viewport_set_hadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_hadjustment (viewport, b_value_get_object (value));
       break;
     case PROP_VADJUSTMENT:
-      btk_viewport_set_vadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_vadjustment (viewport, b_value_get_object (value));
       break;
     case PROP_SHADOW_TYPE:
-      btk_viewport_set_shadow_type (viewport, g_value_get_enum (value));
+      btk_viewport_set_shadow_type (viewport, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_viewport_get_property (GObject         *object,
+btk_viewport_get_property (BObject         *object,
 			   guint            prop_id,
-			   GValue          *value,
-			   GParamSpec      *pspec)
+			   BValue          *value,
+			   BParamSpec      *pspec)
 {
   BtkViewport *viewport;
 
@@ -205,16 +205,16 @@ btk_viewport_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      g_value_set_object (value, viewport->hadjustment);
+      b_value_set_object (value, viewport->hadjustment);
       break;
     case PROP_VADJUSTMENT:
-      g_value_set_object (value, viewport->vadjustment);
+      b_value_set_object (value, viewport->vadjustment);
       break;
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, viewport->shadow_type);
+      b_value_set_enum (value, viewport->shadow_type);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -278,14 +278,14 @@ viewport_disconnect_adjustment (BtkViewport    *viewport,
 }
 
 static void
-btk_viewport_finalize (GObject *object)
+btk_viewport_finalize (BObject *object)
 {
   BtkViewport *viewport = BTK_VIEWPORT (object);
 
   viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL);
   viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_VERTICAL);
 
-  G_OBJECT_CLASS (btk_viewport_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_viewport_parent_class)->finalize (object);
 }
 
 static void
@@ -499,7 +499,7 @@ btk_viewport_set_hadjustment (BtkViewport   *viewport,
 
   viewport_set_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL, adjustment);
 
-  g_object_notify (G_OBJECT (viewport), "hadjustment");
+  g_object_notify (B_OBJECT (viewport), "hadjustment");
 }
 
 /**
@@ -519,7 +519,7 @@ btk_viewport_set_vadjustment (BtkViewport   *viewport,
 
   viewport_set_adjustment (viewport, BTK_ORIENTATION_VERTICAL, adjustment);
 
-  g_object_notify (G_OBJECT (viewport), "vadjustment");
+  g_object_notify (B_OBJECT (viewport), "vadjustment");
 }
 
 static void
@@ -554,7 +554,7 @@ btk_viewport_set_shadow_type (BtkViewport   *viewport,
 	  btk_widget_queue_draw (BTK_WIDGET (viewport));
 	}
 
-      g_object_notify (G_OBJECT (viewport), "shadow-type");
+      g_object_notify (B_OBJECT (viewport), "shadow-type");
     }
 }
 

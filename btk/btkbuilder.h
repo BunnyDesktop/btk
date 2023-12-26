@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_BUILDER                 (btk_builder_get_type ())
-#define BTK_BUILDER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDER, BtkBuilder))
-#define BTK_BUILDER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BUILDER, BtkBuilderClass))
-#define BTK_IS_BUILDER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUILDER))
-#define BTK_IS_BUILDER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BUILDER))
-#define BTK_BUILDER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BUILDER, BtkBuilderClass))
+#define BTK_BUILDER(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDER, BtkBuilder))
+#define BTK_BUILDER_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BUILDER, BtkBuilderClass))
+#define BTK_IS_BUILDER(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUILDER))
+#define BTK_IS_BUILDER_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BUILDER))
+#define BTK_BUILDER_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BUILDER, BtkBuilderClass))
 
 #define BTK_BUILDER_ERROR                (btk_builder_error_quark ())
 
@@ -60,14 +60,14 @@ GQuark btk_builder_error_quark (void);
 
 struct _BtkBuilder
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkBuilderPrivate *GSEAL (priv);
 };
 
 struct _BtkBuilderClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   GType (* get_type_from_name) (BtkBuilder *builder,
                                 const char *type_name);
@@ -84,10 +84,10 @@ struct _BtkBuilderClass
 };
 
 typedef void (*BtkBuilderConnectFunc) (BtkBuilder    *builder,
-				       GObject       *object,
+				       BObject       *object,
 				       const gchar   *signal_name,
 				       const gchar   *handler_name,
-				       GObject       *connect_object,
+				       BObject       *connect_object,
 				       GConnectFlags  flags,
 				       gpointer       user_data);
 
@@ -110,7 +110,7 @@ guint        btk_builder_add_objects_from_string (BtkBuilder    *builder,
                                                   gsize          length,
                                                   gchar        **object_ids,
                                                   GError       **error);
-GObject*     btk_builder_get_object              (BtkBuilder    *builder,
+BObject*     btk_builder_get_object              (BtkBuilder    *builder,
                                                   const gchar   *name);
 GSList*      btk_builder_get_objects             (BtkBuilder    *builder);
 void         btk_builder_connect_signals         (BtkBuilder    *builder,
@@ -125,18 +125,18 @@ GType        btk_builder_get_type_from_name      (BtkBuilder   	*builder,
                                                   const char   	*type_name);
 
 gboolean     btk_builder_value_from_string       (BtkBuilder    *builder,
-						  GParamSpec   	*pspec,
+						  BParamSpec   	*pspec,
                                                   const gchar  	*string,
-                                                  GValue       	*value,
+                                                  BValue       	*value,
 						  GError       **error);
 gboolean     btk_builder_value_from_string_type  (BtkBuilder    *builder,
 						  GType        	 type,
                                                   const gchar  	*string,
-                                                  GValue       	*value,
+                                                  BValue       	*value,
 						  GError       **error);
 
 #define BTK_BUILDER_WARN_INVALID_CHILD_TYPE(object, type) \
-  g_warning ("'%s' is not a valid child type of '%s'", type, g_type_name (G_OBJECT_TYPE (object)))
+  g_warning ("'%s' is not a valid child type of '%s'", type, g_type_name (B_OBJECT_TYPE (object)))
 
 B_END_DECLS
 

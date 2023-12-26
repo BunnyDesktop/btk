@@ -27,8 +27,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_CUPS             (btk_print_backend_cups_get_type ())
-#define BTK_PRINT_BACKEND_CUPS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCups))
-#define BTK_IS_PRINT_BACKEND_CUPS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_CUPS))
+#define BTK_PRINT_BACKEND_CUPS(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCups))
+#define BTK_IS_PRINT_BACKEND_CUPS(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_CUPS))
 
 typedef struct _BtkPrintBackendCups      BtkPrintBackendCups;
 

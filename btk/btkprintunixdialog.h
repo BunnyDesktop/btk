@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_UNIX_DIALOG                  (btk_print_unix_dialog_get_type ())
-#define BTK_PRINT_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
-#define BTK_PRINT_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
-#define BTK_IS_PRINT_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_UNIX_DIALOG))
-#define BTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_UNIX_DIALOG))
-#define BTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
+#define BTK_PRINT_UNIX_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
+#define BTK_PRINT_UNIX_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
+#define BTK_IS_PRINT_UNIX_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
 
 
 typedef struct _BtkPrintUnixDialog         BtkPrintUnixDialog;

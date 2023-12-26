@@ -423,7 +423,7 @@ job_status_changed_cb (BtkPrintJob       *job,
 
 static void
 print_setup_changed_cb (BtkPrintUnixDialog *print_dialog, 
-                        GParamSpec         *pspec,
+                        BParamSpec         *pspec,
                         gpointer            user_data)
 {
   BtkPageSetup             *page_setup;

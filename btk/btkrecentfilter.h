@@ -30,8 +30,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_FILTER		(btk_recent_filter_get_type ())
-#define BTK_RECENT_FILTER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
-#define BTK_IS_RECENT_FILTER(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_FILTER))
+#define BTK_RECENT_FILTER(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
+#define BTK_IS_RECENT_FILTER(obj)	(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_FILTER))
 
 typedef struct _BtkRecentFilter		BtkRecentFilter;
 typedef struct _BtkRecentFilterInfo	BtkRecentFilterInfo;

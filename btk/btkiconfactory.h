@@ -39,24 +39,24 @@ B_BEGIN_DECLS
 typedef struct _BtkIconFactoryClass BtkIconFactoryClass;
 
 #define BTK_TYPE_ICON_FACTORY              (btk_icon_factory_get_type ())
-#define BTK_ICON_FACTORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ICON_FACTORY, BtkIconFactory))
-#define BTK_ICON_FACTORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
-#define BTK_IS_ICON_FACTORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ICON_FACTORY))
-#define BTK_IS_ICON_FACTORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_FACTORY))
-#define BTK_ICON_FACTORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
+#define BTK_ICON_FACTORY(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ICON_FACTORY, BtkIconFactory))
+#define BTK_ICON_FACTORY_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
+#define BTK_IS_ICON_FACTORY(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ICON_FACTORY))
+#define BTK_IS_ICON_FACTORY_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_FACTORY))
+#define BTK_ICON_FACTORY_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
 #define BTK_TYPE_ICON_SET                  (btk_icon_set_get_type ())
 #define BTK_TYPE_ICON_SOURCE               (btk_icon_source_get_type ())
 
 struct _BtkIconFactory
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   GHashTable *GSEAL (icons);
 };
 
 struct _BtkIconFactoryClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

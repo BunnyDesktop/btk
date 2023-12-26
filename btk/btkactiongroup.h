@@ -41,11 +41,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTION_GROUP              (btk_action_group_get_type ())
-#define BTK_ACTION_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroup))
-#define BTK_ACTION_GROUP_CLASS(vtable)     (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
-#define BTK_IS_ACTION_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION_GROUP))
-#define BTK_IS_ACTION_GROUP_CLASS(vtable)  (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_ACTION_GROUP))
-#define BTK_ACTION_GROUP_GET_CLASS(inst)   (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
+#define BTK_ACTION_GROUP(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroup))
+#define BTK_ACTION_GROUP_CLASS(vtable)     (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
+#define BTK_IS_ACTION_GROUP(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION_GROUP))
+#define BTK_IS_ACTION_GROUP_CLASS(vtable)  (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_ACTION_GROUP))
+#define BTK_ACTION_GROUP_GET_CLASS(inst)   (B_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
 
 typedef struct _BtkActionGroup        BtkActionGroup;
 typedef struct _BtkActionGroupPrivate BtkActionGroupPrivate;
@@ -56,7 +56,7 @@ typedef struct _BtkRadioActionEntry   BtkRadioActionEntry;
 
 struct _BtkActionGroup
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
 
@@ -65,7 +65,7 @@ struct _BtkActionGroup
 
 struct _BtkActionGroupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   BtkAction *(* get_action) (BtkActionGroup *action_group,
                              const gchar    *action_name);

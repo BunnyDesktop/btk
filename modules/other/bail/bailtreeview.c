@@ -39,9 +39,9 @@ static void             bail_tree_view_class_init       (BailTreeViewClass      
 static void             bail_tree_view_init             (BailTreeView           *view);
 static void             bail_tree_view_real_initialize  (BatkObject              *obj,
                                                          gpointer               data);
-static void             bail_tree_view_real_notify_btk  (GObject		*obj,
-                                                         GParamSpec		*pspec);
-static void             bail_tree_view_finalize         (GObject                *object);
+static void             bail_tree_view_real_notify_btk  (BObject		*obj,
+                                                         BParamSpec		*pspec);
+static void             bail_tree_view_finalize         (BObject                *object);
 
 static void             bail_tree_view_connect_widget_destroyed 
                                                         (BtkAccessible          *accessible);
@@ -198,8 +198,8 @@ static void             model_row_changed               (BtkTreeModel           
                                                          BtkTreePath            *path,
                                                          BtkTreeIter            *iter,
                                                          gpointer               user_data);
-static void             column_visibility_changed       (GObject                *object,
-                                                         GParamSpec             *param,
+static void             column_visibility_changed       (BObject                *object,
+                                                         BParamSpec             *param,
                                                          gpointer               user_data);
 static void             column_destroy                  (BtkObject              *obj); 
 static void             model_row_inserted              (BtkTreeModel           *tree_model,
@@ -376,7 +376,7 @@ static void
 bail_tree_view_class_init (BailTreeViewClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkAccessibleClass *accessible_class;
   BailWidgetClass *widget_class;
   BailContainerClass *container_class;
@@ -476,7 +476,7 @@ bail_tree_view_real_initialize (BatkObject *obj,
   view->tree_model = tree_model;
   if (tree_model)
     {
-      g_object_add_weak_pointer (G_OBJECT (view->tree_model), (gpointer *)&view->tree_model);
+      g_object_add_weak_pointer (B_OBJECT (view->tree_model), (gpointer *)&view->tree_model);
       connect_model_signals (tree_view, view);
 
       if (btk_tree_model_get_flags (tree_model) & BTK_TREE_MODEL_LIST_ONLY)
@@ -493,7 +493,7 @@ bail_tree_view_real_initialize (BatkObject *obj,
 
   g_object_get (tree_view, hadjustment, &adj, NULL);
   view->old_hadj = adj;
-  g_object_add_weak_pointer (G_OBJECT (view->old_hadj), (gpointer *)&view->old_hadj);
+  g_object_add_weak_pointer (B_OBJECT (view->old_hadj), (gpointer *)&view->old_hadj);
   g_signal_connect (adj, 
                     "value_changed",
                     G_CALLBACK (adjustment_changed),
@@ -501,7 +501,7 @@ bail_tree_view_real_initialize (BatkObject *obj,
 
   g_object_get (tree_view, vadjustment, &adj, NULL);
   view->old_vadj = adj;
-  g_object_add_weak_pointer (G_OBJECT (view->old_vadj), (gpointer *)&view->old_vadj);
+  g_object_add_weak_pointer (B_OBJECT (view->old_vadj), (gpointer *)&view->old_vadj);
   g_signal_connect (adj, 
                     "value_changed",
                     G_CALLBACK (adjustment_changed),
@@ -534,8 +534,8 @@ bail_tree_view_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_tree_view_real_notify_btk (GObject             *obj,
-                                GParamSpec          *pspec)
+bail_tree_view_real_notify_btk (BObject             *obj,
+                                BParamSpec          *pspec)
 {
   BtkWidget *widget;
   BatkObject* batk_obj;
@@ -556,7 +556,7 @@ bail_tree_view_real_notify_btk (GObject             *obj,
       tree_model = btk_tree_view_get_model (tree_view);
       if (bailview->tree_model)
         {
-          g_object_remove_weak_pointer (G_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
+          g_object_remove_weak_pointer (B_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
           disconnect_model_signals (bailview);
         }
       clear_cached_data (bailview);
@@ -566,7 +566,7 @@ bail_tree_view_real_notify_btk (GObject             *obj,
        */
       if (tree_model)
         {
-          g_object_add_weak_pointer (G_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
+          g_object_add_weak_pointer (B_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
           connect_model_signals (tree_view, bailview);
 
           if (btk_tree_model_get_flags (tree_model) & BTK_TREE_MODEL_LIST_ONLY)
@@ -579,10 +579,10 @@ bail_tree_view_real_notify_btk (GObject             *obj,
           role = BATK_ROLE_UNKNOWN;
         }
       batk_object_set_role (batk_obj, role);
-      g_object_freeze_notify (G_OBJECT (batk_obj));
+      g_object_freeze_notify (B_OBJECT (batk_obj));
       g_signal_emit_by_name (batk_obj, "model_changed");
       g_signal_emit_by_name (batk_obj, "visible_data_changed");
-      g_object_thaw_notify (G_OBJECT (batk_obj));
+      g_object_thaw_notify (B_OBJECT (batk_obj));
     }
   else if (strcmp (pspec->name, hadjustment) == 0)
     {
@@ -591,7 +591,7 @@ bail_tree_view_real_notify_btk (GObject             *obj,
                                            (gpointer) adjustment_changed,
                                            widget);
       bailview->old_hadj = adj;
-      g_object_add_weak_pointer (G_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_hadj);
+      g_object_add_weak_pointer (B_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_hadj);
       g_signal_connect (adj, 
                         "value_changed",
                         G_CALLBACK (adjustment_changed),
@@ -604,7 +604,7 @@ bail_tree_view_real_notify_btk (GObject             *obj,
                                            (gpointer) adjustment_changed,
                                            widget);
       bailview->old_vadj = adj;
-      g_object_add_weak_pointer (G_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_vadj);
+      g_object_add_weak_pointer (B_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_vadj);
       g_signal_connect (adj, 
                         "value_changed",
                         G_CALLBACK (adjustment_changed),
@@ -615,7 +615,7 @@ bail_tree_view_real_notify_btk (GObject             *obj,
 }
 
 static void
-bail_tree_view_finalize (GObject	    *object)
+bail_tree_view_finalize (BObject	    *object)
 {
   BailTreeView *view = BAIL_TREE_VIEW (object);
 
@@ -636,7 +636,7 @@ bail_tree_view_finalize (GObject	    *object)
 
   if (view->tree_model)
     {
-      g_object_remove_weak_pointer (G_OBJECT (view->tree_model), (gpointer *)&view->tree_model);
+      g_object_remove_weak_pointer (B_OBJECT (view->tree_model), (gpointer *)&view->tree_model);
       disconnect_model_signals (view);
     }
 
@@ -652,7 +652,7 @@ bail_tree_view_finalize (GObject	    *object)
       g_array_free (array, TRUE);
     }
 
-  G_OBJECT_CLASS (bail_tree_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_tree_view_parent_class)->finalize (object);
 }
 
 static void
@@ -690,7 +690,7 @@ bail_tree_view_destroyed (BtkWidget *widget,
                                           widget);
   if (bailview->tree_model)
     {
-      g_object_remove_weak_pointer (G_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
+      g_object_remove_weak_pointer (B_OBJECT (bailview->tree_model), (gpointer *)&bailview->tree_model);
       disconnect_model_signals (bailview);
       bailview->tree_model = NULL;
     }
@@ -911,9 +911,9 @@ bail_tree_view_ref_child (BatkObject *obj,
     fake_renderer = g_object_new (BTK_TYPE_CELL_RENDERER_TEXT, NULL);
     default_registry = batk_get_default_registry ();
     factory = batk_registry_get_factory (default_registry,
-                                        G_OBJECT_TYPE (fake_renderer));
+                                        B_OBJECT_TYPE (fake_renderer));
     child = batk_object_factory_create_accessible (factory,
-                                                  G_OBJECT (fake_renderer));
+                                                  B_OBJECT (fake_renderer));
     bail_return_val_if_fail (BAIL_IS_RENDERER_CELL (child), NULL);
     cell = BAIL_CELL (child);
     renderer_cell = BAIL_RENDERER_CELL (child);
@@ -943,13 +943,13 @@ bail_tree_view_ref_child (BatkObject *obj,
         renderer = BTK_CELL_RENDERER (l->data);
 
         if (BTK_IS_CELL_RENDERER_TEXT (renderer))
-          g_object_get (G_OBJECT (renderer), "editable", &editable, NULL);
+          g_object_get (B_OBJECT (renderer), "editable", &editable, NULL);
 
         default_registry = batk_get_default_registry ();
         factory = batk_registry_get_factory (default_registry,
-                                            G_OBJECT_TYPE (renderer));
+                                            B_OBJECT_TYPE (renderer));
         child = batk_object_factory_create_accessible (factory,
-                                                      G_OBJECT (renderer));
+                                                      B_OBJECT (renderer));
         bail_return_val_if_fail (BAIL_IS_RENDERER_CELL (child), NULL);
         cell = BAIL_CELL (child);
         renderer_cell = BAIL_RENDERER_CELL (child);
@@ -1561,18 +1561,18 @@ bail_tree_view_set_column_header (BatkTable  *table,
   if (tv_col == NULL)
      return;
 
-  rc = g_object_get_qdata (G_OBJECT (tv_col),
+  rc = g_object_get_qdata (B_OBJECT (tv_col),
                           quark_column_header_object);
   if (rc)
     g_object_unref (rc);
 
-  g_object_set_qdata (G_OBJECT (tv_col),
+  g_object_set_qdata (B_OBJECT (tv_col),
 			quark_column_header_object,
 			header);
   if (header)
     g_object_ref (header);
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, in_col);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, in_col);
 
   values.property_name = "accessible-table-column-header";
   g_signal_emit_by_name (table, 
@@ -1600,10 +1600,10 @@ bail_tree_view_set_caption (BatkTable	*table,
   obj->caption = caption;
   if (obj->caption)
     g_object_ref (obj->caption);
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, old_caption);
-  g_value_init (&values.new_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.new_value, obj->caption);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, old_caption);
+  b_value_init (&values.new_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.new_value, obj->caption);
 
   values.property_name = "accessible-table-caption-object";
   g_signal_emit_by_name (table, 
@@ -1632,7 +1632,7 @@ bail_tree_view_get_column_description (BatkTable	  *table,
   if (tv_col == NULL)
      return NULL;
 
-  rc = g_object_get_qdata (G_OBJECT (tv_col),
+  rc = g_object_get_qdata (B_OBJECT (tv_col),
                            quark_column_desc_object);
 
   if (rc != NULL)
@@ -1666,11 +1666,11 @@ bail_tree_view_set_column_description (BatkTable	   *table,
   if (tv_col == NULL)
      return;
 
-  g_object_set_qdata (G_OBJECT (tv_col),
+  g_object_set_qdata (B_OBJECT (tv_col),
                       quark_column_desc_object,
                       g_strdup (description));
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, in_col);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, in_col);
 
   values.property_name = "accessible-table-column-description";
   g_signal_emit_by_name (table, 
@@ -1719,10 +1719,10 @@ bail_tree_view_set_summary (BatkTable    *table,
   obj->summary = accessible;
   if (obj->summary)
     g_object_ref (obj->summary);
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, old_summary);
-  g_value_init (&values.new_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.new_value, obj->summary);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, old_summary);
+  b_value_init (&values.new_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.new_value, obj->summary);
 
   values.property_name = "accessible-table-summary";
   g_signal_emit_by_name (table, 
@@ -1822,8 +1822,8 @@ set_row_data (BatkTable    *table,
         }
       g_array_append_val (array, row_info);
     }
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, row);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, row);
 
   if (is_header)
     {
@@ -2384,7 +2384,7 @@ bail_tree_view_set_scroll_adjustments (BtkWidget     *widget,
                                               (gpointer) adjustment_changed,
                                               widget);
         bailview->old_hadj = adj;
-        g_object_add_weak_pointer (G_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_hadj);
+        g_object_add_weak_pointer (B_OBJECT (bailview->old_hadj), (gpointer *)&bailview->old_hadj);
         g_signal_connect (adj, 
                           "value_changed",
                           G_CALLBACK (adjustment_changed),
@@ -2397,7 +2397,7 @@ bail_tree_view_set_scroll_adjustments (BtkWidget     *widget,
                                               (gpointer) adjustment_changed,
                                               widget);
         bailview->old_vadj = adj;
-        g_object_add_weak_pointer (G_OBJECT (bailview->old_vadj), (gpointer *)&bailview->old_vadj);
+        g_object_add_weak_pointer (B_OBJECT (bailview->old_vadj), (gpointer *)&bailview->old_vadj);
         g_signal_connect (adj, 
                           "value_changed",
                           G_CALLBACK (adjustment_changed),
@@ -2756,8 +2756,8 @@ model_row_changed (BtkTreeModel *tree_model,
 }
 
 static void
-column_visibility_changed (GObject    *object,
-                           GParamSpec *pspec,
+column_visibility_changed (BObject    *object,
+                           BParamSpec *pspec,
                            gpointer   user_data)
 {
   if (strcmp (pspec->name, "visible") == 0)
@@ -2822,11 +2822,11 @@ column_destroy (BtkObject *obj)
   BatkObject *header;
   gchar *desc;
 
-  header = g_object_get_qdata (G_OBJECT (tv_col),
+  header = g_object_get_qdata (B_OBJECT (tv_col),
                           quark_column_header_object);
   if (header)
     g_object_unref (header);
-  desc = g_object_get_qdata (G_OBJECT (tv_col),
+  desc = g_object_get_qdata (B_OBJECT (tv_col),
                            quark_column_desc_object);
   g_free (desc); 
 }
@@ -3137,7 +3137,7 @@ update_cell_value (BailRendererCell *renderer_cell,
   BtkTreePath *path;
   BtkTreeIter iter;
   GList *renderers, *cur_renderer;
-  GParamSpec *spec;
+  BParamSpec *spec;
   BailRendererCellClass *bail_renderer_cell_class;
   BtkCellRendererClass *btk_cell_renderer_class;
   BailCell *cell;
@@ -3217,17 +3217,17 @@ update_cell_value (BailRendererCell *renderer_cell,
       while (*prop_list)
         {
           spec = g_object_class_find_property
-                           (G_OBJECT_CLASS (btk_cell_renderer_class), *prop_list);
+                           (B_OBJECT_CLASS (btk_cell_renderer_class), *prop_list);
 
           if (spec != NULL)
             {
-              GValue value = { 0, };
+              BValue value = { 0, };
 
-              g_value_init (&value, spec->value_type);
+              b_value_init (&value, spec->value_type);
               g_object_get_property (cur_renderer->data, *prop_list, &value);
-              g_object_set_property (G_OBJECT (renderer_cell->renderer),
+              g_object_set_property (B_OBJECT (renderer_cell->renderer),
                                      *prop_list, &value);
-              g_value_unset(&value);
+              b_value_unset(&value);
             }
           else
             g_warning ("Invalid property: %s\n", *prop_list);
@@ -3536,14 +3536,14 @@ clean_cell_info (BailTreeView *bailview,
                  GList        *list) 
 {
   BailTreeViewCellInfo *cell_info;
-  GObject *obj;
+  BObject *obj;
 
   g_assert (BAIL_IS_TREE_VIEW (bailview));
 
   cell_info = list->data;
 
   if (cell_info->in_use) {
-      obj = G_OBJECT (cell_info->cell);
+      obj = B_OBJECT (cell_info->cell);
       
       bail_cell_add_state (cell_info->cell, BATK_STATE_DEFUNCT, FALSE);
       g_object_weak_unref (obj, (GWeakNotify) cell_destroyed, cell_info);
@@ -4166,7 +4166,7 @@ cell_info_new (BailTreeView      *bailview,
       
   /* Setup weak reference notification */
 
-  g_object_weak_ref (G_OBJECT (cell),
+  g_object_weak_ref (B_OBJECT (cell),
                      (GWeakNotify) cell_destroyed,
                      cell_info);
 }
@@ -4246,9 +4246,9 @@ static void
 connect_model_signals (BtkTreeView  *view,
                        BailTreeView *bailview)
 {
-  GObject *obj;
+  BObject *obj;
 
-  obj = G_OBJECT (bailview->tree_model);
+  obj = B_OBJECT (bailview->tree_model);
   g_signal_connect_data (obj, "row-changed",
                          (GCallback) model_row_changed, view, NULL, 0);
   g_signal_connect_data (obj, "row-inserted",
@@ -4265,10 +4265,10 @@ connect_model_signals (BtkTreeView  *view,
 static void
 disconnect_model_signals (BailTreeView *view) 
 {
-  GObject *obj;
+  BObject *obj;
   BtkWidget *widget;
 
-  obj = G_OBJECT (view->tree_model);
+  obj = B_OBJECT (view->tree_model);
   widget = BTK_ACCESSIBLE (view)->widget;
   g_signal_handlers_disconnect_by_func (obj, (gpointer) model_row_changed, widget);
   g_signal_handlers_disconnect_by_func (obj, (gpointer) model_row_inserted, widget);
@@ -4690,7 +4690,7 @@ get_header_from_column (BtkTreeViewColumn *tv_col)
 
   /* If the user has set a header object, use that */
 
-  rc = g_object_get_qdata (G_OBJECT (tv_col), quark_column_header_object);
+  rc = g_object_get_qdata (B_OBJECT (tv_col), quark_column_header_object);
 
   if (rc == NULL)
     {

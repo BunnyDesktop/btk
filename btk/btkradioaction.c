@@ -38,7 +38,7 @@
 #include "btkprivate.h"
 #include "btkalias.h"
 
-#define BTK_RADIO_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RADIO_ACTION, BtkRadioActionPrivate))
+#define BTK_RADIO_ACTION_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RADIO_ACTION, BtkRadioActionPrivate))
 
 struct _BtkRadioActionPrivate 
 {
@@ -60,15 +60,15 @@ enum
   PROP_CURRENT_VALUE
 };
 
-static void btk_radio_action_finalize     (GObject *object);
-static void btk_radio_action_set_property (GObject         *object,
+static void btk_radio_action_finalize     (BObject *object);
+static void btk_radio_action_set_property (BObject         *object,
 				           guint            prop_id,
-				           const GValue    *value,
-				           GParamSpec      *pspec);
-static void btk_radio_action_get_property (GObject         *object,
+				           const BValue    *value,
+				           BParamSpec      *pspec);
+static void btk_radio_action_get_property (BObject         *object,
 				           guint            prop_id,
-				           GValue          *value,
-				           GParamSpec      *pspec);
+				           BValue          *value,
+				           BParamSpec      *pspec);
 static void btk_radio_action_activate     (BtkAction *action);
 static BtkWidget *create_menu_item        (BtkAction *action);
 
@@ -80,10 +80,10 @@ static guint         radio_action_signals[LAST_SIGNAL] = { 0 };
 static void
 btk_radio_action_class_init (BtkRadioActionClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkActionClass *action_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   action_class = BTK_ACTION_CLASS (klass);
 
   bobject_class->finalize = btk_radio_action_finalize;
@@ -161,11 +161,11 @@ btk_radio_action_class_init (BtkRadioActionClass *klass)
    */
   radio_action_signals[CHANGED] =
     g_signal_new (I_("changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkRadioActionClass, changed),  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, BTK_TYPE_RADIO_ACTION);
+		  B_TYPE_NONE, 1, BTK_TYPE_RADIO_ACTION);
 
   g_type_class_add_private (bobject_class, sizeof (BtkRadioActionPrivate));
 }
@@ -174,7 +174,7 @@ static void
 btk_radio_action_init (BtkRadioAction *action)
 {
   action->private_data = BTK_RADIO_ACTION_GET_PRIVATE (action);
-  action->private_data->group = g_slist_prepend (NULL, action);
+  action->private_data->group = b_slist_prepend (NULL, action);
   action->private_data->value = 0;
 
   btk_toggle_action_set_draw_as_radio (BTK_TOGGLE_ACTION (action), TRUE);
@@ -217,14 +217,14 @@ btk_radio_action_new (const gchar *name,
 }
 
 static void
-btk_radio_action_finalize (GObject *object)
+btk_radio_action_finalize (BObject *object)
 {
   BtkRadioAction *action;
   GSList *tmp_list;
 
   action = BTK_RADIO_ACTION (object);
 
-  action->private_data->group = g_slist_remove (action->private_data->group, action);
+  action->private_data->group = b_slist_remove (action->private_data->group, action);
 
   tmp_list = action->private_data->group;
 
@@ -236,14 +236,14 @@ btk_radio_action_finalize (GObject *object)
       tmp_action->private_data->group = action->private_data->group;
     }
 
-  G_OBJECT_CLASS (btk_radio_action_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_radio_action_parent_class)->finalize (object);
 }
 
 static void
-btk_radio_action_set_property (GObject         *object,
+btk_radio_action_set_property (BObject         *object,
 			       guint            prop_id,
-			       const GValue    *value,
-			       GParamSpec      *pspec)
+			       const BValue    *value,
+			       BParamSpec      *pspec)
 {
   BtkRadioAction *radio_action;
   
@@ -252,7 +252,7 @@ btk_radio_action_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_VALUE:
-      radio_action->private_data->value = g_value_get_int (value);
+      radio_action->private_data->value = b_value_get_int (value);
       break;
     case PROP_GROUP: 
       {
@@ -261,7 +261,7 @@ btk_radio_action_set_property (GObject         *object,
 	
 	if (G_VALUE_HOLDS_OBJECT (value)) 
 	  {
-	    arg = BTK_RADIO_ACTION (g_value_get_object (value));
+	    arg = BTK_RADIO_ACTION (b_value_get_object (value));
 	    if (arg)
 	      slist = btk_radio_action_get_group (arg);
 	    btk_radio_action_set_group (radio_action, slist);
@@ -270,19 +270,19 @@ btk_radio_action_set_property (GObject         *object,
       break;
     case PROP_CURRENT_VALUE:
       btk_radio_action_set_current_value (radio_action,
-                                          g_value_get_int (value));
+                                          b_value_get_int (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_radio_action_get_property (GObject    *object,
+btk_radio_action_get_property (BObject    *object,
 			       guint       prop_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+			       BValue     *value,
+			       BParamSpec *pspec)
 {
   BtkRadioAction *radio_action;
 
@@ -291,14 +291,14 @@ btk_radio_action_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_VALUE:
-      g_value_set_int (value, radio_action->private_data->value);
+      b_value_set_int (value, radio_action->private_data->value);
       break;
     case PROP_CURRENT_VALUE:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_radio_action_get_current_value (radio_action));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -330,12 +330,12 @@ btk_radio_action_activate (BtkAction *action)
 	      break;
 	    }
 	}
-      g_object_notify (G_OBJECT (action), "active");
+      g_object_notify (B_OBJECT (action), "active");
     }
   else
     {
       toggle_action->private_data->active = !toggle_action->private_data->active;
-      g_object_notify (G_OBJECT (action), "active");
+      g_object_notify (B_OBJECT (action), "active");
 
       tmp_list = radio_action->private_data->group;
       while (tmp_list)
@@ -356,7 +356,7 @@ btk_radio_action_activate (BtkAction *action)
 	  tmp_action = tmp_list->data;
 	  tmp_list = tmp_list->next;
 	  
-          g_object_notify (G_OBJECT (tmp_action), "current-value");
+          g_object_notify (B_OBJECT (tmp_action), "current-value");
 
 	  g_signal_emit (tmp_action, radio_action_signals[CHANGED], 0, radio_action);
 	}
@@ -421,13 +421,13 @@ btk_radio_action_set_group (BtkRadioAction *action,
 			    GSList         *group)
 {
   g_return_if_fail (BTK_IS_RADIO_ACTION (action));
-  g_return_if_fail (!g_slist_find (group, action));
+  g_return_if_fail (!b_slist_find (group, action));
 
   if (action->private_data->group)
     {
       GSList *slist;
 
-      action->private_data->group = g_slist_remove (action->private_data->group, action);
+      action->private_data->group = b_slist_remove (action->private_data->group, action);
 
       for (slist = action->private_data->group; slist; slist = slist->next)
 	{
@@ -437,7 +437,7 @@ btk_radio_action_set_group (BtkRadioAction *action,
 	}
     }
 
-  action->private_data->group = g_slist_prepend (group, action);
+  action->private_data->group = b_slist_prepend (group, action);
 
   if (group)
     {

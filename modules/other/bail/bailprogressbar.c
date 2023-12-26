@@ -32,21 +32,21 @@ static void	 bail_progress_bar_class_init        (BailProgressBarClass *klass);
 static void	 bail_progress_bar_init              (BailProgressBar *bar);
 static void      bail_progress_bar_real_initialize   (BatkObject      *obj,
                                                       gpointer       data);
-static void      bail_progress_bar_finalize          (GObject        *object);
+static void      bail_progress_bar_finalize          (BObject        *object);
 
 
 static void	 batk_value_interface_init            (BatkValueIface  *iface);
 
 
-static void      bail_progress_bar_real_notify_btk   (GObject        *obj,
-                                                      GParamSpec     *pspec);
+static void      bail_progress_bar_real_notify_btk   (BObject        *obj,
+                                                      BParamSpec     *pspec);
 
 static void	 bail_progress_bar_get_current_value (BatkValue       *obj,
-                                           	      GValue         *value);
+                                           	      BValue         *value);
 static void	 bail_progress_bar_get_maximum_value (BatkValue       *obj,
-                                            	      GValue         *value);
+                                            	      BValue         *value);
 static void	 bail_progress_bar_get_minimum_value (BatkValue       *obj,
-                                           	      GValue         *value);
+                                           	      BValue         *value);
 static void      bail_progress_bar_value_changed     (BtkAdjustment  *adjustment,
                                                       gpointer       data);
 
@@ -56,7 +56,7 @@ G_DEFINE_TYPE_WITH_CODE (BailProgressBar, bail_progress_bar, BAIL_TYPE_WIDGET,
 static void	 
 bail_progress_bar_class_init		(BailProgressBarClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -112,7 +112,7 @@ batk_value_interface_init (BatkValueIface *iface)
 
 static void	 
 bail_progress_bar_get_current_value (BatkValue   *obj,
-                                     GValue     *value)
+                                     BValue     *value)
 {
   BailProgressBar *progress_bar;
 
@@ -130,7 +130,7 @@ bail_progress_bar_get_current_value (BatkValue   *obj,
 
 static void	 
 bail_progress_bar_get_maximum_value (BatkValue   *obj,
-                                     GValue     *value)
+                                     BValue     *value)
 {
   BailProgressBar *progress_bar;
 
@@ -148,7 +148,7 @@ bail_progress_bar_get_maximum_value (BatkValue   *obj,
 
 static void	 
 bail_progress_bar_get_minimum_value (BatkValue    *obj,
-                              	     GValue      *value)
+                              	     BValue      *value)
 {
   BailProgressBar *progress_bar;
 
@@ -165,7 +165,7 @@ bail_progress_bar_get_minimum_value (BatkValue    *obj,
 }
 
 static void
-bail_progress_bar_finalize (GObject            *object)
+bail_progress_bar_finalize (BObject            *object)
 {
   BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (object);
 
@@ -175,13 +175,13 @@ bail_progress_bar_finalize (GObject            *object)
       progress_bar->adjustment = NULL;
     }
 
-  G_OBJECT_CLASS (bail_progress_bar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_progress_bar_parent_class)->finalize (object);
 }
 
 
 static void
-bail_progress_bar_real_notify_btk (GObject           *obj,
-                                   GParamSpec        *pspec)
+bail_progress_bar_real_notify_btk (BObject           *obj,
+                                   BParamSpec        *pspec)
 {
   BtkWidget *widget = BTK_WIDGET (obj);
   BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (btk_widget_get_accessible (widget));
@@ -222,5 +222,5 @@ bail_progress_bar_value_changed (BtkAdjustment    *adjustment,
 
   progress_bar = BAIL_PROGRESS_BAR (data);
 
-  g_object_notify (G_OBJECT (progress_bar), "accessible-value");
+  g_object_notify (B_OBJECT (progress_bar), "accessible-value");
 }

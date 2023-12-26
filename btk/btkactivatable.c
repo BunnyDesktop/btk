@@ -95,7 +95,7 @@
  * ... Break the reference using btk_activatable_do_set_related_action()...
  *
  * static void 
- * foo_bar_dispose (GObject *object)
+ * foo_bar_dispose (BObject *object)
  * {
  *   FooBar *bar = FOO_BAR (object);
  *   FooBarPrivate *priv = FOO_BAR_GET_PRIVATE (bar);
@@ -107,16 +107,16 @@
  *       btk_activatable_do_set_related_action (BTK_ACTIVATABLE (bar), NULL);
  *       priv->action = NULL;
  *     }
- *   G_OBJECT_CLASS (foo_bar_parent_class)->dispose (object);
+ *   B_OBJECT_CLASS (foo_bar_parent_class)->dispose (object);
  * }
  * 
  * ... Handle the "related-action" and "use-action-appearance" properties ...
  *
  * static void
- * foo_bar_set_property (GObject         *object,
+ * foo_bar_set_property (BObject         *object,
  *                       guint            prop_id,
- *                       const GValue    *value,
- *                       GParamSpec      *pspec)
+ *                       const BValue    *value,
+ *                       BParamSpec      *pspec)
  * {
  *   FooBar *bar = FOO_BAR (object);
  *   FooBarPrivate *priv = FOO_BAR_GET_PRIVATE (bar);
@@ -127,22 +127,22 @@
  *       ...
  * 
  *     case PROP_ACTIVATABLE_RELATED_ACTION:
- *       foo_bar_set_related_action (bar, g_value_get_object (value));
+ *       foo_bar_set_related_action (bar, b_value_get_object (value));
  *       break;
  *     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE:
- *       foo_bar_set_use_action_appearance (bar, g_value_get_boolean (value));
+ *       foo_bar_set_use_action_appearance (bar, b_value_get_boolean (value));
  *       break;
  *     default:
- *       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+ *       B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
  *       break;
  *     }
  * }
  * 
  * static void
- * foo_bar_get_property (GObject         *object,
+ * foo_bar_get_property (BObject         *object,
  *                          guint            prop_id,
- *                          GValue          *value,
- *                          GParamSpec      *pspec)
+ *                          BValue          *value,
+ *                          BParamSpec      *pspec)
  * {
  *   FooBar *bar = FOO_BAR (object);
  *   FooBarPrivate *priv = FOO_BAR_GET_PRIVATE (bar);
@@ -153,13 +153,13 @@
  *       ...
  * 
  *     case PROP_ACTIVATABLE_RELATED_ACTION:
- *       g_value_set_object (value, priv->action);
+ *       b_value_set_object (value, priv->action);
  *       break;
  *     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE:
- *       g_value_set_boolean (value, priv->use_action_appearance);
+ *       b_value_set_boolean (value, priv->use_action_appearance);
  *       break;
  *     default:
- *       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+ *       B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
  *       break;
  *     }
  * }
@@ -278,12 +278,12 @@ btk_activatable_get_type (void)
 
   if (!activatable_type) {
     activatable_type =
-      g_type_register_static_simple (G_TYPE_INTERFACE, I_("BtkActivatable"),
+      g_type_register_static_simple (B_TYPE_INTERFACE, I_("BtkActivatable"),
 				     sizeof (BtkActivatableIface),
 				     (GClassInitFunc) btk_activatable_class_init,
 				     0, NULL, 0);
 
-    g_type_interface_add_prerequisite (activatable_type, G_TYPE_OBJECT);
+    g_type_interface_add_prerequisite (activatable_type, B_TYPE_OBJECT);
   }
 
   return activatable_type;
@@ -350,7 +350,7 @@ btk_activatable_update (BtkActivatable *activatable,
     iface->update (activatable, action, property_name);
   else
     g_critical ("BtkActivatable->update() unimplemented for type %s", 
-		g_type_name (G_OBJECT_TYPE (activatable)));
+		g_type_name (B_OBJECT_TYPE (activatable)));
 }
 
 /**
@@ -378,7 +378,7 @@ btk_activatable_sync_action_properties (BtkActivatable *activatable,
     iface->sync_action_properties (activatable, action);
   else
     g_critical ("BtkActivatable->sync_action_properties() unimplemented for type %s", 
-		g_type_name (G_OBJECT_TYPE (activatable)));
+		g_type_name (B_OBJECT_TYPE (activatable)));
 }
 
 
@@ -406,7 +406,7 @@ btk_activatable_set_related_action (BtkActivatable *activatable,
 
 static void
 btk_activatable_action_notify (BtkAction      *action,
-			       GParamSpec     *pspec,
+			       BParamSpec     *pspec,
 			       BtkActivatable *activatable)
 {
   btk_activatable_update (activatable, action, pspec->name);
@@ -421,7 +421,7 @@ btk_activatable_action_notify (BtkAction      *action,
  * 
  * When implementing #BtkActivatable you must call this when
  * handling changes of the #BtkActivatable:related-action, and
- * you must also use this to break references in #GObject->dispose().
+ * you must also use this to break references in #BObject->dispose().
  *
  * This function adds a reference to the currently set related
  * action for you, it also makes sure the #BtkActivatable->update()
@@ -455,7 +455,7 @@ btk_activatable_do_set_related_action (BtkActivatable *activatable,
           /* Some apps are using the object data directly...
            * so continue to set it for a bit longer
            */
-          g_object_set_data (G_OBJECT (activatable), "btk-action", NULL);
+          g_object_set_data (B_OBJECT (activatable), "btk-action", NULL);
 
           /*
            * We don't want prev_action to be activated
@@ -480,12 +480,12 @@ btk_activatable_do_set_related_action (BtkActivatable *activatable,
 	{
 	  g_object_ref (action);
 
-	  g_signal_connect (G_OBJECT (action), "notify", G_CALLBACK (btk_activatable_action_notify), activatable);
+	  g_signal_connect (B_OBJECT (action), "notify", G_CALLBACK (btk_activatable_action_notify), activatable);
 
           if (BTK_IS_WIDGET (activatable))
             _btk_action_add_to_proxy_list (action, BTK_WIDGET (activatable));
 
-          g_object_set_data (G_OBJECT (activatable), "btk-action", action);
+          g_object_set_data (B_OBJECT (activatable), "btk-action", action);
 	}
     }
 }

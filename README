@@ -250,7 +250,7 @@ Release notes for 2.10
   btk_range_set_[upper/lower]_stepper_sensitivity() functions to
   prevent the arrows from being rendered insensitive.
 
-* BtkObject now uses the "floating reference" support in GObject. 
+* BtkObject now uses the "floating reference" support in BObject. 
   BTK_OBJECT_IS_FLOATING() will still work, but direct checking
   of the BTK_FLOATING flag will no longer detect the floating 
   reference. Details about floating references can be found in the docs:

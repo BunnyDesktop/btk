@@ -99,24 +99,24 @@ enum {
 #define FALLBACK_ITEM_LIMIT 	10
 #define DEFAULT_LABEL_WIDTH     30
 
-#define BTK_RECENT_CHOOSER_MENU_GET_PRIVATE(obj)	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenuPrivate))
+#define BTK_RECENT_CHOOSER_MENU_GET_PRIVATE(obj)	(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenuPrivate))
 
-static void     btk_recent_chooser_menu_finalize    (GObject                   *object);
-static void     btk_recent_chooser_menu_dispose     (GObject                   *object);
-static GObject *btk_recent_chooser_menu_constructor (GType                      type,
+static void     btk_recent_chooser_menu_finalize    (BObject                   *object);
+static void     btk_recent_chooser_menu_dispose     (BObject                   *object);
+static BObject *btk_recent_chooser_menu_constructor (GType                      type,
 						     guint                      n_construct_properties,
-						     GObjectConstructParam     *construct_params);
+						     BObjectConstructParam     *construct_params);
 
 static void btk_recent_chooser_iface_init      (BtkRecentChooserIface     *iface);
 
-static void btk_recent_chooser_menu_set_property (GObject      *object,
+static void btk_recent_chooser_menu_set_property (BObject      *object,
 						  guint         prop_id,
-						  const GValue *value,
-						  GParamSpec   *pspec);
-static void btk_recent_chooser_menu_get_property (GObject      *object,
+						  const BValue *value,
+						  BParamSpec   *pspec);
+static void btk_recent_chooser_menu_get_property (BObject      *object,
 						  guint         prop_id,
-						  GValue       *value,
-						  GParamSpec   *pspec);
+						  BValue       *value,
+						  BParamSpec   *pspec);
 
 static gboolean          btk_recent_chooser_menu_set_current_uri    (BtkRecentChooser  *chooser,
 							             const gchar       *uri,
@@ -203,7 +203,7 @@ btk_recent_chooser_activatable_iface_init (BtkActivatableIface *iface)
 static void
 btk_recent_chooser_menu_class_init (BtkRecentChooserMenuClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->constructor = btk_recent_chooser_menu_constructor;
   bobject_class->dispose = btk_recent_chooser_menu_dispose;
@@ -264,7 +264,7 @@ btk_recent_chooser_menu_init (BtkRecentChooserMenu *menu)
 }
 
 static void
-btk_recent_chooser_menu_finalize (GObject *object)
+btk_recent_chooser_menu_finalize (BObject *object)
 {
   BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
   BtkRecentChooserMenuPrivate *priv = menu->priv;
@@ -280,11 +280,11 @@ btk_recent_chooser_menu_finalize (GObject *object)
   priv->sort_data = NULL;
   priv->sort_func = NULL;
   
-  G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->finalize (object);
 }
 
 static void
-btk_recent_chooser_menu_dispose (GObject *object)
+btk_recent_chooser_menu_dispose (BObject *object)
 {
   BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
   BtkRecentChooserMenuPrivate *priv = menu->priv;
@@ -309,20 +309,20 @@ btk_recent_chooser_menu_dispose (GObject *object)
       priv->current_filter = NULL;
     }
   
-  G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->dispose (object);
 }
 
-static GObject *
+static BObject *
 btk_recent_chooser_menu_constructor (GType                  type,
 				     guint                  n_params,
-				     GObjectConstructParam *params)
+				     BObjectConstructParam *params)
 {
   BtkRecentChooserMenu *menu;
   BtkRecentChooserMenuPrivate *priv;
-  GObjectClass *parent_class;
-  GObject *object;
+  BObjectClass *parent_class;
+  BObject *object;
   
-  parent_class = G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class);
+  parent_class = B_OBJECT_CLASS (btk_recent_chooser_menu_parent_class);
   object = parent_class->constructor (type, n_params, params);
   menu = BTK_RECENT_CHOOSER_MENU (object);
   priv = menu->priv;
@@ -341,7 +341,7 @@ btk_recent_chooser_menu_constructor (GType                  type,
    */
   priv->placeholder = btk_menu_item_new_with_label (_("No items found"));
   btk_widget_set_sensitive (priv->placeholder, FALSE);
-  g_object_set_data (G_OBJECT (priv->placeholder),
+  g_object_set_data (B_OBJECT (priv->placeholder),
                      "btk-recent-menu-placeholder",
                      GINT_TO_POINTER (TRUE));
 
@@ -356,10 +356,10 @@ btk_recent_chooser_menu_constructor (GType                  type,
 }
 
 static void
-btk_recent_chooser_menu_set_property (GObject      *object,
+btk_recent_chooser_menu_set_property (BObject      *object,
 				      guint         prop_id,
-				      const GValue *value,
-				      GParamSpec   *pspec)
+				      const BValue *value,
+				      BParamSpec   *pspec)
 {
   BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
   BtkRecentChooserMenuPrivate *priv = menu->priv;
@@ -367,57 +367,57 @@ btk_recent_chooser_menu_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
-      priv->show_numbers = g_value_get_boolean (value);
+      priv->show_numbers = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
-      set_recent_manager (menu, g_value_get_object (value));
+      set_recent_manager (menu, b_value_get_object (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      priv->show_private = g_value_get_boolean (value);
+      priv->show_private = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      priv->show_not_found = g_value_get_boolean (value);
+      priv->show_not_found = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      btk_recent_chooser_menu_set_show_tips (menu, g_value_get_boolean (value));
+      btk_recent_chooser_menu_set_show_tips (menu, b_value_get_boolean (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      priv->show_icons = g_value_get_boolean (value);
+      priv->show_icons = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
       g_warning ("%s: Choosers of type `%s' do not support selecting multiple items.",
                  B_STRFUNC,
-                 G_OBJECT_TYPE_NAME (object));
+                 B_OBJECT_TYPE_NAME (object));
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      priv->local_only = g_value_get_boolean (value);
+      priv->local_only = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      priv->limit = g_value_get_int (value);
+      priv->limit = b_value_get_int (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      chooser_set_sort_type (menu, g_value_get_enum (value));
+      chooser_set_sort_type (menu, b_value_get_enum (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      btk_recent_chooser_menu_set_current_filter (menu, g_value_get_object (value));
+      btk_recent_chooser_menu_set_current_filter (menu, b_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      _btk_recent_chooser_set_related_action (BTK_RECENT_CHOOSER (menu), g_value_get_object (value));
+      _btk_recent_chooser_set_related_action (BTK_RECENT_CHOOSER (menu), b_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      _btk_recent_chooser_set_use_action_appearance (BTK_RECENT_CHOOSER (menu), g_value_get_boolean (value));
+      _btk_recent_chooser_set_use_action_appearance (BTK_RECENT_CHOOSER (menu), b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_recent_chooser_menu_get_property (GObject    *object,
+btk_recent_chooser_menu_get_property (BObject    *object,
 				      guint       prop_id,
-				      GValue     *value,
-				      GParamSpec *pspec)
+				      BValue     *value,
+				      BParamSpec *pspec)
 {
   BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
   BtkRecentChooserMenuPrivate *priv = menu->priv;
@@ -425,43 +425,43 @@ btk_recent_chooser_menu_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
-      g_value_set_boolean (value, priv->show_numbers);
+      b_value_set_boolean (value, priv->show_numbers);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      g_value_set_boolean (value, priv->show_tips);
+      b_value_set_boolean (value, priv->show_tips);
       break;
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      g_value_set_int (value, priv->limit);
+      b_value_set_int (value, priv->limit);
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      g_value_set_boolean (value, priv->local_only);
+      b_value_set_boolean (value, priv->local_only);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      g_value_set_enum (value, priv->sort_type);
+      b_value_set_enum (value, priv->sort_type);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      g_value_set_boolean (value, priv->show_private);
+      b_value_set_boolean (value, priv->show_private);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      g_value_set_boolean (value, priv->show_not_found);
+      b_value_set_boolean (value, priv->show_not_found);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      g_value_set_boolean (value, priv->show_icons);
+      b_value_set_boolean (value, priv->show_icons);
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, FALSE);
+      b_value_set_boolean (value, FALSE);
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      g_value_set_object (value, priv->current_filter);
+      b_value_set_object (value, priv->current_filter);
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      g_value_set_object (value, _btk_recent_chooser_get_related_action (BTK_RECENT_CHOOSER (menu)));
+      b_value_set_object (value, _btk_recent_chooser_get_related_action (BTK_RECENT_CHOOSER (menu)));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      g_value_set_boolean (value, _btk_recent_chooser_get_use_action_appearance (BTK_RECENT_CHOOSER (menu)));
+      b_value_set_boolean (value, _btk_recent_chooser_get_use_action_appearance (BTK_RECENT_CHOOSER (menu)));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -484,7 +484,7 @@ btk_recent_chooser_menu_set_current_uri (BtkRecentChooser  *chooser,
       
       menu_item = BTK_WIDGET (l->data);
       
-      info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
+      info = g_object_get_data (B_OBJECT (menu_item), "btk-recent-info");
       if (!info)
         continue;
       
@@ -523,7 +523,7 @@ btk_recent_chooser_menu_get_current_uri (BtkRecentChooser  *chooser)
   if (!menu_item)
     return NULL;
   
-  info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
+  info = g_object_get_data (B_OBJECT (menu_item), "btk-recent-info");
   if (!info)
     return NULL;
   
@@ -547,7 +547,7 @@ btk_recent_chooser_menu_select_uri (BtkRecentChooser  *chooser,
       
       menu_item = BTK_WIDGET (l->data);
       
-      info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
+      info = g_object_get_data (B_OBJECT (menu_item), "btk-recent-info");
       if (!info)
         continue;
       
@@ -587,7 +587,7 @@ btk_recent_chooser_menu_select_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
-             g_type_name (G_OBJECT_TYPE (chooser)));
+             g_type_name (B_OBJECT_TYPE (chooser)));
 }
 
 static void
@@ -595,7 +595,7 @@ btk_recent_chooser_menu_unselect_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
-             g_type_name (G_OBJECT_TYPE (chooser)));
+             g_type_name (B_OBJECT_TYPE (chooser)));
 }
 
 static void
@@ -682,7 +682,7 @@ btk_recent_chooser_menu_remove_filter (BtkRecentChooser *chooser,
       g_object_unref (menu->priv->current_filter);
       menu->priv->current_filter = NULL;
 
-      g_object_notify (G_OBJECT (menu), "filter");
+      g_object_notify (B_OBJECT (menu), "filter");
     }
 }
 
@@ -695,7 +695,7 @@ btk_recent_chooser_menu_list_filters (BtkRecentChooser *chooser)
   menu = BTK_RECENT_CHOOSER_MENU (chooser);
  
   if (menu->priv->current_filter)
-    retval = g_slist_prepend (retval, menu->priv->current_filter);
+    retval = b_slist_prepend (retval, menu->priv->current_filter);
 
   return retval;
 }
@@ -709,7 +709,7 @@ btk_recent_chooser_menu_set_current_filter (BtkRecentChooserMenu *menu,
   priv = menu->priv;
   
   if (priv->current_filter)
-    g_object_unref (G_OBJECT (priv->current_filter));
+    g_object_unref (B_OBJECT (priv->current_filter));
   
   priv->current_filter = filter;
 
@@ -718,7 +718,7 @@ btk_recent_chooser_menu_set_current_filter (BtkRecentChooserMenu *menu,
 
   btk_recent_chooser_menu_populate (menu);
   
-  g_object_notify (G_OBJECT (menu), "filter");
+  g_object_notify (B_OBJECT (menu), "filter");
 }
 
 /* taken from libeel/eel-strings.c */
@@ -879,7 +879,7 @@ btk_recent_chooser_menu_insert_item (BtkRecentChooserMenu *menu,
            l != NULL;
            real_position += 1, l = l->next)
         {
-          GObject *child = l->data;
+          BObject *child = l->data;
           gboolean is_placeholder = FALSE;
 
           is_placeholder =
@@ -914,16 +914,16 @@ btk_recent_chooser_menu_dispose_items (BtkRecentChooserMenu *menu)
       
       /* check for our mark, in order to remove just the items we own */
       has_mark =
-        GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu_item), "btk-recent-menu-mark"));
+        GPOINTER_TO_INT (g_object_get_data (B_OBJECT (menu_item), "btk-recent-menu-mark"));
 
       if (has_mark)
         {
           BtkRecentInfo *info;
           
           /* destroy the attached RecentInfo struct, if found */
-          info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
+          info = g_object_get_data (B_OBJECT (menu_item), "btk-recent-info");
           if (info)
-            g_object_set_data_full (G_OBJECT (menu_item), "btk-recent-info",
+            g_object_set_data_full (B_OBJECT (menu_item), "btk-recent-info",
             			    NULL, NULL);
           
           /* and finally remove the item from the menu */
@@ -992,7 +992,7 @@ idle_populate_func (gpointer data)
   pdata->displayed_items += 1;
       
   /* mark the menu item as one of our own */
-  g_object_set_data (G_OBJECT (item),
+  g_object_set_data (B_OBJECT (item),
                      "btk-recent-menu-mark",
       		     GINT_TO_POINTER (TRUE));
       
@@ -1000,7 +1000,7 @@ idle_populate_func (gpointer data)
    * to it, so that it will be destroyed with the menu item when it's
    * not needed anymore.
    */
-  g_object_set_data_full (G_OBJECT (item), "btk-recent-info",
+  g_object_set_data_full (B_OBJECT (item), "btk-recent-info",
       			  btk_recent_info_ref (info),
       			  (GDestroyNotify) btk_recent_info_unref);
   
@@ -1152,7 +1152,7 @@ foreach_set_shot_tips (BtkWidget *widget,
 
   /* toggle the tooltip only on the items we create */
   has_mark =
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "btk-recent-menu-mark"));
+    GPOINTER_TO_INT (g_object_get_data (B_OBJECT (widget), "btk-recent-menu-mark"));
 
   if (has_mark)
     btk_widget_set_has_tooltip (widget, priv->show_tips);
@@ -1290,7 +1290,7 @@ btk_recent_chooser_menu_set_show_numbers (BtkRecentChooserMenu *menu,
     return;
 
   menu->priv->show_numbers = show_numbers;
-  g_object_notify (G_OBJECT (menu), "show-numbers");
+  g_object_notify (B_OBJECT (menu), "show-numbers");
 }
 
 #define __BTK_RECENT_CHOOSER_MENU_C__

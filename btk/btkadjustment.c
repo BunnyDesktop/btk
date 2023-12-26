@@ -50,17 +50,17 @@ enum
 };
 
 
-static void btk_adjustment_get_property                (GObject      *object,
+static void btk_adjustment_get_property                (BObject      *object,
                                                         guint         prop_id,
-                                                        GValue       *value,
-                                                        GParamSpec   *pspec);
-static void btk_adjustment_set_property                (GObject      *object,
+                                                        BValue       *value,
+                                                        BParamSpec   *pspec);
+static void btk_adjustment_set_property                (BObject      *object,
                                                         guint         prop_id,
-                                                        const GValue *value,
-                                                        GParamSpec   *pspec);
-static void btk_adjustment_dispatch_properties_changed (GObject      *object,
+                                                        const BValue *value,
+                                                        BParamSpec   *pspec);
+static void btk_adjustment_dispatch_properties_changed (BObject      *object,
                                                         guint         n_pspecs,
-                                                        GParamSpec  **pspecs);
+                                                        BParamSpec  **pspecs);
 
 static guint adjustment_signals[LAST_SIGNAL] = { 0 };
 
@@ -71,7 +71,7 @@ G_DEFINE_TYPE (BtkAdjustment, btk_adjustment, BTK_TYPE_OBJECT)
 static void
 btk_adjustment_class_init (BtkAdjustmentClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   bobject_class->set_property                = btk_adjustment_set_property;
   bobject_class->get_property                = btk_adjustment_get_property;
@@ -190,21 +190,21 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
 
   adjustment_signals[CHANGED] =
     g_signal_new (I_("changed"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkAdjustmentClass, changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   adjustment_signals[VALUE_CHANGED] =
     g_signal_new (I_("value-changed"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkAdjustmentClass, value_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -219,47 +219,47 @@ btk_adjustment_init (BtkAdjustment *adjustment)
 }
 
 static void
-btk_adjustment_get_property (GObject    *object,
+btk_adjustment_get_property (BObject    *object,
                              guint       prop_id,
-                             GValue     *value,
-                             GParamSpec *pspec)
+                             BValue     *value,
+                             BParamSpec *pspec)
 {
   BtkAdjustment *adjustment = BTK_ADJUSTMENT (object);
 
   switch (prop_id)
     {
     case PROP_VALUE:
-      g_value_set_double (value, adjustment->value);
+      b_value_set_double (value, adjustment->value);
       break;
     case PROP_LOWER:
-      g_value_set_double (value, adjustment->lower);
+      b_value_set_double (value, adjustment->lower);
       break;
     case PROP_UPPER:
-      g_value_set_double (value, adjustment->upper);
+      b_value_set_double (value, adjustment->upper);
       break;
     case PROP_STEP_INCREMENT:
-      g_value_set_double (value, adjustment->step_increment);
+      b_value_set_double (value, adjustment->step_increment);
       break;
     case PROP_PAGE_INCREMENT:
-      g_value_set_double (value, adjustment->page_increment);
+      b_value_set_double (value, adjustment->page_increment);
       break;
     case PROP_PAGE_SIZE:
-      g_value_set_double (value, adjustment->page_size);
+      b_value_set_double (value, adjustment->page_size);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_adjustment_set_property (GObject      *object,
+btk_adjustment_set_property (BObject      *object,
                              guint         prop_id,
-                             const GValue *value,
-                             GParamSpec   *pspec)
+                             const BValue *value,
+                             BParamSpec   *pspec)
 {
   BtkAdjustment *adjustment = BTK_ADJUSTMENT (object);
-  gdouble double_value = g_value_get_double (value);
+  gdouble double_value = b_value_get_double (value);
 
   switch (prop_id)
     {
@@ -282,20 +282,20 @@ btk_adjustment_set_property (GObject      *object,
       adjustment->page_size = double_value;
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_adjustment_dispatch_properties_changed (GObject     *object,
+btk_adjustment_dispatch_properties_changed (BObject     *object,
                                             guint        n_pspecs,
-                                            GParamSpec **pspecs)
+                                            BParamSpec **pspecs)
 {
   gboolean changed = FALSE;
   gint i;
 
-  G_OBJECT_CLASS (btk_adjustment_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
+  B_OBJECT_CLASS (btk_adjustment_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
 
   for (i = 0; i < n_pspecs; i++)
     switch (pspecs[i]->param_id)
@@ -397,7 +397,7 @@ btk_adjustment_get_lower (BtkAdjustment *adjustment)
  * When setting multiple adjustment properties via their individual
  * setters, multiple "changed" signals will be emitted. However, since
  * the emission of the "changed" signal is tied to the emission of the
- * "GObject::notify" signals of the changed properties, it's possible
+ * "BObject::notify" signals of the changed properties, it's possible
  * to compress the "changed" signals into one by calling
  * g_object_freeze_notify() and g_object_thaw_notify() around the
  * calls to the individual setters.
@@ -618,7 +618,7 @@ btk_adjustment_configure (BtkAdjustment *adjustment,
 
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
-  g_object_freeze_notify (G_OBJECT (adjustment));
+  g_object_freeze_notify (B_OBJECT (adjustment));
 
   g_object_set (adjustment,
                 "lower", lower,
@@ -643,7 +643,7 @@ btk_adjustment_configure (BtkAdjustment *adjustment,
       value_changed = TRUE;
     }
 
-  g_object_thaw_notify (G_OBJECT (adjustment));
+  g_object_thaw_notify (B_OBJECT (adjustment));
 
   if (old_stamp == adjustment_changed_stamp)
     btk_adjustment_changed (adjustment); /* force emission before ::value-changed */
@@ -666,7 +666,7 @@ btk_adjustment_value_changed (BtkAdjustment *adjustment)
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
   g_signal_emit (adjustment, adjustment_signals[VALUE_CHANGED], 0);
-  g_object_notify (G_OBJECT (adjustment), "value");
+  g_object_notify (B_OBJECT (adjustment), "value");
 }
 
 void

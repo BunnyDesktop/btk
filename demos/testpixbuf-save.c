@@ -114,7 +114,7 @@ keypress_check (BtkWidget *widget, BdkEventKey *evt, gpointer data)
         gsize count;
         BdkPixbufLoader *loader;
 
-        pixbuf = (BdkPixbuf *) g_object_get_data (G_OBJECT (da), "pixbuf");
+        pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (da), "pixbuf");
 
         if (evt->keyval == 'q')
                 btk_main_quit ();
@@ -292,7 +292,7 @@ keypress_check (BtkWidget *widget, BdkEventKey *evt, gpointer data)
                         alpha_buf = bdk_pixbuf_add_alpha (pixbuf,
                                                           FALSE, 0, 0, 0);
 
-                        g_object_set_data_full (G_OBJECT (da),
+                        g_object_set_data_full (B_OBJECT (da),
                                                 "pixbuf", alpha_buf,
                                                 (GDestroyNotify) g_object_unref);
                 }
@@ -313,7 +313,7 @@ expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
         BdkPixbuf *pixbuf;
         bairo_t *cr;
          
-        pixbuf = (BdkPixbuf *) g_object_get_data (G_OBJECT (drawing_area),
+        pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (drawing_area),
 						  "pixbuf");
 
         cr = bdk_bairo_create (evt->window);
@@ -331,7 +331,7 @@ configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
 {
         BdkPixbuf *pixbuf;
                            
-        pixbuf = (BdkPixbuf *) g_object_get_data (G_OBJECT (drawing_area),   
+        pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (drawing_area),   
 						  "pixbuf");
     
         g_print ("X:%d Y:%d\n", evt->width, evt->height);
@@ -342,7 +342,7 @@ configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
                 root = bdk_get_default_root_window ();
                 new_pixbuf = bdk_pixbuf_get_from_drawable (NULL, root, NULL,
                                                            0, 0, 0, 0, evt->width, evt->height);
-                g_object_set_data_full (G_OBJECT (drawing_area), "pixbuf", new_pixbuf,
+                g_object_set_data_full (B_OBJECT (drawing_area), "pixbuf", new_pixbuf,
                                         (GDestroyNotify) g_object_unref);
         }
 
@@ -384,7 +384,7 @@ main (int argc, char **argv)
 			  G_CALLBACK (configure_cb), NULL);
         g_signal_connect (window, "key_press_event", 
 			  G_CALLBACK (keypress_check), drawing_area);    
-        g_object_set_data_full (G_OBJECT (drawing_area), "pixbuf", pixbuf,
+        g_object_set_data_full (B_OBJECT (drawing_area), "pixbuf", pixbuf,
                                 (GDestroyNotify) g_object_unref);
         btk_box_pack_start (BTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
    

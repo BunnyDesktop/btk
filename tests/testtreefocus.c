@@ -176,14 +176,14 @@ make_model (void)
   BtkTreeIter iter;
 
   model = btk_tree_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN);
+			      B_TYPE_STRING,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN);
 
   while (month->label)
     {

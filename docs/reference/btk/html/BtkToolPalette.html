@@ -306,7 +306,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkToolPalette.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -435,7 +435,7 @@ signal handler of the drag target.</p>
 <span class="n">palette</span> <span class="o">=</span> <span class="n">btk_tool_palette_new</span> <span class="p">();</span>
 <span class="n">target</span> <span class="o">=</span> <span class="n">btk_drawing_area_new</span> <span class="p">();</span>
 
-<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">G_OBJECT</span> <span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="s">&quot;drag-data-received&quot;</span><span class="p">,</span>
+<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">B_OBJECT</span> <span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="s">&quot;drag-data-received&quot;</span><span class="p">,</span>
                   <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">passive_canvas_drag_data_received</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">);</span>
 <span class="n">btk_tool_palette_add_drag_dest</span> <span class="p">(</span><span class="n">BTK_TOOL_PALETTE</span> <span class="p">(</span><span class="n">palette</span><span class="p">),</span> <span class="n">target</span><span class="p">,</span>
                                 <span class="n">BTK_DEST_DEFAULT_ALL</span><span class="p">,</span>

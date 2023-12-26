@@ -52,7 +52,7 @@
 #include "btkprivate.h"
 #include "btkalias.h"
 
-#define BTK_LABEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LABEL, BtkLabelPrivate))
+#define BTK_LABEL_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LABEL, BtkLabelPrivate))
 
 typedef struct
 {
@@ -159,16 +159,16 @@ static guint signals[LAST_SIGNAL] = { 0 };
 static const BdkColor default_link_color = { 0, 0, 0, 0xeeee };
 static const BdkColor default_visited_link_color = { 0, 0x5555, 0x1a1a, 0x8b8b };
 
-static void btk_label_set_property      (GObject          *object,
+static void btk_label_set_property      (BObject          *object,
 					 guint             prop_id,
-					 const GValue     *value,
-					 GParamSpec       *pspec);
-static void btk_label_get_property      (GObject          *object,
+					 const BValue     *value,
+					 BParamSpec       *pspec);
+static void btk_label_get_property      (BObject          *object,
 					 guint             prop_id,
-					 GValue           *value,
-					 GParamSpec       *pspec);
+					 BValue           *value,
+					 BParamSpec       *pspec);
 static void btk_label_destroy           (BtkObject        *object);
-static void btk_label_finalize          (GObject          *object);
+static void btk_label_finalize          (BObject          *object);
 static void btk_label_size_request      (BtkWidget        *widget,
 					 BtkRequisition   *requisition);
 static void btk_label_size_allocate     (BtkWidget        *widget,
@@ -256,14 +256,14 @@ static void     btk_label_drag_data_get     (BtkWidget         *widget,
 static void     btk_label_buildable_interface_init     (BtkBuildableIface *iface);
 static gboolean btk_label_buildable_custom_tag_start   (BtkBuildable     *buildable,
 							BtkBuilder       *builder,
-							GObject          *child,
+							BObject          *child,
 							const gchar      *tagname,
 							GMarkupParser    *parser,
 							gpointer         *data);
 
 static void     btk_label_buildable_custom_finished    (BtkBuildable     *buildable,
 							BtkBuilder       *builder,
-							GObject          *child,
+							BObject          *child,
 							const gchar      *tagname,
 							gpointer          user_data);
 
@@ -321,22 +321,22 @@ add_move_binding (BtkBindingSet  *binding_set,
   
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, FALSE);
 
   /* Selection-extending version */
   btk_binding_entry_add_signal (binding_set, keyval, modmask | BDK_SHIFT_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, TRUE);
 }
 
 static void
 btk_label_class_init (BtkLabelClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkBindingSet *binding_set;
@@ -405,15 +405,15 @@ btk_label_class_init (BtkLabelClass *class)
    */
   signals[MOVE_CURSOR] = 
     g_signal_new (I_("move-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkLabelClass, move_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT_BOOLEAN,
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_MOVEMENT_STEP,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN);
 
    /**
    * BtkLabel::copy-clipboard:
@@ -427,12 +427,12 @@ btk_label_class_init (BtkLabelClass *class)
    */ 
   signals[COPY_CLIPBOARD] =
     g_signal_new (I_("copy-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkLabelClass, copy_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   /**
    * BtkLabel::populate-popup:
@@ -448,12 +448,12 @@ btk_label_class_init (BtkLabelClass *class)
    */
   signals[POPULATE_POPUP] =
     g_signal_new (I_("populate-popup"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkLabelClass, populate_popup),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU);
 
     /**
@@ -472,12 +472,12 @@ btk_label_class_init (BtkLabelClass *class)
      */
     signals[ACTIVATE_CURRENT_LINK] =
       g_signal_new_class_handler ("activate-current-link",
-                                  G_TYPE_FROM_CLASS (object_class),
+                                  B_TYPE_FROM_CLASS (object_class),
                                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                   G_CALLBACK (btk_label_activate_current_link),
                                   NULL, NULL,
                                   _btk_marshal_VOID__VOID,
-                                  G_TYPE_NONE, 0);
+                                  B_TYPE_NONE, 0);
 
     /**
      * BtkLabel::activate-link:
@@ -494,12 +494,12 @@ btk_label_class_init (BtkLabelClass *class)
      */
     signals[ACTIVATE_LINK] =
       g_signal_new ("activate-link",
-                    G_TYPE_FROM_CLASS (object_class),
+                    B_TYPE_FROM_CLASS (object_class),
                     G_SIGNAL_RUN_LAST,
                     G_STRUCT_OFFSET (BtkLabelClass, activate_link),
                     _btk_boolean_handled_accumulator, NULL,
                     _btk_marshal_BOOLEAN__STRING,
-                    G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
+                    B_TYPE_BOOLEAN, 1, B_TYPE_STRING);
 
   g_object_class_install_property (bobject_class,
                                    PROP_LABEL,
@@ -779,40 +779,40 @@ btk_label_class_init (BtkLabelClass *class)
   /* select all */
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
 
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);
 
   /* unselect all */
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
 
   btk_binding_entry_add_signal (binding_set, BDK_backslash, BDK_CONTROL_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
-				G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, BTK_MOVEMENT_PARAGRAPH_ENDS,
+				B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
 
   add_move_binding (binding_set, BDK_f, BDK_MOD1_MASK,
 		    BTK_MOVEMENT_WORDS, 1);
@@ -859,10 +859,10 @@ btk_label_class_init (BtkLabelClass *class)
 }
 
 static void 
-btk_label_set_property (GObject      *object,
+btk_label_set_property (BObject      *object,
 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkLabel *label;
 
@@ -871,64 +871,64 @@ btk_label_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      btk_label_set_label (label, g_value_get_string (value));
+      btk_label_set_label (label, b_value_get_string (value));
       break;
     case PROP_ATTRIBUTES:
-      btk_label_set_attributes (label, g_value_get_boxed (value));
+      btk_label_set_attributes (label, b_value_get_boxed (value));
       break;
     case PROP_USE_MARKUP:
-      btk_label_set_use_markup (label, g_value_get_boolean (value));
+      btk_label_set_use_markup (label, b_value_get_boolean (value));
       break;
     case PROP_USE_UNDERLINE:
-      btk_label_set_use_underline (label, g_value_get_boolean (value));
+      btk_label_set_use_underline (label, b_value_get_boolean (value));
       break;
     case PROP_JUSTIFY:
-      btk_label_set_justify (label, g_value_get_enum (value));
+      btk_label_set_justify (label, b_value_get_enum (value));
       break;
     case PROP_PATTERN:
-      btk_label_set_pattern (label, g_value_get_string (value));
+      btk_label_set_pattern (label, b_value_get_string (value));
       break;
     case PROP_WRAP:
-      btk_label_set_line_wrap (label, g_value_get_boolean (value));
+      btk_label_set_line_wrap (label, b_value_get_boolean (value));
       break;	  
     case PROP_WRAP_MODE:
-      btk_label_set_line_wrap_mode (label, g_value_get_enum (value));
+      btk_label_set_line_wrap_mode (label, b_value_get_enum (value));
       break;	  
     case PROP_SELECTABLE:
-      btk_label_set_selectable (label, g_value_get_boolean (value));
+      btk_label_set_selectable (label, b_value_get_boolean (value));
       break;	  
     case PROP_MNEMONIC_WIDGET:
-      btk_label_set_mnemonic_widget (label, (BtkWidget*) g_value_get_object (value));
+      btk_label_set_mnemonic_widget (label, (BtkWidget*) b_value_get_object (value));
       break;
     case PROP_ELLIPSIZE:
-      btk_label_set_ellipsize (label, g_value_get_enum (value));
+      btk_label_set_ellipsize (label, b_value_get_enum (value));
       break;
     case PROP_WIDTH_CHARS:
-      btk_label_set_width_chars (label, g_value_get_int (value));
+      btk_label_set_width_chars (label, b_value_get_int (value));
       break;
     case PROP_SINGLE_LINE_MODE:
-      btk_label_set_single_line_mode (label, g_value_get_boolean (value));
+      btk_label_set_single_line_mode (label, b_value_get_boolean (value));
       break;	  
     case PROP_ANGLE:
-      btk_label_set_angle (label, g_value_get_double (value));
+      btk_label_set_angle (label, b_value_get_double (value));
       break;
     case PROP_MAX_WIDTH_CHARS:
-      btk_label_set_max_width_chars (label, g_value_get_int (value));
+      btk_label_set_max_width_chars (label, b_value_get_int (value));
       break;
     case PROP_TRACK_VISITED_LINKS:
-      btk_label_set_track_visited_links (label, g_value_get_boolean (value));
+      btk_label_set_track_visited_links (label, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_label_get_property (GObject     *object,
+btk_label_get_property (BObject     *object,
 			guint        prop_id,
-			GValue      *value,
-			GParamSpec  *pspec)
+			BValue      *value,
+			BParamSpec  *pspec)
 {
   BtkLabel *label;
   
@@ -937,75 +937,75 @@ btk_label_get_property (GObject     *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      g_value_set_string (value, label->label);
+      b_value_set_string (value, label->label);
       break;
     case PROP_ATTRIBUTES:
-      g_value_set_boxed (value, label->attrs);
+      b_value_set_boxed (value, label->attrs);
       break;
     case PROP_USE_MARKUP:
-      g_value_set_boolean (value, label->use_markup);
+      b_value_set_boolean (value, label->use_markup);
       break;
     case PROP_USE_UNDERLINE:
-      g_value_set_boolean (value, label->use_underline);
+      b_value_set_boolean (value, label->use_underline);
       break;
     case PROP_JUSTIFY:
-      g_value_set_enum (value, label->jtype);
+      b_value_set_enum (value, label->jtype);
       break;
     case PROP_WRAP:
-      g_value_set_boolean (value, label->wrap);
+      b_value_set_boolean (value, label->wrap);
       break;
     case PROP_WRAP_MODE:
-      g_value_set_enum (value, label->wrap_mode);
+      b_value_set_enum (value, label->wrap_mode);
       break;
     case PROP_SELECTABLE:
-      g_value_set_boolean (value, btk_label_get_selectable (label));
+      b_value_set_boolean (value, btk_label_get_selectable (label));
       break;
     case PROP_MNEMONIC_KEYVAL:
-      g_value_set_uint (value, label->mnemonic_keyval);
+      b_value_set_uint (value, label->mnemonic_keyval);
       break;
     case PROP_MNEMONIC_WIDGET:
-      g_value_set_object (value, (GObject*) label->mnemonic_widget);
+      b_value_set_object (value, (BObject*) label->mnemonic_widget);
       break;
     case PROP_CURSOR_POSITION:
       if (label->select_info && label->select_info->selectable)
 	{
 	  gint offset = g_utf8_pointer_to_offset (label->text,
 						  label->text + label->select_info->selection_end);
-	  g_value_set_int (value, offset);
+	  b_value_set_int (value, offset);
 	}
       else
-	g_value_set_int (value, 0);
+	b_value_set_int (value, 0);
       break;
     case PROP_SELECTION_BOUND:
       if (label->select_info && label->select_info->selectable)
 	{
 	  gint offset = g_utf8_pointer_to_offset (label->text,
 						  label->text + label->select_info->selection_anchor);
-	  g_value_set_int (value, offset);
+	  b_value_set_int (value, offset);
 	}
       else
-	g_value_set_int (value, 0);
+	b_value_set_int (value, 0);
       break;
     case PROP_ELLIPSIZE:
-      g_value_set_enum (value, label->ellipsize);
+      b_value_set_enum (value, label->ellipsize);
       break;
     case PROP_WIDTH_CHARS:
-      g_value_set_int (value, btk_label_get_width_chars (label));
+      b_value_set_int (value, btk_label_get_width_chars (label));
       break;
     case PROP_SINGLE_LINE_MODE:
-      g_value_set_boolean (value, btk_label_get_single_line_mode (label));
+      b_value_set_boolean (value, btk_label_get_single_line_mode (label));
       break;
     case PROP_ANGLE:
-      g_value_set_double (value, btk_label_get_angle (label));
+      b_value_set_double (value, btk_label_get_angle (label));
       break;
     case PROP_MAX_WIDTH_CHARS:
-      g_value_set_int (value, btk_label_get_max_width_chars (label));
+      b_value_set_int (value, btk_label_get_max_width_chars (label));
       break;
     case PROP_TRACK_VISITED_LINKS:
-      g_value_set_boolean (value, btk_label_get_track_visited_links (label));
+      b_value_set_boolean (value, btk_label_get_track_visited_links (label));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1058,7 +1058,7 @@ btk_label_buildable_interface_init (BtkBuildableIface *iface)
 
 typedef struct {
   BtkBuilder    *builder;
-  GObject       *object;
+  BObject       *object;
   BangoAttrList *attrs;
 } BangoParserData;
 
@@ -1073,13 +1073,13 @@ attribute_from_text (BtkBuilder   *builder,
   BangoLanguage  *language;
   BangoFontDescription *font_desc;
   BdkColor       *color;
-  GValue          val = { 0, };
+  BValue          val = { 0, };
 
   if (!btk_builder_value_from_string_type (builder, BANGO_TYPE_ATTR_TYPE, name, &val, error))
     return NULL;
 
-  type = g_value_get_enum (&val);
-  g_value_unset (&val);
+  type = b_value_get_enum (&val);
+  b_value_unset (&val);
 
   switch (type)
     {
@@ -1088,60 +1088,60 @@ attribute_from_text (BtkBuilder   *builder,
       if ((language = bango_language_from_string (value)))
 	{
 	  attribute = bango_attr_language_new (language);
-	  g_value_init (&val, G_TYPE_INT);
+	  b_value_init (&val, B_TYPE_INT);
 	}
       break;
       /* BangoAttrInt */
     case BANGO_ATTR_STYLE:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_STYLE, value, &val, error))
-	attribute = bango_attr_style_new (g_value_get_enum (&val));
+	attribute = bango_attr_style_new (b_value_get_enum (&val));
       break;
     case BANGO_ATTR_WEIGHT:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_WEIGHT, value, &val, error))
-	attribute = bango_attr_weight_new (g_value_get_enum (&val));
+	attribute = bango_attr_weight_new (b_value_get_enum (&val));
       break;
     case BANGO_ATTR_VARIANT:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_VARIANT, value, &val, error))
-	attribute = bango_attr_variant_new (g_value_get_enum (&val));
+	attribute = bango_attr_variant_new (b_value_get_enum (&val));
       break;
     case BANGO_ATTR_STRETCH:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_STRETCH, value, &val, error))
-	attribute = bango_attr_stretch_new (g_value_get_enum (&val));
+	attribute = bango_attr_stretch_new (b_value_get_enum (&val));
       break;
     case BANGO_ATTR_UNDERLINE:
-      if (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, value, &val, error))
-	attribute = bango_attr_underline_new (g_value_get_boolean (&val));
+      if (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, value, &val, error))
+	attribute = bango_attr_underline_new (b_value_get_boolean (&val));
       break;
     case BANGO_ATTR_STRIKETHROUGH:	
-      if (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, value, &val, error))
-	attribute = bango_attr_strikethrough_new (g_value_get_boolean (&val));
+      if (btk_builder_value_from_string_type (builder, B_TYPE_BOOLEAN, value, &val, error))
+	attribute = bango_attr_strikethrough_new (b_value_get_boolean (&val));
       break;
     case BANGO_ATTR_GRAVITY:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_GRAVITY, value, &val, error))
-	attribute = bango_attr_gravity_new (g_value_get_enum (&val));
+	attribute = bango_attr_gravity_new (b_value_get_enum (&val));
       break;
     case BANGO_ATTR_GRAVITY_HINT:
       if (btk_builder_value_from_string_type (builder, BANGO_TYPE_GRAVITY_HINT, 
 					      value, &val, error))
-	attribute = bango_attr_gravity_hint_new (g_value_get_enum (&val));
+	attribute = bango_attr_gravity_hint_new (b_value_get_enum (&val));
       break;
 
       /* BangoAttrString */	  
     case BANGO_ATTR_FAMILY:
       attribute = bango_attr_family_new (value);
-      g_value_init (&val, G_TYPE_INT);
+      b_value_init (&val, B_TYPE_INT);
       break;
 
       /* BangoAttrSize */	  
     case BANGO_ATTR_SIZE:
-      if (btk_builder_value_from_string_type (builder, G_TYPE_INT, 
+      if (btk_builder_value_from_string_type (builder, B_TYPE_INT, 
 					      value, &val, error))
-	attribute = bango_attr_size_new (g_value_get_int (&val));
+	attribute = bango_attr_size_new (b_value_get_int (&val));
       break;
     case BANGO_ATTR_ABSOLUTE_SIZE:
-      if (btk_builder_value_from_string_type (builder, G_TYPE_INT, 
+      if (btk_builder_value_from_string_type (builder, B_TYPE_INT, 
 					      value, &val, error))
-	attribute = bango_attr_size_new_absolute (g_value_get_int (&val));
+	attribute = bango_attr_size_new_absolute (b_value_get_int (&val));
       break;
     
       /* BangoAttrFontDesc */
@@ -1150,7 +1150,7 @@ attribute_from_text (BtkBuilder   *builder,
 	{
 	  attribute = bango_attr_font_desc_new (font_desc);
 	  bango_font_description_free (font_desc);
-	  g_value_init (&val, G_TYPE_INT);
+	  b_value_init (&val, B_TYPE_INT);
 	}
       break;
 
@@ -1159,7 +1159,7 @@ attribute_from_text (BtkBuilder   *builder,
       if (btk_builder_value_from_string_type (builder, BDK_TYPE_COLOR, 
 					      value, &val, error))
 	{
-	  color = g_value_get_boxed (&val);
+	  color = b_value_get_boxed (&val);
 	  attribute = bango_attr_foreground_new (color->red, color->green, color->blue);
 	}
       break;
@@ -1167,7 +1167,7 @@ attribute_from_text (BtkBuilder   *builder,
       if (btk_builder_value_from_string_type (builder, BDK_TYPE_COLOR, 
 					      value, &val, error))
 	{
-	  color = g_value_get_boxed (&val);
+	  color = b_value_get_boxed (&val);
 	  attribute = bango_attr_background_new (color->red, color->green, color->blue);
 	}
       break;
@@ -1175,7 +1175,7 @@ attribute_from_text (BtkBuilder   *builder,
       if (btk_builder_value_from_string_type (builder, BDK_TYPE_COLOR, 
 					      value, &val, error))
 	{
-	  color = g_value_get_boxed (&val);
+	  color = b_value_get_boxed (&val);
 	  attribute = bango_attr_underline_color_new (color->red, color->green, color->blue);
 	}
       break;
@@ -1183,7 +1183,7 @@ attribute_from_text (BtkBuilder   *builder,
       if (btk_builder_value_from_string_type (builder, BDK_TYPE_COLOR, 
 					      value, &val, error))
 	{
-	  color = g_value_get_boxed (&val);
+	  color = b_value_get_boxed (&val);
 	  attribute = bango_attr_strikethrough_color_new (color->red, color->green, color->blue);
 	}
       break;
@@ -1194,9 +1194,9 @@ attribute_from_text (BtkBuilder   *builder,
       break;
       /* BangoAttrFloat */
     case BANGO_ATTR_SCALE:
-      if (btk_builder_value_from_string_type (builder, G_TYPE_DOUBLE, 
+      if (btk_builder_value_from_string_type (builder, B_TYPE_DOUBLE, 
 					      value, &val, error))
-	attribute = bango_attr_scale_new (g_value_get_double (&val));
+	attribute = bango_attr_scale_new (b_value_get_double (&val));
       break;
 
     case BANGO_ATTR_INVALID:
@@ -1207,7 +1207,7 @@ attribute_from_text (BtkBuilder   *builder,
       break;
     }
 
-  g_value_unset (&val);
+  b_value_unset (&val);
 
   return attribute;
 }
@@ -1222,7 +1222,7 @@ bango_start_element (GMarkupParseContext *context,
 		     GError             **error)
 {
   BangoParserData *data = (BangoParserData*)user_data;
-  GValue val = { 0, };
+  BValue val = { 0, };
   guint i;
   gint line_number, char_number;
 
@@ -1278,20 +1278,20 @@ bango_start_element (GMarkupParseContext *context,
 
       if (start)
 	{
-	  if (!btk_builder_value_from_string_type (data->builder, G_TYPE_UINT, 
+	  if (!btk_builder_value_from_string_type (data->builder, B_TYPE_UINT, 
 						   start, &val, error))
 	    return;
-	  start_val = g_value_get_uint (&val);
-	  g_value_unset (&val);
+	  start_val = b_value_get_uint (&val);
+	  b_value_unset (&val);
 	}
 
       if (end)
 	{
-	  if (!btk_builder_value_from_string_type (data->builder, G_TYPE_UINT, 
+	  if (!btk_builder_value_from_string_type (data->builder, B_TYPE_UINT, 
 						   end, &val, error))
 	    return;
-	  end_val = g_value_get_uint (&val);
-	  g_value_unset (&val);
+	  end_val = b_value_get_uint (&val);
+	  b_value_unset (&val);
 	}
 
       attr = attribute_from_text (data->builder, name, value, error);
@@ -1321,7 +1321,7 @@ static const GMarkupParser bango_parser =
 static gboolean
 btk_label_buildable_custom_tag_start (BtkBuildable     *buildable,
 				      BtkBuilder       *builder,
-				      GObject          *child,
+				      BObject          *child,
 				      const gchar      *tagname,
 				      GMarkupParser    *parser,
 				      gpointer         *data)
@@ -1347,7 +1347,7 @@ btk_label_buildable_custom_tag_start (BtkBuildable     *buildable,
 static void
 btk_label_buildable_custom_finished (BtkBuildable *buildable,
 				     BtkBuilder   *builder,
-				     GObject      *child,
+				     BObject      *child,
 				     const gchar  *tagname,
 				     gpointer      user_data)
 {
@@ -1472,7 +1472,7 @@ btk_label_setup_mnemonic (BtkLabel *label,
   BtkWidget *toplevel;
   BtkWidget *mnemonic_menu;
   
-  mnemonic_menu = g_object_get_data (G_OBJECT (label), "btk-mnemonic-menu");
+  mnemonic_menu = g_object_get_data (B_OBJECT (label), "btk-mnemonic-menu");
   
   if (last_key != BDK_VoidSymbol)
     {
@@ -1523,7 +1523,7 @@ btk_label_setup_mnemonic (BtkLabel *label,
     }
   
  done:
-  g_object_set_data (G_OBJECT (label), I_("btk-mnemonic-menu"), mnemonic_menu);
+  g_object_set_data (B_OBJECT (label), I_("btk-mnemonic-menu"), mnemonic_menu);
 }
 
 static void
@@ -1617,7 +1617,7 @@ _btk_label_mnemonics_visible_apply_recursively (BtkWidget *widget,
 
 static void
 label_mnemonics_visible_changed (BtkWindow  *window,
-                                 GParamSpec *pspec,
+                                 BParamSpec *pspec,
                                  gpointer    data)
 {
   gboolean mnemonics_visible;
@@ -1642,7 +1642,7 @@ btk_label_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
 
   shortcuts_connected =
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (settings),
+    GPOINTER_TO_INT (g_object_get_data (B_OBJECT (settings),
                                         "btk-label-shortcuts-connected"));
 
   if (! shortcuts_connected)
@@ -1654,7 +1654,7 @@ btk_label_screen_changed (BtkWidget *widget,
                         G_CALLBACK (label_shortcut_setting_changed),
                         NULL);
 
-      g_object_set_data (G_OBJECT (settings), "btk-label-shortcuts-connected",
+      g_object_set_data (B_OBJECT (settings), "btk-label-shortcuts-connected",
                          GINT_TO_POINTER (TRUE));
     }
 
@@ -1664,12 +1664,12 @@ btk_label_screen_changed (BtkWidget *widget,
 
 static void
 label_mnemonic_widget_weak_notify (gpointer      data,
-				   GObject      *where_the_object_was)
+				   BObject      *where_the_object_was)
 {
   BtkLabel *label = data;
 
   label->mnemonic_widget = NULL;
-  g_object_notify (G_OBJECT (label), "mnemonic-widget");
+  g_object_notify (B_OBJECT (label), "mnemonic-widget");
 }
 
 /**
@@ -1703,20 +1703,20 @@ btk_label_set_mnemonic_widget (BtkLabel  *label,
   if (label->mnemonic_widget)
     {
       btk_widget_remove_mnemonic_label (label->mnemonic_widget, BTK_WIDGET (label));
-      g_object_weak_unref (G_OBJECT (label->mnemonic_widget),
+      g_object_weak_unref (B_OBJECT (label->mnemonic_widget),
 			   label_mnemonic_widget_weak_notify,
 			   label);
     }
   label->mnemonic_widget = widget;
   if (label->mnemonic_widget)
     {
-      g_object_weak_ref (G_OBJECT (label->mnemonic_widget),
+      g_object_weak_ref (B_OBJECT (label->mnemonic_widget),
 		         label_mnemonic_widget_weak_notify,
 		         label);
       btk_widget_add_mnemonic_label (label->mnemonic_widget, BTK_WIDGET (label));
     }
   
-  g_object_notify (G_OBJECT (label), "mnemonic-widget");
+  g_object_notify (B_OBJECT (label), "mnemonic-widget");
 }
 
 /**
@@ -1774,7 +1774,7 @@ btk_label_set_label_internal (BtkLabel *label,
   
   label->label = str;
 
-  g_object_notify (G_OBJECT (label), "label");
+  g_object_notify (B_OBJECT (label), "label");
 }
 
 static void
@@ -1786,7 +1786,7 @@ btk_label_set_use_markup_internal (BtkLabel *label,
     {
       label->use_markup = val;
 
-      g_object_notify (G_OBJECT (label), "use-markup");
+      g_object_notify (B_OBJECT (label), "use-markup");
     }
 }
 
@@ -1799,7 +1799,7 @@ btk_label_set_use_underline_internal (BtkLabel *label,
     {
       label->use_underline = val;
 
-      g_object_notify (G_OBJECT (label), "use-underline");
+      g_object_notify (B_OBJECT (label), "use-underline");
     }
 }
 
@@ -1824,7 +1824,7 @@ btk_label_compose_effective_attrs (BtkLabel *label)
 		      attr = l->data;
 		      bango_attr_list_insert (label->effective_attrs, attr);
 		    }
-		  g_slist_free (iter_attrs);
+		  b_slist_free (iter_attrs);
 	        }
 	      while (bango_attr_iterator_next (iter));
 	      bango_attr_iterator_destroy (iter);
@@ -1847,7 +1847,7 @@ btk_label_set_attributes_internal (BtkLabel      *label,
     bango_attr_list_unref (label->attrs);
   label->attrs = attrs;
 
-  g_object_notify (G_OBJECT (label), "attributes");
+  g_object_notify (B_OBJECT (label), "attributes");
 }
 
 
@@ -1882,7 +1882,7 @@ btk_label_recalculate (BtkLabel *label)
   if (keyval != label->mnemonic_keyval)
     {
       btk_label_setup_mnemonic (label, keyval);
-      g_object_notify (G_OBJECT (label), "mnemonic-keyval");
+      g_object_notify (B_OBJECT (label), "mnemonic-keyval");
     }
 
   btk_label_clear_layout (label);
@@ -1906,7 +1906,7 @@ btk_label_set_text (BtkLabel    *label,
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
 
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_set_use_markup_internal (label, FALSE);
@@ -1914,7 +1914,7 @@ btk_label_set_text (BtkLabel    *label,
   
   btk_label_recalculate (label);
 
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 }
 
 /**
@@ -1984,12 +1984,12 @@ btk_label_set_label (BtkLabel    *label,
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
 
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_recalculate (label);
 
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 }
 
 /**
@@ -2409,7 +2409,7 @@ btk_label_set_markup (BtkLabel    *label,
 {  
   g_return_if_fail (BTK_IS_LABEL (label));
 
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
 
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_set_use_markup_internal (label, TRUE);
@@ -2417,7 +2417,7 @@ btk_label_set_markup (BtkLabel    *label,
   
   btk_label_recalculate (label);
 
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 }
 
 /**
@@ -2439,7 +2439,7 @@ btk_label_set_markup_with_mnemonic (BtkLabel    *label,
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
 
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_set_use_markup_internal (label, TRUE);
@@ -2447,7 +2447,7 @@ btk_label_set_markup_with_mnemonic (BtkLabel    *label,
   
   btk_label_recalculate (label);
 
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 }
 
 /**
@@ -2595,7 +2595,7 @@ btk_label_set_justify (BtkLabel        *label,
       /* No real need to be this drastic, but easier than duplicating the code */
       btk_label_clear_layout (label);
       
-      g_object_notify (G_OBJECT (label), "justify");
+      g_object_notify (B_OBJECT (label), "justify");
       btk_widget_queue_resize (BTK_WIDGET (label));
     }
 }
@@ -2640,7 +2640,7 @@ btk_label_set_ellipsize (BtkLabel          *label,
       /* No real need to be this drastic, but easier than duplicating the code */
       btk_label_clear_layout (label);
       
-      g_object_notify (G_OBJECT (label), "ellipsize");
+      g_object_notify (B_OBJECT (label), "ellipsize");
       btk_widget_queue_resize (BTK_WIDGET (label));
     }
 }
@@ -2685,7 +2685,7 @@ btk_label_set_width_chars (BtkLabel *label,
   if (priv->width_chars != n_chars)
     {
       priv->width_chars = n_chars;
-      g_object_notify (G_OBJECT (label), "width-chars");
+      g_object_notify (B_OBJECT (label), "width-chars");
       btk_label_invalidate_wrap_width (label);
       btk_widget_queue_resize (BTK_WIDGET (label));
     }
@@ -2733,7 +2733,7 @@ btk_label_set_max_width_chars (BtkLabel *label,
     {
       priv->max_width_chars = n_chars;
 
-      g_object_notify (G_OBJECT (label), "max-width-chars");
+      g_object_notify (B_OBJECT (label), "max-width-chars");
       btk_label_invalidate_wrap_width (label);
       btk_widget_queue_resize (BTK_WIDGET (label));
     }
@@ -2787,7 +2787,7 @@ btk_label_set_line_wrap (BtkLabel *label,
 
       btk_label_clear_layout (label);
       btk_widget_queue_resize (BTK_WIDGET (label));
-      g_object_notify (G_OBJECT (label), "wrap");
+      g_object_notify (B_OBJECT (label), "wrap");
     }
 }
 
@@ -2828,7 +2828,7 @@ btk_label_set_line_wrap_mode (BtkLabel *label,
   if (label->wrap_mode != wrap_mode)
     {
       label->wrap_mode = wrap_mode;
-      g_object_notify (G_OBJECT (label), "wrap-mode");
+      g_object_notify (B_OBJECT (label), "wrap-mode");
       
       btk_widget_queue_resize (BTK_WIDGET (label));
     }
@@ -2874,7 +2874,7 @@ btk_label_destroy (BtkObject *object)
 }
 
 static void
-btk_label_finalize (GObject *object)
+btk_label_finalize (BObject *object)
 {
   BtkLabel *label = BTK_LABEL (object);
 
@@ -2893,7 +2893,7 @@ btk_label_finalize (GObject *object)
   btk_label_clear_links (label);
   g_free (label->select_info);
 
-  G_OBJECT_CLASS (btk_label_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_label_parent_class)->finalize (object);
 }
 
 static void
@@ -3813,7 +3813,7 @@ btk_label_parse_uline (BtkLabel    *label,
   g_return_val_if_fail (BTK_IS_LABEL (label), BDK_VoidSymbol);
   g_return_val_if_fail (str != NULL, BDK_VoidSymbol);
 
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
   
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_set_use_markup_internal (label, FALSE);
@@ -3826,10 +3826,10 @@ btk_label_parse_uline (BtkLabel    *label,
     {
       label->mnemonic_keyval = BDK_VoidSymbol;
       btk_label_setup_mnemonic (label, keyval);
-      g_object_notify (G_OBJECT (label), "mnemonic-keyval");
+      g_object_notify (B_OBJECT (label), "mnemonic-keyval");
     }
   
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 
   return keyval;
 }
@@ -3852,7 +3852,7 @@ btk_label_set_text_with_mnemonic (BtkLabel    *label,
   g_return_if_fail (BTK_IS_LABEL (label));
   g_return_if_fail (str != NULL);
 
-  g_object_freeze_notify (G_OBJECT (label));
+  g_object_freeze_notify (B_OBJECT (label));
 
   btk_label_set_label_internal (label, g_strdup (str ? str : ""));
   btk_label_set_use_markup_internal (label, FALSE);
@@ -3860,7 +3860,7 @@ btk_label_set_text_with_mnemonic (BtkLabel    *label,
   
   btk_label_recalculate (label);
 
-  g_object_thaw_notify (G_OBJECT (label));
+  g_object_thaw_notify (B_OBJECT (label));
 }
 
 static void
@@ -4333,7 +4333,7 @@ connect_mnemonics_visible_notify (BtkLabel *label)
     btk_window_get_mnemonics_visible (BTK_WINDOW (toplevel));
 
   connected =
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (toplevel),
+    GPOINTER_TO_INT (g_object_get_data (B_OBJECT (toplevel),
                                         "btk-label-mnemonics-visible-connected"));
 
   if (!connected)
@@ -4342,7 +4342,7 @@ connect_mnemonics_visible_notify (BtkLabel *label)
                         "notify::mnemonics-visible",
                         G_CALLBACK (label_mnemonics_visible_changed),
                         label);
-      g_object_set_data (G_OBJECT (toplevel),
+      g_object_set_data (B_OBJECT (toplevel),
                          "btk-label-mnemonics-visible-connected",
                          GINT_TO_POINTER (1));
     }
@@ -4684,11 +4684,11 @@ btk_label_set_selectable (BtkLabel *label,
     }
   if (setting != old_setting)
     {
-      g_object_freeze_notify (G_OBJECT (label));
-      g_object_notify (G_OBJECT (label), "selectable");
-      g_object_notify (G_OBJECT (label), "cursor-position");
-      g_object_notify (G_OBJECT (label), "selection-bound");
-      g_object_thaw_notify (G_OBJECT (label));
+      g_object_freeze_notify (B_OBJECT (label));
+      g_object_notify (B_OBJECT (label), "selectable");
+      g_object_notify (B_OBJECT (label), "cursor-position");
+      g_object_notify (B_OBJECT (label), "selection-bound");
+      g_object_thaw_notify (B_OBJECT (label));
       btk_widget_queue_draw (BTK_WIDGET (label));
     }
 }
@@ -4736,13 +4736,13 @@ btk_label_set_angle (BtkLabel *label,
 
   g_return_if_fail (BTK_IS_LABEL (label));
 
-  label_angle = (gdouble *)g_object_get_qdata (G_OBJECT (label), quark_angle);
+  label_angle = (gdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
 
   if (!label_angle)
     {
       label_angle = g_slice_new (gdouble);
       *label_angle = 0.0;
-      g_object_set_qdata_full (G_OBJECT (label), quark_angle, 
+      g_object_set_qdata_full (B_OBJECT (label), quark_angle, 
 			       label_angle, free_angle);
     }
   
@@ -4760,7 +4760,7 @@ btk_label_set_angle (BtkLabel *label,
       btk_label_clear_layout (label);
       btk_widget_queue_resize (BTK_WIDGET (label));
 
-      g_object_notify (G_OBJECT (label), "angle");
+      g_object_notify (B_OBJECT (label), "angle");
     }
 }
 
@@ -4782,7 +4782,7 @@ btk_label_get_angle  (BtkLabel *label)
 
   g_return_val_if_fail (BTK_IS_LABEL (label), 0.0);
   
-  angle = (gdouble *)g_object_get_qdata (G_OBJECT (label), quark_angle);
+  angle = (gdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
 
   if (angle)
     return *angle;
@@ -4890,23 +4890,23 @@ btk_label_select_rebunnyion_index (BtkLabel *label,
                                         targets, n_targets,
                                         get_text_callback,
                                         clear_text_callback,
-                                        G_OBJECT (label));
+                                        B_OBJECT (label));
 
           btk_target_table_free (targets, n_targets);
           btk_target_list_unref (list);
         }
       else
         {
-          if (btk_clipboard_get_owner (clipboard) == G_OBJECT (label))
+          if (btk_clipboard_get_owner (clipboard) == B_OBJECT (label))
             btk_clipboard_clear (clipboard);
         }
 
       btk_widget_queue_draw (BTK_WIDGET (label));
 
-      g_object_freeze_notify (G_OBJECT (label));
-      g_object_notify (G_OBJECT (label), "cursor-position");
-      g_object_notify (G_OBJECT (label), "selection-bound");
-      g_object_thaw_notify (G_OBJECT (label));
+      g_object_freeze_notify (B_OBJECT (label));
+      g_object_notify (B_OBJECT (label), "cursor-position");
+      g_object_notify (B_OBJECT (label), "selection-bound");
+      g_object_thaw_notify (B_OBJECT (label));
     }
 }
 
@@ -5156,7 +5156,7 @@ btk_label_set_single_line_mode (BtkLabel *label,
       btk_label_clear_layout (label);
       btk_widget_queue_resize (BTK_WIDGET (label));
 
-      g_object_notify (G_OBJECT (label), "single-line-mode");
+      g_object_notify (B_OBJECT (label), "single-line-mode");
     }
 }
 
@@ -5557,7 +5557,7 @@ static void
 activate_cb (BtkWidget *menuitem,
 	     BtkLabel  *label)
 {
-  const gchar *signal = g_object_get_data (G_OBJECT (menuitem), "btk-signal");
+  const gchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (label, signal);
 }
 
@@ -5570,7 +5570,7 @@ append_action_signal (BtkLabel     *label,
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (activate_cb), label);
 
@@ -5697,7 +5697,7 @@ btk_label_do_popup (BtkLabel       *label,
       btk_widget_show (menuitem);
       btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-      g_signal_connect (G_OBJECT (menuitem), "activate",
+      g_signal_connect (B_OBJECT (menuitem), "activate",
                         G_CALLBACK (open_link_activate_cb), label);
 
       image = btk_image_new_from_stock (BTK_STOCK_JUMP_TO, BTK_ICON_SIZE_MENU);
@@ -5709,7 +5709,7 @@ btk_label_do_popup (BtkLabel       *label,
       btk_widget_show (menuitem);
       btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-      g_signal_connect (G_OBJECT (menuitem), "activate",
+      g_signal_connect (B_OBJECT (menuitem), "activate",
                         G_CALLBACK (copy_link_activate_cb), label);
 
       image = btk_image_new_from_stock (BTK_STOCK_COPY, BTK_ICON_SIZE_MENU);
@@ -5954,7 +5954,7 @@ btk_label_set_track_visited_links (BtkLabel *label,
       /* FIXME: shouldn't have to redo everything here */
       btk_label_recalculate (label);
 
-      g_object_notify (G_OBJECT (label), "track-visited-links");
+      g_object_notify (B_OBJECT (label), "track-visited-links");
     }
 }
 

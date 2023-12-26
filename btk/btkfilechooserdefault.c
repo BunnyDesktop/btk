@@ -141,9 +141,9 @@ _btk_file_chooser_profile_log (const char *func, int indent, const char *msg1, c
 
 typedef struct _BtkFileChooserDefaultClass BtkFileChooserDefaultClass;
 
-#define BTK_FILE_CHOOSER_DEFAULT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DEFAULT, BtkFileChooserDefaultClass))
-#define BTK_IS_FILE_CHOOSER_DEFAULT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DEFAULT))
-#define BTK_FILE_CHOOSER_DEFAULT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DEFAULT, BtkFileChooserDefaultClass))
+#define BTK_FILE_CHOOSER_DEFAULT_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DEFAULT, BtkFileChooserDefaultClass))
+#define BTK_IS_FILE_CHOOSER_DEFAULT_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DEFAULT))
+#define BTK_FILE_CHOOSER_DEFAULT_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DEFAULT, BtkFileChooserDefaultClass))
 
 #define MAX_LOADING_TIME 500
 
@@ -215,16 +215,16 @@ enum {
 /* This list of types is passed to _btk_file_system_model_new*() */
 #define MODEL_COLUMN_TYPES					\
 	MODEL_COL_NUM_COLUMNS,					\
-	G_TYPE_STRING,		  /* MODEL_COL_NAME */		\
-	G_TYPE_INT64,		  /* MODEL_COL_SIZE */		\
-	G_TYPE_LONG,		  /* MODEL_COL_MTIME */		\
-	G_TYPE_FILE,		  /* MODEL_COL_FILE */		\
-	G_TYPE_STRING,		  /* MODEL_COL_NAME_COLLATED */	\
-	G_TYPE_BOOLEAN,		  /* MODEL_COL_IS_FOLDER */	\
-	G_TYPE_BOOLEAN,		  /* MODEL_COL_IS_SENSITIVE */	\
+	B_TYPE_STRING,		  /* MODEL_COL_NAME */		\
+	B_TYPE_INT64,		  /* MODEL_COL_SIZE */		\
+	B_TYPE_LONG,		  /* MODEL_COL_MTIME */		\
+	B_TYPE_FILE,		  /* MODEL_COL_FILE */		\
+	B_TYPE_STRING,		  /* MODEL_COL_NAME_COLLATED */	\
+	B_TYPE_BOOLEAN,		  /* MODEL_COL_IS_FOLDER */	\
+	B_TYPE_BOOLEAN,		  /* MODEL_COL_IS_SENSITIVE */	\
 	BDK_TYPE_PIXBUF,	  /* MODEL_COL_PIXBUF */	\
-	G_TYPE_STRING,		  /* MODEL_COL_SIZE_TEXT */	\
-	G_TYPE_STRING,		  /* MODEL_COL_MTIME_TEXT */	\
+	B_TYPE_STRING,		  /* MODEL_COL_SIZE_TEXT */	\
+	B_TYPE_STRING,		  /* MODEL_COL_MTIME_TEXT */	\
 	BANGO_TYPE_ELLIPSIZE_MODE /* MODEL_COL_ELLIPSIZE */
 
 /* Identifiers for target types */
@@ -258,19 +258,19 @@ typedef enum {
 static void btk_file_chooser_default_iface_init       (BtkFileChooserIface        *iface);
 static void btk_file_chooser_embed_default_iface_init (BtkFileChooserEmbedIface   *iface);
 
-static GObject* btk_file_chooser_default_constructor  (GType                  type,
+static BObject* btk_file_chooser_default_constructor  (GType                  type,
 						       guint                  n_construct_properties,
-						       GObjectConstructParam *construct_params);
-static void     btk_file_chooser_default_finalize     (GObject               *object);
-static void     btk_file_chooser_default_set_property (GObject               *object,
+						       BObjectConstructParam *construct_params);
+static void     btk_file_chooser_default_finalize     (BObject               *object);
+static void     btk_file_chooser_default_set_property (BObject               *object,
 						       guint                  prop_id,
-						       const GValue          *value,
-						       GParamSpec            *pspec);
-static void     btk_file_chooser_default_get_property (GObject               *object,
+						       const BValue          *value,
+						       BParamSpec            *pspec);
+static void     btk_file_chooser_default_get_property (BObject               *object,
 						       guint                  prop_id,
-						       GValue                *value,
-						       GParamSpec            *pspec);
-static void     btk_file_chooser_default_dispose      (GObject               *object);
+						       BValue                *value,
+						       BParamSpec            *pspec);
+static void     btk_file_chooser_default_dispose      (BObject               *object);
 static void     btk_file_chooser_default_show_all       (BtkWidget             *widget);
 static void     btk_file_chooser_default_realize        (BtkWidget             *widget);
 static void     btk_file_chooser_default_map            (BtkWidget             *widget);
@@ -439,7 +439,7 @@ typedef struct {
 } ShortcutsPaneModelFilterClass;
 
 #define SHORTCUTS_PANE_MODEL_FILTER_TYPE (_shortcuts_pane_model_filter_get_type ())
-#define SHORTCUTS_PANE_MODEL_FILTER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), SHORTCUTS_PANE_MODEL_FILTER_TYPE, ShortcutsPaneModelFilter))
+#define SHORTCUTS_PANE_MODEL_FILTER(obj) (B_TYPE_CHECK_INSTANCE_CAST ((obj), SHORTCUTS_PANE_MODEL_FILTER_TYPE, ShortcutsPaneModelFilter))
 
 static void shortcuts_pane_model_filter_drag_source_iface_init (BtkTreeDragSourceIface *iface);
 
@@ -483,7 +483,7 @@ _btk_file_chooser_default_class_init (BtkFileChooserDefaultClass *class)
   static const guint quick_bookmark_keyvals[10] = {
     BDK_KEY_1, BDK_KEY_2, BDK_KEY_3, BDK_KEY_4, BDK_KEY_5, BDK_KEY_6, BDK_KEY_7, BDK_KEY_8, BDK_KEY_9, BDK_KEY_0
   };
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkBindingSet *binding_set;
   int i;
@@ -503,102 +503,102 @@ _btk_file_chooser_default_class_init (BtkFileChooserDefaultClass *class)
 
   signals[LOCATION_POPUP] =
     g_signal_new_class_handler (I_("location-popup"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (location_popup_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__STRING,
-                                G_TYPE_NONE, 1, G_TYPE_STRING);
+                                B_TYPE_NONE, 1, B_TYPE_STRING);
 
   signals[LOCATION_POPUP_ON_PASTE] =
     g_signal_new_class_handler (I_("location-popup-on-paste"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (location_popup_on_paste_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[LOCATION_TOGGLE_POPUP] =
     g_signal_new_class_handler (I_("location-toggle-popup"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (location_toggle_popup_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[UP_FOLDER] =
     g_signal_new_class_handler (I_("up-folder"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (up_folder_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[DOWN_FOLDER] =
     g_signal_new_class_handler (I_("down-folder"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (down_folder_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[HOME_FOLDER] =
     g_signal_new_class_handler (I_("home-folder"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (home_folder_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[DESKTOP_FOLDER] =
     g_signal_new_class_handler (I_("desktop-folder"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (desktop_folder_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[QUICK_BOOKMARK] =
     g_signal_new_class_handler (I_("quick-bookmark"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (quick_bookmark_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__INT,
-                                G_TYPE_NONE, 1, G_TYPE_INT);
+                                B_TYPE_NONE, 1, B_TYPE_INT);
 
   signals[SHOW_HIDDEN] =
     g_signal_new_class_handler (I_("show-hidden"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (show_hidden_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[SEARCH_SHORTCUT] =
     g_signal_new_class_handler (I_("search-shortcut"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (search_shortcut_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   signals[RECENT_SHORTCUT] =
     g_signal_new_class_handler (I_("recent-shortcut"),
-                                G_OBJECT_CLASS_TYPE (class),
+                                B_OBJECT_CLASS_TYPE (class),
                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                                 G_CALLBACK (recent_shortcut_handler),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   binding_set = btk_binding_set_by_class (class);
 
@@ -610,17 +610,17 @@ _btk_file_chooser_default_class_init (BtkFileChooserDefaultClass *class)
   btk_binding_entry_add_signal (binding_set,
 				BDK_KEY_slash, 0,
 				"location-popup",
-				1, G_TYPE_STRING, "/");
+				1, B_TYPE_STRING, "/");
   btk_binding_entry_add_signal (binding_set,
 				BDK_KEY_KP_Divide, 0,
 				"location-popup",
-				1, G_TYPE_STRING, "/");
+				1, B_TYPE_STRING, "/");
 
 #ifdef G_OS_UNIX
   btk_binding_entry_add_signal (binding_set,
 				BDK_KEY_asciitilde, 0,
 				"location-popup",
-				1, G_TYPE_STRING, "~");
+				1, B_TYPE_STRING, "~");
 #endif
 
   btk_binding_entry_add_signal (binding_set,
@@ -676,7 +676,7 @@ _btk_file_chooser_default_class_init (BtkFileChooserDefaultClass *class)
     btk_binding_entry_add_signal (binding_set,
 				  quick_bookmark_keyvals[i], BDK_MOD1_MASK,
 				  "quick-bookmark",
-				  1, G_TYPE_INT, i);
+				  1, B_TYPE_INT, i);
 
   _btk_file_chooser_install_properties (bobject_class);
 }
@@ -803,8 +803,8 @@ shortcuts_free (BtkFileChooserDefault *impl)
 static void
 pending_select_files_free (BtkFileChooserDefault *impl)
 {
-  g_slist_foreach (impl->pending_select_files, (GFunc) g_object_unref, NULL);
-  g_slist_free (impl->pending_select_files);
+  b_slist_foreach (impl->pending_select_files, (GFunc) g_object_unref, NULL);
+  b_slist_free (impl->pending_select_files);
   impl->pending_select_files = NULL;
 }
 
@@ -813,11 +813,11 @@ pending_select_files_add (BtkFileChooserDefault *impl,
 			  GFile                 *file)
 {
   impl->pending_select_files =
-    g_slist_prepend (impl->pending_select_files, g_object_ref (file));
+    b_slist_prepend (impl->pending_select_files, g_object_ref (file));
 }
 
 static void
-btk_file_chooser_default_finalize (GObject *object)
+btk_file_chooser_default_finalize (BObject *object)
 {
   BtkFileChooserDefault *impl = BTK_FILE_CHOOSER_DEFAULT (object);
   GSList *l;
@@ -838,7 +838,7 @@ btk_file_chooser_default_finalize (GObject *object)
       filter = BTK_FILE_FILTER (l->data);
       g_object_unref (filter);
     }
-  g_slist_free (impl->filters);
+  b_slist_free (impl->filters);
 
   if (impl->current_filter)
     g_object_unref (impl->current_filter);
@@ -867,7 +867,7 @@ btk_file_chooser_default_finalize (GObject *object)
 
   g_free (impl->edited_new_text);
 
-  G_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->finalize (object);
 }
 
 /* Shows an error dialog set as transient for the specified window */
@@ -1189,10 +1189,10 @@ shortcuts_reload_icons_get_info_cb (GCancellable *cancellable,
   gboolean cancelled = g_cancellable_is_cancelled (cancellable);
   struct ReloadIconsData *data = user_data;
 
-  if (!g_slist_find (data->impl->reload_icon_cancellables, cancellable))
+  if (!b_slist_find (data->impl->reload_icon_cancellables, cancellable))
     goto out;
 
-  data->impl->reload_icon_cancellables = g_slist_remove (data->impl->reload_icon_cancellables, cancellable);
+  data->impl->reload_icon_cancellables = b_slist_remove (data->impl->reload_icon_cancellables, cancellable);
 
   if (cancelled || error)
     goto out;
@@ -1236,7 +1236,7 @@ shortcuts_reload_icons (BtkFileChooserDefault *impl)
       GCancellable *cancellable = G_CANCELLABLE (l->data);
       g_cancellable_cancel (cancellable);
     }
-  g_slist_free (impl->reload_icon_cancellables);
+  b_slist_free (impl->reload_icon_cancellables);
   impl->reload_icon_cancellables = NULL;
 
   do
@@ -1284,7 +1284,7 @@ shortcuts_reload_icons (BtkFileChooserDefault *impl)
 							   "standard::icon",
 							   shortcuts_reload_icons_get_info_cb,
 							   info);
-	          impl->reload_icon_cancellables = g_slist_append (impl->reload_icon_cancellables, cancellable);
+	          impl->reload_icon_cancellables = b_slist_append (impl->reload_icon_cancellables, cancellable);
 	        }
               else
 	        {
@@ -2028,7 +2028,7 @@ shortcuts_add_volumes (BtkFileChooserDefault *impl)
     }
 
   impl->num_volumes = n;
-  g_slist_free (list);
+  b_slist_free (list);
 
   if (impl->shortcuts_pane_filter_model)
     btk_tree_model_filter_refilter (BTK_TREE_MODEL_FILTER (impl->shortcuts_pane_filter_model));
@@ -2098,8 +2098,8 @@ shortcuts_add_bookmarks (BtkFileChooserDefault *impl)
 
   bookmarks = _btk_file_system_list_bookmarks (impl->file_system);
   shortcuts_append_bookmarks (impl, bookmarks);
-  g_slist_foreach (bookmarks, (GFunc) g_object_unref, NULL);
-  g_slist_free (bookmarks);
+  b_slist_foreach (bookmarks, (GFunc) g_object_unref, NULL);
+  b_slist_free (bookmarks);
 
   if (impl->num_bookmarks == 0)
     shortcuts_remove_rows (impl, shortcuts_get_index (impl, SHORTCUTS_BOOKMARKS_SEPARATOR), 1);
@@ -2202,12 +2202,12 @@ shortcuts_model_create (BtkFileChooserDefault *impl)
   /* Keep this order in sync with the SHORCUTS_COL_* enum values */
   impl->shortcuts_model = btk_list_store_new (SHORTCUTS_COL_NUM_COLUMNS,
 					      BDK_TYPE_PIXBUF,	/* pixbuf */
-					      G_TYPE_STRING,	/* name */
-					      G_TYPE_POINTER,	/* path or volume */
-					      G_TYPE_INT,       /* ShortcutType */
-					      G_TYPE_BOOLEAN,   /* removable */
-					      G_TYPE_BOOLEAN,   /* pixbuf cell visibility */
-					      G_TYPE_POINTER);  /* GCancellable */
+					      B_TYPE_STRING,	/* name */
+					      B_TYPE_POINTER,	/* path or volume */
+					      B_TYPE_INT,       /* ShortcutType */
+					      B_TYPE_BOOLEAN,   /* removable */
+					      B_TYPE_BOOLEAN,   /* pixbuf cell visibility */
+					      B_TYPE_POINTER);  /* GCancellable */
 
   shortcuts_append_search (impl);
 
@@ -2272,7 +2272,7 @@ add_idle_while_impl_is_alive (BtkFileChooserDefault *impl, GCallback callback)
 
   source = g_idle_source_new ();
   g_source_set_closure (source,
-			g_cclosure_new_object (callback, G_OBJECT (impl)));
+			g_cclosure_new_object (callback, B_OBJECT (impl)));
   g_source_attach (source, NULL);
 
   return source;
@@ -3353,7 +3353,7 @@ shortcuts_popup_menu_detach_cb (BtkWidget *attach_widget,
 {
   BtkFileChooserDefault *impl;
   
-  impl = g_object_get_data (G_OBJECT (attach_widget), "BtkFileChooserDefault");
+  impl = g_object_get_data (B_OBJECT (attach_widget), "BtkFileChooserDefault");
   g_assert (BTK_IS_FILE_CHOOSER_DEFAULT (impl));
 
   impl->browse_shortcuts_popup_menu = NULL;
@@ -3564,7 +3564,7 @@ shortcuts_list_create (BtkFileChooserDefault *impl)
   impl->browse_shortcuts_tree_view = btk_tree_view_new ();
   btk_tree_view_set_enable_search (BTK_TREE_VIEW (impl->browse_shortcuts_tree_view), FALSE);
 #ifdef PROFILE_FILE_CHOOSER
-  g_object_set_data (G_OBJECT (impl->browse_shortcuts_tree_view), "fmq-name", "shortcuts");
+  g_object_set_data (B_OBJECT (impl->browse_shortcuts_tree_view), "fmq-name", "shortcuts");
 #endif
 
   /* Connect "after" to key-press-event on the shortcuts pane.  We want this action to be possible:
@@ -3820,7 +3820,7 @@ popup_menu_detach_cb (BtkWidget *attach_widget,
 {
   BtkFileChooserDefault *impl;
 
-  impl = g_object_get_data (G_OBJECT (attach_widget), "BtkFileChooserDefault");
+  impl = g_object_get_data (B_OBJECT (attach_widget), "BtkFileChooserDefault");
   g_assert (BTK_IS_FILE_CHOOSER_DEFAULT (impl));
 
   impl->browse_files_popup_menu = NULL;
@@ -4278,9 +4278,9 @@ create_file_list (BtkFileChooserDefault *impl)
 
   impl->browse_files_tree_view = btk_tree_view_new ();
 #ifdef PROFILE_FILE_CHOOSER
-  g_object_set_data (G_OBJECT (impl->browse_files_tree_view), "fmq-name", "file_list");
+  g_object_set_data (B_OBJECT (impl->browse_files_tree_view), "fmq-name", "file_list");
 #endif
-  g_object_set_data (G_OBJECT (impl->browse_files_tree_view), I_("BtkFileChooserDefault"), impl);
+  g_object_set_data (B_OBJECT (impl->browse_files_tree_view), I_("BtkFileChooserDefault"), impl);
   batk_object_set_name (btk_widget_get_accessible (impl->browse_files_tree_view), _("Files"));
 
   btk_tree_view_set_rules_hint (BTK_TREE_VIEW (impl->browse_files_tree_view), TRUE);
@@ -4945,17 +4945,17 @@ browse_widgets_create (BtkFileChooserDefault *impl)
   g_object_unref (size_group);
 }
 
-static GObject*
+static BObject*
 btk_file_chooser_default_constructor (GType                  type,
 				      guint                  n_construct_properties,
-				      GObjectConstructParam *construct_params)
+				      BObjectConstructParam *construct_params)
 {
   BtkFileChooserDefault *impl;
-  GObject *object;
+  BObject *object;
 
   profile_start ("start", NULL);
 
-  object = G_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->constructor (type,
 										n_construct_properties,
 										construct_params);
   impl = BTK_FILE_CHOOSER_DEFAULT (object);
@@ -5081,7 +5081,7 @@ set_select_multiple (BtkFileChooserDefault *impl,
   btk_tree_view_set_rubber_banding (BTK_TREE_VIEW (impl->browse_files_tree_view), select_multiple);
 
   impl->select_multiple = select_multiple;
-  g_object_notify (G_OBJECT (impl), "select-multiple");
+  g_object_notify (B_OBJECT (impl), "select-multiple");
 
   check_preview_change (impl);
 }
@@ -5411,10 +5411,10 @@ update_appearance (BtkFileChooserDefault *impl)
 }
 
 static void
-btk_file_chooser_default_set_property (GObject      *object,
+btk_file_chooser_default_set_property (BObject      *object,
 				       guint         prop_id,
-				       const GValue *value,
-				       GParamSpec   *pspec)
+				       const BValue *value,
+				       BParamSpec   *pspec)
 
 {
   BtkFileChooserDefault *impl = BTK_FILE_CHOOSER_DEFAULT (object);
@@ -5423,7 +5423,7 @@ btk_file_chooser_default_set_property (GObject      *object,
     {
     case BTK_FILE_CHOOSER_PROP_ACTION:
       {
-	BtkFileChooserAction action = g_value_get_enum (value);
+	BtkFileChooserAction action = b_value_get_enum (value);
 
 	if (action != impl->action)
 	  {
@@ -5451,34 +5451,34 @@ btk_file_chooser_default_set_property (GObject      *object,
       break;
 
     case BTK_FILE_CHOOSER_PROP_FILTER:
-      set_current_filter (impl, g_value_get_object (value));
+      set_current_filter (impl, b_value_get_object (value));
       break;
 
     case BTK_FILE_CHOOSER_PROP_LOCAL_ONLY:
-      set_local_only (impl, g_value_get_boolean (value));
+      set_local_only (impl, b_value_get_boolean (value));
       break;
 
     case BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET:
-      set_preview_widget (impl, g_value_get_object (value));
+      set_preview_widget (impl, b_value_get_object (value));
       break;
 
     case BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE:
-      impl->preview_widget_active = g_value_get_boolean (value);
+      impl->preview_widget_active = b_value_get_boolean (value);
       update_preview_widget_visibility (impl);
       break;
 
     case BTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL:
-      impl->use_preview_label = g_value_get_boolean (value);
+      impl->use_preview_label = b_value_get_boolean (value);
       update_preview_widget_visibility (impl);
       break;
 
     case BTK_FILE_CHOOSER_PROP_EXTRA_WIDGET:
-      set_extra_widget (impl, g_value_get_object (value));
+      set_extra_widget (impl, b_value_get_object (value));
       break;
 
     case BTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE:
       {
-	gboolean select_multiple = g_value_get_boolean (value);
+	gboolean select_multiple = b_value_get_boolean (value);
 	if ((impl->action == BTK_FILE_CHOOSER_ACTION_SAVE ||
              impl->action == BTK_FILE_CHOOSER_ACTION_CREATE_FOLDER)
 	    && select_multiple)
@@ -5495,7 +5495,7 @@ btk_file_chooser_default_set_property (GObject      *object,
 
     case BTK_FILE_CHOOSER_PROP_SHOW_HIDDEN:
       {
-	gboolean show_hidden = g_value_get_boolean (value);
+	gboolean show_hidden = b_value_get_boolean (value);
 	if (show_hidden != impl->show_hidden)
 	  {
 	    impl->show_hidden = show_hidden;
@@ -5508,81 +5508,81 @@ btk_file_chooser_default_set_property (GObject      *object,
 
     case BTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION:
       {
-	gboolean do_overwrite_confirmation = g_value_get_boolean (value);
+	gboolean do_overwrite_confirmation = b_value_get_boolean (value);
 	impl->do_overwrite_confirmation = do_overwrite_confirmation;
       }
       break;
 
     case BTK_FILE_CHOOSER_PROP_CREATE_FOLDERS:
       {
-        gboolean create_folders = g_value_get_boolean (value);
+        gboolean create_folders = b_value_get_boolean (value);
         impl->create_folders = create_folders;
         update_appearance (impl);
       }
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_file_chooser_default_get_property (GObject    *object,
+btk_file_chooser_default_get_property (BObject    *object,
 				       guint       prop_id,
-				       GValue     *value,
-				       GParamSpec *pspec)
+				       BValue     *value,
+				       BParamSpec *pspec)
 {
   BtkFileChooserDefault *impl = BTK_FILE_CHOOSER_DEFAULT (object);
 
   switch (prop_id)
     {
     case BTK_FILE_CHOOSER_PROP_ACTION:
-      g_value_set_enum (value, impl->action);
+      b_value_set_enum (value, impl->action);
       break;
 
     case BTK_FILE_CHOOSER_PROP_FILTER:
-      g_value_set_object (value, impl->current_filter);
+      b_value_set_object (value, impl->current_filter);
       break;
 
     case BTK_FILE_CHOOSER_PROP_LOCAL_ONLY:
-      g_value_set_boolean (value, impl->local_only);
+      b_value_set_boolean (value, impl->local_only);
       break;
 
     case BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET:
-      g_value_set_object (value, impl->preview_widget);
+      b_value_set_object (value, impl->preview_widget);
       break;
 
     case BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE:
-      g_value_set_boolean (value, impl->preview_widget_active);
+      b_value_set_boolean (value, impl->preview_widget_active);
       break;
 
     case BTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL:
-      g_value_set_boolean (value, impl->use_preview_label);
+      b_value_set_boolean (value, impl->use_preview_label);
       break;
 
     case BTK_FILE_CHOOSER_PROP_EXTRA_WIDGET:
-      g_value_set_object (value, impl->extra_widget);
+      b_value_set_object (value, impl->extra_widget);
       break;
 
     case BTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, impl->select_multiple);
+      b_value_set_boolean (value, impl->select_multiple);
       break;
 
     case BTK_FILE_CHOOSER_PROP_SHOW_HIDDEN:
-      g_value_set_boolean (value, impl->show_hidden);
+      b_value_set_boolean (value, impl->show_hidden);
       break;
 
     case BTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION:
-      g_value_set_boolean (value, impl->do_overwrite_confirmation);
+      b_value_set_boolean (value, impl->do_overwrite_confirmation);
       break;
 
     case BTK_FILE_CHOOSER_PROP_CREATE_FOLDERS:
-      g_value_set_boolean (value, impl->create_folders);
+      b_value_set_boolean (value, impl->create_folders);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -5602,7 +5602,7 @@ cancel_all_operations (BtkFileChooserDefault *impl)
 	  GCancellable *cancellable = G_CANCELLABLE (l->data);
 	  g_cancellable_cancel (cancellable);
         }
-      g_slist_free (impl->reload_icon_cancellables);
+      b_slist_free (impl->reload_icon_cancellables);
       impl->reload_icon_cancellables = NULL;
     }
 
@@ -5613,7 +5613,7 @@ cancel_all_operations (BtkFileChooserDefault *impl)
 	  GCancellable *cancellable = G_CANCELLABLE (l->data);
 	  g_cancellable_cancel (cancellable);
         }
-      g_slist_free (impl->loading_shortcuts);
+      b_slist_free (impl->loading_shortcuts);
       impl->loading_shortcuts = NULL;
     }
 
@@ -5674,7 +5674,7 @@ remove_settings_signal (BtkFileChooserDefault *impl,
 }
 
 static void
-btk_file_chooser_default_dispose (GObject *object)
+btk_file_chooser_default_dispose (BObject *object)
 {
   BtkFileChooserDefault *impl = (BtkFileChooserDefault *) object;
 
@@ -5688,7 +5688,7 @@ btk_file_chooser_default_dispose (GObject *object)
 
   remove_settings_signal (impl, btk_widget_get_screen (BTK_WIDGET (impl)));
 
-  G_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_file_chooser_default_parent_class)->dispose (object);
 }
 
 /* We override show-all since we have internal widgets that
@@ -5807,8 +5807,8 @@ change_icon_theme (BtkFileChooserDefault *impl)
 
 /* Callback used when a BtkSettings value changes */
 static void
-settings_notify_cb (GObject               *object,
-		    GParamSpec            *pspec,
+settings_notify_cb (BObject               *object,
+		    BParamSpec            *pspec,
 		    BtkFileChooserDefault *impl)
 {
   const char *name;
@@ -6085,8 +6085,8 @@ install_list_model_filter (BtkFileChooserDefault *impl)
   BtkFileSystemModel *fs_model = BTK_FILE_SYSTEM_MODEL (model);                                                \
   gboolean dir_a, dir_b;										       \
 													       \
-  dir_a = g_value_get_boolean (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_IS_FOLDER));           \
-  dir_b = g_value_get_boolean (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_IS_FOLDER));           \
+  dir_a = b_value_get_boolean (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_IS_FOLDER));           \
+  dir_b = b_value_get_boolean (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_IS_FOLDER));           \
 													       \
   if (dir_a != dir_b)											       \
     return impl->list_sort_ascending ? (dir_a ? -1 : 1) : (dir_a ? 1 : -1) /* Directories *always* go first */
@@ -6104,8 +6104,8 @@ name_sort_func (BtkTreeModel *model,
       const char *key_a, *key_b;
       gint result;
 
-      key_a = g_value_get_string (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_NAME_COLLATED));
-      key_b = g_value_get_string (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_NAME_COLLATED));
+      key_a = b_value_get_string (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_NAME_COLLATED));
+      key_b = b_value_get_string (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_NAME_COLLATED));
 
       if (key_a && key_b)
         result = strcmp (key_a, key_b);
@@ -6132,8 +6132,8 @@ size_sort_func (BtkTreeModel *model,
     {
       gint64 size_a, size_b;
 
-      size_a = g_value_get_int64 (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_SIZE));
-      size_b = g_value_get_int64 (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_SIZE));
+      size_a = b_value_get_int64 (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_SIZE));
+      size_b = b_value_get_int64 (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_SIZE));
 
       return size_a < size_b ? -1 : (size_a == size_b ? 0 : 1);
     }
@@ -6151,8 +6151,8 @@ mtime_sort_func (BtkTreeModel *model,
     {
       glong ta, tb;
 
-      ta = g_value_get_long (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_MTIME));
-      tb = g_value_get_long (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_MTIME));
+      ta = b_value_get_long (_btk_file_system_model_get_value (fs_model, a, MODEL_COL_MTIME));
+      tb = b_value_get_long (_btk_file_system_model_get_value (fs_model, b, MODEL_COL_MTIME));
 
       return ta < tb ? -1 : (ta == tb ? 0 : 1);
     }
@@ -6653,7 +6653,7 @@ copy_attribute (GFileInfo *to, GFileInfo *from, const char *attribute)
 }
 
 static void
-file_system_model_got_thumbnail (GObject *object, GAsyncResult *res, gpointer data)
+file_system_model_got_thumbnail (BObject *object, GAsyncResult *res, gpointer data)
 {
   BtkFileSystemModel *model = data; /* might be unreffed if operation was cancelled */
   GFile *file = G_FILE (object);
@@ -6695,7 +6695,7 @@ file_system_model_set (BtkFileSystemModel *model,
                        GFile              *file,
                        GFileInfo          *info,
                        int                 column,
-                       GValue             *value,
+                       BValue             *value,
                        gpointer            data)
 {
   BtkFileChooserDefault *impl = data;
@@ -6703,22 +6703,22 @@ file_system_model_set (BtkFileSystemModel *model,
   switch (column)
     {
     case MODEL_COL_FILE:
-      g_value_set_object (value, file);
+      b_value_set_object (value, file);
       break;
     case MODEL_COL_NAME:
       if (info == NULL)
-        g_value_set_string (value, DEFAULT_NEW_FOLDER_NAME);
+        b_value_set_string (value, DEFAULT_NEW_FOLDER_NAME);
       else 
-        g_value_set_string (value, g_file_info_get_display_name (info));
+        b_value_set_string (value, g_file_info_get_display_name (info));
       break;
     case MODEL_COL_NAME_COLLATED:
       if (info == NULL)
-        g_value_take_string (value, g_utf8_collate_key_for_filename (DEFAULT_NEW_FOLDER_NAME, -1));
+        b_value_take_string (value, g_utf8_collate_key_for_filename (DEFAULT_NEW_FOLDER_NAME, -1));
       else 
-        g_value_take_string (value, g_utf8_collate_key_for_filename (g_file_info_get_display_name (info), -1));
+        b_value_take_string (value, g_utf8_collate_key_for_filename (g_file_info_get_display_name (info), -1));
       break;
     case MODEL_COL_IS_FOLDER:
-      g_value_set_boolean (value, info == NULL || _btk_file_info_consider_as_directory (info));
+      b_value_set_boolean (value, info == NULL || _btk_file_info_consider_as_directory (info));
       break;
     case MODEL_COL_IS_SENSITIVE:
       if (info)
@@ -6742,17 +6742,17 @@ file_system_model_set (BtkFileSystemModel *model,
               sensitive = !_btk_file_system_model_iter_is_filtered_out (model, &iter);
             }
 
-          g_value_set_boolean (value, sensitive);
+          b_value_set_boolean (value, sensitive);
         }
       else
-        g_value_set_boolean (value, TRUE);
+        b_value_set_boolean (value, TRUE);
       break;
     case MODEL_COL_PIXBUF:
       if (info)
         {
           if (g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_ICON))
             {
-              g_value_take_object (value, _btk_file_info_render_icon (info, BTK_WIDGET (impl), impl->icon_size));
+              b_value_take_object (value, _btk_file_info_render_icon (info, BTK_WIDGET (impl), impl->icon_size));
             }
           else
             {
@@ -6796,19 +6796,19 @@ file_system_model_set (BtkFileSystemModel *model,
             }
         }
       else
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       break;
     case MODEL_COL_SIZE:
-      g_value_set_int64 (value, info ? g_file_info_get_size (info) : 0);
+      b_value_set_int64 (value, info ? g_file_info_get_size (info) : 0);
       break;
     case MODEL_COL_SIZE_TEXT:
       if (info == NULL || _btk_file_info_consider_as_directory (info))
-        g_value_set_string (value, NULL);
+        b_value_set_string (value, NULL);
       else
 #if BUNNYLIB_CHECK_VERSION(2,30,0)
-        g_value_take_string (value, g_format_size (g_file_info_get_size (info)));
+        b_value_take_string (value, g_format_size (g_file_info_get_size (info)));
 #else
-        g_value_take_string (value, g_format_size_for_display (g_file_info_get_size (info)));
+        b_value_take_string (value, g_format_size_for_display (g_file_info_get_size (info)));
 #endif
       break;
     case MODEL_COL_MTIME:
@@ -6819,15 +6819,15 @@ file_system_model_set (BtkFileSystemModel *model,
           break;
         g_file_info_get_modification_time (info, &tv);
         if (column == MODEL_COL_MTIME)
-          g_value_set_long (value, tv.tv_sec);
+          b_value_set_long (value, tv.tv_sec);
         else if (tv.tv_sec == 0)
-          g_value_set_static_string (value, _("Unknown"));
+          b_value_set_static_string (value, _("Unknown"));
         else
-          g_value_take_string (value, my_g_format_time_for_display (tv.tv_sec));
+          b_value_take_string (value, my_g_format_time_for_display (tv.tv_sec));
         break;
       }
     case MODEL_COL_ELLIPSIZE:
-      g_value_set_enum (value, info ? BANGO_ELLIPSIZE_END : BANGO_ELLIPSIZE_NONE);
+      b_value_set_enum (value, info ? BANGO_ELLIPSIZE_END : BANGO_ELLIPSIZE_NONE);
       break;
     default:
       g_assert_not_reached ();
@@ -7598,7 +7598,7 @@ get_files_foreach (BtkTreeModel *model,
     return; /* We are on the editable row */
 
   if (!info->file_from_entry || !g_file_equal (info->file_from_entry, file))
-    info->result = g_slist_prepend (info->result, g_object_ref (file));
+    info->result = b_slist_prepend (info->result, g_object_ref (file));
 }
 
 static GSList *
@@ -7677,7 +7677,7 @@ btk_file_chooser_default_get_files (BtkFileChooser *chooser)
 	}
 
       if (info.file_from_entry)
-        info.result = g_slist_prepend (info.result, info.file_from_entry);
+        info.result = b_slist_prepend (info.result, info.file_from_entry);
       else if (!file_list_seen) 
         goto file_list;
       else
@@ -7709,10 +7709,10 @@ btk_file_chooser_default_get_files (BtkFileChooser *chooser)
       current_folder = btk_file_chooser_get_current_folder_file (chooser);
 
       if (current_folder)
-        info.result = g_slist_prepend (info.result, current_folder);
+        info.result = b_slist_prepend (info.result, current_folder);
     }
 
-  return g_slist_reverse (info.result);
+  return b_slist_reverse (info.result);
 }
 
 GFile *
@@ -7752,14 +7752,14 @@ btk_file_chooser_default_add_filter (BtkFileChooser *chooser,
   BtkFileChooserDefault *impl = BTK_FILE_CHOOSER_DEFAULT (chooser);
   const gchar *name;
 
-  if (g_slist_find (impl->filters, filter))
+  if (b_slist_find (impl->filters, filter))
     {
       g_warning ("btk_file_chooser_add_filter() called on filter already in list\n");
       return;
     }
 
   g_object_ref_sink (filter);
-  impl->filters = g_slist_append (impl->filters, filter);
+  impl->filters = b_slist_append (impl->filters, filter);
 
   name = btk_file_filter_get_name (filter);
   if (!name)
@@ -7767,7 +7767,7 @@ btk_file_chooser_default_add_filter (BtkFileChooser *chooser,
 
   btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (impl->filter_combo), name);
 
-  if (!g_slist_find (impl->filters, impl->current_filter))
+  if (!b_slist_find (impl->filters, impl->current_filter))
     set_current_filter (impl, filter);
 
   show_filters (impl, TRUE);
@@ -7782,7 +7782,7 @@ btk_file_chooser_default_remove_filter (BtkFileChooser *chooser,
   BtkTreeIter iter;
   gint filter_index;
 
-  filter_index = g_slist_index (impl->filters, filter);
+  filter_index = b_slist_index (impl->filters, filter);
 
   if (filter_index < 0)
     {
@@ -7790,7 +7790,7 @@ btk_file_chooser_default_remove_filter (BtkFileChooser *chooser,
       return;
     }
 
-  impl->filters = g_slist_remove (impl->filters, filter);
+  impl->filters = b_slist_remove (impl->filters, filter);
 
   if (filter == impl->current_filter)
     {
@@ -7818,7 +7818,7 @@ btk_file_chooser_default_list_filters (BtkFileChooser *chooser)
 {
   BtkFileChooserDefault *impl = BTK_FILE_CHOOSER_DEFAULT (chooser);
 
-  return g_slist_copy (impl->filters);
+  return b_slist_copy (impl->filters);
 }
 
 /* Returns the position in the shortcuts tree where the nth specified shortcut would appear */
@@ -7845,10 +7845,10 @@ add_shortcut_get_info_cb (GCancellable *cancellable,
   gboolean cancelled = g_cancellable_is_cancelled (cancellable);
   struct AddShortcutData *data = user_data;
 
-  if (!g_slist_find (data->impl->loading_shortcuts, cancellable))
+  if (!b_slist_find (data->impl->loading_shortcuts, cancellable))
     goto out;
 
-  data->impl->loading_shortcuts = g_slist_remove (data->impl->loading_shortcuts, cancellable);
+  data->impl->loading_shortcuts = b_slist_remove (data->impl->loading_shortcuts, cancellable);
 
   if (cancelled || error || (! _btk_file_info_consider_as_directory (info)))
     goto out;
@@ -7902,7 +7902,7 @@ btk_file_chooser_default_add_shortcut_folder (BtkFileChooser  *chooser,
       GCancellable *c = l->data;
       GFile *f;
 
-      f = g_object_get_data (G_OBJECT (c), "add-shortcut-path-key");
+      f = g_object_get_data (B_OBJECT (c), "add-shortcut-path-key");
       if (f && g_file_equal (file, f))
         {
 	  gchar *uri;
@@ -7930,8 +7930,8 @@ btk_file_chooser_default_add_shortcut_folder (BtkFileChooser  *chooser,
   if (!cancellable)
     return FALSE;
 
-  impl->loading_shortcuts = g_slist_append (impl->loading_shortcuts, cancellable);
-  g_object_set_data (G_OBJECT (cancellable), "add-shortcut-path-key", data->file);
+  impl->loading_shortcuts = b_slist_append (impl->loading_shortcuts, cancellable);
+  g_object_set_data (B_OBJECT (cancellable), "add-shortcut-path-key", data->file);
 
   return TRUE;
 }
@@ -7953,10 +7953,10 @@ btk_file_chooser_default_remove_shortcut_folder (BtkFileChooser  *chooser,
       GCancellable *c = l->data;
       GFile *f;
 
-      f = g_object_get_data (G_OBJECT (c), "add-shortcut-path-key");
+      f = g_object_get_data (B_OBJECT (c), "add-shortcut-path-key");
       if (f && g_file_equal (file, f))
         {
-	  impl->loading_shortcuts = g_slist_remove (impl->loading_shortcuts, c);
+	  impl->loading_shortcuts = b_slist_remove (impl->loading_shortcuts, c);
 	  g_cancellable_cancel (c);
           return TRUE;
 	}
@@ -8040,7 +8040,7 @@ btk_file_chooser_default_list_shortcut_folders (BtkFileChooser *chooser)
       g_assert (shortcut_type == SHORTCUT_TYPE_FILE);
 
       shortcut = col_data;
-      list = g_slist_prepend (list, g_object_ref (shortcut));
+      list = b_slist_prepend (list, g_object_ref (shortcut));
 
       if (i != impl->num_shortcuts - 1)
 	{
@@ -8049,7 +8049,7 @@ btk_file_chooser_default_list_shortcut_folders (BtkFileChooser *chooser)
 	}
     }
 
-  return g_slist_reverse (list);
+  return b_slist_reverse (list);
 }
 
 /* Guesses a size based upon font sizes */
@@ -8646,8 +8646,8 @@ add_selection_to_recent_list (BtkFileChooserDefault *impl)
 	}
     }
 
-  g_slist_foreach (files, (GFunc) g_object_unref, NULL);
-  g_slist_free (files);
+  b_slist_foreach (files, (GFunc) g_object_unref, NULL);
+  b_slist_free (files);
 }
 
 static gboolean
@@ -8956,7 +8956,7 @@ search_selected_foreach_get_file_cb (BtkTreeModel *model,
   list = data;
 
   btk_tree_model_get (model, iter, MODEL_COL_FILE, &file, -1);
-  *list = g_slist_prepend (*list, g_object_ref (file));
+  *list = b_slist_prepend (*list, g_object_ref (file));
 }
 
 /* Constructs a list of the selected paths in search mode */
@@ -8970,7 +8970,7 @@ search_get_selected_files (BtkFileChooserDefault *impl)
 
   selection = btk_tree_view_get_selection (BTK_TREE_VIEW (impl->browse_files_tree_view));
   btk_tree_selection_selected_foreach (selection, search_selected_foreach_get_file_cb, &result);
-  result = g_slist_reverse (result);
+  result = b_slist_reverse (result);
 
   return result;
 }
@@ -9386,7 +9386,7 @@ get_recent_files_limit (BtkWidget *widget)
   else
     settings = btk_settings_get_default ();
 
-  g_object_get (G_OBJECT (settings), "btk-recent-files-limit", &limit, NULL);
+  g_object_get (B_OBJECT (settings), "btk-recent-files-limit", &limit, NULL);
 
   return limit;
 }
@@ -9501,7 +9501,7 @@ recent_selected_foreach_get_file_cb (BtkTreeModel *model,
   list = data;
 
   btk_tree_model_get (model, iter, MODEL_COL_FILE, &file, -1);
-  *list = g_slist_prepend (*list, file);
+  *list = b_slist_prepend (*list, file);
 }
 
 /* Constructs a list of the selected paths in recent files mode */
@@ -9515,7 +9515,7 @@ recent_get_selected_files (BtkFileChooserDefault *impl)
 
   selection = btk_tree_view_get_selection (BTK_TREE_VIEW (impl->browse_files_tree_view));
   btk_tree_selection_selected_foreach (selection, recent_selected_foreach_get_file_cb, &result);
-  result = g_slist_reverse (result);
+  result = b_slist_reverse (result);
 
   return result;
 }
@@ -9544,7 +9544,7 @@ set_current_filter (BtkFileChooserDefault *impl,
 
       /* NULL filters are allowed to reset to non-filtered status
        */
-      filter_index = g_slist_index (impl->filters, filter);
+      filter_index = b_slist_index (impl->filters, filter);
       if (impl->filters && filter && filter_index < 0)
 	return;
 
@@ -9569,7 +9569,7 @@ set_current_filter (BtkFileChooserDefault *impl,
       if (impl->recent_model)
         _btk_file_system_model_set_filter (impl->recent_model, filter);
 
-      g_object_notify (G_OBJECT (impl), "filter");
+      g_object_notify (B_OBJECT (impl), "filter");
     }
 }
 
@@ -9578,7 +9578,7 @@ filter_combo_changed (BtkComboBox           *combo_box,
 		      BtkFileChooserDefault *impl)
 {
   gint new_index = btk_combo_box_get_active (combo_box);
-  BtkFileFilter *new_filter = g_slist_nth_data (impl->filters, new_index);
+  BtkFileFilter *new_filter = b_slist_nth_data (impl->filters, new_index);
 
   set_current_filter (impl, new_filter);
 }

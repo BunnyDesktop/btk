@@ -40,7 +40,7 @@ create_store (void)
 {
   BtkListStore *store;
 
-  store = btk_list_store_new (NUM_COLS, G_TYPE_STRING);
+  store = btk_list_store_new (NUM_COLS, B_TYPE_STRING);
 
   return store;
 }

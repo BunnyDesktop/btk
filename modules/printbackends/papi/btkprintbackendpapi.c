@@ -42,9 +42,9 @@
 
 typedef struct _BtkPrintBackendPapiClass BtkPrintBackendPapiClass;
 
-#define BTK_PRINT_BACKEND_PAPI_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapiClass))
-#define BTK_IS_PRINT_BACKEND_PAPI_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_PAPI))
-#define BTK_PRINT_BACKEND_PAPI_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapiClass))
+#define BTK_PRINT_BACKEND_PAPI_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapiClass))
+#define BTK_IS_PRINT_BACKEND_PAPI_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_PAPI))
+#define BTK_PRINT_BACKEND_PAPI_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapiClass))
 
 #define _PAPI_MAX_CHUNK_SIZE 8192
 
@@ -66,12 +66,12 @@ typedef struct {
   BtkPrinter *printer;
 } _PrinterStatus;
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 static void                 btk_print_backend_papi_class_init      (BtkPrintBackendPapiClass *class);
 static void                 btk_print_backend_papi_init            (BtkPrintBackendPapi      *impl);
-static void                 btk_print_backend_papi_finalize        (GObject                  *object);
-static void                 btk_print_backend_papi_dispose         (GObject                  *object);
+static void                 btk_print_backend_papi_finalize        (BObject                  *object);
+static void                 btk_print_backend_papi_dispose         (BObject                  *object);
 static void                 papi_request_printer_list              (BtkPrintBackend          *print_backend);
 static gboolean 	    papi_get_printer_list 		   (BtkPrintBackendPapi      *papi_backend);
 static void                 papi_printer_request_details           (BtkPrinter               *printer);
@@ -170,7 +170,7 @@ btk_print_backend_papi_new (void)
 static void
 btk_print_backend_papi_class_init (BtkPrintBackendPapiClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_CLASS (class);
   
   backend_parent_class = g_type_class_peek_parent (class);
@@ -445,7 +445,7 @@ btk_print_backend_papi_init (BtkPrintBackendPapi *backend)
 }
 
 static void
-btk_print_backend_papi_finalize (GObject *object)
+btk_print_backend_papi_finalize (BObject *object)
 {
   BtkPrintBackendPapi *backend_papi;
 
@@ -462,7 +462,7 @@ btk_print_backend_papi_finalize (GObject *object)
 
 
 static void
-btk_print_backend_papi_dispose (GObject *object)
+btk_print_backend_papi_dispose (BObject *object)
 {
   BtkPrintBackendPapi *backend_papi;
 

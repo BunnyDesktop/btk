@@ -64,7 +64,7 @@ create_simple_completion_model (void)
   BtkListStore *store;
   BtkTreeIter iter;
   
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, 0, "BUNNY", -1);
@@ -133,7 +133,7 @@ create_completion_model (void)
 
   pixbuf = bdk_pixbuf_new_from_xpm_data ((const char **)book_closed_xpm);
 
-  store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
+  store = btk_list_store_new (2, BDK_TYPE_PIXBUF, B_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, 0, pixbuf, 1, "ambient", -1);
@@ -291,9 +291,9 @@ match_selected_cb (BtkEntryCompletion *completion,
 }
 
 static void
-new_prop_editor (GObject *object)
+new_prop_editor (BObject *object)
 {
-	btk_widget_show (create_prop_editor (object, G_OBJECT_TYPE (object)));
+	btk_widget_show (create_prop_editor (object, B_OBJECT_TYPE (object)));
 }
 
 static void
@@ -408,7 +408,7 @@ main (int argc, char *argv[])
   add_with_prop_edit_button (vbox, entry, completion);
 
   /* Create a tree model and use it as the completion model */
-  completion_model = BTK_TREE_MODEL (btk_list_store_new (1, G_TYPE_STRING));
+  completion_model = BTK_TREE_MODEL (btk_list_store_new (1, B_TYPE_STRING));
 
   btk_entry_completion_set_model (completion, completion_model);
   g_object_unref (completion_model);

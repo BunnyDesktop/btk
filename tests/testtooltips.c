@@ -133,7 +133,7 @@ create_model (void)
   BtkTreeStore *store;
   BtkTreeIter iter;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
 
   /* A tree store with some random words ... */
   btk_tree_store_insert_with_values (store, &iter, NULL, 0,

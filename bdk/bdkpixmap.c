@@ -159,7 +159,7 @@ static BdkScreen*   bdk_pixmap_real_get_screen   (BdkDrawable *drawable);
 
 static void bdk_pixmap_init       (BdkPixmapObject      *pixmap);
 static void bdk_pixmap_class_init (BdkPixmapObjectClass *klass);
-static void bdk_pixmap_finalize   (GObject              *object);
+static void bdk_pixmap_finalize   (BObject              *object);
 
 static gpointer parent_class = NULL;
 
@@ -190,7 +190,7 @@ bdk_pixmap_init (BdkPixmapObject *pixmap)
 static void
 bdk_pixmap_class_init (BdkPixmapObjectClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -224,14 +224,14 @@ bdk_pixmap_class_init (BdkPixmapObjectClass *klass)
 }
 
 static void
-bdk_pixmap_finalize (GObject *object)
+bdk_pixmap_finalize (BObject *object)
 {
   BdkPixmapObject *obj = (BdkPixmapObject *) object;
 
   g_object_unref (obj->impl);
   obj->impl = NULL;
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 BdkPixmap *

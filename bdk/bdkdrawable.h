@@ -44,20 +44,20 @@ typedef struct _BdkDrawableClass BdkDrawableClass;
 typedef struct _BdkTrapezoid     BdkTrapezoid;
 
 #define BDK_TYPE_DRAWABLE              (bdk_drawable_get_type ())
-#define BDK_DRAWABLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE, BdkDrawable))
-#define BDK_DRAWABLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE, BdkDrawableClass))
-#define BDK_IS_DRAWABLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE))
-#define BDK_IS_DRAWABLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE))
-#define BDK_DRAWABLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE, BdkDrawableClass))
+#define BDK_DRAWABLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE, BdkDrawable))
+#define BDK_DRAWABLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE, BdkDrawableClass))
+#define BDK_IS_DRAWABLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE))
+#define BDK_IS_DRAWABLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE))
+#define BDK_DRAWABLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE, BdkDrawableClass))
 
 struct _BdkDrawable
 {
-  GObject parent_instance;
+  BObject parent_instance;
 };
  
 struct _BdkDrawableClass 
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   BdkGC *(*create_gc)    (BdkDrawable    *drawable,
 		          BdkGCValues    *values,

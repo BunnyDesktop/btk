@@ -43,7 +43,7 @@ static void bdk_pixmap_impl_win32_get_size   (BdkDrawable        *drawable,
 
 static void bdk_pixmap_impl_win32_init       (BdkPixmapImplWin32      *pixmap);
 static void bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass);
-static void bdk_pixmap_impl_win32_finalize   (GObject                 *object);
+static void bdk_pixmap_impl_win32_finalize   (BObject                 *object);
 
 static gpointer parent_class = NULL;
 
@@ -91,7 +91,7 @@ bdk_pixmap_impl_win32_init (BdkPixmapImplWin32 *impl)
 static void
 bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -102,7 +102,7 @@ bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass)
 }
 
 static void
-bdk_pixmap_impl_win32_finalize (GObject *object)
+bdk_pixmap_impl_win32_finalize (BObject *object)
 {
   BdkPixmapImplWin32 *impl = BDK_PIXMAP_IMPL_WIN32 (object);
   BdkDrawableImplWin32 *drawable_impl = BDK_DRAWABLE_IMPL_WIN32 (impl);
@@ -137,7 +137,7 @@ bdk_pixmap_impl_win32_finalize (GObject *object)
 
   bdk_win32_handle_table_remove (BDK_PIXMAP_HBITMAP (wrapper));
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -234,7 +234,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
       if (dib_surface == NULL ||
 	  bairo_surface_status (dib_surface) != BAIRO_STATUS_SUCCESS)
 	{
-	  g_object_unref ((GObject *) pixmap);
+	  g_object_unref ((BObject *) pixmap);
 	  return NULL;
 	}
 
@@ -254,7 +254,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
 	  bairo_surface_status (image_surface) != BAIRO_STATUS_SUCCESS)
       {
 	bairo_surface_destroy (dib_surface);
-	g_object_unref ((GObject*) pixmap);
+	g_object_unref ((BObject*) pixmap);
 	return NULL;
       }
       bits = bairo_image_surface_get_data (image_surface);
@@ -281,7 +281,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
       if ((hdc = GetDC (hwnd)) == NULL)
 	{
 	  WIN32_GDI_FAILED ("GetDC");
-	  g_object_unref ((GObject *) pixmap);
+	  g_object_unref ((BObject *) pixmap);
 	  return NULL;
 	}
 
@@ -308,7 +308,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
 	{
 	  WIN32_GDI_FAILED ("CreateDIBSection");
 	  GDI_CALL (ReleaseDC, (hwnd, hdc));
-	  g_object_unref ((GObject *) pixmap);
+	  g_object_unref ((BObject *) pixmap);
 	  return NULL;
 	}
       GDI_CALL (ReleaseDC, (hwnd, hdc));
@@ -321,7 +321,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
       if (!hdc)
 	{
 	  WIN32_GDI_FAILED ("CreateCompatibleDC");
-	  g_object_unref ((GObject *) pixmap);
+	  g_object_unref ((BObject *) pixmap);
 	  return NULL;
 	}
 

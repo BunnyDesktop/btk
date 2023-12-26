@@ -83,7 +83,7 @@ create_tree_store (int      depth,
 {
   BtkTreeStore *store;
 
-  store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  store = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
   create_tree_store_recurse (depth, store, NULL, visible);
 
@@ -1837,7 +1837,7 @@ specific_path_dependent_filter (void)
   BtkTreeModel *sort;
   BtkTreeModel *filter;
 
-  list = btk_list_store_new (1, G_TYPE_INT);
+  list = btk_list_store_new (1, B_TYPE_INT);
   btk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
   btk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
   btk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
@@ -1907,10 +1907,10 @@ specific_append_after_collapse (void)
   BtkWidget *window;
   BtkWidget *tree_view;
 
-  store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  store = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_INT);
 
   filter = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
-  g_object_set_data (G_OBJECT (filter), "private-hide-negative-numbers",
+  g_object_set_data (B_OBJECT (filter), "private-hide-negative-numbers",
                      GINT_TO_POINTER (FALSE));
   btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_append_after_collapse_visible_func,
@@ -1958,7 +1958,7 @@ specific_append_after_collapse (void)
     btk_main_iteration ();
 
   /* Add another it */
-  g_object_set_data (G_OBJECT (filter), "private-hide-negative-numbers",
+  g_object_set_data (B_OBJECT (filter), "private-hide-negative-numbers",
                      GINT_TO_POINTER (TRUE));
 
   if (btk_tree_model_get_iter (BTK_TREE_MODEL (store), &iter, append_path))
@@ -2021,7 +2021,7 @@ specific_sort_filter_remove_node (void)
   BtkWidget *window;
   BtkWidget *tree_view;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
   btk_tree_store_append (store, &iter, NULL);
   btk_tree_store_set (store, &iter, 0, "Hello1", -1);
 
@@ -2068,7 +2068,7 @@ specific_sort_filter_remove_root (void)
   BtkTreeIter root, mid, leaf;
   BtkTreePath *path;
 
-  model = BTK_TREE_MODEL (btk_tree_store_new (1, G_TYPE_INT));
+  model = BTK_TREE_MODEL (btk_tree_store_new (1, B_TYPE_INT));
   btk_tree_store_append (BTK_TREE_STORE (model), &root, NULL);
   btk_tree_store_append (BTK_TREE_STORE (model), &mid, &root);
   btk_tree_store_append (BTK_TREE_STORE (model), &leaf, &mid);
@@ -2094,7 +2094,7 @@ specific_root_mixed_visibility (void)
   /* A bit nasty, apologies */
   FilterTest fixture;
 
-  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  fixture.store = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
   for (i = 0; i < LEVEL_LENGTH; i++)
     {
@@ -2141,7 +2141,7 @@ specific_has_child_filter (void)
   /* A bit nasty, apologies */
   FilterTest fixture;
 
-  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  fixture.store = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
   filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture.store), NULL);
   fixture.filter = BTK_TREE_MODEL_FILTER (filter);
   fixture.monitor = NULL;
@@ -2238,7 +2238,7 @@ specific_root_has_child_filter (void)
    * check for visibility only applies to root level nodes.
    */
 
-  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  fixture.store = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
   filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture.store), NULL);
   fixture.filter = BTK_TREE_MODEL_FILTER (filter);
   fixture.monitor = NULL;
@@ -2319,7 +2319,7 @@ specific_filter_add_child (void)
   BtkTreeStore *store;
   BtkTreeModel *filter;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
 
   btk_tree_store_append (store, &iter_first, NULL);
   btk_tree_store_set (store, &iter_first, 0, "Hello", -1);
@@ -2348,7 +2348,7 @@ specific_list_store_clear (void)
   BtkTreeModel *filter;
   BtkWidget *view;
 
-  list = btk_list_store_new (1, G_TYPE_INT);
+  list = btk_list_store_new (1, B_TYPE_INT);
   btk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
   btk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
   btk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
@@ -2374,7 +2374,7 @@ specific_bug_300089 (void)
   BtkTreePath *path;
   BtkTreeIter iter, iter2, sort_iter;
 
-  child_model = BTK_TREE_MODEL (btk_tree_store_new (1, G_TYPE_STRING));
+  child_model = BTK_TREE_MODEL (btk_tree_store_new (1, B_TYPE_STRING));
 
   btk_tree_store_append (BTK_TREE_STORE (child_model), &iter, NULL);
   btk_tree_store_set (BTK_TREE_STORE (child_model), &iter, 0, "A", -1);
@@ -2433,7 +2433,7 @@ specific_bug_301558 (void)
   int i;
   gboolean add;
 
-  tree = btk_tree_store_new (2, G_TYPE_INT, G_TYPE_BOOLEAN);
+  tree = btk_tree_store_new (2, B_TYPE_INT, B_TYPE_BOOLEAN);
   btk_tree_store_append (tree, &iter, NULL);
   btk_tree_store_set (tree, &iter, 0, 123, 1, TRUE, -1);
   btk_tree_store_append (tree, &iter2, &iter);
@@ -2506,7 +2506,7 @@ specific_bug_311955 (void)
   int i;
   int n;
 
-  store = btk_tree_store_new (1, G_TYPE_INT);
+  store = btk_tree_store_new (1, B_TYPE_INT);
 
   btk_tree_store_append (store, &root, NULL);
   btk_tree_store_set (store, &root, 0, 33, -1);
@@ -2582,8 +2582,8 @@ specific_bug_346800 (void)
   int i;
   int items = 50;
   columns = g_new (GType, 2);
-  columns[0] = G_TYPE_STRING;
-  columns[1] = G_TYPE_BOOLEAN;
+  columns[0] = B_TYPE_STRING;
+  columns[1] = B_TYPE_BOOLEAN;
   store = btk_tree_store_newv (2, columns);
   model = BTK_TREE_MODEL (store);
 
@@ -2633,7 +2633,7 @@ specific_bug_364946 (void)
   BtkTreeIter a, aa, aaa, aab, iter;
   BtkTreeModel *s_model;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
 
   btk_tree_store_append (store, &a, NULL);
   btk_tree_store_set (store, &a, 0, "0", -1);
@@ -2683,7 +2683,7 @@ specific_bug_464173 (void)
   BtkWidget *view;
   gboolean visible = TRUE;
 
-  model = btk_tree_store_new (1, G_TYPE_STRING);
+  model = btk_tree_store_new (1, B_TYPE_STRING);
   btk_tree_store_append (model, &iter1, NULL);
   btk_tree_store_set (model, &iter1, 0, "Foo", -1);
   btk_tree_store_append (model, &iter2, &iter1);
@@ -2725,7 +2725,7 @@ specific_bug_540201 (void)
 
   BtkWidget *tree_view;
 
-  store = btk_tree_store_new (1, G_TYPE_INT);
+  store = btk_tree_store_new (1, B_TYPE_INT);
 
   btk_tree_store_append (store, &root, NULL);
   btk_tree_store_set (store, &root, 0, 33, -1);
@@ -2776,7 +2776,7 @@ specific_bug_549287 (void)
   BtkTreeIter iter;
   BtkTreeIter *swap, *parent, *child;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
   filtered = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
   btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filtered),
                                           specific_bug_549287_visible_func,

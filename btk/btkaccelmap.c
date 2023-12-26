@@ -42,12 +42,12 @@
 /* --- structures --- */
 struct _BtkAccelMap
 {
-  GObject parent_instance;
+  BObject parent_instance;
 };
 
 struct _BtkAccelMapClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 typedef struct {
@@ -230,7 +230,7 @@ hash2slist_foreach (gpointer  key,
 {
   GSList **slist_p = user_data;
 
-  *slist_p = g_slist_prepend (*slist_p, value);
+  *slist_p = b_slist_prepend (*slist_p, value);
 }
 
 static GSList*
@@ -322,7 +322,7 @@ internal_change_entry (const gchar    *accel_path,
       for (node = group->acceleratables; node; node = node->next)
 	g_hash_table_insert (window_hm, node->data, node->data);
     }
-  g_slist_free (group_list);
+  b_slist_free (group_list);
 
   /* 3) include all accel groups used by acceleratables */
   win_list = g_hash_table_slist_values (window_hm);
@@ -371,7 +371,7 @@ internal_change_entry (const gchar    *accel_path,
 	    if (!removable)
 	      goto break_loop_step5;
 	    if (ag_entry[i].accel_path_quark)
-	      replace_list = g_slist_prepend (replace_list, GUINT_TO_POINTER (ag_entry[i].accel_path_quark));
+	      replace_list = b_slist_prepend (replace_list, GUINT_TO_POINTER (ag_entry[i].accel_path_quark));
 	  }
       }
  break_loop_step5:
@@ -412,9 +412,9 @@ internal_change_entry (const gchar    *accel_path,
 
       do_accel_map_changed (entry);
     }
-  g_slist_free (replace_list);
-  g_slist_free (group_list);
-  g_slist_free (win_list);
+  b_slist_free (replace_list);
+  b_slist_free (group_list);
+  b_slist_free (win_list);
 
   return change_accel;
 }
@@ -778,7 +778,7 @@ btk_accel_map_foreach (gpointer           data,
     skip_accel:
       /* noop */;
     }
-  g_slist_free (entries);
+  b_slist_free (entries);
 }
 
 /**
@@ -808,7 +808,7 @@ btk_accel_map_foreach_unfiltered (gpointer           data,
 
       foreach_func (data, entry->accel_path, entry->accel_key, entry->accel_mods, changed);
     }
-  g_slist_free (entries);
+  b_slist_free (entries);
 }
 
 /**
@@ -839,7 +839,7 @@ btk_accel_map_add_filter (const gchar *filter_pattern)
 	g_pattern_spec_free (pspec);
 	return;
       }
-  accel_filters = g_slist_prepend (accel_filters, pspec);
+  accel_filters = b_slist_prepend (accel_filters, pspec);
 }
 
 void
@@ -857,7 +857,7 @@ _btk_accel_map_add_group (const gchar   *accel_path,
       btk_accel_map_add_entry (accel_path, 0, 0);
       entry = accel_path_lookup (accel_path);
     }
-  entry->groups = g_slist_prepend (entry->groups, accel_group);
+  entry->groups = b_slist_prepend (entry->groups, accel_group);
 }
 
 void
@@ -868,9 +868,9 @@ _btk_accel_map_remove_group (const gchar   *accel_path,
 
   entry = accel_path_lookup (accel_path);
   g_return_if_fail (entry != NULL);
-  g_return_if_fail (g_slist_find (entry->groups, accel_group));
+  g_return_if_fail (b_slist_find (entry->groups, accel_group));
 
-  entry->groups = g_slist_remove (entry->groups, accel_group);
+  entry->groups = b_slist_remove (entry->groups, accel_group);
 }
 
 
@@ -938,7 +938,7 @@ btk_accel_map_unlock_path (const gchar *accel_path)
   entry->lock_count -= 1;  
 }
 
-G_DEFINE_TYPE (BtkAccelMap, btk_accel_map, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkAccelMap, btk_accel_map, B_TYPE_OBJECT)
 
 static void
 btk_accel_map_class_init (BtkAccelMapClass *accel_map_class)
@@ -958,13 +958,13 @@ btk_accel_map_class_init (BtkAccelMapClass *accel_map_class)
    * Since: 2.4
    */
   accel_map_signals[CHANGED] = g_signal_new (I_("changed"),
-					     G_TYPE_FROM_CLASS (accel_map_class),
+					     B_TYPE_FROM_CLASS (accel_map_class),
 					     G_SIGNAL_DETAILED|G_SIGNAL_RUN_LAST,
 					     0,
 					     NULL, NULL,
 					     _btk_marshal_VOID__STRING_UINT_FLAGS,
-					     G_TYPE_NONE, 3,
-					     G_TYPE_STRING, G_TYPE_UINT, BDK_TYPE_MODIFIER_TYPE);
+					     B_TYPE_NONE, 3,
+					     B_TYPE_STRING, B_TYPE_UINT, BDK_TYPE_MODIFIER_TYPE);
 }
 
 static void

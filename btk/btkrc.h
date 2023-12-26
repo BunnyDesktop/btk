@@ -43,11 +43,11 @@ typedef struct _BtkRcContext    BtkRcContext;
 typedef struct _BtkRcStyleClass BtkRcStyleClass;
 
 #define BTK_TYPE_RC_STYLE              (btk_rc_style_get_type ())
-#define BTK_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_RC_STYLE, BtkRcStyle))
-#define BTK_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
-#define BTK_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_RC_STYLE))
-#define BTK_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RC_STYLE))
-#define BTK_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
+#define BTK_RC_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_RC_STYLE, BtkRcStyle))
+#define BTK_RC_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
+#define BTK_IS_RC_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_RC_STYLE))
+#define BTK_IS_RC_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RC_STYLE))
+#define BTK_RC_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
 
 typedef enum
 {
@@ -59,7 +59,7 @@ typedef enum
 
 struct _BtkRcStyle
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
 
@@ -89,11 +89,11 @@ struct _BtkRcStyle
 
 struct _BtkRcStyleClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Create an empty RC style of the same type as this RC style.
    * The default implementation, which does
-   * g_object_new (G_OBJECT_TYPE (style), NULL);
+   * g_object_new (B_OBJECT_TYPE (style), NULL);
    * should work in most cases.
    */
   BtkRcStyle * (*create_rc_style) (BtkRcStyle *rc_style);
@@ -250,7 +250,7 @@ struct _BtkRcProperty
 
   /* fields similar to BtkSettingsValue */
   gchar *origin;
-  GValue value;
+  BValue value;
 };
 const BtkRcProperty* _btk_rc_style_lookup_rc_property (BtkRcStyle *rc_style,
 						       GQuark      type_name,

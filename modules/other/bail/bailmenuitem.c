@@ -34,7 +34,7 @@ static gint                  bail_menu_item_get_n_children (BatkObject      *obj
 static BatkObject*            bail_menu_item_ref_child      (BatkObject      *obj,
                                                             gint           i);
 static BatkStateSet*          bail_menu_item_ref_state_set  (BatkObject      *obj);
-static void                  bail_menu_item_finalize       (GObject        *object);
+static void                  bail_menu_item_finalize       (BObject        *object);
 
 static void                  batk_action_interface_init     (BatkActionIface *iface);
 static gboolean              bail_menu_item_do_action      (BatkAction      *action,
@@ -67,7 +67,7 @@ G_DEFINE_TYPE_WITH_CODE (BailMenuItem, bail_menu_item, BAIL_TYPE_ITEM,
 static void
 bail_menu_item_class_init (BailMenuItemClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_menu_item_finalize;
@@ -110,7 +110,7 @@ bail_menu_item_real_initialize (BatkObject *obj,
           batk_object_set_parent (obj, btk_widget_get_accessible (parent_widget));
         }
     }
-  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+  g_object_set_data (B_OBJECT (obj), "batk-component-layer",
                      GINT_TO_POINTER (BATK_LAYER_POPUP));
 
   if (BTK_IS_TEAROFF_MENU_ITEM (data))
@@ -131,7 +131,7 @@ bail_menu_item_init (BailMenuItem *menu_item)
 BatkObject*
 bail_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
   
   g_return_val_if_fail (BTK_IS_MENU_ITEM (widget), NULL);
@@ -603,7 +603,7 @@ bail_menu_item_set_description (BatkAction      *action,
 }
 
 static void
-bail_menu_item_finalize (GObject *object)
+bail_menu_item_finalize (BObject *object)
 {
   BailMenuItem *menu_item = BAIL_MENU_ITEM (object);
 
@@ -615,7 +615,7 @@ bail_menu_item_finalize (GObject *object)
       menu_item->action_idle_handler = 0;
     }
 
-  G_OBJECT_CLASS (bail_menu_item_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_menu_item_parent_class)->finalize (object);
 }
 
 static void

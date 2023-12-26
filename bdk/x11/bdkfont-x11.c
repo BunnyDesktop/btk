@@ -62,12 +62,12 @@ bdk_font_name_hash_get (BdkDisplay *display)
   if (!font_name_quark)
     font_name_quark = g_quark_from_static_string ("bdk-font-hash");
 
-  result = g_object_get_qdata (G_OBJECT (display), font_name_quark);
+  result = g_object_get_qdata (B_OBJECT (display), font_name_quark);
 
   if (!result)
     {
       result = g_hash_table_new (g_str_hash, g_str_equal);
-      g_object_set_qdata_full (G_OBJECT (display),
+      g_object_set_qdata_full (B_OBJECT (display),
          font_name_quark, result, (GDestroyNotify) g_hash_table_destroy);
     }
 
@@ -83,12 +83,12 @@ bdk_fontset_name_hash_get (BdkDisplay *display)
   if (!fontset_name_quark)
     fontset_name_quark = g_quark_from_static_string ("bdk-fontset-hash");
 
-  result = g_object_get_qdata (G_OBJECT (display), fontset_name_quark);
+  result = g_object_get_qdata (B_OBJECT (display), fontset_name_quark);
 
   if (!result)
     {
       result = g_hash_table_new (g_str_hash, g_str_equal);
-      g_object_set_qdata_full (G_OBJECT (display),
+      g_object_set_qdata_full (B_OBJECT (display),
          fontset_name_quark, result, (GDestroyNotify) g_hash_table_destroy);
     }
 
@@ -120,7 +120,7 @@ bdk_font_hash_insert (BdkFontType  type,
   GHashTable *hash = (type == BDK_FONT_FONT) ?
     bdk_font_name_hash_get (private->display) : bdk_fontset_name_hash_get (private->display);
 
-  private->names = g_slist_prepend (private->names, g_strdup (font_name));
+  private->names = b_slist_prepend (private->names, g_strdup (font_name));
   g_hash_table_insert (hash, private->names->data, font);
 }
 
@@ -142,7 +142,7 @@ bdk_font_hash_remove (BdkFontType type,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (private->names);
+  b_slist_free (private->names);
   private->names = NULL;
 }
 

@@ -345,7 +345,7 @@ btk_offscreen_box_child_type (BtkContainer *container)
   BtkOffscreenBox *offscreen_box = BTK_OFFSCREEN_BOX (container);
 
   if (offscreen_box->child1 && offscreen_box->child2)
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 
   return BTK_TYPE_WIDGET;
 }

@@ -598,7 +598,7 @@
 <a name="BtkTreeModel.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 BtkTreeModel requires
- GObject.</p>
+ BObject.</p>
 </div>
 <div class="refsect1">
 <a name="BtkTreeModel.derived-interfaces"></a><h2>Known Derived Interfaces</h2>
@@ -1230,7 +1230,7 @@ isn't a valid path in <em class="parameter"><code>model</code></em>
 <div class="refsect2">
 <a name="btk-tree-row-reference-new-proxy"></a><h3>btk_tree_row_reference_new_proxy ()</h3>
 <pre class="programlisting"><a class="link" href="BtkTreeModel.html#BtkTreeRowReference" title="BtkTreeRowReference"><span class="returnvalue">BtkTreeRowReference</span></a> *
-btk_tree_row_reference_new_proxy (<em class="parameter"><code><span class="type">GObject</span> *proxy</code></em>,
+btk_tree_row_reference_new_proxy (<em class="parameter"><code><span class="type">BObject</span> *proxy</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>);</pre>
 <p>You do not need to use this function.  Creates a row reference based on
@@ -1268,7 +1268,7 @@ generally needed by most applications.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>proxy</p></td>
-<td class="parameter_description"><p>A proxy <span class="type">GObject</span></p></td>
+<td class="parameter_description"><p>A proxy <span class="type">BObject</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1429,7 +1429,7 @@ btk_tree_row_reference_copy (<em class="parameter"><code><a class="link" href="B
 <div class="refsect2">
 <a name="btk-tree-row-reference-inserted"></a><h3>btk_tree_row_reference_inserted ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_tree_row_reference_inserted (<em class="parameter"><code><span class="type">GObject</span> *proxy</code></em>,
+btk_tree_row_reference_inserted (<em class="parameter"><code><span class="type">BObject</span> *proxy</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>);</pre>
 <p>Lets a set of row reference created by <a class="link" href="BtkTreeModel.html#btk-tree-row-reference-new-proxy" title="btk_tree_row_reference_new_proxy ()"><code class="function">btk_tree_row_reference_new_proxy()</code></a>
 know that the model emitted the "row_inserted" signal.</p>
@@ -1444,7 +1444,7 @@ know that the model emitted the "row_inserted" signal.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>proxy</p></td>
-<td class="parameter_description"><p>A <span class="type">GObject</span></p></td>
+<td class="parameter_description"><p>A <span class="type">BObject</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1460,7 +1460,7 @@ know that the model emitted the "row_inserted" signal.</p>
 <div class="refsect2">
 <a name="btk-tree-row-reference-deleted"></a><h3>btk_tree_row_reference_deleted ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_tree_row_reference_deleted (<em class="parameter"><code><span class="type">GObject</span> *proxy</code></em>,
+btk_tree_row_reference_deleted (<em class="parameter"><code><span class="type">BObject</span> *proxy</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>);</pre>
 <p>Lets a set of row reference created by <a class="link" href="BtkTreeModel.html#btk-tree-row-reference-new-proxy" title="btk_tree_row_reference_new_proxy ()"><code class="function">btk_tree_row_reference_new_proxy()</code></a>
 know that the model emitted the "row_deleted" signal.</p>
@@ -1475,7 +1475,7 @@ know that the model emitted the "row_deleted" signal.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>proxy</p></td>
-<td class="parameter_description"><p>A <span class="type">GObject</span></p></td>
+<td class="parameter_description"><p>A <span class="type">BObject</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1491,7 +1491,7 @@ know that the model emitted the "row_deleted" signal.</p>
 <div class="refsect2">
 <a name="btk-tree-row-reference-reordered"></a><h3>btk_tree_row_reference_reordered ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_tree_row_reference_reordered (<em class="parameter"><code><span class="type">GObject</span> *proxy</code></em>,
+btk_tree_row_reference_reordered (<em class="parameter"><code><span class="type">BObject</span> *proxy</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                                   <em class="parameter"><code><span class="type">gint</span> *new_order</code></em>);</pre>
@@ -1508,7 +1508,7 @@ know that the model emitted the "rows_reordered" signal.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>proxy</p></td>
-<td class="parameter_description"><p>A <span class="type">GObject</span></p></td>
+<td class="parameter_description"><p>A <span class="type">BObject</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1851,12 +1851,12 @@ be freed with <a class="link" href="BtkTreeModel.html#btk-tree-path-free" title=
 btk_tree_model_get_value (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *tree_model</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                           <em class="parameter"><code><span class="type">gint</span> column</code></em>,
-                          <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Initializes and sets <em class="parameter"><code>value</code></em>
  to that at <em class="parameter"><code>column</code></em>
 .
 When done with <em class="parameter"><code>value</code></em>
-, <code class="function">g_value_unset()</code> needs to be called 
+, <code class="function">b_value_unset()</code> needs to be called 
 to free any allocated memory.</p>
 <div class="refsect3">
 <a name="btk-tree-model-get-value.parameters"></a><h4>Parameters</h4>
@@ -1884,7 +1884,7 @@ to free any allocated memory.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>value</p></td>
-<td class="parameter_description"><p>An empty <span class="type">GValue</span> to set. </p></td>
+<td class="parameter_description"><p>An empty <span class="type">BValue</span> to set. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -2287,12 +2287,12 @@ btk_tree_model_get (<em class="parameter"><code><a class="link" href="BtkTreeMod
 The variable argument list should contain integer column numbers,
 each column number followed by a place to store the value being
 retrieved.  The list is terminated by a -1. For example, to get a
-value from column 0 with type <code class="literal">G_TYPE_STRING</code>, you would
+value from column 0 with type <code class="literal">B_TYPE_STRING</code>, you would
 write: <code class="literal">btk_tree_model_get (model, iter, 0, &amp;place_string_here, -1)</code>,
 where <code class="literal">place_string_here</code> is a <span class="type">gchar*</span> to be 
 filled with the string.</p>
-<p>Returned values with type <code class="literal">G_TYPE_OBJECT</code> have to be unreferenced, values
-with type <code class="literal">G_TYPE_STRING</code> or <code class="literal">G_TYPE_BOXED</code> have to be freed. Other values are
+<p>Returned values with type <code class="literal">B_TYPE_OBJECT</code> have to be unreferenced, values
+with type <code class="literal">B_TYPE_STRING</code> or <code class="literal">B_TYPE_BOXED</code> have to be freed. Other values are
 passed by value.</p>
 <div class="refsect3">
 <a name="btk-tree-model-get.parameters"></a><h4>Parameters</h4>
@@ -2663,7 +2663,7 @@ i.e. <em class="parameter"><code>new_order</code></em>
   void         (* get_value)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter,
 				    gint          column,
-				    GValue       *value);
+				    BValue       *value);
   gboolean     (* iter_next)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter);
   gboolean     (* iter_children)   (BtkTreeModel *tree_model,

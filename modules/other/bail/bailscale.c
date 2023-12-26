@@ -30,9 +30,9 @@ static void         bail_scale_init              (BailScale      *scale);
 
 static void         bail_scale_real_initialize   (BatkObject      *obj,
                                                   gpointer      data);
-static void         bail_scale_notify            (GObject       *obj,
-                                                  GParamSpec    *pspec);
-static void         bail_scale_finalize          (GObject        *object);
+static void         bail_scale_notify            (BObject       *obj,
+                                                  BParamSpec    *pspec);
+static void         bail_scale_finalize          (BObject        *object);
 
 /* batktext.h */ 
 static void	    batk_text_interface_init        (BatkTextIface      *iface);
@@ -87,7 +87,7 @@ G_DEFINE_TYPE_WITH_CODE (BailScale, bail_scale, BAIL_TYPE_RANGE,
 static void	 
 bail_scale_class_init (BailScaleClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
   class->initialize = bail_scale_real_initialize;
@@ -126,18 +126,18 @@ bail_scale_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_scale_finalize (GObject *object)
+bail_scale_finalize (BObject *object)
 {
   BailScale *scale = BAIL_SCALE (object);
 
   g_object_unref (scale->textutil);
-  G_OBJECT_CLASS (bail_scale_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_scale_parent_class)->finalize (object);
 
 }
 
 static void
-bail_scale_notify (GObject    *obj,
-                   GParamSpec *pspec)
+bail_scale_notify (BObject    *obj,
+                   BParamSpec *pspec)
 {
   BailScale *scale = BAIL_SCALE (obj);
 
@@ -168,7 +168,7 @@ bail_scale_notify (GObject    *obj,
             }
         }
     }
-  G_OBJECT_CLASS (bail_scale_parent_class)->notify (obj, pspec);
+  B_OBJECT_CLASS (bail_scale_parent_class)->notify (obj, pspec);
 }
 
 /* batktext.h */

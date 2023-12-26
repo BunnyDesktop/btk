@@ -51,7 +51,7 @@ initialize_model (void)
   gint i;
   BtkTreeIter iter;
 
-  model = (BtkTreeModel *) btk_list_store_new (NUM_COLUMNS, G_TYPE_STRING);
+  model = (BtkTreeModel *) btk_list_store_new (NUM_COLUMNS, B_TYPE_STRING);
   grand = g_rand_new ();
   for (i = 0; i < NUM_ROWS; i++)
     {

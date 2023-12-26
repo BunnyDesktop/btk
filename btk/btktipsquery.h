@@ -40,11 +40,11 @@ B_BEGIN_DECLS
 
 /* --- type macros --- */
 #define	BTK_TYPE_TIPS_QUERY		(btk_tips_query_get_type ())
-#define BTK_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQuery))
-#define BTK_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
-#define BTK_IS_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TIPS_QUERY))
-#define BTK_IS_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TIPS_QUERY))
-#define BTK_TIPS_QUERY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
+#define BTK_TIPS_QUERY(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQuery))
+#define BTK_TIPS_QUERY_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
+#define BTK_IS_TIPS_QUERY(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TIPS_QUERY))
+#define BTK_IS_TIPS_QUERY_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TIPS_QUERY))
+#define BTK_TIPS_QUERY_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
 
 
 /* --- typedefs --- */

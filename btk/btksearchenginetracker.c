@@ -67,7 +67,7 @@ struct _BtkSearchEngineTrackerPrivate
 G_DEFINE_TYPE (BtkSearchEngineTracker, _btk_search_engine_tracker, BTK_TYPE_SEARCH_ENGINE);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
   BtkSearchEngineTracker *tracker;
 
@@ -94,7 +94,7 @@ finalize (GObject *object)
       tracker->priv->connection = NULL;
     }
 
-  G_OBJECT_CLASS (_btk_search_engine_tracker_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_search_engine_tracker_parent_class)->finalize (object);
 }
 
 static GDBusConnection *
@@ -271,7 +271,7 @@ sparql_append_string_literal_lower_case (GString     *sparql,
 }
 
 static void
-query_callback (GObject      *object,
+query_callback (BObject      *object,
                 GAsyncResult *res,
                 gpointer      user_data)
 {
@@ -439,10 +439,10 @@ btk_search_engine_tracker_set_query (BtkSearchEngine *engine,
 static void
 _btk_search_engine_tracker_class_init (BtkSearchEngineTrackerClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkSearchEngineClass *engine_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
 
   engine_class = BTK_SEARCH_ENGINE_CLASS (class);
@@ -458,7 +458,7 @@ _btk_search_engine_tracker_class_init (BtkSearchEngineTrackerClass *class)
 static void
 _btk_search_engine_tracker_init (BtkSearchEngineTracker *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
+  engine->priv = B_TYPE_INSTANCE_GET_PRIVATE (engine,
                                               BTK_TYPE_SEARCH_ENGINE_TRACKER,
                                               BtkSearchEngineTrackerPrivate);
 }

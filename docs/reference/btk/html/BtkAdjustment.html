@@ -260,7 +260,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkAdjustment.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> BtkAdjustment
@@ -549,7 +549,7 @@ btk_adjustment_set_lower (<em class="parameter"><code><a class="link" href="BtkA
 <p>When setting multiple adjustment properties via their individual
 setters, multiple "changed" signals will be emitted. However, since
 the emission of the "changed" signal is tied to the emission of the
-"GObject::notify" signals of the changed properties, it's possible
+"BObject::notify" signals of the changed properties, it's possible
 to compress the "changed" signals into one by calling
 <code class="function">g_object_freeze_notify()</code> and <code class="function">g_object_thaw_notify()</code> around the
 calls to the individual setters.</p>

@@ -158,11 +158,11 @@ do_printing (BtkWidget *do_widget)
   data->filename = demo_find_file ("printing.c", NULL);
   data->font_size = 12.0;
 
-  g_signal_connect (G_OBJECT (operation), "begin-print",
+  g_signal_connect (B_OBJECT (operation), "begin-print",
 		    G_CALLBACK (begin_print), data);
-  g_signal_connect (G_OBJECT (operation), "draw-page",
+  g_signal_connect (B_OBJECT (operation), "draw-page",
 		    G_CALLBACK (draw_page), data);
-  g_signal_connect (G_OBJECT (operation), "end-print",
+  g_signal_connect (B_OBJECT (operation), "end-print",
 		    G_CALLBACK (end_print), data);
 
   btk_print_operation_set_use_full_page (operation, FALSE);

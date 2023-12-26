@@ -54,28 +54,28 @@ enum {
 G_DEFINE_TYPE (BtkToggleAction, btk_toggle_action, BTK_TYPE_ACTION)
 
 static void btk_toggle_action_activate     (BtkAction       *action);
-static void set_property                   (GObject         *object,
+static void set_property                   (BObject         *object,
 					    guint            prop_id,
-					    const GValue    *value,
-					    GParamSpec      *pspec);
-static void get_property                   (GObject         *object,
+					    const BValue    *value,
+					    BParamSpec      *pspec);
+static void get_property                   (BObject         *object,
 					    guint            prop_id,
-					    GValue          *value,
-					    GParamSpec      *pspec);
+					    BValue          *value,
+					    BParamSpec      *pspec);
 static BtkWidget *create_menu_item         (BtkAction       *action);
 
 
-static GObjectClass *parent_class = NULL;
+static BObjectClass *parent_class = NULL;
 static guint         action_signals[LAST_SIGNAL] = { 0 };
 
 static void
 btk_toggle_action_class_init (BtkToggleActionClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkActionClass *action_class;
 
   parent_class = g_type_class_peek_parent (klass);
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   action_class = BTK_ACTION_CLASS (klass);
 
   bobject_class->set_property = set_property;
@@ -123,12 +123,12 @@ btk_toggle_action_class_init (BtkToggleActionClass *klass)
 
   action_signals[TOGGLED] =
     g_signal_new (I_("toggled"),
-                  G_OBJECT_CLASS_TYPE (klass),
+                  B_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (BtkToggleActionClass, toggled),
 		  NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
 
   g_type_class_add_private (bobject_class, sizeof (BtkToggleActionPrivate));
 }
@@ -174,45 +174,45 @@ btk_toggle_action_new (const gchar *name,
 }
 
 static void
-get_property (GObject     *object,
+get_property (BObject     *object,
 	      guint        prop_id,
-	      GValue      *value,
-	      GParamSpec  *pspec)
+	      BValue      *value,
+	      BParamSpec  *pspec)
 {
   BtkToggleAction *action = BTK_TOGGLE_ACTION (object);
   
   switch (prop_id)
     {
     case PROP_DRAW_AS_RADIO:
-      g_value_set_boolean (value, btk_toggle_action_get_draw_as_radio (action));
+      b_value_set_boolean (value, btk_toggle_action_get_draw_as_radio (action));
       break;
     case PROP_ACTIVE:
-      g_value_set_boolean (value, btk_toggle_action_get_active (action));
+      b_value_set_boolean (value, btk_toggle_action_get_active (action));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-set_property (GObject      *object,
+set_property (BObject      *object,
 	      guint         prop_id,
-	      const GValue *value,
-	      GParamSpec   *pspec)
+	      const BValue *value,
+	      BParamSpec   *pspec)
 {
   BtkToggleAction *action = BTK_TOGGLE_ACTION (object);
   
   switch (prop_id)
     {
     case PROP_DRAW_AS_RADIO:
-      btk_toggle_action_set_draw_as_radio (action, g_value_get_boolean (value));
+      btk_toggle_action_set_draw_as_radio (action, b_value_get_boolean (value));
       break;
     case PROP_ACTIVE:
-      btk_toggle_action_set_active (action, g_value_get_boolean (value));
+      btk_toggle_action_set_active (action, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -228,7 +228,7 @@ btk_toggle_action_activate (BtkAction *action)
 
   toggle_action->private_data->active = !toggle_action->private_data->active;
 
-  g_object_notify (G_OBJECT (action), "active");
+  g_object_notify (B_OBJECT (action), "active");
 
   btk_toggle_action_toggled (toggle_action);
 }
@@ -311,7 +311,7 @@ btk_toggle_action_set_draw_as_radio (BtkToggleAction *action,
     {
       action->private_data->draw_as_radio = draw_as_radio;
       
-      g_object_notify (G_OBJECT (action), "draw-as-radio");      
+      g_object_notify (B_OBJECT (action), "draw-as-radio");      
     }
 }
 

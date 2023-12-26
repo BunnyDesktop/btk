@@ -26,14 +26,14 @@
 #include "btktreeprivate.h"
 #include "btkalias.h"
 
-static void btk_cell_renderer_toggle_get_property  (GObject                    *object,
+static void btk_cell_renderer_toggle_get_property  (BObject                    *object,
 						    guint                       param_id,
-						    GValue                     *value,
-						    GParamSpec                 *pspec);
-static void btk_cell_renderer_toggle_set_property  (GObject                    *object,
+						    BValue                     *value,
+						    BParamSpec                 *pspec);
+static void btk_cell_renderer_toggle_set_property  (BObject                    *object,
 						    guint                       param_id,
-						    const GValue               *value,
-						    GParamSpec                 *pspec);
+						    const BValue               *value,
+						    BParamSpec                 *pspec);
 static void btk_cell_renderer_toggle_get_size   (BtkCellRenderer            *cell,
 						 BtkWidget                  *widget,
  						 BdkRectangle               *cell_area,
@@ -75,7 +75,7 @@ enum {
 
 static guint toggle_cell_signals[LAST_SIGNAL] = { 0 };
 
-#define BTK_CELL_RENDERER_TOGGLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererTogglePrivate))
+#define BTK_CELL_RENDERER_TOGGLE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererTogglePrivate))
 
 typedef struct _BtkCellRendererTogglePrivate BtkCellRendererTogglePrivate;
 struct _BtkCellRendererTogglePrivate
@@ -110,7 +110,7 @@ btk_cell_renderer_toggle_init (BtkCellRendererToggle *celltoggle)
 static void
 btk_cell_renderer_toggle_class_init (BtkCellRendererToggleClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (class);
 
   object_class->get_property = btk_cell_renderer_toggle_get_property;
@@ -173,22 +173,22 @@ btk_cell_renderer_toggle_class_init (BtkCellRendererToggleClass *class)
    **/
   toggle_cell_signals[TOGGLED] =
     g_signal_new (I_("toggled"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkCellRendererToggleClass, toggled),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
 
   g_type_class_add_private (object_class, sizeof (BtkCellRendererTogglePrivate));
 }
 
 static void
-btk_cell_renderer_toggle_get_property (GObject     *object,
+btk_cell_renderer_toggle_get_property (BObject     *object,
 				       guint        param_id,
-				       GValue      *value,
-				       GParamSpec  *pspec)
+				       BValue      *value,
+				       BParamSpec  *pspec)
 {
   BtkCellRendererToggle *celltoggle = BTK_CELL_RENDERER_TOGGLE (object);
   BtkCellRendererTogglePrivate *priv;
@@ -198,32 +198,32 @@ btk_cell_renderer_toggle_get_property (GObject     *object,
   switch (param_id)
     {
     case PROP_ACTIVE:
-      g_value_set_boolean (value, celltoggle->active);
+      b_value_set_boolean (value, celltoggle->active);
       break;
     case PROP_INCONSISTENT:
-      g_value_set_boolean (value, priv->inconsistent);
+      b_value_set_boolean (value, priv->inconsistent);
       break;
     case PROP_ACTIVATABLE:
-      g_value_set_boolean (value, celltoggle->activatable);
+      b_value_set_boolean (value, celltoggle->activatable);
       break;
     case PROP_RADIO:
-      g_value_set_boolean (value, celltoggle->radio);
+      b_value_set_boolean (value, celltoggle->radio);
       break;
     case PROP_INDICATOR_SIZE:
-      g_value_set_int (value, priv->indicator_size);
+      b_value_set_int (value, priv->indicator_size);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
 
 
 static void
-btk_cell_renderer_toggle_set_property (GObject      *object,
+btk_cell_renderer_toggle_set_property (BObject      *object,
 				       guint         param_id,
-				       const GValue *value,
-				       GParamSpec   *pspec)
+				       const BValue *value,
+				       BParamSpec   *pspec)
 {
   BtkCellRendererToggle *celltoggle = BTK_CELL_RENDERER_TOGGLE (object);
   BtkCellRendererTogglePrivate *priv;
@@ -233,22 +233,22 @@ btk_cell_renderer_toggle_set_property (GObject      *object,
   switch (param_id)
     {
     case PROP_ACTIVE:
-      celltoggle->active = g_value_get_boolean (value);
+      celltoggle->active = b_value_get_boolean (value);
       break;
     case PROP_INCONSISTENT:
-      priv->inconsistent = g_value_get_boolean (value);
+      priv->inconsistent = b_value_get_boolean (value);
       break;
     case PROP_ACTIVATABLE:
-      celltoggle->activatable = g_value_get_boolean (value);
+      celltoggle->activatable = b_value_get_boolean (value);
       break;
     case PROP_RADIO:
-      celltoggle->radio = g_value_get_boolean (value);
+      celltoggle->radio = b_value_get_boolean (value);
       break;
     case PROP_INDICATOR_SIZE:
-      priv->indicator_size = g_value_get_int (value);
+      priv->indicator_size = b_value_get_int (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -519,7 +519,7 @@ btk_cell_renderer_toggle_set_activatable (BtkCellRendererToggle *toggle,
   if (toggle->activatable != setting)
     {
       toggle->activatable = setting ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (toggle), "activatable");
+      g_object_notify (B_OBJECT (toggle), "activatable");
     }
 }
 

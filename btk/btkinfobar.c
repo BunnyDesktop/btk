@@ -121,7 +121,7 @@
  */
 
 #define BTK_INFO_BAR_GET_PRIVATE(object) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
+  (B_TYPE_INSTANCE_GET_PRIVATE ((object), \
                                 BTK_TYPE_INFO_BAR, \
                                 BtkInfoBarPrivate))
 
@@ -156,31 +156,31 @@ enum
 static guint signals[LAST_SIGNAL];
 
 
-static void     btk_info_bar_set_property (GObject        *object,
+static void     btk_info_bar_set_property (BObject        *object,
                                            guint           prop_id,
-                                           const GValue   *value,
-                                           GParamSpec     *pspec);
-static void     btk_info_bar_get_property (GObject        *object,
+                                           const BValue   *value,
+                                           BParamSpec     *pspec);
+static void     btk_info_bar_get_property (BObject        *object,
                                            guint           prop_id,
-                                           GValue         *value,
-                                           GParamSpec     *pspec);
+                                           BValue         *value,
+                                           BParamSpec     *pspec);
 static void     btk_info_bar_style_set    (BtkWidget      *widget,
                                            BtkStyle       *prev_style);
 static gboolean btk_info_bar_expose       (BtkWidget      *widget,
                                            BdkEventExpose *event);
 static void     btk_info_bar_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject *btk_info_bar_buildable_get_internal_child (BtkBuildable  *buildable,
+static BObject *btk_info_bar_buildable_get_internal_child (BtkBuildable  *buildable,
                                                            BtkBuilder    *builder,
                                                            const gchar   *childname);
 static gboolean  btk_info_bar_buildable_custom_tag_start   (BtkBuildable  *buildable,
                                                             BtkBuilder    *builder,
-                                                            GObject       *child,
+                                                            BObject       *child,
                                                             const gchar   *tagname,
                                                             GMarkupParser *parser,
                                                             gpointer      *data);
 static void      btk_info_bar_buildable_custom_finished    (BtkBuildable  *buildable,
                                                             BtkBuilder    *builder,
-                                                            GObject       *child,
+                                                            BObject       *child,
                                                             const gchar   *tagname,
                                                             gpointer       user_data);
 
@@ -190,10 +190,10 @@ G_DEFINE_TYPE_WITH_CODE (BtkInfoBar, btk_info_bar, BTK_TYPE_HBOX,
                                                 btk_info_bar_buildable_interface_init))
 
 static void
-btk_info_bar_set_property (GObject      *object,
+btk_info_bar_set_property (BObject      *object,
                            guint         prop_id,
-                           const GValue *value,
-                           GParamSpec   *pspec)
+                           const BValue *value,
+                           BParamSpec   *pspec)
 {
   BtkInfoBar *info_bar;
   BtkInfoBarPrivate *priv;
@@ -204,19 +204,19 @@ btk_info_bar_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      btk_info_bar_set_message_type (info_bar, g_value_get_enum (value));
+      btk_info_bar_set_message_type (info_bar, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_info_bar_get_property (GObject    *object,
+btk_info_bar_get_property (BObject    *object,
                            guint       prop_id,
-                           GValue     *value,
-                           GParamSpec *pspec)
+                           BValue     *value,
+                           BParamSpec *pspec)
 {
   BtkInfoBar *info_bar;
   BtkInfoBarPrivate *priv;
@@ -227,18 +227,18 @@ btk_info_bar_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      g_value_set_enum (value, btk_info_bar_get_message_type (info_bar));
+      b_value_set_enum (value, btk_info_bar_get_message_type (info_bar));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_info_bar_finalize (GObject *object)
+btk_info_bar_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (btk_info_bar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_info_bar_parent_class)->finalize (object);
 }
 
 static void
@@ -251,14 +251,14 @@ static ResponseData *
 get_response_data (BtkWidget *widget,
                    gboolean   create)
 {
-  ResponseData *ad = g_object_get_data (G_OBJECT (widget),
+  ResponseData *ad = g_object_get_data (B_OBJECT (widget),
                                         "btk-info-bar-response-data");
 
   if (ad == NULL && create)
     {
       ad = g_slice_new (ResponseData);
 
-      g_object_set_data_full (G_OBJECT (widget),
+      g_object_set_data_full (B_OBJECT (widget),
                               I_("btk-info-bar-response-data"),
                               ad,
                               response_data_free);
@@ -344,11 +344,11 @@ static void
 btk_info_bar_class_init (BtkInfoBarClass *klass)
 {
   BtkWidgetClass *widget_class;
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkBindingSet *binding_set;
 
   widget_class = BTK_WIDGET_CLASS (klass);
-  object_class = G_OBJECT_CLASS (klass);
+  object_class = B_OBJECT_CLASS (klass);
 
   object_class->get_property = btk_info_bar_get_property;
   object_class->set_property = btk_info_bar_set_property;
@@ -398,13 +398,13 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
    * Since: 2.18
    */
   signals[RESPONSE] = g_signal_new (I_("response"),
-                                    G_OBJECT_CLASS_TYPE (klass),
+                                    B_OBJECT_CLASS_TYPE (klass),
                                     G_SIGNAL_RUN_LAST,
                                     G_STRUCT_OFFSET (BtkInfoBarClass, response),
                                     NULL, NULL,
                                     g_cclosure_marshal_VOID__INT,
-                                    G_TYPE_NONE, 1,
-                                    G_TYPE_INT);
+                                    B_TYPE_NONE, 1,
+                                    B_TYPE_INT);
 
   /**
    * BtkInfoBar::close:
@@ -419,12 +419,12 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
    * Since: 2.18
    */
   signals[CLOSE] =  g_signal_new (I_("close"),
-                                  G_OBJECT_CLASS_TYPE (klass),
+                                  B_OBJECT_CLASS_TYPE (klass),
                                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                   G_STRUCT_OFFSET (BtkInfoBarClass, close),
                                   NULL, NULL,
                                   g_cclosure_marshal_VOID__VOID,
-                                  G_TYPE_NONE, 0);
+                                  B_TYPE_NONE, 0);
 
   /**
    * BtkInfoBar:content-area-border:
@@ -649,15 +649,15 @@ btk_info_bar_buildable_interface_init (BtkBuildableIface *iface)
   iface->custom_finished = btk_info_bar_buildable_custom_finished;
 }
 
-static GObject *
+static BObject *
 btk_info_bar_buildable_get_internal_child (BtkBuildable *buildable,
                                            BtkBuilder   *builder,
                                            const gchar  *childname)
 {
   if (strcmp (childname, "content_area") == 0)
-    return G_OBJECT (BTK_INFO_BAR (buildable)->priv->content_area);
+    return B_OBJECT (BTK_INFO_BAR (buildable)->priv->content_area);
   else if (strcmp (childname, "action_area") == 0)
-    return G_OBJECT (BTK_INFO_BAR (buildable)->priv->action_area);
+    return B_OBJECT (BTK_INFO_BAR (buildable)->priv->action_area);
 
   return parent_buildable_iface->get_internal_child (buildable,
                                                      builder,
@@ -725,7 +725,7 @@ btk_info_bar_add_action_widget (BtkInfoBar *info_bar,
       GClosure *closure;
 
       closure = g_cclosure_new_object (G_CALLBACK (action_widget_activated),
-                                       G_OBJECT (info_bar));
+                                       B_OBJECT (info_bar));
       g_signal_connect_closure_by_id (child, signal_id, 0, closure, FALSE);
     }
   else
@@ -1054,7 +1054,7 @@ attributes_text_element (GMarkupParseContext  *context,
   item = g_new (ActionWidgetInfo, 1);
   item->widget_name = g_strndup (text, text_len);
   item->response_id = parser_data->response;
-  parser_data->items = g_slist_prepend (parser_data->items, item);
+  parser_data->items = b_slist_prepend (parser_data->items, item);
   parser_data->response = NULL;
 }
 
@@ -1068,7 +1068,7 @@ static const GMarkupParser attributes_parser =
 gboolean
 btk_info_bar_buildable_custom_tag_start (BtkBuildable  *buildable,
                                          BtkBuilder    *builder,
-                                         GObject       *child,
+                                         BObject       *child,
                                          const gchar   *tagname,
                                          GMarkupParser *parser,
                                          gpointer      *data)
@@ -1096,13 +1096,13 @@ btk_info_bar_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
                                         BtkBuilder   *builder,
-                                        GObject      *child,
+                                        BObject      *child,
                                         const gchar  *tagname,
                                         gpointer      user_data)
 {
   GSList *l;
   ActionWidgetsSubParserData *parser_data;
-  GObject *object;
+  BObject *object;
   BtkInfoBar *info_bar;
   ResponseData *ad;
   guint signal_id;
@@ -1116,7 +1116,7 @@ btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
 
   info_bar = BTK_INFO_BAR (buildable);
   parser_data = (ActionWidgetsSubParserData*)user_data;
-  parser_data->items = g_slist_reverse (parser_data->items);
+  parser_data->items = b_slist_reverse (parser_data->items);
 
   for (l = parser_data->items; l; l = l->next)
     {
@@ -1144,7 +1144,7 @@ btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
           GClosure *closure;
 
           closure = g_cclosure_new_object (G_CALLBACK (action_widget_activated),
-                                           G_OBJECT (info_bar));
+                                           B_OBJECT (info_bar));
           g_signal_connect_closure_by_id (object,
                                           signal_id,
                                           0,
@@ -1160,7 +1160,7 @@ btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
       g_free (item->response_id);
       g_free (item);
     }
-  g_slist_free (parser_data->items);
+  b_slist_free (parser_data->items);
   g_slice_free (ActionWidgetsSubParserData, parser_data);
 }
 
@@ -1234,7 +1234,7 @@ btk_info_bar_set_message_type (BtkInfoBar     *info_bar,
             }
         }
 
-      g_object_notify (G_OBJECT (info_bar), "message-type");
+      g_object_notify (B_OBJECT (info_bar), "message-type");
     }
 }
 

@@ -32,7 +32,7 @@
 #define __BTK_TOGGLE_ACTION_PRIVATE_H__
 
 
-#define BTK_TOGGLE_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionPrivate))
+#define BTK_TOGGLE_ACTION_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionPrivate))
 
 struct _BtkToggleActionPrivate 
 {

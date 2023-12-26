@@ -95,15 +95,15 @@ test_find_widget_input_windows (BtkWidget *widget,
   gpointer udata;
   bdk_window_get_user_data (widget->window, &udata);
   if (udata == widget && (!input_only || (BDK_IS_WINDOW (widget->window) && BDK_WINDOW_OBJECT (widget->window)->input_only)))
-    matches = g_slist_prepend (matches, widget->window);
+    matches = b_slist_prepend (matches, widget->window);
   children = bdk_window_get_children (btk_widget_get_parent_window (widget));
   for (node = children; node; node = node->next)
     {
       bdk_window_get_user_data (node->data, &udata);
       if (udata == widget && (!input_only || (BDK_IS_WINDOW (node->data) && BDK_WINDOW_OBJECT (node->data)->input_only)))
-        matches = g_slist_prepend (matches, node->data);
+        matches = b_slist_prepend (matches, node->data);
     }
-  return g_slist_reverse (matches);
+  return b_slist_reverse (matches);
 }
 
 /**
@@ -137,7 +137,7 @@ btk_test_widget_send_key (BtkWidget      *widget,
     return FALSE;
   k1res = bdk_test_simulate_key (iwindows->data, -1, -1, keyval, modifiers, BDK_KEY_PRESS);
   k2res = bdk_test_simulate_key (iwindows->data, -1, -1, keyval, modifiers, BDK_KEY_RELEASE);
-  g_slist_free (iwindows);
+  b_slist_free (iwindows);
   return k1res && k2res;
 }
 
@@ -173,7 +173,7 @@ btk_test_widget_click (BtkWidget      *widget,
     return FALSE;
   b1res = bdk_test_simulate_button (iwindows->data, -1, -1, button, modifiers, BDK_BUTTON_PRESS);
   b2res = bdk_test_simulate_button (iwindows->data, -1, -1, button, modifiers, BDK_BUTTON_RELEASE);
-  g_slist_free (iwindows);
+  b_slist_free (iwindows);
   return b1res && b2res;
 }
 
@@ -259,7 +259,7 @@ test_list_descendants (BtkWidget *widget,
       GList *node, *list = btk_container_get_children (BTK_CONTAINER (widget));
       for (node = list; node; node = node->next)
         {
-          if (!widget_type || g_type_is_a (G_OBJECT_TYPE (node->data), widget_type))
+          if (!widget_type || g_type_is_a (B_OBJECT_TYPE (node->data), widget_type))
             results = g_list_prepend (results, node->data);
           else
             results = g_list_concat (results, test_list_descendants (node->data, widget_type));

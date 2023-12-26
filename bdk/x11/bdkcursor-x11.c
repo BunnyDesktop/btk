@@ -72,7 +72,7 @@ struct cursor_cache_key
 static void
 add_to_cache (BdkCursorPrivate* cursor)
 {
-  cursor_cache = g_slist_prepend (cursor_cache, cursor);
+  cursor_cache = b_slist_prepend (cursor_cache, cursor);
 
   /* Take a ref so that if the caller frees it we still have it */
   bdk_cursor_ref ((BdkCursor*) cursor);
@@ -116,7 +116,7 @@ find_in_cache (BdkDisplay    *display,
   key.type = type;
   key.name = name;
 
-  res = g_slist_find_custom (cursor_cache, &key, cache_compare_func);
+  res = b_slist_find_custom (cursor_cache, &key, cache_compare_func);
 
   if (res)
     return (BdkCursorPrivate *) res->data;
@@ -144,13 +144,13 @@ _bdk_x11_cursor_display_finalize (BdkDisplay *display)
 	  /* Remove this item from the list */
 	  *(itemp) = item->next;
 	  olditem = item;
-	  item = g_slist_next (item);
-	  g_slist_free_1 (olditem);
+	  item = b_slist_next (item);
+	  b_slist_free_1 (olditem);
         } 
       else 
         {
 	  itemp = &(item->next);
-	  item = g_slist_next (item);
+	  item = b_slist_next (item);
 	}
     }
 }
@@ -659,7 +659,7 @@ bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
   if (size > 0)
     XcursorSetDefaultSize (xdisplay, size);
     
-  g_slist_foreach (cursor_cache, update_cursor, NULL);
+  b_slist_foreach (cursor_cache, update_cursor, NULL);
 }
 
 #else

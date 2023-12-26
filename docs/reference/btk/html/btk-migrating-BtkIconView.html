@@ -167,7 +167,7 @@
 
   <span class="cm">/* construct the BtkIconView */</span>
   <span class="n">icon_view</span> <span class="o">=</span> <span class="n">btk_icon_view_new</span> <span class="p">();</span>
-  <span class="n">store</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">BDK_TYPE_PIXBUF</span><span class="p">,</span> <span class="n">G_TYPE_STRING</span><span class="p">,</span> <span class="n">G_TYPE_POINTER</span><span class="p">);</span>
+  <span class="n">store</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">BDK_TYPE_PIXBUF</span><span class="p">,</span> <span class="n">B_TYPE_STRING</span><span class="p">,</span> <span class="n">B_TYPE_POINTER</span><span class="p">);</span>
 
   <span class="n">btk_icon_view_set_pixbuf_column</span> <span class="p">(</span><span class="n">BTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">PIXBUF_COLUMN</span><span class="p">);</span>
   <span class="n">btk_icon_view_set_text_column</span> <span class="p">(</span><span class="n">BTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">TEXT_COLUMN</span><span class="p">);</span>
@@ -233,7 +233,7 @@
 
 <p>
     assuming that your tree model has a <code class="literal">DATA_COLUMN</code> of type 
-    <code class="literal">G_TYPE_POINTER</code>.
+    <code class="literal">B_TYPE_POINTER</code>.
   </p>
 <p>
     There is a number of minor API differences between 

@@ -66,14 +66,14 @@ typedef enum
 typedef struct _BdkDragContextClass BdkDragContextClass;
 
 #define BDK_TYPE_DRAG_CONTEXT              (bdk_drag_context_get_type ())
-#define BDK_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAG_CONTEXT, BdkDragContext))
-#define BDK_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
-#define BDK_IS_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAG_CONTEXT))
-#define BDK_IS_DRAG_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAG_CONTEXT))
-#define BDK_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
+#define BDK_DRAG_CONTEXT(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAG_CONTEXT, BdkDragContext))
+#define BDK_DRAG_CONTEXT_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
+#define BDK_IS_DRAG_CONTEXT(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAG_CONTEXT))
+#define BDK_IS_DRAG_CONTEXT_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAG_CONTEXT))
+#define BDK_DRAG_CONTEXT_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
 
 struct _BdkDragContext {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
   
@@ -97,7 +97,7 @@ struct _BdkDragContext {
 };
 
 struct _BdkDragContextClass {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
 };
 

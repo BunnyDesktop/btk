@@ -92,11 +92,11 @@ static const int bdk_ndebug_keys = G_N_ELEMENTS (bdk_debug_keys);
 static gboolean
 bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
-  guint debug_value = g_parse_debug_string (value,
+  guint debub_value = g_parse_debug_string (value,
 					    (GDebugKey *) bdk_debug_keys,
 					    bdk_ndebug_keys);
 
-  if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
+  if (debub_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
@@ -104,7 +104,7 @@ bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError
       return FALSE;
     }
 
-  _bdk_debug_flags |= debug_value;
+  _bdk_debug_flags |= debub_value;
 
   return TRUE;
 }
@@ -112,11 +112,11 @@ bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError
 static gboolean
 bdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
-  guint debug_value = g_parse_debug_string (value,
+  guint debub_value = g_parse_debug_string (value,
 					    (GDebugKey *) bdk_debug_keys,
 					    bdk_ndebug_keys);
 
-  if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
+  if (debub_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
@@ -124,7 +124,7 @@ bdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GEr
       return FALSE;
     }
 
-  _bdk_debug_flags &= ~debug_value;
+  _bdk_debug_flags &= ~debub_value;
 
   return TRUE;
 }
@@ -591,12 +591,12 @@ bdk_threads_dispatch_free (gpointer data)
  * }
  *
  * static void
- * some_widget_finalize (GObject *object)
+ * some_widget_finalize (BObject *object)
  * {
  *    SomeWidget *self = SOME_WIDGET (object);
  *    if (self->idle_id)
  *      g_source_remove (self->idle_id);
- *    G_OBJECT_CLASS (parent_class)->finalize (object);
+ *    B_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * ]|
  *
@@ -691,14 +691,14 @@ bdk_threads_add_idle (GSourceFunc    function,
  *    self->timeout_id = g_timeout_add (timeout_callback, self)
  * }
  *  
- * static void some_widget_finalize (GObject *object)
+ * static void some_widget_finalize (BObject *object)
  * {
  *    SomeWidget *self = SOME_WIDGET (object);
  *    
  *    if (self->timeout_id)
  *      g_source_remove (self->timeout_id);
  *    
- *    G_OBJECT_CLASS (parent_class)->finalize (object);
+ *    B_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * ]|
  *

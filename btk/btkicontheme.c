@@ -200,7 +200,7 @@ typedef struct
   BtkIconCache *cache;
 } IconThemeDirMtime;
 
-static void  btk_icon_theme_finalize   (GObject              *object);
+static void  btk_icon_theme_finalize   (BObject              *object);
 static void  theme_dir_destroy         (IconThemeDir         *dir);
 
 static void         theme_destroy     (IconTheme        *theme);
@@ -251,7 +251,7 @@ static GHashTable *icon_theme_builtin_icons;
 BtkIconCache *_builtin_cache = NULL;
 static GList *builtin_dirs = NULL;
 
-G_DEFINE_TYPE (BtkIconTheme, btk_icon_theme, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkIconTheme, btk_icon_theme, B_TYPE_OBJECT)
 
 /**
  * btk_icon_theme_new:
@@ -319,7 +319,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   g_return_val_if_fail (!screen->closed, NULL);
 
-  icon_theme = g_object_get_data (G_OBJECT (screen), "btk-icon-theme");
+  icon_theme = g_object_get_data (B_OBJECT (screen), "btk-icon-theme");
   if (!icon_theme)
     {
       BtkIconThemePrivate *priv;
@@ -330,7 +330,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
       priv = icon_theme->priv;
       priv->is_screen_singleton = TRUE;
 
-      g_object_set_data (G_OBJECT (screen), I_("btk-icon-theme"), icon_theme);
+      g_object_set_data (B_OBJECT (screen), I_("btk-icon-theme"), icon_theme);
     }
 
   return icon_theme;
@@ -339,7 +339,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
 static void
 btk_icon_theme_class_init (BtkIconThemeClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->finalize = btk_icon_theme_finalize;
 
@@ -352,12 +352,12 @@ btk_icon_theme_class_init (BtkIconThemeClass *klass)
  * icon theme.
  **/
   signal_changed = g_signal_new (I_("changed"),
-				 G_TYPE_FROM_CLASS (klass),
+				 B_TYPE_FROM_CLASS (klass),
 				 G_SIGNAL_RUN_LAST,
 				 G_STRUCT_OFFSET (BtkIconThemeClass, changed),
 				 NULL, NULL,
 				 g_cclosure_marshal_VOID__VOID,
-				 G_TYPE_NONE, 0);
+				 B_TYPE_NONE, 0);
 
   g_type_class_add_private (klass, sizeof (BtkIconThemePrivate));
 }
@@ -378,7 +378,7 @@ display_closed (BdkDisplay   *display,
 
   if (was_screen_singleton)
     {
-      g_object_set_data (G_OBJECT (screen), I_("btk-icon-theme"), NULL);
+      g_object_set_data (B_OBJECT (screen), I_("btk-icon-theme"), NULL);
       priv->is_screen_singleton = FALSE;
     }
 
@@ -446,7 +446,7 @@ update_current_theme (BtkIconTheme *icon_theme)
  */
 static void
 theme_changed (BtkSettings  *settings,
-	       GParamSpec   *pspec,
+	       BParamSpec   *pspec,
 	       BtkIconTheme *icon_theme)
 {
   update_current_theme (icon_theme);
@@ -549,7 +549,7 @@ pixbuf_supports_svg (void)
       g_strfreev (mime_types);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
   
   return found_svg;
 }
@@ -663,7 +663,7 @@ blow_themes (BtkIconTheme *icon_theme)
 }
 
 static void
-btk_icon_theme_finalize (GObject *object)
+btk_icon_theme_finalize (BObject *object)
 {
   BtkIconTheme *icon_theme;
   BtkIconThemePrivate *priv;
@@ -691,7 +691,7 @@ btk_icon_theme_finalize (GObject *object)
 
   blow_themes (icon_theme);
 
-  G_OBJECT_CLASS (btk_icon_theme_parent_class)->finalize (object);  
+  B_OBJECT_CLASS (btk_icon_theme_parent_class)->finalize (object);  
 }
 
 /**
@@ -2692,8 +2692,8 @@ btk_icon_info_free (BtkIconInfo *icon_info)
 #endif
   if (icon_info->loadable)
     g_object_unref (icon_info->loadable);
-  g_slist_foreach (icon_info->emblem_infos, (GFunc)btk_icon_info_free, NULL);
-  g_slist_free (icon_info->emblem_infos);
+  b_slist_foreach (icon_info->emblem_infos, (GFunc)btk_icon_info_free, NULL);
+  b_slist_free (icon_info->emblem_infos);
   if (icon_info->pixbuf)
     g_object_unref (icon_info->pixbuf);
   if (icon_info->cache_pixbuf)
@@ -3349,7 +3349,7 @@ btk_icon_theme_add_builtin_icon (const gchar *icon_name,
   default_icon = g_new (BuiltinIcon, 1);
   default_icon->size = size;
   default_icon->pixbuf = g_object_ref (pixbuf);
-  icons = g_slist_prepend (icons, default_icon);
+  icons = b_slist_prepend (icons, default_icon);
 
   /* Replaces value, leaves key untouched
    */
@@ -3443,7 +3443,7 @@ _btk_icon_theme_check_reload (BdkDisplay *display)
     {
       screen = bdk_display_get_screen (display, i);
 
-      icon_theme = g_object_get_data (G_OBJECT (screen), "btk-icon-theme");
+      icon_theme = g_object_get_data (B_OBJECT (screen), "btk-icon-theme");
       if (icon_theme)
 	{
 	  icon_theme->priv->check_reload = TRUE;
@@ -3522,7 +3522,7 @@ btk_icon_theme_lookup_by_gicon (BtkIconTheme       *icon_theme,
 	      /* always force size for emblems */
               emblem_info = btk_icon_theme_lookup_by_gicon (icon_theme, emblem, size / 2, flags | BTK_ICON_LOOKUP_FORCE_SIZE);
               if (emblem_info)
-                info->emblem_infos = g_slist_prepend (info->emblem_infos, emblem_info);
+                info->emblem_infos = b_slist_prepend (info->emblem_infos, emblem_info);
             }
         }
 

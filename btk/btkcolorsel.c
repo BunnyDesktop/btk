@@ -160,16 +160,16 @@ struct _ColorSelectionPrivate
 
 
 static void btk_color_selection_destroy		(BtkObject		 *object);
-static void btk_color_selection_finalize        (GObject		 *object);
+static void btk_color_selection_finalize        (BObject		 *object);
 static void update_color			(BtkColorSelection	 *colorsel);
-static void btk_color_selection_set_property    (GObject                 *object,
+static void btk_color_selection_set_property    (BObject                 *object,
 					         guint                    prop_id,
-					         const GValue            *value,
-					         GParamSpec              *pspec);
-static void btk_color_selection_get_property    (GObject                 *object,
+					         const BValue            *value,
+					         BParamSpec              *pspec);
+static void btk_color_selection_get_property    (BObject                 *object,
 					         guint                    prop_id,
-					         GValue                  *value,
-					         GParamSpec              *pspec);
+					         BValue                  *value,
+					         BParamSpec              *pspec);
 
 static void btk_color_selection_realize         (BtkWidget               *widget);
 static void btk_color_selection_unrealize       (BtkWidget               *widget);
@@ -227,8 +227,8 @@ static void 	set_focus_line_attributes               (BtkWidget 	   *drawing_are
 static gboolean mouse_press 		     	       	(BtkWidget         *invisible,
                             		     	       	 BdkEventButton    *event,
                             		     	       	 gpointer           data);
-static void  palette_change_notify_instance (GObject    *object,
-					     GParamSpec *pspec,
+static void  palette_change_notify_instance (BObject    *object,
+					     BParamSpec *pspec,
 					     gpointer    data);
 static void update_palette (BtkColorSelection *colorsel);
 static void shutdown_eyedropper (BtkWidget *widget);
@@ -265,11 +265,11 @@ G_DEFINE_TYPE (BtkColorSelection, btk_color_selection, BTK_TYPE_VBOX)
 static void
 btk_color_selection_class_init (BtkColorSelectionClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   bobject_class->finalize = btk_color_selection_finalize;
   bobject_class->set_property = btk_color_selection_set_property;
   bobject_class->get_property = btk_color_selection_get_property;
@@ -314,12 +314,12 @@ btk_color_selection_class_init (BtkColorSelectionClass *klass)
   
   color_selection_signals[COLOR_CHANGED] =
     g_signal_new (I_("color-changed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkColorSelectionClass, color_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   g_type_class_add_private (bobject_class, sizeof (ColorSelectionPrivate));
 }
@@ -339,7 +339,7 @@ btk_color_selection_init (BtkColorSelection *colorsel)
   
   btk_widget_push_composite_child ();
 
-  priv = colorsel->private_data = G_TYPE_INSTANCE_GET_PRIVATE (colorsel, BTK_TYPE_COLOR_SELECTION, ColorSelectionPrivate);
+  priv = colorsel->private_data = B_TYPE_INSTANCE_GET_PRIVATE (colorsel, BTK_TYPE_COLOR_SELECTION, ColorSelectionPrivate);
   priv->changing = FALSE;
   priv->default_set = FALSE;
   priv->default_alpha_set = FALSE;
@@ -370,7 +370,7 @@ btk_color_selection_init (BtkColorSelection *colorsel)
   button = btk_button_new ();
 
   btk_widget_set_events (button, BDK_POINTER_MOTION_MASK | BDK_POINTER_MOTION_HINT_MASK);
-  g_object_set_data (G_OBJECT (button), I_("COLORSEL"), colorsel); 
+  g_object_set_data (B_OBJECT (button), I_("COLORSEL"), colorsel); 
   g_signal_connect (button, "clicked",
                     G_CALLBACK (get_screen_color), NULL);
   picker_image = btk_image_new_from_stock (BTK_STOCK_COLOR_PICKER, BTK_ICON_SIZE_BUTTON);
@@ -407,7 +407,7 @@ btk_color_selection_init (BtkColorSelection *colorsel)
   btk_misc_set_alignment (BTK_MISC (priv->opacity_label), 0.0, 0.5); 
   btk_table_attach_defaults (BTK_TABLE (table), priv->opacity_label, 0, 1, 4, 5); 
   adjust = BTK_ADJUSTMENT (btk_adjustment_new (0.0, 0.0, 255.0, 1.0, 1.0, 0.0)); 
-  g_object_set_data (G_OBJECT (adjust), I_("COLORSEL"), colorsel); 
+  g_object_set_data (B_OBJECT (adjust), I_("COLORSEL"), colorsel); 
   priv->opacity_slider = btk_hscale_new (adjust);
   btk_widget_set_tooltip_text (priv->opacity_slider,
                         _("Transparency of the color."));
@@ -508,18 +508,18 @@ btk_color_selection_init (BtkColorSelection *colorsel)
   btk_widget_pop_composite_child ();
 }
 
-/* GObject methods */
+/* BObject methods */
 static void
-btk_color_selection_finalize (GObject *object)
+btk_color_selection_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (btk_color_selection_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_color_selection_parent_class)->finalize (object);
 }
 
 static void
-btk_color_selection_set_property (GObject         *object,
+btk_color_selection_set_property (BObject         *object,
 				  guint            prop_id,
-				  const GValue    *value,
-				  GParamSpec      *pspec)
+				  const BValue    *value,
+				  BParamSpec      *pspec)
 {
   BtkColorSelection *colorsel = BTK_COLOR_SELECTION (object);
   
@@ -527,30 +527,30 @@ btk_color_selection_set_property (GObject         *object,
     {
     case PROP_HAS_OPACITY_CONTROL:
       btk_color_selection_set_has_opacity_control (colorsel, 
-						   g_value_get_boolean (value));
+						   b_value_get_boolean (value));
       break;
     case PROP_HAS_PALETTE:
       btk_color_selection_set_has_palette (colorsel, 
-					   g_value_get_boolean (value));
+					   b_value_get_boolean (value));
       break;
     case PROP_CURRENT_COLOR:
-      btk_color_selection_set_current_color (colorsel, g_value_get_boxed (value));
+      btk_color_selection_set_current_color (colorsel, b_value_get_boxed (value));
       break;
     case PROP_CURRENT_ALPHA:
-      btk_color_selection_set_current_alpha (colorsel, g_value_get_uint (value));
+      btk_color_selection_set_current_alpha (colorsel, b_value_get_uint (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
   
 }
 
 static void
-btk_color_selection_get_property (GObject     *object,
+btk_color_selection_get_property (BObject     *object,
 				  guint        prop_id,
-				  GValue      *value,
-				  GParamSpec  *pspec)
+				  BValue      *value,
+				  BParamSpec  *pspec)
 {
   BtkColorSelection *colorsel = BTK_COLOR_SELECTION (object);
   BdkColor color;
@@ -558,20 +558,20 @@ btk_color_selection_get_property (GObject     *object,
   switch (prop_id)
     {
     case PROP_HAS_OPACITY_CONTROL:
-      g_value_set_boolean (value, btk_color_selection_get_has_opacity_control (colorsel));
+      b_value_set_boolean (value, btk_color_selection_get_has_opacity_control (colorsel));
       break;
     case PROP_HAS_PALETTE:
-      g_value_set_boolean (value, btk_color_selection_get_has_palette (colorsel));
+      b_value_set_boolean (value, btk_color_selection_get_has_palette (colorsel));
       break;
     case PROP_CURRENT_COLOR:
       btk_color_selection_get_current_color (colorsel, &color);
-      g_value_set_boxed (value, &color);
+      b_value_set_boxed (value, &color);
       break;
     case PROP_CURRENT_ALPHA:
-      g_value_set_uint (value, btk_color_selection_get_current_alpha (colorsel));
+      b_value_set_uint (value, btk_color_selection_get_current_alpha (colorsel));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -724,7 +724,7 @@ color_sample_drag_end (BtkWidget      *widget,
 		       BdkDragContext *context,
 		       gpointer        data)
 {
-  g_object_set_data (G_OBJECT (widget), I_("btk-color-selection-drag-window"), NULL);
+  g_object_set_data (B_OBJECT (widget), I_("btk-color-selection-drag-window"), NULL);
 }
 
 static void
@@ -1019,7 +1019,7 @@ palette_get_color (BtkWidget *drawing_area, gdouble *color)
   
   g_return_if_fail (color != NULL);
   
-  color_val = g_object_get_data (G_OBJECT (drawing_area), "color_val");
+  color_val = g_object_get_data (B_OBJECT (drawing_area), "color_val");
   if (color_val == NULL)
     {
       /* Default to white for no good reason */
@@ -1158,7 +1158,7 @@ palette_drag_end (BtkWidget      *widget,
 		  BdkDragContext *context,
 		  gpointer        data)
 {
-  g_object_set_data (G_OBJECT (widget), I_("btk-color-selection-drag-window"), NULL);
+  g_object_set_data (B_OBJECT (widget), I_("btk-color-selection-drag-window"), NULL);
 }
 
 static BdkColor *
@@ -1282,7 +1282,7 @@ palette_set_color (BtkWidget         *drawing_area,
 
   btk_widget_modify_bg (drawing_area, BTK_STATE_NORMAL, &bdk_color);
   
-  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (drawing_area), "color_set")) == 0)
+  if (GPOINTER_TO_INT (g_object_get_data (B_OBJECT (drawing_area), "color_set")) == 0)
     {
       static const BtkTargetEntry targets[] = {
 	{ "application/x-color", 0 }
@@ -1299,7 +1299,7 @@ palette_set_color (BtkWidget         *drawing_area,
 			G_CALLBACK (palette_drag_handle),
 			colorsel);
       
-      g_object_set_data (G_OBJECT (drawing_area), I_("color_set"),
+      g_object_set_data (B_OBJECT (drawing_area), I_("color_set"),
 			 GINT_TO_POINTER (1));
     }
 
@@ -1308,7 +1308,7 @@ palette_set_color (BtkWidget         *drawing_area,
   new_color[2] = color[2];
   new_color[3] = 1.0;
   
-  g_object_set_data_full (G_OBJECT (drawing_area), I_("color_val"), new_color, (GDestroyNotify)g_free);
+  g_object_set_data_full (B_OBJECT (drawing_area), I_("color_val"), new_color, (GDestroyNotify)g_free);
 }
 
 static gboolean
@@ -1364,7 +1364,7 @@ save_color_selected (BtkWidget *menuitem,
 
   drawing_area = BTK_WIDGET (data);
   
-  colorsel = BTK_COLOR_SELECTION (g_object_get_data (G_OBJECT (drawing_area),
+  colorsel = BTK_COLOR_SELECTION (g_object_get_data (B_OBJECT (drawing_area),
                                                      "btk-color-sel"));
 
   priv = colorsel->private_data;
@@ -1380,7 +1380,7 @@ do_popup (BtkColorSelection *colorsel,
   BtkWidget *menu;
   BtkWidget *mi;
   
-  g_object_set_data (G_OBJECT (drawing_area),
+  g_object_set_data (B_OBJECT (drawing_area),
                      I_("btk-color-sel"),
                      colorsel);
   
@@ -1407,7 +1407,7 @@ palette_enter (BtkWidget        *drawing_area,
 	       BdkEventCrossing *event,
 	       gpointer        data)
 {
-  g_object_set_data (G_OBJECT (drawing_area),
+  g_object_set_data (B_OBJECT (drawing_area),
 		     I_("btk-colorsel-have-pointer"),
 		     GUINT_TO_POINTER (TRUE));
 
@@ -1419,7 +1419,7 @@ palette_leave (BtkWidget        *drawing_area,
 	       BdkEventCrossing *event,
 	       gpointer        data)
 {
-  g_object_set_data (G_OBJECT (drawing_area),
+  g_object_set_data (B_OBJECT (drawing_area),
 		     I_("btk-colorsel-have-pointer"),
 		     NULL);
 
@@ -1454,10 +1454,10 @@ palette_release (BtkWidget      *drawing_area,
   btk_widget_grab_focus (drawing_area);
 
   if (event->button == 1 &&
-      g_object_get_data (G_OBJECT (drawing_area),
+      g_object_get_data (B_OBJECT (drawing_area),
 			 "btk-colorsel-have-pointer") != NULL)
     {
-      if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (drawing_area), "color_set")) != 0)
+      if (GPOINTER_TO_INT (g_object_get_data (B_OBJECT (drawing_area), "color_set")) != 0)
         {
           gdouble color[4];
           palette_get_color (drawing_area, color);
@@ -1516,7 +1516,7 @@ palette_activate (BtkWidget   *widget,
       (event->keyval == BDK_KP_Enter) ||
       (event->keyval == BDK_KP_Space))
     {
-      if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "color_set")) != 0)
+      if (GPOINTER_TO_INT (g_object_get_data (B_OBJECT (widget), "color_set")) != 0)
         {
           gdouble color[4];
           palette_get_color (widget, color);
@@ -1555,7 +1555,7 @@ palette_new (BtkColorSelection *colorsel)
 
   btk_widget_set_can_focus (retval, TRUE);
   
-  g_object_set_data (G_OBJECT (retval), I_("color_set"), GINT_TO_POINTER (0)); 
+  g_object_set_data (B_OBJECT (retval), I_("color_set"), GINT_TO_POINTER (0)); 
   btk_widget_set_events (retval, BDK_BUTTON_PRESS_MASK
                          | BDK_BUTTON_RELEASE_MASK
                          | BDK_EXPOSURE_MASK
@@ -1871,7 +1871,7 @@ mouse_press (BtkWidget      *invisible,
 static void
 get_screen_color (BtkWidget *button)
 {
-  BtkColorSelection *colorsel = g_object_get_data (G_OBJECT (button), "COLORSEL");
+  BtkColorSelection *colorsel = g_object_get_data (B_OBJECT (button), "COLORSEL");
   ColorSelectionPrivate *priv = colorsel->private_data;
   BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (button));
   BdkCursor *picker_cursor;
@@ -2007,7 +2007,7 @@ adjustment_changed (BtkAdjustment *adjustment,
   BtkColorSelection *colorsel;
   ColorSelectionPrivate *priv;
   
-  colorsel = BTK_COLOR_SELECTION (g_object_get_data (G_OBJECT (adjustment), "COLORSEL"));
+  colorsel = BTK_COLOR_SELECTION (g_object_get_data (B_OBJECT (adjustment), "COLORSEL"));
   priv = colorsel->private_data;
   
   if (priv->changing)
@@ -2103,7 +2103,7 @@ make_label_spinbutton (BtkColorSelection *colorsel,
     {
       adjust = BTK_ADJUSTMENT (btk_adjustment_new (0.0, 0.0, 255.0, 1.0, 1.0, 0.0));
     }
-  g_object_set_data (G_OBJECT (adjust), I_("COLORSEL"), colorsel);
+  g_object_set_data (B_OBJECT (adjust), I_("COLORSEL"), colorsel);
   *spinbutton = btk_spin_button_new (adjust, 10.0, 0);
 
   btk_widget_set_tooltip_text (*spinbutton, tooltip);  
@@ -2210,10 +2210,10 @@ update_color (BtkColorSelection *colorsel)
   
   g_signal_emit (colorsel, color_selection_signals[COLOR_CHANGED], 0);
   
-  g_object_freeze_notify (G_OBJECT (colorsel));
-  g_object_notify (G_OBJECT (colorsel), "current-color");
-  g_object_notify (G_OBJECT (colorsel), "current-alpha");
-  g_object_thaw_notify (G_OBJECT (colorsel));
+  g_object_freeze_notify (B_OBJECT (colorsel));
+  g_object_notify (B_OBJECT (colorsel), "current-color");
+  g_object_notify (B_OBJECT (colorsel), "current-alpha");
+  g_object_thaw_notify (B_OBJECT (colorsel));
   
   g_object_unref (colorsel);
 }
@@ -2244,8 +2244,8 @@ update_palette (BtkColorSelection *colorsel)
 }
 
 static void
-palette_change_notify_instance (GObject    *object,
-                                GParamSpec *pspec,
+palette_change_notify_instance (BObject    *object,
+                                BParamSpec *pspec,
                                 gpointer    data)
 {
   update_palette (BTK_COLOR_SELECTION (data));
@@ -2370,7 +2370,7 @@ btk_color_selection_set_has_opacity_control (BtkColorSelection *colorsel,
 	}
       color_sample_update_samples (colorsel);
       
-      g_object_notify (G_OBJECT (colorsel), "has-opacity-control");
+      g_object_notify (B_OBJECT (colorsel), "has-opacity-control");
     }
 }
 
@@ -2422,7 +2422,7 @@ btk_color_selection_set_has_palette (BtkColorSelection *colorsel,
 
       update_tooltips (colorsel);
 
-      g_object_notify (G_OBJECT (colorsel), "has-palette");
+      g_object_notify (B_OBJECT (colorsel), "has-palette");
     }
 }
 

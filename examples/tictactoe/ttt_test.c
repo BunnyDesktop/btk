@@ -22,7 +22,7 @@ int main( int   argc,
   
   btk_window_set_title (BTK_WINDOW (window), "Aspect Frame");
   
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (exit), NULL);
   
   btk_container_set_border_width (BTK_CONTAINER (window), 10);
@@ -33,7 +33,7 @@ int main( int   argc,
   btk_widget_show (ttt);
 
   /* And attach to its "tictactoe" signal */
-  g_signal_connect (G_OBJECT (ttt), "tictactoe",
+  g_signal_connect (B_OBJECT (ttt), "tictactoe",
 		    G_CALLBACK (win), NULL);
 
   btk_widget_show (window);

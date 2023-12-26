@@ -39,11 +39,11 @@ typedef struct _BdkPixmapImplX11 BdkPixmapImplX11;
 typedef struct _BdkPixmapImplX11Class BdkPixmapImplX11Class;
 
 #define BDK_TYPE_PIXMAP_IMPL_X11              (bdk_pixmap_impl_x11_get_type ())
-#define BDK_PIXMAP_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11))
-#define BDK_PIXMAP_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
-#define BDK_IS_PIXMAP_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_X11))
-#define BDK_IS_PIXMAP_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_X11))
-#define BDK_PIXMAP_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
+#define BDK_PIXMAP_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11))
+#define BDK_PIXMAP_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
+#define BDK_IS_PIXMAP_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_X11))
+#define BDK_IS_PIXMAP_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_X11))
+#define BDK_PIXMAP_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
 
 struct _BdkPixmapImplX11
 {

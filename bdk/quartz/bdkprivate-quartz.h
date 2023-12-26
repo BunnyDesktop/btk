@@ -36,11 +36,11 @@
 #include "config.h"
 
 #define BDK_TYPE_GC_QUARTZ              (_bdk_gc_quartz_get_type ())
-#define BDK_GC_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_QUARTZ, BdkGCQuartz))
-#define BDK_GC_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
-#define BDK_IS_GC_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_QUARTZ))
-#define BDK_IS_GC_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_QUARTZ))
-#define BDK_GC_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
+#define BDK_GC_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_QUARTZ, BdkGCQuartz))
+#define BDK_GC_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
+#define BDK_IS_GC_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_QUARTZ))
+#define BDK_IS_GC_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_QUARTZ))
+#define BDK_GC_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
 
 #define BDK_DRAG_CONTEXT_PRIVATE(context) ((BdkDragContextPrivate *) BDK_DRAG_CONTEXT (context)->windowing_data)
 
@@ -84,7 +84,7 @@ struct _BdkGCQuartzClass
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkCursorPrivate

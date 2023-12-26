@@ -24,14 +24,14 @@
 static gpointer parent_class = NULL;
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
   BdkDragContextPrivate *private = BDK_DRAG_CONTEXT_PRIVATE (context);
  
   g_free (private);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -45,7 +45,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
 
@@ -72,7 +72,7 @@ bdk_drag_context_get_type (void)
         (GInstanceInitFunc) bdk_drag_context_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkDragContext",
                                             &object_info,
 					    0);

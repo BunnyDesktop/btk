@@ -4772,7 +4772,7 @@ Tue Jun 18 17:02:48 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/Makefile.am (BTKDOC_CFLAGS, BTKDOC_LIBS): set these. 
 
-	* bdk/bdk.types: Add types derived from GObject, so that they get
+	* bdk/bdk.types: Add types derived from BObject, so that they get
 	an object hierarchy section.
 
 2002-05-01  Matthias Clasen  <maclas@gmx.de>
@@ -5686,7 +5686,7 @@ Fri Oct 26 11:54:53 2001  Owen Taylor  <otaylor@redhat.com>
 	correct behavior. This fixes #58798.
 
 	* btk/btk-sections.txt: Update BtkStyle since it's now a
-	GObject and not a struct. This fixes #55807. 
+	BObject and not a struct. This fixes #55807. 
 
 Thu Oct 18 16:40:00 2001  Jonathan Blandford  <jrb@redhat.com>
 

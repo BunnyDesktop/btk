@@ -45,11 +45,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE_BUTTON                 (btk_scale_button_get_type ())
-#define BTK_SCALE_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButton))
-#define BTK_SCALE_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
-#define BTK_IS_SCALE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE_BUTTON))
-#define BTK_IS_SCALE_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE_BUTTON))
-#define BTK_SCALE_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
+#define BTK_SCALE_BUTTON(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButton))
+#define BTK_SCALE_BUTTON_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
+#define BTK_IS_SCALE_BUTTON(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE_BUTTON))
+#define BTK_IS_SCALE_BUTTON_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE_BUTTON))
+#define BTK_SCALE_BUTTON_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
 
 typedef struct _BtkScaleButton        BtkScaleButton;
 typedef struct _BtkScaleButtonClass   BtkScaleButtonClass;

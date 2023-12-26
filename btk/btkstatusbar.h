@@ -37,11 +37,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_STATUSBAR            (btk_statusbar_get_type ())
-#define BTK_STATUSBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_STATUSBAR, BtkStatusbar))
-#define BTK_STATUSBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_STATUSBAR, BtkStatusbarClass))
-#define BTK_IS_STATUSBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_STATUSBAR))
-#define BTK_IS_STATUSBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_STATUSBAR))
-#define BTK_STATUSBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_STATUSBAR, BtkStatusbarClass))
+#define BTK_STATUSBAR(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_STATUSBAR, BtkStatusbar))
+#define BTK_STATUSBAR_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_STATUSBAR, BtkStatusbarClass))
+#define BTK_IS_STATUSBAR(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_STATUSBAR))
+#define BTK_IS_STATUSBAR_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_STATUSBAR))
+#define BTK_STATUSBAR_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_STATUSBAR, BtkStatusbarClass))
 
 
 typedef struct _BtkStatusbar      BtkStatusbar;

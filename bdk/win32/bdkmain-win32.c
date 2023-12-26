@@ -1192,7 +1192,7 @@ _bdk_win32_drawable_description (BdkDrawable *d)
   depth = bdk_drawable_get_depth (d);
 
   return static_printf ("%s:%p:%dx%dx%d",
-			G_OBJECT_TYPE_NAME (d),
+			B_OBJECT_TYPE_NAME (d),
 			BDK_DRAWABLE_HANDLE (d),
 			width, height, depth);
 }

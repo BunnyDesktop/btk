@@ -63,14 +63,14 @@ static const BtkOptionMenuProps default_props = {
 };
 
 static void btk_option_menu_destroy         (BtkObject          *object);
-static void btk_option_menu_set_property    (GObject            *object,
+static void btk_option_menu_set_property    (BObject            *object,
 					     guint               prop_id,
-					     const GValue       *value,
-					     GParamSpec         *pspec);
-static void btk_option_menu_get_property    (GObject            *object,
+					     const BValue       *value,
+					     BParamSpec         *pspec);
+static void btk_option_menu_get_property    (BObject            *object,
 					     guint               prop_id,
-					     GValue             *value,
-					     GParamSpec         *pspec);
+					     BValue             *value,
+					     BParamSpec         *pspec);
 static void btk_option_menu_size_request    (BtkWidget          *widget,
 					     BtkRequisition     *requisition);
 static void btk_option_menu_size_allocate   (BtkWidget          *widget,
@@ -120,24 +120,24 @@ G_DEFINE_TYPE (BtkOptionMenu, btk_option_menu, BTK_TYPE_BUTTON)
 static void
 btk_option_menu_class_init (BtkOptionMenuClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
   signals[CHANGED] =
     g_signal_new (I_("changed"),
-                  G_OBJECT_CLASS_TYPE (class),
+                  B_OBJECT_CLASS_TYPE (class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkOptionMenuClass, changed),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
 
   bobject_class->set_property = btk_option_menu_set_property;
   bobject_class->get_property = btk_option_menu_get_property;
@@ -180,7 +180,7 @@ btk_option_menu_class_init (BtkOptionMenuClass *class)
 static GType
 btk_option_menu_child_type (BtkContainer       *container)
 {
-  return G_TYPE_NONE;
+  return B_TYPE_NONE;
 }
 
 static void
@@ -232,7 +232,7 @@ btk_option_menu_detacher (BtkWidget     *widget,
 					option_menu);
   
   option_menu->menu = NULL;
-  g_object_notify (G_OBJECT (option_menu), "menu");
+  g_object_notify (B_OBJECT (option_menu), "menu");
 }
 
 void
@@ -265,7 +265,7 @@ btk_option_menu_set_menu (BtkOptionMenu *option_menu,
 
       btk_option_menu_update_contents (option_menu);
       
-      g_object_notify (G_OBJECT (option_menu), "menu");
+      g_object_notify (B_OBJECT (option_menu), "menu");
     }
 }
 
@@ -333,41 +333,41 @@ btk_option_menu_get_history (BtkOptionMenu *option_menu)
 }
 
 static void
-btk_option_menu_set_property (GObject            *object,
+btk_option_menu_set_property (BObject            *object,
 			      guint               prop_id,
-			      const GValue       *value,
-			      GParamSpec         *pspec)
+			      const BValue       *value,
+			      BParamSpec         *pspec)
 {
   BtkOptionMenu *option_menu = BTK_OPTION_MENU (object);
 
   switch (prop_id)
     {
     case PROP_MENU:
-      btk_option_menu_set_menu (option_menu, g_value_get_object (value));
+      btk_option_menu_set_menu (option_menu, b_value_get_object (value));
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_option_menu_get_property (GObject            *object,
+btk_option_menu_get_property (BObject            *object,
 			      guint               prop_id,
-			      GValue             *value,
-			      GParamSpec         *pspec)
+			      BValue             *value,
+			      BParamSpec         *pspec)
 {
   BtkOptionMenu *option_menu = BTK_OPTION_MENU (object);
 
   switch (prop_id)
     {
     case PROP_MENU:
-      g_value_set_object (value, option_menu->menu);
+      b_value_set_object (value, option_menu->menu);
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }

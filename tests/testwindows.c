@@ -61,7 +61,7 @@ create_window (BdkWindow *parent,
   
   bdk_rgb_find_color (btk_widget_get_colormap (darea), bg);
   bdk_window_set_background (window, bg);
-  g_object_set_data_full (G_OBJECT (window), "color", bg, g_free);
+  g_object_set_data_full (B_OBJECT (window), "color", bg, g_free);
   
   bdk_window_show (window);
   
@@ -267,7 +267,7 @@ save_window (GString *s,
 
   bdk_window_get_position (window, &x, &y);
   bdk_drawable_get_size (BDK_DRAWABLE (window), &w, &h);
-  color = g_object_get_data (G_OBJECT (window), "color");
+  color = g_object_get_data (B_OBJECT (window), "color");
   
   g_string_append_printf (s, "%d,%d %dx%d (%d,%d,%d) %d %d\n",
 			  x, y, w, h,
@@ -820,7 +820,7 @@ main (int argc, char **argv)
   main_window = window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   btk_container_set_border_width (BTK_CONTAINER (window), 0);
 
-  g_signal_connect (G_OBJECT (window), "delete-event", btk_main_quit, NULL);
+  g_signal_connect (B_OBJECT (window), "delete-event", btk_main_quit, NULL);
 
   hbox = btk_hbox_new (FALSE, 5);
   btk_container_add (BTK_CONTAINER (window), hbox);

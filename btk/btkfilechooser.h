@@ -31,8 +31,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER             (btk_file_chooser_get_type ())
-#define BTK_FILE_CHOOSER(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER, BtkFileChooser))
-#define BTK_IS_FILE_CHOOSER(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER))
+#define BTK_FILE_CHOOSER(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER, BtkFileChooser))
+#define BTK_IS_FILE_CHOOSER(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER))
 
 typedef struct _BtkFileChooser      BtkFileChooser;
 

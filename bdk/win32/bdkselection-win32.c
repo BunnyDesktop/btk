@@ -102,7 +102,7 @@ _bdk_win32_selection_init (void)
 	known_pixbuf_formats[n_known_pixbuf_formats++] = bdk_atom_intern (*mime_type, FALSE);
     }
 
-  g_slist_free (pixbuf_formats);
+  b_slist_free (pixbuf_formats);
   
   text_plain = bdk_atom_intern ("text/plain", FALSE);
   text_plain_charset_utf_8= bdk_atom_intern ("text/plain;charset=utf-8", FALSE);
@@ -1002,7 +1002,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -1026,7 +1026,7 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }

@@ -54,7 +54,7 @@
  */
 
 
-#define BTK_SPINNER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SPINNER, BtkSpinnerPrivate))
+#define BTK_SPINNER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SPINNER, BtkSpinnerPrivate))
 
 G_DEFINE_TYPE (BtkSpinner, btk_spinner, BTK_TYPE_DRAWING_AREA);
 
@@ -74,7 +74,7 @@ struct _BtkSpinnerPrivate
 
 static void btk_spinner_class_init     (BtkSpinnerClass *klass);
 static void btk_spinner_init           (BtkSpinner      *spinner);
-static void btk_spinner_dispose        (GObject         *bobject);
+static void btk_spinner_dispose        (BObject         *bobject);
 static void btk_spinner_realize        (BtkWidget       *widget);
 static void btk_spinner_unrealize      (BtkWidget       *widget);
 static gboolean btk_spinner_expose     (BtkWidget       *widget,
@@ -83,14 +83,14 @@ static void btk_spinner_screen_changed (BtkWidget       *widget,
                                         BdkScreen       *old_screen);
 static void btk_spinner_style_set      (BtkWidget       *widget,
                                         BtkStyle        *prev_style);
-static void btk_spinner_get_property   (GObject         *object,
+static void btk_spinner_get_property   (BObject         *object,
                                         guint            param_id,
-                                        GValue          *value,
-                                        GParamSpec      *pspec);
-static void btk_spinner_set_property   (GObject         *object,
+                                        BValue          *value,
+                                        BParamSpec      *pspec);
+static void btk_spinner_set_property   (BObject         *object,
                                         guint            param_id,
-                                        const GValue    *value,
-                                        GParamSpec      *pspec);
+                                        const BValue    *value,
+                                        BParamSpec      *pspec);
 static void btk_spinner_set_active     (BtkSpinner      *spinner,
                                         gboolean         active);
 static BatkObject *btk_spinner_get_accessible      (BtkWidget *widget);
@@ -99,10 +99,10 @@ static GType      btk_spinner_accessible_get_type (void);
 static void
 btk_spinner_class_init (BtkSpinnerClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS(klass);
+  bobject_class = B_OBJECT_CLASS(klass);
   g_type_class_add_private (bobject_class, sizeof (BtkSpinnerPrivate));
   bobject_class->dispose = btk_spinner_dispose;
   bobject_class->get_property = btk_spinner_get_property;
@@ -165,10 +165,10 @@ btk_spinner_class_init (BtkSpinnerClass *klass)
 }
 
 static void
-btk_spinner_get_property (GObject    *object,
+btk_spinner_get_property (BObject    *object,
                           guint       param_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
+                          BValue     *value,
+                          BParamSpec *pspec)
 {
   BtkSpinnerPrivate *priv;
 
@@ -177,26 +177,26 @@ btk_spinner_get_property (GObject    *object,
   switch (param_id)
     {
       case PROP_ACTIVE:
-        g_value_set_boolean (value, priv->active);
+        b_value_set_boolean (value, priv->active);
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
 static void
-btk_spinner_set_property (GObject      *object,
+btk_spinner_set_property (BObject      *object,
                           guint         param_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+                          const BValue *value,
+                          BParamSpec   *pspec)
 {
   switch (param_id)
     {
       case PROP_ACTIVE:
-        btk_spinner_set_active (BTK_SPINNER (object), g_value_get_boolean (value));
+        btk_spinner_set_active (BTK_SPINNER (object), b_value_get_boolean (value));
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
@@ -351,7 +351,7 @@ btk_spinner_style_set (BtkWidget *widget,
 }
 
 static void
-btk_spinner_dispose (GObject *bobject)
+btk_spinner_dispose (BObject *bobject)
 {
   BtkSpinnerPrivate *priv;
 
@@ -362,7 +362,7 @@ btk_spinner_dispose (GObject *bobject)
       btk_spinner_remove_timeout (BTK_SPINNER (bobject));
     }
 
-  G_OBJECT_CLASS (btk_spinner_parent_class)->dispose (bobject);
+  B_OBJECT_CLASS (btk_spinner_parent_class)->dispose (bobject);
 }
 
 static void
@@ -377,7 +377,7 @@ btk_spinner_set_active (BtkSpinner *spinner, gboolean active)
   if (priv->active != active)
     {
       priv->active = active;
-      g_object_notify (G_OBJECT (spinner), "active");
+      g_object_notify (B_OBJECT (spinner), "active");
 
       if (active && btk_widget_get_realized (BTK_WIDGET (spinner)) && priv->timeout == 0)
         {
@@ -397,7 +397,7 @@ btk_spinner_accessible_factory_get_accessible_type (void)
 }
 
 static BatkObject *
-btk_spinner_accessible_new (GObject *obj)
+btk_spinner_accessible_new (BObject *obj)
 {
   BatkObject *accessible;
 
@@ -410,7 +410,7 @@ btk_spinner_accessible_new (GObject *obj)
 }
 
 static BatkObject*
-btk_spinner_accessible_factory_create_accessible (GObject *obj)
+btk_spinner_accessible_factory_create_accessible (BObject *obj)
 {
   return btk_spinner_accessible_new (obj);
 }
@@ -519,11 +519,11 @@ btk_spinner_accessible_get_type (void)
       factory = batk_registry_get_factory (batk_get_default_registry (),
                                           BTK_TYPE_IMAGE);
       if (!factory)
-        return G_TYPE_INVALID;
+        return B_TYPE_INVALID;
 
       parent_batk_type = batk_object_factory_get_accessible_type (factory);
       if (!parent_batk_type)
-        return G_TYPE_INVALID;
+        return B_TYPE_INVALID;
 
       /*
        * Figure out the size of the class and instance

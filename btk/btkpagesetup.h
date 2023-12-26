@@ -34,8 +34,8 @@ B_BEGIN_DECLS
 typedef struct _BtkPageSetup BtkPageSetup;
 
 #define BTK_TYPE_PAGE_SETUP    (btk_page_setup_get_type ())
-#define BTK_PAGE_SETUP(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetup))
-#define BTK_IS_PAGE_SETUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP))
+#define BTK_PAGE_SETUP(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetup))
+#define BTK_IS_PAGE_SETUP(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP))
 
 GType              btk_page_setup_get_type          (void) B_GNUC_CONST;
 BtkPageSetup *     btk_page_setup_new               (void);

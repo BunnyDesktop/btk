@@ -6,8 +6,8 @@
 B_BEGIN_DECLS
 
 #define TEST_TYPE_PRINT_FILE_OPERATION    (test_print_file_operation_get_type ())
-#define TEST_PRINT_FILE_OPERATION(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), TEST_TYPE_PRINT_FILE_OPERATION, TestPrintFileOperation))
-#define TEST_IS_PRINT_FILE_OPERATION(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TEST_TYPE_PRINT_FILE_OPERATION))
+#define TEST_PRINT_FILE_OPERATION(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), TEST_TYPE_PRINT_FILE_OPERATION, TestPrintFileOperation))
+#define TEST_IS_PRINT_FILE_OPERATION(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), TEST_TYPE_PRINT_FILE_OPERATION))
 
 typedef struct _TestPrintFileOperationClass   TestPrintFileOperationClass;
 typedef struct _TestPrintFileOperationPrivate TestPrintFileOperationPrivate;

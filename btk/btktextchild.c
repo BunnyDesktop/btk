@@ -171,7 +171,7 @@ child_segment_delete_func (BtkTextLineSegment *seg,
   seg->body.child.line = NULL;
 
   /* avoid removing widgets while walking the list */
-  copy = g_slist_copy (seg->body.child.widgets);
+  copy = b_slist_copy (seg->body.child.widgets);
   tmp_list = copy;
   while (tmp_list != NULL)
     {
@@ -179,7 +179,7 @@ child_segment_delete_func (BtkTextLineSegment *seg,
 
       btk_widget_destroy (child);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   /* On removal from the widget's parents (BtkTextView),
@@ -187,7 +187,7 @@ child_segment_delete_func (BtkTextLineSegment *seg,
    */
   g_assert (seg->body.child.widgets == NULL);
 
-  g_slist_free (copy);
+  b_slist_free (copy);
   
   _btk_widget_segment_unref (seg);  
   
@@ -258,7 +258,7 @@ _btk_widget_segment_add    (BtkTextLineSegment *widget_segment,
   g_object_ref (child);
   
   widget_segment->body.child.widgets =
-    g_slist_prepend (widget_segment->body.child.widgets,
+    b_slist_prepend (widget_segment->body.child.widgets,
                      child);
 }
 
@@ -269,7 +269,7 @@ _btk_widget_segment_remove (BtkTextLineSegment *widget_segment,
   g_return_if_fail (widget_segment->type == &btk_text_child_type);
   
   widget_segment->body.child.widgets =
-    g_slist_remove (widget_segment->body.child.widgets,
+    b_slist_remove (widget_segment->body.child.widgets,
                     child);
 
   g_object_unref (child);
@@ -294,21 +294,21 @@ _btk_widget_segment_unref (BtkTextLineSegment *widget_segment)
 BtkTextLayout*
 _btk_anchored_child_get_layout (BtkWidget *child)
 {
-  return g_object_get_data (G_OBJECT (child), "btk-text-child-anchor-layout");  
+  return g_object_get_data (B_OBJECT (child), "btk-text-child-anchor-layout");  
 }
 
 static void
 _btk_anchored_child_set_layout (BtkWidget     *child,
                                 BtkTextLayout *layout)
 {
-  g_object_set_data (G_OBJECT (child),
+  g_object_set_data (B_OBJECT (child),
                      I_("btk-text-child-anchor-layout"),
                      layout);  
 }
      
-static void btk_text_child_anchor_finalize (GObject *obj);
+static void btk_text_child_anchor_finalize (BObject *obj);
 
-G_DEFINE_TYPE (BtkTextChildAnchor, btk_text_child_anchor, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextChildAnchor, btk_text_child_anchor, B_TYPE_OBJECT)
 
 static void
 btk_text_child_anchor_init (BtkTextChildAnchor *child_anchor)
@@ -319,7 +319,7 @@ btk_text_child_anchor_init (BtkTextChildAnchor *child_anchor)
 static void
 btk_text_child_anchor_class_init (BtkTextChildAnchorClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_text_child_anchor_finalize;
 }
@@ -341,7 +341,7 @@ btk_text_child_anchor_new (void)
 }
 
 static void
-btk_text_child_anchor_finalize (GObject *obj)
+btk_text_child_anchor_finalize (BObject *obj)
 {
   BtkTextChildAnchor *anchor;
   GSList *tmp_list;
@@ -365,17 +365,17 @@ btk_text_child_anchor_finalize (GObject *obj)
       while (tmp_list)
         {
           g_object_unref (tmp_list->data);
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
   
-      g_slist_free (seg->body.child.widgets);
+      b_slist_free (seg->body.child.widgets);
   
       g_free (seg);
     }
 
   anchor->segment = NULL;
 
-  G_OBJECT_CLASS (btk_text_child_anchor_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (btk_text_child_anchor_parent_class)->finalize (obj);
 }
 
 /**
@@ -404,7 +404,7 @@ btk_text_child_anchor_get_widgets (BtkTextChildAnchor *anchor)
     {
       list = g_list_prepend (list, iter->data);
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   /* Order is not relevant, so we don't need to reverse the list

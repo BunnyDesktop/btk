@@ -49,11 +49,11 @@ typedef struct _BdkDrawableImplX11 BdkDrawableImplX11;
 typedef struct _BdkDrawableImplX11Class BdkDrawableImplX11Class;
 
 #define BDK_TYPE_DRAWABLE_IMPL_X11              (_bdk_drawable_impl_x11_get_type ())
-#define BDK_DRAWABLE_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11))
-#define BDK_DRAWABLE_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
-#define BDK_IS_DRAWABLE_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_X11))
-#define BDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_X11))
-#define BDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
+#define BDK_DRAWABLE_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11))
+#define BDK_DRAWABLE_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
+#define BDK_IS_DRAWABLE_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
 
 struct _BdkDrawableImplX11
 {

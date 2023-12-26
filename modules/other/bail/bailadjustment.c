@@ -33,15 +33,15 @@ static void	 bail_adjustment_real_initialize   (BatkObject	        *obj,
 static void	 batk_value_interface_init          (BatkValueIface       *iface);
 
 static void	 bail_adjustment_get_current_value (BatkValue            *obj,
-                                                    GValue              *value);
+                                                    BValue              *value);
 static void	 bail_adjustment_get_maximum_value (BatkValue            *obj,
-                                                    GValue              *value);
+                                                    BValue              *value);
 static void	 bail_adjustment_get_minimum_value (BatkValue            *obj,
-                                                    GValue              *value);
+                                                    BValue              *value);
 static void	 bail_adjustment_get_minimum_increment (BatkValue        *obj,
-                                                    GValue              *value);
+                                                    BValue              *value);
 static gboolean	 bail_adjustment_set_current_value (BatkValue            *obj,
-                                                    const GValue        *value);
+                                                    const BValue        *value);
 
 static void      bail_adjustment_destroyed         (BtkAdjustment       *adjustment,
                                                     BailAdjustment      *bail_adjustment);
@@ -65,7 +65,7 @@ bail_adjustment_init (BailAdjustment *adjustment)
 BatkObject* 
 bail_adjustment_new (BtkAdjustment *adjustment)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
 
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), NULL);
@@ -91,7 +91,7 @@ bail_adjustment_real_initialize (BatkObject *obj,
   obj->role = BATK_ROLE_UNKNOWN;
   BAIL_ADJUSTMENT (obj)->adjustment = adjustment;
 
-  g_signal_connect_object (G_OBJECT (adjustment),
+  g_signal_connect_object (B_OBJECT (adjustment),
                            "destroy",
                            G_CALLBACK (bail_adjustment_destroyed),
                            obj, 0);
@@ -109,7 +109,7 @@ batk_value_interface_init (BatkValueIface *iface)
 
 static void	 
 bail_adjustment_get_current_value (BatkValue             *obj,
-                                   GValue               *value)
+                                   BValue               *value)
 {
   BtkAdjustment* adjustment;
   gdouble current_value;
@@ -122,14 +122,14 @@ bail_adjustment_get_current_value (BatkValue             *obj,
   }
 
   current_value = adjustment->value;
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_DOUBLE);
-  g_value_set_double (value,current_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_DOUBLE);
+  b_value_set_double (value,current_value);
 }
 
 static void	 
 bail_adjustment_get_maximum_value (BatkValue             *obj,
-                                   GValue               *value)
+                                   BValue               *value)
 {
   BtkAdjustment* adjustment;
   gdouble maximum_value;
@@ -142,14 +142,14 @@ bail_adjustment_get_maximum_value (BatkValue             *obj,
   }
 
   maximum_value = adjustment->upper;
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_DOUBLE);
-  g_value_set_double (value, maximum_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_DOUBLE);
+  b_value_set_double (value, maximum_value);
 }
 
 static void	 
 bail_adjustment_get_minimum_value (BatkValue             *obj,
-                                   GValue               *value)
+                                   BValue               *value)
 {
   BtkAdjustment* adjustment;
   gdouble minimum_value;
@@ -162,14 +162,14 @@ bail_adjustment_get_minimum_value (BatkValue             *obj,
   }
 
   minimum_value = adjustment->lower;
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_DOUBLE);
-  g_value_set_double (value, minimum_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_DOUBLE);
+  b_value_set_double (value, minimum_value);
 }
 
 static void
 bail_adjustment_get_minimum_increment (BatkValue        *obj,
-                                       GValue          *value)
+                                       BValue          *value)
 {
   BtkAdjustment* adjustment;
   gdouble minimum_increment;
@@ -203,14 +203,14 @@ bail_adjustment_get_minimum_increment (BatkValue        *obj,
       minimum_increment = adjustment->step_increment;
     }
 
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_DOUBLE);
-  g_value_set_double (value, minimum_increment);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_DOUBLE);
+  b_value_set_double (value, minimum_increment);
 }
 
 static gboolean	 
 bail_adjustment_set_current_value (BatkValue             *obj,
-                                   const GValue         *value)
+                                   const BValue         *value)
 {
   if (G_VALUE_HOLDS_DOUBLE (value))
   {
@@ -223,7 +223,7 @@ bail_adjustment_set_current_value (BatkValue             *obj,
       /* State is defunct */
       return FALSE;
     }
-    new_value = g_value_get_double (value);
+    new_value = b_value_get_double (value);
     btk_adjustment_set_value (adjustment, new_value);
 
     return TRUE;

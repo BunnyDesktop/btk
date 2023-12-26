@@ -35,7 +35,7 @@
 #include "bdkprivate.h"
 #include "bdkalias.h"
 
-static void bdk_gc_finalize   (GObject      *object);
+static void bdk_gc_finalize   (BObject      *object);
 
 typedef struct _BdkGCPrivate BdkGCPrivate;
 
@@ -63,14 +63,14 @@ struct _BdkGCPrivate
   guint exposures : 2;
 };
 
-#define BDK_GC_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BDK_TYPE_GC, BdkGCPrivate))
+#define BDK_GC_GET_PRIVATE(o) (B_TYPE_INSTANCE_GET_PRIVATE ((o), BDK_TYPE_GC, BdkGCPrivate))
 
-G_DEFINE_TYPE (BdkGC, bdk_gc, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkGC, bdk_gc, B_TYPE_OBJECT)
 
 static void
 bdk_gc_class_init (BdkGCClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   
   object_class->finalize = bdk_gc_finalize;
 
@@ -205,7 +205,7 @@ _bdk_gc_init (BdkGC           *gc,
 }
 
 static void
-bdk_gc_finalize (GObject *object)
+bdk_gc_finalize (BObject *object)
 {
   BdkGC *gc = BDK_GC (object);
   BdkGCPrivate *priv = BDK_GC_GET_PRIVATE (gc);
@@ -225,7 +225,7 @@ bdk_gc_finalize (GObject *object)
   if (priv->stipple)
     g_object_unref (priv->stipple);
 
-  G_OBJECT_CLASS (bdk_gc_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_gc_parent_class)->finalize (object);
 }
 
 /**

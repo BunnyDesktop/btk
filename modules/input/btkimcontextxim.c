@@ -106,7 +106,7 @@ struct _StatusWindow
 
 static void     btk_im_context_xim_class_init         (BtkIMContextXIMClass  *class);
 static void     btk_im_context_xim_init               (BtkIMContextXIM       *im_context_xim);
-static void     btk_im_context_xim_finalize           (GObject               *obj);
+static void     btk_im_context_xim_finalize           (BObject               *obj);
 static void     btk_im_context_xim_set_client_window  (BtkIMContext          *context,
 						       BdkWindow             *client_window);
 static gboolean btk_im_context_xim_filter_keypress    (BtkIMContext          *context,
@@ -146,7 +146,7 @@ static void           xim_info_display_closed (BdkDisplay *display,
 			                       gboolean    is_error,
 			                       BtkXIMInfo *info);
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 GType btk_type_im_context_xim = 0;
 
@@ -374,7 +374,7 @@ xim_info_display_closed (BdkDisplay *display,
 {
   GSList *ics, *tmp_list;
 
-  open_ims = g_slist_remove (open_ims, info);
+  open_ims = b_slist_remove (open_ims, info);
 
   ics = info->ics;
   info->ics = NULL;
@@ -382,7 +382,7 @@ xim_info_display_closed (BdkDisplay *display,
   for (tmp_list = ics; tmp_list; tmp_list = tmp_list->next)
     set_ic_client_window (tmp_list->data, NULL);
 
-  g_slist_free (ics);
+  b_slist_free (ics);
 
   if (info->status_set)
     g_signal_handler_disconnect (info->settings, info->status_set);
@@ -502,7 +502,7 @@ get_im (BdkWindow *client_window,
   if (info == NULL)
     {
       info = g_new (BtkXIMInfo, 1);
-      open_ims = g_slist_prepend (open_ims, info);
+      open_ims = b_slist_prepend (open_ims, info);
 
       info->screen = screen;
       info->locale = g_strdup (locale);
@@ -526,7 +526,7 @@ static void
 btk_im_context_xim_class_init (BtkIMContextXIMClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
@@ -552,7 +552,7 @@ btk_im_context_xim_init (BtkIMContextXIM *im_context_xim)
 }
 
 static void
-btk_im_context_xim_finalize (GObject *obj)
+btk_im_context_xim_finalize (BObject *obj)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (obj);
 
@@ -587,7 +587,7 @@ btk_im_context_xim_finalize (GObject *obj)
   g_free (context_xim->locale);
   g_free (context_xim->mb_charset);
 
-  G_OBJECT_CLASS (parent_class)->finalize (obj);
+  B_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
 static void
@@ -620,7 +620,7 @@ set_ic_client_window (BtkIMContextXIM *context_xim,
   reinitialize_ic (context_xim);
   if (context_xim->client_window)
     {
-      context_xim->im_info->ics = g_slist_remove (context_xim->im_info->ics, context_xim);
+      context_xim->im_info->ics = b_slist_remove (context_xim->im_info->ics, context_xim);
       context_xim->im_info = NULL;
     }
   
@@ -629,7 +629,7 @@ set_ic_client_window (BtkIMContextXIM *context_xim,
   if (context_xim->client_window)
     {
       context_xim->im_info = get_im (context_xim->client_window, context_xim->locale);
-      context_xim->im_info->ics = g_slist_prepend (context_xim->im_info->ics, context_xim);
+      context_xim->im_info->ics = b_slist_prepend (context_xim->im_info->ics, context_xim);
     }
   
   update_client_widget (context_xim);
@@ -1649,7 +1649,7 @@ on_status_toplevel_destroy (BtkWidget    *toplevel,
  */
 static void
 on_status_toplevel_notify_screen (BtkWindow    *toplevel,
-				  GParamSpec   *pspec,
+				  BParamSpec   *pspec,
 				  StatusWindow *status_window)
 {
   if (status_window->window)
@@ -1693,7 +1693,7 @@ on_status_toplevel_configure (BtkWidget         *toplevel,
 static void
 status_window_free (StatusWindow *status_window)
 {
-  status_windows = g_slist_remove (status_windows, status_window);
+  status_windows = b_slist_remove (status_windows, status_window);
 
   if (status_window->context)
     status_window->context->status_window = NULL;
@@ -1711,7 +1711,7 @@ status_window_free (StatusWindow *status_window)
   if (status_window->window)
     btk_widget_destroy (status_window->window);
   
-  g_object_set_data (G_OBJECT (status_window->toplevel), "btk-im-xim-status-window", NULL);
+  g_object_set_data (B_OBJECT (status_window->toplevel), "btk-im-xim-status-window", NULL);
  
   g_free (status_window);
 }
@@ -1723,14 +1723,14 @@ status_window_get (BtkWidget *toplevel)
 {
   StatusWindow *status_window;
 
-  status_window = g_object_get_data (G_OBJECT (toplevel), "btk-im-xim-status-window");
+  status_window = g_object_get_data (B_OBJECT (toplevel), "btk-im-xim-status-window");
   if (status_window)
     return status_window;
   
   status_window = g_new0 (StatusWindow, 1);
   status_window->toplevel = toplevel;
 
-  status_windows = g_slist_prepend (status_windows, status_window);
+  status_windows = b_slist_prepend (status_windows, status_window);
 
   g_signal_connect (toplevel, "destroy",
 		    G_CALLBACK (on_status_toplevel_destroy),
@@ -1742,7 +1742,7 @@ status_window_get (BtkWidget *toplevel)
 		    G_CALLBACK (on_status_toplevel_notify_screen),
 		    status_window);
   
-  g_object_set_data (G_OBJECT (toplevel), "btk-im-xim-status-window", status_window);
+  g_object_set_data (B_OBJECT (toplevel), "btk-im-xim-status-window", status_window);
 
   return status_window;
 }
@@ -1817,6 +1817,6 @@ btk_im_context_xim_shutdown (void)
       BdkDisplay *display = bdk_screen_get_display (info->screen);
 
       xim_info_display_closed (display, FALSE, info);
-      open_ims = g_slist_remove_link (open_ims, open_ims);
+      open_ims = b_slist_remove_link (open_ims, open_ims);
     }
 }

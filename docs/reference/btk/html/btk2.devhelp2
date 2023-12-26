@@ -4900,8 +4900,8 @@
     <keyword type="function" name="btk_object_remove_data_by_id ()" link="BtkObject.html#btk-object-remove-data-by-id" deprecated=""/>
     <keyword type="function" name="btk_object_remove_no_notify_by_id ()" link="BtkObject.html#btk-object-remove-no-notify-by-id" deprecated=""/>
     <keyword type="struct" name="BtkObject" link="BtkObject.html#BtkObject-struct"/>
-    <keyword type="macro" name="BTK_OBJECT_TYPE" link="BtkObject.html#BTK-OBJECT-TYPE:CAPS" deprecated="2.20: Use G_OBJECT_TYPE() instead."/>
-    <keyword type="macro" name="BTK_OBJECT_TYPE_NAME" link="BtkObject.html#BTK-OBJECT-TYPE-NAME:CAPS" deprecated="2.20: Use G_OBJECT_TYPE_NAME() instead."/>
+    <keyword type="macro" name="BTK_OBJECT_TYPE" link="BtkObject.html#BTK-OBJECT-TYPE:CAPS" deprecated="2.20: Use B_OBJECT_TYPE() instead."/>
+    <keyword type="macro" name="BTK_OBJECT_TYPE_NAME" link="BtkObject.html#BTK-OBJECT-TYPE-NAME:CAPS" deprecated="2.20: Use B_OBJECT_TYPE_NAME() instead."/>
     <keyword type="enum" name="enum BtkObjectFlags" link="BtkObject.html#BtkObjectFlags" deprecated=""/>
     <keyword type="enum" name="enum BtkArgFlags" link="BtkObject.html#BtkArgFlags" deprecated=""/>
     <keyword type="macro" name="btk_object_data_try_key" link="BtkObject.html#btk-object-data-try-key" deprecated=""/>
@@ -5014,7 +5014,7 @@
     <keyword type="property" name="The “has-secondary-forward-stepper” style property" link="BtkScrollbar.html#BtkScrollbar--s-has-secondary-forward-stepper"/>
     <keyword type="property" name="The “min-slider-length” style property" link="BtkScrollbar.html#BtkScrollbar--s-min-slider-length"/>
     <keyword type="struct" name="struct BtkSeparator" link="BtkSeparator.html#BtkSeparator-struct"/>
-    <keyword type="macro" name="BTK_WIDGET_TYPE()" link="BtkWidget.html#BTK-WIDGET-TYPE:CAPS" deprecated="2.20: Use G_OBJECT_TYPE() instead."/>
+    <keyword type="macro" name="BTK_WIDGET_TYPE()" link="BtkWidget.html#BTK-WIDGET-TYPE:CAPS" deprecated="2.20: Use B_OBJECT_TYPE() instead."/>
     <keyword type="macro" name="BTK_WIDGET_STATE()" link="BtkWidget.html#BTK-WIDGET-STATE:CAPS" deprecated="2.20: Use btk_widget_get_state() instead."/>
     <keyword type="macro" name="BTK_WIDGET_SAVED_STATE()" link="BtkWidget.html#BTK-WIDGET-SAVED-STATE:CAPS" deprecated="2.20: Do not used it."/>
     <keyword type="macro" name="BTK_WIDGET_FLAGS()" link="BtkWidget.html#BTK-WIDGET-FLAGS:CAPS" deprecated=""/>

@@ -126,7 +126,7 @@ static void     btk_im_context_real_set_surrounding    (BtkIMContext   *context,
 							gint            len,
 							gint            cursor_index);
 
-G_DEFINE_ABSTRACT_TYPE (BtkIMContext, btk_im_context, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (BtkIMContext, btk_im_context, B_TYPE_OBJECT)
 
 /**
  * BtkIMContextClass:
@@ -202,12 +202,12 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[PREEDIT_START] =
     g_signal_new (I_("preedit-start"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIMContextClass, preedit_start),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   /**
    * BtkIMContext::preedit-end:
    * @context: the object on which the signal is emitted
@@ -217,12 +217,12 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[PREEDIT_END] =
     g_signal_new (I_("preedit-end"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIMContextClass, preedit_end),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   /**
    * BtkIMContext::preedit-changed:
    * @context: the object on which the signal is emitted
@@ -234,12 +234,12 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[PREEDIT_CHANGED] =
     g_signal_new (I_("preedit-changed"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIMContextClass, preedit_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   /**
    * BtkIMContext::commit:
    * @context: the object on which the signal is emitted
@@ -251,13 +251,13 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[COMMIT] =
     g_signal_new (I_("commit"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIMContextClass, commit),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
   /**
    * BtkIMContext::retrieve-surrounding:
    * @context: the object on which the signal is emitted
@@ -271,12 +271,12 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[RETRIEVE_SURROUNDING] =
     g_signal_new (I_("retrieve-surrounding"),
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkIMContextClass, retrieve_surrounding),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__VOID,
-                  G_TYPE_BOOLEAN, 0);
+                  B_TYPE_BOOLEAN, 0);
   /**
    * BtkIMContext::delete-surrounding:
    * @context: the object on which the signal is emitted
@@ -292,14 +292,14 @@ btk_im_context_class_init (BtkIMContextClass *klass)
    */
   im_context_signals[DELETE_SURROUNDING] =
     g_signal_new (I_("delete-surrounding"),
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkIMContextClass, delete_surrounding),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__INT_INT,
-                  G_TYPE_BOOLEAN, 2,
-                  G_TYPE_INT,
-		  G_TYPE_INT);
+                  B_TYPE_BOOLEAN, 2,
+                  B_TYPE_INT,
+		  B_TYPE_INT);
 }
 
 static void
@@ -340,7 +340,7 @@ btk_im_context_real_set_surrounding (BtkIMContext  *context,
 				     gint           len,
 				     gint           cursor_index)
 {
-  SurroundingInfo *info = g_object_get_data (G_OBJECT (context),
+  SurroundingInfo *info = g_object_get_data (B_OBJECT (context),
                                              "btk-im-surrounding-info");
 
   if (info)
@@ -361,11 +361,11 @@ btk_im_context_real_get_surrounding (BtkIMContext *context,
   SurroundingInfo local_info = { NULL, 0 };
   SurroundingInfo *info;
   
-  info = g_object_get_data (G_OBJECT (context), "btk-im-surrounding-info");
+  info = g_object_get_data (B_OBJECT (context), "btk-im-surrounding-info");
   if (!info)
     {
       info = &local_info;
-      g_object_set_data (G_OBJECT (context), I_("btk-im-surrounding-info"), info);
+      g_object_set_data (B_OBJECT (context), I_("btk-im-surrounding-info"), info);
       info_is_local = TRUE;
     }
   
@@ -387,7 +387,7 @@ btk_im_context_real_get_surrounding (BtkIMContext *context,
   if (info_is_local)
     {
       g_free (info->text);
-      g_object_set_data (G_OBJECT (context), I_("btk-im-surrounding-info"), NULL);
+      g_object_set_data (B_OBJECT (context), I_("btk-im-surrounding-info"), NULL);
     }
   
   return result;

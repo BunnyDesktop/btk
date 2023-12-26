@@ -208,7 +208,7 @@ bdk_win32_keymap_init (BdkWin32Keymap *keymap)
 }
 
 static void
-bdk_win32_keymap_finalize (GObject *object)
+bdk_win32_keymap_finalize (BObject *object)
 {
   BdkWin32Keymap *keymap = BDK_WIN32_KEYMAP (object);
 
@@ -216,7 +216,7 @@ bdk_win32_keymap_finalize (GObject *object)
   g_clear_pointer (&keymap->layout_handles, g_array_unref);
   g_clear_pointer (&keymap->options, g_array_unref);
 
-  G_OBJECT_CLASS (bdk_win32_keymap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_win32_keymap_parent_class)->finalize (object);
 }
 
 #ifdef G_ENABLE_DEBUG
@@ -1668,7 +1668,7 @@ bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
 static void
 bdk_win32_keymap_class_init (BdkWin32KeymapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_win32_keymap_finalize;
 

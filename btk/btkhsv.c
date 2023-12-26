@@ -119,13 +119,13 @@ G_DEFINE_TYPE (BtkHSV, btk_hsv, BTK_TYPE_WIDGET)
 static void
 btk_hsv_class_init (BtkHSVClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkHSVClass    *hsv_class;
   BtkBindingSet  *binding_set;
   
-  bobject_class = (GObjectClass *) class;
+  bobject_class = (BObjectClass *) class;
   object_class = (BtkObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
   hsv_class = BTK_HSV_CLASS (class);
@@ -149,53 +149,53 @@ btk_hsv_class_init (BtkHSVClass *class)
   
   hsv_signals[CHANGED] =
     g_signal_new (I_("changed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkHSVClass, changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   hsv_signals[MOVE] =
     g_signal_new (I_("move"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkHSVClass, move),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_DIRECTION_TYPE);
 
   binding_set = btk_binding_set_by_class (class);
 
   btk_binding_entry_add_signal (binding_set, BDK_Up, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_UP);
+                                B_TYPE_ENUM, BTK_DIR_UP);
   btk_binding_entry_add_signal (binding_set, BDK_KP_Up, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_UP);
+                                B_TYPE_ENUM, BTK_DIR_UP);
   
   btk_binding_entry_add_signal (binding_set, BDK_Down, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_DOWN);
+                                B_TYPE_ENUM, BTK_DIR_DOWN);
   btk_binding_entry_add_signal (binding_set, BDK_KP_Down, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_DOWN);
+                                B_TYPE_ENUM, BTK_DIR_DOWN);
 
   
   btk_binding_entry_add_signal (binding_set, BDK_Right, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_RIGHT);
+                                B_TYPE_ENUM, BTK_DIR_RIGHT);
   btk_binding_entry_add_signal (binding_set, BDK_KP_Right, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_RIGHT);
+                                B_TYPE_ENUM, BTK_DIR_RIGHT);
   
   btk_binding_entry_add_signal (binding_set, BDK_Left, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_LEFT);
+                                B_TYPE_ENUM, BTK_DIR_LEFT);
   btk_binding_entry_add_signal (binding_set, BDK_KP_Left, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, BTK_DIR_LEFT);
+                                B_TYPE_ENUM, BTK_DIR_LEFT);
 
   g_type_class_add_private (bobject_class, sizeof (HSVPrivate));   
 }
@@ -206,7 +206,7 @@ btk_hsv_init (BtkHSV *hsv)
 {
   HSVPrivate *priv;
 
-  priv = G_TYPE_INSTANCE_GET_PRIVATE (hsv, BTK_TYPE_HSV, HSVPrivate);
+  priv = B_TYPE_INSTANCE_GET_PRIVATE (hsv, BTK_TYPE_HSV, HSVPrivate);
   
   hsv->priv = priv;
 

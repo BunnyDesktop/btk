@@ -93,7 +93,7 @@ int main( int    argc,
     btk_widget_set_size_request (BTK_WIDGET (window), 300, 150);
 
     btk_window_set_title (BTK_WINDOW (window), "BtkCList Example");
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
                       G_CALLBACK (btk_main_quit),
                       NULL);
     
@@ -115,7 +115,7 @@ int main( int    argc,
 
     /* When a selection is made, we want to know about it. The callback
      * used is selection_made, and its code can be found further down */
-    g_signal_connect (G_OBJECT (clist), "select_row",
+    g_signal_connect (B_OBJECT (clist), "select_row",
                       G_CALLBACK (selection_made),
                       NULL);
 
@@ -148,13 +148,13 @@ int main( int    argc,
     btk_box_pack_start (BTK_BOX (hbox), button_hide_show, TRUE, TRUE, 0);
 
     /* Connect our callbacks to the three buttons */
-    g_signal_connect_swapped (G_OBJECT (button_add), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_add), "clicked",
                               G_CALLBACK (button_add_clicked),
 			      clist);
-    g_signal_connect_swapped (G_OBJECT (button_clear), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_clear), "clicked",
                               G_CALLBACK (button_clear_clicked),
                               clist);
-    g_signal_connect_swapped (G_OBJECT (button_hide_show), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_hide_show), "clicked",
                               G_CALLBACK (button_hide_show_clicked),
                               clist);
 

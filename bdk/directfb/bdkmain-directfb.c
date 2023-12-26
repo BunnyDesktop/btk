@@ -158,7 +158,7 @@ bdk_directfb_other_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;
@@ -225,7 +225,7 @@ bdk_directfb_pointer_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;
@@ -271,7 +271,7 @@ bdk_directfb_keyboard_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;

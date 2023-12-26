@@ -73,7 +73,7 @@ enum {
 G_DEFINE_TYPE (BdkBangoRenderer, bdk_bango_renderer, BANGO_TYPE_RENDERER)
 
 static void
-bdk_bango_renderer_finalize (GObject *object)
+bdk_bango_renderer_finalize (BObject *object)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
   BdkBangoRendererPrivate *priv = bdk_renderer->priv;
@@ -88,18 +88,18 @@ bdk_bango_renderer_finalize (GObject *object)
     if (priv->stipple[i])
       g_object_unref (priv->stipple[i]);
 
-  G_OBJECT_CLASS (bdk_bango_renderer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_bango_renderer_parent_class)->finalize (object);
 }
 
-static GObject*
+static BObject*
 bdk_bango_renderer_constructor (GType                  type,
 				guint                  n_construct_properties,
-				GObjectConstructParam *construct_params)
+				BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
   BdkBangoRenderer *bdk_renderer;
 
-  object = G_OBJECT_CLASS (bdk_bango_renderer_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (bdk_bango_renderer_parent_class)->constructor (type,
                                                                           n_construct_properties,
                                                                           construct_params);
 
@@ -463,39 +463,39 @@ bdk_bango_renderer_prepare_run (BangoRenderer  *renderer,
 }
 
 static void
-bdk_bango_renderer_set_property (GObject         *object,
+bdk_bango_renderer_set_property (BObject         *object,
 				 guint            prop_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec)
+				 const BValue    *value,
+				 BParamSpec      *pspec)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
 
   switch (prop_id)
     {
     case PROP_SCREEN:
-      bdk_renderer->priv->screen = g_value_get_object (value);
+      bdk_renderer->priv->screen = b_value_get_object (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-bdk_bango_renderer_get_property (GObject    *object,
+bdk_bango_renderer_get_property (BObject    *object,
 				 guint       prop_id,
-				 GValue     *value,
-				 GParamSpec *pspec)
+				 BValue     *value,
+				 BParamSpec *pspec)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
 
   switch (prop_id)
     {
     case PROP_SCREEN:
-      g_value_set_object (value, bdk_renderer->priv->screen);
+      b_value_set_object (value, bdk_renderer->priv->screen);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -503,7 +503,7 @@ bdk_bango_renderer_get_property (GObject    *object,
 static void
 bdk_bango_renderer_init (BdkBangoRenderer *renderer)
 {
-  renderer->priv = G_TYPE_INSTANCE_GET_PRIVATE (renderer,
+  renderer->priv = B_TYPE_INSTANCE_GET_PRIVATE (renderer,
 						BDK_TYPE_BANGO_RENDERER,
 						BdkBangoRendererPrivate);
 
@@ -514,7 +514,7 @@ bdk_bango_renderer_init (BdkBangoRenderer *renderer)
 static void
 bdk_bango_renderer_class_init (BdkBangoRendererClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   
@@ -575,7 +575,7 @@ on_renderer_display_closed (BdkDisplay       *display,
   g_signal_handlers_disconnect_by_func (display,
 					on_renderer_display_closed,
 					renderer);
-  g_object_set_data (G_OBJECT (renderer->priv->screen),
+  g_object_set_data (B_OBJECT (renderer->priv->screen),
                      g_intern_static_string ("bdk-bango-renderer"), NULL);
 }
 
@@ -605,11 +605,11 @@ bdk_bango_renderer_get_default (BdkScreen *screen)
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   
-  renderer = g_object_get_data (G_OBJECT (screen), "bdk-bango-renderer");
+  renderer = g_object_get_data (B_OBJECT (screen), "bdk-bango-renderer");
   if (!renderer)
     {
       renderer = bdk_bango_renderer_new (screen);
-      g_object_set_data_full (G_OBJECT (screen), 
+      g_object_set_data_full (B_OBJECT (screen), 
                               g_intern_static_string ("bdk-bango-renderer"), renderer,
 			      (GDestroyNotify)g_object_unref);
 

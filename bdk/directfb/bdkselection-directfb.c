@@ -71,7 +71,7 @@ _bdk_selection_window_destroyed (BdkWindow *window)
 
       if (info->owner == window)
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	}
     }
@@ -93,7 +93,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info = tmp_list->data;
       if (info->selection == selection)
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	  break;
 	}
@@ -106,7 +106,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info->owner = owner;
       info->selection = selection;
 
-      owner_list = g_slist_prepend (owner_list, info);
+      owner_list = b_slist_prepend (owner_list, info);
     }
 
   return TRUE;
@@ -372,7 +372,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -396,7 +396,7 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }

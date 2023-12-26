@@ -4543,7 +4543,7 @@ Thu Jan 27 14:25:45 2005  Manish Singh  <yosh@gimp.org>
 	docs.  (#165163, Jeff Franks)
 	
 	* btk/btkimage.c (btk_image_get_property): Use the correct setter
-	for a string GValue.  (#165203, Damon Chaplin)
+	for a string BValue.  (#165203, Damon Chaplin)
 
 2005-01-24  Matthias Clasen  <mclasen@redhat.com>
 
@@ -5218,7 +5218,7 @@ Tue Jan  4 11:36:43 2005  Søren Sandmann  <sandmann@redhat.com>
 	fix capitalization of error messages.
 
 	* btk/btkcellrenderertext.c (btk_cell_renderer_text_set_property): 
-	Use g_value_get_boolean() for ellipsize_set.  (#162447, 
+	Use b_value_get_boolean() for ellipsize_set.  (#162447, 
 	Brian Tarricone)
 
 2004-12-30  Tor Lillqvist  <tml@iki.fi>

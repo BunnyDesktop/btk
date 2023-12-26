@@ -45,7 +45,7 @@ static void bdk_window_impl_win32_get_size   (BdkDrawable        *drawable,
                                               gint               *height);
 static void bdk_window_impl_win32_init       (BdkWindowImplWin32      *window);
 static void bdk_window_impl_win32_class_init (BdkWindowImplWin32Class *klass);
-static void bdk_window_impl_win32_finalize   (GObject                 *object);
+static void bdk_window_impl_win32_finalize   (BObject                 *object);
 
 static gpointer parent_class = NULL;
 static GSList *modal_window_stack = NULL;
@@ -71,7 +71,7 @@ static gboolean _bdk_window_get_functions (BdkWindow         *window,
 static void bdk_window_impl_iface_init (BdkWindowImplIface *iface);
 
 BdkScreen *
-BDK_WINDOW_SCREEN (GObject *win)
+BDK_WINDOW_SCREEN (BObject *win)
 {
   return _bdk_screen;
 }
@@ -158,7 +158,7 @@ bdk_window_impl_win32_init (BdkWindowImplWin32 *impl)
 static void
 bdk_window_impl_win32_class_init (BdkWindowImplWin32Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -171,7 +171,7 @@ bdk_window_impl_win32_class_init (BdkWindowImplWin32Class *klass)
 }
 
 static void
-bdk_window_impl_win32_finalize (GObject *object)
+bdk_window_impl_win32_finalize (BObject *object)
 {
   BdkWindowObject *wrapper;
   BdkDrawableImplWin32 *draw_impl;
@@ -210,7 +210,7 @@ bdk_window_impl_win32_finalize (GObject *object)
       window_impl->hicon_small = NULL;
     }
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 void
@@ -905,9 +905,9 @@ _bdk_win32_window_destroy (BdkWindow *window,
       BdkWindowImplWin32 *child_impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (child)->impl);
 
       child_impl->transient_owner = NULL;
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
-  g_slist_free (window_impl->transient_children);
+  b_slist_free (window_impl->transient_children);
   window_impl->transient_children = NULL;
 
   /* Remove ourself from our transient owner */
@@ -2061,7 +2061,7 @@ bdk_window_set_geometry_hints (BdkWindow         *window,
 
   impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (window)->impl);
 
-  fi = g_object_get_data (G_OBJECT (window), "fullscreen-info");
+  fi = g_object_get_data (B_OBJECT (window), "fullscreen-info");
   if (fi)
     fi->hint_flags = geom_mask;
   else
@@ -2186,9 +2186,9 @@ bdk_window_set_transient_for (BdkWindow *window,
       BdkWindowImplWin32 *trans_impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (window_impl->transient_owner)->impl);
       if (trans_impl->transient_children != NULL)
         {
-          item = g_slist_find (trans_impl->transient_children, window);
+          item = b_slist_find (trans_impl->transient_children, window);
           item->data = NULL;
-          trans_impl->transient_children = g_slist_delete_link (trans_impl->transient_children, item);
+          trans_impl->transient_children = b_slist_delete_link (trans_impl->transient_children, item);
           trans_impl->num_transients--;
 
           if (!trans_impl->num_transients)
@@ -2196,8 +2196,8 @@ bdk_window_set_transient_for (BdkWindow *window,
               trans_impl->transient_children = NULL;
             }
         }
-      g_object_unref (G_OBJECT (window_impl->transient_owner));
-      g_object_unref (G_OBJECT (window));
+      g_object_unref (B_OBJECT (window_impl->transient_owner));
+      g_object_unref (B_OBJECT (window));
 
       window_impl->transient_owner = NULL;
     }
@@ -2205,11 +2205,11 @@ bdk_window_set_transient_for (BdkWindow *window,
     {
       parent_impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (parent)->impl);
 
-      parent_impl->transient_children = g_slist_append (parent_impl->transient_children, window);
-      g_object_ref (G_OBJECT (window));
+      parent_impl->transient_children = b_slist_append (parent_impl->transient_children, window);
+      g_object_ref (B_OBJECT (window));
       parent_impl->num_transients++;
       window_impl->transient_owner = parent;
-      g_object_ref (G_OBJECT (parent));
+      g_object_ref (B_OBJECT (parent));
     }
 
   /* This changes the *owner* of the window, despite the misleading
@@ -2226,7 +2226,7 @@ bdk_window_set_transient_for (BdkWindow *window,
 void
 _bdk_push_modal_window (BdkWindow *window)
 {
-  modal_window_stack = g_slist_prepend (modal_window_stack,
+  modal_window_stack = b_slist_prepend (modal_window_stack,
                                         window);
 }
 
@@ -2244,10 +2244,10 @@ _bdk_remove_modal_window (BdkWindow *window)
 
   /* Find the requested window in the stack and remove it.  Yeah, I realize this
    * means we're not a 'real stack', strictly speaking.  Sue me. :) */
-  tmp = g_slist_find (modal_window_stack, window);
+  tmp = b_slist_find (modal_window_stack, window);
   if (tmp != NULL)
     {
-      modal_window_stack = g_slist_delete_link (modal_window_stack, tmp);
+      modal_window_stack = b_slist_delete_link (modal_window_stack, tmp);
     }
 }
 
@@ -3277,7 +3277,7 @@ bdk_window_set_decorations (BdkWindow      *window,
 
   decorations_copy = g_malloc (sizeof (BdkWMDecoration));
   *decorations_copy = decorations;
-  g_object_set_qdata_full (G_OBJECT (window), get_decorations_quark (), decorations_copy, g_free);
+  g_object_set_qdata_full (B_OBJECT (window), get_decorations_quark (), decorations_copy, g_free);
 
   update_style_bits (window);
 }
@@ -3290,7 +3290,7 @@ bdk_window_get_decorations (BdkWindow       *window,
   
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  decorations_set = g_object_get_qdata (G_OBJECT (window), get_decorations_quark ());
+  decorations_set = g_object_get_qdata (B_OBJECT (window), get_decorations_quark ());
   if (decorations_set)
     *decorations = *decorations_set;
 
@@ -3327,7 +3327,7 @@ bdk_window_set_functions (BdkWindow    *window,
 
   functions_copy = g_malloc (sizeof (BdkWMFunction));
   *functions_copy = functions;
-  g_object_set_qdata_full (G_OBJECT (window), get_functions_quark (), functions_copy, g_free);
+  g_object_set_qdata_full (B_OBJECT (window), get_functions_quark (), functions_copy, g_free);
 
   update_system_menu (window);
 }
@@ -3338,7 +3338,7 @@ _bdk_window_get_functions (BdkWindow     *window,
 {
   BdkWMFunction* functions_set;
   
-  functions_set = g_object_get_qdata (G_OBJECT (window), get_functions_quark ());
+  functions_set = g_object_get_qdata (B_OBJECT (window), get_functions_quark ());
   if (functions_set)
     *functions = *functions_set;
 
@@ -3610,7 +3610,7 @@ bdk_window_fullscreen (BdkWindow *window)
       /* remember for restoring */
       fi->hint_flags = impl->hint_flags;
       impl->hint_flags &= ~BDK_HINT_MAX_SIZE;
-      g_object_set_data (G_OBJECT (window), "fullscreen-info", fi);
+      g_object_set_data (B_OBJECT (window), "fullscreen-info", fi);
       fi->style = GetWindowLong (BDK_WINDOW_HWND (window), GWL_STYLE);
 
       /* Send state change before configure event */
@@ -3633,7 +3633,7 @@ bdk_window_unfullscreen (BdkWindow *window)
 
   g_return_if_fail (BDK_IS_WINDOW (window));
 
-  fi = g_object_get_data (G_OBJECT (window), "fullscreen-info");
+  fi = g_object_get_data (B_OBJECT (window), "fullscreen-info");
   if (fi)
     {
       BdkWindowImplWin32 *impl = BDK_WINDOW_IMPL_WIN32 (private->impl);
@@ -3647,7 +3647,7 @@ bdk_window_unfullscreen (BdkWindow *window)
 			       fi->r.right - fi->r.left, fi->r.bottom - fi->r.top,
 			       SWP_NOCOPYBITS | SWP_SHOWWINDOW));
       
-      g_object_set_data (G_OBJECT (window), "fullscreen-info", NULL);
+      g_object_set_data (B_OBJECT (window), "fullscreen-info", NULL);
       g_free (fi);
       update_style_bits (window);
     }

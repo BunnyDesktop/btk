@@ -1486,7 +1486,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
   node = target_line->parent;
   while (node != NULL)
     {
-      nodes = g_slist_prepend (nodes, node);
+      nodes = b_slist_prepend (nodes, node);
       node = node->parent;
     }
 
@@ -1497,7 +1497,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
 
       if (node->level == 0)
         {
-          g_slist_free (nodes);
+          b_slist_free (nodes);
           return find_line_top_in_line_list (tree, view,
                                              node->children.line,
                                              target_line, y);
@@ -1531,7 +1531,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
                                        ran out of nodes */
         }
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   g_assert_not_reached (); /* we return when we find the target line */
@@ -3742,7 +3742,7 @@ _btk_text_line_char_index (BtkTextLine *target_line)
 
   while (iter != NULL)
     {
-      node_stack = g_slist_prepend (node_stack, iter);
+      node_stack = b_slist_prepend (node_stack, iter);
 
       iter = iter->parent;
     }
@@ -3764,7 +3764,7 @@ _btk_text_line_char_index (BtkTextLine *target_line)
 
       next_node = node_stack->next ?
         node_stack->next->data : NULL;
-      node_stack = g_slist_remove (node_stack, node_stack->data);
+      node_stack = b_slist_remove (node_stack, node_stack->data);
 
       if (iter->level == 0)
         {
@@ -4561,7 +4561,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
 
           while (node != line_ancestor && node != NULL)
             {
-              child_nodes = g_slist_prepend (child_nodes, node);
+              child_nodes = b_slist_prepend (child_nodes, node);
 
               node = node->next;
             }
@@ -4577,14 +4577,14 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
               if (btk_text_btree_node_has_tag (this_node, tag))
                 {
                   found_node = this_node;
-                  g_slist_free (child_nodes);
+                  b_slist_free (child_nodes);
                   goto found;
                 }
 
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (child_nodes);
+          b_slist_free (child_nodes);
 
           /* Didn't find anything on this level; go up one level. */
           line_ancestor = line_ancestor_parent;
@@ -4640,7 +4640,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
       node = node->children.node;
       while (node != NULL)
         {
-          child_nodes = g_slist_prepend (child_nodes, node);
+          child_nodes = b_slist_prepend (child_nodes, node);
           node = node->next;
         }
 
@@ -4656,10 +4656,10 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
               break;
             }
 
-          iter = g_slist_next (iter);
+          iter = b_slist_next (iter);
         }
 
-      g_slist_free (child_nodes);
+      b_slist_free (child_nodes);
 
       g_assert (node != NULL);
     }
@@ -5991,7 +5991,7 @@ btk_text_btree_get_existing_tag_info (BtkTextBTree *tree,
       if (info->tag == tag)
         return info;
 
-      list = g_slist_next (list);
+      list = b_slist_next (list);
     }
 
   return NULL;
@@ -6016,7 +6016,7 @@ btk_text_btree_get_tag_info (BtkTextBTree *tree,
       info->tag_root = NULL;
       info->toggle_count = 0;
 
-      tree->tag_infos = g_slist_prepend (tree->tag_infos, info);
+      tree->tag_infos = b_slist_prepend (tree->tag_infos, info);
 
 #if 0
       g_print ("Created tag info %p for tag %s(%p)\n",
@@ -6058,7 +6058,7 @@ btk_text_btree_remove_tag_info (BtkTextBTree *tree,
               tree->tag_infos = list->next;
             }
           list->next = NULL;
-          g_slist_free (list);
+          b_slist_free (list);
 
           g_object_unref (info->tag);
 
@@ -6067,7 +6067,7 @@ btk_text_btree_remove_tag_info (BtkTextBTree *tree,
         }
 
       prev = list;
-      list = g_slist_next (list);
+      list = b_slist_next (list);
     }
 }
 
@@ -6900,7 +6900,7 @@ listify_foreach (BtkTextTag *tag, gpointer user_data)
 {
   GSList** listp = user_data;
 
-  *listp = g_slist_prepend (*listp, tag);
+  *listp = b_slist_prepend (*listp, tag);
 }
 
 static GSList*
@@ -7013,7 +7013,7 @@ _btk_text_btree_check (BtkTextBTree *tree)
         }
     }
 
-  g_slist_free (all_tags);
+  b_slist_free (all_tags);
 
   /*
    * Call a recursive procedure to do the main body of checks.
@@ -7119,7 +7119,7 @@ _btk_text_btree_spew (BtkTextBTree *tree)
         printf ("  tag `%s': root at %p, toggle count %d\n",
                 info->tag->name, info->tag_root, info->toggle_count);
 
-        list = g_slist_next (list);
+        list = b_slist_next (list);
       }
 
     if (tree->tag_infos == NULL)

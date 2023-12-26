@@ -448,7 +448,7 @@ do_toolpalette (BtkWidget *do_widget)
       btk_container_add (BTK_CONTAINER (window), box);
 
       /* Orientation combo box: */
-      orientation_model = btk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+      orientation_model = btk_list_store_new (2, B_TYPE_STRING, B_TYPE_INT);
       btk_list_store_append (orientation_model, &iter);
       btk_list_store_set (orientation_model, &iter,
                           0, "Horizontal",
@@ -474,7 +474,7 @@ do_toolpalette (BtkWidget *do_widget)
       btk_box_pack_start (BTK_BOX (box), combo_orientation, FALSE, FALSE, 0);
 
       /* Style combo box: */
-      style_model = btk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+      style_model = btk_list_store_new (2, B_TYPE_STRING, B_TYPE_INT);
       btk_list_store_append (style_model, &iter);
       btk_list_store_set (style_model, &iter,
                           0, "Text",
@@ -648,14 +648,14 @@ load_stock_items (BtkToolPalette *palette)
   GSList *iter;
 
   stock_ids = btk_stock_list_ids ();
-  stock_ids = g_slist_sort (stock_ids, (GCompareFunc) strcmp);
+  stock_ids = b_slist_sort (stock_ids, (GCompareFunc) strcmp);
 
   btk_container_add (BTK_CONTAINER (palette), group_af);
   btk_container_add (BTK_CONTAINER (palette), group_gn);
   btk_container_add (BTK_CONTAINER (palette), group_or);
   btk_container_add (BTK_CONTAINER (palette), group_sz);
 
-  for (iter = stock_ids; iter; iter = g_slist_next (iter))
+  for (iter = stock_ids; iter; iter = b_slist_next (iter))
     {
       BtkStockItem stock_item;
       gchar *id = iter->data;
@@ -690,7 +690,7 @@ load_stock_items (BtkToolPalette *palette)
       g_free (id);
     }
 
-  g_slist_free (stock_ids);
+  b_slist_free (stock_ids);
 }
 
 static void

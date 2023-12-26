@@ -46,11 +46,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_INPUT_DIALOG              (btk_input_dialog_get_type ())
-#define BTK_INPUT_DIALOG(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_INPUT_DIALOG, BtkInputDialog))
-#define BTK_INPUT_DIALOG_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_INPUT_DIALOG, BtkInputDialogClass))
-#define BTK_IS_INPUT_DIALOG(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_INPUT_DIALOG))
-#define BTK_IS_INPUT_DIALOG_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INPUT_DIALOG))
-#define BTK_INPUT_DIALOG_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_INPUT_DIALOG, BtkInputDialogClass))
+#define BTK_INPUT_DIALOG(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_INPUT_DIALOG, BtkInputDialog))
+#define BTK_INPUT_DIALOG_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_INPUT_DIALOG, BtkInputDialogClass))
+#define BTK_IS_INPUT_DIALOG(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_INPUT_DIALOG))
+#define BTK_IS_INPUT_DIALOG_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INPUT_DIALOG))
+#define BTK_INPUT_DIALOG_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_INPUT_DIALOG, BtkInputDialogClass))
 
 
 typedef struct _BtkInputDialog       BtkInputDialog;

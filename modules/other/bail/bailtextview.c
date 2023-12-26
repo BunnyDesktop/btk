@@ -34,10 +34,10 @@ static void       bail_text_view_init                  (BailTextView      *text_
 
 static void       bail_text_view_real_initialize       (BatkObject         *obj,
                                                         gpointer          data);
-static void       bail_text_view_real_notify_btk       (GObject           *obj,
-                                                        GParamSpec        *pspec);
+static void       bail_text_view_real_notify_btk       (BObject           *obj,
+                                                        BParamSpec        *pspec);
 
-static void       bail_text_view_finalize              (GObject           *object);
+static void       bail_text_view_finalize              (BObject           *object);
 
 static void       batk_text_interface_init              (BatkTextIface     *iface);
 
@@ -186,7 +186,7 @@ G_DEFINE_TYPE_WITH_CODE (BailTextView, bail_text_view, BAIL_TYPE_CONTAINER,
 static void
 bail_text_view_class_init (BailTextViewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -261,7 +261,7 @@ bail_text_view_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_text_view_finalize (GObject            *object)
+bail_text_view_finalize (BObject            *object)
 {
   BailTextView *text_view = BAIL_TEXT_VIEW (object);
 
@@ -269,12 +269,12 @@ bail_text_view_finalize (GObject            *object)
   if (text_view->insert_notify_handler)
     g_source_remove (text_view->insert_notify_handler);
 
-  G_OBJECT_CLASS (bail_text_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_text_view_parent_class)->finalize (object);
 }
 
 static void
-bail_text_view_real_notify_btk (GObject             *obj,
-                                GParamSpec          *pspec)
+bail_text_view_real_notify_btk (BObject             *obj,
+                                BParamSpec          *pspec)
 {
   if (!strcmp (pspec->name, "editable"))
     {
@@ -1009,55 +1009,55 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
       value = at->value;
 
       if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_LEFT_MARGIN)))
-        g_object_set (G_OBJECT (tag), "left_margin", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "left_margin", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_RIGHT_MARGIN)))
-        g_object_set (G_OBJECT (tag), "right_margin", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "right_margin", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_INDENT)))
-        g_object_set (G_OBJECT (tag), "indent", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "indent", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_ABOVE_LINES)))
-        g_object_set (G_OBJECT (tag), "pixels_above_lines", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_above_lines", atoi (value), NULL);
 
       else if (!strcmp(name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_BELOW_LINES)))
-        g_object_set (G_OBJECT (tag), "pixels_below_lines", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_below_lines", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_INSIDE_WRAP)))
-        g_object_set (G_OBJECT (tag), "pixels_inside_wrap", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_inside_wrap", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_SIZE)))
-        g_object_set (G_OBJECT (tag), "size", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "size", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_RISE)))
-        g_object_set (G_OBJECT (tag), "rise", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "rise", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_WEIGHT)))
-        g_object_set (G_OBJECT (tag), "weight", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "weight", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_BG_FULL_HEIGHT)))
         {
-          g_object_set (G_OBJECT (tag), "bg_full_height", 
+          g_object_set (B_OBJECT (tag), "bg_full_height", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_BG_FULL_HEIGHT, 0))),
                    NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_LANGUAGE)))
-        g_object_set (G_OBJECT (tag), "language", value, NULL);
+        g_object_set (B_OBJECT (tag), "language", value, NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_FAMILY_NAME)))
-        g_object_set (G_OBJECT (tag), "family", value, NULL);
+        g_object_set (B_OBJECT (tag), "family", value, NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_EDITABLE)))
         {
-          g_object_set (G_OBJECT (tag), "editable", 
+          g_object_set (B_OBJECT (tag), "editable", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_INVISIBLE)))
         {
-          g_object_set (G_OBJECT (tag), "invisible", 
+          g_object_set (B_OBJECT (tag), "invisible", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
@@ -1068,7 +1068,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_UNDERLINE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "underline", j, NULL);
+                  g_object_set (B_OBJECT (tag), "underline", j, NULL);
                   break;
                 }
             } 
@@ -1076,7 +1076,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_STRIKETHROUGH)))
         {
-          g_object_set (G_OBJECT (tag), "strikethrough", 
+          g_object_set (B_OBJECT (tag), "strikethrough", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STRIKETHROUGH, 0))),
                    NULL);
         }
@@ -1088,7 +1088,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
           color->red = atoi (RGB_vals[0]);
           color->green = atoi (RGB_vals[1]);
           color->blue = atoi (RGB_vals[2]);
-          g_object_set (G_OBJECT (tag), "background_bdk", color, NULL);
+          g_object_set (B_OBJECT (tag), "background_bdk", color, NULL);
         }
   
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_FG_COLOR)))
@@ -1098,7 +1098,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
           color->red = atoi (RGB_vals[0]);
           color->green = atoi (RGB_vals[1]);
           color->blue = atoi (RGB_vals[2]);
-          g_object_set (G_OBJECT (tag), "foreground_bdk", color, NULL);
+          g_object_set (B_OBJECT (tag), "foreground_bdk", color, NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_STRETCH)))
@@ -1107,7 +1107,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STRETCH, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "stretch", j, NULL);
+                  g_object_set (B_OBJECT (tag), "stretch", j, NULL);
                   break;
                 }
             }
@@ -1119,7 +1119,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_JUSTIFICATION, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "justification", j, NULL);
+                  g_object_set (B_OBJECT (tag), "justification", j, NULL);
                   break;
                 }
             }
@@ -1131,7 +1131,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_DIRECTION, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "direction", j, NULL);
+                  g_object_set (B_OBJECT (tag), "direction", j, NULL);
                   break;
                 }
             }
@@ -1143,7 +1143,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_VARIANT, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "variant", j, NULL);
+                  g_object_set (B_OBJECT (tag), "variant", j, NULL);
                   break;
                 }
             }
@@ -1155,7 +1155,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_WRAP_MODE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "wrap_mode", j, NULL);
+                  g_object_set (B_OBJECT (tag), "wrap_mode", j, NULL);
                   break;
                 }
             }
@@ -1167,7 +1167,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STYLE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "style", j, NULL);
+                  g_object_set (B_OBJECT (tag), "style", j, NULL);
                   break;
               }
             }

@@ -26,9 +26,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_EMBED             (_btk_file_chooser_embed_get_type ())
-#define BTK_FILE_CHOOSER_EMBED(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
-#define BTK_IS_FILE_CHOOSER_EMBED(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED))
-#define BTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbedIface))
+#define BTK_FILE_CHOOSER_EMBED(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
+#define BTK_IS_FILE_CHOOSER_EMBED(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED))
+#define BTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbedIface))
 
 typedef struct _BtkFileChooserEmbed      BtkFileChooserEmbed;
 typedef struct _BtkFileChooserEmbedIface BtkFileChooserEmbedIface;

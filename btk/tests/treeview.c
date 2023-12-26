@@ -37,7 +37,7 @@ test_bug_546005 (void)
                             NULL, FALSE);
   btk_tree_path_free (path);
 
-  list_store = btk_list_store_new (1, G_TYPE_STRING);
+  list_store = btk_list_store_new (1, B_TYPE_STRING);
   btk_tree_view_set_model (BTK_TREE_VIEW (view),
                            BTK_TREE_MODEL (list_store));
 
@@ -86,7 +86,7 @@ test_bug_539377 (void)
                                                &path, NULL) == FALSE);
 
   /* Non-realized view, with model */
-  list_store = btk_list_store_new (1, G_TYPE_STRING);
+  list_store = btk_list_store_new (1, B_TYPE_STRING);
   btk_tree_view_set_model (BTK_TREE_VIEW (view),
                            BTK_TREE_MODEL (list_store));
 
@@ -106,7 +106,7 @@ test_select_collapsed_row (void)
   BtkWidget *view;
 
   /* Reported by Michael Natterer */
-  tree_store = btk_tree_store_new (1, G_TYPE_STRING);
+  tree_store = btk_tree_store_new (1, B_TYPE_STRING);
   view = btk_tree_view_new_with_model (BTK_TREE_MODEL (tree_store));
 
   btk_tree_store_insert_with_values (tree_store, &parent, NULL, 0,

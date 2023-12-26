@@ -68,7 +68,7 @@ create_combo_box_grid_demo (void)
         BtkCellRenderer *cell = btk_cell_renderer_pixbuf_new ();
         BtkListStore *store;
 
-        store = btk_list_store_new (3, BDK_TYPE_PIXBUF, G_TYPE_INT, G_TYPE_INT);
+        store = btk_list_store_new (3, BDK_TYPE_PIXBUF, B_TYPE_INT, B_TYPE_INT);
 
         /* first row */
         pixbuf = create_color_pixbuf ("red");
@@ -166,7 +166,7 @@ create_tree_blaat (void)
 
         cellview = btk_cell_view_new ();
 
-	store = btk_tree_store_new (3, BDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_BOOLEAN);
+	store = btk_tree_store_new (3, BDK_TYPE_PIXBUF, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
         pixbuf = btk_widget_render_icon (cellview, BTK_STOCK_DIALOG_WARNING,
                                          BTK_ICON_SIZE_BUTTON, NULL);
@@ -237,7 +237,7 @@ create_empty_list_blaat (void)
 
         cellview = btk_cell_view_new ();
 
-        store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
+        store = btk_list_store_new (2, BDK_TYPE_PIXBUF, B_TYPE_STRING);
 
         pixbuf = btk_widget_render_icon (cellview, BTK_STOCK_DIALOG_WARNING,
                                          BTK_ICON_SIZE_BUTTON, NULL);
@@ -321,7 +321,7 @@ create_list_blaat (void)
 
         cellview = btk_cell_view_new ();
 
-        store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
+        store = btk_list_store_new (2, BDK_TYPE_PIXBUF, B_TYPE_STRING);
 
         pixbuf = btk_widget_render_icon (cellview, BTK_STOCK_DIALOG_WARNING,
                                          BTK_ICON_SIZE_BUTTON, NULL);
@@ -381,7 +381,7 @@ create_phylogenetic_tree (void)
         BtkTreeIter iter, iter2, iter3;
         BtkTreeStore *store;
 
-	store = btk_tree_store_new (1,G_TYPE_STRING);
+	store = btk_tree_store_new (1,B_TYPE_STRING);
 
         btk_tree_store_append (store, &iter, NULL);
         btk_tree_store_set (store, &iter,
@@ -634,7 +634,7 @@ create_capital_tree (void)
         BtkTreeIter iter, iter2;
         BtkTreeStore *store;
 
-	store = btk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, B_TYPE_STRING);
 
         btk_tree_store_append (store, &iter, NULL);
         btk_tree_store_set (store, &iter, 0, "A - B", -1);

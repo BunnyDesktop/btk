@@ -59,14 +59,14 @@ static gboolean btk_toggle_button_mnemonic_activate  (BtkWidget            *widg
 static void btk_toggle_button_pressed       (BtkButton            *button);
 static void btk_toggle_button_released      (BtkButton            *button);
 static void btk_toggle_button_clicked       (BtkButton            *button);
-static void btk_toggle_button_set_property  (GObject              *object,
+static void btk_toggle_button_set_property  (BObject              *object,
 					     guint                 prop_id,
-					     const GValue         *value,
-					     GParamSpec           *pspec);
-static void btk_toggle_button_get_property  (GObject              *object,
+					     const BValue         *value,
+					     BParamSpec           *pspec);
+static void btk_toggle_button_get_property  (BObject              *object,
 					     guint                 prop_id,
-					     GValue               *value,
-					     GParamSpec           *pspec);
+					     BValue               *value,
+					     BParamSpec           *pspec);
 static void btk_toggle_button_update_state  (BtkButton            *button);
 
 
@@ -87,11 +87,11 @@ G_DEFINE_TYPE_WITH_CODE (BtkToggleButton, btk_toggle_button, BTK_TYPE_BUTTON,
 static void
 btk_toggle_button_class_init (BtkToggleButtonClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkButtonClass *button_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
   button_class = (BtkButtonClass*) class;
 
@@ -135,12 +135,12 @@ btk_toggle_button_class_init (BtkToggleButtonClass *class)
 
   toggle_button_signals[TOGGLED] =
     g_signal_new (I_("toggled"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkToggleButtonClass, toggled),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -230,10 +230,10 @@ btk_toggle_button_new_with_mnemonic (const gchar *label)
 }
 
 static void
-btk_toggle_button_set_property (GObject      *object,
+btk_toggle_button_set_property (BObject      *object,
 				guint         prop_id,
-				const GValue *value,
-				GParamSpec   *pspec)
+				const BValue *value,
+				BParamSpec   *pspec)
 {
   BtkToggleButton *tb;
 
@@ -242,25 +242,25 @@ btk_toggle_button_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ACTIVE:
-      btk_toggle_button_set_active (tb, g_value_get_boolean (value));
+      btk_toggle_button_set_active (tb, b_value_get_boolean (value));
       break;
     case PROP_INCONSISTENT:
-      btk_toggle_button_set_inconsistent (tb, g_value_get_boolean (value));
+      btk_toggle_button_set_inconsistent (tb, b_value_get_boolean (value));
       break;
     case PROP_DRAW_INDICATOR:
-      btk_toggle_button_set_mode (tb, g_value_get_boolean (value));
+      btk_toggle_button_set_mode (tb, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_toggle_button_get_property (GObject      *object,
+btk_toggle_button_get_property (BObject      *object,
 				guint         prop_id,
-				GValue       *value,
-				GParamSpec   *pspec)
+				BValue       *value,
+				BParamSpec   *pspec)
 {
   BtkToggleButton *tb;
 
@@ -269,16 +269,16 @@ btk_toggle_button_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ACTIVE:
-      g_value_set_boolean (value, tb->active);
+      b_value_set_boolean (value, tb->active);
       break;
     case PROP_INCONSISTENT:
-      g_value_set_boolean (value, tb->inconsistent);
+      b_value_set_boolean (value, tb->inconsistent);
       break;
     case PROP_DRAW_INDICATOR:
-      g_value_set_boolean (value, tb->draw_indicator);
+      b_value_set_boolean (value, tb->draw_indicator);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -313,7 +313,7 @@ btk_toggle_button_set_mode (BtkToggleButton *toggle_button,
       if (btk_widget_get_visible (BTK_WIDGET (toggle_button)))
 	btk_widget_queue_resize (BTK_WIDGET (toggle_button));
 
-      g_object_notify (G_OBJECT (toggle_button), "draw-indicator");
+      g_object_notify (B_OBJECT (toggle_button), "draw-indicator");
     }
 }
 
@@ -395,7 +395,7 @@ btk_toggle_button_set_inconsistent (BtkToggleButton *toggle_button,
       btk_toggle_button_update_state (BTK_BUTTON (toggle_button));
       btk_widget_queue_draw (BTK_WIDGET (toggle_button));
 
-      g_object_notify (G_OBJECT (toggle_button), "inconsistent");      
+      g_object_notify (B_OBJECT (toggle_button), "inconsistent");      
     }
 }
 
@@ -499,7 +499,7 @@ btk_toggle_button_clicked (BtkButton *button)
 
   btk_toggle_button_update_state (button);
 
-  g_object_notify (G_OBJECT (toggle_button), "active");
+  g_object_notify (B_OBJECT (toggle_button), "active");
 
   if (BTK_BUTTON_CLASS (btk_toggle_button_parent_class)->clicked)
     BTK_BUTTON_CLASS (btk_toggle_button_parent_class)->clicked (button);

@@ -134,7 +134,7 @@ main (int argc, char *argv[])
       g_signal_connect (button, "clicked",
 			G_CALLBACK (hello), label);
   
-      images[i] = btk_image_new_from_stock (g_slist_nth (ids, i+1)->data,
+      images[i] = btk_image_new_from_stock (b_slist_nth (ids, i+1)->data,
 					     BTK_ICON_SIZE_BUTTON);
       
       btk_container_add (BTK_CONTAINER (vbox[i]), images[i]);
@@ -165,7 +165,7 @@ main (int argc, char *argv[])
   
   btk_container_add (BTK_CONTAINER (moving_vbox), moving_button);
   
-  moving_image = btk_image_new_from_stock (g_slist_nth (ids, num_screen + 2)->data,
+  moving_image = btk_image_new_from_stock (b_slist_nth (ids, num_screen + 2)->data,
 					   BTK_ICON_SIZE_BUTTON);
   btk_container_add (BTK_CONTAINER (moving_vbox), moving_image);
   btk_widget_show_all (moving_window);

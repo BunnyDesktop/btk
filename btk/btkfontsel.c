@@ -116,15 +116,15 @@ enum {
   SIZE_COLUMN
 };
 
-static void    btk_font_selection_set_property       (GObject         *object,
+static void    btk_font_selection_set_property       (BObject         *object,
 						      guint            prop_id,
-						      const GValue    *value,
-						      GParamSpec      *pspec);
-static void    btk_font_selection_get_property       (GObject         *object,
+						      const BValue    *value,
+						      BParamSpec      *pspec);
+static void    btk_font_selection_get_property       (BObject         *object,
 						      guint            prop_id,
-						      GValue          *value,
-						      GParamSpec      *pspec);
-static void    btk_font_selection_finalize	     (GObject         *object);
+						      BValue          *value,
+						      BParamSpec      *pspec);
+static void    btk_font_selection_finalize	     (BObject         *object);
 static void    btk_font_selection_screen_changed     (BtkWidget	      *widget,
 						      BdkScreen       *previous_screen);
 static void    btk_font_selection_style_set          (BtkWidget      *widget,
@@ -181,7 +181,7 @@ G_DEFINE_TYPE (BtkFontSelection, btk_font_selection, BTK_TYPE_VBOX)
 static void
 btk_font_selection_class_init (BtkFontSelectionClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   
   bobject_class->set_property = btk_font_selection_set_property;
@@ -215,10 +215,10 @@ btk_font_selection_class_init (BtkFontSelectionClass *klass)
 }
 
 static void 
-btk_font_selection_set_property (GObject         *object,
+btk_font_selection_set_property (BObject         *object,
 				 guint            prop_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec)
+				 const BValue    *value,
+				 BParamSpec      *pspec)
 {
   BtkFontSelection *fontsel;
 
@@ -227,21 +227,21 @@ btk_font_selection_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_FONT_NAME:
-      btk_font_selection_set_font_name (fontsel, g_value_get_string (value));
+      btk_font_selection_set_font_name (fontsel, b_value_get_string (value));
       break;
     case PROP_PREVIEW_TEXT:
-      btk_font_selection_set_preview_text (fontsel, g_value_get_string (value));
+      btk_font_selection_set_preview_text (fontsel, b_value_get_string (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static void btk_font_selection_get_property (GObject         *object,
+static void btk_font_selection_get_property (BObject         *object,
 					     guint            prop_id,
-					     GValue          *value,
-					     GParamSpec      *pspec)
+					     BValue          *value,
+					     BParamSpec      *pspec)
 {
   BtkFontSelection *fontsel;
 
@@ -250,16 +250,16 @@ static void btk_font_selection_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_FONT_NAME:
-      g_value_take_string (value, btk_font_selection_get_font_name (fontsel));
+      b_value_take_string (value, btk_font_selection_get_font_name (fontsel));
       break;
     case PROP_FONT:
-      g_value_set_boxed (value, btk_font_selection_get_font_internal (fontsel));
+      b_value_set_boxed (value, btk_font_selection_get_font_internal (fontsel));
       break;
     case PROP_PREVIEW_TEXT:
-      g_value_set_string (value, btk_font_selection_get_preview_text (fontsel));
+      b_value_set_string (value, btk_font_selection_get_preview_text (fontsel));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -364,8 +364,8 @@ btk_font_selection_init (BtkFontSelection *fontsel)
   /* Create the lists  */
 
   model = btk_list_store_new (2,
-			      G_TYPE_OBJECT,  /* FAMILY_COLUMN */
-			      G_TYPE_STRING); /* FAMILY_NAME_COLUMN */
+			      B_TYPE_OBJECT,  /* FAMILY_COLUMN */
+			      B_TYPE_STRING); /* FAMILY_NAME_COLUMN */
   fontsel->family_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
 
@@ -401,8 +401,8 @@ btk_font_selection_init (BtkFontSelection *fontsel)
   focus_chain = g_list_append (focus_chain, scrolled_win);
   
   model = btk_list_store_new (2,
-			      G_TYPE_OBJECT,  /* FACE_COLUMN */
-			      G_TYPE_STRING); /* FACE_NAME_COLUMN */
+			      B_TYPE_OBJECT,  /* FACE_COLUMN */
+			      B_TYPE_STRING); /* FACE_NAME_COLUMN */
   fontsel->face_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
   g_signal_connect (fontsel->face_list, "row-activated",
@@ -437,7 +437,7 @@ btk_font_selection_init (BtkFontSelection *fontsel)
   
   focus_chain = g_list_append (focus_chain, fontsel->size_entry);
 
-  model = btk_list_store_new (1, G_TYPE_INT);
+  model = btk_list_store_new (1, B_TYPE_INT);
   fontsel->size_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
   g_signal_connect (fontsel->size_list, "row-activated",
@@ -570,7 +570,7 @@ btk_font_selection_new (void)
 }
 
 static void
-btk_font_selection_finalize (GObject *object)
+btk_font_selection_finalize (BObject *object)
 {
   BtkFontSelection *fontsel;
   
@@ -584,7 +584,7 @@ btk_font_selection_finalize (GObject *object)
   btk_font_selection_ref_family (fontsel, NULL);
   btk_font_selection_ref_face (fontsel, NULL);
 
-  G_OBJECT_CLASS (btk_font_selection_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_font_selection_parent_class)->finalize (object);
 }
 
 static void
@@ -646,7 +646,7 @@ static void
 btk_font_selection_preview_changed (BtkWidget        *entry,
 				    BtkFontSelection *fontsel)
 {
-  g_object_notify (G_OBJECT (fontsel), "preview-text");
+  g_object_notify (B_OBJECT (fontsel), "preview-text");
 }
 
 static void
@@ -1533,10 +1533,10 @@ btk_font_selection_set_font_name (BtkFontSelection *fontsel,
 
   bango_font_description_free (new_desc);
   
-  g_object_freeze_notify (G_OBJECT (fontsel));
-  g_object_notify (G_OBJECT (fontsel), "font-name");
-  g_object_notify (G_OBJECT (fontsel), "font");
-  g_object_thaw_notify (G_OBJECT (fontsel));
+  g_object_freeze_notify (B_OBJECT (fontsel));
+  g_object_notify (B_OBJECT (fontsel), "font-name");
+  g_object_notify (B_OBJECT (fontsel), "font");
+  g_object_thaw_notify (B_OBJECT (fontsel));
 
   return TRUE;
 }
@@ -1583,7 +1583,7 @@ btk_font_selection_set_preview_text  (BtkFontSelection *fontsel,
  *****************************************************************************/
 
 static void btk_font_selection_dialog_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject * btk_font_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+static BObject * btk_font_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 									  BtkBuilder   *builder,
 									  const gchar  *childname);
 
@@ -1757,19 +1757,19 @@ btk_font_selection_dialog_buildable_interface_init (BtkBuildableIface *iface)
   iface->get_internal_child = btk_font_selection_dialog_buildable_get_internal_child;
 }
 
-static GObject *
+static BObject *
 btk_font_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 							BtkBuilder   *builder,
 							const gchar  *childname)
 {
     if (strcmp(childname, "ok_button") == 0)
-	return G_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->ok_button);
+	return B_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->ok_button);
     else if (strcmp(childname, "cancel_button") == 0)
-	return G_OBJECT (BTK_FONT_SELECTION_DIALOG (buildable)->cancel_button);
+	return B_OBJECT (BTK_FONT_SELECTION_DIALOG (buildable)->cancel_button);
     else if (strcmp(childname, "apply_button") == 0)
-	return G_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->apply_button);
+	return B_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->apply_button);
     else if (strcmp(childname, "font_selection") == 0)
-	return G_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->fontsel);
+	return B_OBJECT (BTK_FONT_SELECTION_DIALOG(buildable)->fontsel);
 
     return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }

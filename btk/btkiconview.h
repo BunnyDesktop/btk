@@ -33,11 +33,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ICON_VIEW            (btk_icon_view_get_type ())
-#define BTK_ICON_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW, BtkIconView))
-#define BTK_ICON_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
-#define BTK_IS_ICON_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW))
-#define BTK_IS_ICON_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_VIEW))
-#define BTK_ICON_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
+#define BTK_ICON_VIEW(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW, BtkIconView))
+#define BTK_ICON_VIEW_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
+#define BTK_IS_ICON_VIEW(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW))
+#define BTK_IS_ICON_VIEW_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_VIEW))
+#define BTK_ICON_VIEW_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
 
 typedef struct _BtkIconView           BtkIconView;
 typedef struct _BtkIconViewClass      BtkIconViewClass;

@@ -28,11 +28,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_COMBO_BOX_TEXT                 (btk_combo_box_text_get_type ())
-#define BTK_COMBO_BOX_TEXT(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxText))
-#define BTK_COMBO_BOX_TEXT_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
-#define BTK_IS_COMBO_BOX_TEXT(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_TEXT))
-#define BTK_IS_COMBO_BOX_TEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COMBO_BOX_TEXT))
-#define BTK_COMBO_BOX_TEXT_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
+#define BTK_COMBO_BOX_TEXT(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxText))
+#define BTK_COMBO_BOX_TEXT_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
+#define BTK_IS_COMBO_BOX_TEXT(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_TEXT))
+#define BTK_IS_COMBO_BOX_TEXT_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COMBO_BOX_TEXT))
+#define BTK_COMBO_BOX_TEXT_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
 
 typedef struct _BtkComboBoxText             BtkComboBoxText;
 typedef struct _BtkComboBoxTextPrivate      BtkComboBoxTextPrivate;

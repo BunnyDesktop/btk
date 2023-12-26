@@ -57,8 +57,8 @@ typedef struct _BdkKeymapX11   BdkKeymapX11;
 typedef struct _BdkKeymapClass BdkKeymapX11Class;
 
 #define BDK_TYPE_KEYMAP_X11          (bdk_keymap_x11_get_type ())
-#define BDK_KEYMAP_X11(object)       (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP_X11, BdkKeymapX11))
-#define BDK_IS_KEYMAP_X11(object)    (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP_X11))
+#define BDK_KEYMAP_X11(object)       (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP_X11, BdkKeymapX11))
+#define BDK_IS_KEYMAP_X11(object)    (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP_X11))
 
 typedef struct _DirectionCacheEntry DirectionCacheEntry;
 
@@ -108,7 +108,7 @@ struct _BdkKeymapX11
 static GType bdk_keymap_x11_get_type   (void);
 static void  bdk_keymap_x11_class_init (BdkKeymapX11Class *klass);
 static void  bdk_keymap_x11_init       (BdkKeymapX11      *keymap);
-static void  bdk_keymap_x11_finalize   (GObject           *object);
+static void  bdk_keymap_x11_finalize   (BObject           *object);
 
 static BdkKeymapClass *parent_class = NULL;
 
@@ -143,7 +143,7 @@ bdk_keymap_x11_get_type (void)
 static void
 bdk_keymap_x11_class_init (BdkKeymapX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -176,7 +176,7 @@ bdk_keymap_x11_init (BdkKeymapX11 *keymap)
 }
 
 static void
-bdk_keymap_x11_finalize (GObject *object)
+bdk_keymap_x11_finalize (BObject *object)
 {
   BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (object);
 
@@ -191,7 +191,7 @@ bdk_keymap_x11_finalize (GObject *object)
     XkbFreeKeyboard (keymap_x11->xkb_desc, XkbAllComponentsMask, True);
 #endif
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static inline void

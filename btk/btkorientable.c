@@ -30,7 +30,7 @@
 
 
 typedef BtkOrientableIface BtkOrientableInterface;
-G_DEFINE_INTERFACE (BtkOrientable, btk_orientable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (BtkOrientable, btk_orientable, B_TYPE_OBJECT)
 
 static void
 btk_orientable_default_init (BtkOrientableInterface *iface)

@@ -29,11 +29,11 @@ typedef struct _BdkDisplayDFBClass BdkDisplayDFBClass;
 
 
 #define BDK_TYPE_DISPLAY_DFB              (bdk_display_dfb_get_type())
-#define BDK_DISPLAY_DFB(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFB))
-#define BDK_DISPLAY_DFB_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFBClass))
-#define BDK_IS_DISPLAY_DFB(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_DFB))
-#define BDK_IS_DISPLAY_DFB_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_DFB))
-#define BDK_DISPLAY_DFB_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFBClass))
+#define BDK_DISPLAY_DFB(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFB))
+#define BDK_DISPLAY_DFB_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFBClass))
+#define BDK_IS_DISPLAY_DFB(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_DFB))
+#define BDK_IS_DISPLAY_DFB_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_DFB))
+#define BDK_DISPLAY_DFB_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_DFB, BdkDisplayDFBClass))
 
 struct _BdkDisplayDFB
 {

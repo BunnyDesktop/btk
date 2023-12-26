@@ -86,11 +86,11 @@
  */
 
 #define BTK_TYPE_TEXT_RENDERER            (_btk_text_renderer_get_type())
-#define BTK_TEXT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_RENDERER, BtkTextRenderer))
-#define BTK_IS_TEXT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_RENDERER))
-#define BTK_TEXT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
-#define BTK_IS_TEXT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_RENDERER))
-#define BTK_TEXT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
+#define BTK_TEXT_RENDERER(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_RENDERER, BtkTextRenderer))
+#define BTK_IS_TEXT_RENDERER(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_RENDERER))
+#define BTK_TEXT_RENDERER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
+#define BTK_IS_TEXT_RENDERER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_RENDERER))
+#define BTK_TEXT_RENDERER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
 
 typedef struct _BtkTextRenderer      BtkTextRenderer;
 typedef struct _BtkTextRendererClass BtkTextRendererClass;
@@ -346,9 +346,9 @@ btk_text_renderer_draw_shape (BangoRenderer   *renderer,
 }
 
 static void
-btk_text_renderer_finalize (GObject *object)
+btk_text_renderer_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (_btk_text_renderer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_text_renderer_parent_class)->finalize (object);
 }
 
 static void
@@ -359,7 +359,7 @@ _btk_text_renderer_init (BtkTextRenderer *renderer)
 static void
 _btk_text_renderer_class_init (BtkTextRendererClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   
@@ -717,7 +717,7 @@ on_renderer_display_closed (BdkDisplay       *display,
   g_signal_handlers_disconnect_by_func (text_renderer->screen,
 					(gpointer)on_renderer_display_closed,
 					text_renderer);
-  g_object_set_data (G_OBJECT (text_renderer->screen), I_("btk-text-renderer"), NULL);
+  g_object_set_data (B_OBJECT (text_renderer->screen), I_("btk-text-renderer"), NULL);
 }
 
 static BtkTextRenderer *
@@ -727,13 +727,13 @@ get_text_renderer (BdkScreen *screen)
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   
-  text_renderer = g_object_get_data (G_OBJECT (screen), "btk-text-renderer");
+  text_renderer = g_object_get_data (B_OBJECT (screen), "btk-text-renderer");
   if (!text_renderer)
     {
       text_renderer = g_object_new (BTK_TYPE_TEXT_RENDERER, "screen", screen, NULL);
       text_renderer->screen = screen;
       
-      g_object_set_data_full (G_OBJECT (screen), I_("btk-text-renderer"), text_renderer,
+      g_object_set_data_full (B_OBJECT (screen), I_("btk-text-renderer"), text_renderer,
 			      (GDestroyNotify)g_object_unref);
 
       g_signal_connect_object (bdk_screen_get_display (screen), "closed",
@@ -902,7 +902,7 @@ btk_text_layout_draw (BtkTextLayout *layout,
       current_y += line_display->height;
       btk_text_layout_free_line_display (layout, line_display);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   btk_text_layout_wrap_loop_end (layout);
@@ -916,7 +916,7 @@ btk_text_layout_draw (BtkTextLayout *layout,
       g_list_free (tmp_widgets);
     }
 
-  g_slist_free (line_list);
+  b_slist_free (line_list);
 }
 
 #define __BTK_TEXT_DISPLAY_C__

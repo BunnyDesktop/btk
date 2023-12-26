@@ -110,14 +110,14 @@
 #define BDK_DEBUG_MISC_OR_EVENTS (BDK_DEBUG_MISC|BDK_DEBUG_EVENTS)
 
 #define BDK_TYPE_GC_WIN32              (_bdk_gc_win32_get_type ())
-#define BDK_GC_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_WIN32, BdkGCWin32))
-#define BDK_GC_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
-#define BDK_IS_GC_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_WIN32))
-#define BDK_IS_GC_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_WIN32))
-#define BDK_GC_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
+#define BDK_GC_WIN32(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_WIN32, BdkGCWin32))
+#define BDK_GC_WIN32_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
+#define BDK_IS_GC_WIN32(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_WIN32))
+#define BDK_IS_GC_WIN32_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_WIN32))
+#define BDK_GC_WIN32_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
 
 //#define BDK_WINDOW_SCREEN(win)         (_bdk_screen)
-BdkScreen *BDK_WINDOW_SCREEN(GObject *win);
+BdkScreen *BDK_WINDOW_SCREEN(BObject *win);
 
 #define BDK_WINDOW_IS_WIN32(win)        (BDK_IS_WINDOW_IMPL_WIN32 (((BdkWindowObject *)win)->impl))
 
@@ -155,7 +155,7 @@ struct _BdkFontPrivateWin32
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 typedef enum {

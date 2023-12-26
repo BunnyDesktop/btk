@@ -37,7 +37,7 @@ int main( int   argc,
   btk_window_set_title (BTK_WINDOW (window), "Arrow Buttons");
 
   /* It's a good idea to do this for all windows. */
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
                     G_CALLBACK (btk_main_quit), NULL);
 
   /* Sets the border width of the window. */

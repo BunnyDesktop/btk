@@ -28,7 +28,7 @@
 
 static void      bail_text_cell_class_init		(BailTextCellClass *klass);
 static void      bail_text_cell_init			(BailTextCell	*text_cell);
-static void      bail_text_cell_finalize		(GObject	*object);
+static void      bail_text_cell_finalize		(BObject	*object);
 
 static const gchar* bail_text_cell_get_name    (BatkObject      *batk_obj);
 
@@ -133,7 +133,7 @@ G_DEFINE_TYPE_WITH_CODE (BailTextCell, bail_text_cell, BAIL_TYPE_RENDERER_CELL,
 static void 
 bail_text_cell_class_init (BailTextCellClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
   BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS (klass);
 
@@ -161,7 +161,7 @@ bail_text_cell_init (BailTextCell *text_cell)
 BatkObject* 
 bail_text_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
 
@@ -180,14 +180,14 @@ bail_text_cell_new (void)
 }
 
 static void
-bail_text_cell_finalize (GObject            *object)
+bail_text_cell_finalize (BObject            *object)
 {
   BailTextCell *text_cell = BAIL_TEXT_CELL (object);
 
   g_object_unref (text_cell->textutil);
   g_free (text_cell->cell_text);
 
-  G_OBJECT_CLASS (bail_text_cell_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_text_cell_parent_class)->finalize (object);
 }
 
 static const gchar*
@@ -213,7 +213,7 @@ bail_text_cell_update_cache (BailRendererCell *cell,
   gint temp_length;
   gchar *new_cache;
 
-  g_object_get (G_OBJECT (cell->renderer), "text", &new_cache, NULL);
+  g_object_get (B_OBJECT (cell->renderer), "text", &new_cache, NULL);
 
   if (text_cell->cell_text)
     {
@@ -232,7 +232,7 @@ bail_text_cell_update_cache (BailRendererCell *cell,
             {
               g_signal_emit_by_name (cell, "text_changed::delete", 0, temp_length);
               if (obj->name == NULL)
-                g_object_notify (G_OBJECT (obj), "accessible-name");
+                g_object_notify (B_OBJECT (obj), "accessible-name");
             }
           if (new_cache)
             rv = TRUE;
@@ -266,7 +266,7 @@ bail_text_cell_update_cache (BailRendererCell *cell,
   			         0, text_cell->cell_length);
 
           if (obj->name == NULL)
-            g_object_notify (G_OBJECT (obj), "accessible-name");
+            g_object_notify (B_OBJECT (obj), "accessible-name");
         }
     }
   return rv;
@@ -406,7 +406,7 @@ bail_text_cell_get_run_attributes (BatkText *text,
                                                     offset,
                                                     start_offset,
                                                     end_offset);
-  g_object_unref (G_OBJECT (layout));
+  g_object_unref (B_OBJECT (layout));
   
   return attrib_set;
 }
@@ -434,7 +434,7 @@ bail_text_cell_get_default_attributes (BatkText	*text)
   attrib_set = bail_misc_get_default_attributes (attrib_set, 
                                                  layout,
                                                  widget);
-  g_object_unref (G_OBJECT (layout));
+  g_object_unref (B_OBJECT (layout));
   return attrib_set;
 }
 

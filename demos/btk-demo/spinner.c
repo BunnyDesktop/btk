@@ -69,12 +69,12 @@ do_spinner (BtkWidget *do_widget)
     btk_widget_set_sensitive (hbox, FALSE);
 
     button = btk_button_new_from_stock (BTK_STOCK_MEDIA_PLAY);
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (B_OBJECT (button), "clicked",
                       G_CALLBACK (on_play_clicked), spinner);
     btk_container_add (BTK_CONTAINER (vbox), button);
 
     button = btk_button_new_from_stock (BTK_STOCK_MEDIA_STOP);
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (B_OBJECT (button), "clicked",
                       G_CALLBACK (on_stop_clicked), spinner);
     btk_container_add (BTK_CONTAINER (vbox), button);
 

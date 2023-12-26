@@ -39,11 +39,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_VSCROLLBAR            (btk_vscrollbar_get_type ())
-#define BTK_VSCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbar))
-#define BTK_VSCROLLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
-#define BTK_IS_VSCROLLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VSCROLLBAR))
-#define BTK_IS_VSCROLLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VSCROLLBAR))
-#define BTK_VSCROLLBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
+#define BTK_VSCROLLBAR(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbar))
+#define BTK_VSCROLLBAR_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
+#define BTK_IS_VSCROLLBAR(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VSCROLLBAR))
+#define BTK_IS_VSCROLLBAR_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VSCROLLBAR))
+#define BTK_VSCROLLBAR_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
 
 
 typedef struct _BtkVScrollbar       BtkVScrollbar;

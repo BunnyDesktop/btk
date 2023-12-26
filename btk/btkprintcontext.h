@@ -35,8 +35,8 @@ B_BEGIN_DECLS
 typedef struct _BtkPrintContext BtkPrintContext;
 
 #define BTK_TYPE_PRINT_CONTEXT    (btk_print_context_get_type ())
-#define BTK_PRINT_CONTEXT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_CONTEXT, BtkPrintContext))
-#define BTK_IS_PRINT_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_CONTEXT))
+#define BTK_PRINT_CONTEXT(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_CONTEXT, BtkPrintContext))
+#define BTK_IS_PRINT_CONTEXT(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_CONTEXT))
 
 GType          btk_print_context_get_type (void) B_GNUC_CONST;
 

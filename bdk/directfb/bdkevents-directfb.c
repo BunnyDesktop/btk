@@ -343,7 +343,7 @@ bdk_event_send_client_message_for_display (BdkDisplay *display,
   g_return_val_if_fail (win != NULL, FALSE);
 
   if ((BDK_WINDOW_OBJECT (win)->window_type != BDK_WINDOW_CHILD) &&
-      (g_object_get_data (G_OBJECT (win), "bdk-window-child-handler")))
+      (g_object_get_data (B_OBJECT (win), "bdk-window-child-handler")))
     {
       /* Managed window, check children */
       GList *ltmp = NULL;
@@ -459,7 +459,7 @@ bdk_event_translate (BdkEvent       *event,
 
   private = BDK_WINDOW_OBJECT (window);
 
-  g_object_ref (G_OBJECT (window));
+  g_object_ref (B_OBJECT (window));
 
   event->any.window = NULL;
   event->any.send_event = FALSE;
@@ -702,7 +702,7 @@ bdk_event_translate (BdkEvent       *event,
 
  done:
 
-  g_object_unref (G_OBJECT (window));
+  g_object_unref (B_OBJECT (window));
 
   return return_val;
 }
@@ -710,7 +710,7 @@ bdk_event_translate (BdkEvent       *event,
 gboolean
 bdk_screen_get_setting (BdkScreen   *screen,
                         const gchar *name,
-                        GValue      *value)
+                        BValue      *value)
 {
   return FALSE;
 }

@@ -81,7 +81,7 @@ iter_insert (BtkWidget *button, BtkTreeView *tree_view)
   BtkTreeIter selected;
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
-  entry = g_object_get_data (G_OBJECT (button), "user_data");
+  entry = g_object_get_data (B_OBJECT (button), "user_data");
   if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
@@ -109,7 +109,7 @@ iter_change (BtkWidget *button, BtkTreeView *tree_view)
   BtkTreeIter selected;
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
-  entry = g_object_get_data (G_OBJECT (button), "user_data");
+  entry = g_object_get_data (B_OBJECT (button), "user_data");
   if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL, &selected))
     {
@@ -130,7 +130,7 @@ iter_insert_with_values (BtkWidget *button, BtkTreeView *tree_view)
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
   gchar *str1, *str2;
 
-  entry = g_object_get_data (G_OBJECT (button), "user_data");
+  entry = g_object_get_data (B_OBJECT (button), "user_data");
   str1 = g_strdup_printf ("Row (<span color=\"red\">%d</span>)", node_count++);
   str2 = g_strdup_printf ("%d", atoi (btk_entry_get_text (BTK_ENTRY (entry))));
 
@@ -289,7 +289,7 @@ make_window (gint view_type)
   BtkWidget *tree_view;
   BtkTreeViewColumn *column;
   BtkCellRenderer *cell;
-  GObject *selection;
+  BObject *selection;
 
   /* Make the Widgets/Objects */
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
@@ -327,7 +327,7 @@ make_window (gint view_type)
     }
 
   btk_tree_view_set_rules_hint (BTK_TREE_VIEW (tree_view), TRUE);
-  selection = G_OBJECT (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)));
+  selection = B_OBJECT (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)));
   btk_tree_selection_set_mode (BTK_TREE_SELECTION (selection), BTK_SELECTION_SINGLE);
 
   /* Put them together */
@@ -356,7 +356,7 @@ make_window (gint view_type)
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
   btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
-  g_object_set_data (G_OBJECT (button), "user_data", entry);
+  g_object_set_data (B_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_insert), 
                     tree_view);
@@ -367,7 +367,7 @@ make_window (gint view_type)
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
   btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
-  g_object_set_data (G_OBJECT (button), "user_data", entry);
+  g_object_set_data (B_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (iter_change),
 		    tree_view);
@@ -378,7 +378,7 @@ make_window (gint view_type)
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
   btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
-  g_object_set_data (G_OBJECT (button), "user_data", entry);
+  g_object_set_data (B_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (iter_insert_with_values),
 		    tree_view);
@@ -445,7 +445,7 @@ main (int argc, char *argv[])
 {
   btk_init (&argc, &argv);
 
-  base_model = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  base_model = btk_tree_store_new (2, B_TYPE_STRING, B_TYPE_STRING);
 
   /* FIXME: reverse this */
   make_window (0);

@@ -43,7 +43,7 @@ struct _BtkIMMulticontextPrivate
   guint focus_in : 1;
 };
 
-static void     btk_im_multicontext_finalize           (GObject                 *object);
+static void     btk_im_multicontext_finalize           (BObject                 *object);
 
 static void     btk_im_multicontext_set_slave          (BtkIMMulticontext       *multicontext,
 							BtkIMContext            *slave,
@@ -95,7 +95,7 @@ G_DEFINE_TYPE (BtkIMMulticontext, btk_im_multicontext, BTK_TYPE_IM_CONTEXT)
 static void
 btk_im_multicontext_class_init (BtkIMMulticontextClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
   
   im_context_class->set_client_window = btk_im_multicontext_set_client_window;
@@ -119,7 +119,7 @@ btk_im_multicontext_init (BtkIMMulticontext *multicontext)
 {
   multicontext->slave = NULL;
   
-  multicontext->priv = G_TYPE_INSTANCE_GET_PRIVATE (multicontext, BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextPrivate);
+  multicontext->priv = B_TYPE_INSTANCE_GET_PRIVATE (multicontext, BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextPrivate);
   multicontext->priv->use_preedit = TRUE;
   multicontext->priv->have_cursor_location = FALSE;
   multicontext->priv->focus_in = FALSE;
@@ -139,7 +139,7 @@ btk_im_multicontext_new (void)
 }
 
 static void
-btk_im_multicontext_finalize (GObject *object)
+btk_im_multicontext_finalize (BObject *object)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (object);
   
@@ -147,7 +147,7 @@ btk_im_multicontext_finalize (GObject *object)
   g_free (multicontext->context_id);
   g_free (multicontext->priv->context_id);
 
-  G_OBJECT_CLASS (btk_im_multicontext_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_im_multicontext_parent_class)->finalize (object);
 }
 
 static void
@@ -284,13 +284,13 @@ btk_im_multicontext_set_client_window (BtkIMContext *context,
       screen = bdk_window_get_screen (window);
       settings = btk_settings_get_for_screen (screen);
 
-      connected = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (settings),
+      connected = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (settings),
                                                       "btk-im-module-connected"));
       if (!connected)
         {
           g_signal_connect (settings, "notify::btk-im-module",
                             G_CALLBACK (im_module_setting_changed), NULL);
-          g_object_set_data (G_OBJECT (settings), "btk-im-module-connected",
+          g_object_set_data (B_OBJECT (settings), "btk-im-module-connected",
                              GINT_TO_POINTER (TRUE));
 
           global_context_id = NULL;
@@ -511,7 +511,7 @@ activate_cb (BtkWidget         *menuitem,
 {
   if (BTK_CHECK_MENU_ITEM (menuitem)->active)
     {
-      const gchar *id = g_object_get_data (G_OBJECT (menuitem), "btk-context-id");
+      const gchar *id = g_object_get_data (B_OBJECT (menuitem), "btk-context-id");
 
       btk_im_multicontext_set_context_id (context, id);
     }
@@ -561,7 +561,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
   if (!context->priv->context_id)
     btk_check_menu_item_set_active (BTK_CHECK_MENU_ITEM (menuitem), TRUE);
   group = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (menuitem));
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"), NULL);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"), NULL);
   g_signal_connect (menuitem, "activate", G_CALLBACK (activate_cb), context);
 
   btk_widget_show (menuitem);
@@ -570,7 +570,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
   menuitem = btk_radio_menu_item_new_with_label (group, C_("input method menu", "None"));
   if (g_strcmp0 (context->priv->context_id, NONE_ID) == 0)
     btk_check_menu_item_set_active (BTK_CHECK_MENU_ITEM (menuitem), TRUE);
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"), NONE_ID);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"), NONE_ID);
   g_signal_connect (menuitem, "activate", G_CALLBACK (activate_cb), context);
   btk_widget_show (menuitem);
   btk_menu_shell_append (menushell, menuitem);
@@ -657,7 +657,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
  
       group = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (menuitem));
       
-      g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"),
+      g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"),
 			 (char *)contexts[i]->context_id);
       g_signal_connect (menuitem, "activate",
 			G_CALLBACK (activate_cb), context);

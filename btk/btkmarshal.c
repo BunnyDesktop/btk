@@ -4,29 +4,29 @@
 #include <bunnylib-object.h>
 
 #ifdef G_ENABLE_DEBUG
-#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
-#define g_marshal_value_peek_char(v)     g_value_get_schar (v)
-#define g_marshal_value_peek_uchar(v)    g_value_get_uchar (v)
-#define g_marshal_value_peek_int(v)      g_value_get_int (v)
-#define g_marshal_value_peek_uint(v)     g_value_get_uint (v)
-#define g_marshal_value_peek_long(v)     g_value_get_long (v)
-#define g_marshal_value_peek_ulong(v)    g_value_get_ulong (v)
-#define g_marshal_value_peek_int64(v)    g_value_get_int64 (v)
-#define g_marshal_value_peek_uint64(v)   g_value_get_uint64 (v)
-#define g_marshal_value_peek_enum(v)     g_value_get_enum (v)
-#define g_marshal_value_peek_flags(v)    g_value_get_flags (v)
-#define g_marshal_value_peek_float(v)    g_value_get_float (v)
-#define g_marshal_value_peek_double(v)   g_value_get_double (v)
-#define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)
-#define g_marshal_value_peek_param(v)    g_value_get_param (v)
-#define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)
-#define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
-#define g_marshal_value_peek_object(v)   g_value_get_object (v)
-#define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
+#define g_marshal_value_peek_boolean(v)  b_value_get_boolean (v)
+#define g_marshal_value_peek_char(v)     b_value_get_schar (v)
+#define g_marshal_value_peek_uchar(v)    b_value_get_uchar (v)
+#define g_marshal_value_peek_int(v)      b_value_get_int (v)
+#define g_marshal_value_peek_uint(v)     b_value_get_uint (v)
+#define g_marshal_value_peek_long(v)     b_value_get_long (v)
+#define g_marshal_value_peek_ulong(v)    b_value_get_ulong (v)
+#define g_marshal_value_peek_int64(v)    b_value_get_int64 (v)
+#define g_marshal_value_peek_uint64(v)   b_value_get_uint64 (v)
+#define g_marshal_value_peek_enum(v)     b_value_get_enum (v)
+#define g_marshal_value_peek_flags(v)    b_value_get_flags (v)
+#define g_marshal_value_peek_float(v)    b_value_get_float (v)
+#define g_marshal_value_peek_double(v)   b_value_get_double (v)
+#define g_marshal_value_peek_string(v)   (char*) b_value_get_string (v)
+#define g_marshal_value_peek_param(v)    b_value_get_param (v)
+#define g_marshal_value_peek_boxed(v)    b_value_get_boxed (v)
+#define g_marshal_value_peek_pointer(v)  b_value_get_pointer (v)
+#define g_marshal_value_peek_object(v)   b_value_get_object (v)
+#define g_marshal_value_peek_variant(v)  b_value_get_variant (v)
 #else /* !G_ENABLE_DEBUG */
-/* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
- *          Do not access GValues directly in your code. Instead, use the
- *          g_value_get_*() functions
+/* WARNING: This code accesses BValues directly, which is UNSUPPORTED API.
+ *          Do not access BValues directly in your code. Instead, use the
+ *          b_value_get_*() functions
  */
 #define g_marshal_value_peek_boolean(v)  (v)->data[0].v_int
 #define g_marshal_value_peek_char(v)     (v)->data[0].v_int
@@ -52,9 +52,9 @@
 /* BOOL:NONE (./btkmarshal.list:1) */
 void
 btk_marshal_BOOLEAN__VOID (GClosure     *closure,
-                           GValue       *return_value,
+                           BValue       *return_value,
                            guint         n_param_values,
-                           const GValue *param_values,
+                           const BValue *param_values,
                            gpointer      invocation_hint B_GNUC_UNUSED,
                            gpointer      marshal_data)
 {
@@ -71,11 +71,11 @@ btk_marshal_BOOLEAN__VOID (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__VOID) (marshal_data ? marshal_data : cc->callback);
@@ -83,15 +83,15 @@ btk_marshal_BOOLEAN__VOID (GClosure     *closure,
   v_return = callback (data1,
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER (./btkmarshal.list:2) */
 void
 btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
-                              GValue       *return_value,
+                              BValue       *return_value,
                               guint         n_param_values,
-                              const GValue *param_values,
+                              const BValue *param_values,
                               gpointer      invocation_hint B_GNUC_UNUSED,
                               gpointer      marshal_data)
 {
@@ -109,11 +109,11 @@ btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -122,15 +122,15 @@ btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 1),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,POINTER,INT,INT (./btkmarshal.list:3) */
 void
 btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
-                                              GValue       *return_value,
+                                              BValue       *return_value,
                                               guint         n_param_values,
-                                              const GValue *param_values,
+                                              const BValue *param_values,
                                               gpointer      invocation_hint B_GNUC_UNUSED,
                                               gpointer      marshal_data)
 {
@@ -151,11 +151,11 @@ btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_POINTER_INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -167,15 +167,15 @@ btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
                        g_marshal_value_peek_int (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,INT,INT (./btkmarshal.list:4) */
 void
 btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
-                                      GValue       *return_value,
+                                      BValue       *return_value,
                                       guint         n_param_values,
-                                      const GValue *param_values,
+                                      const BValue *param_values,
                                       gpointer      invocation_hint B_GNUC_UNUSED,
                                       gpointer      marshal_data)
 {
@@ -195,11 +195,11 @@ btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -210,15 +210,15 @@ btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
                        g_marshal_value_peek_int (param_values + 3),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,INT,INT,UINT (./btkmarshal.list:5) */
 void
 btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
-                                           GValue       *return_value,
+                                           BValue       *return_value,
                                            guint         n_param_values,
-                                           const GValue *param_values,
+                                           const BValue *param_values,
                                            gpointer      invocation_hint B_GNUC_UNUSED,
                                            gpointer      marshal_data)
 {
@@ -239,11 +239,11 @@ btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_INT_INT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -255,15 +255,15 @@ btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
                        g_marshal_value_peek_uint (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,STRING,STRING,POINTER (./btkmarshal.list:6) */
 void
 btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
-                                                    GValue       *return_value,
+                                                    BValue       *return_value,
                                                     guint         n_param_values,
-                                                    const GValue *param_values,
+                                                    const BValue *param_values,
                                                     gpointer      invocation_hint B_GNUC_UNUSED,
                                                     gpointer      marshal_data)
 {
@@ -284,11 +284,11 @@ btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_STRING_STRING_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -300,15 +300,15 @@ btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* ENUM:ENUM (./btkmarshal.list:7) */
 void
 btk_marshal_ENUM__ENUM (GClosure     *closure,
-                        GValue       *return_value,
+                        BValue       *return_value,
                         guint         n_param_values,
-                        const GValue *param_values,
+                        const BValue *param_values,
                         gpointer      invocation_hint B_GNUC_UNUSED,
                         gpointer      marshal_data)
 {
@@ -326,11 +326,11 @@ btk_marshal_ENUM__ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_ENUM__ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -339,15 +339,15 @@ btk_marshal_ENUM__ENUM (GClosure     *closure,
                        g_marshal_value_peek_enum (param_values + 1),
                        data2);
 
-  g_value_set_enum (return_value, v_return);
+  b_value_set_enum (return_value, v_return);
 }
 
 /* INT:POINTER (./btkmarshal.list:8) */
 void
 btk_marshal_INT__POINTER (GClosure     *closure,
-                          GValue       *return_value,
+                          BValue       *return_value,
                           guint         n_param_values,
-                          const GValue *param_values,
+                          const BValue *param_values,
                           gpointer      invocation_hint B_GNUC_UNUSED,
                           gpointer      marshal_data)
 {
@@ -365,11 +365,11 @@ btk_marshal_INT__POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_INT__POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -378,15 +378,15 @@ btk_marshal_INT__POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 1),
                        data2);
 
-  g_value_set_int (return_value, v_return);
+  b_value_set_int (return_value, v_return);
 }
 
 /* INT:POINTER,CHAR,CHAR (./btkmarshal.list:9) */
 void
 btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
-                                    GValue       *return_value,
+                                    BValue       *return_value,
                                     guint         n_param_values,
-                                    const GValue *param_values,
+                                    const BValue *param_values,
                                     gpointer      invocation_hint B_GNUC_UNUSED,
                                     gpointer      marshal_data)
 {
@@ -406,11 +406,11 @@ btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_INT__POINTER_CHAR_CHAR) (marshal_data ? marshal_data : cc->callback);
@@ -421,15 +421,15 @@ btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
                        g_marshal_value_peek_char (param_values + 3),
                        data2);
 
-  g_value_set_int (return_value, v_return);
+  b_value_set_int (return_value, v_return);
 }
 
 /* NONE:ENUM,FLOAT (./btkmarshal.list:13) */
 void
 btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
-                              GValue       *return_value B_GNUC_UNUSED,
+                              BValue       *return_value B_GNUC_UNUSED,
                               guint         n_param_values,
-                              const GValue *param_values,
+                              const BValue *param_values,
                               gpointer      invocation_hint B_GNUC_UNUSED,
                               gpointer      marshal_data)
 {
@@ -446,11 +446,11 @@ btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ENUM_FLOAT) (marshal_data ? marshal_data : cc->callback);
@@ -464,9 +464,9 @@ btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
 /* NONE:ENUM,FLOAT,BOOL (./btkmarshal.list:14) */
 void
 btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
-                                      GValue       *return_value B_GNUC_UNUSED,
+                                      BValue       *return_value B_GNUC_UNUSED,
                                       guint         n_param_values,
-                                      const GValue *param_values,
+                                      const BValue *param_values,
                                       gpointer      invocation_hint B_GNUC_UNUSED,
                                       gpointer      marshal_data)
 {
@@ -484,11 +484,11 @@ btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ENUM_FLOAT_BOOLEAN) (marshal_data ? marshal_data : cc->callback);
@@ -503,9 +503,9 @@ btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
 /* NONE:INT,INT (./btkmarshal.list:16) */
 void
 btk_marshal_VOID__INT_INT (GClosure     *closure,
-                           GValue       *return_value B_GNUC_UNUSED,
+                           BValue       *return_value B_GNUC_UNUSED,
                            guint         n_param_values,
-                           const GValue *param_values,
+                           const BValue *param_values,
                            gpointer      invocation_hint B_GNUC_UNUSED,
                            gpointer      marshal_data)
 {
@@ -522,11 +522,11 @@ btk_marshal_VOID__INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -540,9 +540,9 @@ btk_marshal_VOID__INT_INT (GClosure     *closure,
 /* NONE:INT,INT,POINTER (./btkmarshal.list:17) */
 void
 btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
-                                   GValue       *return_value B_GNUC_UNUSED,
+                                   BValue       *return_value B_GNUC_UNUSED,
                                    guint         n_param_values,
-                                   const GValue *param_values,
+                                   const BValue *param_values,
                                    gpointer      invocation_hint B_GNUC_UNUSED,
                                    gpointer      marshal_data)
 {
@@ -560,11 +560,11 @@ btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__INT_INT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -579,9 +579,9 @@ btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
 /* NONE:POINTER,INT (./btkmarshal.list:21) */
 void
 btk_marshal_VOID__POINTER_INT (GClosure     *closure,
-                               GValue       *return_value B_GNUC_UNUSED,
+                               BValue       *return_value B_GNUC_UNUSED,
                                guint         n_param_values,
-                               const GValue *param_values,
+                               const BValue *param_values,
                                gpointer      invocation_hint B_GNUC_UNUSED,
                                gpointer      marshal_data)
 {
@@ -598,11 +598,11 @@ btk_marshal_VOID__POINTER_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_INT) (marshal_data ? marshal_data : cc->callback);
@@ -616,9 +616,9 @@ btk_marshal_VOID__POINTER_INT (GClosure     *closure,
 /* NONE:POINTER,POINTER (./btkmarshal.list:22) */
 void
 btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
-                                   GValue       *return_value B_GNUC_UNUSED,
+                                   BValue       *return_value B_GNUC_UNUSED,
                                    guint         n_param_values,
-                                   const GValue *param_values,
+                                   const BValue *param_values,
                                    gpointer      invocation_hint B_GNUC_UNUSED,
                                    gpointer      marshal_data)
 {
@@ -635,11 +635,11 @@ btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -653,9 +653,9 @@ btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
 /* NONE:POINTER,POINTER,POINTER (./btkmarshal.list:23) */
 void
 btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
-                                           GValue       *return_value B_GNUC_UNUSED,
+                                           BValue       *return_value B_GNUC_UNUSED,
                                            guint         n_param_values,
-                                           const GValue *param_values,
+                                           const BValue *param_values,
                                            gpointer      invocation_hint B_GNUC_UNUSED,
                                            gpointer      marshal_data)
 {
@@ -673,11 +673,11 @@ btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -692,9 +692,9 @@ btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
 /* NONE:POINTER,STRING,STRING (./btkmarshal.list:24) */
 void
 btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
-                                         GValue       *return_value B_GNUC_UNUSED,
+                                         BValue       *return_value B_GNUC_UNUSED,
                                          guint         n_param_values,
-                                         const GValue *param_values,
+                                         const BValue *param_values,
                                          gpointer      invocation_hint B_GNUC_UNUSED,
                                          gpointer      marshal_data)
 {
@@ -712,11 +712,11 @@ btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_STRING_STRING) (marshal_data ? marshal_data : cc->callback);
@@ -731,9 +731,9 @@ btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
 /* NONE:POINTER,UINT (./btkmarshal.list:25) */
 void
 btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
-                                GValue       *return_value B_GNUC_UNUSED,
+                                BValue       *return_value B_GNUC_UNUSED,
                                 guint         n_param_values,
-                                const GValue *param_values,
+                                const BValue *param_values,
                                 gpointer      invocation_hint B_GNUC_UNUSED,
                                 gpointer      marshal_data)
 {
@@ -750,11 +750,11 @@ btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -768,9 +768,9 @@ btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
 /* NONE:POINTER,UINT,ENUM (./btkmarshal.list:26) */
 void
 btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
-                                     GValue       *return_value B_GNUC_UNUSED,
+                                     BValue       *return_value B_GNUC_UNUSED,
                                      guint         n_param_values,
-                                     const GValue *param_values,
+                                     const BValue *param_values,
                                      gpointer      invocation_hint B_GNUC_UNUSED,
                                      gpointer      marshal_data)
 {
@@ -788,11 +788,11 @@ btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT_ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -807,9 +807,9 @@ btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
 /* NONE:POINTER,POINTER,UINT,UINT (./btkmarshal.list:27) */
 void
 btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
-                                             GValue       *return_value B_GNUC_UNUSED,
+                                             BValue       *return_value B_GNUC_UNUSED,
                                              guint         n_param_values,
-                                             const GValue *param_values,
+                                             const BValue *param_values,
                                              gpointer      invocation_hint B_GNUC_UNUSED,
                                              gpointer      marshal_data)
 {
@@ -828,11 +828,11 @@ btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -848,9 +848,9 @@ btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:POINTER,INT,INT,POINTER,UINT,UINT (./btkmarshal.list:28) */
 void
 btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
-                                                     GValue       *return_value B_GNUC_UNUSED,
+                                                     BValue       *return_value B_GNUC_UNUSED,
                                                      guint         n_param_values,
-                                                     const GValue *param_values,
+                                                     const BValue *param_values,
                                                      gpointer      invocation_hint B_GNUC_UNUSED,
                                                      gpointer      marshal_data)
 {
@@ -871,11 +871,11 @@ btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_INT_INT_POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -893,9 +893,9 @@ btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:POINTER,UINT,UINT (./btkmarshal.list:29) */
 void
 btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
-                                     GValue       *return_value B_GNUC_UNUSED,
+                                     BValue       *return_value B_GNUC_UNUSED,
                                      guint         n_param_values,
-                                     const GValue *param_values,
+                                     const BValue *param_values,
                                      gpointer      invocation_hint B_GNUC_UNUSED,
                                      gpointer      marshal_data)
 {
@@ -913,11 +913,11 @@ btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -932,9 +932,9 @@ btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:STRING,INT,POINTER (./btkmarshal.list:32) */
 void
 btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
-                                      GValue       *return_value B_GNUC_UNUSED,
+                                      BValue       *return_value B_GNUC_UNUSED,
                                       guint         n_param_values,
-                                      const GValue *param_values,
+                                      const BValue *param_values,
                                       gpointer      invocation_hint B_GNUC_UNUSED,
                                       gpointer      marshal_data)
 {
@@ -952,11 +952,11 @@ btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__STRING_INT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -971,9 +971,9 @@ btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
 /* NONE:UINT,POINTER,UINT,ENUM,ENUM,POINTER (./btkmarshal.list:34) */
 void
 btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
-                                                       GValue       *return_value B_GNUC_UNUSED,
+                                                       BValue       *return_value B_GNUC_UNUSED,
                                                        guint         n_param_values,
-                                                       const GValue *param_values,
+                                                       const BValue *param_values,
                                                        gpointer      invocation_hint B_GNUC_UNUSED,
                                                        gpointer      marshal_data)
 {
@@ -994,11 +994,11 @@ btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -1016,9 +1016,9 @@ btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
 /* NONE:UINT,POINTER,UINT,UINT,ENUM (./btkmarshal.list:35) */
 void
 btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
-                                               GValue       *return_value B_GNUC_UNUSED,
+                                               BValue       *return_value B_GNUC_UNUSED,
                                                guint         n_param_values,
-                                               const GValue *param_values,
+                                               const BValue *param_values,
                                                gpointer      invocation_hint B_GNUC_UNUSED,
                                                gpointer      marshal_data)
 {
@@ -1038,11 +1038,11 @@ btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_POINTER_UINT_UINT_ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -1059,9 +1059,9 @@ btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
 /* NONE:UINT,STRING (./btkmarshal.list:36) */
 void
 btk_marshal_VOID__UINT_STRING (GClosure     *closure,
-                               GValue       *return_value B_GNUC_UNUSED,
+                               BValue       *return_value B_GNUC_UNUSED,
                                guint         n_param_values,
-                               const GValue *param_values,
+                               const BValue *param_values,
                                gpointer      invocation_hint B_GNUC_UNUSED,
                                gpointer      marshal_data)
 {
@@ -1078,11 +1078,11 @@ btk_marshal_VOID__UINT_STRING (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_STRING) (marshal_data ? marshal_data : cc->callback);

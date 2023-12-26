@@ -72,7 +72,7 @@ static void         bdk_drawable_real_draw_drawable          (BdkDrawable  *draw
 							      gint	    height);
      
 
-G_DEFINE_ABSTRACT_TYPE (BdkDrawable, bdk_drawable, G_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (BdkDrawable, bdk_drawable, B_TYPE_OBJECT)
 
 static void
 bdk_drawable_class_init (BdkDrawableClass *klass)
@@ -102,7 +102,7 @@ bdk_drawable_init (BdkDrawable *drawable)
  * @destroy_func: (allow-none): function to free @data, or %NULL
  *
  * This function is equivalent to g_object_set_data(),
- * the #GObject variant should be used instead.
+ * the #BObject variant should be used instead.
  * 
  **/
 void          
@@ -113,7 +113,7 @@ bdk_drawable_set_data (BdkDrawable   *drawable,
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   
-  g_object_set_qdata_full (G_OBJECT (drawable),
+  g_object_set_qdata_full (B_OBJECT (drawable),
                            g_quark_from_string (key),
                            data,
                            destroy_func);
@@ -124,7 +124,7 @@ bdk_drawable_set_data (BdkDrawable   *drawable,
  * @drawable: a #BdkDrawable
  * @key: name the data was stored under
  * 
- * Equivalent to g_object_get_data(); the #GObject variant should be
+ * Equivalent to g_object_get_data(); the #BObject variant should be
  * used instead.
  * 
  * Return value: the data stored at @key
@@ -135,7 +135,7 @@ bdk_drawable_get_data (BdkDrawable   *drawable,
 {
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
   
-  return g_object_get_qdata (G_OBJECT (drawable),
+  return g_object_get_qdata (B_OBJECT (drawable),
                              g_quark_try_string (key));
 }
 

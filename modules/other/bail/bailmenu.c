@@ -57,7 +57,7 @@ bail_menu_real_initialize (BatkObject *obj,
 
   obj->role = BATK_ROLE_MENU;
 
-  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+  g_object_set_data (B_OBJECT (obj), "batk-component-layer",
 		     GINT_TO_POINTER (BATK_LAYER_POPUP));
 }
 

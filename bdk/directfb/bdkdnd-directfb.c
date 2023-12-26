@@ -69,16 +69,16 @@ static BdkDragContext *current_dest_drag = NULL;
 
 #define BDK_DRAG_CONTEXT_PRIVATE_DATA(ctx) ((BdkDragContextPrivate *) BDK_DRAG_CONTEXT (ctx)->windowing_data)
 
-static void bdk_drag_context_finalize (GObject *object);
+static void bdk_drag_context_finalize (BObject *object);
 
-G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
 static void
 bdk_drag_context_init (BdkDragContext *dragcontext)
 {
   BdkDragContextPrivate *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
+  private = B_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
                                          BDK_TYPE_DRAG_CONTEXT,
                                          BdkDragContextPrivate);
 
@@ -90,7 +90,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drag_context_finalize;
 
@@ -98,7 +98,7 @@ bdk_drag_context_class_init (BdkDragContextClass *klass)
 }
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
 
@@ -112,7 +112,7 @@ bdk_drag_context_finalize (GObject *object)
 
   contexts = g_list_remove (contexts, context);
 
-  G_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
 }
 
 BdkDragContext *

@@ -48,7 +48,7 @@ static void                  bail_window_init            (BailWindow   *accessib
 
 static void                  bail_window_real_initialize (BatkObject    *obj,
                                                           gpointer     data);
-static void                  bail_window_finalize        (GObject      *object);
+static void                  bail_window_finalize        (BObject      *object);
 
 static const gchar*          bail_window_get_name        (BatkObject     *accessible);
 
@@ -59,8 +59,8 @@ static gboolean              bail_window_real_focus_btk (BtkWidget     *widget,
 
 static BatkStateSet*          bail_window_ref_state_set  (BatkObject     *accessible);
 static BatkRelationSet*       bail_window_ref_relation_set  (BatkObject     *accessible);
-static void                  bail_window_real_notify_btk (GObject      *obj,
-                                                          GParamSpec   *pspec);
+static void                  bail_window_real_notify_btk (BObject      *obj,
+                                                          BParamSpec   *pspec);
 static gint                  bail_window_get_mdi_zorder (BatkComponent  *component);
 
 static gboolean              bail_window_state_event_btk (BtkWidget           *widget,
@@ -88,7 +88,7 @@ static void
 bail_window_class_init (BailWindowClass *klass)
 {
   BailWidgetClass *widget_class;
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_window_finalize;
@@ -106,76 +106,76 @@ bail_window_class_init (BailWindowClass *klass)
 
   bail_window_signals [ACTIVATE] =
     g_signal_new ("activate",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [CREATE] =
     g_signal_new ("create",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [DEACTIVATE] =
     g_signal_new ("deactivate",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [DESTROY] =
     g_signal_new ("destroy",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [MAXIMIZE] =
     g_signal_new ("maximize",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [MINIMIZE] =
     g_signal_new ("minimize",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [MOVE] =
     g_signal_new ("move",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [RESIZE] =
     g_signal_new ("resize",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   bail_window_signals [RESTORE] =
     g_signal_new ("restore",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, /* default signal handler */
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
 }
 
 static void
@@ -207,7 +207,7 @@ bail_window_real_initialize (BatkObject *obj,
                     "window_state_event",
                     G_CALLBACK (bail_window_state_event_btk),
                     NULL);
-  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+  g_object_set_data (B_OBJECT (obj), "batk-component-layer",
                      GINT_TO_POINTER (BATK_LAYER_WINDOW));
 
   if (BTK_IS_FILE_SELECTION (widget))
@@ -245,7 +245,7 @@ bail_window_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_window_finalize (GObject *object)
+bail_window_finalize (BObject *object)
 {
   BailWindow* window = BAIL_WINDOW (object);
 
@@ -260,7 +260,7 @@ bail_window_finalize (GObject *object)
       window->previous_name = NULL;
     }
 
-  G_OBJECT_CLASS (bail_window_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_window_parent_class)->finalize (object);
 }
 
 static const gchar*
@@ -371,7 +371,7 @@ bail_window_get_index_in_parent (BatkObject *accessible)
 	    {
 	      BatkObject *child = batk_object_ref_accessible_child (batk_obj, i);
 	      if (accessible == child) index = i;
-	      g_object_unref (G_OBJECT (child));
+	      g_object_unref (B_OBJECT (child));
 	    }
 	}
     }
@@ -481,7 +481,7 @@ idle_notify_name_change (gpointer data)
     /*
      * The title has changed so notify a change in accessible-name
      */
-      g_object_notify (G_OBJECT (obj), "accessible-name");
+      g_object_notify (B_OBJECT (obj), "accessible-name");
     }
   g_signal_emit_by_name (obj, "visible_data_changed");
 
@@ -489,8 +489,8 @@ idle_notify_name_change (gpointer data)
 }
 
 static void
-bail_window_real_notify_btk (GObject		*obj,
-                             GParamSpec		*pspec)
+bail_window_real_notify_btk (BObject		*obj,
+                             BParamSpec		*pspec)
 {
   BtkWidget *widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);

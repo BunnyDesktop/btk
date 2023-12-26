@@ -78,7 +78,7 @@
   gint ns_x, ns_y;
   BdkRectangle *rect;
 
-  rect = g_object_get_data (G_OBJECT (bdk_window), GIC_CURSOR_RECT);
+  rect = g_object_get_data (B_OBJECT (bdk_window), GIC_CURSOR_RECT);
   if (rect)
     {
       _bdk_quartz_window_bdk_xy_to_xy (rect->x, rect->y + rect->height,
@@ -128,10 +128,10 @@
   gchar *prev_str;
   markedRange = selectedRange = NSMakeRange (NSNotFound, 0);
 
-  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT);
+  prev_str = g_object_get_data (B_OBJECT (bdk_window), TIC_MARKED_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT, NULL);
+  g_object_set_data (B_OBJECT (bdk_window), TIC_MARKED_TEXT, NULL);
 }
 
 -(void)setMarkedText: (id)aString selectedRange: (NSRange)newSelection replacementRange: (NSRange)replacementRange
@@ -158,13 +158,13 @@
       str = [aString UTF8String];
     }
 
-  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT);
+  prev_str = g_object_get_data (B_OBJECT (bdk_window), TIC_MARKED_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT, g_strdup (str));
-  g_object_set_data (G_OBJECT (bdk_window), TIC_SELECTED_POS,
+  g_object_set_data (B_OBJECT (bdk_window), TIC_MARKED_TEXT, g_strdup (str));
+  g_object_set_data (B_OBJECT (bdk_window), TIC_SELECTED_POS,
 		     GUINT_TO_POINTER (selectedRange.location));
-  g_object_set_data (G_OBJECT (bdk_window), TIC_SELECTED_LEN,
+  g_object_set_data (B_OBJECT (bdk_window), TIC_SELECTED_LEN,
 		     GUINT_TO_POINTER (selectedRange.length));
 
   BDK_NOTE (EVENTS, g_print ("setMarkedText: set %s (%p, nsview %p): %s\n",
@@ -172,7 +172,7 @@
 			     str ? str : "(empty)"));
 
   /* handle text input changes by mouse events */
-  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (bdk_window),
+  if (!GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (bdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
       _bdk_quartz_synthesize_null_key_event(bdk_window);
@@ -225,19 +225,19 @@
       str = [string UTF8String];
    }
 
-  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_INSERT_TEXT);
+  prev_str = g_object_get_data (B_OBJECT (bdk_window), TIC_INSERT_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (bdk_window), TIC_INSERT_TEXT, g_strdup (str));
+  g_object_set_data (B_OBJECT (bdk_window), TIC_INSERT_TEXT, g_strdup (str));
   BDK_NOTE (EVENTS, g_print ("insertText: set %s (%p, nsview %p): %s\n",
 			     TIC_INSERT_TEXT, bdk_window, self,
 			     str ? str : "(empty)"));
 
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_FILTERED));
 
   /* handle text input changes by mouse events */
-  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (bdk_window),
+  if (!GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (bdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
       _bdk_quartz_synthesize_null_key_event(bdk_window);
@@ -247,307 +247,307 @@
 -(void)deleteBackward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteBackward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteForward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteForward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteToBeginningOfLine: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteToBeginningOfLine\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteToEndOfLine: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteToEndOfLine\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteWordBackward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteWordBackward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteWordForward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("deleteWordForward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertBacktab: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("insertBacktab\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertNewline: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("insertNewline\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY, GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY, GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertTab: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("insertTab\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveBackward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveBackward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveBackwardAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveBackwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveDown: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveDown\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveDownAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveDownAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveForward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveForward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveForwardAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveForwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveLeft: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveLeft\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveLeftAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveLeftAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveRight: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveRight\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveRightAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveRightAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfDocument: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocument\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfDocumentAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocumentAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfLine: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToBeginningOfLine\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfLineAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToBeginningOfLineAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfDocument: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToEndOfDocument\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfDocumentAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToEndOfDocumentAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfLine: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToEndOfLine\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfLineAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveToEndOfLineAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveUp: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveUp\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveUpAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveUpAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordBackward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordBackward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordBackwardAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordBackwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordForward: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordForward\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordForwardAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordForwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordLeft: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordLeft\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordLeftAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordLeftAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordRight: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordRight\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordRightAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("moveWordRightAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageDown: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("pageDown\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageDownAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("pageDownAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageUp: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("pageUp\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageUpAndModifySelection: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("pageUpAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectAll: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("selectAll\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectLine: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("selectLine\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectWord: (id)sender
 {
   BDK_NOTE (EVENTS, g_print ("selectWord\n"));
-  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
+  g_object_set_data (B_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 

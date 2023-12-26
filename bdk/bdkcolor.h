@@ -57,18 +57,18 @@ struct _BdkColor
 typedef struct _BdkColormapClass BdkColormapClass;
 
 #define BDK_TYPE_COLORMAP              (bdk_colormap_get_type ())
-#define BDK_COLORMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_COLORMAP, BdkColormap))
-#define BDK_COLORMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_COLORMAP, BdkColormapClass))
-#define BDK_IS_COLORMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_COLORMAP))
-#define BDK_IS_COLORMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_COLORMAP))
-#define BDK_COLORMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_COLORMAP, BdkColormapClass))
+#define BDK_COLORMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_COLORMAP, BdkColormap))
+#define BDK_COLORMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_COLORMAP, BdkColormapClass))
+#define BDK_IS_COLORMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_COLORMAP))
+#define BDK_IS_COLORMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_COLORMAP))
+#define BDK_COLORMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_COLORMAP, BdkColormapClass))
 
 #define BDK_TYPE_COLOR                 (bdk_color_get_type ())
 
 struct _BdkColormap
 {
   /*< private >*/
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
   gint      GSEAL (size);
@@ -82,7 +82,7 @@ struct _BdkColormap
 
 struct _BdkColormapClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
 };
 

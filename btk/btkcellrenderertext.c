@@ -28,16 +28,16 @@
 #include "btktreeprivate.h"
 #include "btkalias.h"
 
-static void btk_cell_renderer_text_finalize   (GObject                  *object);
+static void btk_cell_renderer_text_finalize   (BObject                  *object);
 
-static void btk_cell_renderer_text_get_property  (GObject                  *object,
+static void btk_cell_renderer_text_get_property  (BObject                  *object,
 						  guint                     param_id,
-						  GValue                   *value,
-						  GParamSpec               *pspec);
-static void btk_cell_renderer_text_set_property  (GObject                  *object,
+						  BValue                   *value,
+						  BParamSpec               *pspec);
+static void btk_cell_renderer_text_set_property  (BObject                  *object,
 						  guint                     param_id,
-						  const GValue             *value,
-						  GParamSpec               *pspec);
+						  const BValue             *value,
+						  BParamSpec               *pspec);
 static void btk_cell_renderer_text_get_size   (BtkCellRenderer          *cell,
 					       BtkWidget                *widget,
 					       BdkRectangle             *cell_area,
@@ -123,7 +123,7 @@ static guint text_cell_renderer_signals [LAST_SIGNAL];
 
 #define BTK_CELL_RENDERER_TEXT_PATH "btk-cell-renderer-text-path"
 
-#define BTK_CELL_RENDERER_TEXT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextPrivate))
+#define BTK_CELL_RENDERER_TEXT_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextPrivate))
 
 typedef struct _BtkCellRendererTextPrivate BtkCellRendererTextPrivate;
 struct _BtkCellRendererTextPrivate
@@ -177,7 +177,7 @@ btk_cell_renderer_text_init (BtkCellRendererText *celltext)
 static void
 btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (class);
 
   object_class->finalize = btk_cell_renderer_text_finalize;
@@ -575,20 +575,20 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
    */
   text_cell_renderer_signals [EDITED] =
     g_signal_new (I_("edited"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkCellRendererTextClass, edited),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING_STRING,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_STRING,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 2,
+		  B_TYPE_STRING,
+		  B_TYPE_STRING);
 
   g_type_class_add_private (object_class, sizeof (BtkCellRendererTextPrivate));
 }
 
 static void
-btk_cell_renderer_text_finalize (GObject *object)
+btk_cell_renderer_text_finalize (BObject *object)
 {
   BtkCellRendererText *celltext = BTK_CELL_RENDERER_TEXT (object);
   BtkCellRendererTextPrivate *priv;
@@ -605,7 +605,7 @@ btk_cell_renderer_text_finalize (GObject *object)
   if (priv->language)
     g_object_unref (priv->language);
 
-  G_OBJECT_CLASS (btk_cell_renderer_text_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_cell_renderer_text_parent_class)->finalize (object);
 }
 
 static BangoFontMask
@@ -631,10 +631,10 @@ get_property_font_set_mask (guint prop_id)
 }
 
 static void
-btk_cell_renderer_text_get_property (GObject        *object,
+btk_cell_renderer_text_get_property (BObject        *object,
 				     guint           param_id,
-				     GValue         *value,
-				     GParamSpec     *pspec)
+				     BValue         *value,
+				     BParamSpec     *pspec)
 {
   BtkCellRendererText *celltext = BTK_CELL_RENDERER_TEXT (object);
   BtkCellRendererTextPrivate *priv;
@@ -644,15 +644,15 @@ btk_cell_renderer_text_get_property (GObject        *object,
   switch (param_id)
     {
     case PROP_TEXT:
-      g_value_set_string (value, celltext->text);
+      b_value_set_string (value, celltext->text);
       break;
 
     case PROP_ATTRIBUTES:
-      g_value_set_boxed (value, celltext->extra_attrs);
+      b_value_set_boxed (value, celltext->extra_attrs);
       break;
 
     case PROP_SINGLE_PARAGRAPH_MODE:
-      g_value_set_boolean (value, priv->single_paragraph);
+      b_value_set_boolean (value, priv->single_paragraph);
       break;
 
     case PROP_BACKGROUND_BDK:
@@ -663,7 +663,7 @@ btk_cell_renderer_text_get_property (GObject        *object,
         color.green = celltext->background.green;
         color.blue = celltext->background.blue;
         
-        g_value_set_boxed (value, &color);
+        b_value_set_boxed (value, &color);
       }
       break;
 
@@ -675,92 +675,92 @@ btk_cell_renderer_text_get_property (GObject        *object,
         color.green = celltext->foreground.green;
         color.blue = celltext->foreground.blue;
         
-        g_value_set_boxed (value, &color);
+        b_value_set_boxed (value, &color);
       }
       break;
 
     case PROP_FONT:
-        g_value_take_string (value, bango_font_description_to_string (celltext->font));
+        b_value_take_string (value, bango_font_description_to_string (celltext->font));
       break;
       
     case PROP_FONT_DESC:
-      g_value_set_boxed (value, celltext->font);
+      b_value_set_boxed (value, celltext->font);
       break;
 
     case PROP_FAMILY:
-      g_value_set_string (value, bango_font_description_get_family (celltext->font));
+      b_value_set_string (value, bango_font_description_get_family (celltext->font));
       break;
 
     case PROP_STYLE:
-      g_value_set_enum (value, bango_font_description_get_style (celltext->font));
+      b_value_set_enum (value, bango_font_description_get_style (celltext->font));
       break;
 
     case PROP_VARIANT:
-      g_value_set_enum (value, bango_font_description_get_variant (celltext->font));
+      b_value_set_enum (value, bango_font_description_get_variant (celltext->font));
       break;
 
     case PROP_WEIGHT:
-      g_value_set_int (value, bango_font_description_get_weight (celltext->font));
+      b_value_set_int (value, bango_font_description_get_weight (celltext->font));
       break;
 
     case PROP_STRETCH:
-      g_value_set_enum (value, bango_font_description_get_stretch (celltext->font));
+      b_value_set_enum (value, bango_font_description_get_stretch (celltext->font));
       break;
 
     case PROP_SIZE:
-      g_value_set_int (value, bango_font_description_get_size (celltext->font));
+      b_value_set_int (value, bango_font_description_get_size (celltext->font));
       break;
 
     case PROP_SIZE_POINTS:
-      g_value_set_double (value, ((double)bango_font_description_get_size (celltext->font)) / (double)BANGO_SCALE);
+      b_value_set_double (value, ((double)bango_font_description_get_size (celltext->font)) / (double)BANGO_SCALE);
       break;
 
     case PROP_SCALE:
-      g_value_set_double (value, celltext->font_scale);
+      b_value_set_double (value, celltext->font_scale);
       break;
       
     case PROP_EDITABLE:
-      g_value_set_boolean (value, celltext->editable);
+      b_value_set_boolean (value, celltext->editable);
       break;
 
     case PROP_STRIKETHROUGH:
-      g_value_set_boolean (value, celltext->strikethrough);
+      b_value_set_boolean (value, celltext->strikethrough);
       break;
 
     case PROP_UNDERLINE:
-      g_value_set_enum (value, celltext->underline_style);
+      b_value_set_enum (value, celltext->underline_style);
       break;
 
     case PROP_RISE:
-      g_value_set_int (value, celltext->rise);
+      b_value_set_int (value, celltext->rise);
       break;  
 
     case PROP_LANGUAGE:
-      g_value_set_static_string (value, bango_language_to_string (priv->language));
+      b_value_set_static_string (value, bango_language_to_string (priv->language));
       break;
 
     case PROP_ELLIPSIZE:
-      g_value_set_enum (value, priv->ellipsize);
+      b_value_set_enum (value, priv->ellipsize);
       break;
       
     case PROP_WRAP_MODE:
-      g_value_set_enum (value, priv->wrap_mode);
+      b_value_set_enum (value, priv->wrap_mode);
       break;
 
     case PROP_WRAP_WIDTH:
-      g_value_set_int (value, priv->wrap_width);
+      b_value_set_int (value, priv->wrap_width);
       break;
       
     case PROP_ALIGN:
-      g_value_set_enum (value, priv->align);
+      b_value_set_enum (value, priv->align);
       break;
 
     case PROP_BACKGROUND_SET:
-      g_value_set_boolean (value, celltext->background_set);
+      b_value_set_boolean (value, celltext->background_set);
       break;
 
     case PROP_FOREGROUND_SET:
-      g_value_set_boolean (value, celltext->foreground_set);
+      b_value_set_boolean (value, celltext->foreground_set);
       break;
 
     case PROP_FAMILY_SET:
@@ -771,52 +771,52 @@ btk_cell_renderer_text_get_property (GObject        *object,
     case PROP_SIZE_SET:
       {
 	BangoFontMask mask = get_property_font_set_mask (param_id);
-	g_value_set_boolean (value, (bango_font_description_get_set_fields (celltext->font) & mask) != 0);
+	b_value_set_boolean (value, (bango_font_description_get_set_fields (celltext->font) & mask) != 0);
 	
 	break;
       }
 
     case PROP_SCALE_SET:
-      g_value_set_boolean (value, celltext->scale_set);
+      b_value_set_boolean (value, celltext->scale_set);
       break;
       
     case PROP_EDITABLE_SET:
-      g_value_set_boolean (value, celltext->editable_set);
+      b_value_set_boolean (value, celltext->editable_set);
       break;
 
     case PROP_STRIKETHROUGH_SET:
-      g_value_set_boolean (value, celltext->strikethrough_set);
+      b_value_set_boolean (value, celltext->strikethrough_set);
       break;
 
     case PROP_UNDERLINE_SET:
-      g_value_set_boolean (value, celltext->underline_set);
+      b_value_set_boolean (value, celltext->underline_set);
       break;
 
     case  PROP_RISE_SET:
-      g_value_set_boolean (value, celltext->rise_set);
+      b_value_set_boolean (value, celltext->rise_set);
       break;
 
     case PROP_LANGUAGE_SET:
-      g_value_set_boolean (value, priv->language_set);
+      b_value_set_boolean (value, priv->language_set);
       break;
 
     case PROP_ELLIPSIZE_SET:
-      g_value_set_boolean (value, priv->ellipsize_set);
+      b_value_set_boolean (value, priv->ellipsize_set);
       break;
 
     case PROP_ALIGN_SET:
-      g_value_set_boolean (value, priv->align_set);
+      b_value_set_boolean (value, priv->align_set);
       break;
       
     case PROP_WIDTH_CHARS:
-      g_value_set_int (value, priv->width_chars);
+      b_value_set_int (value, priv->width_chars);
       break;  
 
     case PROP_BACKGROUND:
     case PROP_FOREGROUND:
     case PROP_MARKUP:
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -831,7 +831,7 @@ set_bg_color (BtkCellRendererText *celltext,
       if (!celltext->background_set)
         {
           celltext->background_set = TRUE;
-          g_object_notify (G_OBJECT (celltext), "background-set");
+          g_object_notify (B_OBJECT (celltext), "background-set");
         }
       
       celltext->background.red = color->red;
@@ -843,7 +843,7 @@ set_bg_color (BtkCellRendererText *celltext,
       if (celltext->background_set)
         {
           celltext->background_set = FALSE;
-          g_object_notify (G_OBJECT (celltext), "background-set");
+          g_object_notify (B_OBJECT (celltext), "background-set");
         }
     }
 }
@@ -858,7 +858,7 @@ set_fg_color (BtkCellRendererText *celltext,
       if (!celltext->foreground_set)
         {
           celltext->foreground_set = TRUE;
-          g_object_notify (G_OBJECT (celltext), "foreground-set");
+          g_object_notify (B_OBJECT (celltext), "foreground-set");
         }
       
       celltext->foreground.red = color->red;
@@ -870,7 +870,7 @@ set_fg_color (BtkCellRendererText *celltext,
       if (celltext->foreground_set)
         {
           celltext->foreground_set = FALSE;
-          g_object_notify (G_OBJECT (celltext), "foreground-set");
+          g_object_notify (B_OBJECT (celltext), "foreground-set");
         }
     }
 }
@@ -916,7 +916,7 @@ set_font_desc_fields (BangoFontDescription *desc,
 }
 
 static void
-notify_set_changed (GObject       *object,
+notify_set_changed (BObject       *object,
 		    BangoFontMask  changed_mask)
 {
   if (changed_mask & BANGO_FONT_MASK_FAMILY)
@@ -934,7 +934,7 @@ notify_set_changed (GObject       *object,
 }
 
 static void
-notify_fields_changed (GObject       *object,
+notify_fields_changed (BObject       *object,
 		       BangoFontMask  changed_mask)
 {
   if (changed_mask & BANGO_FONT_MASK_FAMILY)
@@ -955,7 +955,7 @@ static void
 set_font_description (BtkCellRendererText  *celltext,
                       BangoFontDescription *font_desc)
 {
-  GObject *object = G_OBJECT (celltext);
+  BObject *object = B_OBJECT (celltext);
   BangoFontDescription *new_font_desc;
   BangoFontMask old_mask, new_mask, changed_mask, set_changed_mask;
   
@@ -1000,10 +1000,10 @@ set_font_description (BtkCellRendererText  *celltext,
 }
 
 static void
-btk_cell_renderer_text_set_property (GObject      *object,
+btk_cell_renderer_text_set_property (BObject      *object,
 				     guint         param_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+				     const BValue *value,
+				     BParamSpec   *pspec)
 {
   BtkCellRendererText *celltext = BTK_CELL_RENDERER_TEXT (object);
   BtkCellRendererTextPrivate *priv;
@@ -1023,7 +1023,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
           priv->markup_set = FALSE;
         }
 
-      celltext->text = g_value_dup_string (value);
+      celltext->text = b_value_dup_string (value);
       g_object_notify (object, "text");
       break;
 
@@ -1031,7 +1031,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
       if (celltext->extra_attrs)
 	bango_attr_list_unref (celltext->extra_attrs);
 
-      celltext->extra_attrs = g_value_get_boxed (value);
+      celltext->extra_attrs = b_value_get_boxed (value);
       if (celltext->extra_attrs)
         bango_attr_list_ref (celltext->extra_attrs);
       break;
@@ -1042,7 +1042,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
 	GError *error = NULL;
 	BangoAttrList *attrs = NULL;
 
-	str = g_value_get_string (value);
+	str = b_value_get_string (value);
 	if (str && !bango_parse_markup (str,
 					-1,
 					0,
@@ -1069,19 +1069,19 @@ btk_cell_renderer_text_set_property (GObject      *object,
       break;
 
     case PROP_SINGLE_PARAGRAPH_MODE:
-      priv->single_paragraph = g_value_get_boolean (value);
+      priv->single_paragraph = b_value_get_boolean (value);
       break;
       
     case PROP_BACKGROUND:
       {
         BdkColor color;
 
-        if (!g_value_get_string (value))
+        if (!b_value_get_string (value))
           set_bg_color (celltext, NULL);       /* reset to background_set to FALSE */
-        else if (bdk_color_parse (g_value_get_string (value), &color))
+        else if (bdk_color_parse (b_value_get_string (value), &color))
           set_bg_color (celltext, &color);
         else
-          g_warning ("Don't know color `%s'", g_value_get_string (value));
+          g_warning ("Don't know color `%s'", b_value_get_string (value));
 
         g_object_notify (object, "background-bdk");
       }
@@ -1091,25 +1091,25 @@ btk_cell_renderer_text_set_property (GObject      *object,
       {
         BdkColor color;
 
-        if (!g_value_get_string (value))
+        if (!b_value_get_string (value))
           set_fg_color (celltext, NULL);       /* reset to foreground_set to FALSE */
-        else if (bdk_color_parse (g_value_get_string (value), &color))
+        else if (bdk_color_parse (b_value_get_string (value), &color))
           set_fg_color (celltext, &color);
         else
-          g_warning ("Don't know color `%s'", g_value_get_string (value));
+          g_warning ("Don't know color `%s'", b_value_get_string (value));
 
         g_object_notify (object, "foreground-bdk");
       }
       break;
 
     case PROP_BACKGROUND_BDK:
-      /* This notifies the GObject itself. */
-      set_bg_color (celltext, g_value_get_boxed (value));
+      /* This notifies the BObject itself. */
+      set_bg_color (celltext, b_value_get_boxed (value));
       break;
 
     case PROP_FOREGROUND_BDK:
-      /* This notifies the GObject itself. */
-      set_fg_color (celltext, g_value_get_boxed (value));
+      /* This notifies the BObject itself. */
+      set_fg_color (celltext, b_value_get_boxed (value));
       break;
 
     case PROP_FONT:
@@ -1117,7 +1117,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
         BangoFontDescription *font_desc = NULL;
         const gchar *name;
 
-        name = g_value_get_string (value);
+        name = b_value_get_string (value);
 
         if (name)
           font_desc = bango_font_description_from_string (name);
@@ -1132,7 +1132,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
       break;
 
     case PROP_FONT_DESC:
-      set_font_description (celltext, g_value_get_boxed (value));
+      set_font_description (celltext, b_value_get_boxed (value));
       
       if (celltext->fixed_height_rows != -1)
 	celltext->calc_fixed_height = TRUE;
@@ -1152,32 +1152,32 @@ btk_cell_renderer_text_set_property (GObject      *object,
 	  {
 	  case PROP_FAMILY:
 	    bango_font_description_set_family (celltext->font,
-					       g_value_get_string (value));
+					       b_value_get_string (value));
 	    break;
 	  case PROP_STYLE:
 	    bango_font_description_set_style (celltext->font,
-					      g_value_get_enum (value));
+					      b_value_get_enum (value));
 	    break;
 	  case PROP_VARIANT:
 	    bango_font_description_set_variant (celltext->font,
-						g_value_get_enum (value));
+						b_value_get_enum (value));
 	    break;
 	  case PROP_WEIGHT:
 	    bango_font_description_set_weight (celltext->font,
-					       g_value_get_int (value));
+					       b_value_get_int (value));
 	    break;
 	  case PROP_STRETCH:
 	    bango_font_description_set_stretch (celltext->font,
-						g_value_get_enum (value));
+						b_value_get_enum (value));
 	    break;
 	  case PROP_SIZE:
 	    bango_font_description_set_size (celltext->font,
-					     g_value_get_int (value));
+					     b_value_get_int (value));
 	    g_object_notify (object, "size-points");
 	    break;
 	  case PROP_SIZE_POINTS:
 	    bango_font_description_set_size (celltext->font,
-					     g_value_get_double (value) * BANGO_SCALE);
+					     b_value_get_double (value) * BANGO_SCALE);
 	    g_object_notify (object, "size");
 	    break;
 	  }
@@ -1193,7 +1193,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
       }
       
     case PROP_SCALE:
-      celltext->font_scale = g_value_get_double (value);
+      celltext->font_scale = b_value_get_double (value);
       celltext->scale_set = TRUE;
       if (celltext->fixed_height_rows != -1)
 	celltext->calc_fixed_height = TRUE;
@@ -1201,7 +1201,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
       break;
       
     case PROP_EDITABLE:
-      celltext->editable = g_value_get_boolean (value);
+      celltext->editable = b_value_get_boolean (value);
       celltext->editable_set = TRUE;
       if (celltext->editable)
         BTK_CELL_RENDERER (celltext)->mode = BTK_CELL_RENDERER_MODE_EDITABLE;
@@ -1211,20 +1211,20 @@ btk_cell_renderer_text_set_property (GObject      *object,
       break;
 
     case PROP_STRIKETHROUGH:
-      celltext->strikethrough = g_value_get_boolean (value);
+      celltext->strikethrough = b_value_get_boolean (value);
       celltext->strikethrough_set = TRUE;
       g_object_notify (object, "strikethrough-set");
       break;
 
     case PROP_UNDERLINE:
-      celltext->underline_style = g_value_get_enum (value);
+      celltext->underline_style = b_value_get_enum (value);
       celltext->underline_set = TRUE;
       g_object_notify (object, "underline-set");
             
       break;
 
     case PROP_RISE:
-      celltext->rise = g_value_get_int (value);
+      celltext->rise = b_value_get_int (value);
       celltext->rise_set = TRUE;
       g_object_notify (object, "rise-set");
       if (celltext->fixed_height_rows != -1)
@@ -1235,40 +1235,40 @@ btk_cell_renderer_text_set_property (GObject      *object,
       priv->language_set = TRUE;
       if (priv->language)
         g_object_unref (priv->language);
-      priv->language = bango_language_from_string (g_value_get_string (value));
+      priv->language = bango_language_from_string (b_value_get_string (value));
       g_object_notify (object, "language-set");
       break;
 
     case PROP_ELLIPSIZE:
-      priv->ellipsize = g_value_get_enum (value);
+      priv->ellipsize = b_value_get_enum (value);
       priv->ellipsize_set = TRUE;
       g_object_notify (object, "ellipsize-set");
       break;
       
     case PROP_WRAP_MODE:
-      priv->wrap_mode = g_value_get_enum (value);
+      priv->wrap_mode = b_value_get_enum (value);
       break;
       
     case PROP_WRAP_WIDTH:
-      priv->wrap_width = g_value_get_int (value);
+      priv->wrap_width = b_value_get_int (value);
       break;
             
     case PROP_WIDTH_CHARS:
-      priv->width_chars = g_value_get_int (value);
+      priv->width_chars = b_value_get_int (value);
       break;  
 
     case PROP_ALIGN:
-      priv->align = g_value_get_enum (value);
+      priv->align = b_value_get_enum (value);
       priv->align_set = TRUE;
       g_object_notify (object, "align-set");
       break;
 
     case PROP_BACKGROUND_SET:
-      celltext->background_set = g_value_get_boolean (value);
+      celltext->background_set = b_value_get_boolean (value);
       break;
 
     case PROP_FOREGROUND_SET:
-      celltext->foreground_set = g_value_get_boolean (value);
+      celltext->foreground_set = b_value_get_boolean (value);
       break;
 
     case PROP_FAMILY_SET:
@@ -1277,7 +1277,7 @@ btk_cell_renderer_text_set_property (GObject      *object,
     case PROP_WEIGHT_SET:
     case PROP_STRETCH_SET:
     case PROP_SIZE_SET:
-      if (!g_value_get_boolean (value))
+      if (!b_value_get_boolean (value))
 	{
 	  bango_font_description_unset_fields (celltext->font,
 					       get_property_font_set_mask (param_id));
@@ -1288,44 +1288,44 @@ btk_cell_renderer_text_set_property (GObject      *object,
 	  
 	  changed_mask = set_font_desc_fields (celltext->font,
 					       get_property_font_set_mask (param_id));
-	  notify_fields_changed (G_OBJECT (celltext), changed_mask);
+	  notify_fields_changed (B_OBJECT (celltext), changed_mask);
 	}
       break;
 
     case PROP_SCALE_SET:
-      celltext->scale_set = g_value_get_boolean (value);
+      celltext->scale_set = b_value_get_boolean (value);
       break;
       
     case PROP_EDITABLE_SET:
-      celltext->editable_set = g_value_get_boolean (value);
+      celltext->editable_set = b_value_get_boolean (value);
       break;
 
     case PROP_STRIKETHROUGH_SET:
-      celltext->strikethrough_set = g_value_get_boolean (value);
+      celltext->strikethrough_set = b_value_get_boolean (value);
       break;
 
     case PROP_UNDERLINE_SET:
-      celltext->underline_set = g_value_get_boolean (value);
+      celltext->underline_set = b_value_get_boolean (value);
       break;
 
     case PROP_RISE_SET:
-      celltext->rise_set = g_value_get_boolean (value);
+      celltext->rise_set = b_value_get_boolean (value);
       break;
 
     case PROP_LANGUAGE_SET:
-      priv->language_set = g_value_get_boolean (value);
+      priv->language_set = b_value_get_boolean (value);
       break;
 
     case PROP_ELLIPSIZE_SET:
-      priv->ellipsize_set = g_value_get_boolean (value);
+      priv->ellipsize_set = b_value_get_boolean (value);
       break;
 
     case PROP_ALIGN_SET:
-      priv->align_set = g_value_get_boolean (value);
+      priv->align_set = b_value_get_boolean (value);
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -1734,7 +1734,7 @@ btk_cell_renderer_text_editing_done (BtkCellEditable *entry,
   if (canceled)
     return;
 
-  path = g_object_get_data (G_OBJECT (entry), BTK_CELL_RENDERER_TEXT_PATH);
+  path = g_object_get_data (B_OBJECT (entry), BTK_CELL_RENDERER_TEXT_PATH);
   new_text = btk_entry_get_text (BTK_ENTRY (entry));
 
   g_signal_emit (data, text_cell_renderer_signals[EDITED], 0, path, new_text);
@@ -1842,7 +1842,7 @@ btk_cell_renderer_text_start_editing (BtkCellRenderer      *cell,
 
   if (celltext->text)
     btk_entry_set_text (BTK_ENTRY (priv->entry), celltext->text);
-  g_object_set_data_full (G_OBJECT (priv->entry), I_(BTK_CELL_RENDERER_TEXT_PATH), g_strdup (path), g_free);
+  g_object_set_data_full (B_OBJECT (priv->entry), I_(BTK_CELL_RENDERER_TEXT_PATH), g_strdup (path), g_free);
   
   btk_editable_select_rebunnyion (BTK_EDITABLE (priv->entry), 0, -1);
   

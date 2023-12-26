@@ -43,9 +43,9 @@
 
 typedef struct _BtkPrintBackendFileClass BtkPrintBackendFileClass;
 
-#define BTK_PRINT_BACKEND_FILE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
-#define BTK_IS_PRINT_BACKEND_FILE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_FILE))
-#define BTK_PRINT_BACKEND_FILE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
+#define BTK_PRINT_BACKEND_FILE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
+#define BTK_IS_PRINT_BACKEND_FILE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_FILE))
+#define BTK_PRINT_BACKEND_FILE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
 
 #define _STREAM_MAX_CHUNK_SIZE 8192
 
@@ -76,7 +76,7 @@ static const gchar* formats[N_FORMATS] =
   "svg"
 };
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 static void                 btk_print_backend_file_class_init      (BtkPrintBackendFileClass *class);
 static void                 btk_print_backend_file_init            (BtkPrintBackendFile      *impl);

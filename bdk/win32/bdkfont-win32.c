@@ -50,7 +50,7 @@ bdk_font_hash_insert (BdkFontType  type,
   if (!*hashp)
     *hashp = g_hash_table_new (g_str_hash, g_str_equal);
 
-  private->names = g_slist_prepend (private->names, g_strdup (font_name));
+  private->names = b_slist_prepend (private->names, g_strdup (font_name));
   g_hash_table_insert (*hashp, private->names->data, font);
 }
 
@@ -72,7 +72,7 @@ bdk_font_hash_remove (BdkFontType type,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (private->names);
+  b_slist_free (private->names);
   private->names = NULL;
 }
 
@@ -1173,7 +1173,7 @@ bdk_font_from_one_singlefont (BdkWin32SingleFont *singlefont)
 
   private->base.ref_count = 1;
   private->names = NULL;
-  private->fonts = g_slist_append (NULL, singlefont);
+  private->fonts = b_slist_append (NULL, singlefont);
 
   /* Pretend all fonts are fontsets... Btktext and btkentry work better
    * that way, they use wide chars, which is necessary for non-ASCII
@@ -1216,7 +1216,7 @@ bdk_font_load_for_display (BdkDisplay  *display,
 
   private->base.ref_count = 1;
   private->names = NULL;
-  private->fonts = g_slist_append (NULL, singlefont);
+  private->fonts = b_slist_append (NULL, singlefont);
 
   /* Pretend all fonts are fontsets... Btktext and btkentry work better
    * that way, they use wide chars, which is necessary for non-ASCII
@@ -1316,7 +1316,7 @@ bdk_fontset_load (const gchar *fontset_name)
       singlefont = bdk_font_load_internal (s);
       if (singlefont)
 	{
-	  private->fonts = g_slist_append (private->fonts, singlefont);
+	  private->fonts = b_slist_append (private->fonts, singlefont);
 	  oldfont = SelectObject (_bdk_display_hdc, singlefont->hfont);
 	  GetTextMetrics (_bdk_display_hdc, &textmetric);
 	  SelectObject (_bdk_display_hdc, oldfont);
@@ -1379,7 +1379,7 @@ _bdk_font_destroy (BdkFont *font)
 	  
 	  list = list->next;
 	}
-      g_slist_free (private->fonts);
+      b_slist_free (private->fonts);
       break;
     }
   g_free (font);

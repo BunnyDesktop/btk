@@ -107,7 +107,7 @@ BtkWidget *get_popup_menu( void )
    /* Make a button to activate the popup menu */
    button = btk_button_new_with_label ("Popup");
    /* Make the menu popup when clicked */
-   g_signal_connect (G_OBJECT(button),
+   g_signal_connect (B_OBJECT(button),
                      "event",
                      G_CALLBACK(popup_cb),
                      (gpointer) menu);
@@ -143,7 +143,7 @@ int main( int argc,
  
   /* Make a window */
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
                     G_CALLBACK (btk_main_quit),
                     NULL);
   btk_window_set_title (BTK_WINDOW(window), "Item Factory");

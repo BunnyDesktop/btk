@@ -30,9 +30,9 @@
 typedef struct _BtkFileFilterClass BtkFileFilterClass;
 typedef struct _FilterRule FilterRule;
 
-#define BTK_FILE_FILTER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
-#define BTK_IS_FILE_FILTER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_FILTER))
-#define BTK_FILE_FILTER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
+#define BTK_FILE_FILTER_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
+#define BTK_IS_FILE_FILTER_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_FILTER))
+#define BTK_FILE_FILTER_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
 
 typedef enum {
   FILTER_RULE_PATTERN,
@@ -73,7 +73,7 @@ struct _FilterRule
   } u;
 };
 
-static void btk_file_filter_finalize   (GObject            *object);
+static void btk_file_filter_finalize   (BObject            *object);
 
 
 G_DEFINE_TYPE (BtkFileFilter, btk_file_filter, BTK_TYPE_OBJECT)
@@ -86,7 +86,7 @@ btk_file_filter_init (BtkFileFilter *object)
 static void
 btk_file_filter_class_init (BtkFileFilterClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   bobject_class->finalize = btk_file_filter_finalize;
 }
@@ -107,7 +107,7 @@ filter_rule_free (FilterRule *rule)
 	rule->u.custom.notify (rule->u.custom.data);
       break;
     case FILTER_RULE_PIXBUF_FORMATS:
-      g_slist_free (rule->u.pixbuf_formats);
+      b_slist_free (rule->u.pixbuf_formats);
       break;
     default:
       g_assert_not_reached ();
@@ -117,16 +117,16 @@ filter_rule_free (FilterRule *rule)
 }
 
 static void
-btk_file_filter_finalize (GObject  *object)
+btk_file_filter_finalize (BObject  *object)
 {
   BtkFileFilter *filter = BTK_FILE_FILTER (object);
 
-  g_slist_foreach (filter->rules, (GFunc)filter_rule_free, NULL);
-  g_slist_free (filter->rules);
+  b_slist_foreach (filter->rules, (GFunc)filter_rule_free, NULL);
+  b_slist_free (filter->rules);
 
   g_free (filter->name);
 
-  G_OBJECT_CLASS (btk_file_filter_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_file_filter_parent_class)->finalize (object);
 }
 
 /**
@@ -201,7 +201,7 @@ file_filter_add_rule (BtkFileFilter *filter,
 		      FilterRule    *rule)
 {
   filter->needed |= rule->needed;
-  filter->rules = g_slist_append (filter->rules, rule);
+  filter->rules = b_slist_append (filter->rules, rule);
 }
 
 /**

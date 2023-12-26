@@ -1907,7 +1907,7 @@ is always done using macros that both test the ability to cast the
 given item, and perform the cast. Some common ones you will see are:</para>
 
 <programlisting role="C">
-  G_OBJECT (object)
+  B_OBJECT (object)
   BTK_WIDGET (widget)
   BTK_OBJECT (object)
   BTK_SIGNAL_FUNC (function)
@@ -1921,7 +1921,7 @@ examples, and can usually tell when to use them simply by looking at the
 function's declaration.</para>
 
 <para>As you can see below in the class hierarchy, all BtkWidgets are
-derived from the GObject base class. This means you can use a widget
+derived from the BObject base class. This means you can use a widget
 in any place the function asks for an object. Note that many functions
 accept a gpointer so there is no need to cast the type.</para>
 
@@ -1957,7 +1957,7 @@ function declarations.</para>
 widgets. (Deprecated widgets and auxiliary classes have been omitted.)</para>
 
 <programlisting role="C">
-GObject
+BObject
  |  
  BtkObject
   +BtkWidget
@@ -4972,7 +4972,7 @@ static void get_value( BtkWidget *widget,
   BtkSpinButton *spin;
 
   spin = BTK_SPIN_BUTTON (spinner1);
-  label = BTK_LABEL (g_object_get_data (G_OBJECT (widget), "user_data"));
+  label = BTK_LABEL (g_object_get_data (B_OBJECT (widget), "user_data"));
   if (GPOINTER_TO_INT (data) == 1)
     buf = g_strdup_printf ("%d", btk_spin_button_get_value_as_int (spin));
   else
@@ -5127,14 +5127,14 @@ int main( int   argc,
   hbox = btk_hbox_new (FALSE, 0);
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, TRUE, 5);
   button = btk_button_new_with_label ("Value as Int");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
 		    GINT_TO_POINTER (1));
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
   
   button = btk_button_new_with_label ("Value as Float");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
 		    GINT_TO_POINTER (2));
@@ -6930,7 +6930,7 @@ static BtkWidget *create_list( void )
 				    BTK_POLICY_AUTOMATIC, 
 				    BTK_POLICY_AUTOMATIC);
    
-    model = btk_list_store_new (1, G_TYPE_STRING);
+    model = btk_list_store_new (1, B_TYPE_STRING);
     tree_view = btk_tree_view_new ();
     btk_container_add (BTK_CONTAINER (scrolled_window), tree_view);
     btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
@@ -9408,25 +9408,25 @@ called.</para>
 <title>Connecting and Disconnecting Signal Handlers</title>
 
 <programlisting role="C">
-gulong g_signal_connect( GObject     *object,
+gulong g_signal_connect( BObject     *object,
                          const gchar *name,
                          GCallback    func,
                          gpointer     func_data );
 
-gulong g_signal_connect_after( GObject       *object,
+gulong g_signal_connect_after( BObject       *object,
                                const gchar   *name,
                                GCallback      func,
                                gpointer       func_data );
 
-gulong g_signal_connect_swapped( GObject       *object,
+gulong g_signal_connect_swapped( BObject       *object,
                                  const gchar   *name,
                                  GCallback      func,
-                                 GObject       *slot_object );
+                                 BObject       *slot_object );
 
-void g_signal_handler_disconnect( GObject *object,
+void g_signal_handler_disconnect( BObject *object,
                                   gulong   handler_id );
 
-void g_signal_handlers_disconnect_by_func( GObject   *object,
+void g_signal_handlers_disconnect_by_func( BObject   *object,
                                            GCallback  func,
                                            gpointer   data );
 </programlisting>
@@ -9438,17 +9438,17 @@ void g_signal_handlers_disconnect_by_func( GObject   *object,
 <title>Blocking and Unblocking Signal Handlers</title>
 
 <programlisting role="C">
-void g_signal_handler_block( GObject *object,
+void g_signal_handler_block( BObject *object,
                              gulong   handler_id);
 
-void g_signal_handlers_block_by_func( GObject   *object,
+void g_signal_handlers_block_by_func( BObject   *object,
                                       GCallback  func,
                                       gpointer   data );
 
-void g_signal_handler_unblock( GObject *object,
+void g_signal_handler_unblock( BObject *object,
                                gulong   handler_id );
 
-void g_signal_handler_unblock_by_func( GObject   *object,
+void g_signal_handler_unblock_by_func( BObject   *object,
                                        GCallback  func,
                                        gpointer   data );
 </programlisting>
@@ -9460,24 +9460,24 @@ void g_signal_handler_unblock_by_func( GObject   *object,
 <title>Emitting and Stopping Signals</title>
 
 <programlisting role="C">
-void g_signal_emit( GObject *object,
+void g_signal_emit( BObject *object,
                     guint      signal_id,
                     ... );
 
-void g_signal_emit_by_name( GObject     *object,
+void g_signal_emit_by_name( BObject     *object,
                             const gchar *name,
                             ... );
 
-void g_signal_emitv( const GValue *instance_and_params,
+void g_signal_emitv( const BValue *instance_and_params,
                      guint         signal_id,
                      GQuark        detail,
-                     GValue       *return_value );
+                     BValue       *return_value );
 
-void g_signal_stop_emission( GObject *object,
+void g_signal_stop_emission( BObject *object,
                              guint    signal_id,
                              GQuark   detail );
 
-void g_signal_stop_emission_by_name( GObject   *object,
+void g_signal_stop_emission_by_name( BObject   *object,
                                      const gchar *detailed_signal );
 </programlisting>
 
@@ -10392,35 +10392,35 @@ void g_list_foreach( GList    *list,
 above. Here is a list of some of their operations:</para>
 
 <programlisting role="C">
-GSList *g_slist_append( GSList   *list,
+GSList *b_slist_append( GSList   *list,
                         gpointer  data );
 		
-GSList *g_slist_prepend( GSList   *list,
+GSList *b_slist_prepend( GSList   *list,
                          gpointer  data );
 			     
-GSList *g_slist_insert( GSList   *list,
+GSList *b_slist_insert( GSList   *list,
                         gpointer  data,
 		        gint      position );
 			     
-GSList *g_slist_remove( GSList   *list,
+GSList *b_slist_remove( GSList   *list,
                         gpointer  data );
 			     
-GSList *g_slist_remove_link( GSList *list,
+GSList *b_slist_remove_link( GSList *list,
                              GSList *link );
 			     
-GSList *g_slist_reverse( GSList *list );
+GSList *b_slist_reverse( GSList *list );
 
-GSList *g_slist_nth( GSList *list,
+GSList *b_slist_nth( GSList *list,
                      gint    n );
 			     
-GSList *g_slist_find( GSList   *list,
+GSList *b_slist_find( GSList   *list,
                       gpointer  data );
 			     
-GSList *g_slist_last( GSList *list );
+GSList *b_slist_last( GSList *list );
 
-gint g_slist_length( GSList *list );
+gint b_slist_length( GSList *list );
 
-void g_slist_foreach( GSList   *list,
+void b_slist_foreach( GSList   *list,
                       GFunc     func,
                       gpointer  user_data );
 	
@@ -11099,7 +11099,7 @@ is natural to make our parent class the Table class.</para>
 <sect2>
 <title>The header file</title>
 
-<para>Each GObject class has a header file which declares the object and
+<para>Each BObject class has a header file which declares the object and
 class structures for that object, along with public functions. 
 A couple of features are worth pointing out. To prevent duplicate
 definitions, we wrap the entire header file in:</para>
@@ -11233,11 +11233,11 @@ tictactoe_class_init (TictactoeClass *klass)
 {
   tictactoe_signals[TICTACTOE_SIGNAL] =
     g_signal_new ("tictactoe",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (TictactoeClass, tictactoe),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  g_cclosure_marshal_VOID__VOID, B_TYPE_NONE, 0);
 }
 </programlisting>
 
@@ -11311,27 +11311,27 @@ pre-supplied marshaller function <literal>g_cclosure_marshal_VOID__VOID</literal
 <para>When specifying types, the following standard types can be used:</para>
 
 <programlisting role="C">
-G_TYPE_INVALID
-G_TYPE_NONE
-G_TYPE_INTERFACE
-G_TYPE_CHAR
-G_TYPE_UCHAR
-G_TYPE_BOOLEAN
-G_TYPE_INT
-G_TYPE_UINT
-G_TYPE_LONG
-G_TYPE_ULONG
-G_TYPE_INT64
-G_TYPE_UINT64
-G_TYPE_ENUM
-G_TYPE_FLAGS
-G_TYPE_FLOAT
-G_TYPE_DOUBLE
-G_TYPE_STRING
-G_TYPE_POINTER
-G_TYPE_BOXED
-G_TYPE_PARAM
-G_TYPE_OBJECT
+B_TYPE_INVALID
+B_TYPE_NONE
+B_TYPE_INTERFACE
+B_TYPE_CHAR
+B_TYPE_UCHAR
+B_TYPE_BOOLEAN
+B_TYPE_INT
+B_TYPE_UINT
+B_TYPE_LONG
+B_TYPE_ULONG
+B_TYPE_INT64
+B_TYPE_UINT64
+B_TYPE_ENUM
+B_TYPE_FLAGS
+B_TYPE_FLOAT
+B_TYPE_DOUBLE
+B_TYPE_STRING
+B_TYPE_POINTER
+B_TYPE_BOXED
+B_TYPE_PARAM
+B_TYPE_OBJECT
 </programlisting>
 
 <para><literal>g_signal_new()</literal> returns a unique integer identifier for the
@@ -11414,12 +11414,12 @@ tictactoe_clear (Tictactoe *ttt)
   for (i=0;i&lt;3;i++)
     for (j=0;j&lt;3;j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_block_matched (B_OBJECT (ttt->buttons[i][j]),
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
 				     FALSE);
-	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_unblock_matched (B_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
                                            0, 0, NULL, NULL, ttt);
       }
@@ -14196,7 +14196,7 @@ typedef enum
   BDK_SELECTION_NOTIFY  = 19,
   BDK_PROXIMITY_IN      = 20,
   BDK_PROXIMITY_OUT     = 21,
-  BDK_DRAG_BEGIN        = 22,
+  BDK_DRAB_BEGIN        = 22,
   BDK_DRAG_REQUEST      = 23,
   BDK_DROP_ENTER        = 24,
   BDK_DROP_LEAVE        = 25,
@@ -14524,10 +14524,10 @@ which are not included in complete form elsewhere.</para>
 B_BEGIN_DECLS
 
 #define TICTACTOE_TYPE            (tictactoe_get_type ())
-#define TICTACTOE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
-#define TICTACTOE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
-#define IS_TICTACTOE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
-#define IS_TICTACTOE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
+#define TICTACTOE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
+#define TICTACTOE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
+#define IS_TICTACTOE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
+#define IS_TICTACTOE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
 
 
 typedef struct _Tictactoe       Tictactoe;
@@ -14632,13 +14632,13 @@ tictactoe_class_init (TictactoeClass *klass)
 {
   
   tictactoe_signals[TICTACTOE_SIGNAL] = g_signal_new ("tictactoe",
-					 G_TYPE_FROM_CLASS (klass),
+					 B_TYPE_FROM_CLASS (klass),
 	                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 	                                 G_STRUCT_OFFSET (TictactoeClass, tictactoe),
                                          NULL, 
                                          NULL,                
 					 g_cclosure_marshal_VOID__VOID,
-                                         G_TYPE_NONE, 0);
+                                         B_TYPE_NONE, 0);
 
 
 }
@@ -14677,12 +14677,12 @@ tictactoe_clear (Tictactoe *ttt)
   for (i = 0; i&lt;3; i++)
     for (j = 0; j&lt;3; j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt-&gt;buttons[i][j]), 
+	g_signal_handlers_block_matched (B_OBJECT (ttt-&gt;buttons[i][j]), 
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt-&gt;buttons[i][j]),
 				      FALSE);
-	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_unblock_matched (B_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
                                            0, 0, NULL, NULL, ttt);
       }

@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_OPTION_MENU                (bail_option_menu_get_type ())
-#define BAIL_OPTION_MENU(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_OPTION_MENU, BailOptionMenu))
-#define BAIL_OPTION_MENU_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_OPTION_MENU, BailOptionMenuClass))
-#define BAIL_IS_OPTION_MENU(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_OPTION_MENU))
-#define BAIL_IS_OPTION_MENU_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_OPTION_MENU))
-#define BAIL_OPTION_MENU_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_OPTION_MENU, BailOptionMenuClass))
+#define BAIL_OPTION_MENU(obj)                (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_OPTION_MENU, BailOptionMenu))
+#define BAIL_OPTION_MENU_CLASS(klass)        (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_OPTION_MENU, BailOptionMenuClass))
+#define BAIL_IS_OPTION_MENU(obj)             (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_OPTION_MENU))
+#define BAIL_IS_OPTION_MENU_CLASS(klass)     (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_OPTION_MENU))
+#define BAIL_OPTION_MENU_GET_CLASS(obj)      (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_OPTION_MENU, BailOptionMenuClass))
 
 typedef struct _BailOptionMenu                   BailOptionMenu;
 typedef struct _BailOptionMenuClass              BailOptionMenuClass;

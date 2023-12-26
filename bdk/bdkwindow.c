@@ -306,16 +306,16 @@ static void bdk_window_free_paint_stack (BdkWindow *window);
 
 static void bdk_window_init       (BdkWindowObject      *window);
 static void bdk_window_class_init (BdkWindowObjectClass *klass);
-static void bdk_window_finalize   (GObject              *object);
+static void bdk_window_finalize   (BObject              *object);
 
-static void bdk_window_set_property (GObject      *object,
+static void bdk_window_set_property (BObject      *object,
                                      guint         prop_id,
-                                     const GValue *value,
-                                     GParamSpec   *pspec);
-static void bdk_window_get_property (GObject      *object,
+                                     const BValue *value,
+                                     BParamSpec   *pspec);
+static void bdk_window_get_property (BObject      *object,
                                      guint         prop_id,
-                                     GValue       *value,
-                                     GParamSpec   *pspec);
+                                     BValue       *value,
+                                     BParamSpec   *pspec);
 
 static void bdk_window_clear_backing_rebunnyion (BdkWindow *window,
 					     BdkRebunnyion *rebunnyion);
@@ -393,11 +393,11 @@ _bdk_paintable_get_type (void)
 	NULL,                        /* base_finalize */
       };
 
-      paintable_type = g_type_register_static (G_TYPE_INTERFACE,
+      paintable_type = g_type_register_static (B_TYPE_INTERFACE,
 					       g_intern_static_string ("BdkPaintable"),
 					       &paintable_info, 0);
 
-      g_type_interface_add_prerequisite (paintable_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (paintable_type, B_TYPE_OBJECT);
     }
 
   return paintable_type;
@@ -424,13 +424,13 @@ bdk_window_init (BdkWindowObject *window)
 /* Stop and return on the first non-NULL parent */
 static gboolean
 accumulate_get_window (GSignalInvocationHint *ihint,
-		       GValue		       *return_accu,
-		       const GValue	       *handler_return,
+		       BValue		       *return_accu,
+		       const BValue	       *handler_return,
 		       gpointer               data)
 {
-  g_value_copy (handler_return, return_accu);
+  b_value_copy (handler_return, return_accu);
   /* Continue while returning NULL */
-  return g_value_get_object (handler_return) == NULL;
+  return b_value_get_object (handler_return) == NULL;
 }
 
 static GQuark quark_pointer_window = 0;
@@ -438,7 +438,7 @@ static GQuark quark_pointer_window = 0;
 static void
 bdk_window_class_init (BdkWindowObjectClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
@@ -514,15 +514,15 @@ bdk_window_class_init (BdkWindowObjectClass *klass)
    */
   signals[PICK_EMBEDDED_CHILD] =
     g_signal_new (g_intern_static_string ("pick-embedded-child"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  accumulate_get_window, NULL,
 		  _bdk_marshal_OBJECT__DOUBLE_DOUBLE,
 		  BDK_TYPE_WINDOW,
 		  2,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_DOUBLE);
+		  B_TYPE_DOUBLE,
+		  B_TYPE_DOUBLE);
 
   /**
    * BdkWindow::to-embedder:
@@ -543,17 +543,17 @@ bdk_window_class_init (BdkWindowObjectClass *klass)
    */
   signals[TO_EMBEDDER] =
     g_signal_new (g_intern_static_string ("to-embedder"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  NULL, NULL,
 		  _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  4,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_POINTER,
-		  G_TYPE_POINTER);
+		  B_TYPE_DOUBLE,
+		  B_TYPE_DOUBLE,
+		  B_TYPE_POINTER,
+		  B_TYPE_POINTER);
 
   /**
    * BdkWindow::from-embedder:
@@ -574,21 +574,21 @@ bdk_window_class_init (BdkWindowObjectClass *klass)
    */
   signals[FROM_EMBEDDER] =
     g_signal_new (g_intern_static_string ("from-embedder"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  0,
 		  NULL, NULL,
 		  _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  4,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_DOUBLE,
-		  G_TYPE_POINTER,
-		  G_TYPE_POINTER);
+		  B_TYPE_DOUBLE,
+		  B_TYPE_DOUBLE,
+		  B_TYPE_POINTER,
+		  B_TYPE_POINTER);
 }
 
 static void
-bdk_window_finalize (GObject *object)
+bdk_window_finalize (BObject *object)
 {
   BdkWindow *window = BDK_WINDOW (object);
   BdkWindowObject *obj = (BdkWindowObject *) object;
@@ -628,45 +628,45 @@ bdk_window_finalize (GObject *object)
   if (obj->cursor)
     bdk_cursor_unref (obj->cursor);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-bdk_window_set_property (GObject      *object,
+bdk_window_set_property (BObject      *object,
                          guint         prop_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
+                         const BValue *value,
+                         BParamSpec   *pspec)
 {
   BdkWindow *window = (BdkWindow *)object;
 
   switch (prop_id)
     {
     case PROP_CURSOR:
-      bdk_window_set_cursor (window, g_value_get_boxed (value));
+      bdk_window_set_cursor (window, b_value_get_boxed (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-bdk_window_get_property (GObject    *object,
+bdk_window_get_property (BObject    *object,
                          guint       prop_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
+                         BValue     *value,
+                         BParamSpec *pspec)
 {
   BdkWindow *window = (BdkWindow *) object;
 
   switch (prop_id)
     {
     case PROP_CURSOR:
-      g_value_set_boxed (value, bdk_window_get_cursor (window));
+      b_value_set_boxed (value, bdk_window_get_cursor (window));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1757,7 +1757,7 @@ temporary_disable_extension_events (BdkWindowObject *window)
 
   if (window->extension_events != 0)
     {
-      g_object_set_data (G_OBJECT (window),
+      g_object_set_data (B_OBJECT (window),
 			 "bdk-window-extension-events",
 			 GINT_TO_POINTER (window->extension_events));
       bdk_input_set_extension_events ((BdkWindow *)window, 0,
@@ -1784,7 +1784,7 @@ reenable_extension_events (BdkWindowObject *window)
   GList *l;
   int mask;
 
-  mask = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (window),
+  mask = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (window),
 					      "bdk-window-extension-events"));
 
   if (mask != 0)
@@ -1795,7 +1795,7 @@ reenable_extension_events (BdkWindowObject *window)
 	 change the mask. */
       bdk_input_set_extension_events ((BdkWindow *)window, mask,
 				      BDK_EXTENSION_EVENTS_CURSOR);
-      g_object_set_data (G_OBJECT (window),
+      g_object_set_data (B_OBJECT (window),
 			 "bdk-window-extension-events",
 			 NULL);
     }
@@ -2030,9 +2030,9 @@ _bdk_window_destroy_hierarchy (BdkWindow *window,
 
   display = bdk_drawable_get_display (BDK_DRAWABLE (window));
   screen = bdk_drawable_get_screen (BDK_DRAWABLE (window));
-  temp_window = g_object_get_qdata (G_OBJECT (screen), quark_pointer_window);
+  temp_window = g_object_get_qdata (B_OBJECT (screen), quark_pointer_window);
   if (temp_window == window)
-    g_object_set_qdata (G_OBJECT (screen), quark_pointer_window, NULL);
+    g_object_set_qdata (B_OBJECT (screen), quark_pointer_window, NULL);
 
 
   switch (private->window_type)
@@ -3052,7 +3052,7 @@ bdk_window_begin_paint_rebunnyion (BdkWindow       *window,
       bdk_rebunnyion_subtract (tmp_paint->rebunnyion, paint->rebunnyion);
     }
 
-  private->paint_stack = g_slist_prepend (private->paint_stack, paint);
+  private->paint_stack = b_slist_prepend (private->paint_stack, paint);
 
   if (!bdk_rebunnyion_empty (paint->rebunnyion))
     {
@@ -3159,7 +3159,7 @@ bdk_window_end_paint (BdkWindow *window)
 
   paint = private->paint_stack->data;
 
-  private->paint_stack = g_slist_delete_link (private->paint_stack,
+  private->paint_stack = b_slist_delete_link (private->paint_stack,
 					      private->paint_stack);
 
   bdk_rebunnyion_get_clipbox (paint->rebunnyion, &clip_box);
@@ -3258,7 +3258,7 @@ bdk_window_free_paint_stack (BdkWindow *window)
 	  tmp_list = tmp_list->next;
 	}
 
-      g_slist_free (private->paint_stack);
+      b_slist_free (private->paint_stack);
       private->paint_stack = NULL;
     }
 }
@@ -5283,7 +5283,7 @@ bdk_window_add_update_window (BdkWindow *window)
    *  setting focus widget to NULL and redrawing old focus widget.
    *  See bug 711552.
    */
-  tmp = g_slist_find (update_windows, window);
+  tmp = b_slist_find (update_windows, window);
   if (tmp != NULL)
     return;
 
@@ -5312,7 +5312,7 @@ bdk_window_add_update_window (BdkWindow *window)
 	      prev = tmp;
 	    }
 	  /* here, tmp got advanced past all lower stacked siblings */
-	  tmp = g_slist_prepend (tmp, g_object_ref (window));
+	  tmp = b_slist_prepend (tmp, g_object_ref (window));
 	  if (prev)
 	    prev->next = tmp;
 	  else
@@ -5325,7 +5325,7 @@ bdk_window_add_update_window (BdkWindow *window)
        */
       if (has_ancestor_in_list && bdk_window_is_ancestor (tmp->data, window))
 	{
-	  tmp = g_slist_prepend (tmp, g_object_ref (window));
+	  tmp = b_slist_prepend (tmp, g_object_ref (window));
 
 	  if (prev)
 	    prev->next = tmp;
@@ -5339,7 +5339,7 @@ bdk_window_add_update_window (BdkWindow *window)
        */
       if (! tmp->next && has_ancestor_in_list)
 	{
-	  tmp = g_slist_append (tmp, g_object_ref (window));
+	  tmp = b_slist_append (tmp, g_object_ref (window));
 	  return;
 	}
 
@@ -5350,7 +5350,7 @@ bdk_window_add_update_window (BdkWindow *window)
    *  hierarchy than what is already in the list) or the list is
    *  empty, prepend
    */
-  update_windows = g_slist_prepend (update_windows, g_object_ref (window));
+  update_windows = b_slist_prepend (update_windows, g_object_ref (window));
 }
 
 static void
@@ -5358,10 +5358,10 @@ bdk_window_remove_update_window (BdkWindow *window)
 {
   GSList *link;
 
-  link = g_slist_find (update_windows, window);
+  link = b_slist_find (update_windows, window);
   if (link != NULL)
     {
-      update_windows = g_slist_delete_link (update_windows, link);
+      update_windows = b_slist_delete_link (update_windows, link);
       g_object_unref (window);
     }
 }
@@ -5691,7 +5691,7 @@ flush_all_displays (void)
   for (tmp_list = displays; tmp_list; tmp_list = tmp_list->next)
     bdk_display_flush (tmp_list->data);
 
-  g_slist_free (displays);
+  b_slist_free (displays);
 }
 
 /* Currently it is not possible to override
@@ -5756,7 +5756,7 @@ bdk_window_process_all_updates (void)
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (old_update_windows);
+  b_slist_free (old_update_windows);
 
   flush_all_displays ();
 
@@ -8264,7 +8264,7 @@ bdk_window_set_cursor (BdkWindow *window,
       else if (_bdk_window_event_parent_of (window, display->pointer_info.window_under_pointer))
 	update_cursor (display);
 
-      g_object_notify (G_OBJECT (window), "cursor");
+      g_object_notify (B_OBJECT (window), "cursor");
     }
 }
 

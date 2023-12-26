@@ -9,7 +9,7 @@
 
 static void _check_statusbar (BatkObject *obj);
 static BatkObject* _find_object (BatkObject* obj, BatkRole role);
-static void _notify_handler (GObject *obj, GParamSpec *pspec);
+static void _notify_handler (BObject *obj, BParamSpec *pspec);
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 
@@ -51,7 +51,7 @@ _find_object (BatkObject *obj,
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
+  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
   const gchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
@@ -62,7 +62,7 @@ static void _property_change_handler (BatkObject   *obj,
            values->property_name ? values->property_name: "NULL");
   if (G_VALUE_HOLDS_STRING (&values->new_value))
     g_print ("_property_change_handler: PropertyValue: %s\n",
-             g_value_get_string (&values->new_value));
+             b_value_get_string (&values->new_value));
 }
 
 static void _check_statusbar (BatkObject *obj)
@@ -86,7 +86,7 @@ static void _check_statusbar (BatkObject *obj)
    */
   g_signal_connect_closure_by_id (statusbar,
                                   g_signal_lookup ("notify", 
-                                                   G_OBJECT_TYPE (statusbar)),
+                                                   B_OBJECT_TYPE (statusbar)),
                                   0,
                                   g_cclosure_new (G_CALLBACK (_notify_handler),
                                                  NULL, NULL),
@@ -97,7 +97,7 @@ static void _check_statusbar (BatkObject *obj)
 }
 
 static void 
-_notify_handler (GObject *obj, GParamSpec *pspec)
+_notify_handler (BObject *obj, BParamSpec *pspec)
 {
   BatkObject *batk_obj = BATK_OBJECT (obj);
   const gchar *name;

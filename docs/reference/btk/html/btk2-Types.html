@@ -475,14 +475,14 @@
 <a name="btk2-Types.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BTK-CLASS-NAME:CAPS"></a><h3>BTK_CLASS_NAME()</h3>
-<pre class="programlisting">#define BTK_CLASS_NAME(class)		(g_type_name (G_TYPE_FROM_CLASS (class)))
+<pre class="programlisting">#define BTK_CLASS_NAME(class)		(g_type_name (B_TYPE_FROM_CLASS (class)))
 </pre>
 <div class="warning"><p><code class="literal">BTK_CLASS_NAME</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CLASS-TYPE:CAPS"></a><h3>BTK_CLASS_TYPE()</h3>
-<pre class="programlisting">#define BTK_CLASS_TYPE(class)		(G_TYPE_FROM_CLASS (class))
+<pre class="programlisting">#define BTK_CLASS_TYPE(class)		(B_TYPE_FROM_CLASS (class))
 </pre>
 <div class="warning"><p><code class="literal">BTK_CLASS_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -881,14 +881,14 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <hr>
 <div class="refsect2">
 <a name="BTK-TYPE-FUNDAMENTAL-LAST:CAPS"></a><h3>BTK_TYPE_FUNDAMENTAL_LAST</h3>
-<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_LAST        (G_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
+<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_LAST        (B_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
 </pre>
 <div class="warning"><p><code class="literal">BTK_TYPE_FUNDAMENTAL_LAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-TYPE-FUNDAMENTAL-MAX:CAPS"></a><h3>BTK_TYPE_FUNDAMENTAL_MAX</h3>
-<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_MAX         (G_TYPE_FUNDAMENTAL_MAX)
+<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_MAX         (B_TYPE_FUNDAMENTAL_MAX)
 </pre>
 <div class="warning"><p><code class="literal">BTK_TYPE_FUNDAMENTAL_MAX</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -902,42 +902,42 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CAST:CAPS"></a><h3>BTK_CHECK_CAST</h3>
-<pre class="programlisting">#define BTK_CHECK_CAST		G_TYPE_CHECK_INSTANCE_CAST
+<pre class="programlisting">#define BTK_CHECK_CAST		B_TYPE_CHECK_INSTANCE_CAST
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CLASS-CAST:CAPS"></a><h3>BTK_CHECK_CLASS_CAST</h3>
-<pre class="programlisting">#define BTK_CHECK_CLASS_CAST G_TYPE_CHECK_CLASS_CAST
+<pre class="programlisting">#define BTK_CHECK_CLASS_CAST B_TYPE_CHECK_CLASS_CAST
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CLASS_CAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-TYPE:CAPS"></a><h3>BTK_CHECK_TYPE</h3>
-<pre class="programlisting">#define BTK_CHECK_TYPE		G_TYPE_CHECK_INSTANCE_TYPE
+<pre class="programlisting">#define BTK_CHECK_TYPE		B_TYPE_CHECK_INSTANCE_TYPE
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CLASS-TYPE:CAPS"></a><h3>BTK_CHECK_CLASS_TYPE</h3>
-<pre class="programlisting">#define BTK_CHECK_CLASS_TYPE G_TYPE_CHECK_CLASS_TYPE
+<pre class="programlisting">#define BTK_CHECK_CLASS_TYPE B_TYPE_CHECK_CLASS_TYPE
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CLASS_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-GET-CLASS:CAPS"></a><h3>BTK_CHECK_GET_CLASS</h3>
-<pre class="programlisting">#define BTK_CHECK_GET_CLASS G_TYPE_INSTANCE_GET_CLASS
+<pre class="programlisting">#define BTK_CHECK_GET_CLASS B_TYPE_INSTANCE_GET_CLASS
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_GET_CLASS</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-FUNDAMENTAL-TYPE:CAPS"></a><h3>BTK_FUNDAMENTAL_TYPE</h3>
-<pre class="programlisting">#define BTK_FUNDAMENTAL_TYPE G_TYPE_FUNDAMENTAL
+<pre class="programlisting">#define BTK_FUNDAMENTAL_TYPE B_TYPE_FUNDAMENTAL
 </pre>
 <div class="warning"><p><code class="literal">BTK_FUNDAMENTAL_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>

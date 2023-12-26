@@ -45,11 +45,11 @@ B_BEGIN_DECLS
  * these are the standard macros for all BtkObject-derived classes.
  */
 #define BTK_TYPE_OBJECT              (btk_object_get_type ())
-#define BTK_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_OBJECT, BtkObject))
-#define BTK_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OBJECT, BtkObjectClass))
-#define BTK_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_OBJECT))
-#define BTK_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OBJECT))
-#define BTK_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), BTK_TYPE_OBJECT, BtkObjectClass))
+#define BTK_OBJECT(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_OBJECT, BtkObject))
+#define BTK_OBJECT_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OBJECT, BtkObjectClass))
+#define BTK_IS_OBJECT(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_OBJECT))
+#define BTK_IS_OBJECT_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OBJECT))
+#define BTK_OBJECT_GET_CLASS(object) (B_TYPE_INSTANCE_GET_CLASS ((object), BTK_TYPE_OBJECT, BtkObjectClass))
 
 /* Macros for extracting various fields from BtkObject and BtkObjectClass.
  */
@@ -60,18 +60,18 @@ B_BEGIN_DECLS
  *
  * Gets the type of an object.
  *
- * Deprecated: 2.20: Use G_OBJECT_TYPE() instead.
+ * Deprecated: 2.20: Use B_OBJECT_TYPE() instead.
  */
-#define BTK_OBJECT_TYPE                   G_OBJECT_TYPE
+#define BTK_OBJECT_TYPE                   B_OBJECT_TYPE
 /**
  * BTK_OBJECT_TYPE_NAME:
  * @object: a #BtkObject.
  *
  * Gets the name of an object's type.
  *
- * Deprecated: 2.20: Use G_OBJECT_TYPE_NAME() instead.
+ * Deprecated: 2.20: Use B_OBJECT_TYPE_NAME() instead.
  */
-#define BTK_OBJECT_TYPE_NAME              G_OBJECT_TYPE_NAME
+#define BTK_OBJECT_TYPE_NAME              B_OBJECT_TYPE_NAME
 #endif
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)

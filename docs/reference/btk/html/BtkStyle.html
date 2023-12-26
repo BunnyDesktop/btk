@@ -617,7 +617,7 @@
 <a name="BtkStyle.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="screen">    <a href="/usr/share/btk-doc/html/bobject/bobject-Boxed-Types.html">GBoxed</a>
     <span class="lineart">╰──</span> BtkBorder
-    GObject
+    BObject
     <span class="lineart">╰──</span> BtkStyle
 </pre>
 </div>
@@ -1126,7 +1126,7 @@ to style-&gt;font_desc. </p></td>
 btk_style_get_style_property (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                               <em class="parameter"><code><span class="type">GType</span> widget_type</code></em>,
                               <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>,
-                              <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Queries the value of a style property corresponding to a
 widget class is in the given style.</p>
 <div class="refsect3">
@@ -1155,7 +1155,7 @@ widget class is in the given style.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> where the value of the property being
+<td class="parameter_description"><p>a <span class="type">BValue</span> where the value of the property being
 queried will be stored</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -4832,9 +4832,9 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
 <div class="refsect2">
 <a name="BtkRcPropertyParser"></a><h3>BtkRcPropertyParser ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-<span class="c_punctuation">(</span>*BtkRcPropertyParser<span class="c_punctuation">)</span> (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+<span class="c_punctuation">(</span>*BtkRcPropertyParser<span class="c_punctuation">)</span> (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                         <em class="parameter"><code>const <span class="type">GString</span> *rc_string</code></em>,
-                        <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 </div>
 </div>
 <div class="refsect1">
@@ -4894,7 +4894,7 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
 
   /* fields similar to BtkSettingsValue */
   gchar *origin;
-  GValue value;
+  BValue value;
 } BtkRcProperty;
 </pre>
 </div>

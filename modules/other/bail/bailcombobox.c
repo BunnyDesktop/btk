@@ -36,7 +36,7 @@ static const gchar* bail_combo_box_get_name                (BatkObject      *obj
 static gint         bail_combo_box_get_n_children          (BatkObject      *obj);
 static BatkObject*   bail_combo_box_ref_child               (BatkObject      *obj,
                                                             gint           i);
-static void         bail_combo_box_finalize                (GObject        *object);
+static void         bail_combo_box_finalize                (BObject        *object);
 static void         batk_action_interface_init              (BatkActionIface *iface);
 
 static gboolean     bail_combo_box_do_action               (BatkAction      *action,
@@ -71,7 +71,7 @@ G_DEFINE_TYPE_WITH_CODE (BailComboBox, bail_combo_box, BAIL_TYPE_CONTAINER,
 static void
 bail_combo_box_class_init (BailComboBoxClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_combo_box_finalize;
@@ -140,7 +140,7 @@ bail_combo_box_changed_btk (BtkWidget *widget)
   if (bail_combo_box->old_selection != index)
     {
       bail_combo_box->old_selection = index;
-      g_object_notify (G_OBJECT (obj), "accessible-name");
+      g_object_notify (B_OBJECT (obj), "accessible-name");
       g_signal_emit_by_name (obj, "selection_changed");
     }
 }
@@ -178,19 +178,19 @@ bail_combo_box_get_name (BatkObject *obj)
       n_columns = btk_tree_model_get_n_columns (model);
       for (i = 0; i < n_columns; i++)
         {
-          GValue value = { 0, };
+          BValue value = { 0, };
 
           btk_tree_model_get_value (model, &iter, i, &value);
           if (G_VALUE_HOLDS_STRING (&value))
             {
 	      if (bail_combo_box->name) g_free (bail_combo_box->name);
               bail_combo_box->name =  g_strdup ((gchar *) 
-						g_value_get_string (&value));
-	      g_value_unset (&value);
+						b_value_get_string (&value));
+	      b_value_unset (&value);
               break;
             }
 	  else
-	    g_value_unset (&value);
+	    b_value_unset (&value);
         }
     }
   return bail_combo_box->name;
@@ -572,7 +572,7 @@ bail_combo_box_remove_selection (BatkSelection *selection,
 }
 
 static void
-bail_combo_box_finalize (GObject *object)
+bail_combo_box_finalize (BObject *object)
 {
   BailComboBox *combo_box = BAIL_COMBO_BOX (object);
 
@@ -584,5 +584,5 @@ bail_combo_box_finalize (GObject *object)
       g_source_remove (combo_box->action_idle_handler);
       combo_box->action_idle_handler = 0;
     }
-  G_OBJECT_CLASS (bail_combo_box_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_combo_box_parent_class)->finalize (object);
 }

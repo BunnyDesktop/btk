@@ -157,7 +157,7 @@ struct _BtkAboutDialogPrivate
   guint wrap_license : 1;
 };
 
-#define BTK_ABOUT_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogPrivate))
+#define BTK_ABOUT_DIALOG_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialogPrivate))
 
 
 enum
@@ -179,15 +179,15 @@ enum
   PROP_WRAP_LICENSE
 };
 
-static void                 btk_about_dialog_finalize       (GObject            *object);
-static void                 btk_about_dialog_get_property   (GObject            *object,
+static void                 btk_about_dialog_finalize       (BObject            *object);
+static void                 btk_about_dialog_get_property   (BObject            *object,
                                                              guint               prop_id,
-                                                             GValue             *value,
-                                                             GParamSpec         *pspec);
-static void                 btk_about_dialog_set_property   (GObject            *object,
+                                                             BValue             *value,
+                                                             BParamSpec         *pspec);
+static void                 btk_about_dialog_set_property   (BObject            *object,
                                                              guint               prop_id,
-                                                             const GValue       *value,
-                                                             GParamSpec         *pspec);
+                                                             const BValue       *value,
+                                                             BParamSpec         *pspec);
 static void                 btk_about_dialog_show           (BtkWidget          *widge);
 static void                 update_name_version             (BtkAboutDialog     *about);
 static BtkIconSet *         icon_set_new_from_pixbufs       (GList              *pixbufs);
@@ -281,10 +281,10 @@ G_DEFINE_TYPE (BtkAboutDialog, btk_about_dialog, BTK_TYPE_DIALOG)
 static void
 btk_about_dialog_class_init (BtkAboutDialogClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   widget_class = (BtkWidgetClass *)klass;
 
   object_class->set_property = btk_about_dialog_set_property;
@@ -311,12 +311,12 @@ btk_about_dialog_class_init (BtkAboutDialogClass *klass)
    */
   signals[ACTIVATE_LINK] =
     g_signal_new ("activate-link",
-                  G_TYPE_FROM_CLASS (object_class),
+                  B_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkAboutDialogClass, activate_link),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__STRING,
-                  G_TYPE_BOOLEAN, 1, G_TYPE_STRING);
+                  B_TYPE_BOOLEAN, 1, B_TYPE_STRING);
 
   /**
    * BtkAboutDialog:program-name:
@@ -447,7 +447,7 @@ btk_about_dialog_class_init (BtkAboutDialogClass *klass)
                                    g_param_spec_boxed ("authors",
                                                        P_("Authors"),
                                                        P_("List of authors of the program"),
-                                                       G_TYPE_STRV,
+                                                       B_TYPE_STRV,
                                                        BTK_PARAM_READWRITE));
 
   /**
@@ -464,7 +464,7 @@ btk_about_dialog_class_init (BtkAboutDialogClass *klass)
                                    g_param_spec_boxed ("documenters",
                                                        P_("Documenters"),
                                                        P_("List of people documenting the program"),
-                                                       G_TYPE_STRV,
+                                                       B_TYPE_STRV,
                                                        BTK_PARAM_READWRITE));
 
   /**
@@ -481,7 +481,7 @@ btk_about_dialog_class_init (BtkAboutDialogClass *klass)
                                    g_param_spec_boxed ("artists",
                                                        P_("Artists"),
                                                        P_("List of people who have contributed artwork to the program"),
-                                                       G_TYPE_STRV,
+                                                       B_TYPE_STRV,
                                                        BTK_PARAM_READWRITE));
 
 
@@ -681,7 +681,7 @@ btk_about_dialog_init (BtkAboutDialog *about)
 }
 
 static void
-btk_about_dialog_finalize (GObject *object)
+btk_about_dialog_finalize (BObject *object)
 {
   BtkAboutDialog *about = BTK_ABOUT_DIALOG (object);
   BtkAboutDialogPrivate *priv = (BtkAboutDialogPrivate *)about->private_data;
@@ -699,20 +699,20 @@ btk_about_dialog_finalize (GObject *object)
   g_strfreev (priv->documenters);
   g_strfreev (priv->artists);
 
-  g_slist_foreach (priv->visited_links, (GFunc)g_free, NULL);
-  g_slist_free (priv->visited_links);
+  b_slist_foreach (priv->visited_links, (GFunc)g_free, NULL);
+  b_slist_free (priv->visited_links);
 
   bdk_cursor_unref (priv->hand_cursor);
   bdk_cursor_unref (priv->regular_cursor);
 
-  G_OBJECT_CLASS (btk_about_dialog_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_about_dialog_parent_class)->finalize (object);
 }
 
 static void
-btk_about_dialog_set_property (GObject      *object,
+btk_about_dialog_set_property (BObject      *object,
                                guint         prop_id,
-                               const GValue *value,
-                               GParamSpec   *pspec)
+                               const BValue *value,
+                               BParamSpec   *pspec)
 {
   BtkAboutDialog *about = BTK_ABOUT_DIALOG (object);
   BtkAboutDialogPrivate *priv = (BtkAboutDialogPrivate *)about->private_data;
@@ -720,58 +720,58 @@ btk_about_dialog_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      btk_about_dialog_set_program_name (about, g_value_get_string (value));
+      btk_about_dialog_set_program_name (about, b_value_get_string (value));
       break;
     case PROP_VERSION:
-      btk_about_dialog_set_version (about, g_value_get_string (value));
+      btk_about_dialog_set_version (about, b_value_get_string (value));
       break;
     case PROP_COMMENTS:
-      btk_about_dialog_set_comments (about, g_value_get_string (value));
+      btk_about_dialog_set_comments (about, b_value_get_string (value));
       break;
     case PROP_WEBSITE:
-      btk_about_dialog_set_website (about, g_value_get_string (value));
+      btk_about_dialog_set_website (about, b_value_get_string (value));
       break;
     case PROP_WEBSITE_LABEL:
-      btk_about_dialog_set_website_label (about, g_value_get_string (value));
+      btk_about_dialog_set_website_label (about, b_value_get_string (value));
       break;
     case PROP_LICENSE:
-      btk_about_dialog_set_license (about, g_value_get_string (value));
+      btk_about_dialog_set_license (about, b_value_get_string (value));
       break;
     case PROP_COPYRIGHT:
-      btk_about_dialog_set_copyright (about, g_value_get_string (value));
+      btk_about_dialog_set_copyright (about, b_value_get_string (value));
       break;
     case PROP_LOGO:
-      btk_about_dialog_set_logo (about, g_value_get_object (value));
+      btk_about_dialog_set_logo (about, b_value_get_object (value));
       break;
     case PROP_AUTHORS:
-      btk_about_dialog_set_authors (about, (const gchar**)g_value_get_boxed (value));
+      btk_about_dialog_set_authors (about, (const gchar**)b_value_get_boxed (value));
       break;
     case PROP_DOCUMENTERS:
-      btk_about_dialog_set_documenters (about, (const gchar**)g_value_get_boxed (value));
+      btk_about_dialog_set_documenters (about, (const gchar**)b_value_get_boxed (value));
       break;
     case PROP_ARTISTS:
-      btk_about_dialog_set_artists (about, (const gchar**)g_value_get_boxed (value));
+      btk_about_dialog_set_artists (about, (const gchar**)b_value_get_boxed (value));
       break;
     case PROP_TRANSLATOR_CREDITS:
-      btk_about_dialog_set_translator_credits (about, g_value_get_string (value));
+      btk_about_dialog_set_translator_credits (about, b_value_get_string (value));
       break;
     case PROP_LOGO_ICON_NAME:
-      btk_about_dialog_set_logo_icon_name (about, g_value_get_string (value));
+      btk_about_dialog_set_logo_icon_name (about, b_value_get_string (value));
       break;
     case PROP_WRAP_LICENSE:
-      priv->wrap_license = g_value_get_boolean (value);
+      priv->wrap_license = b_value_get_boolean (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_about_dialog_get_property (GObject    *object,
+btk_about_dialog_get_property (BObject    *object,
                                guint       prop_id,
-                               GValue     *value,
-                               GParamSpec *pspec)
+                               BValue     *value,
+                               BParamSpec *pspec)
 {
   BtkAboutDialog *about = BTK_ABOUT_DIALOG (object);
   BtkAboutDialogPrivate *priv = (BtkAboutDialogPrivate *)about->private_data;
@@ -779,43 +779,43 @@ btk_about_dialog_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, priv->name);
+      b_value_set_string (value, priv->name);
       break;
     case PROP_VERSION:
-      g_value_set_string (value, priv->version);
+      b_value_set_string (value, priv->version);
       break;
     case PROP_COPYRIGHT:
-      g_value_set_string (value, priv->copyright);
+      b_value_set_string (value, priv->copyright);
       break;
     case PROP_COMMENTS:
-      g_value_set_string (value, priv->comments);
+      b_value_set_string (value, priv->comments);
       break;
     case PROP_WEBSITE:
-      g_value_set_string (value, priv->website_url);
+      b_value_set_string (value, priv->website_url);
       break;
     case PROP_WEBSITE_LABEL:
-      g_value_set_string (value, priv->website_text);
+      b_value_set_string (value, priv->website_text);
       break;
     case PROP_LICENSE:
-      g_value_set_string (value, priv->license);
+      b_value_set_string (value, priv->license);
       break;
     case PROP_TRANSLATOR_CREDITS:
-      g_value_set_string (value, priv->translator_credits);
+      b_value_set_string (value, priv->translator_credits);
       break;
     case PROP_AUTHORS:
-      g_value_set_boxed (value, priv->authors);
+      b_value_set_boxed (value, priv->authors);
       break;
     case PROP_DOCUMENTERS:
-      g_value_set_boxed (value, priv->documenters);
+      b_value_set_boxed (value, priv->documenters);
       break;
     case PROP_ARTISTS:
-      g_value_set_boxed (value, priv->artists);
+      b_value_set_boxed (value, priv->artists);
       break;
     case PROP_LOGO:
       if (btk_image_get_storage_type (BTK_IMAGE (priv->logo_image)) == BTK_IMAGE_PIXBUF)
-        g_value_set_object (value, btk_image_get_pixbuf (BTK_IMAGE (priv->logo_image)));
+        b_value_set_object (value, btk_image_get_pixbuf (BTK_IMAGE (priv->logo_image)));
       else
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       break;
     case PROP_LOGO_ICON_NAME:
       if (btk_image_get_storage_type (BTK_IMAGE (priv->logo_image)) == BTK_IMAGE_ICON_NAME)
@@ -823,16 +823,16 @@ btk_about_dialog_get_property (GObject    *object,
           const gchar *icon_name;
 
           btk_image_get_icon_name (BTK_IMAGE (priv->logo_image), &icon_name, NULL);
-          g_value_set_string (value, icon_name);
+          b_value_set_string (value, icon_name);
         }
       else
-        g_value_set_string (value, NULL);
+        b_value_set_string (value, NULL);
       break;
     case PROP_WRAP_LICENSE:
-      g_value_set_boolean (value, priv->wrap_license);
+      b_value_set_boolean (value, priv->wrap_license);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1024,7 +1024,7 @@ btk_about_dialog_set_program_name (BtkAboutDialog *about,
 
   update_name_version (about);
 
-  g_object_notify (G_OBJECT (about), "program-name");
+  g_object_notify (B_OBJECT (about), "program-name");
 }
 
 
@@ -1077,7 +1077,7 @@ btk_about_dialog_set_version (BtkAboutDialog *about,
 
   update_name_version (about);
 
-  g_object_notify (G_OBJECT (about), "version");
+  g_object_notify (B_OBJECT (about), "version");
 }
 
 /**
@@ -1140,7 +1140,7 @@ btk_about_dialog_set_copyright (BtkAboutDialog *about,
   else
     btk_widget_hide (priv->copyright_label);
 
-  g_object_notify (G_OBJECT (about), "copyright");
+  g_object_notify (B_OBJECT (about), "copyright");
 }
 
 /**
@@ -1201,7 +1201,7 @@ btk_about_dialog_set_comments (BtkAboutDialog *about,
     }
   g_free (tmp);
 
-  g_object_notify (G_OBJECT (about), "comments");
+  g_object_notify (B_OBJECT (about), "comments");
 }
 
 /**
@@ -1262,7 +1262,7 @@ btk_about_dialog_set_license (BtkAboutDialog *about,
     }
   g_free (tmp);
 
-  g_object_notify (G_OBJECT (about), "license");
+  g_object_notify (B_OBJECT (about), "license");
 }
 
 /**
@@ -1314,7 +1314,7 @@ btk_about_dialog_set_wrap_license (BtkAboutDialog *about,
     {
        priv->wrap_license = wrap_license;
 
-       g_object_notify (G_OBJECT (about), "wrap-license");
+       g_object_notify (B_OBJECT (about), "wrap-license");
     }
 }
 
@@ -1370,7 +1370,7 @@ btk_about_dialog_set_website (BtkAboutDialog *about,
 
   update_website (about);
 
-  g_object_notify (G_OBJECT (about), "website");
+  g_object_notify (B_OBJECT (about), "website");
 }
 
 /**
@@ -1423,7 +1423,7 @@ btk_about_dialog_set_website_label (BtkAboutDialog *about,
 
   update_website (about);
 
-  g_object_notify (G_OBJECT (about), "website-label");
+  g_object_notify (B_OBJECT (about), "website-label");
 }
 
 /**
@@ -1496,7 +1496,7 @@ btk_about_dialog_set_authors (BtkAboutDialog  *about,
 
   update_credits_button_visibility (about);
 
-  g_object_notify (G_OBJECT (about), "authors");
+  g_object_notify (B_OBJECT (about), "authors");
 }
 
 /**
@@ -1551,7 +1551,7 @@ btk_about_dialog_set_documenters (BtkAboutDialog *about,
 
   update_credits_button_visibility (about);
 
-  g_object_notify (G_OBJECT (about), "documenters");
+  g_object_notify (B_OBJECT (about), "documenters");
 }
 
 /**
@@ -1606,7 +1606,7 @@ btk_about_dialog_set_artists (BtkAboutDialog *about,
 
   update_credits_button_visibility (about);
 
-  g_object_notify (G_OBJECT (about), "artists");
+  g_object_notify (B_OBJECT (about), "artists");
 }
 
 /**
@@ -1672,7 +1672,7 @@ btk_about_dialog_set_translator_credits (BtkAboutDialog *about,
 
   update_credits_button_visibility (about);
 
-  g_object_notify (G_OBJECT (about), "translator-credits");
+  g_object_notify (B_OBJECT (about), "translator-credits");
 }
 
 /**
@@ -1741,10 +1741,10 @@ btk_about_dialog_set_logo (BtkAboutDialog *about,
 
   priv = (BtkAboutDialogPrivate *)about->private_data;
 
-  g_object_freeze_notify (G_OBJECT (about));
+  g_object_freeze_notify (B_OBJECT (about));
 
   if (btk_image_get_storage_type (BTK_IMAGE (priv->logo_image)) == BTK_IMAGE_ICON_NAME)
-    g_object_notify (G_OBJECT (about), "logo-icon-name");
+    g_object_notify (B_OBJECT (about), "logo-icon-name");
 
   if (logo != NULL)
     btk_image_set_from_pixbuf (BTK_IMAGE (priv->logo_image), logo);
@@ -1764,9 +1764,9 @@ btk_about_dialog_set_logo (BtkAboutDialog *about,
         }
     }
 
-  g_object_notify (G_OBJECT (about), "logo");
+  g_object_notify (B_OBJECT (about), "logo");
 
-  g_object_thaw_notify (G_OBJECT (about));
+  g_object_thaw_notify (B_OBJECT (about));
 }
 
 /**
@@ -1818,16 +1818,16 @@ btk_about_dialog_set_logo_icon_name (BtkAboutDialog *about,
 
   priv = (BtkAboutDialogPrivate *)about->private_data;
 
-  g_object_freeze_notify (G_OBJECT (about));
+  g_object_freeze_notify (B_OBJECT (about));
 
   if (btk_image_get_storage_type (BTK_IMAGE (priv->logo_image)) == BTK_IMAGE_PIXBUF)
-    g_object_notify (G_OBJECT (about), "logo");
+    g_object_notify (B_OBJECT (about), "logo");
 
   btk_image_set_from_icon_name (BTK_IMAGE (priv->logo_image), icon_name,
                                 BTK_ICON_SIZE_DIALOG);
-  g_object_notify (G_OBJECT (about), "logo-icon-name");
+  g_object_notify (B_OBJECT (about), "logo-icon-name");
 
-  g_object_thaw_notify (G_OBJECT (about));
+  g_object_thaw_notify (B_OBJECT (about));
 }
 
 static void
@@ -1844,11 +1844,11 @@ follow_if_link (BtkAboutDialog *about,
     {
       BtkTextTag *tag = tagp->data;
 
-      uri = g_object_get_data (G_OBJECT (tag), "uri");
+      uri = g_object_get_data (B_OBJECT (tag), "uri");
       if (uri)
         emit_activate_link (about, uri);
 
-      if (uri && !g_slist_find_custom (priv->visited_links, uri, (GCompareFunc)strcmp))
+      if (uri && !b_slist_find_custom (priv->visited_links, uri, (GCompareFunc)strcmp))
         {
           BdkColor *style_visited_link_color;
           BdkColor color;
@@ -1865,14 +1865,14 @@ follow_if_link (BtkAboutDialog *about,
           else
             color = default_visited_link_color;
 
-          g_object_set (G_OBJECT (tag), "foreground-bdk", &color, NULL);
+          g_object_set (B_OBJECT (tag), "foreground-bdk", &color, NULL);
 
-          priv->visited_links = g_slist_prepend (priv->visited_links, g_strdup (uri));
+          priv->visited_links = b_slist_prepend (priv->visited_links, g_strdup (uri));
         }
     }
 
   if (tags)
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 static gboolean
@@ -1954,7 +1954,7 @@ set_cursor_if_appropriate (BtkAboutDialog *about,
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
       BtkTextTag *tag = tagp->data;
-      gchar *uri = g_object_get_data (G_OBJECT (tag), "uri");
+      gchar *uri = g_object_get_data (B_OBJECT (tag), "uri");
 
       if (uri != NULL)
         {
@@ -1974,7 +1974,7 @@ set_cursor_if_appropriate (BtkAboutDialog *about,
     }
 
   if (tags)
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 static gboolean
@@ -2127,7 +2127,7 @@ text_view_new (BtkAboutDialog  *about,
 
               link = g_strndup (q1, q2 - q1);
 
-              if (g_slist_find_custom (priv->visited_links, link, (GCompareFunc)strcmp))
+              if (b_slist_find_custom (priv->visited_links, link, (GCompareFunc)strcmp))
                 color = visited_link_color;
               else
                 color = link_color;
@@ -2148,7 +2148,7 @@ text_view_new (BtkAboutDialog  *about,
                 {
                   uri = g_strdup (link);
                 }
-              g_object_set_data_full (G_OBJECT (tag), I_("uri"), uri, g_free);
+              g_object_set_data_full (B_OBJECT (tag), I_("uri"), uri, g_free);
               btk_text_buffer_insert_with_tags (buffer, &end, link, -1, tag, NULL);
 
               g_free (link);
@@ -2463,7 +2463,7 @@ btk_show_about_dialog (BtkWindow   *parent,
   va_list var_args;
 
   if (parent)
-    dialog = g_object_get_data (G_OBJECT (parent), "btk-about-dialog");
+    dialog = g_object_get_data (B_OBJECT (parent), "btk-about-dialog");
   else
     dialog = global_about_dialog;
 
@@ -2481,14 +2481,14 @@ btk_show_about_dialog (BtkWindow   *parent,
                         G_CALLBACK (close_cb), NULL);
 
       va_start (var_args, first_property_name);
-      g_object_set_valist (G_OBJECT (dialog), first_property_name, var_args);
+      g_object_set_valist (B_OBJECT (dialog), first_property_name, var_args);
       va_end (var_args);
 
       if (parent)
         {
           btk_window_set_transient_for (BTK_WINDOW (dialog), parent);
           btk_window_set_destroy_with_parent (BTK_WINDOW (dialog), TRUE);
-          g_object_set_data_full (G_OBJECT (parent),
+          g_object_set_data_full (B_OBJECT (parent),
                                   I_("btk-about-dialog"),
                                   dialog, g_object_unref);
         }

@@ -66,9 +66,9 @@ struct _BdkOffscreenWindowClass
   BdkDrawableClass parent_class;
 };
 
-#define BDK_OFFSCREEN_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindowClass))
-#define BDK_IS_OFFSCREEN_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_OFFSCREEN_WINDOW))
-#define BDK_OFFSCREEN_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindowClass))
+#define BDK_OFFSCREEN_WINDOW_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindowClass))
+#define BDK_IS_OFFSCREEN_WINDOW_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_OFFSCREEN_WINDOW))
+#define BDK_OFFSCREEN_WINDOW_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindowClass))
 
 static void       bdk_offscreen_window_impl_iface_init    (BdkWindowImplIface         *iface);
 static void       bdk_offscreen_window_hide               (BdkWindow                  *window);
@@ -81,7 +81,7 @@ G_DEFINE_TYPE_WITH_CODE (BdkOffscreenWindow,
 
 
 static void
-bdk_offscreen_window_finalize (GObject *object)
+bdk_offscreen_window_finalize (BObject *object)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (object);
 
@@ -92,7 +92,7 @@ bdk_offscreen_window_finalize (GObject *object)
 
   g_object_unref (offscreen->pixmap);
 
-  G_OBJECT_CLASS (bdk_offscreen_window_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_offscreen_window_parent_class)->finalize (object);
 }
 
 static void
@@ -1249,7 +1249,7 @@ static void
 bdk_offscreen_window_class_init (BdkOffscreenWindowClass *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_offscreen_window_finalize;
 

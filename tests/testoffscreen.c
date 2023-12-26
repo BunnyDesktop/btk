@@ -149,7 +149,7 @@ create_treeview (BtkWidget *vbox)
 
   btk_box_pack_start (BTK_BOX (vbox), scrolledwindow, TRUE, TRUE, 0);
 
-  store = btk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  store = btk_list_store_new (2, B_TYPE_STRING, B_TYPE_STRING);
   tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (store));
   g_object_unref (store);
 
@@ -168,7 +168,7 @@ create_treeview (BtkWidget *vbox)
 
   stock_ids = btk_stock_list_ids ();
 
-  for (list = stock_ids; list; list = g_slist_next (list))
+  for (list = stock_ids; list; list = b_slist_next (list))
     {
       const gchar *stock_id = list->data;
       BtkStockItem item;
@@ -182,8 +182,8 @@ create_treeview (BtkWidget *vbox)
         }
     }
 
-  g_slist_foreach (stock_ids, (GFunc) g_free, NULL);
-  g_slist_free (stock_ids);
+  b_slist_foreach (stock_ids, (GFunc) g_free, NULL);
+  b_slist_free (stock_ids);
 }
 
 static BtkWidget *
@@ -366,7 +366,7 @@ main (int   argc,
 
   btk_widget_show_all (window);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (B_OBJECT (button), "clicked",
                     G_CALLBACK (remove_clicked),
                     widget);
 

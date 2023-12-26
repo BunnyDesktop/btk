@@ -100,11 +100,11 @@ typedef struct _BtkTextLine     BtkTextLine;
 typedef struct _BtkTextLineData BtkTextLineData;
 
 #define BTK_TYPE_TEXT_LAYOUT             (btk_text_layout_get_type ())
-#define BTK_TEXT_LAYOUT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayout))
-#define BTK_TEXT_LAYOUT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
-#define BTK_IS_TEXT_LAYOUT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_LAYOUT))
-#define BTK_IS_TEXT_LAYOUT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_LAYOUT))
-#define BTK_TEXT_LAYOUT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
+#define BTK_TEXT_LAYOUT(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayout))
+#define BTK_TEXT_LAYOUT_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
+#define BTK_IS_TEXT_LAYOUT(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_LAYOUT))
+#define BTK_IS_TEXT_LAYOUT_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_LAYOUT))
+#define BTK_TEXT_LAYOUT_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
 
 typedef struct _BtkTextLayout         BtkTextLayout;
 typedef struct _BtkTextLayoutClass    BtkTextLayoutClass;
@@ -114,7 +114,7 @@ typedef struct _BtkTextAttrAppearance BtkTextAttrAppearance;
 
 struct _BtkTextLayout
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /* width of the display area on-screen,
    * i.e. pixels we should wrap to fit inside. */
@@ -179,7 +179,7 @@ struct _BtkTextLayout
 
 struct _BtkTextLayoutClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Some portion of the layout was invalidated
    */

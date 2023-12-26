@@ -567,7 +567,7 @@ bdk_error_trap_push (void)
     }
   else
     {
-      node = g_slist_alloc ();
+      node = b_slist_alloc ();
       node->data = g_new (BdkErrorTrap, 1);
     }
 

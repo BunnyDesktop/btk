@@ -33,9 +33,9 @@ static void	  bail_entry_real_initialize       (BatkObject            *obj,
                                                     gpointer             data);
 static void       text_setup                       (BailEntry            *entry,
                                                     BtkEntry             *btk_entry);
-static void	  bail_entry_real_notify_btk	   (GObject		 *obj,
-                                                    GParamSpec		 *pspec);
-static void       bail_entry_finalize              (GObject              *object);
+static void	  bail_entry_real_notify_btk	   (BObject		 *obj,
+                                                    BParamSpec		 *pspec);
+static void       bail_entry_finalize              (BObject              *object);
 
 static gint       bail_entry_get_index_in_parent   (BatkObject            *accessible);
 
@@ -177,7 +177,7 @@ G_DEFINE_TYPE_WITH_CODE (BailEntry, bail_entry, BAIL_TYPE_WIDGET,
 static void
 bail_entry_class_init (BailEntryClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -238,8 +238,8 @@ bail_entry_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_entry_real_notify_btk (GObject		*obj,
-                            GParamSpec		*pspec)
+bail_entry_real_notify_btk (BObject		*obj,
+                            BParamSpec		*pspec)
 {
   BtkWidget *widget;
   BatkObject* batk_obj;
@@ -341,7 +341,7 @@ text_setup (BailEntry *entry,
 }
 
 static void
-bail_entry_finalize (GObject            *object)
+bail_entry_finalize (BObject            *object)
 {
   BailEntry *entry = BAIL_ENTRY (object);
 
@@ -358,7 +358,7 @@ bail_entry_finalize (GObject            *object)
       g_source_remove (entry->insert_idle_handler);
       entry->insert_idle_handler = 0;
     }
-  G_OBJECT_CLASS (bail_entry_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_entry_parent_class)->finalize (object);
 }
 
 static gint
@@ -394,7 +394,7 @@ bail_entry_ref_state_set (BatkObject *accessible)
 
   entry = BTK_ENTRY (widget);
 
-  g_object_get (G_OBJECT (entry), "editable", &value, NULL);
+  g_object_get (B_OBJECT (entry), "editable", &value, NULL);
   if (value)
     batk_state_set_add_state (state_set, BATK_STATE_EDITABLE);
   batk_state_set_add_state (state_set, BATK_STATE_SINGLE_LINE);

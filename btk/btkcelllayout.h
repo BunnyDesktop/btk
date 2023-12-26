@@ -32,9 +32,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_LAYOUT            (btk_cell_layout_get_type ())
-#define BTK_CELL_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
-#define BTK_IS_CELL_LAYOUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_LAYOUT))
-#define BTK_CELL_LAYOUT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayoutIface))
+#define BTK_CELL_LAYOUT(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
+#define BTK_IS_CELL_LAYOUT(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_LAYOUT))
+#define BTK_CELL_LAYOUT_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayoutIface))
 
 typedef struct _BtkCellLayout           BtkCellLayout; /* dummy typedef */
 typedef struct _BtkCellLayoutIface      BtkCellLayoutIface;
@@ -103,18 +103,18 @@ void  btk_cell_layout_reorder            (BtkCellLayout         *cell_layout,
                                           gint                   position);
 gboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
+						      BObject       *child,
 						      const gchar   *tagname,
 						      GMarkupParser *parser,
 						      gpointer      *data);
 void _btk_cell_layout_buildable_custom_tag_end       (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
+						      BObject       *child,
 						      const gchar   *tagname,
 						      gpointer      *data);
 void _btk_cell_layout_buildable_add_child            (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
+						      BObject       *child,
 						      const gchar   *type);
 
 B_END_DECLS

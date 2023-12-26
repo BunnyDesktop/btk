@@ -102,9 +102,9 @@ enum {
 
 static void     btk_ctree_class_init    (BtkCTreeClass         *klass);
 static void     btk_ctree_init          (BtkCTree              *ctree);
-static GObject* btk_ctree_constructor   (GType                  type,
+static BObject* btk_ctree_constructor   (GType                  type,
 				         guint                  n_construct_properties,
-				         GObjectConstructParam *construct_params);
+				         BObjectConstructParam *construct_params);
 static void btk_ctree_set_arg		(BtkObject      *object,
 					 BtkArg         *arg,
 					 guint           arg_id);
@@ -356,7 +356,7 @@ btk_ctree_get_type (void)
 static void
 btk_ctree_class_init (BtkCTreeClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkCListClass *clist_class;
@@ -1921,7 +1921,7 @@ draw_row (BtkCList     *clist,
 				       row_rectangle.y + row_center_offset + clist_row->cell[i].vertical,
 				       layout);
 		      bdk_gc_set_clip_rectangle (fg_gc, NULL);
-		      g_object_unref (G_OBJECT (layout));
+		      g_object_unref (B_OBJECT (layout));
 		    }
 		  break;
 		default:
@@ -1942,7 +1942,7 @@ draw_row (BtkCList     *clist,
 					    &intersect_rectangle))
 	{
 	  if (layout)
-            g_object_unref (G_OBJECT (layout));
+            g_object_unref (B_OBJECT (layout));
 	  continue;
 	}
 
@@ -1996,7 +1996,7 @@ draw_row (BtkCList     *clist,
 			   row_rectangle.y + row_center_offset + clist_row->cell[i].vertical,
 			   layout);
 
-          g_object_unref (G_OBJECT (layout));
+          g_object_unref (B_OBJECT (layout));
 	}
       bdk_gc_set_clip_rectangle (fg_gc, NULL);
     }
@@ -2853,7 +2853,7 @@ cell_size_request (BtkCList       *clist,
       requisition->width = logical_rect.width;
       requisition->height = logical_rect.height;
       
-      g_object_unref (G_OBJECT (layout));
+      g_object_unref (B_OBJECT (layout));
     }
   else
     {
@@ -3557,12 +3557,12 @@ ctree_is_hot_spot (BtkCTree     *ctree,
  *           Creation, insertion, deletion                 *
  ***********************************************************/
 
-static GObject*
+static BObject*
 btk_ctree_constructor (GType                  type,
 		       guint                  n_construct_properties,
-		       GObjectConstructParam *construct_properties)
+		       BObjectConstructParam *construct_properties)
 {
-  GObject *object = G_OBJECT_CLASS (parent_class)->constructor (type,
+  BObject *object = B_OBJECT_CLASS (parent_class)->constructor (type,
 								n_construct_properties,
 								construct_properties);
 

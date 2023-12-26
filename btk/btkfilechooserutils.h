@@ -45,7 +45,7 @@ typedef enum {
   BTK_FILE_CHOOSER_PROP_LAST                   = BTK_FILE_CHOOSER_PROP_CREATE_FOLDERS
 } BtkFileChooserProp;
 
-void _btk_file_chooser_install_properties (GObjectClass *klass);
+void _btk_file_chooser_install_properties (BObjectClass *klass);
 
 void _btk_file_chooser_delegate_iface_init (BtkFileChooserIface *iface);
 void _btk_file_chooser_set_delegate        (BtkFileChooser *receiver,

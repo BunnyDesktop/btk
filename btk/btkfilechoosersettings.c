@@ -245,7 +245,7 @@ ensure_settings_read (BtkFileChooserSettings *settings)
   settings->settings_read = TRUE;
 }
 
-G_DEFINE_TYPE (BtkFileChooserSettings, _btk_file_chooser_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkFileChooserSettings, _btk_file_chooser_settings, B_TYPE_OBJECT)
 
 static void
 _btk_file_chooser_settings_class_init (BtkFileChooserSettingsClass *class)

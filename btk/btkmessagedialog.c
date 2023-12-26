@@ -96,7 +96,7 @@
  * </refsect2>
  */
 
-#define BTK_MESSAGE_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogPrivate))
+#define BTK_MESSAGE_DIALOG_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogPrivate))
 
 typedef struct _BtkMessageDialogPrivate BtkMessageDialogPrivate;
 
@@ -112,18 +112,18 @@ struct _BtkMessageDialogPrivate
 static void btk_message_dialog_style_set  (BtkWidget             *widget,
                                            BtkStyle              *prev_style);
 
-static void btk_message_dialog_set_property (GObject          *object,
+static void btk_message_dialog_set_property (BObject          *object,
 					     guint             prop_id,
-					     const GValue     *value,
-					     GParamSpec       *pspec);
-static void btk_message_dialog_get_property (GObject          *object,
+					     const BValue     *value,
+					     BParamSpec       *pspec);
+static void btk_message_dialog_get_property (BObject          *object,
 					     guint             prop_id,
-					     GValue           *value,
-					     GParamSpec       *pspec);
+					     BValue           *value,
+					     BParamSpec       *pspec);
 static void btk_message_dialog_add_buttons  (BtkMessageDialog *message_dialog,
 					     BtkButtonsType    buttons);
 static void      btk_message_dialog_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject * btk_message_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
+static BObject * btk_message_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
                                                                   BtkBuilder    *builder,
                                                                   const gchar   *childname);
 
@@ -155,13 +155,13 @@ btk_message_dialog_buildable_interface_init (BtkBuildableIface *iface)
   iface->custom_finished = parent_buildable_iface->custom_finished;
 }
 
-static GObject *
+static BObject *
 btk_message_dialog_buildable_get_internal_child (BtkBuildable *buildable,
                                                  BtkBuilder   *builder,
                                                  const gchar  *childname)
 {
   if (strcmp (childname, "message_area") == 0)
-    return G_OBJECT (btk_message_dialog_get_message_area (BTK_MESSAGE_DIALOG (buildable)));
+    return B_OBJECT (btk_message_dialog_get_message_area (BTK_MESSAGE_DIALOG (buildable)));
 
   return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }
@@ -171,10 +171,10 @@ static void
 btk_message_dialog_class_init (BtkMessageDialogClass *class)
 {
   BtkWidgetClass *widget_class;
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
   widget_class = BTK_WIDGET_CLASS (class);
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   
   widget_class->style_set = btk_message_dialog_style_set;
 
@@ -465,10 +465,10 @@ setup_type (BtkMessageDialog *dialog,
 }
 
 static void 
-btk_message_dialog_set_property (GObject      *object,
+btk_message_dialog_set_property (BObject      *object,
 				 guint         prop_id,
-				 const GValue *value,
-				 GParamSpec   *pspec)
+				 const BValue *value,
+				 BParamSpec   *pspec)
 {
   BtkMessageDialog *dialog;
   BtkMessageDialogPrivate *priv;
@@ -479,28 +479,28 @@ btk_message_dialog_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      setup_type (dialog, g_value_get_enum (value));
+      setup_type (dialog, b_value_get_enum (value));
       break;
     case PROP_BUTTONS:
-      btk_message_dialog_add_buttons (dialog, g_value_get_enum (value));
+      btk_message_dialog_add_buttons (dialog, b_value_get_enum (value));
       break;
     case PROP_TEXT:
       if (priv->has_primary_markup)
 	btk_label_set_markup (BTK_LABEL (dialog->label), 
-			      g_value_get_string (value));
+			      b_value_get_string (value));
       else
 	btk_label_set_text (BTK_LABEL (dialog->label), 
-			    g_value_get_string (value));
+			    b_value_get_string (value));
       break;
     case PROP_USE_MARKUP:
-      priv->has_primary_markup = g_value_get_boolean (value) != FALSE;
+      priv->has_primary_markup = b_value_get_boolean (value) != FALSE;
       btk_label_set_use_markup (BTK_LABEL (dialog->label), 
 				priv->has_primary_markup);
       setup_primary_label_font (dialog);
       break;
     case PROP_SECONDARY_TEXT:
       {
-	const gchar *txt = g_value_get_string (value);
+	const gchar *txt = b_value_get_string (value);
 	
 	if (btk_label_get_use_markup (BTK_LABEL (priv->secondary_label)))
 	  btk_label_set_markup (BTK_LABEL (priv->secondary_label), txt);
@@ -522,23 +522,23 @@ btk_message_dialog_set_property (GObject      *object,
       break;
     case PROP_SECONDARY_USE_MARKUP:
       btk_label_set_use_markup (BTK_LABEL (priv->secondary_label), 
-				g_value_get_boolean (value));
+				b_value_get_boolean (value));
       break;
     case PROP_IMAGE:
-      btk_message_dialog_set_image (dialog, g_value_get_object (value));
+      btk_message_dialog_set_image (dialog, b_value_get_object (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_message_dialog_get_property (GObject     *object,
+btk_message_dialog_get_property (BObject     *object,
 				 guint        prop_id,
-				 GValue      *value,
-				 GParamSpec  *pspec)
+				 BValue      *value,
+				 BParamSpec  *pspec)
 {
   BtkMessageDialog *dialog;
   BtkMessageDialogPrivate *priv;
@@ -549,36 +549,36 @@ btk_message_dialog_get_property (GObject     *object,
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      g_value_set_enum (value, (BtkMessageType) priv->message_type);
+      b_value_set_enum (value, (BtkMessageType) priv->message_type);
       break;
     case PROP_TEXT:
-      g_value_set_string (value, btk_label_get_label (BTK_LABEL (dialog->label)));
+      b_value_set_string (value, btk_label_get_label (BTK_LABEL (dialog->label)));
       break;
     case PROP_USE_MARKUP:
-      g_value_set_boolean (value, priv->has_primary_markup);
+      b_value_set_boolean (value, priv->has_primary_markup);
       break;
     case PROP_SECONDARY_TEXT:
       if (priv->has_secondary_text)
-      g_value_set_string (value, 
+      b_value_set_string (value, 
 			  btk_label_get_label (BTK_LABEL (priv->secondary_label)));
       else
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       break;
     case PROP_SECONDARY_USE_MARKUP:
       if (priv->has_secondary_text)
-	g_value_set_boolean (value, 
+	b_value_set_boolean (value, 
 			     btk_label_get_use_markup (BTK_LABEL (priv->secondary_label)));
       else
-	g_value_set_boolean (value, FALSE);
+	b_value_set_boolean (value, FALSE);
       break;
     case PROP_IMAGE:
-      g_value_set_object (value, dialog->image);
+      b_value_set_object (value, dialog->image);
       break;
     case PROP_MESSAGE_AREA:
-      g_value_set_object (value, priv->message_area);
+      b_value_set_object (value, priv->message_area);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -757,7 +757,7 @@ btk_message_dialog_set_image (BtkMessageDialog *dialog,
 
   dialog->image = image;
 
-  g_object_notify (G_OBJECT (dialog), "image");
+  g_object_notify (B_OBJECT (dialog), "image");
 }
 
 /**
@@ -1004,7 +1004,7 @@ btk_message_dialog_add_buttons (BtkMessageDialog* message_dialog,
       break;
     } 
 
-  g_object_notify (G_OBJECT (message_dialog), "buttons");
+  g_object_notify (B_OBJECT (message_dialog), "buttons");
 }
 
 static void

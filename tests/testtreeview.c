@@ -58,24 +58,24 @@ static void run_automated_tests (void);
 /* This custom model is to test custom model use. */
 
 #define BTK_TYPE_MODEL_TYPES				(btk_tree_model_types_get_type ())
-#define BTK_TREE_MODEL_TYPES(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MODEL_TYPES, BtkTreeModelTypes))
-#define BTK_TREE_MODEL_TYPES_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MODEL_TYPES, BtkTreeModelTypesClass))
-#define BTK_IS_TREE_MODEL_TYPES(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MODEL_TYPES))
-#define BTK_IS_TREE_MODEL_TYPES_GET_CLASS(klass)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MODEL_TYPES))
+#define BTK_TREE_MODEL_TYPES(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MODEL_TYPES, BtkTreeModelTypes))
+#define BTK_TREE_MODEL_TYPES_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MODEL_TYPES, BtkTreeModelTypesClass))
+#define BTK_IS_TREE_MODEL_TYPES(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MODEL_TYPES))
+#define BTK_IS_TREE_MODEL_TYPES_GET_CLASS(klass)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MODEL_TYPES))
 
 typedef struct _BtkTreeModelTypes       BtkTreeModelTypes;
 typedef struct _BtkTreeModelTypesClass  BtkTreeModelTypesClass;
 
 struct _BtkTreeModelTypes
 {
-  GObject parent;
+  BObject parent;
 
   gint stamp;
 };
 
 struct _BtkTreeModelTypesClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   guint        (* get_flags)       (BtkTreeModel *tree_model);   
   gint         (* get_n_columns)   (BtkTreeModel *tree_model);
@@ -89,7 +89,7 @@ struct _BtkTreeModelTypesClass
   void         (* get_value)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter,
 				    gint          column,
-				    GValue       *value);
+				    BValue       *value);
   gboolean     (* iter_next)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter);
   gboolean     (* iter_children)   (BtkTreeModel *tree_model,
@@ -151,16 +151,16 @@ get_model_types (void)
   
   if (column_types[0] == 0)
     {
-      column_types[0] = G_TYPE_STRING;
-      column_types[1] = G_TYPE_STRING;
+      column_types[0] = B_TYPE_STRING;
+      column_types[1] = B_TYPE_STRING;
       column_types[2] = BDK_TYPE_PIXBUF;
-      column_types[3] = G_TYPE_FLOAT;
-      column_types[4] = G_TYPE_UINT;
-      column_types[5] = G_TYPE_UCHAR;
-      column_types[6] = G_TYPE_CHAR;
+      column_types[3] = B_TYPE_FLOAT;
+      column_types[4] = B_TYPE_UINT;
+      column_types[5] = B_TYPE_UCHAR;
+      column_types[6] = B_TYPE_CHAR;
 #define BOOL_COLUMN 7
-      column_types[BOOL_COLUMN] = G_TYPE_BOOLEAN;
-      column_types[8] = G_TYPE_INT;
+      column_types[BOOL_COLUMN] = B_TYPE_BOOLEAN;
+      column_types[8] = B_TYPE_INT;
     }
 
   return column_types;
@@ -171,7 +171,7 @@ col_clicked_cb (BtkTreeViewColumn *col, gpointer data)
 {
   BtkWindow *win;
 
-  win = BTK_WINDOW (create_prop_editor (G_OBJECT (col), BTK_TYPE_TREE_VIEW_COLUMN));
+  win = BTK_WINDOW (create_prop_editor (B_OBJECT (col), BTK_TYPE_TREE_VIEW_COLUMN));
 
   btk_window_set_title (win, btk_tree_view_column_get_title (col));
 }
@@ -255,7 +255,7 @@ toggled_callback (BtkCellRendererToggle *celltoggle,
     }
   else
     g_warning ("don't know how to actually toggle value for model type %s",
-               g_type_name (G_TYPE_FROM_INSTANCE (model)));
+               g_type_name (B_TYPE_FROM_INSTANCE (model)));
 }
 
 static void
@@ -316,7 +316,7 @@ edited_callback (BtkCellRendererText *renderer,
     }
   else
     g_warning ("don't know how to actually toggle value for model type %s",
-               g_type_name (G_TYPE_FROM_INSTANCE (model)));
+               g_type_name (B_TYPE_FROM_INSTANCE (model)));
 }
 
 static ColumnsType current_column_type = COLUMNS_LOTS;
@@ -647,7 +647,7 @@ create_tree_model (void)
 			      t[6], t[7], t[8]);
 
   i = 0;
-  while (i < G_TYPE_FUNDAMENTAL_MAX)
+  while (i < B_TYPE_FUNDAMENTAL_MAX)
     {
       typesystem_recurse (i, NULL, store);
       
@@ -726,8 +726,8 @@ main (int    argc,
   models[MODEL_SORTED_TREE] = btk_tree_model_sort_new_with_model (model);
   g_object_unref (model);
 
-  models[MODEL_EMPTY_LIST] = BTK_TREE_MODEL (btk_list_store_new (1, G_TYPE_INT));
-  models[MODEL_EMPTY_TREE] = BTK_TREE_MODEL (btk_tree_store_new (1, G_TYPE_INT));
+  models[MODEL_EMPTY_LIST] = BTK_TREE_MODEL (btk_list_store_new (1, B_TYPE_INT));
+  models[MODEL_EMPTY_TREE] = BTK_TREE_MODEL (btk_tree_store_new (1, B_TYPE_INT));
   
   models[MODEL_NULL] = NULL;
 
@@ -821,7 +821,7 @@ static BtkTreePath *btk_real_model_types_get_path        (BtkTreeModel        *t
 static void         btk_real_model_types_get_value       (BtkTreeModel        *tree_model,
 							   BtkTreeIter         *iter,
 							   gint                 column,
-							   GValue              *value);
+							   BValue              *value);
 static gboolean     btk_real_model_types_iter_next       (BtkTreeModel        *tree_model,
 							   BtkTreeIter         *iter);
 static gboolean     btk_real_model_types_iter_children   (BtkTreeModel        *tree_model,
@@ -867,7 +867,7 @@ btk_tree_model_types_get_type (void)
 	NULL
       };
 
-      model_types_type = g_type_register_static (G_TYPE_OBJECT,
+      model_types_type = g_type_register_static (B_TYPE_OBJECT,
 						 "BtkTreeModelTypes",
 						 &model_types_info, 0);
       g_type_add_interface_static (model_types_type,
@@ -910,8 +910,8 @@ btk_tree_model_types_init (BtkTreeModelTypes *model_types)
 }
 
 static GType column_types[] = {
-  G_TYPE_STRING, /* GType */
-  G_TYPE_STRING  /* type name */
+  B_TYPE_STRING, /* GType */
+  B_TYPE_STRING  /* type name */
 };
   
 static gint
@@ -924,7 +924,7 @@ static GType
 btk_real_model_types_get_column_type (BtkTreeModel *tree_model,
                                       gint          index)
 {
-  g_return_val_if_fail (index < G_N_ELEMENTS (column_types), G_TYPE_INVALID);
+  g_return_val_if_fail (index < G_N_ELEMENTS (column_types), B_TYPE_INVALID);
   
   return column_types[index];
 }
@@ -940,8 +940,8 @@ btk_real_model_types_get_iter (BtkTreeModel *tree_model,
 }
 #endif
 
-/* The toplevel nodes of the tree are the reserved types, G_TYPE_NONE through
- * G_TYPE_RESERVED_FUNDAMENTAL.
+/* The toplevel nodes of the tree are the reserved types, B_TYPE_NONE through
+ * B_TYPE_RESERVED_FUNDAMENTAL.
  */
 
 static BtkTreePath *
@@ -960,12 +960,12 @@ btk_real_model_types_get_path (BtkTreeModel *tree_model,
   retval = btk_tree_path_new ();
   
   parent = g_type_parent (type);
-  while (parent != G_TYPE_INVALID)
+  while (parent != B_TYPE_INVALID)
     {
       GType* children = g_type_children (parent, NULL);
       gint i = 0;
 
-      if (!children || children[0] == G_TYPE_INVALID)
+      if (!children || children[0] == B_TYPE_INVALID)
         {
           g_warning ("bad iterator?");
           return NULL;
@@ -992,7 +992,7 @@ static void
 btk_real_model_types_get_value (BtkTreeModel *tree_model,
                                 BtkTreeIter  *iter,
                                 gint          column,
-                                GValue       *value)
+                                BValue       *value)
 {
   GType type;
 
@@ -1004,17 +1004,17 @@ btk_real_model_types_get_value (BtkTreeModel *tree_model,
       {
         gchar *str;
         
-        g_value_init (value, G_TYPE_STRING);
+        b_value_init (value, B_TYPE_STRING);
 
         str = g_strdup_printf ("%ld", (long int) type);
-        g_value_set_string (value, str);
+        b_value_set_string (value, str);
         g_free (str);
       }
       break;
 
     case 1:
-      g_value_init (value, G_TYPE_STRING);
-      g_value_set_string (value, g_type_name (type));
+      b_value_init (value, B_TYPE_STRING);
+      b_value_set_string (value, g_type_name (type));
       break;
 
     default:
@@ -1034,13 +1034,13 @@ btk_real_model_types_iter_next (BtkTreeModel  *tree_model,
 
   parent = g_type_parent (type);
   
-  if (parent == G_TYPE_INVALID)
+  if (parent == B_TYPE_INVALID)
     {
       /* find next _valid_ fundamental type */
       do
 	type++;
-      while (!g_type_name (type) && type <= G_TYPE_FUNDAMENTAL_MAX);
-      if (type <= G_TYPE_FUNDAMENTAL_MAX)
+      while (!g_type_name (type) && type <= B_TYPE_FUNDAMENTAL_MAX);
+      if (type <= B_TYPE_FUNDAMENTAL_MAX)
 	{
 	  /* found one */
           iter->user_data = GINT_TO_POINTER (type);
@@ -1061,7 +1061,7 @@ btk_real_model_types_iter_next (BtkTreeModel  *tree_model,
   
       ++i;
 
-      if (children[i] != G_TYPE_INVALID)
+      if (children[i] != B_TYPE_INVALID)
         {
           g_free (children);
           iter->user_data = GINT_TO_POINTER (children[i]);
@@ -1087,7 +1087,7 @@ btk_real_model_types_iter_children (BtkTreeModel *tree_model,
 
   children = g_type_children (type, NULL);
 
-  if (!children || children[0] == G_TYPE_INVALID)
+  if (!children || children[0] == B_TYPE_INVALID)
     {
       g_free (children);
       return FALSE;
@@ -1111,7 +1111,7 @@ btk_real_model_types_iter_has_child (BtkTreeModel *tree_model,
   
   children = g_type_children (type, NULL);
 
-  if (!children || children[0] == G_TYPE_INVALID)
+  if (!children || children[0] == B_TYPE_INVALID)
     {
       g_free (children);
       return FALSE;
@@ -1129,7 +1129,7 @@ btk_real_model_types_iter_n_children (BtkTreeModel *tree_model,
 {
   if (iter == NULL)
     {
-      return G_TYPE_FUNDAMENTAL_MAX;
+      return B_TYPE_FUNDAMENTAL_MAX;
     }
   else
     {
@@ -1156,7 +1156,7 @@ btk_real_model_types_iter_nth_child (BtkTreeModel *tree_model,
   if (parent == NULL)
     {
       /* fundamental type */
-      if (n < G_TYPE_FUNDAMENTAL_MAX)
+      if (n < B_TYPE_FUNDAMENTAL_MAX)
         {
           iter->user_data = GINT_TO_POINTER (n);
           return TRUE;
@@ -1202,9 +1202,9 @@ btk_real_model_types_iter_parent (BtkTreeModel *tree_model,
   
   parent = g_type_parent (type);
   
-  if (parent == G_TYPE_INVALID)
+  if (parent == B_TYPE_INVALID)
     {
-      if (type > G_TYPE_FUNDAMENTAL_MAX)
+      if (type > B_TYPE_FUNDAMENTAL_MAX)
         g_warning ("no parent for %ld %s\n",
                    (long int) type,
                    g_type_name (type));
@@ -1331,7 +1331,7 @@ run_automated_tests (void)
     gint i;
     BtkTreeIter iter;
     
-    store = btk_list_store_new (1, G_TYPE_INT);
+    store = btk_list_store_new (1, B_TYPE_INT);
 
     model = BTK_TREE_MODEL (store);
     
@@ -1400,7 +1400,7 @@ run_automated_tests (void)
     BtkTreeStore *store;
     BtkTreeIter root;
 
-    store = btk_tree_store_new (1, G_TYPE_INT);
+    store = btk_tree_store_new (1, B_TYPE_INT);
     btk_tree_store_append (BTK_TREE_STORE (store), &root, NULL);
     /* Remove test until it is rewritten to work */
     /*    treestore_torture_recurse (store, &root, 0);*/

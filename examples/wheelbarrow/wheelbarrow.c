@@ -143,7 +143,7 @@ int main (int argc,
      * since we're making it a popup. */
     btk_init (&argc, &argv);
     window = btk_window_new (BTK_WINDOW_POPUP);
-    g_signal_connect (G_OBJECT (window), "delete_event",
+    g_signal_connect (B_OBJECT (window), "delete_event",
                       G_CALLBACK (close_application), NULL);
     btk_widget_show (window);
 

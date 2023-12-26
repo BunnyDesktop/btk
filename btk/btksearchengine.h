@@ -28,11 +28,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_SEARCH_ENGINE		(_btk_search_engine_get_type ())
-#define BTK_SEARCH_ENGINE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngine))
-#define BTK_SEARCH_ENGINE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
-#define BTK_IS_SEARCH_ENGINE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE))
-#define BTK_IS_SEARCH_ENGINE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE))
-#define BTK_SEARCH_ENGINE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
+#define BTK_SEARCH_ENGINE(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngine))
+#define BTK_SEARCH_ENGINE_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
+#define BTK_IS_SEARCH_ENGINE(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE))
+#define BTK_IS_SEARCH_ENGINE_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE))
+#define BTK_SEARCH_ENGINE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
 
 typedef struct _BtkSearchEngine BtkSearchEngine;
 typedef struct _BtkSearchEngineClass BtkSearchEngineClass;
@@ -40,14 +40,14 @@ typedef struct _BtkSearchEnginePrivate BtkSearchEnginePrivate;
 
 struct _BtkSearchEngine 
 {
-  GObject parent;
+  BObject parent;
 
   BtkSearchEnginePrivate *priv;
 };
 
 struct _BtkSearchEngineClass 
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   /* VTable */
   void     (*set_query)       (BtkSearchEngine *engine, 

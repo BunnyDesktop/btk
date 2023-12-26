@@ -102,7 +102,7 @@
 
 typedef struct _BtkTextViewPrivate BtkTextViewPrivate;
 
-#define BTK_TEXT_VIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewPrivate))
+#define BTK_TEXT_VIEW_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewPrivate))
 
 struct _BtkTextViewPrivate 
 {
@@ -164,15 +164,15 @@ enum
 };
 
 static void btk_text_view_destroy              (BtkObject        *object);
-static void btk_text_view_finalize             (GObject          *object);
-static void btk_text_view_set_property         (GObject         *object,
+static void btk_text_view_finalize             (BObject          *object);
+static void btk_text_view_set_property         (BObject         *object,
 						guint            prop_id,
-						const GValue    *value,
-						GParamSpec      *pspec);
-static void btk_text_view_get_property         (GObject         *object,
+						const BValue    *value,
+						BParamSpec      *pspec);
+static void btk_text_view_get_property         (BObject         *object,
 						guint            prop_id,
-						GValue          *value,
-						GParamSpec      *pspec);
+						BValue          *value,
+						BParamSpec      *pspec);
 static void btk_text_view_size_request         (BtkWidget        *widget,
                                                 BtkRequisition   *requisition);
 static void btk_text_view_size_allocate        (BtkWidget        *widget,
@@ -330,7 +330,7 @@ static void btk_text_view_mark_set_handler       (BtkTextBuffer     *buffer,
                                                   BtkTextMark       *mark,
                                                   gpointer           data);
 static void btk_text_view_target_list_notify     (BtkTextBuffer     *buffer,
-                                                  const GParamSpec  *pspec,
+                                                  const BParamSpec  *pspec,
                                                   gpointer           data);
 static void btk_text_view_paste_done_handler     (BtkTextBuffer     *buffer,
                                                   BtkClipboard      *clipboard,
@@ -452,22 +452,22 @@ add_move_binding (BtkBindingSet  *binding_set,
 
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
                                 "move-cursor", 3,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count,
-                                G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count,
+                                B_TYPE_BOOLEAN, FALSE);
 
   /* Selection-extending version */
   btk_binding_entry_add_signal (binding_set, keyval, modmask | BDK_SHIFT_MASK,
                                 "move-cursor", 3,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count,
-                                G_TYPE_BOOLEAN, TRUE);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count,
+                                B_TYPE_BOOLEAN, TRUE);
 }
 
 static void
 btk_text_view_class_init (BtkTextViewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (klass);
@@ -731,15 +731,15 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[MOVE_CURSOR] = 
     g_signal_new (I_("move-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class), 
+		  B_OBJECT_CLASS_TYPE (bobject_class), 
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 
 		  G_STRUCT_OFFSET (BtkTextViewClass, move_cursor),
 		  NULL, NULL, 
 		  _btk_marshal_VOID__ENUM_INT_BOOLEAN, 
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_MOVEMENT_STEP, 
-		  G_TYPE_INT, 
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_INT, 
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkTextView::page-horizontally:
@@ -758,14 +758,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PAGE_HORIZONTALLY] =
     g_signal_new (I_("page-horizontally"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, page_horizontally),
 		  NULL, NULL,
 		  _btk_marshal_VOID__INT_BOOLEAN,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_NONE, 2,
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN);
   
   /**
    * BtkTextView::move-viewport:
@@ -783,14 +783,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[MOVE_VIEWPORT] =
     g_signal_new_class_handler (I_("move-viewport"),
-                                G_OBJECT_CLASS_TYPE (bobject_class),
+                                B_OBJECT_CLASS_TYPE (bobject_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_move_viewport),
                                 NULL, NULL,
                                 _btk_marshal_VOID__ENUM_INT,
-                                G_TYPE_NONE, 2,
+                                B_TYPE_NONE, 2,
                                 BTK_TYPE_SCROLL_STEP,
-                                G_TYPE_INT);
+                                B_TYPE_INT);
 
   /**
    * BtkTextView::set-anchor:
@@ -806,12 +806,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */   
   signals[SET_ANCHOR] =
     g_signal_new (I_("set-anchor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, set_anchor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::insert-at-cursor:
@@ -827,13 +827,13 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[INSERT_AT_CURSOR] =
     g_signal_new (I_("insert-at-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, insert_at_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
 
   /**
    * BtkTextView::delete-from-cursor:
@@ -856,14 +856,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[DELETE_FROM_CURSOR] =
     g_signal_new (I_("delete-from-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, delete_from_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_DELETE_TYPE,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /**
    * BtkTextView::backspace:
@@ -878,12 +878,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[BACKSPACE] =
     g_signal_new (I_("backspace"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, backspace),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::cut-clipboard:
@@ -898,12 +898,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[CUT_CLIPBOARD] =
     g_signal_new (I_("cut-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, cut_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::copy-clipboard:
@@ -918,12 +918,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[COPY_CLIPBOARD] =
     g_signal_new (I_("copy-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, copy_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::paste-clipboard:
@@ -939,12 +939,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PASTE_CLIPBOARD] =
     g_signal_new (I_("paste-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, paste_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::toggle-overwrite:
@@ -958,12 +958,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */ 
   signals[TOGGLE_OVERWRITE] =
     g_signal_new (I_("toggle-overwrite"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, toggle_overwrite),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::set-scroll-adjustments
@@ -976,12 +976,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[SET_SCROLL_ADJUSTMENTS] =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, set_scroll_adjustments),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT,
 		  BTK_TYPE_ADJUSTMENT);
   widget_class->set_scroll_adjustments_signal = signals[SET_SCROLL_ADJUSTMENTS];
@@ -999,12 +999,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[POPULATE_POPUP] =
     g_signal_new (I_("populate-popup"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkTextViewClass, populate_popup),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU);
   
   /**
@@ -1022,12 +1022,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[SELECT_ALL] =
     g_signal_new_class_handler (I_("select-all"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_select_all),
                                 NULL, NULL,
                                 _btk_marshal_VOID__BOOLEAN,
-                                G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+                                B_TYPE_NONE, 1, B_TYPE_BOOLEAN);
 
   /**
    * BtkTextView::toggle-cursor-visible:
@@ -1041,12 +1041,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */ 
   signals[TOGGLE_CURSOR_VISIBLE] =
     g_signal_new_class_handler (I_("toggle-cursor-visible"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_toggle_cursor_visible),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::preedit-changed:
@@ -1064,13 +1064,13 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PREEDIT_CHANGED] =
     g_signal_new_class_handler (I_("preedit-changed"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 NULL,
                                 NULL, NULL,
                                 _btk_marshal_VOID__STRING,
-                                G_TYPE_NONE, 1,
-                                G_TYPE_STRING);
+                                B_TYPE_NONE, 1,
+                                B_TYPE_STRING);
 
   /*
    * Key bindings
@@ -1178,31 +1178,31 @@ btk_text_view_class_init (BtkTextViewClass *klass)
   /* Select all */
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
 				"select-all", 1,
-  				G_TYPE_BOOLEAN, TRUE);
+  				B_TYPE_BOOLEAN, TRUE);
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
 				"select-all", 1,
-  				G_TYPE_BOOLEAN, TRUE);
+  				B_TYPE_BOOLEAN, TRUE);
   
   /* Unselect all */
   btk_binding_entry_add_signal (binding_set, BDK_backslash, BDK_CONTROL_MASK,
 				 "select-all", 1,
-				 G_TYPE_BOOLEAN, FALSE);
+				 B_TYPE_BOOLEAN, FALSE);
 
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				 "select-all", 1,
-				 G_TYPE_BOOLEAN, FALSE);
+				 B_TYPE_BOOLEAN, FALSE);
 
   /* Deleting text */
   btk_binding_entry_add_signal (binding_set, BDK_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, 0,
 				"backspace", 0);
@@ -1213,33 +1213,33 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, -1);
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, -1);
 
   /* Cut/copy/paste */
 
@@ -1418,7 +1418,7 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
       GSList *tmp_list;
       GSList *copy;
 
-      copy = g_slist_copy (text_view->children);
+      copy = b_slist_copy (text_view->children);
       tmp_list = copy;
       while (tmp_list != NULL)
         {
@@ -1430,10 +1430,10 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
-      g_slist_free (copy);
+      b_slist_free (copy);
 
       g_signal_handlers_disconnect_by_func (text_view->buffer,
 					    btk_text_view_mark_set_handler,
@@ -1504,7 +1504,7 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
 	}
     }
 
-  g_object_notify (G_OBJECT (text_view), "buffer");
+  g_object_notify (B_OBJECT (text_view), "buffer");
   
   if (btk_widget_get_visible (BTK_WIDGET (text_view)))
     btk_widget_queue_draw (BTK_WIDGET (text_view));
@@ -2336,7 +2336,7 @@ btk_text_view_set_wrap_mode (BtkTextView *text_view,
         }
     }
 
-  g_object_notify (G_OBJECT (text_view), "wrap-mode");
+  g_object_notify (B_OBJECT (text_view), "wrap-mode");
 }
 
 /**
@@ -2393,7 +2393,7 @@ btk_text_view_set_editable (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "editable");
+      g_object_notify (B_OBJECT (text_view), "editable");
     }
 }
 
@@ -2438,7 +2438,7 @@ btk_text_view_set_pixels_above_lines (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-above-lines");
+      g_object_notify (B_OBJECT (text_view), "pixels-above-lines");
     }
 }
 
@@ -2483,7 +2483,7 @@ btk_text_view_set_pixels_below_lines (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-below-lines");
+      g_object_notify (B_OBJECT (text_view), "pixels-below-lines");
     }
 }
 
@@ -2528,7 +2528,7 @@ btk_text_view_set_pixels_inside_wrap (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-inside-wrap");
+      g_object_notify (B_OBJECT (text_view), "pixels-inside-wrap");
     }
 }
 
@@ -2573,7 +2573,7 @@ btk_text_view_set_justification (BtkTextView     *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "justification");
+      g_object_notify (B_OBJECT (text_view), "justification");
     }
 }
 
@@ -2618,7 +2618,7 @@ btk_text_view_set_left_margin (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "left-margin");
+      g_object_notify (B_OBJECT (text_view), "left-margin");
     }
 }
 
@@ -2663,7 +2663,7 @@ btk_text_view_set_right_margin (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "right-margin");
+      g_object_notify (B_OBJECT (text_view), "right-margin");
     }
 }
 
@@ -2708,7 +2708,7 @@ btk_text_view_set_indent (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "indent");
+      g_object_notify (B_OBJECT (text_view), "indent");
     }
 }
 
@@ -2761,7 +2761,7 @@ btk_text_view_set_tabs (BtkTextView   *text_view,
       btk_text_layout_default_style_changed (text_view->layout);
     }
 
-  g_object_notify (G_OBJECT (text_view), "tabs");
+  g_object_notify (B_OBJECT (text_view), "tabs");
 }
 
 /**
@@ -2820,7 +2820,7 @@ btk_text_view_set_cursor_visible (BtkTextView *text_view,
             }
         }
 
-      g_object_notify (G_OBJECT (text_view), "cursor-visible");
+      g_object_notify (B_OBJECT (text_view), "cursor-visible");
     }
 }
 
@@ -2915,7 +2915,7 @@ btk_text_view_destroy (BtkObject *object)
 }
 
 static void
-btk_text_view_finalize (GObject *object)
+btk_text_view_finalize (BObject *object)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -2957,14 +2957,14 @@ btk_text_view_finalize (GObject *object)
 
   g_free (priv->im_module);
 
-  G_OBJECT_CLASS (btk_text_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_view_parent_class)->finalize (object);
 }
 
 static void
-btk_text_view_set_property (GObject         *object,
+btk_text_view_set_property (BObject         *object,
 			    guint            prop_id,
-			    const GValue    *value,
-			    GParamSpec      *pspec)
+			    const BValue    *value,
+			    BParamSpec      *pspec)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -2975,79 +2975,79 @@ btk_text_view_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_PIXELS_ABOVE_LINES:
-      btk_text_view_set_pixels_above_lines (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_above_lines (text_view, b_value_get_int (value));
       break;
 
     case PROP_PIXELS_BELOW_LINES:
-      btk_text_view_set_pixels_below_lines (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_below_lines (text_view, b_value_get_int (value));
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
-      btk_text_view_set_pixels_inside_wrap (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_inside_wrap (text_view, b_value_get_int (value));
       break;
 
     case PROP_EDITABLE:
-      btk_text_view_set_editable (text_view, g_value_get_boolean (value));
+      btk_text_view_set_editable (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_WRAP_MODE:
-      btk_text_view_set_wrap_mode (text_view, g_value_get_enum (value));
+      btk_text_view_set_wrap_mode (text_view, b_value_get_enum (value));
       break;
       
     case PROP_JUSTIFICATION:
-      btk_text_view_set_justification (text_view, g_value_get_enum (value));
+      btk_text_view_set_justification (text_view, b_value_get_enum (value));
       break;
 
     case PROP_LEFT_MARGIN:
-      btk_text_view_set_left_margin (text_view, g_value_get_int (value));
+      btk_text_view_set_left_margin (text_view, b_value_get_int (value));
       break;
 
     case PROP_RIGHT_MARGIN:
-      btk_text_view_set_right_margin (text_view, g_value_get_int (value));
+      btk_text_view_set_right_margin (text_view, b_value_get_int (value));
       break;
 
     case PROP_INDENT:
-      btk_text_view_set_indent (text_view, g_value_get_int (value));
+      btk_text_view_set_indent (text_view, b_value_get_int (value));
       break;
 
     case PROP_TABS:
-      btk_text_view_set_tabs (text_view, g_value_get_boxed (value));
+      btk_text_view_set_tabs (text_view, b_value_get_boxed (value));
       break;
 
     case PROP_CURSOR_VISIBLE:
-      btk_text_view_set_cursor_visible (text_view, g_value_get_boolean (value));
+      btk_text_view_set_cursor_visible (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_OVERWRITE:
-      btk_text_view_set_overwrite (text_view, g_value_get_boolean (value));
+      btk_text_view_set_overwrite (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_BUFFER:
-      btk_text_view_set_buffer (text_view, BTK_TEXT_BUFFER (g_value_get_object (value)));
+      btk_text_view_set_buffer (text_view, BTK_TEXT_BUFFER (b_value_get_object (value)));
       break;
 
     case PROP_ACCEPTS_TAB:
-      btk_text_view_set_accepts_tab (text_view, g_value_get_boolean (value));
+      btk_text_view_set_accepts_tab (text_view, b_value_get_boolean (value));
       break;
       
     case PROP_IM_MODULE:
       g_free (priv->im_module);
-      priv->im_module = g_value_dup_string (value);
+      priv->im_module = b_value_dup_string (value);
       if (BTK_IS_IM_MULTICONTEXT (text_view->im_context))
         btk_im_multicontext_set_context_id (BTK_IM_MULTICONTEXT (text_view->im_context), priv->im_module);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_text_view_get_property (GObject         *object,
+btk_text_view_get_property (BObject         *object,
 			    guint            prop_id,
-			    GValue          *value,
-			    GParamSpec      *pspec)
+			    BValue          *value,
+			    BParamSpec      *pspec)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -3058,67 +3058,67 @@ btk_text_view_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_PIXELS_ABOVE_LINES:
-      g_value_set_int (value, text_view->pixels_above_lines);
+      b_value_set_int (value, text_view->pixels_above_lines);
       break;
 
     case PROP_PIXELS_BELOW_LINES:
-      g_value_set_int (value, text_view->pixels_below_lines);
+      b_value_set_int (value, text_view->pixels_below_lines);
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
-      g_value_set_int (value, text_view->pixels_inside_wrap);
+      b_value_set_int (value, text_view->pixels_inside_wrap);
       break;
 
     case PROP_EDITABLE:
-      g_value_set_boolean (value, text_view->editable);
+      b_value_set_boolean (value, text_view->editable);
       break;
       
     case PROP_WRAP_MODE:
-      g_value_set_enum (value, text_view->wrap_mode);
+      b_value_set_enum (value, text_view->wrap_mode);
       break;
 
     case PROP_JUSTIFICATION:
-      g_value_set_enum (value, text_view->justify);
+      b_value_set_enum (value, text_view->justify);
       break;
 
     case PROP_LEFT_MARGIN:
-      g_value_set_int (value, text_view->left_margin);
+      b_value_set_int (value, text_view->left_margin);
       break;
 
     case PROP_RIGHT_MARGIN:
-      g_value_set_int (value, text_view->right_margin);
+      b_value_set_int (value, text_view->right_margin);
       break;
 
     case PROP_INDENT:
-      g_value_set_int (value, text_view->indent);
+      b_value_set_int (value, text_view->indent);
       break;
 
     case PROP_TABS:
-      g_value_set_boxed (value, text_view->tabs);
+      b_value_set_boxed (value, text_view->tabs);
       break;
 
     case PROP_CURSOR_VISIBLE:
-      g_value_set_boolean (value, text_view->cursor_visible);
+      b_value_set_boolean (value, text_view->cursor_visible);
       break;
 
     case PROP_BUFFER:
-      g_value_set_object (value, get_buffer (text_view));
+      b_value_set_object (value, get_buffer (text_view));
       break;
 
     case PROP_OVERWRITE:
-      g_value_set_boolean (value, text_view->overwrite_mode);
+      b_value_set_boolean (value, text_view->overwrite_mode);
       break;
 
     case PROP_ACCEPTS_TAB:
-      g_value_set_boolean (value, text_view->accepts_tab);
+      b_value_set_boolean (value, text_view->accepts_tab);
       break;
       
     case PROP_IM_MODULE:
-      g_value_set_string (value, priv->im_module);
+      b_value_set_string (value, priv->im_module);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -3204,7 +3204,7 @@ btk_text_view_size_request (BtkWidget      *widget,
           btk_widget_size_request (child->widget, &child_req);
         }
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -3268,7 +3268,7 @@ btk_text_view_child_allocated (BtkTextLayout *layout,
    * window coordinates, then size_allocate the child.
    */
 
-  vc = g_object_get_data (G_OBJECT (child),
+  vc = g_object_get_data (B_OBJECT (child),
                           "btk-text-view-child");
 
   g_assert (vc != NULL);
@@ -3338,7 +3338,7 @@ btk_text_view_allocate_children (BtkTextView *text_view)
           btk_widget_size_allocate (child->widget, &allocation);          
         }
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -3800,7 +3800,7 @@ changed_handler (BtkTextLayout     *layout,
           if (child->anchor)
             btk_text_view_update_child_allocation (text_view, child);
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
@@ -4158,16 +4158,16 @@ emit_event_on_tags (BtkWidget   *widget,
     {
       BtkTextTag *tag = tmp->data;
 
-      if (btk_text_tag_event (tag, G_OBJECT (widget), event, iter))
+      if (btk_text_tag_event (tag, B_OBJECT (widget), event, iter))
         {
           retval = TRUE;
           break;
         }
 
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
 
-  g_slist_free (tags);
+  b_slist_free (tags);
 
   return retval;
 }
@@ -4784,12 +4784,12 @@ btk_text_view_remove (BtkContainer *container,
       if (vc->widget == child)
         break;
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   g_assert (iter != NULL); /* be sure we had the child in the list */
 
-  text_view->children = g_slist_remove (text_view->children, vc);
+  text_view->children = b_slist_remove (text_view->children, vc);
 
   btk_widget_unparent (vc->widget);
 
@@ -4811,7 +4811,7 @@ btk_text_view_forall (BtkContainer *container,
 
   text_view = BTK_TEXT_VIEW (container);
 
-  copy = g_slist_copy (text_view->children);
+  copy = b_slist_copy (text_view->children);
   iter = copy;
 
   while (iter != NULL)
@@ -4820,10 +4820,10 @@ btk_text_view_forall (BtkContainer *container,
 
       (* callback) (vc->widget, callback_data);
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
-  g_slist_free (copy);
+  b_slist_free (copy);
 }
 
 #define CURSOR_ON_MULTIPLIER 2
@@ -5878,7 +5878,7 @@ btk_text_view_toggle_overwrite (BtkTextView *text_view)
 
   btk_text_view_pend_cursor_blink (text_view);
 
-  g_object_notify (G_OBJECT (text_view), "overwrite");
+  g_object_notify (B_OBJECT (text_view), "overwrite");
 }
 
 /**
@@ -5945,7 +5945,7 @@ btk_text_view_set_accepts_tab (BtkTextView *text_view,
     {
       text_view->accepts_tab = accepts_tab;
 
-      g_object_notify (G_OBJECT (text_view), "accepts-tab");
+      g_object_notify (B_OBJECT (text_view), "accepts-tab");
     }
 }
 
@@ -6529,7 +6529,7 @@ btk_text_view_ensure_layout (BtkTextView *text_view)
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
       btk_text_view_invalidate (text_view);
@@ -6589,7 +6589,7 @@ btk_text_view_destroy_layout (BtkTextView *text_view)
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
       btk_text_view_stop_cursor_blink (text_view);
@@ -7400,7 +7400,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
           if (child->anchor)
             adjust_allocation (child->widget, dx, dy);
           
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
@@ -7626,7 +7626,7 @@ btk_text_view_mark_set_handler (BtkTextBuffer     *buffer,
 
 static void
 btk_text_view_target_list_notify (BtkTextBuffer    *buffer,
-                                  const GParamSpec *pspec,
+                                  const BParamSpec *pspec,
                                   gpointer          data)
 {
   BtkWidget     *widget = BTK_WIDGET (data);
@@ -7738,7 +7738,7 @@ static void
 activate_cb (BtkWidget   *menuitem,
 	     BtkTextView *text_view)
 {
-  const gchar *signal = g_object_get_data (G_OBJECT (menuitem), "btk-signal");
+  const gchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (text_view, signal);
 }
 
@@ -7751,7 +7751,7 @@ append_action_signal (BtkTextView  *text_view,
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (activate_cb), text_view);
 
@@ -8194,11 +8194,11 @@ text_window_realize (BtkTextWindow *win,
                                  &widget->style->bg[btk_widget_get_state (widget)]);
     }
 
-  g_object_set_qdata (G_OBJECT (win->window),
+  g_object_set_qdata (B_OBJECT (win->window),
                       g_quark_from_static_string ("btk-text-view-text-window"),
                       win);
 
-  g_object_set_qdata (G_OBJECT (win->bin_window),
+  g_object_set_qdata (B_OBJECT (win->bin_window),
                       g_quark_from_static_string ("btk-text-view-text-window"),
                       win);
 }
@@ -8484,7 +8484,7 @@ btk_text_view_get_window_type (BtkTextView *text_view,
   if (window == BTK_WIDGET (text_view)->window)
     return BTK_TEXT_WINDOW_WIDGET;
 
-  win = g_object_get_qdata (G_OBJECT (window),
+  win = g_object_get_qdata (B_OBJECT (window),
                             g_quark_try_string ("btk-text-view-text-window"));
 
   if (win)
@@ -8971,7 +8971,7 @@ text_view_child_new_anchored (BtkWidget          *child,
   g_object_ref (vc->widget);
   g_object_ref (vc->anchor);
 
-  g_object_set_data (G_OBJECT (child),
+  g_object_set_data (B_OBJECT (child),
                      I_("btk-text-view-child"),
                      vc);
 
@@ -9002,7 +9002,7 @@ text_view_child_new_window (BtkWidget          *child,
   vc->x = x;
   vc->y = y;
 
-  g_object_set_data (G_OBJECT (child),
+  g_object_set_data (B_OBJECT (child),
                      I_("btk-text-view-child"),
                      vc);
   
@@ -9012,7 +9012,7 @@ text_view_child_new_window (BtkWidget          *child,
 static void
 text_view_child_free (BtkTextViewChild *child)
 {
-  g_object_set_data (G_OBJECT (child->widget),
+  g_object_set_data (B_OBJECT (child->widget),
                      I_("btk-text-view-child"), NULL);
 
   if (child->anchor)
@@ -9047,7 +9047,7 @@ static void
 add_child (BtkTextView      *text_view,
            BtkTextViewChild *vc)
 {
-  text_view->children = g_slist_prepend (text_view->children,
+  text_view->children = b_slist_prepend (text_view->children,
                                          vc);
 
   if (btk_widget_get_realized (BTK_WIDGET (text_view)))
@@ -9155,7 +9155,7 @@ btk_text_view_move_child (BtkTextView *text_view,
   g_return_if_fail (BTK_IS_WIDGET (child));
   g_return_if_fail (child->parent == (BtkWidget*) text_view);
 
-  vc = g_object_get_data (G_OBJECT (child),
+  vc = g_object_get_data (B_OBJECT (child),
                           "btk-text-view-child");
 
   g_assert (vc != NULL);

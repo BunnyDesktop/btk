@@ -1996,7 +1996,7 @@ btk_file_chooser_get_uris (<em class="parameter"><code><a class="link" href="Btk
 <a name="btk-file-chooser-get-uris.returns"></a><h4>Returns</h4>
 <p>a <span class="type">GSList</span> containing the URIs of all selected
 files and subfolders in the current folder. Free the returned list
-with <code class="function">g_slist_free()</code>, and the filenames with <code class="function">g_free()</code>. </p>
+with <code class="function">b_slist_free()</code>, and the filenames with <code class="function">g_free()</code>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
@@ -2470,7 +2470,7 @@ btk_file_chooser_list_filters (<em class="parameter"><code><a class="link" href=
 <p>a
 <span class="type">GSList</span> containing the current set of user selectable filters. The
 contents of the list are owned by BTK+, but you must free the list
-itself with <code class="function">g_slist_free()</code> when you are done with it. </p>
+itself with <code class="function">b_slist_free()</code> when you are done with it. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> BtkFileFilter][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
@@ -2658,7 +2658,7 @@ btk_file_chooser_list_shortcut_folder_uris
 <a name="btk-file-chooser-list-shortcut-folder-uris.returns"></a><h4>Returns</h4>
 <p>A list of folder
 URIs, or <code class="literal">NULL</code> if there are no shortcut folders.  Free the returned
-list with <code class="function">g_slist_free()</code>, and the URIs with <code class="function">g_free()</code>. </p>
+list with <code class="function">b_slist_free()</code>, and the URIs with <code class="function">g_free()</code>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
@@ -2754,7 +2754,7 @@ as <span class="type">GFile</span>. An internal function, see <a class="link" hr
 <a name="btk-file-chooser-get-files.returns"></a><h4>Returns</h4>
 <p>a <span class="type">GSList</span>
 containing a <span class="type">GFile</span> for each selected file and subfolder in the
-current folder.  Free the returned list with <code class="function">g_slist_free()</code>, and
+current folder.  Free the returned list with <code class="function">b_slist_free()</code>, and
 the files with <code class="function">g_object_unref()</code>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GFile][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -3397,7 +3397,7 @@ folder cannot be represented as local filenames they will be ignored. (See
 <a name="btk-file-chooser-get-filenames.returns"></a><h4>Returns</h4>
 <p>a <span class="type">GSList</span>
 containing the filenames of all selected files and subfolders in
-the current folder. Free the returned list with <code class="function">g_slist_free()</code>,
+the current folder. Free the returned list with <code class="function">b_slist_free()</code>,
 and the filenames with <code class="function">g_free()</code>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> filename][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
@@ -3626,7 +3626,7 @@ will be set as appropriate.</p>
 <a name="btk-file-chooser-list-shortcut-folders.returns"></a><h4>Returns</h4>
 <p>A list of
 folder filenames, or <code class="literal">NULL</code> if there are no shortcut folders.  Free
-the returned list with <code class="function">g_slist_free()</code>, and the filenames with
+the returned list with <code class="function">b_slist_free()</code>, and the filenames with
 <code class="function">g_free()</code>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> filename][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>

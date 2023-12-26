@@ -149,7 +149,7 @@ bdk_pixmap_impl_quartz_get_context (BdkDrawable *drawable,
 }
 
 static void
-bdk_pixmap_impl_quartz_finalize (GObject *object)
+bdk_pixmap_impl_quartz_finalize (BObject *object)
 {
   BdkPixmapImplQuartz *impl = BDK_PIXMAP_IMPL_QUARTZ (object);
 
@@ -157,13 +157,13 @@ bdk_pixmap_impl_quartz_finalize (GObject *object)
 
   _bdk_quartz_drawable_finish (BDK_DRAWABLE (impl));
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_pixmap_impl_quartz_class_init (BdkPixmapImplQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   BdkDrawableImplQuartzClass *drawable_quartz_class = BDK_DRAWABLE_IMPL_QUARTZ_CLASS (klass);
   

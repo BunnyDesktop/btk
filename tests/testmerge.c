@@ -56,7 +56,7 @@ dump_accels (void)
 static void
 print_toplevel (BtkWidget *widget, gpointer user_data)
 {
-  g_print ("%s\n", G_OBJECT_TYPE_NAME (widget));
+  g_print ("%s\n", B_OBJECT_TYPE_NAME (widget));
 }
 
 static void
@@ -70,8 +70,8 @@ dump_toplevels (BtkWidget    *button,
 					    BTK_UI_MANAGER_TOOLBAR |
 					    BTK_UI_MANAGER_POPUP);
 
-  g_slist_foreach (toplevels, (GFunc) print_toplevel, NULL);
-  g_slist_free (toplevels);
+  b_slist_foreach (toplevels, (GFunc) print_toplevel, NULL);
+  b_slist_free (toplevels);
 }
 
 static void
@@ -147,7 +147,7 @@ static void
 activate_action (BtkAction *action)
 {
   const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const gchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("Action %s (type=%s) activated", name, typename);
 }
@@ -156,7 +156,7 @@ static void
 toggle_action (BtkAction *action)
 {
   const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const gchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("ToggleAction %s (type=%s) toggled (active=%d)", name, typename,
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (action)));
@@ -168,7 +168,7 @@ radio_action_changed (BtkAction *action, BtkRadioAction *current)
 {
   g_message ("RadioAction %s (type=%s) activated (active=%d) (value %d)", 
 	     btk_action_get_name (BTK_ACTION (current)), 
-	     G_OBJECT_TYPE_NAME (BTK_ACTION (current)),
+	     B_OBJECT_TYPE_NAME (BTK_ACTION (current)),
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current)),
 	     btk_radio_action_get_current_value (current));
 }
@@ -246,7 +246,7 @@ toggle_merge (BtkWidget    *button,
 {
   gint mergenum;
 
-  mergenum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "mergenum"));
+  mergenum = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (button), "mergenum"));
 
   if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
@@ -374,15 +374,15 @@ iter_compare_func (BtkTreeModel *model,
 		   BtkTreeIter  *b,
 		   gpointer      user_data)
 {
-  GValue a_value = { 0, }, b_value = { 0, };
+  BValue a_value = { 0, }, b_value = { 0, };
   BtkAction *a_action, *b_action;
   const gchar *a_name, *b_name;
   gint retval = 0;
 
   btk_tree_model_get_value (model, a, 0, &a_value);
   btk_tree_model_get_value (model, b, 0, &b_value);
-  a_action = BTK_ACTION (g_value_get_object (&a_value));
-  b_action = BTK_ACTION (g_value_get_object (&b_value));
+  a_action = BTK_ACTION (b_value_get_object (&a_value));
+  b_action = BTK_ACTION (b_value_get_object (&b_value));
 
   a_name = btk_action_get_name (a_action);
   b_name = btk_action_get_name (b_action);
@@ -395,8 +395,8 @@ iter_compare_func (BtkTreeModel *model,
   else 
     retval = strcmp (a_name, b_name);
 
-  g_value_unset (&b_value);
-  g_value_unset (&a_value);
+  b_value_unset (&b_value);
+  b_value_unset (&a_value);
 
   return retval;
 }
@@ -525,7 +525,7 @@ set_tip (BtkWidget *widget)
   ActionStatus *data;
   gchar *tooltip;
   
-  data = g_object_get_data (G_OBJECT (widget), "action-status");
+  data = g_object_get_data (B_OBJECT (widget), "action-status");
   
   if (data) 
     {
@@ -543,7 +543,7 @@ unset_tip (BtkWidget *widget)
 {
   ActionStatus *data;
 
-  data = g_object_get_data (G_OBJECT (widget), "action-status");
+  data = g_object_get_data (B_OBJECT (widget), "action-status");
 
   if (data)
     btk_statusbar_pop (BTK_STATUSBAR (data->statusbar), 0);
@@ -559,7 +559,7 @@ connect_proxy (BtkUIManager *merge,
     {
       ActionStatus *data;
 
-      data = g_object_get_data (G_OBJECT (proxy), "action-status");
+      data = g_object_get_data (B_OBJECT (proxy), "action-status");
       if (data)
 	{
 	  g_object_unref (data->action);
@@ -575,7 +575,7 @@ connect_proxy (BtkUIManager *merge,
 	  data->action = g_object_ref (action);
 	  data->statusbar = g_object_ref (statusbar);
 
-	  g_object_set_data_full (G_OBJECT (proxy), "action-status", 
+	  g_object_set_data_full (B_OBJECT (proxy), "action-status", 
 				  data, action_status_destroy);
 	  
 	  g_signal_connect (proxy, "select",  G_CALLBACK (set_tip), NULL);
@@ -674,7 +674,7 @@ main (int argc, char **argv)
   for (i = 0; i < G_N_ELEMENTS (merge_ids); i++)
     {
       button = btk_check_button_new_with_label (merge_ids[i].filename);
-      g_object_set_data (G_OBJECT (button), "mergenum", GINT_TO_POINTER (i));
+      g_object_set_data (B_OBJECT (button), "mergenum", GINT_TO_POINTER (i));
       g_signal_connect (button, "toggled", G_CALLBACK (toggle_merge), merge);
       btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (button), TRUE);
@@ -722,7 +722,7 @@ main (int argc, char **argv)
       {
 	BtkAction *a = action->data;
 	g_print ("  action %s ref count %d\n", 
-		 btk_action_get_name (a), G_OBJECT (a)->ref_count);
+		 btk_action_get_name (a), B_OBJECT (a)->ref_count);
       }
   }
 #endif
@@ -740,7 +740,7 @@ main (int argc, char **argv)
       {
 	BtkAction *a = action->data;
 	g_print ("  action %s ref count %d\n", 
-		 btk_action_get_name (a), G_OBJECT (a)->ref_count);
+		 btk_action_get_name (a), B_OBJECT (a)->ref_count);
       }
   }
 #endif

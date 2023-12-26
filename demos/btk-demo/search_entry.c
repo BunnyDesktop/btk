@@ -174,7 +174,7 @@ icon_press_cb (BtkEntry       *entry,
 
 static void
 text_changed_cb (BtkEntry   *entry,
-                 GParamSpec *pspec,
+                 BParamSpec *pspec,
                  BtkWidget  *button)
 {
   gboolean has_text;

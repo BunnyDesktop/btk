@@ -54,7 +54,7 @@
       simple:
     </para>
       <informalexample><programlisting><![CDATA[
-BtkListStore *store = btk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+BtkListStore *store = btk_list_store_new (2, B_TYPE_STRING, B_TYPE_BOOLEAN);
 ]]></programlisting></informalexample>
     <para>
       This creates a list store with two columns: a string column and a boolean
@@ -74,9 +74,9 @@ enum
 };
 
 BtkTreeStore *store = btk_tree_store_new (N_COLUMNS,       /* Total number of columns */
-                                          G_TYPE_STRING,   /* Book title              */
-                                          G_TYPE_STRING,   /* Author                  */
-                                          G_TYPE_BOOLEAN); /* Is checked out?         */
+                                          B_TYPE_STRING,   /* Book title              */
+                                          B_TYPE_STRING,   /* Author                  */
+                                          B_TYPE_BOOLEAN); /* Is checked out?         */
 ]]></programlisting></informalexample>
     <para>
       Adding data to the model is done using btk_tree_store_set() or 
@@ -210,7 +210,7 @@ BtkTreeSelection *select;
 
 select = btk_tree_view_get_selection (BTK_TREE_VIEW (tree));
 btk_tree_selection_set_mode (select, BTK_SELECTION_SINGLE);
-g_signal_connect (G_OBJECT (select), "changed",
+g_signal_connect (B_OBJECT (select), "changed",
                   G_CALLBACK (tree_selection_changed_cb),
                   NULL);
 ]]></programlisting></informalexample>
@@ -266,9 +266,9 @@ setup_tree (void)
    /* Create a model.  We are using the store model for now, though we
     * could use any other BtkTreeModel */
    store = btk_tree_store_new (N_COLUMNS,
-                               G_TYPE_STRING,
-                               G_TYPE_STRING,
-                               G_TYPE_BOOLEAN);
+                               B_TYPE_STRING,
+                               B_TYPE_STRING,
+                               B_TYPE_BOOLEAN);
 
    /* custom function to fill the model with data */
    populate_tree_model (store);
@@ -278,12 +278,12 @@ setup_tree (void)
 
    /* The view now holds a reference.  We can get rid of our own
     * reference */
-   g_object_unref (G_OBJECT (store));
+   g_object_unref (B_OBJECT (store));
 
    /* Create a cell render and arbitrarily make it red for demonstration
     * purposes */
    renderer = btk_cell_renderer_text_new (<!-- -->);
-   g_object_set (G_OBJECT (renderer),
+   g_object_set (B_OBJECT (renderer),
                  "foreground", "red",
                  NULL);
 

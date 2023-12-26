@@ -26,7 +26,7 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static void btk_tree_selection_finalize          (GObject               *object);
+static void btk_tree_selection_finalize          (BObject               *object);
 static gint btk_tree_selection_real_select_all   (BtkTreeSelection      *selection);
 static gint btk_tree_selection_real_unselect_all (BtkTreeSelection      *selection);
 static gint btk_tree_selection_real_select_node  (BtkTreeSelection      *selection,
@@ -42,26 +42,26 @@ enum
 
 static guint tree_selection_signals [LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BtkTreeSelection, btk_tree_selection, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTreeSelection, btk_tree_selection, B_TYPE_OBJECT)
 
 static void
 btk_tree_selection_class_init (BtkTreeSelectionClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
 
   object_class->finalize = btk_tree_selection_finalize;
   class->changed = NULL;
 
   tree_selection_signals[CHANGED] =
     g_signal_new (I_("changed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkTreeSelectionClass, changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -71,7 +71,7 @@ btk_tree_selection_init (BtkTreeSelection *selection)
 }
 
 static void
-btk_tree_selection_finalize (GObject *object)
+btk_tree_selection_finalize (BObject *object)
 {
   BtkTreeSelection *selection = BTK_TREE_SELECTION (object);
 
@@ -84,7 +84,7 @@ btk_tree_selection_finalize (GObject *object)
     }
 
   /* chain parent_class' handler */
-  G_OBJECT_CLASS (btk_tree_selection_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tree_selection_parent_class)->finalize (object);
 }
 
 /**
@@ -1167,7 +1167,7 @@ btk_tree_selection_real_modify_range (BtkTreeSelection *selection,
 	btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
       selection->tree_view->priv->anchor =
-	btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view),
+	btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view),
 	                                  selection->tree_view->priv->model,
 					  anchor_path);
     }
@@ -1348,7 +1348,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 		  if (btk_tree_selection_real_select_node (selection, tree, node, TRUE))
 		    {
 		      selection->tree_view->priv->anchor =
-			btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+			btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 		    }
 		}
 	    }
@@ -1361,7 +1361,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 		    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 		  selection->tree_view->priv->anchor =
-		    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+		    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 		}
 	    }
 	}
@@ -1375,7 +1375,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 	  dirty = btk_tree_selection_real_select_node (selection, tree, node, TRUE);
 	}
       else if ((mode & (BTK_TREE_SELECT_MODE_EXTEND | BTK_TREE_SELECT_MODE_TOGGLE)) == (BTK_TREE_SELECT_MODE_EXTEND | BTK_TREE_SELECT_MODE_TOGGLE))
@@ -1391,7 +1391,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 
 	  if ((flags & BTK_RBNODE_IS_SELECTED) == BTK_RBNODE_IS_SELECTED)
 	    dirty |= btk_tree_selection_real_select_node (selection, tree, node, FALSE);
@@ -1414,7 +1414,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 
 	  dirty |= btk_tree_selection_real_select_node (selection, tree, node, TRUE);
 	}

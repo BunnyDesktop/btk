@@ -545,7 +545,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkSettings.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkSettings
 </pre>
 </div>
@@ -605,22 +605,22 @@ btk_settings_get_for_screen (<em class="parameter"><code><a href="../html/BdkScr
 <div class="refsect2">
 <a name="btk-settings-install-property"></a><h3>btk_settings_install_property ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_settings_install_property (<em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+btk_settings_install_property (<em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-settings-install-property-parser"></a><h3>btk_settings_install_property_parser ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_settings_install_property_parser (<em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
+btk_settings_install_property_parser (<em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>,
                                       <em class="parameter"><code><a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> parser</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-rc-property-parse-color"></a><h3>btk_rc_property_parse_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_rc_property_parse_color (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+btk_rc_property_parse_color (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                              <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
-                             <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 <p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
 or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a
 color given either by its name or in the form 
@@ -638,7 +638,7 @@ between 0 and 1.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_description"><p>a <span class="type">BParamSpec</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -648,7 +648,7 @@ between 0 and 1.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>property_value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> values.</p></td>
+<td class="parameter_description"><p>a <span class="type">BValue</span> which must hold <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> values.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -665,9 +665,9 @@ has been set to the resulting <a href="../html/bdk2-Colormaps-and-Colors.html#Bd
 <div class="refsect2">
 <a name="btk-rc-property-parse-enum"></a><h3>btk_rc_property_parse_enum ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_rc_property_parse_enum (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+btk_rc_property_parse_enum (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                             <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
-                            <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 <p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
 or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a single
 enumeration value.</p>
@@ -685,7 +685,7 @@ may be surrounded by parentheses.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_description"><p>a <span class="type">BParamSpec</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -695,7 +695,7 @@ may be surrounded by parentheses.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>property_value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold enum values.</p></td>
+<td class="parameter_description"><p>a <span class="type">BValue</span> which must hold enum values.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -712,9 +712,9 @@ has been set to the resulting <span class="type">GEnumValue</span>.</p>
 <div class="refsect2">
 <a name="btk-rc-property-parse-flags"></a><h3>btk_rc_property_parse_flags ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_rc_property_parse_flags (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+btk_rc_property_parse_flags (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                              <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
-                             <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 <p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
 or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses flags. </p>
 <p>Flags can be specified by their name, their nickname or
@@ -731,7 +731,7 @@ numerically. Multiple flags can be specified in the form
 <tbody>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_description"><p>a <span class="type">BParamSpec</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -741,7 +741,7 @@ numerically. Multiple flags can be specified in the form
 </tr>
 <tr>
 <td class="parameter_name"><p>property_value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold flags values.</p></td>
+<td class="parameter_description"><p>a <span class="type">BValue</span> which must hold flags values.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -758,9 +758,9 @@ has been set to the resulting flags value.</p>
 <div class="refsect2">
 <a name="btk-rc-property-parse-requisition"></a><h3>btk_rc_property_parse_requisition ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_rc_property_parse_requisition (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+btk_rc_property_parse_requisition (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                                    <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
-                                   <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 <p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
 or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a
 requisition in the form 
@@ -776,7 +776,7 @@ requisition in the form
 <tbody>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_description"><p>a <span class="type">BParamSpec</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -786,7 +786,7 @@ requisition in the form
 </tr>
 <tr>
 <td class="parameter_name"><p>property_value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold boxed values.</p></td>
+<td class="parameter_description"><p>a <span class="type">BValue</span> which must hold boxed values.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -803,9 +803,9 @@ has been set to the resulting <a class="link" href="BtkWidget.html#BtkRequisitio
 <div class="refsect2">
 <a name="btk-rc-property-parse-border"></a><h3>btk_rc_property_parse_border ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_rc_property_parse_border (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+btk_rc_property_parse_border (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                               <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
-                              <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
 <p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
 or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses
 borders in the form 
@@ -822,7 +822,7 @@ borders in the form
 <tbody>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_description"><p>a <span class="type">BParamSpec</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -832,7 +832,7 @@ borders in the form
 </tr>
 <tr>
 <td class="parameter_name"><p>property_value</p></td>
-<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold boxed values.</p></td>
+<td class="parameter_description"><p>a <span class="type">BValue</span> which must hold boxed values.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -899,7 +899,7 @@ btk_settings_set_double_property (<em class="parameter"><code><a class="link" hr
   /* valid types are LONG, DOUBLE and STRING corresponding to the token parsed,
    * or a GSTRING holding an unparsed statement
    */
-  GValue value;
+  BValue value;
 };
 </pre>
 </div>

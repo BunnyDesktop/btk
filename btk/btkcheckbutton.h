@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CHECK_BUTTON                  (btk_check_button_get_type ())
-#define BTK_CHECK_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButton))
-#define BTK_CHECK_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
-#define BTK_IS_CHECK_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CHECK_BUTTON))
-#define BTK_IS_CHECK_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CHECK_BUTTON))
-#define BTK_CHECK_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
+#define BTK_CHECK_BUTTON(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButton))
+#define BTK_CHECK_BUTTON_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
+#define BTK_IS_CHECK_BUTTON(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CHECK_BUTTON))
+#define BTK_IS_CHECK_BUTTON_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CHECK_BUTTON))
+#define BTK_CHECK_BUTTON_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
 
 
 typedef struct _BtkCheckButton       BtkCheckButton;

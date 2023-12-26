@@ -29,8 +29,8 @@ static void      bail_check_sub_menu_item_init              (BailCheckSubMenuIte
 
 static void      bail_check_sub_menu_item_toggled_btk       (BtkWidget              *widget);
 
-static void      bail_check_sub_menu_item_real_notify_btk   (GObject                *obj,
-                                                             GParamSpec             *pspec);
+static void      bail_check_sub_menu_item_real_notify_btk   (BObject                *obj,
+                                                             BParamSpec             *pspec);
 
 static void      bail_check_sub_menu_item_real_initialize   (BatkObject              *obj,
                                                              gpointer               data);
@@ -60,7 +60,7 @@ bail_check_sub_menu_item_init (BailCheckSubMenuItem *item)
 BatkObject* 
 bail_check_sub_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_CHECK_MENU_ITEM (widget), NULL);
@@ -128,8 +128,8 @@ bail_check_sub_menu_item_ref_state_set (BatkObject *accessible)
 }
 
 static void
-bail_check_sub_menu_item_real_notify_btk (GObject           *obj,
-                                          GParamSpec        *pspec)
+bail_check_sub_menu_item_real_notify_btk (BObject           *obj,
+                                          BParamSpec        *pspec)
 {
   BtkCheckMenuItem *check_menu_item = BTK_CHECK_MENU_ITEM (obj);
   BatkObject *batk_obj;

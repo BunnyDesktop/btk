@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PROGRESS_BAR            (btk_progress_bar_get_type ())
-#define BTK_PROGRESS_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS_BAR, BtkProgressBar))
-#define BTK_PROGRESS_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS_BAR, BtkProgressBarClass))
-#define BTK_IS_PROGRESS_BAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS_BAR))
-#define BTK_IS_PROGRESS_BAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS_BAR))
-#define BTK_PROGRESS_BAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS_BAR, BtkProgressBarClass))
+#define BTK_PROGRESS_BAR(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS_BAR, BtkProgressBar))
+#define BTK_PROGRESS_BAR_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS_BAR, BtkProgressBarClass))
+#define BTK_IS_PROGRESS_BAR(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS_BAR))
+#define BTK_IS_PROGRESS_BAR_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS_BAR))
+#define BTK_PROGRESS_BAR_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS_BAR, BtkProgressBarClass))
 
 
 typedef struct _BtkProgressBar       BtkProgressBar;

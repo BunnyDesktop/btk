@@ -67,7 +67,7 @@ typedef struct _ViewColumnModelClass ViewColumnModelClass;
 
 struct _ViewColumnModel
 {
-  GObject parent;
+  BObject parent;
   BtkTreeView *view;
   GList *columns;
   gint stamp;
@@ -75,7 +75,7 @@ struct _ViewColumnModel
 
 struct _ViewColumnModelClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 static void view_column_model_init (ViewColumnModel *model)
@@ -96,11 +96,11 @@ view_column_model_get_column_type (BtkTreeModel *tree_model,
   switch (index)
     {
     case 0:
-      return G_TYPE_STRING;
+      return B_TYPE_STRING;
     case 1:
       return BTK_TYPE_TREE_VIEW_COLUMN;
     default:
-      return G_TYPE_INVALID;
+      return B_TYPE_INVALID;
     }
 }
 
@@ -157,7 +157,7 @@ static void
 view_column_model_get_value (BtkTreeModel *tree_model,
 			     BtkTreeIter  *iter,
 			     gint          column,
-			     GValue       *value)
+			     BValue       *value)
 {
   ViewColumnModel *view_model = (ViewColumnModel *)tree_model;
 
@@ -167,13 +167,13 @@ view_column_model_get_value (BtkTreeModel *tree_model,
 
   if (column == 0)
     {
-      g_value_init (value, G_TYPE_STRING);
-      g_value_set_string (value, btk_tree_view_column_get_title (BTK_TREE_VIEW_COLUMN (((GList *)iter->user_data)->data)));
+      b_value_init (value, B_TYPE_STRING);
+      b_value_set_string (value, btk_tree_view_column_get_title (BTK_TREE_VIEW_COLUMN (((GList *)iter->user_data)->data)));
     }
   else
     {
-      g_value_init (value, BTK_TYPE_TREE_VIEW_COLUMN);
-      g_value_set_object (value, ((GList *)iter->user_data)->data);
+      b_value_init (value, BTK_TYPE_TREE_VIEW_COLUMN);
+      b_value_set_object (value, ((GList *)iter->user_data)->data);
     }
 }
 
@@ -408,7 +408,7 @@ view_column_model_get_type (void)
 	NULL
       };
 
-      view_column_model_type = g_type_register_static (G_TYPE_OBJECT, "ViewModelColumn", &view_column_model_info, 0);
+      view_column_model_type = g_type_register_static (B_TYPE_OBJECT, "ViewModelColumn", &view_column_model_info, 0);
       g_type_add_interface_static (view_column_model_type,
 				   BTK_TYPE_TREE_MODEL,
 				   &tree_model_info);
@@ -557,7 +557,7 @@ add_clicked (BtkWidget *button, gpointer data)
 
   cell = btk_cell_renderer_text_new ();
   column = btk_tree_view_column_new_with_attributes (label, cell, "text", 0, NULL);
-  g_object_set_data_full (G_OBJECT (column), column_data, label, g_free);
+  g_object_set_data_full (B_OBJECT (column), column_data, label, g_free);
   btk_tree_view_column_set_reorderable (column, TRUE);
   btk_tree_view_column_set_sizing (column, BTK_TREE_VIEW_COLUMN_GROW_ONLY);
   btk_tree_view_column_set_resizable (column, TRUE);
@@ -771,8 +771,8 @@ main (int argc, char *argv[])
   btk_init (&argc, &argv);
 
   /* First initialize all the models for signal purposes */
-  left_tree_model = (BtkTreeModel *) btk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
-  sample_model = (BtkTreeModel *) btk_list_store_new (1, G_TYPE_STRING);
+  left_tree_model = (BtkTreeModel *) btk_list_store_new (2, B_TYPE_STRING, B_TYPE_POINTER);
+  sample_model = (BtkTreeModel *) btk_list_store_new (1, B_TYPE_STRING);
   sample_tree_view_top = btk_tree_view_new_with_model (sample_model);
   sample_tree_view_bottom = btk_tree_view_new_with_model (sample_model);
   top_right_tree_model = (BtkTreeModel *) view_column_model_new (BTK_TREE_VIEW (sample_tree_view_top));

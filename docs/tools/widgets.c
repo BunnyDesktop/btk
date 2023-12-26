@@ -287,7 +287,7 @@ create_combo_box_entry (void)
 		       "}\n"
 		       "widget_class \"BtkComboBoxEntry\" style \"combo-box-entry-style\"\n" );
 
-  model = (BtkTreeModel *)btk_list_store_new (1, G_TYPE_STRING);
+  model = (BtkTreeModel *)btk_list_store_new (1, B_TYPE_STRING);
   widget = g_object_new (BTK_TYPE_COMBO_BOX,
 			 "has-entry", TRUE,
 			 "model", model,
@@ -371,7 +371,7 @@ create_tree_view (void)
 
   widget = btk_frame_new (NULL);
   btk_frame_set_shadow_type (BTK_FRAME (widget), BTK_SHADOW_IN);
-  list_store = btk_list_store_new (1, G_TYPE_STRING);
+  list_store = btk_list_store_new (1, B_TYPE_STRING);
   btk_list_store_append (list_store, &iter);
   btk_list_store_set (list_store, &iter, 0, "Line One", -1);
   btk_list_store_append (list_store, &iter);
@@ -406,7 +406,7 @@ create_icon_view (void)
 
   widget = btk_frame_new (NULL);
   btk_frame_set_shadow_type (BTK_FRAME (widget), BTK_SHADOW_IN);
-  list_store = btk_list_store_new (2, G_TYPE_STRING, BDK_TYPE_PIXBUF);
+  list_store = btk_list_store_new (2, B_TYPE_STRING, BDK_TYPE_PIXBUF);
   btk_list_store_append (list_store, &iter);
   pixbuf = bdk_pixbuf_new_from_file ("folder.png", NULL);
   btk_list_store_set (list_store, &iter, 0, "One", 1, pixbuf, -1);

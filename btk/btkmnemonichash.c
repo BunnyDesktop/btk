@@ -52,7 +52,7 @@ mnemonic_hash_free_foreach (gpointer	key,
 	     name, targets->data);
   g_free (name);
   
-  g_slist_free (targets);
+  b_slist_free (targets);
 }
 
 void
@@ -77,9 +77,9 @@ _btk_mnemonic_hash_add (BtkMnemonicHash *mnemonic_hash,
   g_return_if_fail (BTK_IS_WIDGET (target));
   
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
-  g_return_if_fail (g_slist_find (targets, target) == NULL);
+  g_return_if_fail (b_slist_find (targets, target) == NULL);
 
-  new_targets = g_slist_append (targets, target);
+  new_targets = b_slist_append (targets, target);
   if (new_targets != targets)
     g_hash_table_insert (mnemonic_hash->hash, key, new_targets);
 }
@@ -96,9 +96,9 @@ _btk_mnemonic_hash_remove (BtkMnemonicHash *mnemonic_hash,
   
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
 
-  g_return_if_fail (targets && g_slist_find (targets, target) != NULL);
+  g_return_if_fail (targets && b_slist_find (targets, target) != NULL);
 
-  new_targets = g_slist_remove (targets, target);
+  new_targets = b_slist_remove (targets, target);
   if (new_targets != targets)
     {
       if (new_targets == NULL)
@@ -147,8 +147,8 @@ _btk_mnemonic_hash_activate (BtkMnemonicHash *mnemonic_hash,
       /* For round robin we put the activated entry on
        * the end of the list after activation
        */
-      targets = g_slist_remove (targets, chosen_widget);
-      targets = g_slist_append (targets, chosen_widget);
+      targets = b_slist_remove (targets, chosen_widget);
+      targets = b_slist_append (targets, chosen_widget);
       g_hash_table_insert (mnemonic_hash->hash,
 			   GUINT_TO_POINTER (keyval),
 			   targets);

@@ -116,25 +116,25 @@ static gint         btk_combo_window_key_press   (BtkWidget        *window,
 						  BtkCombo         *combo);
 static void         btk_combo_size_allocate      (BtkWidget        *widget,
 						  BtkAllocation   *allocation);
-static void         btk_combo_set_property       (GObject         *object,
+static void         btk_combo_set_property       (BObject         *object,
 						  guint            prop_id,
-						  const GValue    *value,
-						  GParamSpec      *pspec);
-static void         btk_combo_get_property       (GObject         *object,
+						  const BValue    *value,
+						  BParamSpec      *pspec);
+static void         btk_combo_get_property       (BObject         *object,
 						  guint            prop_id,
-						  GValue          *value,
-						  GParamSpec      *pspec);
+						  BValue          *value,
+						  BParamSpec      *pspec);
 
 G_DEFINE_TYPE (BtkCombo, btk_combo, BTK_TYPE_HBOX)
 
 static void
 btk_combo_class_init (BtkComboClass * klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *oclass;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass *) klass;
+  bobject_class = (BObjectClass *) klass;
   oclass = (BtkObjectClass *) klass;
   widget_class = (BtkWidgetClass *) klass;
 
@@ -368,7 +368,7 @@ btk_combo_func (BtkListItem * li)
   BtkWidget *label;
   gchar *ltext = NULL;
 
-  ltext = g_object_get_data (G_OBJECT (li), I_(btk_combo_string_key));
+  ltext = g_object_get_data (B_OBJECT (li), I_(btk_combo_string_key));
   if (!ltext)
     {
       label = BTK_BIN (li)->child;
@@ -414,7 +414,7 @@ btk_combo_entry_focus_out (BtkEntry * entry, BdkEventFocus * event, BtkCombo * c
       focus_idle = g_idle_source_new ();
       g_source_set_closure (focus_idle,
 			    g_cclosure_new_object (G_CALLBACK (btk_combo_focus_idle),
-						   G_OBJECT (combo)));
+						   B_OBJECT (combo)));
       g_source_attach (focus_idle, NULL);
 	g_source_unref (focus_idle);
       
@@ -1041,18 +1041,18 @@ btk_combo_set_value_in_list (BtkCombo * combo, gboolean val, gboolean ok_if_empt
   val = val != FALSE;
   ok_if_empty = ok_if_empty != FALSE;
 
-  g_object_freeze_notify (G_OBJECT (combo));
+  g_object_freeze_notify (B_OBJECT (combo));
   if (combo->value_in_list != val)
     {
        combo->value_in_list = val;
-  g_object_notify (G_OBJECT (combo), "value-in-list");
+  g_object_notify (B_OBJECT (combo), "value-in-list");
     }
   if (combo->ok_if_empty != ok_if_empty)
     {
        combo->ok_if_empty = ok_if_empty;
-  g_object_notify (G_OBJECT (combo), "allow-empty");
+  g_object_notify (B_OBJECT (combo), "allow-empty");
     }
-  g_object_thaw_notify (G_OBJECT (combo));
+  g_object_thaw_notify (B_OBJECT (combo));
 }
 
 void
@@ -1064,7 +1064,7 @@ btk_combo_set_case_sensitive (BtkCombo * combo, gboolean val)
   if (combo->case_sensitive != val) 
     {
   combo->case_sensitive = val;
-  g_object_notify (G_OBJECT (combo), "case-sensitive");
+  g_object_notify (B_OBJECT (combo), "case-sensitive");
     }
 }
 
@@ -1077,7 +1077,7 @@ btk_combo_set_use_arrows (BtkCombo * combo, gboolean val)
   if (combo->use_arrows != val) 
     {
   combo->use_arrows = val;
-  g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
+  g_object_notify (B_OBJECT (combo), "enable-arrow-keys");
     }
 }
 
@@ -1089,16 +1089,16 @@ btk_combo_set_use_arrows_always (BtkCombo * combo, gboolean val)
 
   if (combo->use_arrows_always != val) 
     {
-       g_object_freeze_notify (G_OBJECT (combo));
+       g_object_freeze_notify (B_OBJECT (combo));
   combo->use_arrows_always = val;
-       g_object_notify (G_OBJECT (combo), "enable-arrows-always");
+       g_object_notify (B_OBJECT (combo), "enable-arrows-always");
 
        if (combo->use_arrows != TRUE) 
          {
   combo->use_arrows = TRUE;
-  g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
+  g_object_notify (B_OBJECT (combo), "enable-arrow-keys");
          }
-  g_object_thaw_notify (G_OBJECT (combo));
+  g_object_thaw_notify (B_OBJECT (combo));
     }
 }
 
@@ -1132,7 +1132,7 @@ btk_combo_set_item_string (BtkCombo    *combo,
   g_return_if_fail (BTK_IS_COMBO (combo));
   g_return_if_fail (item != NULL);
 
-  g_object_set_data_full (G_OBJECT (item), I_(btk_combo_string_key),
+  g_object_set_data_full (B_OBJECT (item), I_(btk_combo_string_key),
 			  g_strdup (item_value), g_free);
 }
 
@@ -1169,64 +1169,64 @@ btk_combo_disable_activate (BtkCombo *combo)
 }
 
 static void
-btk_combo_set_property (GObject      *object,
+btk_combo_set_property (BObject      *object,
 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkCombo *combo = BTK_COMBO (object);
   
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
-      btk_combo_set_use_arrows (combo, g_value_get_boolean (value));
+      btk_combo_set_use_arrows (combo, b_value_get_boolean (value));
       break;
     case PROP_ENABLE_ARROWS_ALWAYS:
-      btk_combo_set_use_arrows_always (combo, g_value_get_boolean (value));
+      btk_combo_set_use_arrows_always (combo, b_value_get_boolean (value));
       break;
     case PROP_CASE_SENSITIVE:
-      btk_combo_set_case_sensitive (combo, g_value_get_boolean (value));
+      btk_combo_set_case_sensitive (combo, b_value_get_boolean (value));
       break;
     case PROP_ALLOW_EMPTY:
-      combo->ok_if_empty = g_value_get_boolean (value);
+      combo->ok_if_empty = b_value_get_boolean (value);
       break;
     case PROP_VALUE_IN_LIST:
-      combo->value_in_list = g_value_get_boolean (value);
+      combo->value_in_list = b_value_get_boolean (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
   
 }
 
 static void
-btk_combo_get_property (GObject    *object,
+btk_combo_get_property (BObject    *object,
 			guint       prop_id,
-			GValue     *value,
-			GParamSpec *pspec)
+			BValue     *value,
+			BParamSpec *pspec)
 {
   BtkCombo *combo = BTK_COMBO (object);
   
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
-      g_value_set_boolean (value, combo->use_arrows);
+      b_value_set_boolean (value, combo->use_arrows);
       break;
     case PROP_ENABLE_ARROWS_ALWAYS:
-      g_value_set_boolean (value, combo->use_arrows_always);
+      b_value_set_boolean (value, combo->use_arrows_always);
       break;
     case PROP_CASE_SENSITIVE:
-      g_value_set_boolean (value, combo->case_sensitive);
+      b_value_set_boolean (value, combo->case_sensitive);
       break;
     case PROP_ALLOW_EMPTY:
-      g_value_set_boolean (value, combo->ok_if_empty);
+      b_value_set_boolean (value, combo->ok_if_empty);
       break;
     case PROP_VALUE_IN_LIST:
-      g_value_set_boolean (value, combo->value_in_list);
+      b_value_set_boolean (value, combo->value_in_list);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
    

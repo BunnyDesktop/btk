@@ -40,7 +40,7 @@ static gint     bdk_colormap_match_color (BdkColormap      *cmap,
 					  const gchar      *available);
 static void     bdk_colormap_init        (BdkColormap      *colormap);
 static void     bdk_colormap_class_init  (BdkColormapClass *klass);
-static void     bdk_colormap_finalize    (GObject          *object);
+static void     bdk_colormap_finalize    (BObject          *object);
 
 static gpointer parent_class = NULL;
 
@@ -64,7 +64,7 @@ bdk_colormap_get_type (void)
         (GInstanceInitFunc) bdk_colormap_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkColormap",
                                             &object_info, 0);
     }
@@ -94,7 +94,7 @@ bdk_colormap_init (BdkColormap *colormap)
 static void
 bdk_colormap_class_init (BdkColormapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -102,7 +102,7 @@ bdk_colormap_class_init (BdkColormapClass *klass)
 }
 
 static void
-bdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (BObject *object)
 {
   BdkColormap *colormap = BDK_COLORMAP (object);
   BdkColormapPrivateWin32 *private = BDK_WIN32_COLORMAP_DATA (colormap);
@@ -116,7 +116,7 @@ bdk_colormap_finalize (GObject *object)
   g_free (colormap->colors);
   g_free (private);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* Mimics XAllocColorCells. Allocate read/write color cells. */
@@ -348,7 +348,7 @@ alloc_color (BdkColormap  *cmap,
 
       *pixelp = GetNearestColor (_bdk_display_hdc, new_pixel);
       color->peRed = GetRValue (*pixelp);
-      color->peGreen = GetGValue (*pixelp);
+      color->peGreen = GetBValue (*pixelp);
       color->peBlue = GetBValue (*pixelp);
       return TRUE;
 

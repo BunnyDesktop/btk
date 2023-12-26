@@ -37,15 +37,15 @@ B_BEGIN_DECLS
 typedef struct _BdkScreenClass BdkScreenClass;
 
 #define BDK_TYPE_SCREEN            (bdk_screen_get_type ())
-#define BDK_SCREEN(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN, BdkScreen))
-#define BDK_SCREEN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN, BdkScreenClass))
-#define BDK_IS_SCREEN(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN))
-#define BDK_IS_SCREEN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN))
-#define BDK_SCREEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN, BdkScreenClass))
+#define BDK_SCREEN(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN, BdkScreen))
+#define BDK_SCREEN_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN, BdkScreenClass))
+#define BDK_IS_SCREEN(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN))
+#define BDK_IS_SCREEN_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN))
+#define BDK_SCREEN_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN, BdkScreenClass))
 
 struct _BdkScreen
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   guint GSEAL (closed) : 1;
 
@@ -59,7 +59,7 @@ struct _BdkScreen
 
 struct _BdkScreenClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*size_changed) (BdkScreen *screen);
   void (*composited_changed) (BdkScreen *screen);
@@ -114,7 +114,7 @@ BdkScreen *bdk_screen_get_default (void);
 
 gboolean   bdk_screen_get_setting (BdkScreen   *screen,
 				   const gchar *name,
-				   GValue      *value);
+				   BValue      *value);
 
 void                        bdk_screen_set_font_options (BdkScreen                  *screen,
 							 const bairo_font_options_t *options);

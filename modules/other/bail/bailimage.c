@@ -43,7 +43,7 @@ static void      bail_image_get_image_size     (BatkImage        *image,
                                                 gint            *height);
 static gboolean  bail_image_set_image_description (BatkImage     *image,
                                                 const gchar     *description);
-static void      bail_image_finalize           (GObject         *object);
+static void      bail_image_finalize           (BObject         *object);
 
 G_DEFINE_TYPE_WITH_CODE (BailImage, bail_image, BAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_IMAGE, batk_image_interface_init))
@@ -51,7 +51,7 @@ G_DEFINE_TYPE_WITH_CODE (BailImage, bail_image, BAIL_TYPE_WIDGET,
 static void
 bail_image_class_init (BailImageClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_image_finalize;
@@ -271,12 +271,12 @@ bail_image_set_image_description (BatkImage     *image,
 }
 
 static void
-bail_image_finalize (GObject      *object)
+bail_image_finalize (BObject      *object)
 {
   BailImage *aimage = BAIL_IMAGE (object);
 
   g_free (aimage->image_description);
   g_free (aimage->stock_name);
 
-  G_OBJECT_CLASS (bail_image_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_image_parent_class)->finalize (object);
 }

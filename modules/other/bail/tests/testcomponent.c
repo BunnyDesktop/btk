@@ -30,7 +30,7 @@ static void _check_position (BatkObject *obj)
   }
 
   batk_component_get_position (BATK_COMPONENT(obj), &x1, &y1, BATK_XY_SCREEN);
-  g_print ("Object Type: %s\n", g_type_name (G_OBJECT_TYPE (obj)));
+  g_print ("Object Type: %s\n", g_type_name (B_OBJECT_TYPE (obj)));
   g_print ("Object at %d, %d on screen\n", x1, y1);
   g_print ("Object at %d, %d, size: %d, %d\n", x, y, width, height);
 
@@ -42,7 +42,7 @@ static void _check_position (BatkObject *obj)
     
     batk_component_get_extents (BATK_COMPONENT(parent),
                                &px, &py, &pwidth, &pheight, BATK_XY_SCREEN);
-    g_print ("Parent Type: %s\n", g_type_name (G_OBJECT_TYPE (parent)));
+    g_print ("Parent Type: %s\n", g_type_name (B_OBJECT_TYPE (parent)));
     g_print ("Parent at %d, %d, size: %d, %d\n", px, py, pwidth, pheight);
     ret_object = batk_component_ref_accessible_at_point (BATK_COMPONENT (parent), 
                                                         x, y, BATK_XY_SCREEN);
@@ -60,7 +60,7 @@ static void _check_position (BatkObject *obj)
       g_print ("ret_object at %d, %d, size: %d, %d\n", px, py, pwidth, pheight);
     }
     if (ret_object)
-      g_object_unref (G_OBJECT (ret_object));
+      g_object_unref (B_OBJECT (ret_object));
     ret_object = batk_component_ref_accessible_at_point (BATK_COMPONENT (parent), 
                                                         x+width-1, y+height-1, BATK_XY_SCREEN);
     if (!ret_object)
@@ -73,7 +73,7 @@ static void _check_position (BatkObject *obj)
                 x+width-1, y+height-1);
     } 
     if (ret_object)
-      g_object_unref (G_OBJECT (ret_object));
+      g_object_unref (B_OBJECT (ret_object));
     ret_object = batk_component_ref_accessible_at_point (BATK_COMPONENT (parent), 
                                                         x-1, y-1, BATK_XY_SCREEN);
     if ((ret_object) && (ret_object == obj))
@@ -82,7 +82,7 @@ static void _check_position (BatkObject *obj)
                 x-1, y-1);
     } 
     if (ret_object)
-      g_object_unref (G_OBJECT (ret_object));
+      g_object_unref (B_OBJECT (ret_object));
     ret_object = batk_component_ref_accessible_at_point (BATK_COMPONENT (parent), 
                                                         x+width, y+height, BATK_XY_SCREEN);
     if ((ret_object) && (ret_object == obj))
@@ -91,7 +91,7 @@ static void _check_position (BatkObject *obj)
                 x+width, y+height);
     }
     if (ret_object)
-      g_object_unref (G_OBJECT (ret_object));
+      g_object_unref (B_OBJECT (ret_object));
   }
   if (!batk_component_contains (BATK_COMPONENT(obj), x, y, BATK_XY_SCREEN))
     g_print ("Component does not contain position, %d %d\n", x, y);

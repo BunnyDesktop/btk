@@ -1501,7 +1501,7 @@ convert_rgb_pixbuf_to_image (guchar  *src,
  * Object stuff
  */
 static inline const char *
-drawable_impl_type_name (GObject *object)
+drawable_impl_type_name (BObject *object)
 {
   if (BDK_IS_PIXMAP (object))
     return "PIXMAP";
@@ -1517,7 +1517,7 @@ drawable_impl_type_name (GObject *object)
 
 
 static void
-bdk_drawable_impl_directfb_finalize (GObject *object)
+bdk_drawable_impl_directfb_finalize (BObject *object)
 {
   BdkDrawableImplDirectFB *impl;
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (object);
@@ -1535,14 +1535,14 @@ bdk_drawable_impl_directfb_finalize (GObject *object)
   if (impl->surface)
     impl->surface->Release (impl->surface);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_drawable_impl_directfb_class_init (BdkDrawableImplDirectFBClass *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
+  BObjectClass     *object_class   = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 

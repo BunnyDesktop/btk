@@ -14,7 +14,7 @@ delete_event_cb (BtkWidget *editor,
 
 static void
 properties_cb (BtkWidget *button,
-               GObject   *entry)
+               BObject   *entry)
 {
   BtkWidget *editor;
 
@@ -22,7 +22,7 @@ properties_cb (BtkWidget *button,
 
   if (editor == NULL)
     {
-      editor = create_prop_editor (G_OBJECT (entry), G_TYPE_INVALID);
+      editor = create_prop_editor (B_OBJECT (entry), B_TYPE_INVALID);
       btk_container_set_border_width (BTK_CONTAINER (editor), 12);
       btk_window_set_transient_for (BTK_WINDOW (editor),
                                     BTK_WINDOW (btk_widget_get_toplevel (button)));
@@ -102,7 +102,7 @@ main (int argc, char **argv)
   btk_window_set_title (BTK_WINDOW (window), "Btk Entry Icons Test");
   btk_container_set_border_width (BTK_CONTAINER (window), 12);
 
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (btk_main_quit), NULL);
 
   table = btk_table_new (2, 4, FALSE);

@@ -36,11 +36,11 @@
 B_BEGIN_DECLS
 
 #define BDK_TYPE_VISUAL              (bdk_visual_get_type ())
-#define BDK_VISUAL(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_VISUAL, BdkVisual))
-#define BDK_VISUAL_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_VISUAL, BdkVisualClass))
-#define BDK_IS_VISUAL(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_VISUAL))
-#define BDK_IS_VISUAL_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_VISUAL))
-#define BDK_VISUAL_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_VISUAL, BdkVisualClass))
+#define BDK_VISUAL(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_VISUAL, BdkVisual))
+#define BDK_VISUAL_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_VISUAL, BdkVisualClass))
+#define BDK_IS_VISUAL(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_VISUAL))
+#define BDK_IS_VISUAL_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_VISUAL))
+#define BDK_VISUAL_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_VISUAL, BdkVisualClass))
 
 typedef struct _BdkVisualClass    BdkVisualClass;
 
@@ -76,7 +76,7 @@ typedef enum
  */
 struct _BdkVisual
 {
-  GObject parent_instance;
+  BObject parent_instance;
   
   BdkVisualType GSEAL (type);
   gint GSEAL (depth);

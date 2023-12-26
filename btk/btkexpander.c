@@ -36,7 +36,7 @@
 #include "btkdnd.h"
 #include "btkalias.h"
 
-#define BTK_EXPANDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_EXPANDER, BtkExpanderPrivate))
+#define BTK_EXPANDER_GET_PRIVATE(o) (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_EXPANDER, BtkExpanderPrivate))
 
 #define DEFAULT_EXPANDER_SIZE 10
 #define DEFAULT_EXPANDER_SPACING 2
@@ -71,14 +71,14 @@ struct _BtkExpanderPrivate
   guint             label_fill : 1;
 };
 
-static void btk_expander_set_property (GObject          *object,
+static void btk_expander_set_property (BObject          *object,
 				       guint             prop_id,
-				       const GValue     *value,
-				       GParamSpec       *pspec);
-static void btk_expander_get_property (GObject          *object,
+				       const BValue     *value,
+				       BParamSpec       *pspec);
+static void btk_expander_get_property (BObject          *object,
 				       guint             prop_id,
-				       GValue           *value,
-				       GParamSpec       *pspec);
+				       BValue           *value,
+				       BParamSpec       *pspec);
 
 static void btk_expander_destroy (BtkObject *object);
 
@@ -133,7 +133,7 @@ static void get_expander_bounds (BtkExpander  *expander,
 static void btk_expander_buildable_init           (BtkBuildableIface *iface);
 static void btk_expander_buildable_add_child      (BtkBuildable *buildable,
 						   BtkBuilder   *builder,
-						   GObject      *child,
+						   BObject      *child,
 						   const gchar  *type);
 
 G_DEFINE_TYPE_WITH_CODE (BtkExpander, btk_expander, BTK_TYPE_BIN,
@@ -143,12 +143,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkExpander, btk_expander, BTK_TYPE_BIN,
 static void
 btk_expander_class_init (BtkExpanderClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class   = (GObjectClass *) klass;
+  bobject_class   = (BObjectClass *) klass;
   object_class    = (BtkObjectClass *) klass;
   widget_class    = (BtkWidgetClass *) klass;
   container_class = (BtkContainerClass *) klass;
@@ -261,12 +261,12 @@ btk_expander_class_init (BtkExpanderClass *klass)
 
   widget_class->activate_signal =
     g_signal_new (I_("activate"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkExpanderClass, activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -301,7 +301,7 @@ btk_expander_init (BtkExpander *expander)
 static void
 btk_expander_buildable_add_child (BtkBuildable  *buildable,
 				  BtkBuilder    *builder,
-				  GObject       *child,
+				  BObject       *child,
 				  const gchar   *type)
 {
   if (!type)
@@ -319,47 +319,47 @@ btk_expander_buildable_init (BtkBuildableIface *iface)
 }
 
 static void
-btk_expander_set_property (GObject      *object,
+btk_expander_set_property (BObject      *object,
 			   guint         prop_id,
-			   const GValue *value,
-			   GParamSpec   *pspec)
+			   const BValue *value,
+			   BParamSpec   *pspec)
 {
   BtkExpander *expander = BTK_EXPANDER (object);
                                                                                                              
   switch (prop_id)
     {
     case PROP_EXPANDED:
-      btk_expander_set_expanded (expander, g_value_get_boolean (value));
+      btk_expander_set_expanded (expander, b_value_get_boolean (value));
       break;
     case PROP_LABEL:
-      btk_expander_set_label (expander, g_value_get_string (value));
+      btk_expander_set_label (expander, b_value_get_string (value));
       break;
     case PROP_USE_UNDERLINE:
-      btk_expander_set_use_underline (expander, g_value_get_boolean (value));
+      btk_expander_set_use_underline (expander, b_value_get_boolean (value));
       break;
     case PROP_USE_MARKUP:
-      btk_expander_set_use_markup (expander, g_value_get_boolean (value));
+      btk_expander_set_use_markup (expander, b_value_get_boolean (value));
       break;
     case PROP_SPACING:
-      btk_expander_set_spacing (expander, g_value_get_int (value));
+      btk_expander_set_spacing (expander, b_value_get_int (value));
       break;
     case PROP_LABEL_WIDGET:
-      btk_expander_set_label_widget (expander, g_value_get_object (value));
+      btk_expander_set_label_widget (expander, b_value_get_object (value));
       break;
     case PROP_LABEL_FILL:
-      btk_expander_set_label_fill (expander, g_value_get_boolean (value));
+      btk_expander_set_label_fill (expander, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_expander_get_property (GObject    *object,
+btk_expander_get_property (BObject    *object,
 			   guint       prop_id,
-			   GValue     *value,
-			   GParamSpec *pspec)
+			   BValue     *value,
+			   BParamSpec *pspec)
 {
   BtkExpander *expander = BTK_EXPANDER (object);
   BtkExpanderPrivate *priv = expander->priv;
@@ -367,30 +367,30 @@ btk_expander_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_EXPANDED:
-      g_value_set_boolean (value, priv->expanded);
+      b_value_set_boolean (value, priv->expanded);
       break;
     case PROP_LABEL:
-      g_value_set_string (value, btk_expander_get_label (expander));
+      b_value_set_string (value, btk_expander_get_label (expander));
       break;
     case PROP_USE_UNDERLINE:
-      g_value_set_boolean (value, priv->use_underline);
+      b_value_set_boolean (value, priv->use_underline);
       break;
     case PROP_USE_MARKUP:
-      g_value_set_boolean (value, priv->use_markup);
+      b_value_set_boolean (value, priv->use_markup);
       break;
     case PROP_SPACING:
-      g_value_set_int (value, priv->spacing);
+      b_value_set_int (value, priv->spacing);
       break;
     case PROP_LABEL_WIDGET:
-      g_value_set_object (value,
+      b_value_set_object (value,
 			  priv->label_widget ?
-			  G_OBJECT (priv->label_widget) : NULL);
+			  B_OBJECT (priv->label_widget) : NULL);
       break;
     case PROP_LABEL_FILL:
-      g_value_set_boolean (value, priv->label_fill);
+      b_value_set_boolean (value, priv->label_fill);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1448,7 +1448,7 @@ btk_expander_set_expanded (BtkExpander *expander,
 	    }
 	}
 
-      g_object_notify (G_OBJECT (expander), "expanded");
+      g_object_notify (B_OBJECT (expander), "expanded");
     }
 }
 
@@ -1496,7 +1496,7 @@ btk_expander_set_spacing (BtkExpander *expander,
 
       btk_widget_queue_resize (BTK_WIDGET (expander));
 
-      g_object_notify (G_OBJECT (expander), "spacing");
+      g_object_notify (B_OBJECT (expander), "spacing");
     }
 }
 
@@ -1551,7 +1551,7 @@ btk_expander_set_label (BtkExpander *expander,
       btk_expander_set_label_widget (expander, child);
     }
 
-  g_object_notify (G_OBJECT (expander), "label");
+  g_object_notify (B_OBJECT (expander), "label");
 }
 
 /**
@@ -1619,7 +1619,7 @@ btk_expander_set_use_underline (BtkExpander *expander,
       if (BTK_IS_LABEL (priv->label_widget))
 	btk_label_set_use_underline (BTK_LABEL (priv->label_widget), use_underline);
 
-      g_object_notify (G_OBJECT (expander), "use-underline");
+      g_object_notify (B_OBJECT (expander), "use-underline");
     }
 }
 
@@ -1673,7 +1673,7 @@ btk_expander_set_use_markup (BtkExpander *expander,
       if (BTK_IS_LABEL (priv->label_widget))
 	btk_label_set_use_markup (BTK_LABEL (priv->label_widget), use_markup);
 
-      g_object_notify (G_OBJECT (expander), "use-markup");
+      g_object_notify (B_OBJECT (expander), "use-markup");
     }
 }
 
@@ -1745,10 +1745,10 @@ btk_expander_set_label_widget (BtkExpander *expander,
   if (btk_widget_get_visible (widget))
     btk_widget_queue_resize (widget);
 
-  g_object_freeze_notify (G_OBJECT (expander));
-  g_object_notify (G_OBJECT (expander), "label-widget");
-  g_object_notify (G_OBJECT (expander), "label");
-  g_object_thaw_notify (G_OBJECT (expander));
+  g_object_freeze_notify (B_OBJECT (expander));
+  g_object_notify (B_OBJECT (expander), "label-widget");
+  g_object_notify (B_OBJECT (expander), "label");
+  g_object_thaw_notify (B_OBJECT (expander));
 }
 
 /**
@@ -1801,7 +1801,7 @@ btk_expander_set_label_fill (BtkExpander *expander,
       if (priv->label_widget != NULL)
         btk_widget_queue_resize (BTK_WIDGET (expander));
 
-      g_object_notify (G_OBJECT (expander), "label-fill");
+      g_object_notify (B_OBJECT (expander), "label-fill");
     }
 }
 

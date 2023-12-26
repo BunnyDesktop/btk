@@ -41,11 +41,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_HSV            (btk_hsv_get_type ())
-#define BTK_HSV(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
-#define BTK_HSV_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSV, BtkHSVClass))
-#define BTK_IS_HSV(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSV))
-#define BTK_IS_HSV_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSV))
-#define BTK_HSV_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSV, BtkHSVClass))
+#define BTK_HSV(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
+#define BTK_HSV_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSV, BtkHSVClass))
+#define BTK_IS_HSV(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSV))
+#define BTK_IS_HSV_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSV))
+#define BTK_HSV_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSV, BtkHSVClass))
 
 
 typedef struct _BtkHSV      BtkHSV;

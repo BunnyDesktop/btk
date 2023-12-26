@@ -15,7 +15,7 @@ static void
 activate_action (BtkAction *action)
 {
   const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const gchar *typename = B_OBJECT_TYPE_NAME (action);
 
   BtkWidget *dialog;
 
@@ -39,7 +39,7 @@ static void
 activate_radio_action (BtkAction *action, BtkRadioAction *current)
 {
   const gchar *name = btk_action_get_name (BTK_ACTION (current));
-  const gchar *typename = G_OBJECT_TYPE_NAME (BTK_ACTION (current));
+  const gchar *typename = B_OBJECT_TYPE_NAME (BTK_ACTION (current));
   gboolean active = btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current));
   gint value = btk_radio_action_get_current_value (BTK_RADIO_ACTION (current));
 
@@ -463,7 +463,7 @@ do_appwindow (BtkWidget *do_widget)
 					  NULL);
 
       merge = btk_ui_manager_new ();
-      g_object_set_data_full (G_OBJECT (window), "ui-manager", merge,
+      g_object_set_data_full (B_OBJECT (window), "ui-manager", merge,
 			      g_object_unref);
       btk_ui_manager_insert_action_group (merge, action_group, 0);
       btk_window_add_accel_group (BTK_WINDOW (window),

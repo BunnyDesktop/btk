@@ -188,7 +188,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkTreeModelFilter.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkTreeModelFilter
 </pre>
 </div>
@@ -221,7 +221,7 @@ BtkTreeModelFilter implements
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkTreeModelFilterModifyFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                                 <em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                 <em class="parameter"><code><span class="type">BValue</span> *value</code></em>,
                                  <em class="parameter"><code><span class="type">gint</span> column</code></em>,
                                  <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
 </div>
@@ -441,7 +441,7 @@ btk_tree_model_filter_set_visible_column
  should
 look for visibility information. <em class="parameter"><code>columns</code></em>
  should be a column of type
-<code class="literal">G_TYPE_BOOLEAN</code>, where <code class="literal">TRUE</code> means that a row is visible, and <code class="literal">FALSE</code>
+<code class="literal">B_TYPE_BOOLEAN</code>, where <code class="literal">TRUE</code> means that a row is visible, and <code class="literal">FALSE</code>
 if not.</p>
 <div class="refsect3">
 <a name="btk-tree-model-filter-set-visible-column.parameters"></a><h4>Parameters</h4>

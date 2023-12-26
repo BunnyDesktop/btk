@@ -139,7 +139,7 @@ static void   xdnd_manage_source_filter (BdkDragContext *context,
 					 BdkWindow      *window,
 					 gboolean        add_filter);
 
-static void bdk_drag_context_finalize   (GObject              *object);
+static void bdk_drag_context_finalize   (BObject              *object);
 
 static GList *contexts;
 static GSList *window_caches;
@@ -156,14 +156,14 @@ static const struct {
   { "XdndDrop",     xdnd_drop_filter },
 };
 	      
-G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
 static void
 bdk_drag_context_init (BdkDragContext *dragcontext)
 {
   BdkDragContextPrivateX11 *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext, 
+  private = B_TYPE_INSTANCE_GET_PRIVATE (dragcontext, 
 					 BDK_TYPE_DRAG_CONTEXT, 
 					 BdkDragContextPrivateX11);
   
@@ -175,7 +175,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drag_context_finalize;
 
@@ -183,7 +183,7 @@ bdk_drag_context_class_init (BdkDragContextClass *klass)
 }
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
@@ -202,12 +202,12 @@ bdk_drag_context_finalize (GObject *object)
   if (context->dest_window)
     g_object_unref (context->dest_window);
 
-  g_slist_free_full (private->window_caches, (GDestroyNotify)bdk_window_cache_unref);
+  b_slist_free_full (private->window_caches, (GDestroyNotify)bdk_window_cache_unref);
   private->window_caches = NULL;
   
   contexts = g_list_remove (contexts, context);
 
-  G_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
 }
 
 /* Drag Contexts */
@@ -639,7 +639,7 @@ bdk_window_cache_unref (BdkWindowCache *cache)
 
   if (cache->ref_count == 0)
     {
-      window_caches = g_slist_remove (window_caches, cache);
+      window_caches = b_slist_remove (window_caches, cache);
       bdk_window_cache_destroy (cache);
     }
 }
@@ -659,7 +659,7 @@ bdk_window_cache_get (BdkScreen *screen)
 
   cache = bdk_window_cache_new (screen);
 
-  window_caches = g_slist_prepend (window_caches, cache);
+  window_caches = b_slist_prepend (window_caches, cache);
 
   return cache;
 }
@@ -3229,7 +3229,7 @@ _bdk_drag_get_protocol_for_display (BdkDisplay      *display,
   if (window &&
       bdk_window_get_window_type (window) != BDK_WINDOW_FOREIGN)
     {
-      if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+      if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
 	{
 	  *protocol = BDK_DRAG_PROTO_XDND;
 	  *version = 5;
@@ -3356,7 +3356,7 @@ drag_context_find_window_cache (BdkDragContext  *context,
     }
 
   cache = bdk_window_cache_get (screen);
-  private->window_caches = g_slist_prepend (private->window_caches, cache);
+  private->window_caches = b_slist_prepend (private->window_caches, cache);
   
   return cache;
 }
@@ -3959,10 +3959,10 @@ bdk_window_register_dnd (BdkWindow      *window)
 
   base_precache_atoms (display);
 
-  if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+  if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
     return;
   else
-    g_object_set_data (G_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
+    g_object_set_data (B_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
   
   /* Set Motif drag receiver information property */
 

@@ -43,7 +43,7 @@
 
 static gint btk_pixmap_expose     (BtkWidget       *widget,
 				   BdkEventExpose  *event);
-static void btk_pixmap_finalize   (GObject         *object);
+static void btk_pixmap_finalize   (BObject         *object);
 static void build_insensitive_pixmap (BtkPixmap *btkpixmap);
 
 G_DEFINE_TYPE (BtkPixmap, btk_pixmap, BTK_TYPE_MISC)
@@ -51,7 +51,7 @@ G_DEFINE_TYPE (BtkPixmap, btk_pixmap, BTK_TYPE_MISC)
 static void
 btk_pixmap_class_init (BtkPixmapClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class;
 
   widget_class = (BtkWidgetClass*) class;
@@ -91,11 +91,11 @@ btk_pixmap_new (BdkPixmap *val,
 }
 
 static void
-btk_pixmap_finalize (GObject *object)
+btk_pixmap_finalize (BObject *object)
 {
   btk_pixmap_set (BTK_PIXMAP (object), NULL, NULL);
 
-  G_OBJECT_CLASS (btk_pixmap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_pixmap_parent_class)->finalize (object);
 }
 
 void

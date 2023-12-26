@@ -46,10 +46,10 @@ btk_cell_layout_get_type (void)
       };
 
       cell_layout_type =
-        g_type_register_static (G_TYPE_INTERFACE, I_("BtkCellLayout"),
+        g_type_register_static (B_TYPE_INTERFACE, I_("BtkCellLayout"),
                                 &cell_layout_info, 0);
 
-      g_type_interface_add_prerequisite (cell_layout_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (cell_layout_type, B_TYPE_OBJECT);
     }
 
   return cell_layout_type;
@@ -388,7 +388,7 @@ static const GMarkupParser attributes_parser =
 gboolean
 _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 					     BtkBuilder    *builder,
-					     GObject       *child,
+					     BObject       *child,
 					     const gchar   *tagname,
 					     GMarkupParser *parser,
 					     gpointer      *data)
@@ -416,7 +416,7 @@ _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 void
 _btk_cell_layout_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
-					   GObject      *child,
+					   BObject      *child,
 					   const gchar  *tagname,
 					   gpointer     *data)
 {
@@ -430,7 +430,7 @@ _btk_cell_layout_buildable_custom_tag_end (BtkBuildable *buildable,
 void
 _btk_cell_layout_buildable_add_child (BtkBuildable      *buildable,
 				      BtkBuilder        *builder,
-				      GObject           *child,
+				      BObject           *child,
 				      const gchar       *type)
 {
   BtkCellLayoutIface *iface;

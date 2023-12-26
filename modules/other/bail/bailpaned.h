@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_PANED                      (bail_paned_get_type ())
-#define BAIL_PANED(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PANED, BailPaned))
-#define BAIL_PANED_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PANED, BailPanedClass))
-#define BAIL_IS_PANED(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PANED))
-#define BAIL_IS_PANED_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PANED))
-#define BAIL_PANED_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PANED, BailPanedClass))
+#define BAIL_PANED(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PANED, BailPaned))
+#define BAIL_PANED_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PANED, BailPanedClass))
+#define BAIL_IS_PANED(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PANED))
+#define BAIL_IS_PANED_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PANED))
+#define BAIL_PANED_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PANED, BailPanedClass))
 
 typedef struct _BailPaned              BailPaned;
 typedef struct _BailPanedClass         BailPanedClass;

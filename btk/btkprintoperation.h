@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_OPERATION		(btk_print_operation_get_type ())
-#define BTK_PRINT_OPERATION(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION, BtkPrintOperation))
-#define BTK_PRINT_OPERATION_CLASS(klass)    	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_OPERATION, BtkPrintOperationClass))
-#define BTK_IS_PRINT_OPERATION(obj) 		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION))
-#define BTK_IS_PRINT_OPERATION_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_OPERATION))
-#define BTK_PRINT_OPERATION_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_OPERATION, BtkPrintOperationClass))
+#define BTK_PRINT_OPERATION(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION, BtkPrintOperation))
+#define BTK_PRINT_OPERATION_CLASS(klass)    	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_OPERATION, BtkPrintOperationClass))
+#define BTK_IS_PRINT_OPERATION(obj) 		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION))
+#define BTK_IS_PRINT_OPERATION_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_OPERATION))
+#define BTK_PRINT_OPERATION_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_OPERATION, BtkPrintOperationClass))
 
 typedef struct _BtkPrintOperationClass   BtkPrintOperationClass;
 typedef struct _BtkPrintOperationPrivate BtkPrintOperationPrivate;
@@ -77,14 +77,14 @@ typedef enum {
 
 struct _BtkPrintOperation
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrintOperationPrivate *GSEAL (priv);
 };
 
 struct _BtkPrintOperationClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void     (*done)               (BtkPrintOperation *operation,
 				  BtkPrintOperationResult result);

@@ -62,13 +62,13 @@ struct _BtkTrayIconPrivate
   BtkOrientation orientation;
 };
 
-static void btk_tray_icon_constructed   (GObject     *object);
-static void btk_tray_icon_dispose       (GObject     *object);
+static void btk_tray_icon_constructed   (BObject     *object);
+static void btk_tray_icon_dispose       (BObject     *object);
 
-static void btk_tray_icon_get_property  (GObject     *object,
+static void btk_tray_icon_get_property  (BObject     *object,
 				 	 guint        prop_id,
-					 GValue      *value,
-					 GParamSpec  *pspec);
+					 BValue      *value,
+					 BParamSpec  *pspec);
 
 static void     btk_tray_icon_realize   (BtkWidget   *widget);
 static void     btk_tray_icon_style_set (BtkWidget   *widget,
@@ -92,7 +92,7 @@ G_DEFINE_TYPE (BtkTrayIcon, btk_tray_icon, BTK_TYPE_PLUG)
 static void
 btk_tray_icon_class_init (BtkTrayIconClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)class;
 
   bobject_class->get_property = btk_tray_icon_get_property;
@@ -119,7 +119,7 @@ btk_tray_icon_class_init (BtkTrayIconClass *class)
 static void
 btk_tray_icon_init (BtkTrayIcon *icon)
 {
-  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, BTK_TYPE_TRAY_ICON,
+  icon->priv = B_TYPE_INSTANCE_GET_PRIVATE (icon, BTK_TYPE_TRAY_ICON,
 					    BtkTrayIconPrivate);
   
   icon->priv->stamp = 1;
@@ -130,7 +130,7 @@ btk_tray_icon_init (BtkTrayIcon *icon)
 }
 
 static void
-btk_tray_icon_constructed (GObject *object)
+btk_tray_icon_constructed (BObject *object)
 {
   /* Do setup that depends on the screen; screen has been set at this point */
 
@@ -188,7 +188,7 @@ btk_tray_icon_clear_manager_window (BtkTrayIcon *icon)
 }
 
 static void
-btk_tray_icon_dispose (GObject *object)
+btk_tray_icon_dispose (BObject *object)
 {
   BtkTrayIcon *icon = BTK_TRAY_ICON (object);
   BtkWidget *widget = BTK_WIDGET (object);
@@ -198,24 +198,24 @@ btk_tray_icon_dispose (GObject *object)
 
   bdk_window_remove_filter (root_window, btk_tray_icon_manager_filter, icon);
 
-  G_OBJECT_CLASS (btk_tray_icon_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tray_icon_parent_class)->dispose (object);
 }
 
 static void
-btk_tray_icon_get_property (GObject    *object,
+btk_tray_icon_get_property (BObject    *object,
 			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+			    BValue     *value,
+			    BParamSpec *pspec)
 {
   BtkTrayIcon *icon = BTK_TRAY_ICON (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, icon->priv->orientation);
+      b_value_set_enum (value, icon->priv->orientation);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -314,7 +314,7 @@ btk_tray_icon_get_orientation_property (BtkTrayIcon *icon)
 	{
 	  icon->priv->orientation = orientation;
 
-	  g_object_notify (G_OBJECT (icon), "orientation");
+	  g_object_notify (B_OBJECT (icon), "orientation");
 	}
     }
 

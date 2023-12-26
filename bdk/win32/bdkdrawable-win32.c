@@ -141,7 +141,7 @@ static BdkScreen *  bdk_win32_get_screen     (BdkDrawable    *drawable);
 
 static BdkVisual*   bdk_win32_get_visual     (BdkDrawable    *drawable);
 
-static void bdk_drawable_impl_win32_finalize   (GObject *object);
+static void bdk_drawable_impl_win32_finalize   (BObject *object);
 
 static const bairo_user_data_key_t bdk_win32_bairo_key;
 static const bairo_user_data_key_t bdk_win32_bairo_hdc_key;
@@ -153,7 +153,7 @@ static void
 _bdk_drawable_impl_win32_class_init (BdkDrawableImplWin32Class *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drawable_impl_win32_finalize;
 
@@ -188,11 +188,11 @@ _bdk_drawable_impl_win32_init (BdkDrawableImplWin32 *impl)
 }
 
 static void
-bdk_drawable_impl_win32_finalize (GObject *object)
+bdk_drawable_impl_win32_finalize (BObject *object)
 {
   bdk_drawable_set_colormap (BDK_DRAWABLE (object), NULL);
 
-  G_OBJECT_CLASS (_bdk_drawable_impl_win32_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_drawable_impl_win32_parent_class)->finalize (object);
 }
 
 /*****************************************************
@@ -1462,11 +1462,11 @@ blit_from_pixmap (gboolean              use_fg_bg,
 		  bg = _bdk_win32_colormap_color (dest->colormap, bgix);
 		  fg = _bdk_win32_colormap_color (dest->colormap, fgix);
 		  newtable[0].rgbBlue = GetBValue (bg);
-		  newtable[0].rgbGreen = GetGValue (bg);
+		  newtable[0].rgbGreen = GetBValue (bg);
 		  newtable[0].rgbRed = GetRValue (bg);
 		  newtable[0].rgbReserved = 0;
 		  newtable[1].rgbBlue = GetBValue (fg);
-		  newtable[1].rgbGreen = GetGValue (fg);
+		  newtable[1].rgbGreen = GetBValue (fg);
 		  newtable[1].rgbRed = GetRValue (fg);
 		  newtable[1].rgbReserved = 0;
 		}

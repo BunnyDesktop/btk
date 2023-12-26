@@ -50,11 +50,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_RULER            (btk_ruler_get_type ())
-#define BTK_RULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RULER, BtkRuler))
-#define BTK_RULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RULER, BtkRulerClass))
-#define BTK_IS_RULER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RULER))
-#define BTK_IS_RULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RULER))
-#define BTK_RULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RULER, BtkRulerClass))
+#define BTK_RULER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RULER, BtkRuler))
+#define BTK_RULER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RULER, BtkRulerClass))
+#define BTK_IS_RULER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RULER))
+#define BTK_IS_RULER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RULER))
+#define BTK_RULER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RULER, BtkRulerClass))
 
 
 typedef struct _BtkRuler        BtkRuler;

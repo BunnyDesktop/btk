@@ -62,7 +62,7 @@ static void        bdk_window_impl_directfb_set_colormap       (BdkDrawable *dra
                                                                 BdkColormap *colormap);
 static void bdk_window_impl_directfb_init       (BdkWindowImplDirectFB      *window);
 static void bdk_window_impl_directfb_class_init (BdkWindowImplDirectFBClass *klass);
-static void bdk_window_impl_directfb_finalize   (GObject                    *object);
+static void bdk_window_impl_directfb_finalize   (BObject                    *object);
 
 static void bdk_window_impl_iface_init (BdkWindowImplIface *iface);
 static void bdk_directfb_window_destroy (BdkWindow *window,
@@ -113,7 +113,7 @@ bdk_window_impl_directfb_init (BdkWindowImplDirectFB *impl)
 static void
 bdk_window_impl_directfb_class_init (BdkWindowImplDirectFBClass *klass)
 {
-  GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
+  BObjectClass     *object_class   = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
@@ -140,7 +140,7 @@ g_free_2nd (gpointer a,
 }
 
 static void
-bdk_window_impl_directfb_finalize (GObject *object)
+bdk_window_impl_directfb_finalize (BObject *object)
 {
   BdkWindowImplDirectFB *impl = BDK_WINDOW_IMPL_DIRECTFB (object);
 
@@ -165,8 +165,8 @@ bdk_window_impl_directfb_finalize (GObject *object)
       impl->window = NULL;
     }
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static BdkRebunnyion *
@@ -1113,7 +1113,7 @@ bdk_directfb_window_send_crossing_events (BdkWindow       *src,
       win = BDK_WINDOW (BDK_WINDOW_OBJECT (b)->parent);
       while (win != c)
         {
-          path = g_slist_prepend (path, win);
+          path = b_slist_prepend (path, win);
           win = BDK_WINDOW (BDK_WINDOW_OBJECT (win)->parent);
         }
 
@@ -1121,7 +1121,7 @@ bdk_directfb_window_send_crossing_events (BdkWindow       *src,
       while (list)
         {
           win = BDK_WINDOW (list->data);
-          list = g_slist_next (list);
+          list = b_slist_next (list);
 
           if (list)
             next = BDK_WINDOW (list->data);
@@ -1162,7 +1162,7 @@ bdk_directfb_window_send_crossing_events (BdkWindow       *src,
             }
         }
 
-      g_slist_free (path);
+      b_slist_free (path);
     }
 
   event_win = bdk_directfb_pointer_event_window (b, BDK_ENTER_NOTIFY);
@@ -1443,7 +1443,7 @@ bdk_directfb_window_move_resize (BdkWindow *window,
     {
       BdkWindowChildHandlerData *data;
 
-      data = g_object_get_data (G_OBJECT (private->parent),
+      data = g_object_get_data (B_OBJECT (private->parent),
                                 "bdk-window-child-handler");
 
       if (data &&
@@ -2321,7 +2321,7 @@ bdk_fb_window_set_child_handler (BdkWindow             *window,
   data->get_pos   = get_pos;
   data->user_data = user_data;
 
-  g_object_set_data_full (G_OBJECT (window), "bdk-window-child-handler",
+  g_object_set_data_full (B_OBJECT (window), "bdk-window-child-handler",
                           data, (GDestroyNotify) g_free);
 }
 
@@ -2336,7 +2336,7 @@ bdk_window_set_decorations (BdkWindow       *window,
   dec = g_new (BdkWMDecoration, 1);
   *dec = decorations;
 
-  g_object_set_data_full (G_OBJECT (window), "bdk-window-decorations",
+  g_object_set_data_full (B_OBJECT (window), "bdk-window-decorations",
                           dec, (GDestroyNotify) g_free);
 }
 
@@ -2348,7 +2348,7 @@ bdk_window_get_decorations (BdkWindow       *window,
 
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  dec = g_object_get_data (G_OBJECT (window), "bdk-window-decorations");
+  dec = g_object_get_data (B_OBJECT (window), "bdk-window-decorations");
   if (dec)
     {
       *decorations = *dec;

@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TEXT_VIEW             (btk_text_view_get_type ())
-#define BTK_TEXT_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_VIEW, BtkTextView))
-#define BTK_TEXT_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_VIEW, BtkTextViewClass))
-#define BTK_IS_TEXT_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_VIEW))
-#define BTK_IS_TEXT_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_VIEW))
-#define BTK_TEXT_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewClass))
+#define BTK_TEXT_VIEW(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_VIEW, BtkTextView))
+#define BTK_TEXT_VIEW_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_VIEW, BtkTextViewClass))
+#define BTK_IS_TEXT_VIEW(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_VIEW))
+#define BTK_IS_TEXT_VIEW_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_VIEW))
+#define BTK_TEXT_VIEW_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewClass))
 
 typedef enum
 {

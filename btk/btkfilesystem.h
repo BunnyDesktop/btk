@@ -27,18 +27,18 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_SYSTEM         (_btk_file_system_get_type ())
-#define BTK_FILE_SYSTEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystem))
-#define BTK_FILE_SYSTEM_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
-#define BTK_IS_FILE_SYSTEM(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FILE_SYSTEM))
-#define BTK_IS_FILE_SYSTEM_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FILE_SYSTEM))
-#define BTK_FILE_SYSTEM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
+#define BTK_FILE_SYSTEM(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystem))
+#define BTK_FILE_SYSTEM_CLASS(c)     (B_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
+#define BTK_IS_FILE_SYSTEM(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FILE_SYSTEM))
+#define BTK_IS_FILE_SYSTEM_CLASS(c)  (B_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FILE_SYSTEM))
+#define BTK_FILE_SYSTEM_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
 
 #define BTK_TYPE_FOLDER         (_btk_folder_get_type ())
-#define BTK_FOLDER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FOLDER, BtkFolder))
-#define BTK_FOLDER_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FOLDER, BtkFolderClass))
-#define BTK_IS_FOLDER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FOLDER))
-#define BTK_IS_FOLDER_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FOLDER))
-#define BTK_FOLDER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FOLDER, BtkFolderClass))
+#define BTK_FOLDER(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FOLDER, BtkFolder))
+#define BTK_FOLDER_CLASS(c)     (B_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FOLDER, BtkFolderClass))
+#define BTK_IS_FOLDER(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FOLDER))
+#define BTK_IS_FOLDER_CLASS(c)  (B_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FOLDER))
+#define BTK_FOLDER_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FOLDER, BtkFolderClass))
 
 typedef struct BtkFileSystemClass BtkFileSystemClass;
 typedef struct BtkFileSystem BtkFileSystem;
@@ -49,7 +49,7 @@ typedef struct BtkFileSystemBookmark BtkFileSystemBookmark; /* opaque struct */
 
 struct BtkFileSystemClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*bookmarks_changed) (BtkFileSystem *file_system);
   void (*volumes_changed)   (BtkFileSystem *file_system);
@@ -57,12 +57,12 @@ struct BtkFileSystemClass
 
 struct BtkFileSystem
 {
-  GObject parent_object;
+  BObject parent_object;
 };
 
 struct BtkFolderClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*files_added)      (BtkFolder *folder,
 			    GList     *paths);
@@ -76,7 +76,7 @@ struct BtkFolderClass
 
 struct BtkFolder
 {
-  GObject parent_object;
+  BObject parent_object;
 };
 
 typedef void (* BtkFileSystemGetFolderCallback)    (GCancellable        *cancellable,

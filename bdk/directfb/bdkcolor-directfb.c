@@ -51,7 +51,7 @@ typedef struct {
 } BdkColormapPrivateDirectFB;
 
 
-static void  bdk_colormap_finalize (GObject *object);
+static void  bdk_colormap_finalize (BObject *object);
 
 static gint  bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
                                               BdkColor    *colors,
@@ -62,7 +62,7 @@ static gint  bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
 static void  bdk_directfb_allocate_color_key (BdkColormap *colormap);
 
 
-G_DEFINE_TYPE (BdkColormap, bdk_colormap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkColormap, bdk_colormap, B_TYPE_OBJECT)
 
 static void
 bdk_colormap_init (BdkColormap *colormap)
@@ -75,13 +75,13 @@ bdk_colormap_init (BdkColormap *colormap)
 static void
 bdk_colormap_class_init (BdkColormapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_colormap_finalize;
 }
 
 static void
-bdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (BObject *object)
 {
   BdkColormap                *colormap = BDK_COLORMAP (object);
   BdkColormapPrivateDirectFB *private  = colormap->windowing_data;
@@ -99,7 +99,7 @@ bdk_colormap_finalize (GObject *object)
       colormap->windowing_data = NULL;
     }
 
-  G_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
 }
 
 BdkColormap*

@@ -55,8 +55,8 @@ static gboolean       delegate_remove_shortcut_folder (BtkFileChooser    *choose
 						       GFile             *file,
 						       GError           **error);
 static GSList *       delegate_list_shortcut_folders  (BtkFileChooser    *chooser);
-static void           delegate_notify                 (GObject           *object,
-						       GParamSpec        *pspec,
+static void           delegate_notify                 (BObject           *object,
+						       BParamSpec        *pspec,
 						       gpointer           data);
 static void           delegate_current_folder_changed (BtkFileChooser    *chooser,
 						       gpointer           data);
@@ -72,7 +72,7 @@ static BtkFileChooserConfirmation delegate_confirm_overwrite (BtkFileChooser    
 
 /**
  * _btk_file_chooser_install_properties:
- * @klass: the class structure for a type deriving from #GObject
+ * @klass: the class structure for a type deriving from #BObject
  *
  * Installs the necessary properties for a class implementing
  * #BtkFileChooser. A #BtkParamSpecOverride property is installed
@@ -82,7 +82,7 @@ static BtkFileChooserConfirmation delegate_confirm_overwrite (BtkFileChooser    
  * are using.
  **/
 void
-_btk_file_chooser_install_properties (GObjectClass *klass)
+_btk_file_chooser_install_properties (BObjectClass *klass)
 {
   g_object_class_override_property (klass,
 				    BTK_FILE_CHOOSER_PROP_ACTION,
@@ -156,8 +156,8 @@ _btk_file_chooser_delegate_iface_init (BtkFileChooserIface *iface)
 
 /**
  * _btk_file_chooser_set_delegate:
- * @receiver: a #GObject implementing #BtkFileChooser
- * @delegate: another #GObject implementing #BtkFileChooser
+ * @receiver: a #BObject implementing #BtkFileChooser
+ * @delegate: another #BObject implementing #BtkFileChooser
  *
  * Establishes that calls on @receiver for #BtkFileChooser
  * methods should be delegated to @delegate, and that
@@ -172,7 +172,7 @@ _btk_file_chooser_set_delegate (BtkFileChooser *receiver,
   g_return_if_fail (BTK_IS_FILE_CHOOSER (receiver));
   g_return_if_fail (BTK_IS_FILE_CHOOSER (delegate));
 
-  g_object_set_data (G_OBJECT (receiver), I_("btk-file-chooser-delegate"), delegate);
+  g_object_set_data (B_OBJECT (receiver), I_("btk-file-chooser-delegate"), delegate);
   g_signal_connect (delegate, "notify",
 		    G_CALLBACK (delegate_notify), receiver);
   g_signal_connect (delegate, "current-folder-changed",
@@ -201,7 +201,7 @@ _btk_file_chooser_delegate_get_quark (void)
 static BtkFileChooser *
 get_delegate (BtkFileChooser *receiver)
 {
-  return g_object_get_qdata (G_OBJECT (receiver),
+  return g_object_get_qdata (B_OBJECT (receiver),
 			     BTK_FILE_CHOOSER_DELEGATE_QUARK);
 }
 
@@ -314,13 +314,13 @@ delegate_set_current_name (BtkFileChooser *chooser,
 }
 
 static void
-delegate_notify (GObject    *object,
-		 GParamSpec *pspec,
+delegate_notify (BObject    *object,
+		 BParamSpec *pspec,
 		 gpointer    data)
 {
   gpointer iface;
 
-  iface = g_type_interface_peek (g_type_class_peek (G_OBJECT_TYPE (object)),
+  iface = g_type_interface_peek (g_type_class_peek (B_OBJECT_TYPE (object)),
 				 btk_file_chooser_get_type ());
   if (g_object_interface_find_property (iface, pspec->name))
     g_object_notify (data, pspec->name);

@@ -798,7 +798,7 @@ bdk_x11_register_standard_event_type (BdkDisplay          *display,
   event_type->base = event_base;
   event_type->n_events = n_events;
 
-  display_x11->event_types = g_slist_prepend (display_x11->event_types, event_type);
+  display_x11->event_types = b_slist_prepend (display_x11->event_types, event_type);
 }
 
 /* Return the window this has to do with, if any, rather
@@ -2864,11 +2864,11 @@ bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
   if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return FALSE;
 
-  supported_atoms = g_object_get_data (G_OBJECT (screen), "bdk-net-wm-supported-atoms");
+  supported_atoms = g_object_get_data (B_OBJECT (screen), "bdk-net-wm-supported-atoms");
   if (!supported_atoms)
     {
       supported_atoms = g_new0 (NetWmSupportedAtoms, 1);
-      g_object_set_data_full (G_OBJECT (screen), "bdk-net-wm-supported-atoms", supported_atoms, cleanup_atoms);
+      g_object_set_data_full (B_OBJECT (screen), "bdk-net-wm-supported-atoms", supported_atoms, cleanup_atoms);
     }
 
   fetch_net_wm_check_window (screen);
@@ -2988,7 +2988,7 @@ check_transform (const gchar *xsettings_name,
 		 GType        src_type,
 		 GType        dest_type)
 {
-  if (!g_value_type_transformable (src_type, dest_type))
+  if (!b_value_type_transformable (src_type, dest_type))
     {
       g_warning ("Cannot transform xsetting %s of type %s to type %s\n",
 		 xsettings_name,
@@ -3020,7 +3020,7 @@ check_transform (const gchar *xsettings_name,
 gboolean
 bdk_screen_get_setting (BdkScreen   *screen,
 			const gchar *name,
-			GValue      *value)
+			BValue      *value)
 {
 
   const char *xsettings_name = NULL;
@@ -3029,7 +3029,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
   BdkScreenX11 *screen_x11;
   gboolean success = FALSE;
   gint i;
-  GValue tmp_val = { 0, };
+  BValue tmp_val = { 0, };
   
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
   
@@ -3053,21 +3053,21 @@ bdk_screen_get_setting (BdkScreen   *screen,
   switch (setting->type)
     {
     case XSETTINGS_TYPE_INT:
-      if (check_transform (xsettings_name, G_TYPE_INT, G_VALUE_TYPE (value)))
+      if (check_transform (xsettings_name, B_TYPE_INT, G_VALUE_TYPE (value)))
 	{
-	  g_value_init (&tmp_val, G_TYPE_INT);
-	  g_value_set_int (&tmp_val, setting->data.v_int);
-	  g_value_transform (&tmp_val, value);
+	  b_value_init (&tmp_val, B_TYPE_INT);
+	  b_value_set_int (&tmp_val, setting->data.v_int);
+	  b_value_transform (&tmp_val, value);
 
 	  success = TRUE;
 	}
       break;
     case XSETTINGS_TYPE_STRING:
-      if (check_transform (xsettings_name, G_TYPE_STRING, G_VALUE_TYPE (value)))
+      if (check_transform (xsettings_name, B_TYPE_STRING, G_VALUE_TYPE (value)))
 	{
-	  g_value_init (&tmp_val, G_TYPE_STRING);
-	  g_value_set_string (&tmp_val, setting->data.v_string);
-	  g_value_transform (&tmp_val, value);
+	  b_value_init (&tmp_val, B_TYPE_STRING);
+	  b_value_set_string (&tmp_val, setting->data.v_string);
+	  b_value_transform (&tmp_val, value);
 
 	  success = TRUE;
 	}
@@ -3077,23 +3077,23 @@ bdk_screen_get_setting (BdkScreen   *screen,
 	{
 	  BdkColor color;
 	  
-	  g_value_init (&tmp_val, BDK_TYPE_COLOR);
+	  b_value_init (&tmp_val, BDK_TYPE_COLOR);
 
 	  color.pixel = 0;
 	  color.red = setting->data.v_color.red;
 	  color.green = setting->data.v_color.green;
 	  color.blue = setting->data.v_color.blue;
 	  
-	  g_value_set_boxed (&tmp_val, &color);
+	  b_value_set_boxed (&tmp_val, &color);
 	  
-	  g_value_transform (&tmp_val, value);
+	  b_value_transform (&tmp_val, value);
 	  
 	  success = TRUE;
 	}
       break;
     }
   
-  g_value_unset (&tmp_val);
+  b_value_unset (&tmp_val);
 
  out:
   if (setting)

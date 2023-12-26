@@ -83,7 +83,7 @@ set_toolbar_style_toggled (BtkCheckButton *button, BtkToolbar *toolbar)
   BtkWidget *option_menu;
   int style;
   
-  option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
+  option_menu = g_object_get_data (B_OBJECT (button), "option-menu");
 
   if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
@@ -244,7 +244,7 @@ create_items_list (BtkWidget **tree_view_p)
   BtkListStore *list_store;
   BtkCellRenderer *cell;
   
-  list_store = btk_list_store_new (2, BTK_TYPE_TOOL_ITEM, G_TYPE_STRING);
+  list_store = btk_list_store_new (2, BTK_TYPE_TOOL_ITEM, B_TYPE_STRING);
   
   tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (list_store));
 
@@ -318,7 +318,7 @@ set_icon_size_toggled (BtkCheckButton *button, BtkToolbar *toolbar)
   BtkWidget *option_menu;
   int icon_size;
   
-  option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
+  option_menu = g_object_get_data (B_OBJECT (button), "option-menu");
 
   if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
@@ -364,7 +364,7 @@ static BtkTargetEntry target_table[] = {
 };
 
 static BtkWidget *
-make_prop_editor (GObject *object)
+make_prop_editor (BObject *object)
 {
   BtkWidget *prop_editor = create_prop_editor (object, 0);
   btk_widget_show (prop_editor);
@@ -554,7 +554,7 @@ main (gint argc, gchar **argv)
 
   option_menu = btk_combo_box_text_new ();
   btk_widget_set_sensitive (option_menu, FALSE);  
-  g_object_set_data (G_OBJECT (checkbox), "option-menu", option_menu);
+  g_object_set_data (B_OBJECT (checkbox), "option-menu", option_menu);
   
   menu = btk_menu_new();
   for (i = 0; i < G_N_ELEMENTS (toolbar_styles); i++)
@@ -570,7 +570,7 @@ main (gint argc, gchar **argv)
   btk_box_pack_start (BTK_BOX (hbox2), checkbox, FALSE, FALSE, 0);
 
   option_menu = btk_combo_box_text_new ();
-  g_object_set_data (G_OBJECT (checkbox), "option-menu", option_menu);
+  g_object_set_data (B_OBJECT (checkbox), "option-menu", option_menu);
   btk_widget_set_sensitive (option_menu, FALSE);
   btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (option_menu), "small toolbar");
   btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (option_menu), "large toolbar");
@@ -677,7 +677,7 @@ main (gint argc, gchar **argv)
   
   
   item = btk_radio_tool_button_new_from_stock (group, BTK_STOCK_JUSTIFY_CENTER);
-  make_prop_editor (G_OBJECT (item));
+  make_prop_editor (B_OBJECT (item));
 
   group = btk_radio_tool_button_get_group (BTK_RADIO_TOOL_BUTTON (item));
   add_item_to_list (store, item, "Center");
@@ -742,7 +742,7 @@ main (gint argc, gchar **argv)
 
   btk_widget_show_all (window);
 
-  make_prop_editor (G_OBJECT (toolbar));
+  make_prop_editor (B_OBJECT (toolbar));
 
   g_signal_connect (window, "delete_event", G_CALLBACK (btk_main_quit), NULL);
   

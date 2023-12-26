@@ -102,7 +102,7 @@ struct _BdkDevicePrivate {
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkInputWindow

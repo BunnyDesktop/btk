@@ -38,14 +38,14 @@ typedef struct {
   gchar *constructor;
   GSList *properties;
   GSList *signals;
-  GObject *object;
+  BObject *object;
   CommonInfo *parent;
 } ObjectInfo;
 
 typedef struct {
   TagInfo tag;
   GSList *packing_properties;
-  GObject *object;
+  BObject *object;
   CommonInfo *parent;
   gchar *type;
   gchar *internal_child;
@@ -82,8 +82,8 @@ typedef struct {
   gchar *tagname;
   const gchar *start;
   gpointer data;
-  GObject *object;
-  GObject *child;
+  BObject *object;
+  BObject *child;
 } SubParser;
 
 typedef struct {
@@ -114,7 +114,7 @@ void _btk_builder_parser_parse_buffer (BtkBuilder *builder,
                                        gsize length,
                                        gchar **requested_objs,
                                        GError **error);
-GObject * _btk_builder_construct (BtkBuilder *builder,
+BObject * _btk_builder_construct (BtkBuilder *builder,
                                   ObjectInfo *info,
 				  GError    **error);
 void      _btk_builder_add (BtkBuilder *builder,

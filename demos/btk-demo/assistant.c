@@ -102,7 +102,7 @@ create_page1 (BtkWidget *assistant)
 
   entry = btk_entry_new ();
   btk_box_pack_start (BTK_BOX (box), entry, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (entry), "changed",
+  g_signal_connect (B_OBJECT (entry), "changed",
 		    G_CALLBACK (on_entry_changed), assistant);
 
   btk_widget_show_all (box);
@@ -194,13 +194,13 @@ do_assistant (BtkWidget *do_widget)
       create_page3 (assistant);
       create_page4 (assistant);
 
-      g_signal_connect (G_OBJECT (assistant), "cancel",
+      g_signal_connect (B_OBJECT (assistant), "cancel",
 			G_CALLBACK (on_assistant_close_cancel), &assistant);
-      g_signal_connect (G_OBJECT (assistant), "close",
+      g_signal_connect (B_OBJECT (assistant), "close",
 			G_CALLBACK (on_assistant_close_cancel), &assistant);
-      g_signal_connect (G_OBJECT (assistant), "apply",
+      g_signal_connect (B_OBJECT (assistant), "apply",
 			G_CALLBACK (on_assistant_apply), NULL);
-      g_signal_connect (G_OBJECT (assistant), "prepare",
+      g_signal_connect (B_OBJECT (assistant), "prepare",
 			G_CALLBACK (on_assistant_prepare), NULL);
     }
 

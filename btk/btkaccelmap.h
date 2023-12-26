@@ -31,11 +31,11 @@ B_BEGIN_DECLS
 
 /* --- global BtkAccelMap object --- */
 #define BTK_TYPE_ACCEL_MAP                (btk_accel_map_get_type ())
-#define BTK_ACCEL_MAP(accel_map)	  (G_TYPE_CHECK_INSTANCE_CAST ((accel_map), BTK_TYPE_ACCEL_MAP, BtkAccelMap))
-#define BTK_ACCEL_MAP_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCEL_MAP, BtkAccelMapClass))
-#define BTK_IS_ACCEL_MAP(accel_map)	  (G_TYPE_CHECK_INSTANCE_TYPE ((accel_map), BTK_TYPE_ACCEL_MAP))
-#define BTK_IS_ACCEL_MAP_CLASS(klass)	  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCEL_MAP))
-#define BTK_ACCEL_MAP_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCEL_MAP, BtkAccelMapClass))
+#define BTK_ACCEL_MAP(accel_map)	  (B_TYPE_CHECK_INSTANCE_CAST ((accel_map), BTK_TYPE_ACCEL_MAP, BtkAccelMap))
+#define BTK_ACCEL_MAP_CLASS(klass)	  (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCEL_MAP, BtkAccelMapClass))
+#define BTK_IS_ACCEL_MAP(accel_map)	  (B_TYPE_CHECK_INSTANCE_TYPE ((accel_map), BTK_TYPE_ACCEL_MAP))
+#define BTK_IS_ACCEL_MAP_CLASS(klass)	  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCEL_MAP))
+#define BTK_ACCEL_MAP_GET_CLASS(obj)      (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCEL_MAP, BtkAccelMapClass))
 
 typedef struct _BtkAccelMap      BtkAccelMap;
 typedef struct _BtkAccelMapClass BtkAccelMapClass;

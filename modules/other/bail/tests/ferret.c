@@ -85,7 +85,7 @@ typedef struct
   BtkLabel *label;
 
   BtkButton *button;
-  GValue    button_gval;
+  BValue    button_gval;
   gulong    signal_id;
   BatkObject *batkobj;
   gint      action_num;
@@ -119,11 +119,11 @@ static void _create_event_watcher (void);
 
 static gboolean _mouse_watcher (GSignalInvocationHint *ihint,
 	guint                  n_param_values,
-	const GValue          *param_values,
+	const BValue          *param_values,
 	gpointer               data);
 static gboolean _button_watcher (GSignalInvocationHint *ihint,
 	guint                  n_param_values,
-	const GValue          *param_values,
+	const BValue          *param_values,
 	gpointer               data);
 static void _send_to_magnifier (gint x, gint y, gint w, gint h);
 static void _send_to_festival (const gchar * name,
@@ -155,7 +155,7 @@ static gint _print_table (BatkTable *aobject);
 static gint _print_text (BatkText *aobject);
 static gint _print_text_attributes (BatkText *aobject);
 static gint _print_value (BatkValue *aobject);
-static void _print_value_type(gint group_num, gchar *type, GValue *value);
+static void _print_value_type(gint group_num, gchar *type, BValue *value);
 static gint _print_groupname(TabNumber tab_n, GroupId group_id,
   const char *groupname);
 static NameValue* _print_key_value(TabNumber tab_n, gint group_number,
@@ -174,26 +174,26 @@ static NameValue* _get_name_value(GroupInfo *group, const gchar *label,
 /* Signal handlers */
 
 static void _update_handlers(BatkObject *obj);
-static void _notify_text_insert_handler (GObject *obj,
+static void _notify_text_insert_handler (BObject *obj,
   int position, int offset);
-static void _notify_text_delete_handler (GObject *obj,
+static void _notify_text_delete_handler (BObject *obj,
   int position, int offset);
-static void _notify_caret_handler (GObject *obj, int position);
-static void _notify_table_row_inserted (GObject *obj,
+static void _notify_caret_handler (BObject *obj, int position);
+static void _notify_table_row_inserted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_column_inserted (GObject *obj,
+static void _notify_table_column_inserted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_row_deleted (GObject *obj,
+static void _notify_table_row_deleted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_column_deleted (GObject *obj,
+static void _notify_table_column_deleted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_row_reordered (GObject *obj);
-static void _notify_table_column_reordered (GObject *obj);
-static void _notify_object_child_added (GObject *obj,
+static void _notify_table_row_reordered (BObject *obj);
+static void _notify_table_column_reordered (BObject *obj);
+static void _notify_object_child_added (BObject *obj,
   gint index, BatkObject *child);
-static void _notify_object_child_removed (GObject *obj,
+static void _notify_object_child_removed (BObject *obj,
   gint index, BatkObject *child);
-static void _notify_object_state_change (GObject *obj,
+static void _notify_object_state_change (BObject *obj,
   gchar *name, gboolean set);
 
 /* Property handlers */
@@ -637,7 +637,7 @@ _print_object (BatkObject *aobject)
     group_num = _print_groupname(tab_n, OBJECT_INTERFACE, "Object Interface");
 
     name = batk_object_get_name (aobject);
-    typename = g_type_name (G_OBJECT_TYPE (aobject));
+    typename = g_type_name (B_OBJECT_TYPE (aobject));
     description = batk_object_get_description (aobject);
     parent = batk_object_get_parent(aobject);
     if (parent)
@@ -735,7 +735,7 @@ _print_object (BatkObject *aobject)
       {
         parent_name = batk_object_get_name(parent);
 
-        parent_typename = g_type_name (G_OBJECT_TYPE (parent));
+        parent_typename = g_type_name (B_OBJECT_TYPE (parent));
 
         if (parent_typename)
           {
@@ -1093,7 +1093,7 @@ _print_selection (BatkSelection *aobject)
       g_return_val_if_fail (batk_object_get_role (object) == BATK_ROLE_LIST,
                             group_num);
       n_selectable = batk_object_get_n_accessible_children (object);
-      g_object_unref (G_OBJECT (object)); 
+      g_object_unref (B_OBJECT (object)); 
     }
     else
     {
@@ -1119,7 +1119,7 @@ _print_selection (BatkSelection *aobject)
       _print_key_value (tab_n, group_num, label_str,
                         (gpointer) selected_name, VALUE_STRING);
       g_free (label_str);
-      g_object_unref (G_OBJECT (selected_object));
+      g_object_unref (B_OBJECT (selected_object));
     }
     return group_num;
 }
@@ -1366,7 +1366,7 @@ _print_text_attributes (BatkText *aobject)
     if (attribute_set == NULL)
       attribute_set_len = 0;
     else
-      attribute_set_len = g_slist_length(attribute_set);
+      attribute_set_len = b_slist_length(attribute_set);
 
     label_str = g_strdup_printf("Number of Attributes");
     output_str = g_strdup_printf("%d", attribute_set_len);
@@ -1377,7 +1377,7 @@ _print_text_attributes (BatkText *aobject)
 
     for (i=0; i < attribute_set_len; i++)
       {
-        attribute = ((BatkAttribute *) g_slist_nth(attribute_set, i)->data);
+        attribute = ((BatkAttribute *) b_slist_nth(attribute_set, i)->data);
 
         _print_key_value(tab_n, group_num, attribute->name,
                          (gpointer)attribute->value, VALUE_STRING);
@@ -1392,7 +1392,7 @@ _print_text_attributes (BatkText *aobject)
 static gint
 _print_value (BatkValue *aobject)
 {
-    GValue *value_back, val;
+    BValue *value_back, val;
     gint group_num;
     TabNumber tab_n = VALUE;
 
@@ -1411,7 +1411,7 @@ _print_value (BatkValue *aobject)
 }
 
 static void
-_print_value_type(gint group_num, gchar *type, GValue *value)
+_print_value_type(gint group_num, gchar *type, BValue *value)
 {
     gchar *label_str = NULL;
     gchar *output_str = NULL;
@@ -1421,7 +1421,7 @@ _print_value_type(gint group_num, gchar *type, GValue *value)
       {
         label_str = g_strdup_printf("%s - Double", type);
         output_str = g_strdup_printf("%f",
-          g_value_get_double (value));
+          b_value_get_double (value));
         _print_key_value(tab_n, group_num, label_str, (gpointer)output_str,
           VALUE_STRING);
       }
@@ -1429,7 +1429,7 @@ _print_value_type(gint group_num, gchar *type, GValue *value)
       {
         label_str = g_strdup_printf("%s - Integer", type);
         output_str = g_strdup_printf("%d",
-          g_value_get_int (value));
+          b_value_get_int (value));
         _print_key_value(tab_n, group_num, label_str, (gpointer)output_str,
           VALUE_STRING);
       }
@@ -1464,13 +1464,13 @@ _create_event_watcher (void)
 static gboolean
 _mouse_watcher (GSignalInvocationHint *ihint,
                guint                  n_param_values,
-               const GValue          *param_values,
+               const BValue          *param_values,
                gpointer               data)
 {
-    GObject *object;
+    BObject *object;
     BtkWidget *widget;
 
-    object = g_value_get_object (param_values + 0);
+    object = b_value_get_object (param_values + 0);
 
     if (BTK_IS_MENU(object)) return TRUE;
 
@@ -1491,13 +1491,13 @@ _mouse_watcher (GSignalInvocationHint *ihint,
 static gboolean
 _button_watcher (GSignalInvocationHint *ihint,
                  guint                  n_param_values,
-                 const GValue          *param_values,
+                 const BValue          *param_values,
                  gpointer               data)
 {
-    GObject *object;
+    BObject *object;
     BtkWidget *widget;
 
-    object = g_value_get_object (param_values + 0);
+    object = b_value_get_object (param_values + 0);
 
     widget = BTK_WIDGET (object);
     if (BTK_IS_CONTAINER (widget))
@@ -1511,7 +1511,7 @@ _button_watcher (GSignalInvocationHint *ihint,
           gint  aobject_x, aobject_y;
           gint x, y;
 
-          gp = g_value_get_boxed (param_values + 1);
+          gp = b_value_get_boxed (param_values + 1);
           event = (BdkEventButton *) gp;
           aobject = btk_widget_get_accessible (widget);
           aobject_x = aobject_y = 0;
@@ -1536,7 +1536,7 @@ _button_watcher (GSignalInvocationHint *ihint,
                   g_print ("No child at position %d %d for %s\n", 
                            x,
                            y,
-                           g_type_name (G_OBJECT_TYPE (widget)));
+                           g_type_name (B_OBJECT_TYPE (widget)));
                 }
             }
         }
@@ -1950,7 +1950,7 @@ _get_name_value(GroupInfo *group, const gchar *label,
 {
     NameValue *name_value = NULL;
     GList *nv_list;
-    GValue *value;
+    BValue *value;
     gboolean found = FALSE;
     static char *empty_string = "";
 
@@ -2006,10 +2006,10 @@ _get_name_value(GroupInfo *group, const gchar *label,
               BTK_WIDGET(name_value->text), FALSE, FALSE, 10);
           case VALUE_BUTTON:
             value = &(name_value->button_gval);
-            memset (value, 0, sizeof (GValue));
-            g_value_init (value, G_TYPE_STRING);
-            g_value_set_string (value, (gchar *)value_ptr);
-            g_object_set_property(G_OBJECT(name_value->button),
+            memset (value, 0, sizeof (BValue));
+            b_value_init (value, B_TYPE_STRING);
+            b_value_set_string (value, (gchar *)value_ptr);
+            g_object_set_property(B_OBJECT(name_value->button),
               "label", value);
             btk_box_pack_start(BTK_BOX(name_value->column2),
               BTK_WIDGET(name_value->button), FALSE, FALSE, 10);
@@ -2046,10 +2046,10 @@ _get_name_value(GroupInfo *group, const gchar *label,
             break;
           case VALUE_BUTTON:
             value = &(name_value->button_gval);
-            memset (value, 0, sizeof (GValue));
-            g_value_init (value, G_TYPE_STRING);
-            g_value_set_string (value, (gchar *)value_ptr);
-            g_object_set_property(G_OBJECT(name_value->button),
+            memset (value, 0, sizeof (BValue));
+            b_value_init (value, B_TYPE_STRING);
+            b_value_set_string (value, (gchar *)value_ptr);
+            g_object_set_property(B_OBJECT(name_value->button),
               "label", value);
             break;
           }
@@ -2155,7 +2155,7 @@ _update_handlers(BatkObject *obj)
 {
     /* Remove signal handlers from object that had focus before */
 
-    if (last_object != NULL && G_TYPE_CHECK_INSTANCE(last_object))
+    if (last_object != NULL && B_TYPE_CHECK_INSTANCE(last_object))
       {
         if (child_added_id != 0)
            g_signal_handler_disconnect(last_object, child_added_id);
@@ -2204,7 +2204,7 @@ _update_handlers(BatkObject *obj)
     table_column_reordered_id = 0;
     property_id = 0;
 
-    if (!G_TYPE_CHECK_INSTANCE(obj))
+    if (!B_TYPE_CHECK_INSTANCE(obj))
         return;
 
     g_object_ref(obj);
@@ -2233,7 +2233,7 @@ _update_handlers(BatkObject *obj)
     if (BATK_IS_TEXT(obj))
       {
         text_caret_handler_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("text_caret_moved", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("text_caret_moved", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_caret_handler),
                 NULL, NULL), FALSE);
         text_inserted_id = g_signal_connect_closure (obj,
@@ -2249,33 +2249,33 @@ _update_handlers(BatkObject *obj)
     if (BATK_IS_TABLE(obj))
       {
         table_row_inserted_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("row_inserted", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("row_inserted", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_row_inserted),
                 NULL, NULL), FALSE);
         table_column_inserted_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("column_inserted", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("column_inserted", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_column_inserted),
                 NULL, NULL), FALSE);
         table_row_deleted_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("row_deleted", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("row_deleted", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_row_deleted),
                 NULL, NULL), FALSE);
         table_column_deleted_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("column_deleted", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("column_deleted", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_column_deleted),
                 NULL, NULL), FALSE);
         table_row_reordered_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("row_reordered", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("row_reordered", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_row_reordered),
                 NULL, NULL), FALSE);
         table_column_reordered_id = g_signal_connect_closure_by_id (obj,
-                g_signal_lookup ("column_reordered", G_OBJECT_TYPE (obj)),
+                g_signal_lookup ("column_reordered", B_OBJECT_TYPE (obj)),
                 0, g_cclosure_new (G_CALLBACK (_notify_table_column_reordered),
                 NULL, NULL), FALSE);
       }
 
     property_id = g_signal_connect_closure_by_id (obj,
-      g_signal_lookup ("property_change", G_OBJECT_TYPE (obj)),
+      g_signal_lookup ("property_change", B_OBJECT_TYPE (obj)),
       0, g_cclosure_new (G_CALLBACK (_property_change_handler),
       NULL, NULL),
           FALSE);
@@ -2284,7 +2284,7 @@ _update_handlers(BatkObject *obj)
 /* Text signals */
 
 static void
-_notify_text_insert_handler (GObject *obj, int position, int offset)
+_notify_text_insert_handler (BObject *obj, int position, int offset)
 {
     gchar *text = batk_text_get_text (BATK_TEXT (obj), position, position + offset);
     gchar *output_str = g_strdup_printf("position %d, length %d text: %s",
@@ -2295,7 +2295,7 @@ _notify_text_insert_handler (GObject *obj, int position, int offset)
 }
 
 static void
-_notify_text_delete_handler (GObject *obj, int position, int offset)
+_notify_text_delete_handler (BObject *obj, int position, int offset)
 {
     gchar *text = batk_text_get_text (BATK_TEXT (obj), position, position + offset);
     gchar *output_str = g_strdup_printf("position %d, length %d text: %s",
@@ -2306,7 +2306,7 @@ _notify_text_delete_handler (GObject *obj, int position, int offset)
 }
 
 static void
-_notify_caret_handler (GObject *obj, int position)
+_notify_caret_handler (BObject *obj, int position)
 {
     gchar *output_str = g_strdup_printf("position %d", position);
     _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
@@ -2317,7 +2317,7 @@ _notify_caret_handler (GObject *obj, int position)
 /* Table signals */
 
 static void
-_notify_table_row_inserted (GObject *obj, gint start_offset,
+_notify_table_row_inserted (BObject *obj, gint start_offset,
   gint length)
 {
     gchar *output_str =
@@ -2329,7 +2329,7 @@ _notify_table_row_inserted (GObject *obj, gint start_offset,
 }
 
 static void
-_notify_table_column_inserted (GObject *obj, gint start_offset,
+_notify_table_column_inserted (BObject *obj, gint start_offset,
   gint length)
 {
     gchar *output_str =
@@ -2341,7 +2341,7 @@ _notify_table_column_inserted (GObject *obj, gint start_offset,
 }
 
 static void
-_notify_table_row_deleted (GObject *obj, gint start_offset,
+_notify_table_row_deleted (BObject *obj, gint start_offset,
   gint length)
 {
     gchar *output_str = g_strdup_printf("position %d, num of rows inserted %d!\n",
@@ -2352,7 +2352,7 @@ _notify_table_row_deleted (GObject *obj, gint start_offset,
 }
 
 static void
-_notify_table_column_deleted (GObject *obj, gint start_offset,
+_notify_table_column_deleted (BObject *obj, gint start_offset,
   gint length)
 {
     gchar *output_str = g_strdup_printf("position %d, num of rows inserted %d!\n",
@@ -2363,14 +2363,14 @@ _notify_table_column_deleted (GObject *obj, gint start_offset,
 }
 
 static void
-_notify_table_row_reordered (GObject *obj)
+_notify_table_row_reordered (BObject *obj)
 {
     _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Row Reordered", NULL);
 }
 
 static void
-_notify_table_column_reordered (GObject *obj)
+_notify_table_column_reordered (BObject *obj)
 {
     _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Column Reordered", NULL);
@@ -2379,7 +2379,7 @@ _notify_table_column_reordered (GObject *obj)
 /* Object signals */
 
 static void
-_notify_object_child_added (GObject *obj, gint index,
+_notify_object_child_added (BObject *obj, gint index,
   BatkObject *child)
 {
     gchar *output_str = g_strdup_printf("index %d", index);
@@ -2389,7 +2389,7 @@ _notify_object_child_added (GObject *obj, gint index,
 }
 
 static void
-_notify_object_child_removed (GObject *obj, gint index,
+_notify_object_child_removed (BObject *obj, gint index,
   BatkObject *child)
 {
     gchar *output_str = g_strdup_printf("index %d", index);
@@ -2399,7 +2399,7 @@ _notify_object_child_removed (GObject *obj, gint index,
 }
 
 static void 
-_notify_object_state_change (GObject *obj, gchar *name, gboolean set)
+_notify_object_state_change (BObject *obj, gchar *name, gboolean set)
 {
     gchar *output_str = g_strdup_printf("name %s %s set", 
                         name, set ? "is" : "was");

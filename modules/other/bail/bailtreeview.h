@@ -27,11 +27,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_TREE_VIEW                  (bail_tree_view_get_type ())
-#define BAIL_TREE_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TREE_VIEW, BailTreeView))
-#define BAIL_TREE_VIEW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TREE_VIEW, BailTreeViewClass))
-#define BAIL_IS_TREE_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TREE_VIEW))
-#define BAIL_IS_TREE_VIEW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TREE_VIEW))
-#define BAIL_TREE_VIEW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TREE_VIEW, BailTreeViewClass))
+#define BAIL_TREE_VIEW(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TREE_VIEW, BailTreeView))
+#define BAIL_TREE_VIEW_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TREE_VIEW, BailTreeViewClass))
+#define BAIL_IS_TREE_VIEW(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TREE_VIEW))
+#define BAIL_IS_TREE_VIEW_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TREE_VIEW))
+#define BAIL_TREE_VIEW_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TREE_VIEW, BailTreeViewClass))
 
 typedef struct _BailTreeView              BailTreeView;
 typedef struct _BailTreeViewClass         BailTreeViewClass;

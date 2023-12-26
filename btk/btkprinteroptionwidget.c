@@ -43,9 +43,9 @@
 #include "btkalias.h"
 
 #define BTK_PRINTER_OPTION_WIDGET_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetPrivate))
 
-static void btk_printer_option_widget_finalize (GObject *object);
+static void btk_printer_option_widget_finalize (BObject *object);
 
 static void deconstruct_widgets (BtkPrinterOptionWidget *widget);
 static void construct_widgets (BtkPrinterOptionWidget *widget);
@@ -79,24 +79,24 @@ static guint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkPrinterOptionWidget, btk_printer_option_widget, BTK_TYPE_HBOX)
 
-static void btk_printer_option_widget_set_property (GObject      *object,
+static void btk_printer_option_widget_set_property (BObject      *object,
 						    guint         prop_id,
-						    const GValue *value,
-						    GParamSpec   *pspec);
-static void btk_printer_option_widget_get_property (GObject      *object,
+						    const BValue *value,
+						    BParamSpec   *pspec);
+static void btk_printer_option_widget_get_property (BObject      *object,
 						    guint         prop_id,
-						    GValue       *value,
-						    GParamSpec   *pspec);
+						    BValue       *value,
+						    BParamSpec   *pspec);
 static gboolean btk_printer_option_widget_mnemonic_activate (BtkWidget *widget,
 							      gboolean  group_cycling);
 
 static void
 btk_printer_option_widget_class_init (BtkPrinterOptionWidgetClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
 
   object_class->finalize = btk_printer_option_widget_finalize;
@@ -109,12 +109,12 @@ btk_printer_option_widget_class_init (BtkPrinterOptionWidgetClass *class)
 
   signals[CHANGED] =
     g_signal_new ("changed",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrinterOptionWidgetClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_SOURCE,
@@ -135,7 +135,7 @@ btk_printer_option_widget_init (BtkPrinterOptionWidget *widget)
 }
 
 static void
-btk_printer_option_widget_finalize (GObject *object)
+btk_printer_option_widget_finalize (BObject *object)
 {
   BtkPrinterOptionWidget *widget = BTK_PRINTER_OPTION_WIDGET (object);
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
@@ -146,14 +146,14 @@ btk_printer_option_widget_finalize (GObject *object)
       priv->source = NULL;
     }
   
-  G_OBJECT_CLASS (btk_printer_option_widget_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_option_widget_parent_class)->finalize (object);
 }
 
 static void
-btk_printer_option_widget_set_property (GObject         *object,
+btk_printer_option_widget_set_property (BObject         *object,
 					guint            prop_id,
-					const GValue    *value,
-					GParamSpec      *pspec)
+					const BValue    *value,
+					BParamSpec      *pspec)
 {
   BtkPrinterOptionWidget *widget;
   
@@ -162,19 +162,19 @@ btk_printer_option_widget_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      btk_printer_option_widget_set_source (widget, g_value_get_object (value));
+      btk_printer_option_widget_set_source (widget, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_printer_option_widget_get_property (GObject    *object,
+btk_printer_option_widget_get_property (BObject    *object,
 					guint       prop_id,
-					GValue     *value,
-					GParamSpec *pspec)
+					BValue     *value,
+					BParamSpec *pspec)
 {
   BtkPrinterOptionWidget *widget = BTK_PRINTER_OPTION_WIDGET (object);
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
@@ -182,10 +182,10 @@ btk_printer_option_widget_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_SOURCE:
-      g_value_set_object (value, priv->source);
+      b_value_set_object (value, priv->source);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -252,7 +252,7 @@ btk_printer_option_widget_set_source (BtkPrinterOptionWidget *widget,
   construct_widgets (widget);
   update_widgets (widget);
 
-  g_object_notify (G_OBJECT (widget), "source");
+  g_object_notify (B_OBJECT (widget), "source");
 }
 
 enum {
@@ -266,7 +266,7 @@ combo_box_set_model (BtkWidget *combo_box)
 {
   BtkListStore *store;
 
-  store = btk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING);
+  store = btk_list_store_new (N_COLUMNS, B_TYPE_STRING, B_TYPE_STRING);
   btk_combo_box_set_model (BTK_COMBO_BOX (combo_box), BTK_TREE_MODEL (store));
   g_object_unref (store);
 }
@@ -667,7 +667,7 @@ radio_changed_cb (BtkWidget              *button,
   gchar *value;
   
   g_signal_handler_block (priv->source, priv->source_changed_handler);
-  value = g_object_get_data (G_OBJECT (button), "value");
+  value = g_object_get_data (B_OBJECT (button), "value");
   if (value)
     btk_printer_option_set (priv->source, value);
   g_signal_handler_unblock (priv->source, priv->source_changed_handler);
@@ -678,7 +678,7 @@ static void
 select_maybe (BtkWidget   *widget, 
 	      const gchar *value)
 {
-  gchar *v = g_object_get_data (G_OBJECT (widget), "value");
+  gchar *v = g_object_get_data (B_OBJECT (widget), "value");
       
   if (strcmp (value, v) == 0)
     btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (widget), TRUE);
@@ -706,7 +706,7 @@ alternative_append (BtkWidget              *box,
   btk_widget_show (button);
   btk_box_pack_start (BTK_BOX (box), button, FALSE, FALSE, 0);
 
-  g_object_set_data (G_OBJECT (button), "value", (gpointer)value);
+  g_object_set_data (B_OBJECT (button), "value", (gpointer)value);
   g_signal_connect (button, "toggled", 
 		    G_CALLBACK (radio_changed_cb), widget);
 

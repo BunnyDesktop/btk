@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE            (btk_scale_get_type ())
-#define BTK_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
-#define BTK_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE, BtkScaleClass))
-#define BTK_IS_SCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE))
-#define BTK_IS_SCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE))
-#define BTK_SCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE, BtkScaleClass))
+#define BTK_SCALE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
+#define BTK_SCALE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE, BtkScaleClass))
+#define BTK_IS_SCALE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE))
+#define BTK_IS_SCALE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE))
+#define BTK_SCALE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE, BtkScaleClass))
 
 
 typedef struct _BtkScale        BtkScale;

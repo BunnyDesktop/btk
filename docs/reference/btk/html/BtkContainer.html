@@ -305,7 +305,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GParamSpec</span> *
+<span class="returnvalue">BParamSpec</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkContainer.html#btk-container-class-find-child-property" title="btk_container_class_find_child_property ()">btk_container_class_find_child_property</a> <span class="c_punctuation">()</span>
@@ -321,7 +321,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GParamSpec</span> **
+<span class="returnvalue">BParamSpec</span> **
 </td>
 <td class="function_name">
 <a class="link" href="BtkContainer.html#btk-container-class-list-child-properties" title="btk_container_class_list_child_properties ()">btk_container_class_list_child_properties</a> <span class="c_punctuation">()</span>
@@ -415,7 +415,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkContainer.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -1002,7 +1002,7 @@ btk_container_resize_children (<em class="parameter"><code><a class="link" href=
 <pre class="programlisting"><span class="returnvalue">GType</span>
 btk_container_child_type (<em class="parameter"><code><a class="link" href="BtkContainer.html" title="BtkContainer"><span class="type">BtkContainer</span></a> *container</code></em>);</pre>
 <p>Returns the type of the children supported by the container.</p>
-<p>Note that this may return <code class="literal">G_TYPE_NONE</code> to indicate that no more
+<p>Note that this may return <code class="literal">B_TYPE_NONE</code> to indicate that no more
 children can be added, e.g. for a <a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> which already has two 
 children.</p>
 <div class="refsect3">
@@ -1125,7 +1125,7 @@ with <em class="parameter"><code>first_prop_name</code></em>
 btk_container_child_get_property (<em class="parameter"><code><a class="link" href="BtkContainer.html" title="BtkContainer"><span class="type">BtkContainer</span></a> *container</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
                                   <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>,
-                                  <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Gets the value of a child property for <em class="parameter"><code>child</code></em>
  and <em class="parameter"><code>container</code></em>
 .</p>
@@ -1170,7 +1170,7 @@ btk_container_child_get_property (<em class="parameter"><code><a class="link" hr
 btk_container_child_set_property (<em class="parameter"><code><a class="link" href="BtkContainer.html" title="BtkContainer"><span class="type">BtkContainer</span></a> *container</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
                                   <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>,
-                                  <em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+                                  <em class="parameter"><code>const <span class="type">BValue</span> *value</code></em>);</pre>
 <p>Sets a child property for <em class="parameter"><code>child</code></em>
  and <em class="parameter"><code>container</code></em>
 .</p>
@@ -1567,9 +1567,9 @@ btk_container_unset_focus_chain (<em class="parameter"><code><a class="link" hre
 <hr>
 <div class="refsect2">
 <a name="btk-container-class-find-child-property"></a><h3>btk_container_class_find_child_property ()</h3>
-<pre class="programlisting"><span class="returnvalue">GParamSpec</span> *
+<pre class="programlisting"><span class="returnvalue">BParamSpec</span> *
 btk_container_class_find_child_property
-                               (<em class="parameter"><code><span class="type">GObjectClass</span> *cclass</code></em>,
+                               (<em class="parameter"><code><span class="type">BObjectClass</span> *cclass</code></em>,
                                 <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>);</pre>
 <p>Finds a child property of a container class by name.</p>
 <div class="refsect3">
@@ -1593,7 +1593,7 @@ btk_container_class_find_child_property
 </tr>
 <tr>
 <td class="parameter_name"><p>returns</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> of the child property or
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> of the child property or
 <code class="literal">NULL</code> if <em class="parameter"><code>class</code></em>
 has no child property with that name. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></td>
@@ -1609,7 +1609,7 @@ has no child property with that name. </p></td>
 btk_container_class_install_child_property
                                (<em class="parameter"><code><span class="type">BtkContainerClass</span> *cclass</code></em>,
                                 <em class="parameter"><code><span class="type">guint</span> property_id</code></em>,
-                                <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>);</pre>
 <p>Installs a child property on a container class.</p>
 <div class="refsect3">
 <a name="btk-container-class-install-child-property.parameters"></a><h4>Parameters</h4>
@@ -1632,7 +1632,7 @@ btk_container_class_install_child_property
 </tr>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> for the property</p></td>
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> for the property</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1642,9 +1642,9 @@ btk_container_class_install_child_property
 <hr>
 <div class="refsect2">
 <a name="btk-container-class-list-child-properties"></a><h3>btk_container_class_list_child_properties ()</h3>
-<pre class="programlisting"><span class="returnvalue">GParamSpec</span> **
+<pre class="programlisting"><span class="returnvalue">BParamSpec</span> **
 btk_container_class_list_child_properties
-                               (<em class="parameter"><code><span class="type">GObjectClass</span> *cclass</code></em>,
+                               (<em class="parameter"><code><span class="type">BObjectClass</span> *cclass</code></em>,
                                 <em class="parameter"><code><span class="type">guint</span> *n_properties</code></em>);</pre>
 <p>Returns all child properties of a container class.</p>
 <div class="refsect3">
@@ -1669,7 +1669,7 @@ btk_container_class_list_child_properties
 <tr>
 <td class="parameter_name"><p>returns</p></td>
 <td class="parameter_description"><p>a newly
-allocated <code class="literal">NULL</code>-terminated array of <span class="type">GParamSpec</span>*.
+allocated <code class="literal">NULL</code>-terminated array of <span class="type">BParamSpec</span>*.
 The array must be freed with <code class="function">g_free()</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=n_properties][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></td>
 </tr>

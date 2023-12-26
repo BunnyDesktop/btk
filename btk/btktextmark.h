@@ -62,22 +62,22 @@ typedef struct _BtkTextMark      BtkTextMark;
 typedef struct _BtkTextMarkClass BtkTextMarkClass;
 
 #define BTK_TYPE_TEXT_MARK              (btk_text_mark_get_type ())
-#define BTK_TEXT_MARK(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_MARK, BtkTextMark))
-#define BTK_TEXT_MARK_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
-#define BTK_IS_TEXT_MARK(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_MARK))
-#define BTK_IS_TEXT_MARK_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_MARK))
-#define BTK_TEXT_MARK_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
+#define BTK_TEXT_MARK(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_MARK, BtkTextMark))
+#define BTK_TEXT_MARK_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
+#define BTK_IS_TEXT_MARK(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_MARK))
+#define BTK_IS_TEXT_MARK_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_MARK))
+#define BTK_TEXT_MARK_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
 
 struct _BtkTextMark
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   gpointer GSEAL (segment);
 };
 
 struct _BtkTextMarkClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

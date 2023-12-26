@@ -90,7 +90,7 @@
 #include "btkalias.h"
 
 
-#define BTK_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ACTION, BtkActionPrivate))
+#define BTK_ACTION_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ACTION, BtkActionPrivate))
 
 struct _BtkActionPrivate 
 {
@@ -160,19 +160,19 @@ static void btk_action_buildable_set_name         (BtkBuildable *buildable,
 						   const gchar  *name);
 static const gchar* btk_action_buildable_get_name (BtkBuildable *buildable);
 
-G_DEFINE_TYPE_WITH_CODE (BtkAction, btk_action, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkAction, btk_action, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_action_buildable_init))
 
-static void btk_action_finalize     (GObject *object);
-static void btk_action_set_property (GObject         *object,
+static void btk_action_finalize     (BObject *object);
+static void btk_action_set_property (BObject         *object,
 				     guint            prop_id,
-				     const GValue    *value,
-				     GParamSpec      *pspec);
-static void btk_action_get_property (GObject         *object,
+				     const BValue    *value,
+				     BParamSpec      *pspec);
+static void btk_action_get_property (BObject         *object,
 				     guint            prop_id,
-				     GValue          *value,
-				     GParamSpec      *pspec);
+				     BValue          *value,
+				     BParamSpec      *pspec);
 static void btk_action_set_action_group (BtkAction	*action,
 					 BtkActionGroup *action_group);
 
@@ -184,9 +184,9 @@ static void       disconnect_proxy    (BtkAction *action,
 				       BtkWidget *proxy);
  
 static void       closure_accel_activate (GClosure     *closure,
-					  GValue       *return_value,
+					  BValue       *return_value,
 					  guint         n_param_values,
-					  const GValue *param_values,
+					  const BValue *param_values,
 					  gpointer      invocation_hint,
 					  gpointer      marshal_data);
 
@@ -196,9 +196,9 @@ static guint         action_signals[LAST_SIGNAL] = { 0 };
 static void
 btk_action_class_init (BtkActionClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->finalize     = btk_action_finalize;
   bobject_class->set_property = btk_action_set_property;
@@ -301,7 +301,7 @@ btk_action_class_init (BtkActionClass *klass)
 				   g_param_spec_object ("gicon",
 							P_("GIcon"),
 							P_("The GIcon being displayed"),
-							G_TYPE_ICON,
+							B_TYPE_ICON,
  							BTK_PARAM_READWRITE));							
   /**
    * BtkAction:icon-name:
@@ -424,11 +424,11 @@ btk_action_class_init (BtkActionClass *klass)
    */
   action_signals[ACTIVATE] =
     g_signal_new (I_("activate"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkActionClass, activate),  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   g_type_class_add_private (bobject_class, sizeof (BtkActionPrivate));
 }
@@ -463,7 +463,7 @@ btk_action_init (BtkAction *action)
   action->private_data->accel_group = NULL;
   action->private_data->accel_quark = 0;
   action->private_data->accel_closure = 
-    g_closure_new_object (sizeof (GClosure), G_OBJECT (action));
+    g_closure_new_object (sizeof (GClosure), B_OBJECT (action));
   g_closure_set_marshal (action->private_data->accel_closure, 
 			 closure_accel_activate);
   g_closure_ref (action->private_data->accel_closure);
@@ -534,7 +534,7 @@ btk_action_new (const gchar *name,
 }
 
 static void
-btk_action_finalize (GObject *object)
+btk_action_finalize (BObject *object)
 {
   BtkAction *action;
   action = BTK_ACTION (object);
@@ -552,14 +552,14 @@ btk_action_finalize (GObject *object)
   if (action->private_data->accel_group)
     g_object_unref (action->private_data->accel_group);
 
-  G_OBJECT_CLASS (btk_action_parent_class)->finalize (object);  
+  B_OBJECT_CLASS (btk_action_parent_class)->finalize (object);  
 }
 
 static void
-btk_action_set_property (GObject         *object,
+btk_action_set_property (BObject         *object,
 			 guint            prop_id,
-			 const GValue    *value,
-			 GParamSpec      *pspec)
+			 const BValue    *value,
+			 BParamSpec      *pspec)
 {
   BtkAction *action;
   
@@ -568,64 +568,64 @@ btk_action_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      action->private_data->name = g_intern_string (g_value_get_string (value));
+      action->private_data->name = g_intern_string (b_value_get_string (value));
       break;
     case PROP_LABEL:
-      btk_action_set_label (action, g_value_get_string (value));
+      btk_action_set_label (action, b_value_get_string (value));
       break;
     case PROP_SHORT_LABEL:
-      btk_action_set_short_label (action, g_value_get_string (value));
+      btk_action_set_short_label (action, b_value_get_string (value));
       break;
     case PROP_TOOLTIP:
-      btk_action_set_tooltip (action, g_value_get_string (value));
+      btk_action_set_tooltip (action, b_value_get_string (value));
       break;
     case PROP_STOCK_ID:
-      btk_action_set_stock_id (action, g_value_get_string (value));
+      btk_action_set_stock_id (action, b_value_get_string (value));
       break;
     case PROP_GICON:
-      btk_action_set_gicon (action, g_value_get_object (value));
+      btk_action_set_gicon (action, b_value_get_object (value));
       break;
     case PROP_ICON_NAME:
-      btk_action_set_icon_name (action, g_value_get_string (value));
+      btk_action_set_icon_name (action, b_value_get_string (value));
       break;
     case PROP_VISIBLE_HORIZONTAL:
-      btk_action_set_visible_horizontal (action, g_value_get_boolean (value));
+      btk_action_set_visible_horizontal (action, b_value_get_boolean (value));
       break;
     case PROP_VISIBLE_VERTICAL:
-      btk_action_set_visible_vertical (action, g_value_get_boolean (value));
+      btk_action_set_visible_vertical (action, b_value_get_boolean (value));
       break;
     case PROP_VISIBLE_OVERFLOWN:
-      action->private_data->visible_overflown = g_value_get_boolean (value);
+      action->private_data->visible_overflown = b_value_get_boolean (value);
       break;
     case PROP_IS_IMPORTANT:
-      btk_action_set_is_important (action, g_value_get_boolean (value));
+      btk_action_set_is_important (action, b_value_get_boolean (value));
       break;
     case PROP_HIDE_IF_EMPTY:
-      action->private_data->hide_if_empty = g_value_get_boolean (value);
+      action->private_data->hide_if_empty = b_value_get_boolean (value);
       break;
     case PROP_SENSITIVE:
-      btk_action_set_sensitive (action, g_value_get_boolean (value));
+      btk_action_set_sensitive (action, b_value_get_boolean (value));
       break;
     case PROP_VISIBLE:
-      btk_action_set_visible (action, g_value_get_boolean (value));
+      btk_action_set_visible (action, b_value_get_boolean (value));
       break;
     case PROP_ACTION_GROUP:
-      btk_action_set_action_group (action, g_value_get_object (value));
+      btk_action_set_action_group (action, b_value_get_object (value));
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      btk_action_set_always_show_image (action, g_value_get_boolean (value));
+      btk_action_set_always_show_image (action, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_action_get_property (GObject    *object,
+btk_action_get_property (BObject    *object,
 			 guint       prop_id,
-			 GValue     *value,
-			 GParamSpec *pspec)
+			 BValue     *value,
+			 BParamSpec *pspec)
 {
   BtkAction *action;
 
@@ -634,55 +634,55 @@ btk_action_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_static_string (value, action->private_data->name);
+      b_value_set_static_string (value, action->private_data->name);
       break;
     case PROP_LABEL:
-      g_value_set_string (value, action->private_data->label);
+      b_value_set_string (value, action->private_data->label);
       break;
     case PROP_SHORT_LABEL:
-      g_value_set_string (value, action->private_data->short_label);
+      b_value_set_string (value, action->private_data->short_label);
       break;
     case PROP_TOOLTIP:
-      g_value_set_string (value, action->private_data->tooltip);
+      b_value_set_string (value, action->private_data->tooltip);
       break;
     case PROP_STOCK_ID:
-      g_value_set_string (value, action->private_data->stock_id);
+      b_value_set_string (value, action->private_data->stock_id);
       break;
     case PROP_ICON_NAME:
-      g_value_set_string (value, action->private_data->icon_name);
+      b_value_set_string (value, action->private_data->icon_name);
       break;
     case PROP_GICON:
-      g_value_set_object (value, action->private_data->gicon);
+      b_value_set_object (value, action->private_data->gicon);
       break;
     case PROP_VISIBLE_HORIZONTAL:
-      g_value_set_boolean (value, action->private_data->visible_horizontal);
+      b_value_set_boolean (value, action->private_data->visible_horizontal);
       break;
     case PROP_VISIBLE_VERTICAL:
-      g_value_set_boolean (value, action->private_data->visible_vertical);
+      b_value_set_boolean (value, action->private_data->visible_vertical);
       break;
     case PROP_VISIBLE_OVERFLOWN:
-      g_value_set_boolean (value, action->private_data->visible_overflown);
+      b_value_set_boolean (value, action->private_data->visible_overflown);
       break;
     case PROP_IS_IMPORTANT:
-      g_value_set_boolean (value, action->private_data->is_important);
+      b_value_set_boolean (value, action->private_data->is_important);
       break;
     case PROP_HIDE_IF_EMPTY:
-      g_value_set_boolean (value, action->private_data->hide_if_empty);
+      b_value_set_boolean (value, action->private_data->hide_if_empty);
       break;
     case PROP_SENSITIVE:
-      g_value_set_boolean (value, action->private_data->sensitive);
+      b_value_set_boolean (value, action->private_data->sensitive);
       break;
     case PROP_VISIBLE:
-      g_value_set_boolean (value, action->private_data->visible);
+      b_value_set_boolean (value, action->private_data->visible);
       break;
     case PROP_ACTION_GROUP:
-      g_value_set_object (value, action->private_data->action_group);
+      b_value_set_object (value, action->private_data->action_group);
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      g_value_set_boolean (value, action->private_data->always_show_image);
+      b_value_set_boolean (value, action->private_data->always_show_image);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -711,14 +711,14 @@ static void
 remove_proxy (BtkAction *action,
 	      BtkWidget *proxy)
 {
-  action->private_data->proxies = g_slist_remove (action->private_data->proxies, proxy);
+  action->private_data->proxies = b_slist_remove (action->private_data->proxies, proxy);
 }
 
 static void
 connect_proxy (BtkAction *action,
 	       BtkWidget *proxy)
 {
-  action->private_data->proxies = g_slist_prepend (action->private_data->proxies, proxy);
+  action->private_data->proxies = b_slist_prepend (action->private_data->proxies, proxy);
 
   if (action->private_data->action_group)
     _btk_action_group_emit_connect_proxy (action->private_data->action_group, action, proxy);
@@ -1145,7 +1145,7 @@ btk_action_set_sensitive (BtkAction *action,
     {
       action->private_data->sensitive = sensitive;
 
-      g_object_notify (G_OBJECT (action), "sensitive");
+      g_object_notify (B_OBJECT (action), "sensitive");
     }
 }
 
@@ -1216,7 +1216,7 @@ btk_action_set_visible (BtkAction *action,
     {
       action->private_data->visible = visible;
 
-      g_object_notify (G_OBJECT (action), "visible");
+      g_object_notify (B_OBJECT (action), "visible");
     }
 }
 /**
@@ -1242,7 +1242,7 @@ btk_action_set_is_important (BtkAction *action,
     {
       action->private_data->is_important = is_important;
       
-      g_object_notify (G_OBJECT (action), "is-important");
+      g_object_notify (B_OBJECT (action), "is-important");
     }  
 }
 
@@ -1293,7 +1293,7 @@ btk_action_set_always_show_image (BtkAction *action,
     {
       priv->always_show_image = always_show;
 
-      g_object_notify (G_OBJECT (action), "always-show-image");
+      g_object_notify (B_OBJECT (action), "always-show-image");
     }
 }
 
@@ -1347,7 +1347,7 @@ btk_action_set_label (BtkAction	  *action,
 	action->private_data->label = g_strdup (stock_item.label);
     }
 
-  g_object_notify (G_OBJECT (action), "label");
+  g_object_notify (B_OBJECT (action), "label");
   
   /* if short_label is unset, set short_label=label */
   if (!action->private_data->short_label_set)
@@ -1400,7 +1400,7 @@ btk_action_set_short_label (BtkAction   *action,
   if (!action->private_data->short_label_set)
     action->private_data->short_label = g_strdup (action->private_data->label);
 
-  g_object_notify (G_OBJECT (action), "short-label");
+  g_object_notify (B_OBJECT (action), "short-label");
 }
 
 /**
@@ -1444,7 +1444,7 @@ btk_action_set_visible_horizontal (BtkAction *action,
     {
       action->private_data->visible_horizontal = visible_horizontal;
       
-      g_object_notify (G_OBJECT (action), "visible-horizontal");
+      g_object_notify (B_OBJECT (action), "visible-horizontal");
     }  
 }
 
@@ -1489,7 +1489,7 @@ btk_action_set_visible_vertical (BtkAction *action,
     {
       action->private_data->visible_vertical = visible_vertical;
       
-      g_object_notify (G_OBJECT (action), "visible-vertical");
+      g_object_notify (B_OBJECT (action), "visible-vertical");
     }  
 }
 
@@ -1532,7 +1532,7 @@ btk_action_set_tooltip (BtkAction   *action,
   action->private_data->tooltip = g_strdup (tooltip);
   g_free (tmp);
 
-  g_object_notify (G_OBJECT (action), "tooltip");
+  g_object_notify (B_OBJECT (action), "tooltip");
 }
 
 /**
@@ -1576,7 +1576,7 @@ btk_action_set_stock_id (BtkAction   *action,
   action->private_data->stock_id = g_strdup (stock_id);
   g_free (tmp);
 
-  g_object_notify (G_OBJECT (action), "stock-id");
+  g_object_notify (B_OBJECT (action), "stock-id");
   
   /* update label and short_label if appropriate */
   if (!action->private_data->label_set)
@@ -1632,7 +1632,7 @@ btk_action_set_icon_name (BtkAction   *action,
   action->private_data->icon_name = g_strdup (icon_name);
   g_free (tmp);
 
-  g_object_notify (G_OBJECT (action), "icon-name");
+  g_object_notify (B_OBJECT (action), "icon-name");
 }
 
 /**
@@ -1676,7 +1676,7 @@ btk_action_set_gicon (BtkAction *action,
   if (action->private_data->gicon)
     g_object_ref (action->private_data->gicon);
 
-  g_object_notify (G_OBJECT (action), "gicon");
+  g_object_notify (B_OBJECT (action), "gicon");
 }
 
 /**
@@ -1755,9 +1755,9 @@ btk_action_unblock_activate_from (BtkAction *action,
 
 static void
 closure_accel_activate (GClosure     *closure,
-                        GValue       *return_value,
+                        BValue       *return_value,
                         guint         n_param_values,
-                        const GValue *param_values,
+                        const BValue *param_values,
                         gpointer      invocation_hint,
                         gpointer      marshal_data)
 {
@@ -1766,7 +1766,7 @@ closure_accel_activate (GClosure     *closure,
       _btk_action_emit_activate (BTK_ACTION (closure->data));
       
       /* we handled the accelerator */
-      g_value_set_boolean (return_value, TRUE);
+      b_value_set_boolean (return_value, TRUE);
     }
 }
 

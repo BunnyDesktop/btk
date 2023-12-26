@@ -49,7 +49,7 @@ typedef enum {
   BTK_RECENT_CHOOSER_PROP_LAST
 } BtkRecentChooserProp;
 
-void   _btk_recent_chooser_install_properties  (GObjectClass          *klass);
+void   _btk_recent_chooser_install_properties  (BObjectClass          *klass);
 
 void   _btk_recent_chooser_delegate_iface_init (BtkRecentChooserIface *iface);
 void   _btk_recent_chooser_set_delegate        (BtkRecentChooser      *receiver,

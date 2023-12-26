@@ -59,7 +59,7 @@ create_stock_icon_store (void)
 
   cellview = btk_cell_view_new ();
   
-  store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
+  store = btk_list_store_new (2, BDK_TYPE_PIXBUF, B_TYPE_STRING);
 
   for (i = 0; i < G_N_ELEMENTS (stock_id); i++)
     {
@@ -204,7 +204,7 @@ create_capital_store (void)
   BtkTreeStore *store;
   gint i;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
   
   for (i = 0; capitals[i].group || capitals[i].capital; i++)
     {
@@ -250,11 +250,11 @@ fill_combo_entry (BtkWidget *combo)
 /* A simple validating entry */
 
 #define TYPE_MASK_ENTRY             (mask_entry_get_type ())
-#define MASK_ENTRY(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MASK_ENTRY, MaskEntry))
-#define MASK_ENTRY_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), TYPE_MASK_ENTRY, MaskEntryClass))
-#define IS_MASK_ENTRY(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MASK_ENTRY))
-#define IS_MASK_ENTRY_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), TYPE_MASK_ENTRY))
-#define MASK_ENTRY_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), TYPE_MASK_ENTRY, MaskEntryClass))
+#define MASK_ENTRY(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_MASK_ENTRY, MaskEntry))
+#define MASK_ENTRY_CLASS(vtable)    (B_TYPE_CHECK_CLASS_CAST ((vtable), TYPE_MASK_ENTRY, MaskEntryClass))
+#define IS_MASK_ENTRY(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_MASK_ENTRY))
+#define IS_MASK_ENTRY_CLASS(vtable) (B_TYPE_CHECK_CLASS_TYPE ((vtable), TYPE_MASK_ENTRY))
+#define MASK_ENTRY_GET_CLASS(inst)  (B_TYPE_INSTANCE_GET_CLASS ((inst), TYPE_MASK_ENTRY, MaskEntryClass))
 
 
 typedef struct _MaskEntry MaskEntry;

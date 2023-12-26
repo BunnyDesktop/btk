@@ -560,7 +560,7 @@ easter_egg_callback (BtkWidget *button,
   btk_container_add (BTK_CONTAINER (sw), view);
 
   window_ptr = &window;
-  g_object_add_weak_pointer (G_OBJECT (window), window_ptr);
+  g_object_add_weak_pointer (B_OBJECT (window), window_ptr);
 
   btk_window_set_default_size (BTK_WINDOW (window), 300, 400);
   

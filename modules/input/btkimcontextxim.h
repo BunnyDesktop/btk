@@ -28,11 +28,11 @@ B_BEGIN_DECLS
 extern GType btk_type_im_context_xim;
 
 #define BTK_TYPE_IM_CONTEXT_XIM            (btk_type_im_context_xim)
-#define BTK_IM_CONTEXT_XIM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIM))
-#define BTK_IM_CONTEXT_XIM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIMClass))
-#define BTK_IS_IM_CONTEXT_XIM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_XIM))
-#define BTK_IS_IM_CONTEXT_XIM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_XIM))
-#define BTK_IM_CONTEXT_XIM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIMClass))
+#define BTK_IM_CONTEXT_XIM(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIM))
+#define BTK_IM_CONTEXT_XIM_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIMClass))
+#define BTK_IS_IM_CONTEXT_XIM(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_XIM))
+#define BTK_IS_IM_CONTEXT_XIM_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_XIM))
+#define BTK_IM_CONTEXT_XIM_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_XIM, BtkIMContextXIMClass))
 
 
 typedef struct _BtkIMContextXIM       BtkIMContextXIM;

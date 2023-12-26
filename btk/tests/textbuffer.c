@@ -102,7 +102,7 @@ count_toggles_at_iter (BtkTextIter *iter,
   
   /* get toggle-ons and toggle-offs */
   tags = btk_text_iter_get_toggled_tags (iter, TRUE);
-  tags = g_slist_concat (tags,
+  tags = b_slist_concat (tags,
                          btk_text_iter_get_toggled_tags (iter, FALSE));
   
   tmp = tags;
@@ -113,10 +113,10 @@ count_toggles_at_iter (BtkTextIter *iter,
       else if (of_tag == tmp->data)
         ++count;
       
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
   
-  g_slist_free (tags);
+  b_slist_free (tags);
 
   return count;
 }
@@ -482,10 +482,10 @@ run_tests (BtkTextBuffer *buffer)
 
               g_hash_table_insert (tag_states, tag, GINT_TO_POINTER (TRUE));
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
       
           /* get toggled-off tags */
           tags = btk_text_iter_get_toggled_tags (&iter, FALSE);
@@ -505,10 +505,10 @@ run_tests (BtkTextBuffer *buffer)
 
               g_hash_table_remove (tag_states, tag);
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
 
           if (!found_some)
             g_error ("No tags found going forward to tag toggle.");
@@ -558,10 +558,10 @@ run_tests (BtkTextBuffer *buffer)
           
               g_hash_table_insert (tag_states, tag, GINT_TO_POINTER (TRUE));
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
       
           /* get toggled-on tags */
           tags = btk_text_iter_get_toggled_tags (&iter, TRUE);
@@ -581,10 +581,10 @@ run_tests (BtkTextBuffer *buffer)
 
               g_hash_table_remove (tag_states, tag);
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
 
           if (!found_some)
             g_error ("No tags found going backward to tag toggle.");

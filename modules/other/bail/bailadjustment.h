@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_ADJUSTMENT                     (bail_adjustment_get_type ())
-#define BAIL_ADJUSTMENT(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustment))
-#define BAIL_ADJUSTMENT_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
-#define BAIL_IS_ADJUSTMENT(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ADJUSTMENT))
-#define BAIL_IS_ADJUSTMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ADJUSTMENT))
-#define BAIL_ADJUSTMENT_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
+#define BAIL_ADJUSTMENT(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustment))
+#define BAIL_ADJUSTMENT_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
+#define BAIL_IS_ADJUSTMENT(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ADJUSTMENT))
+#define BAIL_IS_ADJUSTMENT_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ADJUSTMENT))
+#define BAIL_ADJUSTMENT_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
 
 typedef struct _BailAdjustment                  BailAdjustment;
 typedef struct _BailAdjustmentClass		BailAdjustmentClass;

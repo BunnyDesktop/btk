@@ -31,17 +31,17 @@
 #include "btkalias.h"
 
 #define BTK_PRINT_BACKEND_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendPrivate))
 
-static void btk_print_backend_dispose      (GObject      *object);
-static void btk_print_backend_set_property (GObject      *object,
+static void btk_print_backend_dispose      (BObject      *object);
+static void btk_print_backend_set_property (BObject      *object,
                                             guint         prop_id,
-                                            const GValue *value,
-                                            GParamSpec   *pspec);
-static void btk_print_backend_get_property (GObject      *object,
+                                            const BValue *value,
+                                            BParamSpec   *pspec);
+static void btk_print_backend_get_property (BObject      *object,
                                             guint         prop_id,
-                                            GValue       *value,
-                                            GParamSpec   *pspec);
+                                            BValue       *value,
+                                            BParamSpec   *pspec);
 
 struct _BtkPrintBackendPrivate
 {
@@ -71,7 +71,7 @@ enum
   PROP_STATUS
 };
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 GQuark
 btk_print_backend_error_quark (void)
@@ -107,9 +107,9 @@ struct _BtkPrintBackendModuleClass
   GTypeModuleClass parent_class;
 };
 
-G_DEFINE_TYPE (BtkPrintBackendModule, _btk_print_backend_module, G_TYPE_TYPE_MODULE)
+G_DEFINE_TYPE (BtkPrintBackendModule, _btk_print_backend_module, B_TYPE_TYPE_MODULE)
 #define BTK_TYPE_PRINT_BACKEND_MODULE      (_btk_print_backend_module_get_type ())
-#define BTK_PRINT_BACKEND_MODULE(module)   (G_TYPE_CHECK_INSTANCE_CAST ((module), BTK_TYPE_PRINT_BACKEND_MODULE, BtkPrintBackendModule))
+#define BTK_PRINT_BACKEND_MODULE(module)   (B_TYPE_CHECK_INSTANCE_CAST ((module), BTK_TYPE_PRINT_BACKEND_MODULE, BtkPrintBackendModule))
 
 static GSList *loaded_backends;
 
@@ -170,20 +170,20 @@ btk_print_backend_module_unload (GTypeModule *module)
  * initialization
  */
 static void
-btk_print_backend_module_finalize (GObject *object)
+btk_print_backend_module_finalize (BObject *object)
 {
   BtkPrintBackendModule *module = BTK_PRINT_BACKEND_MODULE (object);
 
   g_free (module->path);
 
-  G_OBJECT_CLASS (_btk_print_backend_module_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_print_backend_module_parent_class)->finalize (object);
 }
 
 static void
 _btk_print_backend_module_class_init (BtkPrintBackendModuleClass *class)
 {
-  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  GTypeModuleClass *module_class = B_TYPE_MODULE_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   module_class->load = btk_print_backend_module_load;
   module_class->unload = btk_print_backend_module_unload;
@@ -192,10 +192,10 @@ _btk_print_backend_module_class_init (BtkPrintBackendModuleClass *class)
 }
 
 static void 
-btk_print_backend_set_property (GObject      *object,
+btk_print_backend_set_property (BObject      *object,
                                 guint         prop_id,
-                                const GValue *value,
-                                GParamSpec   *pspec)
+                                const BValue *value,
+                                BParamSpec   *pspec)
 {
   BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);
   BtkPrintBackendPrivate *priv;
@@ -205,19 +205,19 @@ btk_print_backend_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_STATUS:
-      priv->status = g_value_get_int (value);
+      priv->status = b_value_get_int (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_print_backend_get_property (GObject    *object,
+btk_print_backend_get_property (BObject    *object,
                                 guint       prop_id,
-                                GValue     *value,
-                                GParamSpec *pspec)
+                                BValue     *value,
+                                BParamSpec *pspec)
 {
   BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);
   BtkPrintBackendPrivate *priv;
@@ -227,10 +227,10 @@ btk_print_backend_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_STATUS:
-      g_value_set_int (value, priv->status);
+      b_value_set_int (value, priv->status);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -245,10 +245,10 @@ _btk_print_backend_module_create (BtkPrintBackendModule *pb_module)
 {
   BtkPrintBackend *pb;
   
-  if (g_type_module_use (G_TYPE_MODULE (pb_module)))
+  if (g_type_module_use (B_TYPE_MODULE (pb_module)))
     {
       pb = pb_module->create ();
-      g_type_module_unuse (G_TYPE_MODULE (pb_module));
+      g_type_module_unuse (B_TYPE_MODULE (pb_module));
       return pb;
     }
   return NULL;
@@ -267,7 +267,7 @@ _btk_print_backend_create (const gchar *backend_name)
     {
       pb_module = l->data;
       
-      if (strcmp (G_TYPE_MODULE (pb_module)->name, backend_name) == 0)
+      if (strcmp (B_TYPE_MODULE (pb_module)->name, backend_name) == 0)
 	return _btk_print_backend_module_create (pb_module);
     }
 
@@ -282,10 +282,10 @@ _btk_print_backend_create (const gchar *backend_name)
 	{
 	  pb_module = g_object_new (BTK_TYPE_PRINT_BACKEND_MODULE, NULL);
 
-	  g_type_module_set_name (G_TYPE_MODULE (pb_module), backend_name);
+	  g_type_module_set_name (B_TYPE_MODULE (pb_module), backend_name);
 	  pb_module->path = g_strdup (module_path);
 
-	  loaded_backends = g_slist_prepend (loaded_backends,
+	  loaded_backends = b_slist_prepend (loaded_backends,
 		   		             pb_module);
 
 	  pb = _btk_print_backend_module_create (pb_module);
@@ -294,7 +294,7 @@ _btk_print_backend_create (const gchar *backend_name)
 	   * There is a problem with module unloading in the cups module,
 	   * see cups_dispatch_watch_finalize for details. 
 	   */
-	  g_type_module_use (G_TYPE_MODULE (pb_module));
+	  g_type_module_use (B_TYPE_MODULE (pb_module));
 	}
       
       g_free (module_path);
@@ -348,7 +348,7 @@ btk_print_backend_load_modules (void)
  *             BtkPrintBackend           *
  *****************************************/
 
-G_DEFINE_TYPE (BtkPrintBackend, btk_print_backend, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintBackend, btk_print_backend, B_TYPE_OBJECT)
 
 static void                 fallback_printer_request_details       (BtkPrinter          *printer);
 static gboolean             fallback_printer_mark_conflicts        (BtkPrinter          *printer,
@@ -371,8 +371,8 @@ static void                 request_password                       (BtkPrintBack
 static void
 btk_print_backend_class_init (BtkPrintBackendClass *class)
 {
-  GObjectClass *object_class;
-  object_class = (GObjectClass *) class;
+  BObjectClass *object_class;
+  object_class = (BObjectClass *) class;
 
   backend_parent_class = g_type_class_peek_parent (class);
   
@@ -402,52 +402,52 @@ btk_print_backend_class_init (BtkPrintBackendClass *class)
   
   signals[PRINTER_LIST_CHANGED] =
     g_signal_new (I_("printer-list-changed"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_list_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   signals[PRINTER_LIST_DONE] =
     g_signal_new (I_("printer-list-done"),
-		    G_TYPE_FROM_CLASS (class),
+		    B_TYPE_FROM_CLASS (class),
 		    G_SIGNAL_RUN_LAST,
 		    G_STRUCT_OFFSET (BtkPrintBackendClass, printer_list_done),
 		    NULL, NULL,
 		    g_cclosure_marshal_VOID__VOID,
-		    G_TYPE_NONE, 0);
+		    B_TYPE_NONE, 0);
   signals[PRINTER_ADDED] =
     g_signal_new (I_("printer-added"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_added),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
+		  B_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[PRINTER_REMOVED] =
     g_signal_new (I_("printer-removed"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_removed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
+		  B_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[PRINTER_STATUS_CHANGED] =
     g_signal_new (I_("printer-status-changed"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_status_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
+		  B_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[REQUEST_PASSWORD] =
     g_signal_new (I_("request-password"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintBackendClass, request_password),
 		  NULL, NULL,
 		  _btk_marshal_VOID__POINTER_POINTER_POINTER_POINTER_STRING,
-		  G_TYPE_NONE, 5, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_STRING);
+		  B_TYPE_NONE, 5, B_TYPE_POINTER, B_TYPE_POINTER, B_TYPE_POINTER, B_TYPE_POINTER, B_TYPE_STRING);
 }
 
 static void
@@ -465,7 +465,7 @@ btk_print_backend_init (BtkPrintBackend *backend)
 }
 
 static void
-btk_print_backend_dispose (GObject *object)
+btk_print_backend_dispose (BObject *object)
 {
   BtkPrintBackend *backend;
   BtkPrintBackendPrivate *priv;
@@ -820,7 +820,7 @@ request_password (BtkPrintBackend  *backend,
     }
 
   g_object_ref (backend);
-  g_signal_connect (G_OBJECT (dialog), "response",
+  g_signal_connect (B_OBJECT (dialog), "response",
                     G_CALLBACK (password_dialog_response), backend);
 
   btk_widget_show_all (dialog);
@@ -835,7 +835,7 @@ btk_print_backend_destroy (BtkPrintBackend *print_backend)
    * will be around. However, this results in a cycle, which we break
    * with this call, which causes the print backend to release its printers.
    */
-  g_object_run_dispose (G_OBJECT (print_backend));
+  g_object_run_dispose (B_OBJECT (print_backend));
 }
 
 

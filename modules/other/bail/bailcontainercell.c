@@ -24,7 +24,7 @@
 
 static void       bail_container_cell_class_init          (BailContainerCellClass *klass);
 static void       bail_container_cell_init                (BailContainerCell   *cell);
-static void       bail_container_cell_finalize            (GObject             *obj);
+static void       bail_container_cell_finalize            (BObject             *obj);
 
 
 static void       _bail_container_cell_recompute_child_indices 
@@ -43,7 +43,7 @@ static void
 bail_container_cell_class_init (BailContainerCellClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS(klass);
-  GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *g_object_class = B_OBJECT_CLASS (klass);
 
   g_object_class->finalize = bail_container_cell_finalize;
 
@@ -59,7 +59,7 @@ bail_container_cell_init (BailContainerCell   *cell)
 BailContainerCell * 
 bail_container_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailContainerCell *container;
 
@@ -77,7 +77,7 @@ bail_container_cell_new (void)
 }
 
 static void
-bail_container_cell_finalize (GObject *obj)
+bail_container_cell_finalize (BObject *obj)
 {
   BailContainerCell *container = BAIL_CONTAINER_CELL (obj);
   GList *list;
@@ -90,7 +90,7 @@ bail_container_cell_finalize (GObject *obj)
   }
   g_list_free (container->children);
   
-  G_OBJECT_CLASS (bail_container_cell_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (bail_container_cell_parent_class)->finalize (obj);
 }
 
 

@@ -38,11 +38,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_MESSAGE_DIALOG                  (btk_message_dialog_get_type ())
-#define BTK_MESSAGE_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialog))
-#define BTK_MESSAGE_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
-#define BTK_IS_MESSAGE_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MESSAGE_DIALOG))
-#define BTK_IS_MESSAGE_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MESSAGE_DIALOG))
-#define BTK_MESSAGE_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
+#define BTK_MESSAGE_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialog))
+#define BTK_MESSAGE_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
+#define BTK_IS_MESSAGE_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_IS_MESSAGE_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_MESSAGE_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
 
 typedef struct _BtkMessageDialog        BtkMessageDialog;
 typedef struct _BtkMessageDialogClass   BtkMessageDialogClass;

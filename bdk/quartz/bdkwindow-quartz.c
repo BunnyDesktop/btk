@@ -195,7 +195,7 @@ check_grab_destroy (BdkWindow *window)
 }
 
 static void
-bdk_window_impl_quartz_finalize (GObject *object)
+bdk_window_impl_quartz_finalize (BObject *object)
 {
   BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (object);
 
@@ -207,13 +207,13 @@ bdk_window_impl_quartz_finalize (GObject *object)
   if (impl->transient_for)
     g_object_unref (impl->transient_for);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_window_impl_quartz_class_init (BdkWindowImplQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableImplQuartzClass *drawable_quartz_class = BDK_DRAWABLE_IMPL_QUARTZ_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
@@ -447,7 +447,7 @@ _bdk_windowing_window_process_updates_recurse (BdkWindow *window,
             {
               [nswindow retain];
               [nswindow disableFlushWindow];
-              update_nswindows = g_slist_prepend (update_nswindows, nswindow);
+              update_nswindows = b_slist_prepend (update_nswindows, nswindow);
             }
         }
     }
@@ -498,7 +498,7 @@ _bdk_windowing_after_process_all_updates (void)
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (old_update_nswindows);
+  b_slist_free (old_update_nswindows);
 
   in_process_all_updates = FALSE;
 
@@ -833,10 +833,10 @@ _bdk_quartz_window_find_child (BdkWindow *window,
 void
 _bdk_quartz_window_did_become_main (BdkWindow *window)
 {
-  main_window_stack = g_slist_remove (main_window_stack, window);
+  main_window_stack = b_slist_remove (main_window_stack, window);
 
   if (BDK_WINDOW_OBJECT (window)->window_type != BDK_WINDOW_TEMP)
-    main_window_stack = g_slist_prepend (main_window_stack, window);
+    main_window_stack = b_slist_prepend (main_window_stack, window);
 
   clear_toplevel_order ();
 }
@@ -1174,7 +1174,7 @@ _bdk_quartz_window_destroy (BdkWindow *window,
   private = BDK_WINDOW_OBJECT (window);
   impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
-  main_window_stack = g_slist_remove (main_window_stack, window);
+  main_window_stack = b_slist_remove (main_window_stack, window);
 
   g_list_free (impl->sorted_children);
   impl->sorted_children = NULL;
@@ -1323,7 +1323,7 @@ bdk_window_quartz_hide (BdkWindow *window)
   if (window && WINDOW_IS_TOPLEVEL (window))
     {
      /* Update main window. */
-      main_window_stack = g_slist_remove (main_window_stack, window);
+      main_window_stack = b_slist_remove (main_window_stack, window);
       if ([NSApp mainWindow] == impl->toplevel)
         _bdk_quartz_window_did_resign_main (window);
 
@@ -2981,7 +2981,7 @@ bdk_window_deiconify (BdkWindow *window)
 static FullscreenSavedGeometry *
 get_fullscreen_geometry (BdkWindow *window)
 {
-  return g_object_get_data (G_OBJECT (window), FULLSCREEN_DATA);
+  return g_object_get_data (B_OBJECT (window), FULLSCREEN_DATA);
 }
 
 void
@@ -3009,7 +3009,7 @@ bdk_window_fullscreen (BdkWindow *window)
       if (!bdk_window_get_decorations (window, &geometry->decor))
         geometry->decor = BDK_DECOR_ALL;
 
-      g_object_set_data_full (G_OBJECT (window),
+      g_object_set_data_full (B_OBJECT (window),
                               FULLSCREEN_DATA, geometry, 
                               g_free);
 
@@ -3068,7 +3068,7 @@ bdk_window_unfullscreen (BdkWindow *window)
 
       bdk_window_set_decorations (window, geometry->decor);
 
-      g_object_set_data (G_OBJECT (window), FULLSCREEN_DATA, NULL);
+      g_object_set_data (B_OBJECT (window), FULLSCREEN_DATA, NULL);
 
       [impl->toplevel makeKeyAndOrderFront:impl->toplevel];
       clear_toplevel_order ();

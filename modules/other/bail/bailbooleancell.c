@@ -55,7 +55,7 @@ bail_boolean_cell_init (BailBooleanCell *cell)
 BatkObject* 
 bail_boolean_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
   BailBooleanCell *boolean_cell;
@@ -86,7 +86,7 @@ bail_boolean_cell_update_cache (BailRendererCell *cell,
   gboolean new_boolean;
   gboolean new_sensitive;
 
-  g_object_get (G_OBJECT(cell->renderer), "active", &new_boolean,
+  g_object_get (B_OBJECT(cell->renderer), "active", &new_boolean,
                                           "sensitive", &new_sensitive, NULL);
 
   if (boolean_cell->cell_value != new_boolean)

@@ -6,11 +6,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_WIDGET_PROFILER		(btk_widget_profiler_get_type ())
-#define BTK_WIDGET_PROFILER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfiler))
-#define BTK_WIDGET_PROFILER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfilerClass))
-#define BTK_IS_WIDGET_PROFILER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_WIDGET_PROFILER))
-#define BTK_IS_WIDGET_PROFILER_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WIDGET_PROFILER))
-#define BTK_WIDGET_PROFILER_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfilerClass))
+#define BTK_WIDGET_PROFILER(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfiler))
+#define BTK_WIDGET_PROFILER_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfilerClass))
+#define BTK_IS_WIDGET_PROFILER(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_WIDGET_PROFILER))
+#define BTK_IS_WIDGET_PROFILER_CLASS(klass)     (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_WIDGET_PROFILER))
+#define BTK_WIDGET_PROFILER_GET_CLASS(obj)      (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfilerClass))
 
 typedef enum
 {
@@ -25,13 +25,13 @@ typedef struct _BtkWidgetProfilerClass BtkWidgetProfilerClass;
 typedef struct _BtkWidgetProfilerPrivate BtkWidgetProfilerPrivate;
 
 struct _BtkWidgetProfiler {
-	GObject object;
+	BObject object;
 
 	BtkWidgetProfilerPrivate *priv;
 };
 
 struct _BtkWidgetProfilerClass {
-	GObjectClass parent_class;
+	BObjectClass parent_class;
 
 	/* signals */
 

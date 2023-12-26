@@ -131,7 +131,7 @@ Mon Mar 15 08:48:48 2004  Jonathan Blandford  <jrb@bunny.org>
 2004-03-15  Tor Lillqvist  <tml@iki.fi>
 
 	* bdk/win32/bdkgc-win32.c (bdk_gc_copy): Don't just copy the whole
-	BdkGCWin32 with a single assignment, that overwrites GObject's
+	BdkGCWin32 with a single assignment, that overwrites BObject's
 	private data (for instance ref_count). (#137012, John Ehresman)
 
 2004-03-15  Mark McLoughlin  <mark@skynet.ie>
@@ -8645,7 +8645,7 @@ Sat Jul 26 15:21:27 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 	events with a non-Latin keyboard.
 
 	(assign_object): New helper function, handles the g_object_ref()
-	and unref() calls when assigning GObject pointers.
+	and unref() calls when assigning BObject pointers.
 		
 	(generate_crossing_events): Also generate the BDK_NOTIFY_INTERIOR
 	enter event when the pointer has moved to an ancestor window. Was
@@ -10464,7 +10464,7 @@ Wed May 14 09:05:11 2003   Hidetoshi Tajima <hidetoshi.tajima@sun.com>
 2003-05-11  Anders Carlsson  <andersca@codefactory.se>
 
 	* btk/btkdnd.c (btk_drag_source_unset_icon): Don't cast a gchar to
-	a GObject. (#112762)
+	a BObject. (#112762)
 
 2003-05-08  Sven Neumann  <sven@gimp.org>
 
@@ -11043,7 +11043,7 @@ Thu Feb 27 17:44:24 2003  Manish Singh  <yosh@gimp.org>
 	* tests/testtext.c
 	* tests/testtreeedit.c
 	* tests/testtreefocus.c
-	* tests/testtreeview.c: remove unnecessary G_OBJECT() casts.
+	* tests/testtreeview.c: remove unnecessary B_OBJECT() casts.
 
 Tue Feb 25 21:55:17 2003  Jonathan Blandford  <jrb@redhat.com>
 
@@ -11347,7 +11347,7 @@ Mon Jan 27 22:41:26 2003  Kristian Rietveld  <kris@btk.org>
 
 	* btk/btktreeview.c (btk_tree_view_set_model),
 	(btk_tree_view_search_equal_func): make TreeView search handle
-	all types which are transformable by GValue. (Fixes #99803, reported
+	all types which are transformable by BValue. (Fixes #99803, reported
 	by Muktha Narayan).
 
 Mon Jan 27 22:39:25 2003  Kristian Rietveld  <kris@btk.org>

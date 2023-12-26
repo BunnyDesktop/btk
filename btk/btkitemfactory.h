@@ -50,11 +50,11 @@ typedef	void	(*BtkItemFactoryCallback1) (gpointer		 callback_data,
 					    BtkWidget		*widget);
 
 #define BTK_TYPE_ITEM_FACTORY            (btk_item_factory_get_type ())
-#define BTK_ITEM_FACTORY(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ITEM_FACTORY, BtkItemFactory))
-#define BTK_ITEM_FACTORY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ITEM_FACTORY, BtkItemFactoryClass))
-#define BTK_IS_ITEM_FACTORY(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ITEM_FACTORY))
-#define BTK_IS_ITEM_FACTORY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ITEM_FACTORY))
-#define BTK_ITEM_FACTORY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ITEM_FACTORY, BtkItemFactoryClass))
+#define BTK_ITEM_FACTORY(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ITEM_FACTORY, BtkItemFactory))
+#define BTK_ITEM_FACTORY_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ITEM_FACTORY, BtkItemFactoryClass))
+#define BTK_IS_ITEM_FACTORY(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ITEM_FACTORY))
+#define BTK_IS_ITEM_FACTORY_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ITEM_FACTORY))
+#define BTK_ITEM_FACTORY_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ITEM_FACTORY, BtkItemFactoryClass))
 
 
 typedef	struct	_BtkItemFactory			BtkItemFactory;

@@ -204,7 +204,7 @@ animation_change_notify (BtkToolItemGroup *group)
 
 static void
 btk_tool_item_group_settings_change_notify (BtkSettings      *settings,
-                                            const GParamSpec *pspec,
+                                            const BParamSpec *pspec,
                                             BtkToolItemGroup *group)
 {
   if (strcmp (pspec->name, "btk-enable-animations") == 0)
@@ -379,7 +379,7 @@ btk_tool_item_group_init (BtkToolItemGroup *group)
 
   btk_widget_set_redraw_on_allocate (BTK_WIDGET (group), FALSE);
 
-  group->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (group,
+  group->priv = priv = B_TYPE_INSTANCE_GET_PRIVATE (group,
                                              BTK_TYPE_TOOL_ITEM_GROUP,
                                              BtkToolItemGroupPrivate);
 
@@ -419,80 +419,80 @@ btk_tool_item_group_init (BtkToolItemGroup *group)
 }
 
 static void
-btk_tool_item_group_set_property (GObject      *object,
+btk_tool_item_group_set_property (BObject      *object,
                                   guint         prop_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
+                                  const BValue *value,
+                                  BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
   switch (prop_id)
     {
       case PROP_LABEL:
-        btk_tool_item_group_set_label (group, g_value_get_string (value));
+        btk_tool_item_group_set_label (group, b_value_get_string (value));
         break;
 
       case PROP_LABEL_WIDGET:
-        btk_tool_item_group_set_label_widget (group, g_value_get_object (value));
+        btk_tool_item_group_set_label_widget (group, b_value_get_object (value));
 	break;
 
       case PROP_COLLAPSED:
-        btk_tool_item_group_set_collapsed (group, g_value_get_boolean (value));
+        btk_tool_item_group_set_collapsed (group, b_value_get_boolean (value));
         break;
 
       case PROP_ELLIPSIZE:
-        btk_tool_item_group_set_ellipsize (group, g_value_get_enum (value));
+        btk_tool_item_group_set_ellipsize (group, b_value_get_enum (value));
         break;
 
       case PROP_RELIEF:
-        btk_tool_item_group_set_header_relief (group, g_value_get_enum(value));
+        btk_tool_item_group_set_header_relief (group, b_value_get_enum(value));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_item_group_get_property (GObject    *object,
+btk_tool_item_group_get_property (BObject    *object,
                                   guint       prop_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
+                                  BValue     *value,
+                                  BParamSpec *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
   switch (prop_id)
     {
       case PROP_LABEL:
-        g_value_set_string (value, btk_tool_item_group_get_label (group));
+        b_value_set_string (value, btk_tool_item_group_get_label (group));
         break;
 
       case PROP_LABEL_WIDGET:
-        g_value_set_object (value,
+        b_value_set_object (value,
 			    btk_tool_item_group_get_label_widget (group));
         break;
 
       case PROP_COLLAPSED:
-        g_value_set_boolean (value, btk_tool_item_group_get_collapsed (group));
+        b_value_set_boolean (value, btk_tool_item_group_get_collapsed (group));
         break;
 
       case PROP_ELLIPSIZE:
-        g_value_set_enum (value, btk_tool_item_group_get_ellipsize (group));
+        b_value_set_enum (value, btk_tool_item_group_get_ellipsize (group));
         break;
 
       case PROP_RELIEF:
-        g_value_set_enum (value, btk_tool_item_group_get_header_relief (group));
+        b_value_set_enum (value, btk_tool_item_group_get_header_relief (group));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_item_group_finalize (GObject *object)
+btk_tool_item_group_finalize (BObject *object)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
@@ -502,11 +502,11 @@ btk_tool_item_group_finalize (GObject *object)
       group->priv->children = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_item_group_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tool_item_group_parent_class)->finalize (object);
 }
 
 static void
-btk_tool_item_group_dispose (GObject *object)
+btk_tool_item_group_dispose (BObject *object)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
   BtkToolItemGroupPrivate* priv = group->priv;
@@ -521,7 +521,7 @@ btk_tool_item_group_dispose (GObject *object)
       priv->toplevel = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_item_group_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tool_item_group_parent_class)->dispose (object);
 }
 
 static void
@@ -1408,8 +1408,8 @@ static void
 btk_tool_item_group_set_child_property (BtkContainer *container,
                                         BtkWidget    *child,
                                         guint         prop_id,
-                                        const GValue *value,
-                                        GParamSpec   *pspec)
+                                        const BValue *value,
+                                        BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (container);
   BtkToolItem *item = BTK_TOOL_ITEM (child);
@@ -1426,7 +1426,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
     {
       case CHILD_PROP_HOMOGENEOUS:
         btk_tool_item_group_set_item_packing (group, item,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               expand,
                                               fill,
                                               new_row);
@@ -1435,7 +1435,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
       case CHILD_PROP_EXPAND:
         btk_tool_item_group_set_item_packing (group, item,
                                               homogeneous,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               fill,
                                               new_row);
         break;
@@ -1444,7 +1444,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
         btk_tool_item_group_set_item_packing (group, item,
                                               homogeneous,
                                               expand,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               new_row);
         break;
 
@@ -1453,11 +1453,11 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
                                               homogeneous,
                                               expand,
                                               fill,
-                                              g_value_get_boolean (value));
+                                              b_value_get_boolean (value));
         break;
 
       case CHILD_PROP_POSITION:
-        btk_tool_item_group_set_item_position (group, item, g_value_get_int (value));
+        btk_tool_item_group_set_item_position (group, item, b_value_get_int (value));
         break;
 
       default:
@@ -1470,8 +1470,8 @@ static void
 btk_tool_item_group_get_child_property (BtkContainer *container,
                                         BtkWidget    *child,
                                         guint         prop_id,
-                                        GValue       *value,
-                                        GParamSpec   *pspec)
+                                        BValue       *value,
+                                        BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (container);
   BtkToolItem *item = BTK_TOOL_ITEM (child);
@@ -1487,23 +1487,23 @@ btk_tool_item_group_get_child_property (BtkContainer *container,
   switch (prop_id)
     {
       case CHILD_PROP_HOMOGENEOUS:
-        g_value_set_boolean (value, homogeneous);
+        b_value_set_boolean (value, homogeneous);
         break;
 
        case CHILD_PROP_EXPAND:
-        g_value_set_boolean (value, expand);
+        b_value_set_boolean (value, expand);
         break;
 
        case CHILD_PROP_FILL:
-        g_value_set_boolean (value, fill);
+        b_value_set_boolean (value, fill);
         break;
 
        case CHILD_PROP_NEW_ROW:
-        g_value_set_boolean (value, new_row);
+        b_value_set_boolean (value, new_row);
         break;
 
      case CHILD_PROP_POSITION:
-        g_value_set_int (value, btk_tool_item_group_get_item_position (group, item));
+        b_value_set_int (value, btk_tool_item_group_get_item_position (group, item));
         break;
 
       default:
@@ -1515,7 +1515,7 @@ btk_tool_item_group_get_child_property (BtkContainer *container,
 static void
 btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
 {
-  GObjectClass       *oclass = G_OBJECT_CLASS (cls);
+  BObjectClass       *oclass = B_OBJECT_CLASS (cls);
   BtkWidgetClass     *wclass = BTK_WIDGET_CLASS (cls);
   BtkContainerClass  *cclass = BTK_CONTAINER_CLASS (cls);
 
@@ -1673,7 +1673,7 @@ btk_tool_item_group_set_label (BtkToolItemGroup *group,
       btk_tool_item_group_set_label_widget (group, child);
     }
 
-  g_object_notify (G_OBJECT (group), "label");
+  g_object_notify (B_OBJECT (group), "label");
 }
 
 /**
@@ -1726,10 +1726,10 @@ btk_tool_item_group_set_label_widget (BtkToolItemGroup *group,
   else
     btk_widget_hide (priv->header);
 
-  g_object_freeze_notify (G_OBJECT (group));
-  g_object_notify (G_OBJECT (group), "label-widget");
-  g_object_notify (G_OBJECT (group), "label");
-  g_object_thaw_notify (G_OBJECT (group));
+  g_object_freeze_notify (B_OBJECT (group));
+  g_object_notify (B_OBJECT (group), "label-widget");
+  g_object_notify (B_OBJECT (group), "label");
+  g_object_thaw_notify (B_OBJECT (group));
 }
 
 /**
@@ -1890,7 +1890,7 @@ btk_tool_item_group_set_collapsed (BtkToolItemGroup *group,
         }
 
       priv->collapsed = collapsed;
-      g_object_notify (G_OBJECT (group), "collapsed");
+      g_object_notify (B_OBJECT (group), "collapsed");
     }
 }
 
@@ -1913,7 +1913,7 @@ btk_tool_item_group_set_ellipsize (BtkToolItemGroup   *group,
     {
       group->priv->ellipsize = ellipsize;
       btk_tool_item_group_header_adjust_style (group);
-      g_object_notify (G_OBJECT (group), "ellipsize");
+      g_object_notify (B_OBJECT (group), "ellipsize");
       _btk_tool_item_group_palette_reconfigured (group);
     }
 }

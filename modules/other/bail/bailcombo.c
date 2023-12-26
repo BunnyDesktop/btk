@@ -35,7 +35,7 @@ static void         bail_combo_selection_changed_btk   (BtkWidget      *widget,
 static gint         bail_combo_get_n_children          (BatkObject      *obj);
 static BatkObject*   bail_combo_ref_child               (BatkObject      *obj,
                                                         gint           i);
-static void         bail_combo_finalize                (GObject        *object);
+static void         bail_combo_finalize                (BObject        *object);
 static void         batk_action_interface_init          (BatkActionIface *iface);
 
 static gboolean     bail_combo_do_action               (BatkAction      *action,
@@ -74,7 +74,7 @@ G_DEFINE_TYPE_WITH_CODE (BailCombo, bail_combo, BAIL_TYPE_CONTAINER,
 static void
 bail_combo_class_init (BailComboClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_combo_finalize;
@@ -615,7 +615,7 @@ bail_combo_set_description (BatkAction      *action,
 }
 
 static void
-bail_combo_finalize (GObject            *object)
+bail_combo_finalize (BObject            *object)
 {
   BailCombo *combo = BAIL_COMBO (object);
 
@@ -635,5 +635,5 @@ bail_combo_finalize (GObject            *object)
       g_source_remove (combo->select_idle_handler);
       combo->select_idle_handler = 0;       
     }
-  G_OBJECT_CLASS (bail_combo_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_combo_parent_class)->finalize (object);
 }

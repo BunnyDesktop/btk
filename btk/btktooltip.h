@@ -31,8 +31,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOLTIP                 (btk_tooltip_get_type ())
-#define BTK_TOOLTIP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIP, BtkTooltip))
-#define BTK_IS_TOOLTIP(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIP))
+#define BTK_TOOLTIP(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIP, BtkTooltip))
+#define BTK_IS_TOOLTIP(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIP))
 
 GType btk_tooltip_get_type (void);
 

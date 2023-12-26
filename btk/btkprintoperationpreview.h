@@ -31,9 +31,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_OPERATION_PREVIEW                  (btk_print_operation_preview_get_type ())
-#define BTK_PRINT_OPERATION_PREVIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreview))
-#define BTK_IS_PRINT_OPERATION_PREVIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW))
-#define BTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreviewIface))
+#define BTK_PRINT_OPERATION_PREVIEW(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreview))
+#define BTK_IS_PRINT_OPERATION_PREVIEW(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW))
+#define BTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreviewIface))
 
 typedef struct _BtkPrintOperationPreview      BtkPrintOperationPreview;      /*dummy typedef */
 typedef struct _BtkPrintOperationPreviewIface BtkPrintOperationPreviewIface;

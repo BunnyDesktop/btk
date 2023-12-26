@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_DRAWING_AREA            (btk_drawing_area_get_type ())
-#define BTK_DRAWING_AREA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingArea))
-#define BTK_DRAWING_AREA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
-#define BTK_IS_DRAWING_AREA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DRAWING_AREA))
-#define BTK_IS_DRAWING_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DRAWING_AREA))
-#define BTK_DRAWING_AREA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
+#define BTK_DRAWING_AREA(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingArea))
+#define BTK_DRAWING_AREA_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
+#define BTK_IS_DRAWING_AREA(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DRAWING_AREA))
+#define BTK_IS_DRAWING_AREA_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DRAWING_AREA))
+#define BTK_DRAWING_AREA_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
 
 
 typedef struct _BtkDrawingArea       BtkDrawingArea;

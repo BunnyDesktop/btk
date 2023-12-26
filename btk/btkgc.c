@@ -111,13 +111,13 @@ free_gc_drawable (gpointer data)
 static GHashTable*
 btk_gc_get_drawable_ht (BdkScreen *screen)
 {
-  GHashTable *ht = g_object_get_qdata (G_OBJECT (screen), quark_btk_gc_drawable_ht);
+  GHashTable *ht = g_object_get_qdata (B_OBJECT (screen), quark_btk_gc_drawable_ht);
   if (!ht)
     {
       ht = g_hash_table_new_full ((GHashFunc) btk_gc_drawable_hash,
 				  (GEqualFunc) btk_gc_drawable_equal,
 				  NULL, free_gc_drawable);
-      g_object_set_qdata_full (G_OBJECT (screen), 
+      g_object_set_qdata_full (B_OBJECT (screen), 
 			       quark_btk_gc_drawable_ht, ht, 
 			       (GDestroyNotify)g_hash_table_destroy);
     }

@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_LABEL		  (btk_label_get_type ())
-#define BTK_LABEL(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LABEL, BtkLabel))
-#define BTK_LABEL_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LABEL, BtkLabelClass))
-#define BTK_IS_LABEL(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LABEL))
-#define BTK_IS_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LABEL))
-#define BTK_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LABEL, BtkLabelClass))
+#define BTK_LABEL(obj)		  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LABEL, BtkLabel))
+#define BTK_LABEL_CLASS(klass)	  (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LABEL, BtkLabelClass))
+#define BTK_IS_LABEL(obj)	  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LABEL))
+#define BTK_IS_LABEL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LABEL))
+#define BTK_LABEL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LABEL, BtkLabelClass))
 
 
 typedef struct _BtkLabel       BtkLabel;

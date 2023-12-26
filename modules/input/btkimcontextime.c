@@ -77,20 +77,20 @@ struct _BtkIMContextIMEPrivate
 };
 
 
-/* GObject class methods */
+/* BObject class methods */
 static void btk_im_context_ime_class_init (BtkIMContextIMEClass *class);
 static void btk_im_context_ime_init       (BtkIMContextIME      *context_ime);
-static void btk_im_context_ime_dispose    (GObject              *obj);
-static void btk_im_context_ime_finalize   (GObject              *obj);
+static void btk_im_context_ime_dispose    (BObject              *obj);
+static void btk_im_context_ime_finalize   (BObject              *obj);
 
-static void btk_im_context_ime_set_property (GObject      *object,
+static void btk_im_context_ime_set_property (BObject      *object,
                                              guint         prop_id,
-                                             const GValue *value,
-                                             GParamSpec   *pspec);
-static void btk_im_context_ime_get_property (GObject      *object,
+                                             const BValue *value,
+                                             BParamSpec   *pspec);
+static void btk_im_context_ime_get_property (BObject      *object,
                                              guint         prop_id,
-                                             GValue       *value,
-                                             GParamSpec   *pspec);
+                                             BValue       *value,
+                                             BParamSpec   *pspec);
 
 /* BtkIMContext's virtual functions */
 static void btk_im_context_ime_set_client_window   (BtkIMContext *context,
@@ -124,7 +124,7 @@ static void cb_client_widget_hierarchy_changed  (BtkWidget       *widget,
                                                  BtkIMContextIME *context_ime);
 
 GType btk_type_im_context_ime = 0;
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 
 void
@@ -152,7 +152,7 @@ static void
 btk_im_context_ime_class_init (BtkIMContextIMEClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
@@ -197,7 +197,7 @@ btk_im_context_ime_init (BtkIMContextIME *context_ime)
 
 
 static void
-btk_im_context_ime_dispose (GObject *obj)
+btk_im_context_ime_dispose (BObject *obj)
 {
   BtkIMContext *context = BTK_IM_CONTEXT (obj);
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
@@ -207,13 +207,13 @@ btk_im_context_ime_dispose (GObject *obj)
 
   FREE_PREEDIT_BUFFER (context_ime);
 
-  if (G_OBJECT_CLASS (parent_class)->dispose)
-    G_OBJECT_CLASS (parent_class)->dispose (obj);
+  if (B_OBJECT_CLASS (parent_class)->dispose)
+    B_OBJECT_CLASS (parent_class)->dispose (obj);
 }
 
 
 static void
-btk_im_context_ime_finalize (GObject *obj)
+btk_im_context_ime_finalize (BObject *obj)
 {
   /* BtkIMContext *context = BTK_IM_CONTEXT (obj); */
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
@@ -221,16 +221,16 @@ btk_im_context_ime_finalize (GObject *obj)
   g_free (context_ime->priv);
   context_ime->priv = NULL;
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (obj);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
 
 static void
-btk_im_context_ime_set_property (GObject      *object,
+btk_im_context_ime_set_property (BObject      *object,
                                  guint         prop_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
+                                 const BValue *value,
+                                 BParamSpec   *pspec)
 {
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
@@ -245,10 +245,10 @@ btk_im_context_ime_set_property (GObject      *object,
 
 
 static void
-btk_im_context_ime_get_property (GObject    *object,
+btk_im_context_ime_get_property (BObject    *object,
                                  guint       prop_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
+                                 BValue     *value,
+                                 BParamSpec *pspec)
 {
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
@@ -790,7 +790,7 @@ btk_im_context_ime_focus_out (BtkIMContext *context)
   if (BTK_IS_WIDGET (widget))
     {
       g_signal_handlers_disconnect_by_func
-        (G_OBJECT (widget),
+        (B_OBJECT (widget),
          G_CALLBACK (cb_client_widget_hierarchy_changed), context_ime);
     }
 

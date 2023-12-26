@@ -39,11 +39,11 @@ typedef struct _BdkPixmapImplWin32 BdkPixmapImplWin32;
 typedef struct _BdkPixmapImplWin32Class BdkPixmapImplWin32Class;
 
 #define BDK_TYPE_PIXMAP_IMPL_WIN32              (_bdk_pixmap_impl_win32_get_type ())
-#define BDK_PIXMAP_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32))
-#define BDK_PIXMAP_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
-#define BDK_IS_PIXMAP_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_WIN32))
-#define BDK_IS_PIXMAP_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32))
-#define BDK_PIXMAP_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
+#define BDK_PIXMAP_IMPL_WIN32(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32))
+#define BDK_PIXMAP_IMPL_WIN32_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
+#define BDK_IS_PIXMAP_IMPL_WIN32(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_WIN32))
+#define BDK_IS_PIXMAP_IMPL_WIN32_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32))
+#define BDK_PIXMAP_IMPL_WIN32_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
 
 struct _BdkPixmapImplWin32
 {

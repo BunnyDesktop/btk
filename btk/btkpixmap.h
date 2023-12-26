@@ -35,11 +35,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PIXMAP			 (btk_pixmap_get_type ())
-#define BTK_PIXMAP(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
-#define BTK_PIXMAP_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PIXMAP, BtkPixmapClass))
-#define BTK_IS_PIXMAP(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PIXMAP))
-#define BTK_IS_PIXMAP_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PIXMAP))
-#define BTK_PIXMAP_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PIXMAP, BtkPixmapClass))
+#define BTK_PIXMAP(obj)			 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
+#define BTK_PIXMAP_CLASS(klass)		 (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PIXMAP, BtkPixmapClass))
+#define BTK_IS_PIXMAP(obj)		 (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PIXMAP))
+#define BTK_IS_PIXMAP_CLASS(klass)	 (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PIXMAP))
+#define BTK_PIXMAP_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PIXMAP, BtkPixmapClass))
 
 
 typedef struct _BtkPixmap	BtkPixmap;

@@ -28,8 +28,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_TEST    (btk_print_backend_test_get_type ())
-#define BTK_PRINT_BACKEND_TEST(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_TEST, BtkPrintBackendTest))
-#define BTK_IS_PRINT_BACKEND_TEST(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_TEST))
+#define BTK_PRINT_BACKEND_TEST(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_TEST, BtkPrintBackendTest))
+#define BTK_IS_PRINT_BACKEND_TEST(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_TEST))
 
 typedef struct _BtkPrintBackendTest    BtkPrintBackendTest;
 

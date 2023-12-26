@@ -77,7 +77,7 @@ struct _FilterLevel
   FilterLevel *parent_level;
 };
 
-#define BTK_TREE_MODEL_FILTER_GET_PRIVATE(obj)  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterPrivate))
+#define BTK_TREE_MODEL_FILTER_GET_PRIVATE(obj)  (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterPrivate))
 
 struct _BtkTreeModelFilterPrivate
 {
@@ -135,15 +135,15 @@ enum
 /* general code (object/interface init, properties, etc) */
 static void         btk_tree_model_filter_tree_model_init                 (BtkTreeModelIface       *iface);
 static void         btk_tree_model_filter_drag_source_init                (BtkTreeDragSourceIface  *iface);
-static void         btk_tree_model_filter_finalize                        (GObject                 *object);
-static void         btk_tree_model_filter_set_property                    (GObject                 *object,
+static void         btk_tree_model_filter_finalize                        (BObject                 *object);
+static void         btk_tree_model_filter_set_property                    (BObject                 *object,
                                                                            guint                    prop_id,
-                                                                           const GValue            *value,
-                                                                           GParamSpec              *pspec);
-static void         btk_tree_model_filter_get_property                    (GObject                 *object,
+                                                                           const BValue            *value,
+                                                                           BParamSpec              *pspec);
+static void         btk_tree_model_filter_get_property                    (BObject                 *object,
                                                                            guint                    prop_id,
-                                                                           GValue                 *value,
-                                                                           GParamSpec             *pspec);
+                                                                           BValue                 *value,
+                                                                           BParamSpec             *pspec);
 
 /* signal handlers */
 static void         btk_tree_model_filter_row_changed                     (BtkTreeModel           *c_model,
@@ -183,7 +183,7 @@ static BtkTreePath *btk_tree_model_filter_get_path                        (BtkTr
 static void         btk_tree_model_filter_get_value                       (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            gint                    column,
-                                                                           GValue                 *value);
+                                                                           BValue                 *value);
 static gboolean     btk_tree_model_filter_iter_next                       (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter);
 static gboolean     btk_tree_model_filter_iter_children                   (BtkTreeModel           *model,
@@ -280,7 +280,7 @@ static FilterElt   *bsearch_elt_with_offset                               (GArra
                                                                            gint                  *index);
 
 
-G_DEFINE_TYPE_WITH_CODE (BtkTreeModelFilter, btk_tree_model_filter, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkTreeModelFilter, btk_tree_model_filter, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_MODEL,
 						btk_tree_model_filter_tree_model_init)
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_DRAG_SOURCE,
@@ -302,9 +302,9 @@ btk_tree_model_filter_init (BtkTreeModelFilter *filter)
 static void
 btk_tree_model_filter_class_init (BtkTreeModelFilterClass *filter_class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *) filter_class;
+  object_class = (BObjectClass *) filter_class;
 
   object_class->set_property = btk_tree_model_filter_set_property;
   object_class->get_property = btk_tree_model_filter_get_property;
@@ -362,7 +362,7 @@ btk_tree_model_filter_drag_source_init (BtkTreeDragSourceIface *iface)
 
 
 static void
-btk_tree_model_filter_finalize (GObject *object)
+btk_tree_model_filter_finalize (BObject *object)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *) object;
 
@@ -389,49 +389,49 @@ btk_tree_model_filter_finalize (GObject *object)
     filter->priv->visible_destroy (filter->priv->visible_data);
 
   /* must chain up */
-  G_OBJECT_CLASS (btk_tree_model_filter_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tree_model_filter_parent_class)->finalize (object);
 }
 
 static void
-btk_tree_model_filter_set_property (GObject      *object,
+btk_tree_model_filter_set_property (BObject      *object,
                                     guint         prop_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
+                                    const BValue *value,
+                                    BParamSpec   *pspec)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (object);
 
   switch (prop_id)
     {
       case PROP_CHILD_MODEL:
-        btk_tree_model_filter_set_model (filter, g_value_get_object (value));
+        btk_tree_model_filter_set_model (filter, b_value_get_object (value));
         break;
       case PROP_VIRTUAL_ROOT:
-        btk_tree_model_filter_set_root (filter, g_value_get_boxed (value));
+        btk_tree_model_filter_set_root (filter, b_value_get_boxed (value));
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tree_model_filter_get_property (GObject    *object,
+btk_tree_model_filter_get_property (BObject    *object,
                                     guint       prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
+                                    BValue     *value,
+                                    BParamSpec *pspec)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (object);
 
   switch (prop_id)
     {
       case PROP_CHILD_MODEL:
-        g_value_set_object (value, filter->priv->child_model);
+        b_value_set_object (value, filter->priv->child_model);
         break;
       case PROP_VIRTUAL_ROOT:
-        g_value_set_boxed (value, filter->priv->virtual_root);
+        b_value_set_boxed (value, filter->priv->virtual_root);
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
@@ -768,18 +768,18 @@ btk_tree_model_filter_visible (BtkTreeModelFilter *filter,
     }
   else if (filter->priv->visible_column >= 0)
    {
-     GValue val = {0, };
+     BValue val = {0, };
 
      btk_tree_model_get_value (filter->priv->child_model, child_iter,
                                filter->priv->visible_column, &val);
 
-     if (g_value_get_boolean (&val))
+     if (b_value_get_boolean (&val))
        {
-         g_value_unset (&val);
+         b_value_unset (&val);
          return TRUE;
        }
 
-     g_value_unset (&val);
+     b_value_unset (&val);
      return FALSE;
    }
 
@@ -2210,15 +2210,15 @@ btk_tree_model_filter_get_column_type (BtkTreeModel *model,
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
 
-  g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (model), G_TYPE_INVALID);
-  g_return_val_if_fail (filter->priv->child_model != NULL, G_TYPE_INVALID);
+  g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (model), B_TYPE_INVALID);
+  g_return_val_if_fail (filter->priv->child_model != NULL, B_TYPE_INVALID);
 
   /* so we can't modify the modify func after this ... */
   filter->priv->modify_func_set = TRUE;
 
   if (filter->priv->modify_types)
     {
-      g_return_val_if_fail (index < filter->priv->modify_n_columns, G_TYPE_INVALID);
+      g_return_val_if_fail (index < filter->priv->modify_n_columns, B_TYPE_INVALID);
 
       return filter->priv->modify_types[index];
     }
@@ -2392,7 +2392,7 @@ static void
 btk_tree_model_filter_get_value (BtkTreeModel *model,
                                  BtkTreeIter  *iter,
                                  gint          column,
-                                 GValue       *value)
+                                 BValue       *value)
 {
   BtkTreeIter child_iter;
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (model);
@@ -2405,7 +2405,7 @@ btk_tree_model_filter_get_value (BtkTreeModel *model,
     {
       g_return_if_fail (column < filter->priv->modify_n_columns);
 
-      g_value_init (value, filter->priv->modify_types[column]);
+      b_value_init (value, filter->priv->modify_types[column]);
       filter->priv->modify_func (model,
                            iter,
                            value,
@@ -3126,7 +3126,7 @@ btk_tree_model_filter_set_modify_func (BtkTreeModelFilter           *filter,
  *
  * Sets @column of the child_model to be the column where @filter should
  * look for visibility information. @columns should be a column of type
- * %G_TYPE_BOOLEAN, where %TRUE means that a row is visible, and %FALSE
+ * %B_TYPE_BOOLEAN, where %TRUE means that a row is visible, and %FALSE
  * if not.
  *
  * Since: 2.4

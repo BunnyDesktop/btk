@@ -64,7 +64,7 @@ _bdk_selection_window_destroyed (BdkWindow *window)
       
       if (info->owner == window)
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	}
     }
@@ -89,7 +89,7 @@ _bdk_selection_filter_clear_event (XSelectionClearEvent *event)
 	  if ((BDK_DRAWABLE_XID (info->owner) == event->window &&
 	       event->serial >= info->serial))
 	    {
-	      owner_list = g_slist_remove (owner_list, info);
+	      owner_list = b_slist_remove (owner_list, info);
 	      g_free (info);
 	      return TRUE;
 	    }
@@ -162,7 +162,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info = tmp_list->data;
       if (info->selection == selection) 
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	  break;
 	}
@@ -176,7 +176,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info->serial = NextRequest (BDK_WINDOW_XDISPLAY (owner));
       info->selection = selection;
 
-      owner_list = g_slist_prepend (owner_list, info);
+      owner_list = b_slist_prepend (owner_list, info);
     }
 
   XSetSelectionOwner (xdisplay, xselection, xwindow, time);
@@ -558,7 +558,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -583,7 +583,7 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
   
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }

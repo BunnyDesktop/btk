@@ -31,8 +31,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CLIPBOARD            (btk_clipboard_get_type ())
-#define BTK_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
-#define BTK_IS_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIPBOARD))
+#define BTK_CLIPBOARD(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
+#define BTK_IS_CLIPBOARD(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIPBOARD))
 
 typedef void (* BtkClipboardReceivedFunc)         (BtkClipboard     *clipboard,
 					           BtkSelectionData *selection_data,
@@ -89,8 +89,8 @@ gboolean btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
 				       guint                  n_targets,
 				       BtkClipboardGetFunc    get_func,
 				       BtkClipboardClearFunc  clear_func,
-				       GObject               *owner);
-GObject *btk_clipboard_get_owner      (BtkClipboard          *clipboard);
+				       BObject               *owner);
+BObject *btk_clipboard_get_owner      (BtkClipboard          *clipboard);
 void     btk_clipboard_clear          (BtkClipboard          *clipboard);
 void     btk_clipboard_set_text       (BtkClipboard          *clipboard,
 				       const gchar           *text,

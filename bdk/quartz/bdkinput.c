@@ -81,13 +81,13 @@ static BdkDevice *_bdk_quartz_eraser = NULL;
 static BdkDevice *active_device = NULL;
 
 static void
-bdk_device_finalize (GObject *object)
+bdk_device_finalize (BObject *object)
 {
   g_error ("A BdkDevice object was finalized. This should not happen");
 }
 
 static void
-bdk_device_class_init (GObjectClass *class)
+bdk_device_class_init (BObjectClass *class)
 {
   class->finalize = bdk_device_finalize;
 }
@@ -112,7 +112,7 @@ bdk_device_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkDevice",
                                             &object_info, 0);
     }

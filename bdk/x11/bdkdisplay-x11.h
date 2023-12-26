@@ -39,11 +39,11 @@ typedef struct _BdkDisplayX11 BdkDisplayX11;
 typedef struct _BdkDisplayX11Class BdkDisplayX11Class;
 
 #define BDK_TYPE_DISPLAY_X11              (_bdk_display_x11_get_type())
-#define BDK_DISPLAY_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_X11, BdkDisplayX11))
-#define BDK_DISPLAY_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
-#define BDK_IS_DISPLAY_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_X11))
-#define BDK_IS_DISPLAY_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_X11))
-#define BDK_DISPLAY_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
+#define BDK_DISPLAY_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_X11, BdkDisplayX11))
+#define BDK_DISPLAY_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
+#define BDK_IS_DISPLAY_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_X11))
+#define BDK_IS_DISPLAY_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_X11))
+#define BDK_DISPLAY_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
 
 typedef enum 
 {

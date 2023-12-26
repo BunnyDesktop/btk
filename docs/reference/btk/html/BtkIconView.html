@@ -745,7 +745,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkIconView.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -891,7 +891,7 @@ btk_icon_view_set_text_column (<em class="parameter"><code><a class="link" href=
 <p>Sets the column with text for <em class="parameter"><code>icon_view</code></em>
  to be <em class="parameter"><code>column</code></em>
 . The text
-column must be of type <span class="type">G_TYPE_STRING</span>.</p>
+column must be of type <span class="type">B_TYPE_STRING</span>.</p>
 <div class="refsect3">
 <a name="btk-icon-view-set-text-column.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -953,7 +953,7 @@ btk_icon_view_set_markup_column (<em class="parameter"><code><a class="link" hre
 <p>Sets the column with markup information for <em class="parameter"><code>icon_view</code></em>
  to be
 <em class="parameter"><code>column</code></em>
-. The markup column must be of type <span class="type">G_TYPE_STRING</span>.
+. The markup column must be of type <span class="type">B_TYPE_STRING</span>.
 If the markup column is set to something, it overrides
 the text column set by <a class="link" href="BtkIconView.html#btk-icon-view-set-text-column" title="btk_icon_view_set_text_column ()"><code class="function">btk_icon_view_set_text_column()</code></a>.</p>
 <div class="refsect3">
@@ -3166,7 +3166,7 @@ at the edges of the icon view.</p>
 <p>The ::markup-column property contains the number of the model column
 containing markup information to be displayed. The markup column must be
 
-of type <span class="type">G_TYPE_STRING</span>. If this property and the :text-column property
+of type <span class="type">B_TYPE_STRING</span>. If this property and the :text-column property
 
 are both set to column numbers, it overrides the text column.
 If both are set to -1, no texts are displayed.</p>
@@ -3269,7 +3269,7 @@ the cells (i.e. the icon and the text) of an item.</p>
 <p>The ::text-column property contains the number of the model column
 containing the texts which are displayed. The text column must be
 
-of type <span class="type">G_TYPE_STRING</span>. If this property and the :markup-column
+of type <span class="type">B_TYPE_STRING</span>. If this property and the :markup-column
 
 property are both set to -1, no texts are displayed.</p>
 <p>Owner: BtkIconView</p>

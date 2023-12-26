@@ -32,13 +32,13 @@ static void       bail_label_class_init            (BailLabelClass    *klass);
 static void       bail_label_init                  (BailLabel         *label);
 static void	  bail_label_real_initialize	   (BatkObject 	      *obj,
                                                     gpointer	      data);
-static void	  bail_label_real_notify_btk	   (GObject	      *obj,
-                                                    GParamSpec	      *pspec);
+static void	  bail_label_real_notify_btk	   (BObject	      *obj,
+                                                    BParamSpec	      *pspec);
 static void       bail_label_map_btk               (BtkWidget         *widget,
                                                     gpointer          data);
 static void       bail_label_init_text_util        (BailLabel         *bail_label,
                                                     BtkWidget         *widget);
-static void       bail_label_finalize              (GObject           *object);
+static void       bail_label_finalize              (BObject           *object);
 
 static void       batk_text_interface_init          (BatkTextIface      *iface);
 
@@ -113,7 +113,7 @@ G_DEFINE_TYPE_WITH_CODE (BailLabel, bail_label, BAIL_TYPE_WIDGET,
 static void
 bail_label_class_init (BailLabelClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -217,7 +217,7 @@ notify_name_change (BatkObject *batk_obj)
   BtkLabel *label;
   BailLabel *bail_label;
   BtkWidget *widget;
-  GObject *bail_obj;
+  BObject *bail_obj;
 
   widget = BTK_ACCESSIBLE (batk_obj)->widget;
   if (widget == NULL)
@@ -226,7 +226,7 @@ notify_name_change (BatkObject *batk_obj)
      */
     return;
 
-  bail_obj = G_OBJECT (batk_obj);
+  bail_obj = B_OBJECT (batk_obj);
   label = BTK_LABEL (widget);
   bail_label = BAIL_LABEL (batk_obj);
 
@@ -274,7 +274,7 @@ notify_name_change (BatkObject *batk_obj)
 }
 
 static void
-window_created (GObject *obj,
+window_created (BObject *obj,
                 gpointer data)
 {
   g_return_if_fail (BAIL_LABEL (data));
@@ -283,14 +283,14 @@ window_created (GObject *obj,
 }
 
 static void
-bail_label_real_notify_btk (GObject           *obj,
-                            GParamSpec        *pspec)
+bail_label_real_notify_btk (BObject           *obj,
+                            BParamSpec        *pspec)
 {
   BtkWidget *widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);
   BtkLabel *label;
   BailLabel *bail_label;
-  GObject *bail_obj;
+  BObject *bail_obj;
   BatkObject *top_level;
   BatkObject *temp_obj;
 
@@ -332,7 +332,7 @@ bail_label_real_notify_btk (GObject           *obj,
       gboolean text_caret_moved = FALSE;
       gboolean selection_changed = FALSE;
 
-      bail_obj = G_OBJECT (batk_obj);
+      bail_obj = B_OBJECT (batk_obj);
       label = BTK_LABEL (widget);
 
       if (bail_label->selection_bound != -1 && bail_label->selection_bound < bail_label->cursor_position)
@@ -404,13 +404,13 @@ bail_label_real_notify_btk (GObject           *obj,
 }
 
 static void
-bail_label_finalize (GObject            *object)
+bail_label_finalize (BObject            *object)
 {
   BailLabel *label = BAIL_LABEL (object);
 
   if (label->textutil)
     g_object_unref (label->textutil);
-  G_OBJECT_CLASS (bail_label_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_label_parent_class)->finalize (object);
 }
 
 

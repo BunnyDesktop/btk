@@ -49,7 +49,7 @@ enum {
 /***************************/
 
 static void btk_color_selection_dialog_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject * btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+static BObject * btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 									  BtkBuilder   *builder,
 									  const gchar  *childname);
 
@@ -61,10 +61,10 @@ G_DEFINE_TYPE_WITH_CODE (BtkColorSelectionDialog, btk_color_selection_dialog,
 static BtkBuildableIface *parent_buildable_iface;
 
 static void
-btk_color_selection_dialog_get_property (GObject         *object,
+btk_color_selection_dialog_get_property (BObject         *object,
 					 guint            prop_id,
-					 GValue          *value,
-					 GParamSpec      *pspec)
+					 BValue          *value,
+					 BParamSpec      *pspec)
 {
   BtkColorSelectionDialog *colorsel;
 
@@ -73,19 +73,19 @@ btk_color_selection_dialog_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_COLOR_SELECTION:
-      g_value_set_object (value, colorsel->colorsel);
+      b_value_set_object (value, colorsel->colorsel);
       break;
     case PROP_OK_BUTTON:
-      g_value_set_object (value, colorsel->ok_button);
+      b_value_set_object (value, colorsel->ok_button);
       break;
     case PROP_CANCEL_BUTTON:
-      g_value_set_object (value, colorsel->cancel_button);
+      b_value_set_object (value, colorsel->cancel_button);
       break;
     case PROP_HELP_BUTTON:
-      g_value_set_object (value, colorsel->help_button);
+      b_value_set_object (value, colorsel->help_button);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -93,7 +93,7 @@ btk_color_selection_dialog_get_property (GObject         *object,
 static void
 btk_color_selection_dialog_class_init (BtkColorSelectionDialogClass *klass)
 {
-  GObjectClass   *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass   *bobject_class = B_OBJECT_CLASS (klass);
   bobject_class->get_property = btk_color_selection_dialog_get_property;
 
   g_object_class_install_property (bobject_class,
@@ -212,19 +212,19 @@ btk_color_selection_dialog_buildable_interface_init (BtkBuildableIface *iface)
   iface->get_internal_child = btk_color_selection_dialog_buildable_get_internal_child;
 }
 
-static GObject *
+static BObject *
 btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 							 BtkBuilder   *builder,
 							 const gchar  *childname)
 {
     if (strcmp(childname, "ok_button") == 0)
-	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->ok_button);
+	return B_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->ok_button);
     else if (strcmp(childname, "cancel_button") == 0)
-	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->cancel_button);
+	return B_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->cancel_button);
     else if (strcmp(childname, "help_button") == 0)
-	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->help_button);
+	return B_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->help_button);
     else if (strcmp(childname, "color_selection") == 0)
-	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->colorsel);
+	return B_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->colorsel);
 
     return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }

@@ -31,18 +31,18 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL_FILTER              (btk_tree_model_filter_get_type ())
-#define BTK_TREE_MODEL_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilter))
-#define BTK_TREE_MODEL_FILTER_CLASS(vtable)     (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterClass))
-#define BTK_IS_TREE_MODEL_FILTER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_FILTER))
-#define BTK_IS_TREE_MODEL_FILTER_CLASS(vtable)  (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_TREE_MODEL_FILTER))
-#define BTK_TREE_MODEL_FILTER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterClass))
+#define BTK_TREE_MODEL_FILTER(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilter))
+#define BTK_TREE_MODEL_FILTER_CLASS(vtable)     (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterClass))
+#define BTK_IS_TREE_MODEL_FILTER(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_FILTER))
+#define BTK_IS_TREE_MODEL_FILTER_CLASS(vtable)  (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_TREE_MODEL_FILTER))
+#define BTK_TREE_MODEL_FILTER_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterClass))
 
 typedef gboolean (* BtkTreeModelFilterVisibleFunc) (BtkTreeModel *model,
                                                     BtkTreeIter  *iter,
                                                     gpointer      data);
 typedef void (* BtkTreeModelFilterModifyFunc) (BtkTreeModel *model,
                                                BtkTreeIter  *iter,
-                                               GValue       *value,
+                                               BValue       *value,
                                                gint          column,
                                                gpointer      data);
 
@@ -52,7 +52,7 @@ typedef struct _BtkTreeModelFilterPrivate   BtkTreeModelFilterPrivate;
 
 struct _BtkTreeModelFilter
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
   BtkTreeModelFilterPrivate *GSEAL (priv);
@@ -60,7 +60,7 @@ struct _BtkTreeModelFilter
 
 struct _BtkTreeModelFilterClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved0) (void);

@@ -48,11 +48,11 @@ typedef struct _BdkXPositionInfo BdkXPositionInfo;
  */
 
 #define BDK_TYPE_WINDOW_IMPL_X11              (bdk_window_impl_x11_get_type ())
-#define BDK_WINDOW_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11))
-#define BDK_WINDOW_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
-#define BDK_IS_WINDOW_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_X11))
-#define BDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_X11))
-#define BDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
+#define BDK_WINDOW_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11))
+#define BDK_WINDOW_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
+#define BDK_IS_WINDOW_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
 
 struct _BdkWindowImplX11
 {

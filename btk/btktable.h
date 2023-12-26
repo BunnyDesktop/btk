@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TABLE			(btk_table_get_type ())
-#define BTK_TABLE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TABLE, BtkTable))
-#define BTK_TABLE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TABLE, BtkTableClass))
-#define BTK_IS_TABLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TABLE))
-#define BTK_IS_TABLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TABLE))
-#define BTK_TABLE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TABLE, BtkTableClass))
+#define BTK_TABLE(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TABLE, BtkTable))
+#define BTK_TABLE_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TABLE, BtkTableClass))
+#define BTK_IS_TABLE(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TABLE))
+#define BTK_IS_TABLE_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TABLE))
+#define BTK_TABLE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TABLE, BtkTableClass))
 
 
 typedef struct _BtkTable	BtkTable;

@@ -167,15 +167,15 @@ btk_tips_query_class_init (BtkTipsQueryClass *class)
 		    BTK_TYPE_STRING);
   tips_query_signals[SIGNAL_WIDGET_SELECTED] =
     g_signal_new (I_("widget-selected"),
-                  G_TYPE_FROM_CLASS(object_class),
+                  B_TYPE_FROM_CLASS(object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET(BtkTipsQueryClass, widget_selected),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__OBJECT_STRING_STRING_BOXED,
-                  G_TYPE_BOOLEAN, 4,
+                  B_TYPE_BOOLEAN, 4,
                   BTK_TYPE_WIDGET,
-                  G_TYPE_STRING,
-                  G_TYPE_STRING,
+                  B_TYPE_STRING,
+                  B_TYPE_STRING,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 }
 

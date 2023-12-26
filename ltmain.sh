@@ -5665,7 +5665,7 @@ void lt_fatal (const char *file, int line, const char *message, ...);
 static const char *nonnull (const char *s);
 static const char *nonempty (const char *s);
 void lt_setenv (const char *name, const char *value);
-char *lt_extend_str (const char *orig_value, const char *add, int to_end);
+char *lt_extend_str (const char *orib_value, const char *add, int to_end);
 void lt_update_exe_path (const char *name, const char *value);
 void lt_update_lib_path (const char *name, const char *value);
 char **prepare_spawn (char **argv);
@@ -6253,23 +6253,23 @@ lt_setenv (const char *name, const char *value)
 }
 
 char *
-lt_extend_str (const char *orig_value, const char *add, int to_end)
+lt_extend_str (const char *orib_value, const char *add, int to_end)
 {
   char *new_value;
-  if (orig_value && *orig_value)
+  if (orib_value && *orib_value)
     {
-      size_t orig_value_len = strlen (orig_value);
+      size_t orib_value_len = strlen (orib_value);
       size_t add_len = strlen (add);
-      new_value = XMALLOC (char, add_len + orig_value_len + 1);
+      new_value = XMALLOC (char, add_len + orib_value_len + 1);
       if (to_end)
         {
-          strcpy (new_value, orig_value);
-          strcpy (new_value + orig_value_len, add);
+          strcpy (new_value, orib_value);
+          strcpy (new_value + orib_value_len, add);
         }
       else
         {
           strcpy (new_value, add);
-          strcpy (new_value + add_len, orig_value);
+          strcpy (new_value + add_len, orib_value);
         }
     }
   else

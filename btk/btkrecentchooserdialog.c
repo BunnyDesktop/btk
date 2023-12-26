@@ -40,20 +40,20 @@ struct _BtkRecentChooserDialogPrivate
 
 static void btk_recent_chooser_dialog_class_init (BtkRecentChooserDialogClass *klass);
 static void btk_recent_chooser_dialog_init       (BtkRecentChooserDialog      *dialog);
-static void btk_recent_chooser_dialog_finalize   (GObject                     *object);
+static void btk_recent_chooser_dialog_finalize   (BObject                     *object);
 
-static GObject *btk_recent_chooser_dialog_constructor (GType                  type,
+static BObject *btk_recent_chooser_dialog_constructor (GType                  type,
 						       guint                  n_construct_properties,
-						       GObjectConstructParam *construct_params);
+						       BObjectConstructParam *construct_params);
 
-static void btk_recent_chooser_dialog_set_property (GObject      *object,
+static void btk_recent_chooser_dialog_set_property (BObject      *object,
 						    guint         prop_id,
-						    const GValue *value,
-						    GParamSpec   *pspec);
-static void btk_recent_chooser_dialog_get_property (GObject      *object,
+						    const BValue *value,
+						    BParamSpec   *pspec);
+static void btk_recent_chooser_dialog_get_property (BObject      *object,
 						    guint         prop_id,
-						    GValue       *value,
-						    GParamSpec   *pspec);
+						    BValue       *value,
+						    BParamSpec   *pspec);
 
 static void btk_recent_chooser_dialog_map       (BtkWidget *widget);
 static void btk_recent_chooser_dialog_unmap     (BtkWidget *widget);
@@ -67,7 +67,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkRecentChooserDialog,
 static void
 btk_recent_chooser_dialog_class_init (BtkRecentChooserDialogClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   
   bobject_class->set_property = btk_recent_chooser_dialog_set_property;
@@ -86,7 +86,7 @@ btk_recent_chooser_dialog_class_init (BtkRecentChooserDialogClass *klass)
 static void
 btk_recent_chooser_dialog_init (BtkRecentChooserDialog *dialog)
 {
-  BtkRecentChooserDialogPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (dialog,
+  BtkRecentChooserDialogPrivate *priv = B_TYPE_INSTANCE_GET_PRIVATE (dialog,
   								     BTK_TYPE_RECENT_CHOOSER_DIALOG,
   								     BtkRecentChooserDialogPrivate);
   BtkDialog *rc_dialog = BTK_DIALOG (dialog);
@@ -141,15 +141,15 @@ btk_recent_chooser_item_activated_cb (BtkRecentChooser *chooser,
   g_list_free (children);
 }
 
-static GObject *
+static BObject *
 btk_recent_chooser_dialog_constructor (GType                  type,
 				       guint                  n_construct_properties,
-				       GObjectConstructParam *construct_params)
+				       BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
   BtkRecentChooserDialogPrivate *priv;
   
-  object = G_OBJECT_CLASS (btk_recent_chooser_dialog_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_recent_chooser_dialog_parent_class)->constructor (type,
 		  							         n_construct_properties,
 										 construct_params);
   priv = BTK_RECENT_CHOOSER_DIALOG_GET_PRIVATE (object);
@@ -181,10 +181,10 @@ btk_recent_chooser_dialog_constructor (GType                  type,
 }
 
 static void
-btk_recent_chooser_dialog_set_property (GObject      *object,
+btk_recent_chooser_dialog_set_property (BObject      *object,
 					guint         prop_id,
-					const GValue *value,
-					GParamSpec   *pspec)
+					const BValue *value,
+					BParamSpec   *pspec)
 {
   BtkRecentChooserDialogPrivate *priv;
   
@@ -193,35 +193,35 @@ btk_recent_chooser_dialog_set_property (GObject      *object,
   switch (prop_id)
     {
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
-      priv->manager = g_value_get_object (value);
+      priv->manager = b_value_get_object (value);
       break;
     default:
-      g_object_set_property (G_OBJECT (priv->chooser), pspec->name, value);
+      g_object_set_property (B_OBJECT (priv->chooser), pspec->name, value);
       break;
     }
 }
 
 static void
-btk_recent_chooser_dialog_get_property (GObject      *object,
+btk_recent_chooser_dialog_get_property (BObject      *object,
 					guint         prop_id,
-					GValue       *value,
-					GParamSpec   *pspec)
+					BValue       *value,
+					BParamSpec   *pspec)
 {
   BtkRecentChooserDialogPrivate *priv;
   
   priv = BTK_RECENT_CHOOSER_DIALOG_GET_PRIVATE (object);
   
-  g_object_get_property (G_OBJECT (priv->chooser), pspec->name, value);
+  g_object_get_property (B_OBJECT (priv->chooser), pspec->name, value);
 }
 
 static void
-btk_recent_chooser_dialog_finalize (GObject *object)
+btk_recent_chooser_dialog_finalize (BObject *object)
 {
   BtkRecentChooserDialog *dialog = BTK_RECENT_CHOOSER_DIALOG (object);
  
   dialog->priv->manager = NULL;
   
-  G_OBJECT_CLASS (btk_recent_chooser_dialog_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_recent_chooser_dialog_parent_class)->finalize (object);
 }
 
 static void

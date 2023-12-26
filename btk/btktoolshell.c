@@ -50,7 +50,7 @@ btk_tool_shell_get_type (void)
 
   if (!type)
     {
-      type = g_type_register_static_simple (G_TYPE_INTERFACE, I_("BtkToolShell"),
+      type = g_type_register_static_simple (B_TYPE_INTERFACE, I_("BtkToolShell"),
                                             sizeof (BtkToolShellIface),
                                             NULL, 0, NULL, 0);
       g_type_interface_add_prerequisite (type, BTK_TYPE_WIDGET);

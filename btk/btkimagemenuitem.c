@@ -57,15 +57,15 @@ static void btk_image_menu_item_forall               (BtkContainer    *container
 						      BtkCallback      callback,
 						      gpointer         callback_data);
 
-static void btk_image_menu_item_finalize             (GObject         *object);
-static void btk_image_menu_item_set_property         (GObject         *object,
+static void btk_image_menu_item_finalize             (BObject         *object);
+static void btk_image_menu_item_set_property         (BObject         *object,
 						      guint            prop_id,
-						      const GValue    *value,
-						      GParamSpec      *pspec);
-static void btk_image_menu_item_get_property         (GObject         *object,
+						      const BValue    *value,
+						      BParamSpec      *pspec);
+static void btk_image_menu_item_get_property         (BObject         *object,
 						      guint            prop_id,
-						      GValue          *value,
-						      GParamSpec      *pspec);
+						      BValue          *value,
+						      BParamSpec      *pspec);
 static void btk_image_menu_item_screen_changed       (BtkWidget        *widget,
 						      BdkScreen        *previous_screen);
 
@@ -100,12 +100,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkImageMenuItem, btk_image_menu_item, BTK_TYPE_MENU_IT
 						btk_image_menu_item_activatable_interface_init))
 
 #define GET_PRIVATE(object)  \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_IMAGE_MENU_ITEM, BtkImageMenuItemPrivate))
+  (B_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_IMAGE_MENU_ITEM, BtkImageMenuItemPrivate))
 
 static void
 btk_image_menu_item_class_init (BtkImageMenuItemClass *klass)
 {
-  GObjectClass *bobject_class = (GObjectClass*) klass;
+  BObjectClass *bobject_class = (BObjectClass*) klass;
   BtkObjectClass *object_class = (BtkObjectClass*) klass;
   BtkWidgetClass *widget_class = (BtkWidgetClass*) klass;
   BtkMenuItemClass *menu_item_class = (BtkMenuItemClass*) klass;
@@ -201,65 +201,65 @@ btk_image_menu_item_init (BtkImageMenuItem *image_menu_item)
 }
 
 static void 
-btk_image_menu_item_finalize (GObject *object)
+btk_image_menu_item_finalize (BObject *object)
 {
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->label);
   priv->label  = NULL;
 
-  G_OBJECT_CLASS (btk_image_menu_item_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_image_menu_item_parent_class)->finalize (object);
 }
 
 static void
-btk_image_menu_item_set_property (GObject         *object,
+btk_image_menu_item_set_property (BObject         *object,
                                   guint            prop_id,
-                                  const GValue    *value,
-                                  GParamSpec      *pspec)
+                                  const BValue    *value,
+                                  BParamSpec      *pspec)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_IMAGE:
-      btk_image_menu_item_set_image (image_menu_item, (BtkWidget *) g_value_get_object (value));
+      btk_image_menu_item_set_image (image_menu_item, (BtkWidget *) b_value_get_object (value));
       break;
     case PROP_USE_STOCK:
-      btk_image_menu_item_set_use_stock (image_menu_item, g_value_get_boolean (value));
+      btk_image_menu_item_set_use_stock (image_menu_item, b_value_get_boolean (value));
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      btk_image_menu_item_set_always_show_image (image_menu_item, g_value_get_boolean (value));
+      btk_image_menu_item_set_always_show_image (image_menu_item, b_value_get_boolean (value));
       break;
     case PROP_ACCEL_GROUP:
-      btk_image_menu_item_set_accel_group (image_menu_item, g_value_get_object (value));
+      btk_image_menu_item_set_accel_group (image_menu_item, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_image_menu_item_get_property (GObject         *object,
+btk_image_menu_item_get_property (BObject         *object,
                                   guint            prop_id,
-                                  GValue          *value,
-                                  GParamSpec      *pspec)
+                                  BValue          *value,
+                                  BParamSpec      *pspec)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_IMAGE:
-      g_value_set_object (value, btk_image_menu_item_get_image (image_menu_item));
+      b_value_set_object (value, btk_image_menu_item_get_image (image_menu_item));
       break;
     case PROP_USE_STOCK:
-      g_value_set_boolean (value, btk_image_menu_item_get_use_stock (image_menu_item));      
+      b_value_set_boolean (value, btk_image_menu_item_get_use_stock (image_menu_item));      
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      g_value_set_boolean (value, btk_image_menu_item_get_always_show_image (image_menu_item));
+      b_value_set_boolean (value, btk_image_menu_item_get_always_show_image (image_menu_item));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -383,7 +383,7 @@ btk_image_menu_item_set_label (BtkMenuItem      *menu_item,
 
       btk_image_menu_item_recalculate (BTK_IMAGE_MENU_ITEM (menu_item));
 
-      g_object_notify (G_OBJECT (menu_item), "label");
+      g_object_notify (B_OBJECT (menu_item), "label");
 
     }
 }
@@ -769,7 +769,7 @@ btk_image_menu_item_set_use_stock (BtkImageMenuItem *image_menu_item,
 
       btk_image_menu_item_recalculate (image_menu_item);
 
-      g_object_notify (G_OBJECT (image_menu_item), "use-stock");
+      g_object_notify (B_OBJECT (image_menu_item), "use-stock");
     }
 }
 
@@ -832,7 +832,7 @@ btk_image_menu_item_set_always_show_image (BtkImageMenuItem *image_menu_item,
             btk_widget_hide (image_menu_item->image);
         }
 
-      g_object_notify (G_OBJECT (image_menu_item), "always-show-image");
+      g_object_notify (B_OBJECT (image_menu_item), "always-show-image");
     }
 }
 
@@ -901,7 +901,7 @@ btk_image_menu_item_set_accel_group (BtkImageMenuItem *image_menu_item,
 				    stock_item.modifier,
 				    BTK_ACCEL_VISIBLE);
 	
-	g_object_notify (G_OBJECT (image_menu_item), "accel-group");
+	g_object_notify (B_OBJECT (image_menu_item), "accel-group");
       }
 }
 
@@ -938,7 +938,7 @@ btk_image_menu_item_set_image (BtkImageMenuItem *image_menu_item,
 		"no-show-all", TRUE,
 		NULL);
 
-  g_object_notify (G_OBJECT (image_menu_item), "image");
+  g_object_notify (B_OBJECT (image_menu_item), "image");
 }
 
 /**
@@ -979,7 +979,7 @@ btk_image_menu_item_remove (BtkContainer *container,
           btk_widget_get_visible (BTK_WIDGET (container)))
         btk_widget_queue_resize (BTK_WIDGET (container));
 
-      g_object_notify (G_OBJECT (image_menu_item), "image");
+      g_object_notify (B_OBJECT (image_menu_item), "image");
     }
   else
     {
@@ -1036,7 +1036,7 @@ btk_image_menu_item_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
   
   show_image_connection = 
-    GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (settings), 
+    GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
 					 "btk-image-menu-item-connection"));
   
   if (show_image_connection)
@@ -1045,7 +1045,7 @@ btk_image_menu_item_screen_changed (BtkWidget *widget,
   show_image_connection =
     g_signal_connect (settings, "notify::btk-menu-images",
 		      G_CALLBACK (btk_image_menu_item_setting_changed), NULL);
-  g_object_set_data (G_OBJECT (settings), 
+  g_object_set_data (B_OBJECT (settings), 
 		     I_("btk-image-menu-item-connection"),
 		     GUINT_TO_POINTER (show_image_connection));
 

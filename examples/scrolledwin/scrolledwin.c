@@ -23,7 +23,7 @@ int main( int   argc,
     /* Create a new dialog window for the scrolled window to be
      * packed into.  */
     window = btk_dialog_new ();
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
 		      G_CALLBACK (destroy), NULL);
     btk_window_set_title (BTK_WINDOW (window), "BtkScrolledWindow example");
     btk_container_set_border_width (BTK_CONTAINER (window), 0);
@@ -71,9 +71,9 @@ int main( int   argc,
     
     /* Add a "close" button to the bottom of the dialog */
     button = btk_button_new_with_label ("close");
-    g_signal_connect_swapped (G_OBJECT (button), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button), "clicked",
 			      G_CALLBACK (btk_widget_destroy),
-			      G_OBJECT (window));
+			      B_OBJECT (window));
     
     /* this makes it so the button is the default. */
     

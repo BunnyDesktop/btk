@@ -50,15 +50,15 @@ enum {
 };
 
 
-static void   btk_preview_set_property  (GObject          *object,
+static void   btk_preview_set_property  (BObject          *object,
 					 guint             prop_id,
-					 const GValue     *value,
-					 GParamSpec       *pspec);
-static void   btk_preview_get_property  (GObject          *object,
+					 const BValue     *value,
+					 BParamSpec       *pspec);
+static void   btk_preview_get_property  (BObject          *object,
 					 guint             prop_id,
-					 GValue           *value,
-					 GParamSpec       *pspec);
-static void   btk_preview_finalize      (GObject          *object);
+					 BValue           *value,
+					 BParamSpec       *pspec);
+static void   btk_preview_finalize      (BObject          *object);
 static void   btk_preview_realize       (BtkWidget        *widget);
 static void   btk_preview_size_allocate (BtkWidget        *widget,
 					 BtkAllocation    *allocation);
@@ -76,7 +76,7 @@ G_DEFINE_TYPE (BtkPreview, btk_preview, BTK_TYPE_WIDGET)
 static void
 btk_preview_class_init (BtkPreviewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class;
 
   widget_class = (BtkWidgetClass*) klass;
@@ -106,29 +106,29 @@ btk_preview_class_init (BtkPreviewClass *klass)
 }
 
 static void
-btk_preview_set_property (GObject      *object,
+btk_preview_set_property (BObject      *object,
 			  guint         prop_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
+			  const BValue *value,
+			  BParamSpec   *pspec)
 {
   BtkPreview *preview = BTK_PREVIEW (object);
   
   switch (prop_id)
     {
     case PROP_EXPAND:
-      btk_preview_set_expand (preview, g_value_get_boolean (value));
+      btk_preview_set_expand (preview, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_preview_get_property (GObject      *object,
+btk_preview_get_property (BObject      *object,
 			  guint         prop_id,
-			  GValue       *value,
-			  GParamSpec   *pspec)
+			  BValue       *value,
+			  BParamSpec   *pspec)
 {
   BtkPreview *preview;
   
@@ -137,10 +137,10 @@ btk_preview_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_EXPAND:
-      g_value_set_boolean (value, preview->expand);
+      b_value_set_boolean (value, preview->expand);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -331,7 +331,7 @@ btk_preview_set_expand (BtkPreview *preview,
       preview->expand = expand;
       btk_widget_queue_resize (BTK_WIDGET (preview));
  
-      g_object_notify (G_OBJECT (preview), "expand"); 
+      g_object_notify (B_OBJECT (preview), "expand"); 
     }
 }
 
@@ -405,13 +405,13 @@ btk_preview_get_info (void)
 
 
 static void
-btk_preview_finalize (GObject *object)
+btk_preview_finalize (BObject *object)
 {
   BtkPreview *preview = BTK_PREVIEW (object);
 
   g_free (preview->buffer);
 
-  G_OBJECT_CLASS (btk_preview_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_preview_parent_class)->finalize (object);
 }
 
 static void

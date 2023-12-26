@@ -38,7 +38,7 @@ static void delegate_response_requested       (BtkFileChooserEmbed *chooser_embe
 static BtkFileChooserEmbed *
 get_delegate (BtkFileChooserEmbed *receiver)
 {
-  return g_object_get_data (G_OBJECT (receiver), "btk-file-chooser-embed-delegate");
+  return g_object_get_data (B_OBJECT (receiver), "btk-file-chooser-embed-delegate");
 }
 
 /**
@@ -61,7 +61,7 @@ _btk_file_chooser_embed_delegate_iface_init (BtkFileChooserEmbedIface *iface)
 /**
  * _btk_file_chooser_embed_set_delegate:
  * @receiver: a GOobject implementing #BtkFileChooserEmbed
- * @delegate: another GObject implementing #BtkFileChooserEmbed
+ * @delegate: another BObject implementing #BtkFileChooserEmbed
  *
  * Establishes that calls on @receiver for #BtkFileChooser methods should be
  * delegated to @delegate, and that #BtkFileChooser signals emitted on @delegate
@@ -75,7 +75,7 @@ _btk_file_chooser_embed_set_delegate (BtkFileChooserEmbed *receiver,
   g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (receiver));
   g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (delegate));
   
-  g_object_set_data (G_OBJECT (receiver), I_("btk-file-chooser-embed-delegate"), delegate);
+  g_object_set_data (B_OBJECT (receiver), I_("btk-file-chooser-embed-delegate"), delegate);
 
   g_signal_connect (delegate, "default-size-changed",
 		    G_CALLBACK (delegate_default_size_changed), receiver);
@@ -137,7 +137,7 @@ _btk_file_chooser_embed_get_type (void)
 	(GClassInitFunc)btk_file_chooser_embed_class_init, /* class_init */
       };
 
-      file_chooser_embed_type = g_type_register_static (G_TYPE_INTERFACE,
+      file_chooser_embed_type = g_type_register_static (B_TYPE_INTERFACE,
 							I_("BtkFileChooserEmbed"),
 							&file_chooser_embed_info, 0);
 
@@ -150,7 +150,7 @@ _btk_file_chooser_embed_get_type (void)
 static void
 btk_file_chooser_embed_class_init (gpointer g_iface)
 {
-  GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
+  GType iface_type = B_TYPE_FROM_INTERFACE (g_iface);
 
   g_signal_new (I_("default-size-changed"),
 		iface_type,
@@ -158,14 +158,14 @@ btk_file_chooser_embed_class_init (gpointer g_iface)
 		G_STRUCT_OFFSET (BtkFileChooserEmbedIface, default_size_changed),
 		NULL, NULL,
 		_btk_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
   g_signal_new (I_("response-requested"),
 		iface_type,
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (BtkFileChooserEmbedIface, response_requested),
 		NULL, NULL,
 		_btk_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
 }
 
 void

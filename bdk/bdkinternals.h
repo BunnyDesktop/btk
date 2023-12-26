@@ -521,9 +521,9 @@ void _bdk_windowing_window_set_composited (BdkWindow *window,
 					   gboolean composited);
 
 #define BDK_TYPE_PAINTABLE            (_bdk_paintable_get_type ())
-#define BDK_PAINTABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_PAINTABLE, BdkPaintable))
-#define BDK_IS_PAINTABLE(obj)	      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_PAINTABLE))
-#define BDK_PAINTABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_PAINTABLE, BdkPaintableIface))
+#define BDK_PAINTABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_PAINTABLE, BdkPaintable))
+#define BDK_IS_PAINTABLE(obj)	      (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_PAINTABLE))
+#define BDK_PAINTABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_PAINTABLE, BdkPaintableIface))
 
 typedef struct _BdkPaintable        BdkPaintable;
 typedef struct _BdkPaintableIface   BdkPaintableIface;
@@ -691,8 +691,8 @@ BdkRebunnyion  *_bdk_rebunnyion_new_from_yxbanded_rects (BdkRectangle *rects, in
  *****************************/
 typedef struct _BdkOffscreenWindow      BdkOffscreenWindow;
 #define BDK_TYPE_OFFSCREEN_WINDOW            (bdk_offscreen_window_get_type())
-#define BDK_OFFSCREEN_WINDOW(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindow))
-#define BDK_IS_OFFSCREEN_WINDOW(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_OFFSCREEN_WINDOW))
+#define BDK_OFFSCREEN_WINDOW(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindow))
+#define BDK_IS_OFFSCREEN_WINDOW(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_OFFSCREEN_WINDOW))
 GType bdk_offscreen_window_get_type (void);
 BdkDrawable * _bdk_offscreen_window_get_real_drawable (BdkOffscreenWindow *window);
 void       _bdk_offscreen_window_new                 (BdkWindow     *window,

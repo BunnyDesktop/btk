@@ -30,11 +30,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_CUPS                  (btk_printer_cups_get_type ())
-#define BTK_PRINTER_CUPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCups))
-#define BTK_PRINTER_CUPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
-#define BTK_IS_PRINTER_CUPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_CUPS))
-#define BTK_IS_PRINTER_CUPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_CUPS))
-#define BTK_PRINTER_CUPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
+#define BTK_PRINTER_CUPS(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCups))
+#define BTK_PRINTER_CUPS_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
+#define BTK_IS_PRINTER_CUPS(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_CUPS))
+#define BTK_IS_PRINTER_CUPS_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_CUPS))
+#define BTK_PRINTER_CUPS_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
 
 typedef struct _BtkPrinterCups	        BtkPrinterCups;
 typedef struct _BtkPrinterCupsClass     BtkPrinterCupsClass;

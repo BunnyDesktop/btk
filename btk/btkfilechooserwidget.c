@@ -31,19 +31,19 @@
 
 #define BTK_FILE_CHOOSER_WIDGET_GET_PRIVATE(o)  (BTK_FILE_CHOOSER_WIDGET (o)->priv)
 
-static void btk_file_chooser_widget_finalize     (GObject                   *object);
+static void btk_file_chooser_widget_finalize     (BObject                   *object);
 
-static GObject* btk_file_chooser_widget_constructor  (GType                  type,
+static BObject* btk_file_chooser_widget_constructor  (GType                  type,
 						      guint                  n_construct_properties,
-						      GObjectConstructParam *construct_params);
-static void     btk_file_chooser_widget_set_property (GObject               *object,
+						      BObjectConstructParam *construct_params);
+static void     btk_file_chooser_widget_set_property (BObject               *object,
 						      guint                  prop_id,
-						      const GValue          *value,
-						      GParamSpec            *pspec);
-static void     btk_file_chooser_widget_get_property (GObject               *object,
+						      const BValue          *value,
+						      BParamSpec            *pspec);
+static void     btk_file_chooser_widget_get_property (BObject               *object,
 						      guint                  prop_id,
-						      GValue                *value,
-						      GParamSpec            *pspec);
+						      BValue                *value,
+						      BParamSpec            *pspec);
 
 G_DEFINE_TYPE_WITH_CODE (BtkFileChooserWidget, btk_file_chooser_widget, BTK_TYPE_VBOX,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_FILE_CHOOSER,
@@ -54,7 +54,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkFileChooserWidget, btk_file_chooser_widget, BTK_TYPE
 static void
 btk_file_chooser_widget_class_init (BtkFileChooserWidgetClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   bobject_class->constructor = btk_file_chooser_widget_constructor;
   bobject_class->set_property = btk_file_chooser_widget_set_property;
@@ -69,31 +69,31 @@ btk_file_chooser_widget_class_init (BtkFileChooserWidgetClass *class)
 static void
 btk_file_chooser_widget_init (BtkFileChooserWidget *chooser_widget)
 {
-  BtkFileChooserWidgetPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (chooser_widget,
+  BtkFileChooserWidgetPrivate *priv = B_TYPE_INSTANCE_GET_PRIVATE (chooser_widget,
 								   BTK_TYPE_FILE_CHOOSER_WIDGET,
 								   BtkFileChooserWidgetPrivate);
   chooser_widget->priv = priv;
 }
 
 static void
-btk_file_chooser_widget_finalize (GObject *object)
+btk_file_chooser_widget_finalize (BObject *object)
 {
   BtkFileChooserWidget *chooser = BTK_FILE_CHOOSER_WIDGET (object);
 
   g_free (chooser->priv->file_system);
 
-  G_OBJECT_CLASS (btk_file_chooser_widget_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_file_chooser_widget_parent_class)->finalize (object);
 }
 
-static GObject*
+static BObject*
 btk_file_chooser_widget_constructor (GType                  type,
 				     guint                  n_construct_properties,
-				     GObjectConstructParam *construct_params)
+				     BObjectConstructParam *construct_params)
 {
   BtkFileChooserWidgetPrivate *priv;
-  GObject *object;
+  BObject *object;
   
-  object = G_OBJECT_CLASS (btk_file_chooser_widget_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_file_chooser_widget_parent_class)->constructor (type,
 									       n_construct_properties,
 									       construct_params);
   priv = BTK_FILE_CHOOSER_WIDGET_GET_PRIVATE (object);
@@ -117,10 +117,10 @@ btk_file_chooser_widget_constructor (GType                  type,
 }
 
 static void
-btk_file_chooser_widget_set_property (GObject         *object,
+btk_file_chooser_widget_set_property (BObject         *object,
 				      guint            prop_id,
-				      const GValue    *value,
-				      GParamSpec      *pspec)
+				      const BValue    *value,
+				      BParamSpec      *pspec)
 {
   BtkFileChooserWidgetPrivate *priv = BTK_FILE_CHOOSER_WIDGET_GET_PRIVATE (object);
 
@@ -128,23 +128,23 @@ btk_file_chooser_widget_set_property (GObject         *object,
     {
     case BTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND:
       g_free (priv->file_system);
-      priv->file_system = g_value_dup_string (value);
+      priv->file_system = b_value_dup_string (value);
       break;
     default:
-      g_object_set_property (G_OBJECT (priv->impl), pspec->name, value);
+      g_object_set_property (B_OBJECT (priv->impl), pspec->name, value);
       break;
     }
 }
 
 static void
-btk_file_chooser_widget_get_property (GObject         *object,
+btk_file_chooser_widget_get_property (BObject         *object,
 				      guint            prop_id,
-				      GValue          *value,
-				      GParamSpec      *pspec)
+				      BValue          *value,
+				      BParamSpec      *pspec)
 {
   BtkFileChooserWidgetPrivate *priv = BTK_FILE_CHOOSER_WIDGET_GET_PRIVATE (object);
   
-  g_object_get_property (G_OBJECT (priv->impl), pspec->name, value);
+  g_object_get_property (B_OBJECT (priv->impl), pspec->name, value);
 }
 
 /**

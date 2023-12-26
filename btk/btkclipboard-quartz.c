@@ -52,7 +52,7 @@ typedef struct _BtkClipboardClass BtkClipboardClass;
 
 struct _BtkClipboard
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   NSPasteboard *pasteboard;
   BtkClipboardOwner *owner;
@@ -82,14 +82,14 @@ struct _BtkClipboard
 
 struct _BtkClipboardClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*owner_change) (BtkClipboard        *clipboard,
 			BdkEventOwnerChange *event);
 };
 
 static void btk_clipboard_class_init   (BtkClipboardClass   *class);
-static void btk_clipboard_finalize     (GObject             *object);
+static void btk_clipboard_finalize     (BObject             *object);
 static void btk_clipboard_owner_change (BtkClipboard        *clipboard,
 					BdkEventOwnerChange *event);
 
@@ -159,7 +159,7 @@ static BtkClipboard *clipboard_peek       (BdkDisplay       *display,
 static const gchar clipboards_owned_key[] = "btk-clipboards-owned";
 static GQuark clipboards_owned_key_id = 0;
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 static guint         clipboard_signals[LAST_SIGNAL] = { 0 };
 
 GType
@@ -182,7 +182,7 @@ btk_clipboard_get_type (void)
 	(GInstanceInitFunc) NULL,
       };
 
-      clipboard_type = g_type_register_static (G_TYPE_OBJECT, I_("BtkClipboard"),
+      clipboard_type = g_type_register_static (B_TYPE_OBJECT, I_("BtkClipboard"),
 					       &clipboard_info, 0);
     }
 
@@ -192,7 +192,7 @@ btk_clipboard_get_type (void)
 static void
 btk_clipboard_class_init (BtkClipboardClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
@@ -202,32 +202,32 @@ btk_clipboard_class_init (BtkClipboardClass *class)
 
   clipboard_signals[OWNER_CHANGE] =
     g_signal_new (I_("owner-change"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkClipboardClass, owner_change),
 		  NULL, NULL,
 		  _btk_marshal_VOID__BOXED,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 }
 
 static void
-btk_clipboard_finalize (GObject *object)
+btk_clipboard_finalize (BObject *object)
 {
   BtkClipboard *clipboard;
   GSList *clipboards;
 
   clipboard = BTK_CLIPBOARD (object);
 
-  clipboards = g_object_get_data (G_OBJECT (clipboard->display), "btk-clipboard-list");
-  if (g_slist_index (clipboards, clipboard) >= 0)
+  clipboards = g_object_get_data (B_OBJECT (clipboard->display), "btk-clipboard-list");
+  if (b_slist_index (clipboards, clipboard) >= 0)
     g_warning ("BtkClipboard prematurely finalized");
 
   clipboard_unset (clipboard);
 
-  clipboards = g_object_get_data (G_OBJECT (clipboard->display), "btk-clipboard-list");
-  clipboards = g_slist_remove (clipboards, clipboard);
-  g_object_set_data (G_OBJECT (clipboard->display), I_("btk-clipboard-list"), clipboards);
+  clipboards = g_object_get_data (B_OBJECT (clipboard->display), "btk-clipboard-list");
+  clipboards = b_slist_remove (clipboards, clipboard);
+  g_object_set_data (B_OBJECT (clipboard->display), I_("btk-clipboard-list"), clipboards);
 
   if (clipboard->store_loop && g_main_loop_is_running (clipboard->store_loop))
     g_main_loop_quit (clipboard->store_loop);
@@ -237,7 +237,7 @@ btk_clipboard_finalize (GObject *object)
 
   g_free (clipboard->storable_targets);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -247,10 +247,10 @@ clipboard_display_closed (BdkDisplay   *display,
 {
   GSList *clipboards;
 
-  clipboards = g_object_get_data (G_OBJECT (display), "btk-clipboard-list");
-  g_object_run_dispose (G_OBJECT (clipboard));
-  clipboards = g_slist_remove (clipboards, clipboard);
-  g_object_set_data (G_OBJECT (display), I_("btk-clipboard-list"), clipboards);
+  clipboards = g_object_get_data (B_OBJECT (display), "btk-clipboard-list");
+  g_object_run_dispose (B_OBJECT (clipboard));
+  clipboards = b_slist_remove (clipboards, clipboard);
+  g_object_set_data (B_OBJECT (display), I_("btk-clipboard-list"), clipboards);
   g_object_unref (clipboard);
 }
 
@@ -297,7 +297,7 @@ clipboard_owner_destroyed (gpointer data)
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (clipboards);
+  b_slist_free (clipboards);
 }
 
 static void
@@ -308,7 +308,7 @@ clipboard_add_owner_notify (BtkClipboard *clipboard)
 
   if (clipboard->have_owner)
     g_object_set_qdata_full (clipboard->user_data, clipboards_owned_key_id,
-			     g_slist_prepend (g_object_steal_qdata (clipboard->user_data,
+			     b_slist_prepend (g_object_steal_qdata (clipboard->user_data,
 								    clipboards_owned_key_id),
 					      clipboard),
 			     clipboard_owner_destroyed);
@@ -319,7 +319,7 @@ clipboard_remove_owner_notify (BtkClipboard *clipboard)
 {
   if (clipboard->have_owner)
      g_object_set_qdata_full (clipboard->user_data, clipboards_owned_key_id,
-			      g_slist_remove (g_object_steal_qdata (clipboard->user_data,
+			      b_slist_remove (g_object_steal_qdata (clipboard->user_data,
 								    clipboards_owned_key_id),
 					      clipboard),
 			      clipboard_owner_destroyed);
@@ -427,7 +427,7 @@ btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
 			      guint                  n_targets,
 			      BtkClipboardGetFunc    get_func,
 			      BtkClipboardClearFunc  clear_func,
-			      GObject               *owner)
+			      BObject               *owner)
 {
   g_return_val_if_fail (clipboard != NULL, FALSE);
   g_return_val_if_fail (targets != NULL, FALSE);
@@ -439,7 +439,7 @@ btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
 				     TRUE);
 }
 
-GObject *
+BObject *
 btk_clipboard_get_owner (BtkClipboard *clipboard)
 {
   g_return_val_if_fail (clipboard != NULL, NULL);
@@ -940,7 +940,7 @@ clipboard_peek (BdkDisplay *display,
   if (selection == BDK_NONE)
     selection = BDK_SELECTION_CLIPBOARD;
 
-  clipboards = g_object_get_data (G_OBJECT (display), "btk-clipboard-list");
+  clipboards = g_object_get_data (B_OBJECT (display), "btk-clipboard-list");
 
   tmp_list = clipboards;
   while (tmp_list)
@@ -977,8 +977,8 @@ clipboard_peek (BdkDisplay *display,
       clipboard->display = display;
       clipboard->n_cached_targets = -1;
       clipboard->n_storable_targets = -1;
-      clipboards = g_slist_prepend (clipboards, clipboard);
-      g_object_set_data (G_OBJECT (display), I_("btk-clipboard-list"), clipboards);
+      clipboards = b_slist_prepend (clipboards, clipboard);
+      g_object_set_data (B_OBJECT (display), I_("btk-clipboard-list"), clipboards);
       g_signal_connect (display, "closed",
 			G_CALLBACK (clipboard_display_closed), clipboard);
       bdk_display_request_selection_notification (display, selection);
@@ -1109,7 +1109,7 @@ _btk_clipboard_store_all (void)
 
       list = list->next;
     }
-  g_slist_free (displays);
+  b_slist_free (displays);
 }
 
 #define __BTK_CLIPBOARD_C__

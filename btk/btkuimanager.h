@@ -43,11 +43,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_UI_MANAGER            (btk_ui_manager_get_type ())
-#define BTK_UI_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
-#define BTK_UI_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
-#define BTK_IS_UI_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_UI_MANAGER))
-#define BTK_IS_UI_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_UI_MANAGER))
-#define BTK_UI_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
+#define BTK_UI_MANAGER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
+#define BTK_UI_MANAGER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
+#define BTK_IS_UI_MANAGER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_UI_MANAGER))
+#define BTK_IS_UI_MANAGER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_UI_MANAGER))
+#define BTK_UI_MANAGER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
 
 typedef struct _BtkUIManager      BtkUIManager;
 typedef struct _BtkUIManagerClass BtkUIManagerClass;
@@ -55,7 +55,7 @@ typedef struct _BtkUIManagerPrivate BtkUIManagerPrivate;
 
 
 struct _BtkUIManager {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
 
@@ -63,7 +63,7 @@ struct _BtkUIManager {
 };
 
 struct _BtkUIManagerClass {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Signals */
   void (* add_widget)       (BtkUIManager *merge,

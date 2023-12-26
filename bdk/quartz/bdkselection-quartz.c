@@ -172,7 +172,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -194,7 +194,7 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }

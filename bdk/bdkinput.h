@@ -36,11 +36,11 @@
 B_BEGIN_DECLS
 
 #define BDK_TYPE_DEVICE              (bdk_device_get_type ())
-#define BDK_DEVICE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
-#define BDK_DEVICE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DEVICE, BdkDeviceClass))
-#define BDK_IS_DEVICE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DEVICE))
-#define BDK_IS_DEVICE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DEVICE))
-#define BDK_DEVICE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DEVICE, BdkDeviceClass))
+#define BDK_DEVICE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
+#define BDK_DEVICE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DEVICE, BdkDeviceClass))
+#define BDK_IS_DEVICE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DEVICE))
+#define BDK_IS_DEVICE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DEVICE))
+#define BDK_DEVICE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DEVICE, BdkDeviceClass))
 
 typedef struct _BdkDeviceKey	    BdkDeviceKey;
 typedef struct _BdkDeviceAxis	    BdkDeviceAxis;
@@ -97,7 +97,7 @@ struct _BdkDeviceAxis
 
 struct _BdkDevice
 {
-  GObject parent_instance;
+  BObject parent_instance;
   /* All fields are read-only */
 	  
   gchar *GSEAL (name);

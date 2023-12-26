@@ -31,13 +31,13 @@
 
 typedef struct _BtkPageSetupClass BtkPageSetupClass;
 
-#define BTK_IS_PAGE_SETUP_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP))
-#define BTK_PAGE_SETUP_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP, BtkPageSetupClass))
-#define BTK_PAGE_SETUP_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetupClass))
+#define BTK_IS_PAGE_SETUP_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP))
+#define BTK_PAGE_SETUP_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP, BtkPageSetupClass))
+#define BTK_PAGE_SETUP_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetupClass))
 
 struct _BtkPageSetup
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPageOrientation orientation;
   BtkPaperSize *paper_size;
@@ -47,19 +47,19 @@ struct _BtkPageSetup
 
 struct _BtkPageSetupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
-G_DEFINE_TYPE (BtkPageSetup, btk_page_setup, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPageSetup, btk_page_setup, B_TYPE_OBJECT)
 
 static void
-btk_page_setup_finalize (GObject *object)
+btk_page_setup_finalize (BObject *object)
 {
   BtkPageSetup *setup = BTK_PAGE_SETUP (object);
   
   btk_paper_size_free (setup->paper_size);
   
-  G_OBJECT_CLASS (btk_page_setup_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_page_setup_parent_class)->finalize (object);
 }
 
 static void
@@ -76,7 +76,7 @@ btk_page_setup_init (BtkPageSetup *setup)
 static void
 btk_page_setup_class_init (BtkPageSetupClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
 
   bobject_class->finalize = btk_page_setup_finalize;
 }

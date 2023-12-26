@@ -118,20 +118,20 @@ static BdkDragContext *current_dest_drag = NULL;
 
 static void bdk_drag_context_init       (BdkDragContext      *dragcontext);
 static void bdk_drag_context_class_init (BdkDragContextClass *klass);
-static void bdk_drag_context_finalize   (GObject              *object);
+static void bdk_drag_context_finalize   (BObject              *object);
 
 static gpointer parent_class = NULL;
 
 static gboolean use_ole2_dnd = FALSE;
 
-G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
 static void
 bdk_drag_context_init (BdkDragContext *dragcontext)
 {
   BdkDragContextPrivateWin32 *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
+  private = B_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
 					 BDK_TYPE_DRAG_CONTEXT,
 					 BdkDragContextPrivateWin32);
 
@@ -154,7 +154,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -164,7 +164,7 @@ bdk_drag_context_class_init (BdkDragContextClass *klass)
 }
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
 
@@ -196,7 +196,7 @@ bdk_drag_context_finalize (GObject *object)
 	}
     }
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* Drag Contexts */
@@ -306,7 +306,7 @@ idroptarget_addref (LPDROPTARGET This)
   int ref_count = ++private->ref_count;
 
   BDK_NOTE (DND, g_print ("idroptarget_addref %p %d\n", This, ref_count));
-  g_object_ref (G_OBJECT (ctx->context));
+  g_object_ref (B_OBJECT (ctx->context));
 
   return ref_count;
 }
@@ -354,7 +354,7 @@ idroptarget_release (LPDROPTARGET This)
   BDK_NOTE (DND, g_print ("idroptarget_release %p %d\n", This, ref_count));
 
   if (!private->being_finalized)
-    g_object_unref (G_OBJECT (ctx->context));
+    g_object_unref (B_OBJECT (ctx->context));
 
   if (ref_count == 0)
     g_free (This);
@@ -563,7 +563,7 @@ idropsource_addref (LPDROPSOURCE This)
   int ref_count = ++private->ref_count;
 
   BDK_NOTE (DND, g_print ("idropsource_addref %p %d\n", This, ref_count));
-  g_object_ref (G_OBJECT (ctx->context));
+  g_object_ref (B_OBJECT (ctx->context));
 
   return ref_count;
 }
@@ -611,7 +611,7 @@ idropsource_release (LPDROPSOURCE This)
   BDK_NOTE (DND, g_print ("idropsource_release %p %d\n", This, ref_count));
 
   if (!private->being_finalized)
-    g_object_unref (G_OBJECT (ctx->context));
+    g_object_unref (B_OBJECT (ctx->context));
 
   if (ref_count == 0)
     g_free (This);
@@ -1675,7 +1675,7 @@ local_send_enter (BdkDragContext *context,
 
   if (current_dest_drag != NULL)
     {
-      g_object_unref (G_OBJECT (current_dest_drag));
+      g_object_unref (B_OBJECT (current_dest_drag));
       current_dest_drag = NULL;
     }
 
@@ -1960,7 +1960,7 @@ bdk_drag_get_protocol_for_display (BdkDisplay      *display,
   if (window &&
       bdk_window_get_window_type (window) != BDK_WINDOW_FOREIGN)
     {
-      if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+      if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
 	{
 	  if (use_ole2_dnd)
 	    *protocol = BDK_DRAG_PROTO_OLE2;
@@ -2379,10 +2379,10 @@ bdk_window_register_dnd (BdkWindow *window)
   if (bdk_window_get_window_type (window) == BDK_WINDOW_OFFSCREEN)
     return;
 
-  if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+  if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
     return;
   else
-    g_object_set_data (G_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
+    g_object_set_data (B_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
 
   BDK_NOTE (DND, g_print ("bdk_window_register_dnd: %p\n", BDK_WINDOW_HWND (window)));
 

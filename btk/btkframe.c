@@ -46,14 +46,14 @@ enum {
   PROP_LABEL_WIDGET
 };
 
-static void btk_frame_set_property (GObject      *object,
+static void btk_frame_set_property (BObject      *object,
 				    guint         param_id,
-				    const GValue *value,
-				    GParamSpec   *pspec);
-static void btk_frame_get_property (GObject     *object,
+				    const BValue *value,
+				    BParamSpec   *pspec);
+static void btk_frame_get_property (BObject     *object,
 				    guint        param_id,
-				    GValue      *value,
-				    GParamSpec  *pspec);
+				    BValue      *value,
+				    BParamSpec  *pspec);
 static void btk_frame_paint         (BtkWidget      *widget,
 				     BdkRectangle   *area);
 static gint btk_frame_expose        (BtkWidget      *widget,
@@ -78,7 +78,7 @@ static void btk_frame_real_compute_child_allocation (BtkFrame      *frame,
 static void btk_frame_buildable_init                (BtkBuildableIface *iface);
 static void btk_frame_buildable_add_child           (BtkBuildable *buildable,
 						     BtkBuilder   *builder,
-						     GObject      *child,
+						     BObject      *child,
 						     const gchar  *type);
 
 G_DEFINE_TYPE_WITH_CODE (BtkFrame, btk_frame, BTK_TYPE_BIN,
@@ -88,11 +88,11 @@ G_DEFINE_TYPE_WITH_CODE (BtkFrame, btk_frame, BTK_TYPE_BIN,
 static void
 btk_frame_class_init (BtkFrameClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   widget_class = BTK_WIDGET_CLASS (class);
   container_class = BTK_CONTAINER_CLASS (class);
 
@@ -168,7 +168,7 @@ btk_frame_buildable_init (BtkBuildableIface *iface)
 static void
 btk_frame_buildable_add_child (BtkBuildable *buildable,
 			       BtkBuilder   *builder,
-			       GObject      *child,
+			       BObject      *child,
 			       const gchar  *type)
 {
   if (type && strcmp (type, "label") == 0)
@@ -189,10 +189,10 @@ btk_frame_init (BtkFrame *frame)
 }
 
 static void 
-btk_frame_set_property (GObject         *object,
+btk_frame_set_property (BObject         *object,
 			guint            prop_id,
-			const GValue    *value,
-			GParamSpec      *pspec)
+			const BValue    *value,
+			BParamSpec      *pspec)
 {
   BtkFrame *frame;
 
@@ -201,34 +201,34 @@ btk_frame_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      btk_frame_set_label (frame, g_value_get_string (value));
+      btk_frame_set_label (frame, b_value_get_string (value));
       break;
     case PROP_LABEL_XALIGN:
-      btk_frame_set_label_align (frame, g_value_get_float (value), 
+      btk_frame_set_label_align (frame, b_value_get_float (value), 
 				 frame->label_yalign);
       break;
     case PROP_LABEL_YALIGN:
       btk_frame_set_label_align (frame, frame->label_xalign, 
-				 g_value_get_float (value));
+				 b_value_get_float (value));
       break;
     case PROP_SHADOW:
     case PROP_SHADOW_TYPE:
-      btk_frame_set_shadow_type (frame, g_value_get_enum (value));
+      btk_frame_set_shadow_type (frame, b_value_get_enum (value));
       break;
     case PROP_LABEL_WIDGET:
-      btk_frame_set_label_widget (frame, g_value_get_object (value));
+      btk_frame_set_label_widget (frame, b_value_get_object (value));
       break;
     default:      
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_frame_get_property (GObject         *object,
+btk_frame_get_property (BObject         *object,
 			guint            prop_id,
-			GValue          *value,
-			GParamSpec      *pspec)
+			BValue          *value,
+			BParamSpec      *pspec)
 {
   BtkFrame *frame;
 
@@ -237,25 +237,25 @@ btk_frame_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_LABEL:
-      g_value_set_string (value, btk_frame_get_label (frame));
+      b_value_set_string (value, btk_frame_get_label (frame));
       break;
     case PROP_LABEL_XALIGN:
-      g_value_set_float (value, frame->label_xalign);
+      b_value_set_float (value, frame->label_xalign);
       break;
     case PROP_LABEL_YALIGN:
-      g_value_set_float (value, frame->label_yalign);
+      b_value_set_float (value, frame->label_yalign);
       break;
     case PROP_SHADOW:
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, frame->shadow_type);
+      b_value_set_enum (value, frame->shadow_type);
       break;
     case PROP_LABEL_WIDGET:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           frame->label_widget ?
-                          G_OBJECT (frame->label_widget) : NULL);
+                          B_OBJECT (frame->label_widget) : NULL);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -395,10 +395,10 @@ btk_frame_set_label_widget (BtkFrame  *frame,
   if (btk_widget_get_visible (BTK_WIDGET (frame)) && need_resize)
     btk_widget_queue_resize (BTK_WIDGET (frame));
 
-  g_object_freeze_notify (G_OBJECT (frame));
-  g_object_notify (G_OBJECT (frame), "label-widget");
-  g_object_notify (G_OBJECT (frame), "label");
-  g_object_thaw_notify (G_OBJECT (frame));
+  g_object_freeze_notify (B_OBJECT (frame));
+  g_object_notify (B_OBJECT (frame), "label-widget");
+  g_object_notify (B_OBJECT (frame), "label");
+  g_object_thaw_notify (B_OBJECT (frame));
 }
 
 /**
@@ -442,20 +442,20 @@ btk_frame_set_label_align (BtkFrame *frame,
   xalign = CLAMP (xalign, 0.0, 1.0);
   yalign = CLAMP (yalign, 0.0, 1.0);
 
-  g_object_freeze_notify (G_OBJECT (frame));
+  g_object_freeze_notify (B_OBJECT (frame));
   if (xalign != frame->label_xalign)
     {
       frame->label_xalign = xalign;
-      g_object_notify (G_OBJECT (frame), "label-xalign");
+      g_object_notify (B_OBJECT (frame), "label-xalign");
     }
 
   if (yalign != frame->label_yalign)
     {
       frame->label_yalign = yalign;
-      g_object_notify (G_OBJECT (frame), "label-yalign");
+      g_object_notify (B_OBJECT (frame), "label-yalign");
     }
 
-  g_object_thaw_notify (G_OBJECT (frame));
+  g_object_thaw_notify (B_OBJECT (frame));
   btk_widget_queue_resize (BTK_WIDGET (frame));
 }
 
@@ -502,7 +502,7 @@ btk_frame_set_shadow_type (BtkFrame      *frame,
     {
       widget = BTK_WIDGET (frame);
       frame->shadow_type = type;
-      g_object_notify (G_OBJECT (frame), "shadow-type");
+      g_object_notify (B_OBJECT (frame), "shadow-type");
 
       if (btk_widget_is_drawable (widget))
 	{

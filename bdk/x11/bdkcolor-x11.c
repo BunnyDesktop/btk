@@ -66,16 +66,16 @@ static gboolean bdk_colormap_equal       (Colormap    *a,
 static void     bdk_colormap_sync        (BdkColormap *colormap,
                                           gboolean     force);
 
-static void bdk_colormap_finalize   (GObject              *object);
+static void bdk_colormap_finalize   (BObject              *object);
 
-G_DEFINE_TYPE (BdkColormap, bdk_colormap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkColormap, bdk_colormap, B_TYPE_OBJECT)
 
 static void
 bdk_colormap_init (BdkColormap *colormap)
 {
   BdkColormapPrivateX11 *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (colormap, BDK_TYPE_COLORMAP, 
+  private = B_TYPE_INSTANCE_GET_PRIVATE (colormap, BDK_TYPE_COLORMAP, 
 					 BdkColormapPrivateX11);
 
   colormap->windowing_data = private;
@@ -92,7 +92,7 @@ bdk_colormap_init (BdkColormap *colormap)
 static void
 bdk_colormap_class_init (BdkColormapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_colormap_finalize;
 
@@ -100,7 +100,7 @@ bdk_colormap_class_init (BdkColormapClass *klass)
 }
 
 static void
-bdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (BObject *object)
 {
   BdkColormap *colormap = BDK_COLORMAP (object);
   BdkColormapPrivateX11 *private = BDK_COLORMAP_PRIVATE_DATA (colormap);
@@ -116,7 +116,7 @@ bdk_colormap_finalize (GObject *object)
   g_free (private->info);
   g_free (colormap->colors);
   
-  G_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
 }
 
 /**

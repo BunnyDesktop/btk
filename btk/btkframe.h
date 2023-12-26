@@ -39,11 +39,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_FRAME                  (btk_frame_get_type ())
-#define BTK_FRAME(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FRAME, BtkFrame))
-#define BTK_FRAME_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FRAME, BtkFrameClass))
-#define BTK_IS_FRAME(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FRAME))
-#define BTK_IS_FRAME_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FRAME))
-#define BTK_FRAME_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FRAME, BtkFrameClass))
+#define BTK_FRAME(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FRAME, BtkFrame))
+#define BTK_FRAME_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FRAME, BtkFrameClass))
+#define BTK_IS_FRAME(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FRAME))
+#define BTK_IS_FRAME_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FRAME))
+#define BTK_FRAME_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FRAME, BtkFrameClass))
 
 
 typedef struct _BtkFrame       BtkFrame;

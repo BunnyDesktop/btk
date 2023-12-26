@@ -59,8 +59,8 @@
  * but BDK coordinates can *not*!
  */
 
-static void  bdk_screen_quartz_dispose          (GObject         *object);
-static void  bdk_screen_quartz_finalize         (GObject         *object);
+static void  bdk_screen_quartz_dispose          (BObject         *object);
+static void  bdk_screen_quartz_finalize         (BObject         *object);
 static void  bdk_screen_quartz_calculate_layout (BdkScreenQuartz *screen);
 
 static void display_reconfiguration_callback (CGDirectDisplayID            display,
@@ -72,7 +72,7 @@ G_DEFINE_TYPE (BdkScreenQuartz, _bdk_screen_quartz, BDK_TYPE_SCREEN);
 static void
 _bdk_screen_quartz_class_init (BdkScreenQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->dispose = bdk_screen_quartz_dispose;
   object_class->finalize = bdk_screen_quartz_finalize;
@@ -100,7 +100,7 @@ _bdk_screen_quartz_init (BdkScreenQuartz *screen_quartz)
 }
 
 static void
-bdk_screen_quartz_dispose (GObject *object)
+bdk_screen_quartz_dispose (BObject *object)
 {
   BdkScreenQuartz *screen = BDK_SCREEN_QUARTZ (object);
 
@@ -119,7 +119,7 @@ bdk_screen_quartz_dispose (GObject *object)
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,
                                           screen);
 
-  G_OBJECT_CLASS (_bdk_screen_quartz_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_screen_quartz_parent_class)->dispose (object);
 }
 
 static void
@@ -135,7 +135,7 @@ bdk_screen_quartz_screen_rects_free (BdkScreenQuartz *screen)
 }
 
 static void
-bdk_screen_quartz_finalize (GObject *object)
+bdk_screen_quartz_finalize (BObject *object)
 {
   BdkScreenQuartz *screen = BDK_SCREEN_QUARTZ (object);
 

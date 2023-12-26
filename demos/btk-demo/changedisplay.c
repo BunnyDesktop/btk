@@ -422,7 +422,7 @@ create_display_frame (ChangeDisplayInfo *info)
   btk_box_pack_start (BTK_BOX (button_vbox), button, FALSE, FALSE, 0);
 
   info->display_model = (BtkTreeModel *)btk_list_store_new (DISPLAY_NUM_COLUMNS,
-							    G_TYPE_STRING,
+							    B_TYPE_STRING,
 							    BDK_TYPE_DISPLAY);
 
   btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), info->display_model);
@@ -453,7 +453,7 @@ create_screen_frame (ChangeDisplayInfo *info)
   create_frame (info, "Screen", &frame, &tree_view, &button_vbox);
 
   info->screen_model = (BtkTreeModel *)btk_list_store_new (SCREEN_NUM_COLUMNS,
-							   G_TYPE_INT,
+							   B_TYPE_INT,
 							   BDK_TYPE_SCREEN);
 
   btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), info->screen_model);
@@ -544,7 +544,7 @@ initialize_displays (ChangeDisplayInfo *info)
   for (tmp_list = displays; tmp_list; tmp_list = tmp_list->next)
     add_display (info, tmp_list->data);
 
-  g_slist_free (tmp_list);
+  b_slist_free (tmp_list);
 
   g_signal_connect (manager, "display-opened",
 		    G_CALLBACK (display_opened_cb), info);
@@ -570,7 +570,7 @@ destroy_info (ChangeDisplayInfo *info)
 					  display_closed_cb,
 					  info);
 
-  g_slist_free (tmp_list);
+  b_slist_free (tmp_list);
 
   g_object_unref (info->size_group);
   g_object_unref (info->display_model);

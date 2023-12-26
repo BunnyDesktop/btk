@@ -6,11 +6,11 @@
 #include <btk/btk.h>
 
 #define BTK_TYPE_MIRROR_BIN              (btk_mirror_bin_get_type ())
-#define BTK_MIRROR_BIN(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MIRROR_BIN, BtkMirrorBin))
-#define BTK_MIRROR_BIN_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MIRROR_BIN, BtkMirrorBinClass))
-#define BTK_IS_MIRROR_BIN(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MIRROR_BIN))
-#define BTK_IS_MIRROR_BIN_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MIRROR_BIN))
-#define BTK_MIRROR_BIN_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MIRROR_BIN, BtkMirrorBinClass))
+#define BTK_MIRROR_BIN(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MIRROR_BIN, BtkMirrorBin))
+#define BTK_MIRROR_BIN_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MIRROR_BIN, BtkMirrorBinClass))
+#define BTK_IS_MIRROR_BIN(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MIRROR_BIN))
+#define BTK_IS_MIRROR_BIN_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MIRROR_BIN))
+#define BTK_MIRROR_BIN_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MIRROR_BIN, BtkMirrorBinClass))
 
 typedef struct _BtkMirrorBin   BtkMirrorBin;
 typedef struct _BtkMirrorBinClass  BtkMirrorBinClass;
@@ -247,7 +247,7 @@ btk_mirror_bin_child_type (BtkContainer *container)
   BtkMirrorBin *bin = BTK_MIRROR_BIN (container);
 
   if (bin->child)
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 
   return BTK_TYPE_WIDGET;
 }

@@ -42,7 +42,7 @@
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 
@@ -70,13 +70,13 @@ static BdkVisualType       available_types[G_N_ELEMENTS (formats) + 1]  = {0};
 
 
 static void
-bdk_visual_finalize (GObject *object)
+bdk_visual_finalize (BObject *object)
 {
   g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-bdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (BObjectClass *class)
 {
   class->finalize = bdk_visual_finalize;
 }
@@ -101,7 +101,7 @@ bdk_visual_get_type (void)
           (GInstanceInitFunc) NULL,
         };
 
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkVisual",
                                             &object_info, 0);
     }

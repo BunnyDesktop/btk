@@ -181,7 +181,7 @@ create_notebook (gchar           **labels,
 
   g_signal_connect (BTK_NOTEBOOK (notebook), "page-reordered",
 		    G_CALLBACK (on_page_reordered), NULL);
-  g_signal_connect_after (G_OBJECT (notebook), "drag-begin",
+  g_signal_connect_after (B_OBJECT (notebook), "drag-begin",
 			  G_CALLBACK (on_notebook_drag_begin), NULL);
   return notebook;
 }
@@ -225,7 +225,7 @@ create_notebook_with_notebooks (gchar           **labels,
 
   g_signal_connect (BTK_NOTEBOOK (notebook), "page-reordered",
 		    G_CALLBACK (on_page_reordered), NULL);
-  g_signal_connect_after (G_OBJECT (notebook), "drag-begin",
+  g_signal_connect_after (B_OBJECT (notebook), "drag-begin",
 			  G_CALLBACK (on_notebook_drag_begin), NULL);
   return notebook;
 }
@@ -243,7 +243,7 @@ create_trash_button (void)
 		     G_N_ELEMENTS (button_targets),
 		     BDK_ACTION_MOVE);
 
-  g_signal_connect_after (G_OBJECT (button), "drag-data-received",
+  g_signal_connect_after (B_OBJECT (button), "drag-data-received",
 			  G_CALLBACK (on_button_drag_data_received), NULL);
   return button;
 }

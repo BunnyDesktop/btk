@@ -191,7 +191,7 @@ bdk_quartz_gc_set_dashes (BdkGC *gc,
 }
 
 static void
-bdk_gc_quartz_finalize (GObject *object)
+bdk_gc_quartz_finalize (BObject *object)
 {
   BdkGCQuartz *private = BDK_GC_QUARTZ (object);
 
@@ -201,13 +201,13 @@ bdk_gc_quartz_finalize (GObject *object)
   if (private->ts_pattern)
     CGPatternRelease (private->ts_pattern);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_gc_quartz_class_init (BdkGCQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);

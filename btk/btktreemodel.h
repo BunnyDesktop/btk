@@ -32,9 +32,9 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL            (btk_tree_model_get_type ())
-#define BTK_TREE_MODEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL, BtkTreeModel))
-#define BTK_IS_TREE_MODEL(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL))
-#define BTK_TREE_MODEL_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_MODEL, BtkTreeModelIface))
+#define BTK_TREE_MODEL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL, BtkTreeModel))
+#define BTK_IS_TREE_MODEL(obj)	       (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL))
+#define BTK_TREE_MODEL_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TREE_MODEL, BtkTreeModelIface))
 
 #define BTK_TYPE_TREE_ITER             (btk_tree_iter_get_type ())
 #define BTK_TYPE_TREE_PATH             (btk_tree_path_get_type ())
@@ -97,7 +97,7 @@ struct _BtkTreeModelIface
   void         (* get_value)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter,
 				    gint          column,
-				    GValue       *value);
+				    BValue       *value);
   gboolean     (* iter_next)       (BtkTreeModel *tree_model,
 				    BtkTreeIter  *iter);
   gboolean     (* iter_children)   (BtkTreeModel *tree_model,
@@ -163,7 +163,7 @@ gboolean     btk_tree_path_is_descendant    (BtkTreePath       *path,
 GType                btk_tree_row_reference_get_type (void) B_GNUC_CONST;
 BtkTreeRowReference *btk_tree_row_reference_new       (BtkTreeModel        *model,
 						       BtkTreePath         *path);
-BtkTreeRowReference *btk_tree_row_reference_new_proxy (GObject             *proxy,
+BtkTreeRowReference *btk_tree_row_reference_new_proxy (BObject             *proxy,
 						       BtkTreeModel        *model,
 						       BtkTreePath         *path);
 BtkTreePath         *btk_tree_row_reference_get_path  (BtkTreeRowReference *reference);
@@ -173,11 +173,11 @@ BtkTreeRowReference *btk_tree_row_reference_copy      (BtkTreeRowReference *refe
 void                 btk_tree_row_reference_free      (BtkTreeRowReference *reference);
 /* These two functions are only needed if you created the row reference with a
  * proxy object */
-void                 btk_tree_row_reference_inserted  (GObject     *proxy,
+void                 btk_tree_row_reference_inserted  (BObject     *proxy,
 						       BtkTreePath *path);
-void                 btk_tree_row_reference_deleted   (GObject     *proxy,
+void                 btk_tree_row_reference_deleted   (BObject     *proxy,
 						       BtkTreePath *path);
-void                 btk_tree_row_reference_reordered (GObject     *proxy,
+void                 btk_tree_row_reference_reordered (BObject     *proxy,
 						       BtkTreePath *path,
 						       BtkTreeIter *iter,
 						       gint        *new_order);
@@ -210,7 +210,7 @@ BtkTreePath *     btk_tree_model_get_path        (BtkTreeModel *tree_model,
 void              btk_tree_model_get_value       (BtkTreeModel *tree_model,
 						  BtkTreeIter  *iter,
 						  gint          column,
-						  GValue       *value);
+						  BValue       *value);
 gboolean          btk_tree_model_iter_next       (BtkTreeModel *tree_model,
 						  BtkTreeIter  *iter);
 gboolean          btk_tree_model_iter_children   (BtkTreeModel *tree_model,

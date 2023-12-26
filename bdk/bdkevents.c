@@ -1371,7 +1371,7 @@ bdk_event_get_type (void)
  **/
 gboolean
 bdk_setting_get (const gchar *name,
-		 GValue      *value)
+		 BValue      *value)
 {
   return bdk_screen_get_setting (bdk_screen_get_default (), name, value);
 }

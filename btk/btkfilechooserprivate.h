@@ -36,7 +36,7 @@
 
 B_BEGIN_DECLS
 
-#define BTK_FILE_CHOOSER_GET_IFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_FILE_CHOOSER, BtkFileChooserIface))
+#define BTK_FILE_CHOOSER_GET_IFACE(inst)  (B_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_FILE_CHOOSER, BtkFileChooserIface))
 
 typedef struct _BtkFileChooserIface BtkFileChooserIface;
 

@@ -32,8 +32,8 @@ B_BEGIN_DECLS
 typedef struct _BtkPrintSettings BtkPrintSettings;
 
 #define BTK_TYPE_PRINT_SETTINGS    (btk_print_settings_get_type ())
-#define BTK_PRINT_SETTINGS(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettings))
-#define BTK_IS_PRINT_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_SETTINGS))
+#define BTK_PRINT_SETTINGS(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettings))
+#define BTK_IS_PRINT_SETTINGS(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_SETTINGS))
 
 typedef void  (*BtkPrintSettingsFunc)  (const gchar *key,
 					const gchar *value,

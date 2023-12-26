@@ -39,11 +39,11 @@
 #include <bdk/bdkinternals.h>
 
 #define BDK_TYPE_GC_X11              (_bdk_gc_x11_get_type ())
-#define BDK_GC_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_X11, BdkGCX11))
-#define BDK_GC_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_X11, BdkGCX11Class))
-#define BDK_IS_GC_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_X11))
-#define BDK_IS_GC_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_X11))
-#define BDK_GC_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_X11, BdkGCX11Class))
+#define BDK_GC_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_X11, BdkGCX11))
+#define BDK_GC_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_X11, BdkGCX11Class))
+#define BDK_IS_GC_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_X11))
+#define BDK_IS_GC_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_X11))
+#define BDK_GC_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_X11, BdkGCX11Class))
 
 typedef struct _BdkCursorPrivate       BdkCursorPrivate;
 typedef struct _BdkVisualPrivate       BdkVisualPrivate;
@@ -193,7 +193,7 @@ void _bdk_x11_cursor_display_finalize (BdkDisplay *display);
 
 gboolean _bdk_x11_get_xft_setting (BdkScreen   *screen,
 				   const gchar *name,
-				   GValue      *value);
+				   BValue      *value);
 
 extern BdkDrawableClass  _bdk_x11_drawable_class;
 extern gboolean	         _bdk_use_xshm;

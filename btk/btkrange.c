@@ -86,7 +86,7 @@ typedef enum {
   STEPPER_D
 } Stepper;
 
-#define BTK_RANGE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RANGE, BtkRangeLayout))
+#define BTK_RANGE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RANGE, BtkRangeLayout))
 
 struct _BtkRangeLayout
 {
@@ -136,14 +136,14 @@ struct _BtkRangeLayout
 };
 
 
-static void btk_range_set_property   (GObject          *object,
+static void btk_range_set_property   (BObject          *object,
                                       guint             prop_id,
-                                      const GValue     *value,
-                                      GParamSpec       *pspec);
-static void btk_range_get_property   (GObject          *object,
+                                      const BValue     *value,
+                                      BParamSpec       *pspec);
+static void btk_range_get_property   (BObject          *object,
                                       guint             prop_id,
-                                      GValue           *value,
-                                      GParamSpec       *pspec);
+                                      BValue           *value,
+                                      BParamSpec       *pspec);
 static void btk_range_destroy        (BtkObject        *object);
 static void btk_range_size_request   (BtkWidget        *widget,
                                       BtkRequisition   *requisition);
@@ -242,11 +242,11 @@ static guint signals[LAST_SIGNAL];
 static void
 btk_range_class_init (BtkRangeClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
@@ -288,22 +288,22 @@ btk_range_class_init (BtkRangeClass *class)
    */
   signals[VALUE_CHANGED] =
     g_signal_new (I_("value-changed"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkRangeClass, value_changed),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
   
   signals[ADJUST_BOUNDS] =
     g_signal_new (I_("adjust-bounds"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkRangeClass, adjust_bounds),
                   NULL, NULL,
                   _btk_marshal_VOID__DOUBLE,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_DOUBLE);
+                  B_TYPE_NONE, 1,
+                  B_TYPE_DOUBLE);
   
   /**
    * BtkRange::move-slider:
@@ -314,12 +314,12 @@ btk_range_class_init (BtkRangeClass *class)
    */
   signals[MOVE_SLIDER] =
     g_signal_new (I_("move-slider"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkRangeClass, move_slider),
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM,
-                  G_TYPE_NONE, 1,
+                  B_TYPE_NONE, 1,
                   BTK_TYPE_SCROLL_TYPE);
 
   /**
@@ -350,14 +350,14 @@ btk_range_class_init (BtkRangeClass *class)
    */
   signals[CHANGE_VALUE] =
     g_signal_new (I_("change-value"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkRangeClass, change_value),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__ENUM_DOUBLE,
-                  G_TYPE_BOOLEAN, 2,
+                  B_TYPE_BOOLEAN, 2,
                   BTK_TYPE_SCROLL_TYPE,
-                  G_TYPE_DOUBLE);
+                  B_TYPE_DOUBLE);
 
   g_object_class_override_property (bobject_class,
                                     PROP_ORIENTATION,
@@ -617,17 +617,17 @@ btk_range_class_init (BtkRangeClass *class)
 }
 
 static void
-btk_range_set_property (GObject      *object,
+btk_range_set_property (BObject      *object,
 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkRange *range = BTK_RANGE (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      range->orientation = g_value_get_enum (value);
+      range->orientation = b_value_get_enum (value);
 
       range->layout->slider_detail_quark = 0;
       range->layout->stepper_detail_quark[0] = 0;
@@ -638,80 +638,80 @@ btk_range_set_property (GObject      *object,
       btk_widget_queue_resize (BTK_WIDGET (range));
       break;
     case PROP_UPDATE_POLICY:
-      btk_range_set_update_policy (range, g_value_get_enum (value));
+      btk_range_set_update_policy (range, b_value_get_enum (value));
       break;
     case PROP_ADJUSTMENT:
-      btk_range_set_adjustment (range, g_value_get_object (value));
+      btk_range_set_adjustment (range, b_value_get_object (value));
       break;
     case PROP_INVERTED:
-      btk_range_set_inverted (range, g_value_get_boolean (value));
+      btk_range_set_inverted (range, b_value_get_boolean (value));
       break;
     case PROP_LOWER_STEPPER_SENSITIVITY:
-      btk_range_set_lower_stepper_sensitivity (range, g_value_get_enum (value));
+      btk_range_set_lower_stepper_sensitivity (range, b_value_get_enum (value));
       break;
     case PROP_UPPER_STEPPER_SENSITIVITY:
-      btk_range_set_upper_stepper_sensitivity (range, g_value_get_enum (value));
+      btk_range_set_upper_stepper_sensitivity (range, b_value_get_enum (value));
       break;
     case PROP_SHOW_FILL_LEVEL:
-      btk_range_set_show_fill_level (range, g_value_get_boolean (value));
+      btk_range_set_show_fill_level (range, b_value_get_boolean (value));
       break;
     case PROP_RESTRICT_TO_FILL_LEVEL:
-      btk_range_set_restrict_to_fill_level (range, g_value_get_boolean (value));
+      btk_range_set_restrict_to_fill_level (range, b_value_get_boolean (value));
       break;
     case PROP_FILL_LEVEL:
-      btk_range_set_fill_level (range, g_value_get_double (value));
+      btk_range_set_fill_level (range, b_value_get_double (value));
       break;
     case PROP_ROUND_DIGITS:
-      btk_range_set_round_digits (range, g_value_get_int (value));
+      btk_range_set_round_digits (range, b_value_get_int (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_range_get_property (GObject      *object,
+btk_range_get_property (BObject      *object,
 			guint         prop_id,
-			GValue       *value,
-			GParamSpec   *pspec)
+			BValue       *value,
+			BParamSpec   *pspec)
 {
   BtkRange *range = BTK_RANGE (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, range->orientation);
+      b_value_set_enum (value, range->orientation);
       break;
     case PROP_UPDATE_POLICY:
-      g_value_set_enum (value, range->update_policy);
+      b_value_set_enum (value, range->update_policy);
       break;
     case PROP_ADJUSTMENT:
-      g_value_set_object (value, range->adjustment);
+      b_value_set_object (value, range->adjustment);
       break;
     case PROP_INVERTED:
-      g_value_set_boolean (value, range->inverted);
+      b_value_set_boolean (value, range->inverted);
       break;
     case PROP_LOWER_STEPPER_SENSITIVITY:
-      g_value_set_enum (value, btk_range_get_lower_stepper_sensitivity (range));
+      b_value_set_enum (value, btk_range_get_lower_stepper_sensitivity (range));
       break;
     case PROP_UPPER_STEPPER_SENSITIVITY:
-      g_value_set_enum (value, btk_range_get_upper_stepper_sensitivity (range));
+      b_value_set_enum (value, btk_range_get_upper_stepper_sensitivity (range));
       break;
     case PROP_SHOW_FILL_LEVEL:
-      g_value_set_boolean (value, btk_range_get_show_fill_level (range));
+      b_value_set_boolean (value, btk_range_get_show_fill_level (range));
       break;
     case PROP_RESTRICT_TO_FILL_LEVEL:
-      g_value_set_boolean (value, btk_range_get_restrict_to_fill_level (range));
+      b_value_set_boolean (value, btk_range_get_restrict_to_fill_level (range));
       break;
     case PROP_FILL_LEVEL:
-      g_value_set_double (value, btk_range_get_fill_level (range));
+      b_value_set_double (value, btk_range_get_fill_level (range));
       break;
     case PROP_ROUND_DIGITS:
-      g_value_set_int (value, btk_range_get_round_digits (range));
+      b_value_set_int (value, btk_range_get_round_digits (range));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -797,7 +797,7 @@ btk_range_set_update_policy (BtkRange      *range,
   if (range->update_policy != policy)
     {
       range->update_policy = policy;
-      g_object_notify (G_OBJECT (range), "update-policy");
+      g_object_notify (B_OBJECT (range), "update-policy");
     }
 }
 
@@ -868,7 +868,7 @@ btk_range_set_adjustment (BtkRange      *range,
 			range);
       
       btk_range_adjustment_changed (adjustment, range);
-      g_object_notify (G_OBJECT (range), "adjustment");
+      g_object_notify (B_OBJECT (range), "adjustment");
     }
 }
 
@@ -893,7 +893,7 @@ btk_range_set_inverted (BtkRange *range,
   if (setting != range->inverted)
     {
       range->inverted = setting;
-      g_object_notify (G_OBJECT (range), "inverted");
+      g_object_notify (B_OBJECT (range), "inverted");
       btk_widget_queue_resize (BTK_WIDGET (range));
     }
 }
@@ -1135,7 +1135,7 @@ btk_range_set_lower_stepper_sensitivity (BtkRange           *range,
       btk_range_calc_layout (range, range->adjustment->value);
       btk_widget_queue_draw (BTK_WIDGET (range));
 
-      g_object_notify (G_OBJECT (range), "lower-stepper-sensitivity");
+      g_object_notify (B_OBJECT (range), "lower-stepper-sensitivity");
     }
 }
 
@@ -1182,7 +1182,7 @@ btk_range_set_upper_stepper_sensitivity (BtkRange           *range,
       btk_range_calc_layout (range, range->adjustment->value);
       btk_widget_queue_draw (BTK_WIDGET (range));
 
-      g_object_notify (G_OBJECT (range), "upper-stepper-sensitivity");
+      g_object_notify (B_OBJECT (range), "upper-stepper-sensitivity");
     }
 }
 
@@ -1329,7 +1329,7 @@ btk_range_set_show_fill_level (BtkRange *range,
   if (show_fill_level != range->layout->show_fill_level)
     {
       range->layout->show_fill_level = show_fill_level;
-      g_object_notify (G_OBJECT (range), "show-fill-level");
+      g_object_notify (B_OBJECT (range), "show-fill-level");
       btk_widget_queue_draw (BTK_WIDGET (range));
     }
 }
@@ -1374,7 +1374,7 @@ btk_range_set_restrict_to_fill_level (BtkRange *range,
   if (restrict_to_fill_level != range->layout->restrict_to_fill_level)
     {
       range->layout->restrict_to_fill_level = restrict_to_fill_level;
-      g_object_notify (G_OBJECT (range), "restrict-to-fill-level");
+      g_object_notify (B_OBJECT (range), "restrict-to-fill-level");
 
       btk_range_set_value (range, btk_range_get_value (range));
     }
@@ -1432,7 +1432,7 @@ btk_range_set_fill_level (BtkRange *range,
   if (fill_level != range->layout->fill_level)
     {
       range->layout->fill_level = fill_level;
-      g_object_notify (G_OBJECT (range), "fill-level");
+      g_object_notify (B_OBJECT (range), "fill-level");
 
       if (range->layout->show_fill_level)
         btk_widget_queue_draw (BTK_WIDGET (range));
@@ -3996,7 +3996,7 @@ btk_range_set_round_digits (BtkRange *range,
 
   range->round_digits = round_digits;
 
-  g_object_notify (G_OBJECT (range), "round-digits");
+  g_object_notify (B_OBJECT (range), "round-digits");
 }
 
 /**

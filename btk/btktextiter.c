@@ -1058,7 +1058,7 @@ btk_text_iter_get_marks (const BtkTextIter *iter)
     {
       if (seg->type == &btk_text_left_mark_type ||
           seg->type == &btk_text_right_mark_type)
-        retval = g_slist_prepend (retval, seg->body.mark.obj);
+        retval = b_slist_prepend (retval, seg->body.mark.obj);
 
       seg = seg->next;
     }
@@ -1107,14 +1107,14 @@ btk_text_iter_get_toggled_tags  (const BtkTextIter  *iter,
         {
           if (seg->type == &btk_text_toggle_on_type)
             {
-              retval = g_slist_prepend (retval, seg->body.toggle.info->tag);
+              retval = b_slist_prepend (retval, seg->body.toggle.info->tag);
             }
         }
       else
         {
           if (seg->type == &btk_text_toggle_off_type)
             {
-              retval = g_slist_prepend (retval, seg->body.toggle.info->tag);
+              retval = b_slist_prepend (retval, seg->body.toggle.info->tag);
             }
         }
 
@@ -1335,14 +1335,14 @@ btk_text_iter_get_tags (const BtkTextIter *iter)
   i = 0;
   while (i < tag_count)
     {
-      retval = g_slist_prepend (retval, tags[i]);
+      retval = b_slist_prepend (retval, tags[i]);
       ++i;
     }
   
   g_free (tags);
 
   /* Return tags in ascending order of priority */
-  return g_slist_reverse (retval);
+  return b_slist_reverse (retval);
 }
 
 /**
@@ -4542,7 +4542,7 @@ strbreakup (const char *string,
           new_string = g_new (gchar, len + 1);
           strncpy (new_string, string, len);
           new_string[len] = 0;
-          string_list = g_slist_prepend (string_list, new_string);
+          string_list = b_slist_prepend (string_list, new_string);
           n++;
           string = s + delimiter_len;
           s = strstr (string, delimiter);
@@ -4552,7 +4552,7 @@ strbreakup (const char *string,
   if (*string)
     {
       n++;
-      string_list = g_slist_prepend (string_list, g_strdup (string));
+      string_list = b_slist_prepend (string_list, g_strdup (string));
     }
 
   str_array = g_new (gchar*, n);
@@ -4563,7 +4563,7 @@ strbreakup (const char *string,
   for (slist = string_list; slist; slist = slist->next)
     str_array[i--] = slist->data;
 
-  g_slist_free (string_list);
+  b_slist_free (string_list);
 
   return str_array;
 }

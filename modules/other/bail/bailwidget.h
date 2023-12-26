@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_WIDGET                     (bail_widget_get_type ())
-#define BAIL_WIDGET(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WIDGET, BailWidget))
-#define BAIL_WIDGET_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_WIDGET, BailWidgetClass))
-#define BAIL_IS_WIDGET(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_WIDGET))
-#define BAIL_IS_WIDGET_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_WIDGET))
-#define BAIL_WIDGET_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_WIDGET, BailWidgetClass))
+#define BAIL_WIDGET(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WIDGET, BailWidget))
+#define BAIL_WIDGET_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_WIDGET, BailWidgetClass))
+#define BAIL_IS_WIDGET(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_WIDGET))
+#define BAIL_IS_WIDGET_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_WIDGET))
+#define BAIL_WIDGET_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_WIDGET, BailWidgetClass))
 
 typedef struct _BailWidget                   BailWidget;
 typedef struct _BailWidgetClass              BailWidgetClass;
@@ -48,8 +48,8 @@ struct _BailWidgetClass
   /*
    * Signal handler for notify signal on BTK widget
    */
-  void (*notify_btk)                   (GObject             *object,
-                                        GParamSpec          *pspec);
+  void (*notify_btk)                   (BObject             *object,
+                                        BParamSpec          *pspec);
   /*
    * Signal handler for focus_in_event and focus_out_event signal on BTK widget
    */

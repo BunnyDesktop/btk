@@ -84,7 +84,7 @@ blink_cb (gpointer data)
   BtkWidget *widget = data;
 
   btk_widget_show (widget);
-  g_object_set_data (G_OBJECT (widget), "blink", NULL);
+  g_object_set_data (B_OBJECT (widget), "blink", NULL);
 
   return FALSE;
 }
@@ -93,21 +93,21 @@ static void
 blink (BtkWidget *widget,
        BtkWidget *window)
 {
-  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (window), "blink"));
+  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (window), "blink"));
   
   if (!blink_timeout)
     {
       blink_timeout = bdk_threads_add_timeout (1000, blink_cb, window);
       btk_widget_hide (window);
 
-      g_object_set_data (G_OBJECT (window), "blink", GUINT_TO_POINTER (blink_timeout));
+      g_object_set_data (B_OBJECT (window), "blink", GUINT_TO_POINTER (blink_timeout));
     }
 }
 
 static void
 local_destroy (BtkWidget *window)
 {
-  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (window), "blink"));
+  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (window), "blink"));
   if (blink_timeout)
     g_source_remove (blink_timeout);
 }

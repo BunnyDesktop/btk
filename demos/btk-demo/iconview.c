@@ -154,10 +154,10 @@ create_store (void)
   BtkListStore *store;
 
   store = btk_list_store_new (NUM_COLS,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING,
+			      B_TYPE_STRING,
+			      B_TYPE_STRING,
 			      BDK_TYPE_PIXBUF,
-			      G_TYPE_BOOLEAN);
+			      B_TYPE_BOOLEAN);
 
   /* Set sort column and function */
   btk_tree_sortable_set_default_sort_func (BTK_TREE_SORTABLE (store),

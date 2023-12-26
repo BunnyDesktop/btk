@@ -280,7 +280,7 @@
 </div>
 <div class="refsect1">
 <a name="btk2-Resource-Files.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkRcStyle
 </pre>
 </div>
@@ -360,7 +360,7 @@ would be items inside a BUNNY canvas widget.</p>
 <span class="n">btk_widget_class_path</span> <span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">class_path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
 <span class="n">btk_rc_get_style_by_paths</span> <span class="p">(</span><span class="n">btk_widget_get_settings</span> <span class="p">(</span><span class="n">widget</span><span class="p">),</span> 
                            <span class="n">path</span><span class="p">,</span> <span class="n">class_path</span><span class="p">,</span>
-                           <span class="n">G_OBJECT_TYPE</span> <span class="p">(</span><span class="n">widget</span><span class="p">));</span></pre></td>
+                           <span class="n">B_OBJECT_TYPE</span> <span class="p">(</span><span class="n">widget</span><span class="p">));</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -396,7 +396,7 @@ or <code class="literal">NULL</code> if no matching against the class path shoul
 <tr>
 <td class="parameter_name"><p>type</p></td>
 <td class="parameter_description"><p>a type that will be used along with parent types of this type
-when matching against class styles, or <span class="type">G_TYPE_NONE</span></p></td>
+when matching against class styles, or <span class="type">B_TYPE_NONE</span></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>

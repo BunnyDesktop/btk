@@ -54,8 +54,8 @@ static gboolean  delegate_set_current_uri            (BtkRecentChooser  *chooser
 static gchar *   delegate_get_current_uri            (BtkRecentChooser  *chooser);
 
 /* Signals */
-static void      delegate_notify            (GObject          *object,
-					     GParamSpec       *pspec,
+static void      delegate_notify            (BObject          *object,
+					     BParamSpec       *pspec,
 					     gpointer          user_data);
 static void      delegate_selection_changed (BtkRecentChooser *receiver,
 					     gpointer          user_data);
@@ -64,7 +64,7 @@ static void      delegate_item_activated    (BtkRecentChooser *receiver,
 
 /**
  * _btk_recent_chooser_install_properties:
- * @klass: the class structure for a type deriving from #GObject
+ * @klass: the class structure for a type deriving from #BObject
  *
  * Installs the necessary properties for a class implementing
  * #BtkRecentChooser. A #BtkParamSpecOverride property is installed
@@ -74,7 +74,7 @@ static void      delegate_item_activated    (BtkRecentChooser *receiver,
  * are using.
  */
 void
-_btk_recent_chooser_install_properties (GObjectClass *klass)
+_btk_recent_chooser_install_properties (BObjectClass *klass)
 {
   g_object_class_override_property (klass,
   				    BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER,
@@ -138,8 +138,8 @@ _btk_recent_chooser_delegate_iface_init (BtkRecentChooserIface *iface)
 
 /**
  * _btk_recent_chooser_set_delegate:
- * @receiver: a #GObject implementing #BtkRecentChooser
- * @delegate: another #GObject implementing #BtkRecentChooser
+ * @receiver: a #BObject implementing #BtkRecentChooser
+ * @delegate: another #BObject implementing #BtkRecentChooser
  *
  * Establishes that calls on @receiver for #BtkRecentChooser
  * methods should be delegated to @delegate, and that
@@ -154,7 +154,7 @@ _btk_recent_chooser_set_delegate (BtkRecentChooser *receiver,
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (receiver));
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (delegate));
   
-  g_object_set_data (G_OBJECT (receiver),
+  g_object_set_data (B_OBJECT (receiver),
   		    "btk-recent-chooser-delegate", delegate);
   
   g_signal_connect (delegate, "notify",
@@ -179,7 +179,7 @@ _btk_recent_chooser_delegate_get_quark (void)
 static BtkRecentChooser *
 get_delegate (BtkRecentChooser *receiver)
 {
-  return g_object_get_qdata (G_OBJECT (receiver),
+  return g_object_get_qdata (B_OBJECT (receiver),
   			     BTK_RECENT_CHOOSER_DELEGATE_QUARK);
 }
 
@@ -269,13 +269,13 @@ delegate_get_current_uri (BtkRecentChooser *chooser)
 }
 
 static void
-delegate_notify (GObject    *object,
-		 GParamSpec *pspec,
+delegate_notify (BObject    *object,
+		 BParamSpec *pspec,
 		 gpointer    user_data)
 {
   gpointer iface;
 
-  iface = g_type_interface_peek (g_type_class_peek (G_OBJECT_TYPE (object)),
+  iface = g_type_interface_peek (g_type_class_peek (B_OBJECT_TYPE (object)),
 				 btk_recent_chooser_get_type ());
   if (g_object_interface_find_property (iface, pspec->name))
     g_object_notify (user_data, pspec->name);
@@ -447,7 +447,7 @@ _btk_recent_chooser_get_items (BtkRecentChooser  *chooser,
       gboolean show_private = FALSE;
       gboolean show_not_found = FALSE;
 
-      g_object_get (G_OBJECT (chooser),
+      g_object_get (B_OBJECT (chooser),
                     "local-only", &local_only,
                     "show-private", &show_private,
                     "show-not-found", &show_not_found,

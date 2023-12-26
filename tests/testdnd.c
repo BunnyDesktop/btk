@@ -332,7 +332,7 @@ target_drag_motion	   (BtkWidget	       *widget,
 
   source_widget = btk_drag_get_source_widget (context);
   g_print ("motion, source %s\n", source_widget ?
-	   G_OBJECT_TYPE_NAME (source_widget) :
+	   B_OBJECT_TYPE_NAME (source_widget) :
 	   "NULL");
 
   tmp_list = context->targets;

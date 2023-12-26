@@ -37,7 +37,7 @@
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 static void     bdk_visual_add            (BdkVisual *visual);
@@ -83,7 +83,7 @@ bdk_visual_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             g_intern_static_string ("BdkVisual"),
                                             &object_info, 0);
     }

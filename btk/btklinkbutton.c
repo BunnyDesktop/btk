@@ -59,17 +59,17 @@ enum
   PROP_VISITED
 };
 
-#define BTK_LINK_BUTTON_GET_PRIVATE(obj)	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonPrivate))
+#define BTK_LINK_BUTTON_GET_PRIVATE(obj)	(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonPrivate))
 
-static void     btk_link_button_finalize     (GObject          *object);
-static void     btk_link_button_get_property (GObject          *object,
+static void     btk_link_button_finalize     (BObject          *object);
+static void     btk_link_button_get_property (BObject          *object,
 					      guint             prop_id,
-					      GValue           *value,
-					      GParamSpec       *pspec);
-static void     btk_link_button_set_property (GObject          *object,
+					      BValue           *value,
+					      BParamSpec       *pspec);
+static void     btk_link_button_set_property (BObject          *object,
 					      guint             prop_id,
-					      const GValue     *value,
-					      GParamSpec       *pspec);
+					      const BValue     *value,
+					      BParamSpec       *pspec);
 static void     btk_link_button_add          (BtkContainer     *container,
 					      BtkWidget        *widget);
 static gboolean btk_link_button_button_press (BtkWidget        *widget,
@@ -115,7 +115,7 @@ G_DEFINE_TYPE (BtkLinkButton, btk_link_button, BTK_TYPE_BUTTON)
 static void
 btk_link_button_class_init (BtkLinkButtonClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (klass);
   BtkButtonClass *button_class = BTK_BUTTON_CLASS (klass);
@@ -191,55 +191,55 @@ btk_link_button_init (BtkLinkButton *link_button)
 }
 
 static void
-btk_link_button_finalize (GObject *object)
+btk_link_button_finalize (BObject *object)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   g_free (link_button->priv->uri);
   
-  G_OBJECT_CLASS (btk_link_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_link_button_parent_class)->finalize (object);
 }
 
 static void
-btk_link_button_get_property (GObject    *object,
+btk_link_button_get_property (BObject    *object,
 			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+			      BValue     *value,
+			      BParamSpec *pspec)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   switch (prop_id)
     {
     case PROP_URI:
-      g_value_set_string (value, link_button->priv->uri);
+      b_value_set_string (value, link_button->priv->uri);
       break;
     case PROP_VISITED:
-      g_value_set_boolean (value, link_button->priv->visited);
+      b_value_set_boolean (value, link_button->priv->visited);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_link_button_set_property (GObject      *object,
+btk_link_button_set_property (BObject      *object,
 			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+			      const BValue *value,
+			      BParamSpec   *pspec)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   switch (prop_id)
     {
     case PROP_URI:
-      btk_link_button_set_uri (link_button, g_value_get_string (value));
+      btk_link_button_set_uri (link_button, b_value_get_string (value));
       break;
     case PROP_VISITED:
-      btk_link_button_set_visited (link_button, g_value_get_boolean (value));
+      btk_link_button_set_visited (link_button, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -677,7 +677,7 @@ btk_link_button_set_uri (BtkLinkButton *link_button,
   g_free (priv->uri);
   priv->uri = g_strdup (uri);
 
-  g_object_notify (G_OBJECT (link_button), "uri");
+  g_object_notify (B_OBJECT (link_button), "uri");
 
   btk_link_button_set_visited (link_button, FALSE);
 }
@@ -762,7 +762,7 @@ btk_link_button_set_visited (BtkLinkButton *link_button,
 
       set_link_color (link_button);
 
-      g_object_notify (G_OBJECT (link_button), "visited");
+      g_object_notify (B_OBJECT (link_button), "visited");
     }
 }
 

@@ -32,7 +32,7 @@ static void             bail_toplevel_class_init        (BailToplevelClass      
 static void             bail_toplevel_init              (BailToplevel           *toplevel);
 static void             bail_toplevel_initialize        (BatkObject              *accessible,
                                                          gpointer                data);
-static void             bail_toplevel_object_finalize   (GObject                *obj);
+static void             bail_toplevel_object_finalize   (BObject                *obj);
 
 /* batkobject.h */
 
@@ -48,11 +48,11 @@ static void             bail_toplevel_window_destroyed  (BtkWindow              
                                                         BailToplevel            *text);
 static gboolean         bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
                                                         guint                   n_param_values,
-                                                        const GValue            *param_values,
+                                                        const BValue            *param_values,
                                                         gpointer                data);
 static gboolean         bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
                                                         guint                   n_param_values,
-                                                        const GValue            *param_values,
+                                                        const BValue            *param_values,
                                                         gpointer                data);
 
 /* Misc */
@@ -69,7 +69,7 @@ static void
 bail_toplevel_class_init (BailToplevelClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS(klass);
-  GObjectClass *g_object_class = G_OBJECT_CLASS(klass);
+  BObjectClass *g_object_class = B_OBJECT_CLASS(klass);
 
   class->initialize = bail_toplevel_initialize;
   class->get_n_children = bail_toplevel_get_n_children;
@@ -106,7 +106,7 @@ bail_toplevel_init (BailToplevel *toplevel)
         }
       else
         {
-          g_signal_connect (G_OBJECT (window), 
+          g_signal_connect (B_OBJECT (window), 
                             "destroy",
                             G_CALLBACK (bail_toplevel_window_destroyed),
                             toplevel);
@@ -137,14 +137,14 @@ bail_toplevel_initialize (BatkObject *accessible,
 }
 
 static void
-bail_toplevel_object_finalize (GObject *obj)
+bail_toplevel_object_finalize (BObject *obj)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (obj);
 
   if (toplevel->window_list)
     g_list_free (toplevel->window_list);
 
-  G_OBJECT_CLASS (bail_toplevel_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (bail_toplevel_parent_class)->finalize (obj);
 }
 
 static BatkObject*
@@ -199,17 +199,17 @@ bail_toplevel_window_destroyed (BtkWindow    *window,
 static gboolean
 bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
                                   guint                  n_param_values,
-                                  const GValue          *param_values,
+                                  const BValue          *param_values,
                                   gpointer               data)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (data);
   BatkObject *batk_obj = BATK_OBJECT (toplevel);
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   gint n_children;
   BatkObject *child;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
 
   if (!BTK_IS_WINDOW (object))
     return TRUE;
@@ -250,7 +250,7 @@ bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
                          child, NULL);
 
   /* Connect destroy signal callback */
-  g_signal_connect (G_OBJECT(object), 
+  g_signal_connect (B_OBJECT(object), 
                     "destroy",
                     G_CALLBACK (bail_toplevel_window_destroyed),
                     toplevel);
@@ -264,13 +264,13 @@ bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
 static gboolean
 bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
                                   guint                  n_param_values,
-                                  const GValue          *param_values,
+                                  const BValue          *param_values,
                                   gpointer               data)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (data);
-  GObject *object;
+  BObject *object;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
 
   if (!BTK_IS_WINDOW (object))
     return TRUE;

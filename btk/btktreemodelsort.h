@@ -31,18 +31,18 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL_SORT			(btk_tree_model_sort_get_type ())
-#define BTK_TREE_MODEL_SORT(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSort))
-#define BTK_TREE_MODEL_SORT_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
-#define BTK_IS_TREE_MODEL_SORT(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_SORT))
-#define BTK_IS_TREE_MODEL_SORT_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_MODEL_SORT))
-#define BTK_TREE_MODEL_SORT_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
+#define BTK_TREE_MODEL_SORT(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSort))
+#define BTK_TREE_MODEL_SORT_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
+#define BTK_IS_TREE_MODEL_SORT(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_SORT))
+#define BTK_IS_TREE_MODEL_SORT_CLASS(klass)		(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_MODEL_SORT))
+#define BTK_TREE_MODEL_SORT_GET_CLASS(obj)		(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
 
 typedef struct _BtkTreeModelSort       BtkTreeModelSort;
 typedef struct _BtkTreeModelSortClass  BtkTreeModelSortClass;
 
 struct _BtkTreeModelSort
 {
-  GObject parent;
+  BObject parent;
 
   /* < private > */
   gpointer GSEAL (root);
@@ -71,7 +71,7 @@ struct _BtkTreeModelSort
 
 struct _BtkTreeModelSortClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

@@ -99,16 +99,16 @@ enum {
   PROP_ACCEL_WIDGET
 };
 
-static void         btk_accel_label_set_property (GObject            *object,
+static void         btk_accel_label_set_property (BObject            *object,
 						  guint               prop_id,
-						  const GValue       *value,
-						  GParamSpec         *pspec);
-static void         btk_accel_label_get_property (GObject            *object,
+						  const BValue       *value,
+						  BParamSpec         *pspec);
+static void         btk_accel_label_get_property (BObject            *object,
 						  guint               prop_id,
-						  GValue             *value,
-						  GParamSpec         *pspec);
+						  BValue             *value,
+						  BParamSpec         *pspec);
 static void         btk_accel_label_destroy      (BtkObject          *object);
-static void         btk_accel_label_finalize     (GObject            *object);
+static void         btk_accel_label_finalize     (BObject            *object);
 static void         btk_accel_label_size_request (BtkWidget          *widget,
 						  BtkRequisition     *requisition);
 static gboolean     btk_accel_label_expose_event (BtkWidget          *widget,
@@ -121,7 +121,7 @@ G_DEFINE_TYPE (BtkAccelLabel, btk_accel_label, BTK_TYPE_LABEL)
 static void
 btk_accel_label_class_init (BtkAccelLabelClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   
@@ -177,7 +177,7 @@ btk_accel_label_class_init (BtkAccelLabelClass *class)
                                    g_param_spec_boxed ("accel-closure",
 						       P_("Accelerator Closure"),
 						       P_("The closure to be monitored for accelerator changes"),
-						       G_TYPE_CLOSURE,
+						       B_TYPE_CLOSURE,
 						       BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
                                    PROP_ACCEL_WIDGET,
@@ -189,10 +189,10 @@ btk_accel_label_class_init (BtkAccelLabelClass *class)
 }
 
 static void
-btk_accel_label_set_property (GObject      *object,
+btk_accel_label_set_property (BObject      *object,
 			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+			      const BValue *value,
+			      BParamSpec   *pspec)
 {
   BtkAccelLabel  *accel_label;
 
@@ -201,22 +201,22 @@ btk_accel_label_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ACCEL_CLOSURE:
-      btk_accel_label_set_accel_closure (accel_label, g_value_get_boxed (value));
+      btk_accel_label_set_accel_closure (accel_label, b_value_get_boxed (value));
       break;
     case PROP_ACCEL_WIDGET:
-      btk_accel_label_set_accel_widget (accel_label, g_value_get_object (value));
+      btk_accel_label_set_accel_widget (accel_label, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_accel_label_get_property (GObject    *object,
+btk_accel_label_get_property (BObject    *object,
 			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+			      BValue     *value,
+			      BParamSpec *pspec)
 {
   BtkAccelLabel  *accel_label;
 
@@ -225,13 +225,13 @@ btk_accel_label_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_ACCEL_CLOSURE:
-      g_value_set_boxed (value, accel_label->accel_closure);
+      b_value_set_boxed (value, accel_label->accel_closure);
       break;
     case PROP_ACCEL_WIDGET:
-      g_value_set_object (value, accel_label->accel_widget);
+      b_value_set_object (value, accel_label->accel_widget);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -280,13 +280,13 @@ btk_accel_label_destroy (BtkObject *object)
 }
 
 static void
-btk_accel_label_finalize (GObject *object)
+btk_accel_label_finalize (BObject *object)
 {
   BtkAccelLabel *accel_label = BTK_ACCEL_LABEL (object);
 
   g_free (accel_label->accel_string);
   
-  G_OBJECT_CLASS (btk_accel_label_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_accel_label_parent_class)->finalize (object);
 }
 
 /**
@@ -487,7 +487,7 @@ btk_accel_label_set_accel_widget (BtkAccelLabel *accel_label,
 				   accel_label, G_CONNECT_SWAPPED);
 	  refetch_widget_accel_closure (accel_label);
 	}
-      g_object_notify (G_OBJECT (accel_label), "accel-widget");
+      g_object_notify (B_OBJECT (accel_label), "accel-widget");
     }
 }
 
@@ -550,7 +550,7 @@ btk_accel_label_set_accel_closure (BtkAccelLabel *accel_label,
 				   accel_label, 0);
 	}
       btk_accel_label_reset (accel_label);
-      g_object_notify (G_OBJECT (accel_label), "accel-closure");
+      g_object_notify (B_OBJECT (accel_label), "accel-closure");
     }
 }
 

@@ -89,16 +89,16 @@ btk_icon_factory_buildable_init  (BtkBuildableIface      *iface);
 
 static gboolean btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 							     BtkBuilder       *builder,
-							     GObject          *child,
+							     BObject          *child,
 							     const gchar      *tagname,
 							     GMarkupParser    *parser,
 							     gpointer         *data);
 static void btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
-						       GObject      *child,
+						       BObject      *child,
 						       const gchar  *tagname,
 						       gpointer     *user_data);
-static void btk_icon_factory_finalize   (GObject             *object);
+static void btk_icon_factory_finalize   (BObject             *object);
 static void get_default_icons           (BtkIconFactory      *icon_factory);
 static void icon_source_clear           (BtkIconSource       *source);
 
@@ -111,7 +111,7 @@ static BtkIconSize icon_size_register_intern (const gchar *name,
    0, 0, 0,								\
    any_direction, any_state, any_size }
 
-G_DEFINE_TYPE_WITH_CODE (BtkIconFactory, btk_icon_factory, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkIconFactory, btk_icon_factory, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_icon_factory_buildable_init))
 
@@ -119,13 +119,13 @@ static void
 btk_icon_factory_init (BtkIconFactory *factory)
 {
   factory->icons = g_hash_table_new (g_str_hash, g_str_equal);
-  all_icon_factories = g_slist_prepend (all_icon_factories, factory);
+  all_icon_factories = b_slist_prepend (all_icon_factories, factory);
 }
 
 static void
 btk_icon_factory_class_init (BtkIconFactoryClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_icon_factory_finalize;
 }
@@ -145,17 +145,17 @@ free_icon_set (gpointer key, gpointer value, gpointer data)
 }
 
 static void
-btk_icon_factory_finalize (GObject *object)
+btk_icon_factory_finalize (BObject *object)
 {
   BtkIconFactory *factory = BTK_ICON_FACTORY (object);
 
-  all_icon_factories = g_slist_remove (all_icon_factories, factory);
+  all_icon_factories = b_slist_remove (all_icon_factories, factory);
 
   g_hash_table_foreach (factory->icons, free_icon_set, NULL);
 
   g_hash_table_destroy (factory->icons);
 
-  G_OBJECT_CLASS (btk_icon_factory_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_icon_factory_parent_class)->finalize (object);
 }
 
 /**
@@ -274,7 +274,7 @@ btk_icon_factory_add_default (BtkIconFactory *factory)
 
   g_object_ref (factory);
 
-  default_factories = g_slist_prepend (default_factories, factory);
+  default_factories = b_slist_prepend (default_factories, factory);
 }
 
 /**
@@ -290,7 +290,7 @@ btk_icon_factory_remove_default (BtkIconFactory  *factory)
 {
   g_return_if_fail (BTK_IS_ICON_FACTORY (factory));
 
-  default_factories = g_slist_remove (default_factories, factory);
+  default_factories = b_slist_remove (default_factories, factory);
 
   g_object_unref (factory);
 }
@@ -335,7 +335,7 @@ btk_icon_factory_lookup_default (const gchar *stock_id)
       if (icon_set)
         return icon_set;
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   _btk_icon_factory_ensure_default_icons ();
@@ -615,11 +615,11 @@ get_settings_sizes (BtkSettings *settings,
   if (!sizes_quark)
     sizes_quark = g_quark_from_static_string ("btk-icon-sizes");
 
-  settings_sizes = g_object_get_qdata (G_OBJECT (settings), sizes_quark);
+  settings_sizes = g_object_get_qdata (B_OBJECT (settings), sizes_quark);
   if (!settings_sizes)
     {
       settings_sizes = g_array_new (FALSE, FALSE, sizeof (SettingsIconSize));
-      g_object_set_qdata_full (G_OBJECT (settings), sizes_quark,
+      g_object_set_qdata_full (B_OBJECT (settings), sizes_quark,
 			       settings_sizes, free_settings_sizes);
       if (created)
 	*created = TRUE;
@@ -780,7 +780,7 @@ icon_size_set_all_from_settings (BtkSettings *settings)
 
 static void
 icon_size_settings_changed (BtkSettings  *settings,
-			    GParamSpec   *pspec)
+			    BParamSpec   *pspec)
 {
   icon_size_set_all_from_settings (settings);
 
@@ -1215,9 +1215,9 @@ btk_icon_set_unref (BtkIconSet *icon_set)
         {
           btk_icon_source_free (tmp_list->data);
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
-      g_slist_free (icon_set->sources);
+      b_slist_free (icon_set->sources);
 
       clear_cache (icon_set, TRUE);
 
@@ -1257,13 +1257,13 @@ btk_icon_set_copy (BtkIconSet *icon_set)
   tmp_list = icon_set->sources;
   while (tmp_list != NULL)
     {
-      copy->sources = g_slist_prepend (copy->sources,
+      copy->sources = b_slist_prepend (copy->sources,
                                        btk_icon_source_copy (tmp_list->data));
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  copy->sources = g_slist_reverse (copy->sources);
+  copy->sources = b_slist_reverse (copy->sources);
 
   copy->cache = copy_cache (icon_set, copy);
   copy->cache_size = icon_set->cache_size;
@@ -1323,14 +1323,14 @@ find_best_matching_source (BtkIconSet       *icon_set,
           (s->any_state || (s->state == state)) &&
           (s->any_size || size == (BtkIconSize)-1 || (sizes_equivalent (size, s->size))))
         {
-	  if (!g_slist_find (failed, s))
+	  if (!b_slist_find (failed, s))
 	    {
 	      source = s;
 	      break;
 	    }
 	}
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return source;
@@ -1354,7 +1354,7 @@ ensure_filename_pixbuf (BtkIconSet    *icon_set,
 	  g_warning (_("Error loading icon: %s"), error->message);
 	  g_error_free (error);
 
-	  icon_set->sources = g_slist_remove (icon_set->sources, source);
+	  icon_set->sources = b_slist_remove (icon_set->sources, source);
 
 	  btk_icon_source_free (source);
 
@@ -1541,7 +1541,7 @@ find_and_render_icon_source (BtkIconSet       *icon_set,
 	  if (!pixbuf)
 	    {
 	      g_warning ("Failed to render icon");
-	      failed = g_slist_prepend (failed, source);
+	      failed = b_slist_prepend (failed, source);
 	    }
 	  break;
 	case BTK_ICON_SOURCE_ICON_NAME:
@@ -1550,14 +1550,14 @@ find_and_render_icon_source (BtkIconSet       *icon_set,
 					    direction, state, size,
 					    widget, detail);
 	  if (!pixbuf)
-	    failed = g_slist_prepend (failed, source);
+	    failed = b_slist_prepend (failed, source);
 	  break;
 	case BTK_ICON_SOURCE_EMPTY:
 	  g_assert_not_reached ();
 	}
     }
 
-  g_slist_free (failed);
+  b_slist_free (failed);
 
   return pixbuf;
 }
@@ -1737,7 +1737,7 @@ btk_icon_set_add_source (BtkIconSet          *icon_set,
       return;
     }
 
-  icon_set->sources = g_slist_insert_sorted (icon_set->sources,
+  icon_set->sources = b_slist_insert_sorted (icon_set->sources,
                                              btk_icon_source_copy (source),
                                              icon_source_compare);
 }
@@ -1778,9 +1778,9 @@ btk_icon_set_get_sizes (BtkIconSet   *icon_set,
           break;
         }
       else
-        specifics = g_slist_prepend (specifics, GINT_TO_POINTER (source->size));
+        specifics = b_slist_prepend (specifics, GINT_TO_POINTER (source->size));
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   if (all_sizes)
@@ -1804,7 +1804,7 @@ btk_icon_set_get_sizes (BtkIconSet   *icon_set,
     {
       gint i;
 
-      *n_sizes = g_slist_length (specifics);
+      *n_sizes = b_slist_length (specifics);
       *sizes = g_new (BtkIconSize, *n_sizes);
 
       i = 0;
@@ -1814,11 +1814,11 @@ btk_icon_set_get_sizes (BtkIconSet   *icon_set,
           (*sizes)[i] = GPOINTER_TO_INT (tmp_list->data);
 
           ++i;
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
-  g_slist_free (specifics);
+  b_slist_free (specifics);
 }
 
 
@@ -2460,7 +2460,7 @@ find_in_cache (BtkIconSet      *icon_set,
         }
 
       prev = tmp_list;
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return NULL;
@@ -2489,7 +2489,7 @@ add_to_cache (BtkIconSet      *icon_set,
     g_object_ref (style);
 
   icon = g_new (CachedIcon, 1);
-  icon_set->cache = g_slist_prepend (icon_set->cache, icon);
+  icon_set->cache = b_slist_prepend (icon_set->cache, icon);
   icon_set->cache_size++;
 
   icon->style = style;
@@ -2520,7 +2520,7 @@ add_to_cache (BtkIconSet      *icon_set,
       /* Free the last icon */
       icon = tmp_list->next->data;
 
-      g_slist_free (tmp_list->next);
+      b_slist_free (tmp_list->next);
       tmp_list->next = NULL;
 
       cached_icon_free (icon);
@@ -2558,10 +2558,10 @@ clear_cache (BtkIconSet *icon_set,
 
       cached_icon_free (icon);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  g_slist_free (cache);
+  b_slist_free (cache);
 }
 
 static GSList*
@@ -2591,12 +2591,12 @@ copy_cache (BtkIconSet *icon_set,
 
       icon_copy->size = icon->size;
 
-      copy = g_slist_prepend (copy, icon_copy);
+      copy = b_slist_prepend (copy, icon_copy);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  return g_slist_reverse (copy);
+  return b_slist_reverse (copy);
 }
 
 static void
@@ -2605,13 +2605,13 @@ attach_to_style (BtkIconSet *icon_set,
 {
   GHashTable *table;
 
-  table = g_object_get_qdata (G_OBJECT (style),
+  table = g_object_get_qdata (B_OBJECT (style),
                               g_quark_try_string ("btk-style-icon-sets"));
 
   if (table == NULL)
     {
       table = g_hash_table_new (NULL, NULL);
-      g_object_set_qdata_full (G_OBJECT (style),
+      g_object_set_qdata_full (B_OBJECT (style),
                                g_quark_from_static_string ("btk-style-icon-sets"),
                                table,
                                style_dnotify);
@@ -2626,7 +2626,7 @@ detach_from_style (BtkIconSet *icon_set,
 {
   GHashTable *table;
 
-  table = g_object_get_qdata (G_OBJECT (style),
+  table = g_object_get_qdata (B_OBJECT (style),
                               g_quark_try_string ("btk-style-icon-sets"));
 
   if (table != NULL)
@@ -2697,7 +2697,7 @@ _btk_icon_factory_list_ids (void)
 
       ids = g_list_concat (ids, these_ids);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return ids;
@@ -2817,7 +2817,7 @@ icon_source_start_element (GMarkupParseContext *context,
   source_data->direction = direction;
   source_data->state = state;
 
-  parser_data->sources = g_slist_prepend (parser_data->sources, source_data);
+  parser_data->sources = b_slist_prepend (parser_data->sources, source_data);
   return;
 
  error:
@@ -2855,7 +2855,7 @@ static const GMarkupParser icon_source_parser =
 static gboolean
 btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 					     BtkBuilder       *builder,
-					     GObject          *child,
+					     BObject          *child,
 					     const gchar      *tagname,
 					     GMarkupParser    *parser,
 					     gpointer         *data)
@@ -2877,7 +2877,7 @@ btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 static void
 btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
-					   GObject      *child,
+					   BObject      *child,
 					   const gchar  *tagname,
 					   gpointer     *user_data)
 {
@@ -2935,7 +2935,7 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 
 	  /* Inline source_add() to avoid creating a copy */
 	  g_assert (icon_source->type != BTK_ICON_SOURCE_EMPTY);
-	  icon_set->sources = g_slist_insert_sorted (icon_set->sources,
+	  icon_set->sources = b_slist_insert_sorted (icon_set->sources,
 						     icon_source,
 						     icon_source_compare);
 
@@ -2944,7 +2944,7 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 	  g_free (source_data->icon_name);
 	  g_slice_free (IconSourceParserData, source_data);
 	}
-      g_slist_free (parser_data->sources);
+      b_slist_free (parser_data->sources);
       g_slice_free (IconFactoryParserData, parser_data);
 
       /* TODO: Add an attribute/tag to prevent this.

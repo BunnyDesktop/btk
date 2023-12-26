@@ -44,11 +44,11 @@ B_BEGIN_DECLS
  * Type checking and casting macros
  */
 #define BTK_TYPE_INFO_BAR              (btk_info_bar_get_type())
-#define BTK_INFO_BAR(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), BTK_TYPE_INFO_BAR, BtkInfoBar))
-#define BTK_INFO_BAR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
-#define BTK_IS_INFO_BAR(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), BTK_TYPE_INFO_BAR))
-#define BTK_IS_INFO_BAR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INFO_BAR))
-#define BTK_INFO_BAR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
+#define BTK_INFO_BAR(obj)              (B_TYPE_CHECK_INSTANCE_CAST((obj), BTK_TYPE_INFO_BAR, BtkInfoBar))
+#define BTK_INFO_BAR_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST((klass), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
+#define BTK_IS_INFO_BAR(obj)           (B_TYPE_CHECK_INSTANCE_TYPE((obj), BTK_TYPE_INFO_BAR))
+#define BTK_IS_INFO_BAR_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INFO_BAR))
+#define BTK_INFO_BAR_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
 
 
 typedef struct _BtkInfoBarPrivate BtkInfoBarPrivate;

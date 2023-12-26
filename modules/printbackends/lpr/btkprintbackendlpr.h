@@ -28,8 +28,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_LPR            (btk_print_backend_lpr_get_type ())
-#define BTK_PRINT_BACKEND_LPR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLpr))
-#define BTK_IS_PRINT_BACKEND_LPR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_LPR))
+#define BTK_PRINT_BACKEND_LPR(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLpr))
+#define BTK_IS_PRINT_BACKEND_LPR(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_LPR))
 
 typedef struct _BtkPrintBackendLpr      BtkPrintBackendLpr;
 

@@ -59,15 +59,15 @@ struct _BtkCellViewPrivate
 
 
 static void        btk_cell_view_cell_layout_init         (BtkCellLayoutIface *iface);
-static void        btk_cell_view_get_property             (GObject           *object,
+static void        btk_cell_view_get_property             (BObject           *object,
                                                            guint             param_id,
-                                                           GValue           *value,
-                                                           GParamSpec       *pspec);
-static void        btk_cell_view_set_property             (GObject          *object,
+                                                           BValue           *value,
+                                                           BParamSpec       *pspec);
+static void        btk_cell_view_set_property             (BObject          *object,
                                                            guint             param_id,
-                                                           const GValue     *value,
-                                                           GParamSpec       *pspec);
-static void        btk_cell_view_finalize                 (GObject          *object);
+                                                           const BValue     *value,
+                                                           BParamSpec       *pspec);
+static void        btk_cell_view_finalize                 (BObject          *object);
 static void        btk_cell_view_size_request             (BtkWidget        *widget,
                                                            BtkRequisition   *requisition);
 static void        btk_cell_view_size_allocate            (BtkWidget        *widget,
@@ -77,7 +77,7 @@ static gboolean    btk_cell_view_expose                   (BtkWidget        *wid
 static void        btk_cell_view_set_value                (BtkCellView     *cell_view,
                                                            BtkCellRenderer *renderer,
                                                            gchar           *property,
-                                                           GValue          *value);
+                                                           BValue          *value);
 static BtkCellViewCellInfo *btk_cell_view_get_cell_info   (BtkCellView      *cellview,
                                                            BtkCellRenderer  *renderer);
 static void        btk_cell_view_set_cell_data            (BtkCellView      *cell_view);
@@ -110,19 +110,19 @@ static GList *    btk_cell_view_cell_layout_get_cells          (BtkCellLayout   
 static void       btk_cell_view_buildable_init                 (BtkBuildableIface     *iface);
 static gboolean   btk_cell_view_buildable_custom_tag_start     (BtkBuildable  	      *buildable,
 								BtkBuilder    	      *builder,
-								GObject       	      *child,
+								BObject       	      *child,
 								const gchar   	      *tagname,
 								GMarkupParser 	      *parser,
 								gpointer      	      *data);
 static void       btk_cell_view_buildable_custom_tag_end       (BtkBuildable  	      *buildable,
 								BtkBuilder    	      *builder,
-								GObject       	      *child,
+								BObject       	      *child,
 								const gchar   	      *tagname,
 								gpointer      	      *data);
 
 static BtkBuildableIface *parent_buildable_iface;
 
-#define BTK_CELL_VIEW_GET_PRIVATE(obj)    (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_VIEW, BtkCellViewPrivate))
+#define BTK_CELL_VIEW_GET_PRIVATE(obj)    (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_VIEW, BtkCellViewPrivate))
 
 enum
 {
@@ -142,7 +142,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkCellView, btk_cell_view, BTK_TYPE_WIDGET,
 static void
 btk_cell_view_class_init (BtkCellViewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
 
   bobject_class->get_property = btk_cell_view_get_property;
@@ -216,10 +216,10 @@ btk_cell_view_cell_layout_init (BtkCellLayoutIface *iface)
 }
 
 static void
-btk_cell_view_get_property (GObject    *object,
+btk_cell_view_get_property (BObject    *object,
                             guint       param_id,
-                            GValue     *value,
-                            GParamSpec *pspec)
+                            BValue     *value,
+                            BParamSpec *pspec)
 {
   BtkCellView *view = BTK_CELL_VIEW (object);
 
@@ -231,26 +231,26 @@ btk_cell_view_get_property (GObject    *object,
 
           color = view->priv->background;
 
-          g_value_set_boxed (value, &color);
+          b_value_set_boxed (value, &color);
         }
         break;
       case PROP_BACKGROUND_SET:
-        g_value_set_boolean (value, view->priv->background_set);
+        b_value_set_boolean (value, view->priv->background_set);
         break;
       case PROP_MODEL:
-	g_value_set_object (value, view->priv->model);
+	b_value_set_object (value, view->priv->model);
 	break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
         break;
     }
 }
 
 static void
-btk_cell_view_set_property (GObject      *object,
+btk_cell_view_set_property (BObject      *object,
                             guint         param_id,
-                            const GValue *value,
-                            GParamSpec   *pspec)
+                            const BValue *value,
+                            BParamSpec   *pspec)
 {
   BtkCellView *view = BTK_CELL_VIEW (object);
 
@@ -260,27 +260,27 @@ btk_cell_view_set_property (GObject      *object,
         {
           BdkColor color;
 
-          if (!g_value_get_string (value))
+          if (!b_value_get_string (value))
             btk_cell_view_set_background_color (view, NULL);
-          else if (bdk_color_parse (g_value_get_string (value), &color))
+          else if (bdk_color_parse (b_value_get_string (value), &color))
             btk_cell_view_set_background_color (view, &color);
           else
-            g_warning ("Don't know color `%s'", g_value_get_string (value));
+            g_warning ("Don't know color `%s'", b_value_get_string (value));
 
           g_object_notify (object, "background-bdk");
         }
         break;
       case PROP_BACKGROUND_BDK:
-        btk_cell_view_set_background_color (view, g_value_get_boxed (value));
+        btk_cell_view_set_background_color (view, b_value_get_boxed (value));
         break;
       case PROP_BACKGROUND_SET:
-        view->priv->background_set = g_value_get_boolean (value);
+        view->priv->background_set = b_value_get_boolean (value);
         break;
       case PROP_MODEL:
-	btk_cell_view_set_model (view, g_value_get_object (value));
+	btk_cell_view_set_model (view, b_value_get_object (value));
 	break;
     default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
         break;
     }
 }
@@ -294,7 +294,7 @@ btk_cell_view_init (BtkCellView *cellview)
 }
 
 static void
-btk_cell_view_finalize (GObject *object)
+btk_cell_view_finalize (BObject *object)
 {
   BtkCellView *cellview = BTK_CELL_VIEW (object);
 
@@ -306,7 +306,7 @@ btk_cell_view_finalize (GObject *object)
   if (cellview->priv->displayed_row)
      btk_tree_row_reference_free (cellview->priv->displayed_row);
 
-  G_OBJECT_CLASS (btk_cell_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_cell_view_parent_class)->finalize (object);
 }
 
 static void
@@ -535,19 +535,19 @@ btk_cell_view_set_cell_data (BtkCellView *cell_view)
       GSList *j;
       BtkCellViewCellInfo *info = i->data;
 
-      g_object_freeze_notify (G_OBJECT (info->cell));
+      g_object_freeze_notify (B_OBJECT (info->cell));
 
       for (j = info->attributes; j && j->next; j = j->next->next)
         {
           gchar *property = j->data;
           gint column = GPOINTER_TO_INT (j->next->data);
-          GValue value = {0, };
+          BValue value = {0, };
 
           btk_tree_model_get_value (cell_view->priv->model, &iter,
                                     column, &value);
-          g_object_set_property (G_OBJECT (info->cell),
+          g_object_set_property (B_OBJECT (info->cell),
                                  property, &value);
-          g_value_unset (&value);
+          b_value_unset (&value);
         }
 
       if (info->func)
@@ -557,7 +557,7 @@ btk_cell_view_set_cell_data (BtkCellView *cell_view)
 			&iter,
 			info->func_data);
 
-      g_object_thaw_notify (G_OBJECT (info->cell));
+      g_object_thaw_notify (B_OBJECT (info->cell));
     }
 }
 
@@ -618,9 +618,9 @@ btk_cell_view_cell_layout_add_attribute (BtkCellLayout   *layout,
   info = btk_cell_view_get_cell_info (cellview, renderer);
   g_return_if_fail (info != NULL);
 
-  info->attributes = g_slist_prepend (info->attributes,
+  info->attributes = b_slist_prepend (info->attributes,
                                       GINT_TO_POINTER (column));
-  info->attributes = g_slist_prepend (info->attributes,
+  info->attributes = b_slist_prepend (info->attributes,
                                       g_strdup (attribute));
 }
 
@@ -687,7 +687,7 @@ btk_cell_view_cell_layout_clear_attributes (BtkCellLayout   *layout,
 	  list = list->next->next;
 	}
       
-      g_slist_free (info->attributes);
+      b_slist_free (info->attributes);
       info->attributes = NULL;
     }
 }
@@ -753,7 +753,7 @@ btk_cell_view_new_with_text (const gchar *text)
 {
   BtkCellView *cellview;
   BtkCellRenderer *renderer;
-  GValue value = {0, };
+  BValue value = {0, };
 
   cellview = BTK_CELL_VIEW (btk_cell_view_new ());
 
@@ -761,10 +761,10 @@ btk_cell_view_new_with_text (const gchar *text)
   btk_cell_view_cell_layout_pack_start (BTK_CELL_LAYOUT (cellview),
                                         renderer, TRUE);
 
-  g_value_init (&value, G_TYPE_STRING);
-  g_value_set_string (&value, text);
+  b_value_init (&value, B_TYPE_STRING);
+  b_value_set_string (&value, text);
   btk_cell_view_set_value (cellview, renderer, "text", &value);
-  g_value_unset (&value);
+  b_value_unset (&value);
 
   return BTK_WIDGET (cellview);
 }
@@ -787,7 +787,7 @@ btk_cell_view_new_with_markup (const gchar *markup)
 {
   BtkCellView *cellview;
   BtkCellRenderer *renderer;
-  GValue value = {0, };
+  BValue value = {0, };
 
   cellview = BTK_CELL_VIEW (btk_cell_view_new ());
 
@@ -795,10 +795,10 @@ btk_cell_view_new_with_markup (const gchar *markup)
   btk_cell_view_cell_layout_pack_start (BTK_CELL_LAYOUT (cellview),
                                         renderer, TRUE);
 
-  g_value_init (&value, G_TYPE_STRING);
-  g_value_set_string (&value, markup);
+  b_value_init (&value, B_TYPE_STRING);
+  b_value_set_string (&value, markup);
   btk_cell_view_set_value (cellview, renderer, "markup", &value);
-  g_value_unset (&value);
+  b_value_unset (&value);
 
   return BTK_WIDGET (cellview);
 }
@@ -819,7 +819,7 @@ btk_cell_view_new_with_pixbuf (BdkPixbuf *pixbuf)
 {
   BtkCellView *cellview;
   BtkCellRenderer *renderer;
-  GValue value = {0, };
+  BValue value = {0, };
 
   cellview = BTK_CELL_VIEW (btk_cell_view_new ());
 
@@ -827,10 +827,10 @@ btk_cell_view_new_with_pixbuf (BdkPixbuf *pixbuf)
   btk_cell_view_cell_layout_pack_start (BTK_CELL_LAYOUT (cellview),
                                         renderer, TRUE);
 
-  g_value_init (&value, BDK_TYPE_PIXBUF);
-  g_value_set_object (&value, pixbuf);
+  b_value_init (&value, BDK_TYPE_PIXBUF);
+  b_value_set_object (&value, pixbuf);
   btk_cell_view_set_value (cellview, renderer, "pixbuf", &value);
-  g_value_unset (&value);
+  b_value_unset (&value);
 
   return BTK_WIDGET (cellview);
 }
@@ -851,9 +851,9 @@ static void
 btk_cell_view_set_value (BtkCellView     *cell_view,
                          BtkCellRenderer *renderer,
                          gchar           *property,
-                         GValue          *value)
+                         BValue          *value)
 {
-  g_object_set_property (G_OBJECT (renderer), property, value);
+  g_object_set_property (B_OBJECT (renderer), property, value);
 
   /* force resize and redraw */
   btk_widget_queue_resize (BTK_WIDGET (cell_view));
@@ -1033,7 +1033,7 @@ btk_cell_view_set_background_color (BtkCellView    *cell_view,
       if (!cell_view->priv->background_set)
         {
           cell_view->priv->background_set = TRUE;
-          g_object_notify (G_OBJECT (cell_view), "background-set");
+          g_object_notify (B_OBJECT (cell_view), "background-set");
         }
 
       cell_view->priv->background = *color;
@@ -1043,7 +1043,7 @@ btk_cell_view_set_background_color (BtkCellView    *cell_view,
       if (cell_view->priv->background_set)
         {
           cell_view->priv->background_set = FALSE;
-          g_object_notify (G_OBJECT (cell_view), "background-set");
+          g_object_notify (B_OBJECT (cell_view), "background-set");
         }
     }
 
@@ -1093,7 +1093,7 @@ btk_cell_view_get_cell_renderers (BtkCellView *cell_view)
 static gboolean
 btk_cell_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
-					  GObject       *child,
+					  BObject       *child,
 					  const gchar   *tagname,
 					  GMarkupParser *parser,
 					  gpointer      *data)
@@ -1110,7 +1110,7 @@ btk_cell_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_cell_view_buildable_custom_tag_end (BtkBuildable *buildable,
 					BtkBuilder   *builder,
-					GObject      *child,
+					BObject      *child,
 					const gchar  *tagname,
 					gpointer     *data)
 {

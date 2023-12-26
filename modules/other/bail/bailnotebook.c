@@ -27,12 +27,12 @@
 
 static void         bail_notebook_class_init          (BailNotebookClass *klass);
 static void         bail_notebook_init                (BailNotebook      *notebook);
-static void         bail_notebook_finalize            (GObject           *object);
+static void         bail_notebook_finalize            (BObject           *object);
 static void         bail_notebook_real_initialize     (BatkObject         *obj,
                                                        gpointer          data);
 
-static void         bail_notebook_real_notify_btk     (GObject           *obj,
-                                                       GParamSpec        *pspec);
+static void         bail_notebook_real_notify_btk     (BObject           *obj,
+                                                       BParamSpec        *pspec);
 
 static BatkObject*   bail_notebook_ref_child           (BatkObject      *obj,
                                                        gint           i);
@@ -73,7 +73,7 @@ G_DEFINE_TYPE_WITH_CODE (BailNotebook, bail_notebook, BAIL_TYPE_CONTAINER,
 static void
 bail_notebook_class_init (BailNotebookClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
   BailContainerClass *container_class;
@@ -181,7 +181,7 @@ bail_notebook_real_initialize (BatkObject *obj,
                     "page-added",
                     G_CALLBACK (bail_notebook_page_added),
                     NULL);
-  g_object_weak_ref (G_OBJECT(btk_notebook),
+  g_object_weak_ref (B_OBJECT(btk_notebook),
                      (GWeakNotify) bail_notebook_destroyed,
                      obj);                     
 
@@ -189,8 +189,8 @@ bail_notebook_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_notebook_real_notify_btk (GObject           *obj,
-                               GParamSpec        *pspec)
+bail_notebook_real_notify_btk (BObject           *obj,
+                               BParamSpec        *pspec)
 {
   BtkWidget *widget;
   BatkObject* batk_obj;
@@ -269,7 +269,7 @@ bail_notebook_real_notify_btk (GObject           *obj,
 }
 
 static void
-bail_notebook_finalize (GObject            *object)
+bail_notebook_finalize (BObject            *object)
 {
   BailNotebook *notebook = BAIL_NOTEBOOK (object);
   GList *list;
@@ -292,7 +292,7 @@ bail_notebook_finalize (GObject            *object)
   if (notebook->idle_focus_id)
     g_source_remove (notebook->idle_focus_id);
 
-  G_OBJECT_CLASS (bail_notebook_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_notebook_parent_class)->finalize (object);
 }
 
 static void

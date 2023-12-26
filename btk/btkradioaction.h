@@ -40,11 +40,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_RADIO_ACTION            (btk_radio_action_get_type ())
-#define BTK_RADIO_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_ACTION, BtkRadioAction))
-#define BTK_RADIO_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_ACTION, BtkRadioActionClass))
-#define BTK_IS_RADIO_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_ACTION))
-#define BTK_IS_RADIO_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_ACTION))
-#define BTK_RADIO_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_RADIO_ACTION, BtkRadioActionClass))
+#define BTK_RADIO_ACTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_ACTION, BtkRadioAction))
+#define BTK_RADIO_ACTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_ACTION, BtkRadioActionClass))
+#define BTK_IS_RADIO_ACTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_ACTION))
+#define BTK_IS_RADIO_ACTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_ACTION))
+#define BTK_RADIO_ACTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_RADIO_ACTION, BtkRadioActionClass))
 
 typedef struct _BtkRadioAction        BtkRadioAction;
 typedef struct _BtkRadioActionPrivate BtkRadioActionPrivate;

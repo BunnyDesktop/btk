@@ -60,14 +60,14 @@ enum {
   PROP_DISCRETE_BLOCKS
 };
 
-static void btk_progress_bar_set_property  (GObject             *object,
+static void btk_progress_bar_set_property  (BObject             *object,
 					    guint                prop_id,
-					    const GValue        *value,
-					    GParamSpec          *pspec);
-static void btk_progress_bar_get_property  (GObject             *object,
+					    const BValue        *value,
+					    BParamSpec          *pspec);
+static void btk_progress_bar_get_property  (BObject             *object,
 					    guint                prop_id,
-					    GValue              *value,
-					    GParamSpec          *pspec);
+					    BValue              *value,
+					    BParamSpec          *pspec);
 static gboolean btk_progress_bar_expose    (BtkWidget           *widget,
 					    BdkEventExpose      *event);
 static void btk_progress_bar_size_request  (BtkWidget           *widget,
@@ -93,11 +93,11 @@ G_DEFINE_TYPE (BtkProgressBar, btk_progress_bar, BTK_TYPE_PROGRESS)
 static void
 btk_progress_bar_class_init (BtkProgressBarClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkProgressClass *progress_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass *) class;
   progress_class = (BtkProgressClass *) class;
 
@@ -292,10 +292,10 @@ btk_progress_bar_init (BtkProgressBar *pbar)
 }
 
 static void
-btk_progress_bar_set_property (GObject      *object,
+btk_progress_bar_set_property (BObject      *object,
 			       guint         prop_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+			       const BValue *value,
+			       BParamSpec   *pspec)
 {
   BtkProgressBar *pbar;
 
@@ -305,46 +305,46 @@ btk_progress_bar_set_property (GObject      *object,
     {
     case PROP_ADJUSTMENT:
       btk_progress_set_adjustment (BTK_PROGRESS (pbar),
-				   BTK_ADJUSTMENT (g_value_get_object (value)));
+				   BTK_ADJUSTMENT (b_value_get_object (value)));
       break;
     case PROP_ORIENTATION:
-      btk_progress_bar_set_orientation (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_orientation (pbar, b_value_get_enum (value));
       break;
     case PROP_BAR_STYLE:
-      btk_progress_bar_set_bar_style_internal (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_bar_style_internal (pbar, b_value_get_enum (value));
       break;
     case PROP_ACTIVITY_STEP:
-      btk_progress_bar_set_activity_step_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_activity_step_internal (pbar, b_value_get_uint (value));
       break;
     case PROP_ACTIVITY_BLOCKS:
-      btk_progress_bar_set_activity_blocks_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_activity_blocks_internal (pbar, b_value_get_uint (value));
       break;
     case PROP_DISCRETE_BLOCKS:
-      btk_progress_bar_set_discrete_blocks_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_discrete_blocks_internal (pbar, b_value_get_uint (value));
       break;
     case PROP_FRACTION:
-      btk_progress_bar_set_fraction (pbar, g_value_get_double (value));
+      btk_progress_bar_set_fraction (pbar, b_value_get_double (value));
       break;
     case PROP_PULSE_STEP:
-      btk_progress_bar_set_pulse_step (pbar, g_value_get_double (value));
+      btk_progress_bar_set_pulse_step (pbar, b_value_get_double (value));
       break;
     case PROP_TEXT:
-      btk_progress_bar_set_text (pbar, g_value_get_string (value));
+      btk_progress_bar_set_text (pbar, b_value_get_string (value));
       break;
     case PROP_ELLIPSIZE:
-      btk_progress_bar_set_ellipsize (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_ellipsize (pbar, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_progress_bar_get_property (GObject      *object,
+btk_progress_bar_get_property (BObject      *object,
 			       guint         prop_id,
-			       GValue       *value,
-			       GParamSpec   *pspec)
+			       BValue       *value,
+			       BParamSpec   *pspec)
 {
   BtkProgressBar *pbar;
 
@@ -353,37 +353,37 @@ btk_progress_bar_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      g_value_set_object (value, BTK_PROGRESS (pbar)->adjustment);
+      b_value_set_object (value, BTK_PROGRESS (pbar)->adjustment);
       break;
     case PROP_ORIENTATION:
-      g_value_set_enum (value, pbar->orientation);
+      b_value_set_enum (value, pbar->orientation);
       break;
     case PROP_BAR_STYLE:
-      g_value_set_enum (value, pbar->bar_style);
+      b_value_set_enum (value, pbar->bar_style);
       break;
     case PROP_ACTIVITY_STEP:
-      g_value_set_uint (value, pbar->activity_step);
+      b_value_set_uint (value, pbar->activity_step);
       break;
     case PROP_ACTIVITY_BLOCKS:
-      g_value_set_uint (value, pbar->activity_blocks);
+      b_value_set_uint (value, pbar->activity_blocks);
       break;
     case PROP_DISCRETE_BLOCKS:
-      g_value_set_uint (value, pbar->blocks);
+      b_value_set_uint (value, pbar->blocks);
       break;
     case PROP_FRACTION:
-      g_value_set_double (value, btk_progress_get_current_percentage (BTK_PROGRESS (pbar)));
+      b_value_set_double (value, btk_progress_get_current_percentage (BTK_PROGRESS (pbar)));
       break;
     case PROP_PULSE_STEP:
-      g_value_set_double (value, pbar->pulse_fraction);
+      b_value_set_double (value, pbar->pulse_fraction);
       break;
     case PROP_TEXT:
-      g_value_set_string (value, btk_progress_bar_get_text (pbar));
+      b_value_set_string (value, btk_progress_bar_get_text (pbar));
       break;
     case PROP_ELLIPSIZE:
-      g_value_set_enum (value, pbar->ellipsize);
+      b_value_set_enum (value, pbar->ellipsize);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1058,7 +1058,7 @@ btk_progress_bar_set_bar_style_internal (BtkProgressBar     *pbar,
       if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
 	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
-      g_object_notify (G_OBJECT (pbar), "bar-style");
+      g_object_notify (B_OBJECT (pbar), "bar-style");
     }
 }
 
@@ -1076,7 +1076,7 @@ btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
       if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
 	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
-      g_object_notify (G_OBJECT (pbar), "discrete-blocks");
+      g_object_notify (B_OBJECT (pbar), "discrete-blocks");
     }
 }
 
@@ -1089,7 +1089,7 @@ btk_progress_bar_set_activity_step_internal (BtkProgressBar *pbar,
   if (pbar->activity_step != step)
     {
       pbar->activity_step = step;
-      g_object_notify (G_OBJECT (pbar), "activity-step");
+      g_object_notify (B_OBJECT (pbar), "activity-step");
     }
 }
 
@@ -1103,7 +1103,7 @@ btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
   if (pbar->activity_blocks != blocks)
     {
       pbar->activity_blocks = blocks;
-      g_object_notify (G_OBJECT (pbar), "activity-blocks");
+      g_object_notify (B_OBJECT (pbar), "activity-blocks");
     }
 }
 
@@ -1134,7 +1134,7 @@ btk_progress_bar_set_fraction (BtkProgressBar *pbar,
    */
   btk_progress_set_percentage (BTK_PROGRESS (pbar), fraction);
 
-  g_object_notify (G_OBJECT (pbar), "fraction");
+  g_object_notify (B_OBJECT (pbar), "fraction");
 }
 
 /**
@@ -1181,7 +1181,7 @@ btk_progress_bar_set_text (BtkProgressBar *pbar,
    */
   BTK_PROGRESS (pbar)->use_text_format = (text == NULL);
   
-  g_object_notify (G_OBJECT (pbar), "text");
+  g_object_notify (B_OBJECT (pbar), "text");
 }
 
 /**
@@ -1200,7 +1200,7 @@ btk_progress_bar_set_pulse_step   (BtkProgressBar *pbar,
   
   pbar->pulse_fraction = fraction;
 
-  g_object_notify (G_OBJECT (pbar), "pulse-step");
+  g_object_notify (B_OBJECT (pbar), "pulse-step");
 }
 
 void
@@ -1237,7 +1237,7 @@ btk_progress_bar_set_orientation (BtkProgressBar           *pbar,
       if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
 	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
-      g_object_notify (G_OBJECT (pbar), "orientation");
+      g_object_notify (B_OBJECT (pbar), "orientation");
     }
 }
 
@@ -1372,7 +1372,7 @@ btk_progress_bar_set_ellipsize (BtkProgressBar     *pbar,
     {
       pbar->ellipsize = mode;
 
-      g_object_notify (G_OBJECT (pbar), "ellipsize");
+      g_object_notify (B_OBJECT (pbar), "ellipsize");
       btk_widget_queue_resize (BTK_WIDGET (pbar));
     }
 }

@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_TRAY_ICON		(btk_tray_icon_get_type ())
-#define BTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
-#define BTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
-#define BTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TRAY_ICON))
-#define BTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TRAY_ICON))
-#define BTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
+#define BTK_TRAY_ICON(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
+#define BTK_TRAY_ICON_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
+#define BTK_IS_TRAY_ICON(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TRAY_ICON))
+#define BTK_IS_TRAY_ICON_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TRAY_ICON))
+#define BTK_TRAY_ICON_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
 	
 typedef struct _BtkTrayIcon	   BtkTrayIcon;
 typedef struct _BtkTrayIconPrivate BtkTrayIconPrivate;

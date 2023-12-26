@@ -86,8 +86,8 @@ create_items_model (void)
   add_items ();
 
   /* create list store */
-  model = btk_list_store_new (NUM_ITEM_COLUMNS, G_TYPE_INT, G_TYPE_STRING,
-                              G_TYPE_INT, G_TYPE_BOOLEAN);
+  model = btk_list_store_new (NUM_ITEM_COLUMNS, B_TYPE_INT, B_TYPE_STRING,
+                              B_TYPE_INT, B_TYPE_BOOLEAN);
 
   /* add items */
   for (i = 0; i < articles->len; i++)
@@ -116,7 +116,7 @@ create_numbers_model (void)
   BtkTreeIter iter;
 
   /* create list store */
-  model = btk_list_store_new (NUM_NUMBER_COLUMNS, G_TYPE_STRING, G_TYPE_INT);
+  model = btk_list_store_new (NUM_NUMBER_COLUMNS, B_TYPE_STRING, B_TYPE_INT);
 
   /* add numbers */
   for (i = 0; i < N_NUMBERS; i++)
@@ -219,7 +219,7 @@ cell_edited (BtkCellRendererText *cell,
   BtkTreePath *path = btk_tree_path_new_from_string (path_string);
   BtkTreeIter iter;
 
-  gint column = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cell), "column"));
+  gint column = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (cell), "column"));
 
   btk_tree_model_get_iter (model, &iter, path);
 
@@ -277,7 +277,7 @@ add_columns (BtkTreeView  *treeview,
                     G_CALLBACK (cell_edited), items_model);
   g_signal_connect (renderer, "editing-started",
                     G_CALLBACK (editing_started), NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_NUMBER));
+  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_NUMBER));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Number", renderer,
@@ -291,7 +291,7 @@ add_columns (BtkTreeView  *treeview,
                 NULL);
   g_signal_connect (renderer, "edited",
                     G_CALLBACK (cell_edited), items_model);
-  g_object_set_data (G_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_PRODUCT));
+  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_PRODUCT));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Product", renderer,
@@ -300,7 +300,7 @@ add_columns (BtkTreeView  *treeview,
 
   /* yummy column */
   renderer = btk_cell_renderer_progress_new ();
-  g_object_set_data (G_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_YUMMY));
+  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_YUMMY));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Yummy", renderer,

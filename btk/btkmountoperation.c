@@ -79,15 +79,15 @@
  * applications.
  */
 
-static void   btk_mount_operation_finalize     (GObject          *object);
-static void   btk_mount_operation_set_property (GObject          *object,
+static void   btk_mount_operation_finalize     (BObject          *object);
+static void   btk_mount_operation_set_property (BObject          *object,
                                                 guint             prop_id,
-                                                const GValue     *value,
-                                                GParamSpec       *pspec);
-static void   btk_mount_operation_get_property (GObject          *object,
+                                                const BValue     *value,
+                                                BParamSpec       *pspec);
+static void   btk_mount_operation_get_property (BObject          *object,
                                                 guint             prop_id,
-                                                GValue           *value,
-                                                GParamSpec       *pspec);
+                                                BValue           *value,
+                                                BParamSpec       *pspec);
 
 static void   btk_mount_operation_ask_password (GMountOperation *op,
                                                 const char      *message,
@@ -106,7 +106,7 @@ static void   btk_mount_operation_show_processes (GMountOperation *op,
 
 static void   btk_mount_operation_aborted      (GMountOperation *op);
 
-G_DEFINE_TYPE (BtkMountOperation, btk_mount_operation, G_TYPE_MOUNT_OPERATION);
+G_DEFINE_TYPE (BtkMountOperation, btk_mount_operation, B_TYPE_MOUNT_OPERATION);
 
 enum {
   PROP_0,
@@ -140,7 +140,7 @@ struct _BtkMountOperationPrivate {
 static void
 btk_mount_operation_class_init (BtkMountOperationClass *klass)
 {
-  GObjectClass         *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass         *object_class = B_OBJECT_CLASS (klass);
   GMountOperationClass *mount_op_class = G_MOUNT_OPERATION_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (BtkMountOperationPrivate));
@@ -182,13 +182,13 @@ btk_mount_operation_class_init (BtkMountOperationClass *klass)
 static void
 btk_mount_operation_init (BtkMountOperation *operation)
 {
-  operation->priv = G_TYPE_INSTANCE_GET_PRIVATE (operation,
+  operation->priv = B_TYPE_INSTANCE_GET_PRIVATE (operation,
                                                  BTK_TYPE_MOUNT_OPERATION,
                                                  BtkMountOperationPrivate);
 }
 
 static void
-btk_mount_operation_finalize (GObject *object)
+btk_mount_operation_finalize (BObject *object)
 {
   BtkMountOperation *operation = BTK_MOUNT_OPERATION (object);
   BtkMountOperationPrivate *priv = operation->priv;
@@ -204,39 +204,39 @@ btk_mount_operation_finalize (GObject *object)
   if (priv->screen)
     g_object_unref (priv->screen);
 
-  G_OBJECT_CLASS (btk_mount_operation_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_mount_operation_parent_class)->finalize (object);
 }
 
 static void
-btk_mount_operation_set_property (GObject      *object,
+btk_mount_operation_set_property (BObject      *object,
                                   guint         prop_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
+                                  const BValue *value,
+                                  BParamSpec   *pspec)
 {
   BtkMountOperation *operation = BTK_MOUNT_OPERATION (object);
 
   switch (prop_id)
     {
     case PROP_PARENT:
-      btk_mount_operation_set_parent (operation, g_value_get_object (value));
+      btk_mount_operation_set_parent (operation, b_value_get_object (value));
       break;
 
     case PROP_SCREEN:
-      btk_mount_operation_set_screen (operation, g_value_get_object (value));
+      btk_mount_operation_set_screen (operation, b_value_get_object (value));
       break;
 
     case PROP_IS_SHOWING:
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_mount_operation_get_property (GObject    *object,
+btk_mount_operation_get_property (BObject    *object,
                                   guint       prop_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
+                                  BValue     *value,
+                                  BParamSpec *pspec)
 {
   BtkMountOperation *operation = BTK_MOUNT_OPERATION (object);
   BtkMountOperationPrivate *priv = operation->priv;
@@ -244,19 +244,19 @@ btk_mount_operation_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_PARENT:
-      g_value_set_object (value, priv->parent_window);
+      b_value_set_object (value, priv->parent_window);
       break;
 
     case PROP_IS_SHOWING:
-      g_value_set_boolean (value, priv->dialog != NULL);
+      b_value_set_boolean (value, priv->dialog != NULL);
       break;
 
     case PROP_SCREEN:
-      g_value_set_object (value, priv->screen);
+      b_value_set_object (value, priv->screen);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -271,7 +271,7 @@ remember_button_toggled (BtkToggleButton   *button,
     {
       gpointer data;
 
-      data = g_object_get_data (G_OBJECT (button), "password-save");
+      data = g_object_get_data (B_OBJECT (button), "password-save");
       priv->password_save = GPOINTER_TO_INT (data);
     }
 }
@@ -318,7 +318,7 @@ pw_dialog_got_response (BtkDialog         *dialog,
     g_mount_operation_reply (op, G_MOUNT_OPERATION_ABORTED);
 
   priv->dialog = NULL;
-  g_object_notify (G_OBJECT (op), "is-showing");
+  g_object_notify (B_OBJECT (op), "is-showing");
   btk_widget_destroy (BTK_WIDGET (dialog));
   g_object_unref (op);
 }
@@ -637,7 +637,7 @@ btk_mount_operation_ask_password (GMountOperation   *mount_op,
       choice = btk_radio_button_new_with_mnemonic (NULL, _("Forget password _immediately"));
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (choice),
                                     password_save == G_PASSWORD_SAVE_NEVER);
-      g_object_set_data (G_OBJECT (choice), "password-save",
+      g_object_set_data (B_OBJECT (choice), "password-save",
                          GINT_TO_POINTER (G_PASSWORD_SAVE_NEVER));
       g_signal_connect (choice, "toggled",
                         G_CALLBACK (remember_button_toggled), operation);
@@ -647,7 +647,7 @@ btk_mount_operation_ask_password (GMountOperation   *mount_op,
       choice = btk_radio_button_new_with_mnemonic (group, _("Remember password until you _logout"));
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (choice),
                                     password_save == G_PASSWORD_SAVE_FOR_SESSION);
-      g_object_set_data (G_OBJECT (choice), "password-save",
+      g_object_set_data (B_OBJECT (choice), "password-save",
                          GINT_TO_POINTER (G_PASSWORD_SAVE_FOR_SESSION));
       g_signal_connect (choice, "toggled",
                         G_CALLBACK (remember_button_toggled), operation);
@@ -657,14 +657,14 @@ btk_mount_operation_ask_password (GMountOperation   *mount_op,
       choice = btk_radio_button_new_with_mnemonic (group, _("Remember _forever"));
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (choice),
                                     password_save == G_PASSWORD_SAVE_PERMANENTLY);
-      g_object_set_data (G_OBJECT (choice), "password-save",
+      g_object_set_data (B_OBJECT (choice), "password-save",
                          GINT_TO_POINTER (G_PASSWORD_SAVE_PERMANENTLY));
       g_signal_connect (choice, "toggled",
                         G_CALLBACK (remember_button_toggled), operation);
       btk_box_pack_start (BTK_BOX (remember_box), choice, FALSE, FALSE, 0);
     }
 
-  g_signal_connect (G_OBJECT (dialog), "response",
+  g_signal_connect (B_OBJECT (dialog), "response",
                     G_CALLBACK (pw_dialog_got_response), operation);
 
   if (can_anonymous)
@@ -677,7 +677,7 @@ btk_mount_operation_ask_password (GMountOperation   *mount_op,
   else if (! pw_dialog_input_is_valid (operation))
     btk_dialog_set_response_sensitive (dialog, BTK_RESPONSE_OK, FALSE);
 
-  g_object_notify (G_OBJECT (operation), "is-showing");
+  g_object_notify (B_OBJECT (operation), "is-showing");
 
   if (priv->parent_window)
     {
@@ -712,7 +712,7 @@ question_dialog_button_clicked (BtkDialog       *dialog,
     g_mount_operation_reply (op, G_MOUNT_OPERATION_ABORTED);
 
   priv->dialog = NULL;
-  g_object_notify (G_OBJECT (operation), "is-showing");
+  g_object_notify (B_OBJECT (operation), "is-showing");
   btk_widget_destroy (BTK_WIDGET (dialog));
   g_object_unref (op);
 }
@@ -760,11 +760,11 @@ btk_mount_operation_ask_question (GMountOperation *op,
   for (count = len - 1; count >= 0; count--)
     btk_dialog_add_button (BTK_DIALOG (dialog), choices[count], count);
 
-  g_signal_connect (G_OBJECT (dialog), "response",
+  g_signal_connect (B_OBJECT (dialog), "response",
                     G_CALLBACK (question_dialog_button_clicked), op);
 
   priv->dialog = BTK_DIALOG (dialog);
-  g_object_notify (G_OBJECT (op), "is-showing");
+  g_object_notify (B_OBJECT (op), "is-showing");
 
   if (priv->parent_window == NULL && priv->screen)
     btk_window_set_screen (BTK_WINDOW (dialog), priv->screen);
@@ -793,7 +793,7 @@ show_processes_button_clicked (BtkDialog       *dialog,
     g_mount_operation_reply (op, G_MOUNT_OPERATION_ABORTED);
 
   priv->dialog = NULL;
-  g_object_notify (G_OBJECT (operation), "is-showing");
+  g_object_notify (B_OBJECT (operation), "is-showing");
   btk_widget_destroy (BTK_WIDGET (dialog));
   g_object_unref (op);
 }
@@ -1248,11 +1248,11 @@ create_show_processes_dialog (GMountOperation *op,
   for (count = len - 1; count >= 0; count--)
     btk_dialog_add_button (BTK_DIALOG (dialog), choices[count], count);
 
-  g_signal_connect (G_OBJECT (dialog), "response",
+  g_signal_connect (B_OBJECT (dialog), "response",
                     G_CALLBACK (show_processes_button_clicked), op);
 
   priv->dialog = BTK_DIALOG (dialog);
-  g_object_notify (G_OBJECT (op), "is-showing");
+  g_object_notify (B_OBJECT (op), "is-showing");
 
   if (priv->parent_window == NULL && priv->screen)
     btk_window_set_screen (BTK_WINDOW (dialog), priv->screen);
@@ -1300,16 +1300,16 @@ create_show_processes_dialog (GMountOperation *op,
 
   list_store = btk_list_store_new (3,
                                    BDK_TYPE_PIXBUF,
-                                   G_TYPE_STRING,
-                                   G_TYPE_INT);
+                                   B_TYPE_STRING,
+                                   B_TYPE_INT);
 
   btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (list_store));
 
   priv->process_list_store = list_store;
   priv->process_tree_view = tree_view;
   /* set pointers to NULL when dialog goes away */
-  g_object_add_weak_pointer (G_OBJECT (list_store), (gpointer *) &priv->process_list_store);
-  g_object_add_weak_pointer (G_OBJECT (tree_view), (gpointer *) &priv->process_tree_view);
+  g_object_add_weak_pointer (B_OBJECT (list_store), (gpointer *) &priv->process_list_store);
+  g_object_add_weak_pointer (B_OBJECT (tree_view), (gpointer *) &priv->process_tree_view);
 
   g_object_unref (list_store);
 
@@ -1356,7 +1356,7 @@ btk_mount_operation_aborted (GMountOperation *op)
     {
       btk_widget_destroy (BTK_WIDGET (priv->dialog));
       priv->dialog = NULL;
-      g_object_notify (G_OBJECT (op), "is-showing");
+      g_object_notify (B_OBJECT (op), "is-showing");
       g_object_unref (op);
     }
 }
@@ -1444,7 +1444,7 @@ btk_mount_operation_set_parent (BtkMountOperation *op,
   if (priv->dialog)
     btk_window_set_transient_for (BTK_WINDOW (priv->dialog), priv->parent_window);
 
-  g_object_notify (G_OBJECT (op), "parent");
+  g_object_notify (B_OBJECT (op), "parent");
 }
 
 /**
@@ -1496,7 +1496,7 @@ btk_mount_operation_set_screen (BtkMountOperation *op,
   if (priv->dialog)
     btk_window_set_screen (BTK_WINDOW (priv->dialog), screen);
 
-  g_object_notify (G_OBJECT (op), "screen");
+  g_object_notify (B_OBJECT (op), "screen");
 }
 
 /**

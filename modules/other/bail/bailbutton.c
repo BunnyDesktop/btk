@@ -35,15 +35,15 @@ static gint                  bail_button_get_n_children   (BatkObject       *obj
 static BatkObject*            bail_button_ref_child        (BatkObject       *obj,
                                                            gint            i);
 static BatkStateSet*          bail_button_ref_state_set    (BatkObject       *obj);
-static void                  bail_button_notify_label_btk (GObject         *obj,
-                                                           GParamSpec      *pspec,
+static void                  bail_button_notify_label_btk (BObject         *obj,
+                                                           BParamSpec      *pspec,
                                                            gpointer        data);
 static void                  bail_button_label_map_btk    (BtkWidget       *widget,
                                                            gpointer        data);
 
 static void                  bail_button_real_initialize  (BatkObject       *obj,
                                                            gpointer        data);
-static void                  bail_button_finalize         (GObject        *object);
+static void                  bail_button_finalize         (BObject        *object);
 static void                  bail_button_init_textutil    (BailButton     *button,
                                                            BtkWidget      *label);
 
@@ -69,9 +69,9 @@ static gboolean              bail_button_set_description(BatkAction      *action
                                                          gint           i,
                                                          const gchar    *desc);
 static void                  bail_button_notify_label_weak_ref (gpointer data,
-                                                                GObject  *obj);
+                                                                BObject  *obj);
 static void                  bail_button_notify_weak_ref       (gpointer data,
-                                                                GObject  *obj);
+                                                                BObject  *obj);
 
 
 /* BatkImage.h */
@@ -152,7 +152,7 @@ G_DEFINE_TYPE_WITH_CODE (BailButton, bail_button, BAIL_TYPE_CONTAINER,
 static void
 bail_button_class_init (BailButtonClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailContainerClass *container_class;
 
@@ -246,7 +246,7 @@ bail_button_is_default_press (BtkWidget *widget)
       parent = btk_widget_get_parent (widget);
       if (parent)
         {
-          parent_type_name = g_type_name (G_OBJECT_TYPE (parent));
+          parent_type_name = g_type_name (B_OBJECT_TYPE (parent));
           if (strcmp (parent_type_name, "ColorCombo"))
             return TRUE;
         }
@@ -313,8 +313,8 @@ bail_button_label_map_btk (BtkWidget *widget,
 }
 
 static void
-bail_button_notify_label_btk (GObject           *obj,
-                              GParamSpec        *pspec,
+bail_button_notify_label_btk (BObject           *obj,
+                              BParamSpec        *pspec,
                               gpointer           data)
 {
   BatkObject* batk_obj = BATK_OBJECT (data);
@@ -337,7 +337,7 @@ bail_button_notify_label_btk (GObject           *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -347,7 +347,7 @@ bail_button_notify_label_btk (GObject           *obj,
 }
 
 static void
-bail_button_notify_weak_ref (gpointer data, GObject* obj)
+bail_button_notify_weak_ref (gpointer data, BObject* obj)
 {
   BtkLabel *label = NULL;
 
@@ -360,7 +360,7 @@ bail_button_notify_weak_ref (gpointer data, GObject* obj)
           g_signal_handlers_disconnect_by_func (label,
                                                 (GCallback) bail_button_notify_label_btk,
                                                 BAIL_BUTTON (batk_obj));
-          g_object_weak_unref (G_OBJECT (label),
+          g_object_weak_unref (B_OBJECT (label),
                                bail_button_notify_label_weak_ref,
                                BAIL_BUTTON (batk_obj));
         }
@@ -368,7 +368,7 @@ bail_button_notify_weak_ref (gpointer data, GObject* obj)
 }
 
 static void
-bail_button_notify_label_weak_ref (gpointer data, GObject* obj)
+bail_button_notify_label_weak_ref (gpointer data, BObject* obj)
 {
   BtkLabel *label = NULL;
   BailButton *button = NULL;
@@ -378,7 +378,7 @@ bail_button_notify_label_weak_ref (gpointer data, GObject* obj)
     {
       button = BAIL_BUTTON (BATK_OBJECT (data));
       if (button)
-        g_object_weak_unref (G_OBJECT (button), bail_button_notify_weak_ref,
+        g_object_weak_unref (B_OBJECT (button), bail_button_notify_weak_ref,
                              label);
     }
 }
@@ -395,9 +395,9 @@ bail_button_init_textutil (BailButton  *button,
   button->textutil = bail_text_util_new ();
   label_text = btk_label_get_text (BTK_LABEL (label));
   bail_text_util_text_setup (button->textutil, label_text);
-  g_object_weak_ref (G_OBJECT (button),
+  g_object_weak_ref (B_OBJECT (button),
                      bail_button_notify_weak_ref, label);
-  g_object_weak_ref (G_OBJECT (label),
+  g_object_weak_ref (B_OBJECT (label),
                      bail_button_notify_label_weak_ref, button);
   g_signal_connect (label,
                     "notify",
@@ -1430,7 +1430,7 @@ bail_button_get_character_at_offset (BatkText	         *text,
 }
 
 static void
-bail_button_finalize (GObject            *object)
+bail_button_finalize (BObject            *object)
 {
   BailButton *button = BAIL_BUTTON (object);
 
@@ -1451,7 +1451,7 @@ bail_button_finalize (GObject            *object)
     {
       g_object_unref (button->textutil);
     }
-  G_OBJECT_CLASS (bail_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_button_parent_class)->finalize (object);
 }
 
 static BtkWidget*
@@ -1639,7 +1639,7 @@ get_n_attached_menus (BtkWidget  *widget)
   if (widget == NULL)
     return 0;
 
-  list_menus = g_object_get_data (G_OBJECT (widget), BAIL_BUTTON_ATTACHED_MENUS);
+  list_menus = g_object_get_data (B_OBJECT (widget), BAIL_BUTTON_ATTACHED_MENUS);
   if (list_menus == NULL)
     return 0;
 
@@ -1656,7 +1656,7 @@ get_nth_attached_menu (BtkWidget  *widget,
   if (widget == NULL)
     return NULL;
 
-  list_menus = g_object_get_data (G_OBJECT (widget), BAIL_BUTTON_ATTACHED_MENUS);
+  list_menus = g_object_get_data (B_OBJECT (widget), BAIL_BUTTON_ATTACHED_MENUS);
   if (list_menus == NULL ||
       index >= g_list_length (list_menus))
     return NULL;

@@ -157,7 +157,7 @@ bail_option_menu_real_add_btk (BtkContainer *container,
 
   BAIL_CONTAINER_CLASS (bail_option_menu_parent_class)->add_btk (container, widget, data);
 
-  g_object_notify (G_OBJECT (batk_child), "accessible_parent");
+  g_object_notify (B_OBJECT (batk_child), "accessible_parent");
 
   g_signal_emit_by_name (batk_parent, "children_changed::add",
 			 1, batk_child, NULL);
@@ -174,8 +174,8 @@ bail_option_menu_real_remove_btk (BtkContainer *container,
   BatkObject* batk_parent = BATK_OBJECT (data);
   BatkObject *batk_child = btk_widget_get_accessible (widget);
 
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, batk_parent);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, batk_parent);
 
   values.property_name = "accessible-parent";
   g_signal_emit_by_name (batk_child,
@@ -351,6 +351,6 @@ bail_option_menu_changed (BtkOptionMenu   *option_menu)
   BailOptionMenu *bail_option_menu;
 
   bail_option_menu = BAIL_OPTION_MENU (btk_widget_get_accessible (BTK_WIDGET (option_menu)));
-  g_object_notify (G_OBJECT (bail_option_menu), "accessible-name");
+  g_object_notify (B_OBJECT (bail_option_menu), "accessible-name");
 }
 

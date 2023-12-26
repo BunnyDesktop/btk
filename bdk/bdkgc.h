@@ -180,15 +180,15 @@ struct _BdkGCValues
 };
 
 #define BDK_TYPE_GC              (bdk_gc_get_type ())
-#define BDK_GC(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC, BdkGC))
-#define BDK_GC_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC, BdkGCClass))
-#define BDK_IS_GC(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC))
-#define BDK_IS_GC_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC))
-#define BDK_GC_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC, BdkGCClass))
+#define BDK_GC(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC, BdkGC))
+#define BDK_GC_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC, BdkGCClass))
+#define BDK_IS_GC(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC))
+#define BDK_IS_GC_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC))
+#define BDK_GC_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC, BdkGCClass))
 
 struct _BdkGC
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   gint GSEAL (clip_x_origin);
   gint GSEAL (clip_y_origin);
@@ -200,7 +200,7 @@ struct _BdkGC
 
 struct _BdkGCClass 
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   void (*get_values)     (BdkGC          *gc,
 			  BdkGCValues    *values);

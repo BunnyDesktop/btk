@@ -31,7 +31,7 @@ static void         bail_cell_destroyed           (BtkWidget           *widget,
                                                    BailCell            *cell);
 
 static void         bail_cell_init                (BailCell            *cell);
-static void         bail_cell_object_finalize     (GObject             *cell);
+static void         bail_cell_object_finalize     (BObject             *cell);
 static BatkStateSet* bail_cell_ref_state_set       (BatkObject           *obj);
 static gint         bail_cell_get_index_in_parent (BatkObject           *obj);
 
@@ -83,7 +83,7 @@ static void
 bail_cell_class_init (BailCellClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
-  GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *g_object_class = B_OBJECT_CLASS (klass);
 
   g_object_class->finalize = bail_cell_object_finalize;
 
@@ -104,7 +104,7 @@ bail_cell_initialise (BailCell  *cell,
   batk_object_set_parent (BATK_OBJECT (cell), parent);
   cell->index = index;
 
-  g_signal_connect_object (G_OBJECT (widget),
+  g_signal_connect_object (B_OBJECT (widget),
                            "destroy",
                            G_CALLBACK (bail_cell_destroyed ),
                            cell, 0);
@@ -136,7 +136,7 @@ bail_cell_init (BailCell *cell)
 }
 
 static void
-bail_cell_object_finalize (GObject *obj)
+bail_cell_object_finalize (BObject *obj)
 {
   BailCell *cell = BAIL_CELL (obj);
   BatkRelationSet *relation_set;
@@ -176,7 +176,7 @@ bail_cell_object_finalize (GObject *obj)
         }
       g_object_unref (relation_set);
     }
-  G_OBJECT_CLASS (bail_cell_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (bail_cell_parent_class)->finalize (obj);
 }
 
 static BatkStateSet *

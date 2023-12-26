@@ -28,8 +28,8 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_FILE    (btk_print_backend_file_get_type ())
-#define BTK_PRINT_BACKEND_FILE(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFile))
-#define BTK_IS_PRINT_BACKEND_FILE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_FILE))
+#define BTK_PRINT_BACKEND_FILE(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFile))
+#define BTK_IS_PRINT_BACKEND_FILE(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_FILE))
 
 typedef struct _BtkPrintBackendFile    BtkPrintBackendFile;
 

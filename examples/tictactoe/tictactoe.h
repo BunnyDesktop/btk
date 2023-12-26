@@ -28,10 +28,10 @@
 B_BEGIN_DECLS
 
 #define TICTACTOE_TYPE            (tictactoe_get_type ())
-#define TICTACTOE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
-#define TICTACTOE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
-#define IS_TICTACTOE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
-#define IS_TICTACTOE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
+#define TICTACTOE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
+#define TICTACTOE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
+#define IS_TICTACTOE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
+#define IS_TICTACTOE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
 
 
 typedef struct _Tictactoe       Tictactoe;

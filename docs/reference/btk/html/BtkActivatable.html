@@ -146,7 +146,7 @@
 <a name="BtkActivatable.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 BtkActivatable requires
- GObject.</p>
+ BObject.</p>
 </div>
 <div class="refsect1">
 <a name="BtkActivatable.implementations"></a><h2>Known Implementations</h2>
@@ -446,7 +446,7 @@ the action pointer and boolean flag on your instance, and calling
 <span class="p">...</span> <span class="n">Break</span> <span class="n">the</span> <span class="n">reference</span> <span class="n">using</span> <span class="n">btk_activatable_do_set_related_action</span><span class="p">()...</span>
 
 <span class="k">static</span> <span class="kt">void</span> 
-<span class="n">foo_bar_dispose</span> <span class="p">(</span><span class="n">GObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
+<span class="n">foo_bar_dispose</span> <span class="p">(</span><span class="n">BObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">FooBar</span> <span class="o">*</span><span class="n">bar</span> <span class="o">=</span> <span class="n">FOO_BAR</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
   <span class="n">FooBarPrivate</span> <span class="o">*</span><span class="n">priv</span> <span class="o">=</span> <span class="n">FOO_BAR_GET_PRIVATE</span> <span class="p">(</span><span class="n">bar</span><span class="p">);</span>
@@ -458,16 +458,16 @@ the action pointer and boolean flag on your instance, and calling
       <span class="n">btk_activatable_do_set_related_action</span> <span class="p">(</span><span class="n">BTK_ACTIVATABLE</span> <span class="p">(</span><span class="n">bar</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">);</span>
       <span class="n">priv</span><span class="o">-&gt;</span><span class="n">action</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
     <span class="p">}</span>
-  <span class="n">G_OBJECT_CLASS</span> <span class="p">(</span><span class="n">foo_bar_parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">dispose</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">B_OBJECT_CLASS</span> <span class="p">(</span><span class="n">foo_bar_parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">dispose</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="p">...</span> <span class="n">Handle</span> <span class="n">the</span> <span class="s">&quot;related-action&quot;</span> <span class="n">and</span> <span class="s">&quot;use-action-appearance&quot;</span> <span class="n">properties</span> <span class="p">...</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="n">foo_bar_set_property</span> <span class="p">(</span><span class="n">GObject</span>         <span class="o">*</span><span class="n">object</span><span class="p">,</span>
+<span class="n">foo_bar_set_property</span> <span class="p">(</span><span class="n">BObject</span>         <span class="o">*</span><span class="n">object</span><span class="p">,</span>
                       <span class="n">guint</span>            <span class="n">prop_id</span><span class="p">,</span>
-                      <span class="k">const</span> <span class="n">GValue</span>    <span class="o">*</span><span class="n">value</span><span class="p">,</span>
-                      <span class="n">GParamSpec</span>      <span class="o">*</span><span class="n">pspec</span><span class="p">)</span>
+                      <span class="k">const</span> <span class="n">BValue</span>    <span class="o">*</span><span class="n">value</span><span class="p">,</span>
+                      <span class="n">BParamSpec</span>      <span class="o">*</span><span class="n">pspec</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">FooBar</span> <span class="o">*</span><span class="n">bar</span> <span class="o">=</span> <span class="n">FOO_BAR</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
   <span class="n">FooBarPrivate</span> <span class="o">*</span><span class="n">priv</span> <span class="o">=</span> <span class="n">FOO_BAR_GET_PRIVATE</span> <span class="p">(</span><span class="n">bar</span><span class="p">);</span>
@@ -478,22 +478,22 @@ the action pointer and boolean flag on your instance, and calling
       <span class="p">...</span>
 
     <span class="k">case</span> <span class="nl">PROP_ACTIVATABLE_RELATED_ACTION</span><span class="p">:</span>
-      <span class="n">foo_bar_set_related_action</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">g_value_get_object</span> <span class="p">(</span><span class="n">value</span><span class="p">));</span>
+      <span class="n">foo_bar_set_related_action</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">b_value_get_object</span> <span class="p">(</span><span class="n">value</span><span class="p">));</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">case</span> <span class="nl">PROP_ACTIVATABLE_USE_ACTION_APPEARANCE</span><span class="p">:</span>
-      <span class="n">foo_bar_set_use_action_appearance</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">g_value_get_boolean</span> <span class="p">(</span><span class="n">value</span><span class="p">));</span>
+      <span class="n">foo_bar_set_use_action_appearance</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">b_value_get_boolean</span> <span class="p">(</span><span class="n">value</span><span class="p">));</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">default</span><span class="o">:</span>
-      <span class="n">G_OBJECT_WARN_INVALID_PROPERTY_ID</span> <span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">prop_id</span><span class="p">,</span> <span class="n">pspec</span><span class="p">);</span>
+      <span class="n">B_OBJECT_WARN_INVALID_PROPERTY_ID</span> <span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">prop_id</span><span class="p">,</span> <span class="n">pspec</span><span class="p">);</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="n">foo_bar_get_property</span> <span class="p">(</span><span class="n">GObject</span>         <span class="o">*</span><span class="n">object</span><span class="p">,</span>
+<span class="n">foo_bar_get_property</span> <span class="p">(</span><span class="n">BObject</span>         <span class="o">*</span><span class="n">object</span><span class="p">,</span>
                          <span class="n">guint</span>            <span class="n">prop_id</span><span class="p">,</span>
-                         <span class="n">GValue</span>          <span class="o">*</span><span class="n">value</span><span class="p">,</span>
-                         <span class="n">GParamSpec</span>      <span class="o">*</span><span class="n">pspec</span><span class="p">)</span>
+                         <span class="n">BValue</span>          <span class="o">*</span><span class="n">value</span><span class="p">,</span>
+                         <span class="n">BParamSpec</span>      <span class="o">*</span><span class="n">pspec</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">FooBar</span> <span class="o">*</span><span class="n">bar</span> <span class="o">=</span> <span class="n">FOO_BAR</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
   <span class="n">FooBarPrivate</span> <span class="o">*</span><span class="n">priv</span> <span class="o">=</span> <span class="n">FOO_BAR_GET_PRIVATE</span> <span class="p">(</span><span class="n">bar</span><span class="p">);</span>
@@ -504,13 +504,13 @@ the action pointer and boolean flag on your instance, and calling
       <span class="p">...</span>
 
     <span class="k">case</span> <span class="nl">PROP_ACTIVATABLE_RELATED_ACTION</span><span class="p">:</span>
-      <span class="n">g_value_set_object</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">priv</span><span class="o">-&gt;</span><span class="n">action</span><span class="p">);</span>
+      <span class="n">b_value_set_object</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">priv</span><span class="o">-&gt;</span><span class="n">action</span><span class="p">);</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">case</span> <span class="nl">PROP_ACTIVATABLE_USE_ACTION_APPEARANCE</span><span class="p">:</span>
-      <span class="n">g_value_set_boolean</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">priv</span><span class="o">-&gt;</span><span class="n">use_action_appearance</span><span class="p">);</span>
+      <span class="n">b_value_set_boolean</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">priv</span><span class="o">-&gt;</span><span class="n">use_action_appearance</span><span class="p">);</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="k">default</span><span class="o">:</span>
-      <span class="n">G_OBJECT_WARN_INVALID_PROPERTY_ID</span> <span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">prop_id</span><span class="p">,</span> <span class="n">pspec</span><span class="p">);</span>
+      <span class="n">B_OBJECT_WARN_INVALID_PROPERTY_ID</span> <span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">prop_id</span><span class="p">,</span> <span class="n">pspec</span><span class="p">);</span>
       <span class="k">break</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -626,7 +626,7 @@ btk_activatable_do_set_related_action (<em class="parameter"><code><a class="lin
 <p>This is a utility function for <a class="link" href="BtkActivatable.html" title="BtkActivatable"><span class="type">BtkActivatable</span></a> implementors.</p>
 <p>When implementing <a class="link" href="BtkActivatable.html" title="BtkActivatable"><span class="type">BtkActivatable</span></a> you must call this when
 handling changes of the <a class="link" href="BtkActivatable.html#BtkActivatable--related-action" title="The “related-action” property"><span class="type">“related-action”</span></a>, and
-you must also use this to break references in <span class="type">GObject</span>-&gt;<code class="function">dispose()</code>.</p>
+you must also use this to break references in <span class="type">BObject</span>-&gt;<code class="function">dispose()</code>.</p>
 <p>This function adds a reference to the currently set related
 action for you, it also makes sure the <a class="link" href="BtkActivatable.html" title="BtkActivatable"><span class="type">BtkActivatable</span></a>-&gt;<code class="function">update()</code>
 method is called when the related <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a> properties change

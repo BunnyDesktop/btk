@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_BUTTON                     (bail_button_get_type ())
-#define BAIL_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BUTTON, BailButton))
-#define BAIL_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BUTTON, BailButtonClass))
-#define BAIL_IS_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BUTTON))
-#define BAIL_IS_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BUTTON))
-#define BAIL_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BUTTON, BailButtonClass))
+#define BAIL_BUTTON(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BUTTON, BailButton))
+#define BAIL_BUTTON_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BUTTON, BailButtonClass))
+#define BAIL_IS_BUTTON(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BUTTON))
+#define BAIL_IS_BUTTON_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BUTTON))
+#define BAIL_BUTTON_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BUTTON, BailButtonClass))
 
 typedef struct _BailButton                   BailButton;
 typedef struct _BailButtonClass              BailButtonClass;

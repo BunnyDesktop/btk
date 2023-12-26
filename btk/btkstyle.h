@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_STYLE              (btk_style_get_type ())
-#define BTK_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_STYLE, BtkStyle))
-#define BTK_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_STYLE, BtkStyleClass))
-#define BTK_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_STYLE))
-#define BTK_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_STYLE))
-#define BTK_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_STYLE, BtkStyleClass))
+#define BTK_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_STYLE, BtkStyle))
+#define BTK_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_STYLE, BtkStyleClass))
+#define BTK_IS_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_STYLE))
+#define BTK_IS_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_STYLE))
+#define BTK_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_STYLE, BtkStyleClass))
 
 #define BTK_TYPE_BORDER             (btk_border_get_type ())
 
@@ -59,9 +59,9 @@ typedef struct _BtkIconSet     BtkIconSet;
 typedef struct _BtkIconSource  BtkIconSource;
 typedef struct _BtkRcProperty  BtkRcProperty;
 typedef struct _BtkSettings    BtkSettings;
-typedef gboolean (*BtkRcPropertyParser) (const GParamSpec *pspec,
+typedef gboolean (*BtkRcPropertyParser) (const BParamSpec *pspec,
 					 const GString    *rc_string,
-					 GValue           *property_value);
+					 BValue           *property_value);
 
 /* We make this forward declaration here, since we pass
  * BtkWidget's to the draw functions.
@@ -72,7 +72,7 @@ typedef struct _BtkWidget      BtkWidget;
 
 struct _BtkStyle
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
 
@@ -124,7 +124,7 @@ struct _BtkStyle
 
 struct _BtkStyleClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Initialize for a particular colormap/depth
    * combination. style->colormap/style->depth will have
@@ -144,7 +144,7 @@ struct _BtkStyleClass
 
   /* Create an empty style of the same type as this style.
    * The default implementation, which does
-   * g_object_new (G_OBJECT_TYPE (style), NULL);
+   * g_object_new (B_OBJECT_TYPE (style), NULL);
    * should work in most cases.
    */
   BtkStyle *(*clone)             (BtkStyle               *style);
@@ -886,7 +886,7 @@ void       btk_border_free     (BtkBorder       *border_);
 void btk_style_get_style_property (BtkStyle    *style,
                                    GType        widget_type,
                                    const gchar *property_name,
-                                   GValue      *value);
+                                   BValue      *value);
 void btk_style_get_valist         (BtkStyle    *style,
                                    GType        widget_type,
                                    const gchar *first_property_name,
@@ -897,9 +897,9 @@ void btk_style_get                (BtkStyle    *style,
                                    ...) B_GNUC_NULL_TERMINATED;
 
 /* --- private API --- */
-const GValue* _btk_style_peek_property_value (BtkStyle           *style,
+const BValue* _btk_style_peek_property_value (BtkStyle           *style,
 					      GType               widget_type,
-					      GParamSpec         *pspec,
+					      BParamSpec         *pspec,
 					      BtkRcPropertyParser parser);
 
 void          _btk_style_init_for_settings   (BtkStyle           *style,

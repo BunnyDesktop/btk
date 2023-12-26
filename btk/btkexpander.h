@@ -33,11 +33,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_EXPANDER            (btk_expander_get_type ())
-#define BTK_EXPANDER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EXPANDER, BtkExpander))
-#define BTK_EXPANDER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EXPANDER, BtkExpanderClass))
-#define BTK_IS_EXPANDER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EXPANDER))
-#define BTK_IS_EXPANDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EXPANDER))
-#define BTK_EXPANDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EXPANDER, BtkExpanderClass))
+#define BTK_EXPANDER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EXPANDER, BtkExpander))
+#define BTK_EXPANDER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EXPANDER, BtkExpanderClass))
+#define BTK_IS_EXPANDER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EXPANDER))
+#define BTK_IS_EXPANDER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EXPANDER))
+#define BTK_EXPANDER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EXPANDER, BtkExpanderClass))
 
 typedef struct _BtkExpander        BtkExpander;
 typedef struct _BtkExpanderClass   BtkExpanderClass;

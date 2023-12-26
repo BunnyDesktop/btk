@@ -58,7 +58,7 @@ static guint            add_listener	                        (GSignalEmissionHoo
 static void             do_window_event_initialization          (void);
 static gboolean         state_event_watcher                     (GSignalInvocationHint  *hint,
                                                                  guint                  n_param_values,
-                                                                 const GValue           *param_values,
+                                                                 const BValue           *param_values,
                                                                  gpointer               data);
 static void             window_added                             (BatkObject             *batk_obj,
                                                                   guint                 index,
@@ -70,7 +70,7 @@ static gboolean        window_focus                              (BtkWidget     
                                                                   BdkEventFocus         *event);
 static gboolean         configure_event_watcher                 (GSignalInvocationHint  *hint,
                                                                  guint                  n_param_values,
-                                                                 const GValue           *param_values,
+                                                                 const BValue           *param_values,
                                                                  gpointer               data);
                                                                   
 
@@ -290,7 +290,7 @@ bail_util_add_key_event_listener (BatkKeySnoopFunc  listener_func,
   listener->data = listener_data;
   listener->key = key;
 
-  key_listener_list = g_slist_append (key_listener_list, listener);
+  key_listener_list = b_slist_append (key_listener_list, listener);
 
   return key;
 }
@@ -307,7 +307,7 @@ bail_util_remove_key_event_listener (guint listener_key)
       if (listener->key == listener_key)
         {
           g_slice_free (KeyEventListener, listener);
-          key_listener_list = g_slist_delete_link (key_listener_list, l);
+          key_listener_list = b_slist_delete_link (key_listener_list, l);
 
           break;
         }
@@ -421,10 +421,10 @@ do_window_event_initialization (void)
 static gboolean
 state_event_watcher (GSignalInvocationHint  *hint,
                      guint                  n_param_values,
-                     const GValue           *param_values,
+                     const BValue           *param_values,
                      gpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BatkObject *batk_obj;
   BatkObject *parent;
@@ -432,14 +432,14 @@ state_event_watcher (GSignalInvocationHint  *hint,
   gchar *signal_name;
   guint signal_id;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   /*
    * The object can be a BtkMenu when it is popped up; we ignore this
    */
   if (!BTK_IS_WINDOW (object))
     return FALSE;
 
-  event = g_value_get_boxed (param_values + 1);
+  event = b_value_get_boxed (param_values + 1);
   bail_return_val_if_fail (event->type == BDK_WINDOW_STATE, FALSE);
   widget = BTK_WIDGET (object);
 
@@ -549,10 +549,10 @@ window_focus (BtkWidget     *widget,
 static gboolean 
 configure_event_watcher (GSignalInvocationHint  *hint,
                          guint                  n_param_values,
-                         const GValue           *param_values,
+                         const BValue           *param_values,
                          gpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BatkObject *batk_obj;
   BatkObject *parent;
@@ -560,14 +560,14 @@ configure_event_watcher (GSignalInvocationHint  *hint,
   gchar *signal_name;
   guint signal_id;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   if (!BTK_IS_WINDOW (object))
     /*
      * BtkDrawingArea can send a BDK_CONFIGURE event but we ignore here
      */
     return FALSE;
 
-  event = g_value_get_boxed (param_values + 1);
+  event = b_value_get_boxed (param_values + 1);
   if (event->type != BDK_CONFIGURE)
     return FALSE;
   if (BTK_WINDOW (object)->configure_request_count)

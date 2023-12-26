@@ -60,8 +60,8 @@ static void bdk_pixmap_impl_x11_get_size   (BdkDrawable        *drawable,
                                             gint               *width,
                                             gint               *height);
 
-static void bdk_pixmap_impl_x11_dispose    (GObject            *object);
-static void bdk_pixmap_impl_x11_finalize   (GObject            *object);
+static void bdk_pixmap_impl_x11_dispose    (BObject            *object);
+static void bdk_pixmap_impl_x11_finalize   (BObject            *object);
 
 G_DEFINE_TYPE (BdkPixmapImplX11, bdk_pixmap_impl_x11, BDK_TYPE_DRAWABLE_IMPL_X11)
 
@@ -81,7 +81,7 @@ bdk_pixmap_impl_x11_init (BdkPixmapImplX11 *impl)
 static void
 bdk_pixmap_impl_x11_class_init (BdkPixmapImplX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   object_class->dispose  = bdk_pixmap_impl_x11_dispose;
@@ -91,7 +91,7 @@ bdk_pixmap_impl_x11_class_init (BdkPixmapImplX11Class *klass)
 }
 
 static void
-bdk_pixmap_impl_x11_dispose (GObject *object)
+bdk_pixmap_impl_x11_dispose (BObject *object)
 {
   BdkPixmapImplX11 *impl = BDK_PIXMAP_IMPL_X11 (object);
   BdkPixmap *wrapper = BDK_PIXMAP (BDK_DRAWABLE_IMPL_X11 (impl)->wrapper);
@@ -105,11 +105,11 @@ bdk_pixmap_impl_x11_dispose (GObject *object)
 
   _bdk_xid_table_remove (display, BDK_PIXMAP_XID (wrapper));
 
-  G_OBJECT_CLASS (bdk_pixmap_impl_x11_parent_class)->dispose (object);
+  B_OBJECT_CLASS (bdk_pixmap_impl_x11_parent_class)->dispose (object);
 }
 
 static void
-bdk_pixmap_impl_x11_finalize (GObject *object)
+bdk_pixmap_impl_x11_finalize (BObject *object)
 {
   BdkPixmapImplX11 *impl = BDK_PIXMAP_IMPL_X11 (object);
   BdkPixmap *wrapper = BDK_PIXMAP (BDK_DRAWABLE_IMPL_X11 (impl)->wrapper);
@@ -122,7 +122,7 @@ bdk_pixmap_impl_x11_finalize (GObject *object)
       _bdk_x11_drawable_finish (BDK_DRAWABLE (draw_impl));
     }
 
-  G_OBJECT_CLASS (bdk_pixmap_impl_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_pixmap_impl_x11_parent_class)->finalize (object);
 }
 
 static void

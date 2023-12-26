@@ -24,7 +24,7 @@
 #include "bdkimage.h"
 #include "bdkprivate-quartz.h"
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 BdkImage *
 _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
@@ -251,19 +251,19 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image = BDK_IMAGE (object);
 
   g_free (image->mem);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
   
@@ -290,7 +290,7 @@ bdk_image_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkImage",
                                             &object_info,
 					    0);

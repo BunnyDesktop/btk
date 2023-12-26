@@ -89,7 +89,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BTK_TEXT_LAYOUT_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutPrivate))
+#define BTK_TEXT_LAYOUT_GET_PRIVATE(o)  (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutPrivate))
 
 typedef struct _BtkTextLayoutPrivate BtkTextLayoutPrivate;
 
@@ -171,18 +171,18 @@ enum {
 
 #define PIXEL_BOUND(d) (((d) + BANGO_SCALE - 1) / BANGO_SCALE)
 
-static void btk_text_layout_finalize (GObject *object);
+static void btk_text_layout_finalize (BObject *object);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
 BangoAttrType btk_text_attr_appearance_type = 0;
 
-G_DEFINE_TYPE (BtkTextLayout, btk_text_layout, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextLayout, btk_text_layout, B_TYPE_OBJECT)
 
 static void
 btk_text_layout_class_init (BtkTextLayoutClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_text_layout_finalize;
 
@@ -193,39 +193,39 @@ btk_text_layout_class_init (BtkTextLayoutClass *klass)
 
   signals[INVALIDATED] =
     g_signal_new (I_("invalidated"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextLayoutClass, invalidated),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   signals[CHANGED] =
     g_signal_new (I_("changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextLayoutClass, changed),
                   NULL, NULL,
                   _btk_marshal_VOID__INT_INT_INT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   3,
-                  G_TYPE_INT,
-                  G_TYPE_INT,
-                  G_TYPE_INT);
+                  B_TYPE_INT,
+                  B_TYPE_INT,
+                  B_TYPE_INT);
 
   signals[ALLOCATE_CHILD] =
     g_signal_new (I_("allocate-child"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextLayoutClass, allocate_child),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_INT_INT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   3,
                   BTK_TYPE_OBJECT,
-                  G_TYPE_INT,
-                  G_TYPE_INT);
+                  B_TYPE_INT,
+                  B_TYPE_INT);
   
   g_type_class_add_private (object_class, sizeof (BtkTextLayoutPrivate));
 }
@@ -253,7 +253,7 @@ free_style_cache (BtkTextLayout *text_layout)
 }
 
 static void
-btk_text_layout_finalize (GObject *object)
+btk_text_layout_finalize (BObject *object)
 {
   BtkTextLayout *layout;
 
@@ -296,7 +296,7 @@ btk_text_layout_finalize (GObject *object)
     }
 
 
-  G_OBJECT_CLASS (btk_text_layout_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_layout_parent_class)->finalize (object);
 }
 
 /**
@@ -753,7 +753,7 @@ btk_text_layout_get_lines (BtkTextLayout *layout,
   line = first_btree_line;
   while (TRUE)
     {
-      retval = g_slist_prepend (retval, line);
+      retval = b_slist_prepend (retval, line);
 
       if (line == last_btree_line)
         break;
@@ -761,7 +761,7 @@ btk_text_layout_get_lines (BtkTextLayout *layout,
       line = _btk_text_line_next_excluding_last (line);
     }
 
-  retval = g_slist_reverse (retval);
+  retval = b_slist_reverse (retval);
 
   return retval;
 }
@@ -828,8 +828,8 @@ btk_text_layout_invalidate_cache (BtkTextLayout *layout,
 
       if (cursors_only)
 	{
-	  g_slist_foreach (display->cursors, (GFunc)g_free, NULL);
-	  g_slist_free (display->cursors);
+	  b_slist_foreach (display->cursors, (GFunc)g_free, NULL);
+	  b_slist_free (display->cursors);
 	  display->cursors = NULL;
 	  display->cursors_invalid = TRUE;
 	  display->has_block_cursor = FALSE;
@@ -1597,7 +1597,7 @@ add_pixbuf_attrs (BtkTextLayout      *layout,
   bango_attr_list_insert (attrs, attr);
 
   display->shaped_objects =
-    g_slist_append (display->shaped_objects, pixbuf->pixbuf);
+    b_slist_append (display->shaped_objects, pixbuf->pixbuf);
 }
 
 static void
@@ -1637,7 +1637,7 @@ add_child_attrs (BtkTextLayout      *layout,
           break;
         }
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   if (tmp_list == NULL)
@@ -1656,7 +1656,7 @@ add_child_attrs (BtkTextLayout      *layout,
       widget = NULL;
     }
 
-  display->shaped_objects = g_slist_append (display->shaped_objects, widget);
+  display->shaped_objects = b_slist_append (display->shaped_objects, widget);
   
   logical_rect.x = 0;
   logical_rect.y = -height * BANGO_SCALE;
@@ -1777,7 +1777,7 @@ add_cursor (BtkTextLayout      *layout,
       cursor->height = BANGO_PIXELS (strong_pos.height);
       cursor->is_strong = TRUE;
       cursor->is_weak = (layout->cursor_direction == BTK_TEXT_DIR_NONE) ? FALSE : TRUE;
-      display->cursors = g_slist_prepend (display->cursors, cursor);
+      display->cursors = b_slist_prepend (display->cursors, cursor);
     }
   
   if (add_weak)
@@ -1793,7 +1793,7 @@ add_cursor (BtkTextLayout      *layout,
 	  cursor->height = BANGO_PIXELS (weak_pos.height);
 	  cursor->is_strong = (layout->cursor_direction == BTK_TEXT_DIR_NONE) ? FALSE : TRUE;
 	  cursor->is_weak = TRUE;
-	  display->cursors = g_slist_prepend (display->cursors, cursor);
+	  display->cursors = b_slist_prepend (display->cursors, cursor);
 	}
     }
 }
@@ -1951,7 +1951,7 @@ add_preedit_attrs (BtkTextLayout     *layout,
 	  tmp_list = tmp_list->next;
 	}
       
-      g_slist_free (extra_attrs);
+      b_slist_free (extra_attrs);
       
       insert_attr = bango_attr_font_desc_new (font_desc);
       insert_attr->start_index = start + offset;
@@ -2054,9 +2054,9 @@ update_text_display_cursors (BtkTextLayout      *layout,
 
           if (seg->body.mark.visible)
             {
-              cursor_byte_offsets = g_slist_prepend (cursor_byte_offsets,
+              cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets,
                                                      GINT_TO_POINTER (layout_byte_offset + cursor_offset));
-              cursor_segs = g_slist_prepend (cursor_segs, seg);
+              cursor_segs = b_slist_prepend (cursor_segs, seg);
             }
         }
 
@@ -2081,8 +2081,8 @@ update_text_display_cursors (BtkTextLayout      *layout,
       tmp_list1 = tmp_list1->next;
       tmp_list2 = tmp_list2->next;
     }
-  g_slist_free (cursor_byte_offsets);
-  g_slist_free (cursor_segs);
+  b_slist_free (cursor_byte_offsets);
+  b_slist_free (cursor_segs);
 }
 
 /* Same as _btk_text_btree_get_tags(), except it returns GPtrArray,
@@ -2292,8 +2292,8 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
 
  			  if (seg->body.mark.visible)
  			    {
-			      cursor_byte_offsets = g_slist_prepend (cursor_byte_offsets, GINT_TO_POINTER (layout_byte_offset));
-			      cursor_segs = g_slist_prepend (cursor_segs, seg);
+			      cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets, GINT_TO_POINTER (layout_byte_offset));
+			      cursor_segs = b_slist_prepend (cursor_segs, seg);
 			      if (_btk_text_btree_mark_is_insert (_btk_text_buffer_get_btree (layout->buffer),
 								  seg->body.mark.obj))
 				display->insert_index = layout_byte_offset;
@@ -2407,9 +2407,9 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
 
           if (seg->body.mark.visible)
             {
-              cursor_byte_offsets = g_slist_prepend (cursor_byte_offsets,
+              cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets,
                                                      GINT_TO_POINTER (layout_byte_offset + cursor_offset));
-              cursor_segs = g_slist_prepend (cursor_segs, seg);
+              cursor_segs = b_slist_prepend (cursor_segs, seg);
             }
         }
 
@@ -2464,8 +2464,8 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
       tmp_list1 = tmp_list1->next;
       tmp_list2 = tmp_list2->next;
     }
-  g_slist_free (cursor_byte_offsets);
-  g_slist_free (cursor_segs);
+  b_slist_free (cursor_byte_offsets);
+  b_slist_free (cursor_segs);
 
   bango_layout_get_extents (display->layout, NULL, &extents);
 
@@ -2520,10 +2520,10 @@ btk_text_layout_free_line_display (BtkTextLayout      *layout,
 
       if (display->cursors)
         {
-          g_slist_foreach (display->cursors, (GFunc)g_free, NULL);
-          g_slist_free (display->cursors);
+          b_slist_foreach (display->cursors, (GFunc)g_free, NULL);
+          b_slist_free (display->cursors);
         }
-      g_slist_free (display->shaped_objects);
+      b_slist_free (display->shaped_objects);
       
       if (display->pg_bg_color)
         bdk_color_free (display->pg_bg_color);
@@ -3218,7 +3218,7 @@ btk_text_layout_move_iter_to_previous_line (BtkTextLayout *layout,
 
           if (display->height > 0)
             {
-              tmp_list = g_slist_last (bango_layout_get_lines_readonly (display->layout));
+              tmp_list = b_slist_last (bango_layout_get_lines_readonly (display->layout));
               layout_line = tmp_list->data;
 
               line_display_index_to_iter (layout, display, iter,

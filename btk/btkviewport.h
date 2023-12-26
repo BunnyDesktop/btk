@@ -40,11 +40,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_VIEWPORT            (btk_viewport_get_type ())
-#define BTK_VIEWPORT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VIEWPORT, BtkViewport))
-#define BTK_VIEWPORT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VIEWPORT, BtkViewportClass))
-#define BTK_IS_VIEWPORT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VIEWPORT))
-#define BTK_IS_VIEWPORT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VIEWPORT))
-#define BTK_VIEWPORT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VIEWPORT, BtkViewportClass))
+#define BTK_VIEWPORT(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VIEWPORT, BtkViewport))
+#define BTK_VIEWPORT_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VIEWPORT, BtkViewportClass))
+#define BTK_IS_VIEWPORT(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VIEWPORT))
+#define BTK_IS_VIEWPORT_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VIEWPORT))
+#define BTK_VIEWPORT_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VIEWPORT, BtkViewportClass))
 
 
 typedef struct _BtkViewport       BtkViewport;

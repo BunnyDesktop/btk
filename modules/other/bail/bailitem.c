@@ -37,11 +37,11 @@ static void                  bail_item_real_initialize (BatkObject     *obj,
                                                         gpointer      data);
 static void                  bail_item_label_map_btk   (BtkWidget     *widget,
                                                         gpointer      data);
-static void                  bail_item_finalize        (GObject       *object);
+static void                  bail_item_finalize        (BObject       *object);
 static void                  bail_item_init_textutil   (BailItem      *item,
                                                         BtkWidget     *label);
-static void                  bail_item_notify_label_btk(GObject       *obj,
-                                                        GParamSpec    *pspec,
+static void                  bail_item_notify_label_btk(BObject       *obj,
+                                                        BParamSpec    *pspec,
                                                         gpointer      data);
 
 /* batktext.h */ 
@@ -94,7 +94,7 @@ G_DEFINE_TYPE_WITH_CODE (BailItem, bail_item, BAIL_TYPE_CONTAINER,
 static void
 bail_item_class_init (BailItemClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailContainerClass *container_class;
 
@@ -175,7 +175,7 @@ bail_item_init_textutil (BailItem  *item,
 }
 
 static void
-bail_item_finalize (GObject *object)
+bail_item_finalize (BObject *object)
 {
   BailItem *item = BAIL_ITEM (object);
 
@@ -188,7 +188,7 @@ bail_item_finalize (GObject *object)
       g_free (item->text);
       item->text = NULL;
     }
-  G_OBJECT_CLASS (bail_item_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_item_parent_class)->finalize (object);
 }
 
 static const gchar*
@@ -268,18 +268,18 @@ bail_item_get_name (BatkObject *obj)
                           n_columns = btk_tree_model_get_n_columns (model);
                           for (i = 0; i < n_columns; i++)
                             {
-                              GValue value = { 0, };
+                              BValue value = { 0, };
 
                                btk_tree_model_get_value (model, &iter, i, &value);
                                if (G_VALUE_HOLDS_STRING (&value))
                                  {
 				   g_free (item->text);
-                                   item->text =  (gchar *) g_value_dup_string (&value);
-                                   g_value_unset (&value);
+                                   item->text =  (gchar *) b_value_dup_string (&value);
+                                   b_value_unset (&value);
                                    break;
                                  }
 
-                               g_value_unset (&value);
+                               b_value_unset (&value);
                             }
                         }
                       name = item->text;
@@ -309,8 +309,8 @@ bail_item_ref_child (BatkObject *obj,
 }
 
 static void
-bail_item_notify_label_btk (GObject           *obj,
-                            GParamSpec        *pspec,
+bail_item_notify_label_btk (BObject           *obj,
+                            BParamSpec        *pspec,
                             gpointer           data)
 {
   BatkObject* batk_obj = BATK_OBJECT (data);
@@ -333,7 +333,7 @@ bail_item_notify_label_btk (GObject           *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed

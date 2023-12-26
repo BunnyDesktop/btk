@@ -40,11 +40,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_RANGE            (btk_range_get_type ())
-#define BTK_RANGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RANGE, BtkRange))
-#define BTK_RANGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RANGE, BtkRangeClass))
-#define BTK_IS_RANGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RANGE))
-#define BTK_IS_RANGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RANGE))
-#define BTK_RANGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RANGE, BtkRangeClass))
+#define BTK_RANGE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RANGE, BtkRange))
+#define BTK_RANGE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RANGE, BtkRangeClass))
+#define BTK_IS_RANGE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RANGE))
+#define BTK_IS_RANGE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RANGE))
+#define BTK_RANGE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RANGE, BtkRangeClass))
 
 /* These two are private/opaque types, ignore */
 typedef struct _BtkRangeLayout    BtkRangeLayout;

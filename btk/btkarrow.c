@@ -60,14 +60,14 @@ enum {
 };
 
 
-static void     btk_arrow_set_property (GObject        *object,
+static void     btk_arrow_set_property (BObject        *object,
                                         guint           prop_id,
-                                        const GValue   *value,
-                                        GParamSpec     *pspec);
-static void     btk_arrow_get_property (GObject        *object,
+                                        const BValue   *value,
+                                        BParamSpec     *pspec);
+static void     btk_arrow_get_property (BObject        *object,
                                         guint           prop_id,
-                                        GValue         *value,
-                                        GParamSpec     *pspec);
+                                        BValue         *value,
+                                        BParamSpec     *pspec);
 static gboolean btk_arrow_expose       (BtkWidget      *widget,
                                         BdkEventExpose *event);
 
@@ -78,10 +78,10 @@ G_DEFINE_TYPE (BtkArrow, btk_arrow, BTK_TYPE_MISC)
 static void
 btk_arrow_class_init (BtkArrowClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
   bobject_class->set_property = btk_arrow_set_property;
@@ -116,10 +116,10 @@ btk_arrow_class_init (BtkArrowClass *class)
 }
 
 static void
-btk_arrow_set_property (GObject         *object,
+btk_arrow_set_property (BObject         *object,
 			guint            prop_id,
-			const GValue    *value,
-			GParamSpec      *pspec)
+			const BValue    *value,
+			BParamSpec      *pspec)
 {
   BtkArrow *arrow = BTK_ARROW (object);
 
@@ -127,38 +127,38 @@ btk_arrow_set_property (GObject         *object,
     {
     case PROP_ARROW_TYPE:
       btk_arrow_set (arrow,
-		     g_value_get_enum (value),
+		     b_value_get_enum (value),
 		     arrow->shadow_type);
       break;
     case PROP_SHADOW_TYPE:
       btk_arrow_set (arrow,
 		     arrow->arrow_type,
-		     g_value_get_enum (value));
+		     b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_arrow_get_property (GObject         *object,
+btk_arrow_get_property (BObject         *object,
 			guint            prop_id,
-			GValue          *value,
-			GParamSpec      *pspec)
+			BValue          *value,
+			BParamSpec      *pspec)
 {
   BtkArrow *arrow = BTK_ARROW (object);
 
   switch (prop_id)
     {
     case PROP_ARROW_TYPE:
-      g_value_set_enum (value, arrow->arrow_type);
+      b_value_set_enum (value, arrow->arrow_type);
       break;
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, arrow->shadow_type);
+      b_value_set_enum (value, arrow->shadow_type);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -218,21 +218,21 @@ btk_arrow_set (BtkArrow      *arrow,
   if (   ((BtkArrowType) arrow->arrow_type != arrow_type)
       || ((BtkShadowType) arrow->shadow_type != shadow_type))
     {
-      g_object_freeze_notify (G_OBJECT (arrow));
+      g_object_freeze_notify (B_OBJECT (arrow));
 
       if ((BtkArrowType) arrow->arrow_type != arrow_type)
         {
           arrow->arrow_type = arrow_type;
-          g_object_notify (G_OBJECT (arrow), "arrow-type");
+          g_object_notify (B_OBJECT (arrow), "arrow-type");
         }
 
       if ((BtkShadowType) arrow->shadow_type != shadow_type)
         {
           arrow->shadow_type = shadow_type;
-          g_object_notify (G_OBJECT (arrow), "shadow-type");
+          g_object_notify (B_OBJECT (arrow), "shadow-type");
         }
 
-      g_object_thaw_notify (G_OBJECT (arrow));
+      g_object_thaw_notify (B_OBJECT (arrow));
 
       widget = BTK_WIDGET (arrow);
       if (btk_widget_is_drawable (widget))

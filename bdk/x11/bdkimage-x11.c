@@ -69,16 +69,16 @@ struct _BdkImagePrivateX11
 static GList *image_list = NULL;
 
 static void bdk_x11_image_destroy (BdkImage      *image);
-static void bdk_image_finalize    (GObject       *object);
+static void bdk_image_finalize    (BObject       *object);
 
 #define PRIVATE_DATA(image) ((BdkImagePrivateX11 *) BDK_IMAGE (image)->windowing_data)
 
-G_DEFINE_TYPE (BdkImage, bdk_image, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkImage, bdk_image, B_TYPE_OBJECT)
 
 static void
 bdk_image_init (BdkImage *image)
 {
-  image->windowing_data = G_TYPE_INSTANCE_GET_PRIVATE (image, 
+  image->windowing_data = B_TYPE_INSTANCE_GET_PRIVATE (image, 
 						       BDK_TYPE_IMAGE, 
 						       BdkImagePrivateX11);
 }
@@ -86,7 +86,7 @@ bdk_image_init (BdkImage *image)
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_image_finalize;
 
@@ -94,13 +94,13 @@ bdk_image_class_init (BdkImageClass *klass)
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image = BDK_IMAGE (object);
 
   bdk_x11_image_destroy (image);
   
-  G_OBJECT_CLASS (bdk_image_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_image_parent_class)->finalize (object);
 }
 
 

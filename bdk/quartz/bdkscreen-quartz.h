@@ -27,11 +27,11 @@ typedef struct _BdkScreenQuartz BdkScreenQuartz;
 typedef struct _BdkScreenQuartzClass BdkScreenQuartzClass;
 
 #define BDK_TYPE_SCREEN_QUARTZ              (_bdk_screen_quartz_get_type ())
-#define BDK_SCREEN_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartz))
-#define BDK_SCREEN_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
-#define BDK_IS_SCREEN_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_QUARTZ))
-#define BDK_IS_SCREEN_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_QUARTZ))
-#define BDK_SCREEN_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
+#define BDK_SCREEN_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartz))
+#define BDK_SCREEN_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
+#define BDK_IS_SCREEN_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_IS_SCREEN_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_SCREEN_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
 
 struct _BdkScreenQuartz
 {

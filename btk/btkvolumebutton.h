@@ -39,11 +39,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_VOLUME_BUTTON                 (btk_volume_button_get_type ())
-#define BTK_VOLUME_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButton))
-#define BTK_VOLUME_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
-#define BTK_IS_VOLUME_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VOLUME_BUTTON))
-#define BTK_IS_VOLUME_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VOLUME_BUTTON))
-#define BTK_VOLUME_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
+#define BTK_VOLUME_BUTTON(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButton))
+#define BTK_VOLUME_BUTTON_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
+#define BTK_IS_VOLUME_BUTTON(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VOLUME_BUTTON))
+#define BTK_IS_VOLUME_BUTTON_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VOLUME_BUTTON))
+#define BTK_VOLUME_BUTTON_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
 
 typedef struct _BtkVolumeButton       BtkVolumeButton;
 typedef struct _BtkVolumeButtonClass  BtkVolumeButtonClass;

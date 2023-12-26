@@ -276,7 +276,7 @@ btk_gamma_curve_init (BtkGammaCurve *curve)
   for (i = 0; i < 3; ++i)
     {
       curve->button[i] = btk_toggle_button_new ();
-      g_object_set_data (G_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
+      g_object_set_data (B_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
 			 GINT_TO_POINTER (i));
       btk_container_add (BTK_CONTAINER (vbox), curve->button[i]);
       g_signal_connect (curve->button[i], "realize",
@@ -290,7 +290,7 @@ btk_gamma_curve_init (BtkGammaCurve *curve)
   for (i = 3; i < 5; ++i)
     {
       curve->button[i] = btk_button_new ();
-      g_object_set_data (G_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
+      g_object_set_data (B_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
 			 GINT_TO_POINTER (i));
       btk_container_add (BTK_CONTAINER (vbox), curve->button[i]);
       g_signal_connect (curve->button[i], "realize",
@@ -323,7 +323,7 @@ button_realize_callback (BtkWidget *w)
   BdkPixbuf *pixbuf;
   int i;
 
-  i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  i = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
   bdk_pixdata_deserialize (&pixdata, streams[i].length, streams[i].stream, NULL);
   pixbuf = bdk_pixbuf_from_pixdata (&pixdata, TRUE, NULL);
   image = btk_image_new_from_pixbuf (pixbuf);
@@ -343,7 +343,7 @@ button_toggled_callback (BtkWidget *w, gpointer data)
   if (!BTK_TOGGLE_BUTTON (w)->active)
     return;
 
-  active = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  active = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
 
   for (i = 0; i < 3; ++i)
     if ((i != active) && BTK_TOGGLE_BUTTON (c->button[i])->active)
@@ -394,7 +394,7 @@ button_clicked_callback (BtkWidget *w, gpointer data)
   BtkGammaCurve *c = data;
   int active;
 
-  active = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  active = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
   if (active == 3)
     {
       /* set gamma */
@@ -409,7 +409,7 @@ button_clicked_callback (BtkWidget *w, gpointer data)
 	  btk_window_set_screen (BTK_WINDOW (c->gamma_dialog),
 				 btk_widget_get_screen (w));
 	  btk_window_set_title (BTK_WINDOW (c->gamma_dialog), _("Gamma"));
-	  g_object_add_weak_pointer (G_OBJECT (c->gamma_dialog),
+	  g_object_add_weak_pointer (B_OBJECT (c->gamma_dialog),
 				     (gpointer *)&c->gamma_dialog);
 	  
 	  vbox = BTK_DIALOG (c->gamma_dialog)->vbox;

@@ -36,10 +36,10 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BtkPrinterOption, btk_printer_option, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrinterOption, btk_printer_option, B_TYPE_OBJECT)
 
 static void
-btk_printer_option_finalize (GObject *object)
+btk_printer_option_finalize (BObject *object)
 {
   BtkPrinterOption *option = BTK_PRINTER_OPTION (object);
   int i;
@@ -56,7 +56,7 @@ btk_printer_option_finalize (GObject *object)
   g_free (option->choices_display);
   g_free (option->group);
   
-  G_OBJECT_CLASS (btk_printer_option_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_option_parent_class)->finalize (object);
 }
 
 static void
@@ -69,18 +69,18 @@ btk_printer_option_init (BtkPrinterOption *option)
 static void
 btk_printer_option_class_init (BtkPrinterOptionClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
 
   bobject_class->finalize = btk_printer_option_finalize;
 
   signals[CHANGED] =
     g_signal_new ("changed",
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrinterOptionClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 BtkPrinterOption *

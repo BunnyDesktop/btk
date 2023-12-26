@@ -98,7 +98,7 @@ activate_cb (BtkWidget *menu_item,
   BtkTextUtilCallbackInfo *info = data;
   char buf[7];
   
-  entry = g_object_get_data (G_OBJECT (menu_item), "btk-unicode-menu-entry");
+  entry = g_object_get_data (B_OBJECT (menu_item), "btk-unicode-menu-entry");
 
   buf[g_unichar_to_utf8 (entry->ch, buf)] = '\0';
   
@@ -135,7 +135,7 @@ _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushe
       info = callback_info_new (func, data);
 
       menuitem = btk_menu_item_new_with_mnemonic (_(bidi_menu_entries[i].label));
-      g_object_set_data (G_OBJECT (menuitem), I_("btk-unicode-menu-entry"),
+      g_object_set_data (B_OBJECT (menuitem), I_("btk-unicode-menu-entry"),
                          (gpointer)&bidi_menu_entries[i]);
 
       g_signal_connect_data (menuitem, "activate",
@@ -185,7 +185,7 @@ limit_layout_lines (BangoLayout *layout)
       g_string_append (str, "\n" ELLIPSIS_CHARACTER "\n");
 
       /* get last lines */
-      elem = g_slist_nth (lines, n_lines - DRAG_ICON_MAX_LINES / 2);
+      elem = b_slist_nth (lines, n_lines - DRAG_ICON_MAX_LINES / 2);
       append_n_lines (str, text, elem,
                       DRAG_ICON_MAX_LINES / 2);
 

@@ -66,8 +66,8 @@
 #endif
 
 
-static void   bdk_display_x11_dispose            (GObject            *object);
-static void   bdk_display_x11_finalize           (GObject            *object);
+static void   bdk_display_x11_dispose            (BObject            *object);
+static void   bdk_display_x11_finalize           (BObject            *object);
 
 #ifdef HAVE_X11R6
 static void bdk_internal_connection_watch (Display  *display,
@@ -125,7 +125,7 @@ G_DEFINE_TYPE (BdkDisplayX11, _bdk_display_x11, BDK_TYPE_DISPLAY)
 static void
 _bdk_display_x11_class_init (BdkDisplayX11Class * class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   
   object_class->dispose = bdk_display_x11_dispose;
   object_class->finalize = bdk_display_x11_finalize;
@@ -825,7 +825,7 @@ bdk_x11_display_ungrab (BdkDisplay *display)
 }
 
 static void
-bdk_display_x11_dispose (GObject *object)
+bdk_display_x11_dispose (BObject *object)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (object);
   gint           i;
@@ -837,11 +837,11 @@ bdk_display_x11_dispose (GObject *object)
 
   _bdk_events_uninit (BDK_DISPLAY_OBJECT (object));
 
-  G_OBJECT_CLASS (_bdk_display_x11_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_display_x11_parent_class)->dispose (object);
 }
 
 static void
-bdk_display_x11_finalize (GObject *object)
+bdk_display_x11_finalize (BObject *object)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (object);
   gint           i;
@@ -872,8 +872,8 @@ bdk_display_x11_finalize (GObject *object)
   g_list_free (display_x11->client_filters);
 
   /* List of event window extraction functions */
-  g_slist_foreach (display_x11->event_types, (GFunc)g_free, NULL);
-  g_slist_free (display_x11->event_types);
+  b_slist_foreach (display_x11->event_types, (GFunc)g_free, NULL);
+  b_slist_free (display_x11->event_types);
 
   /* input BdkDevice list */
   g_list_foreach (display_x11->input_devices, (GFunc) g_object_unref, NULL);
@@ -895,7 +895,7 @@ bdk_display_x11_finalize (GObject *object)
 
   XCloseDisplay (display_x11->xdisplay);
 
-  G_OBJECT_CLASS (_bdk_display_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_display_x11_parent_class)->finalize (object);
 }
 
 /**

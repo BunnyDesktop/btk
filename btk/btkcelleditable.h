@@ -29,10 +29,10 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_EDITABLE            (btk_cell_editable_get_type ())
-#define BTK_CELL_EDITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditable))
-#define BTK_CELL_EDITABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
-#define BTK_IS_CELL_EDITABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_EDITABLE))
-#define BTK_CELL_EDITABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
+#define BTK_CELL_EDITABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditable))
+#define BTK_CELL_EDITABLE_CLASS(obj)      (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
+#define BTK_IS_CELL_EDITABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_EDITABLE))
+#define BTK_CELL_EDITABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
 
 typedef struct _BtkCellEditable      BtkCellEditable; /* Dummy typedef */
 typedef struct _BtkCellEditableIface BtkCellEditableIface;

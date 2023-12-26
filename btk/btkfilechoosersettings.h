@@ -42,7 +42,7 @@ typedef struct _BtkFileChooserSettingsClass BtkFileChooserSettingsClass;
 
 struct _BtkFileChooserSettings
 {
-  GObject object;
+  BObject object;
 
   LocationMode location_mode;
 
@@ -62,7 +62,7 @@ struct _BtkFileChooserSettings
 
 struct _BtkFileChooserSettingsClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 GType _btk_file_chooser_settings_get_type (void) B_GNUC_CONST;

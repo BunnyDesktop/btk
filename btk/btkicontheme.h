@@ -32,11 +32,11 @@ B_BEGIN_DECLS
 #define BTK_TYPE_ICON_INFO              (btk_icon_info_get_type ())
 
 #define BTK_TYPE_ICON_THEME             (btk_icon_theme_get_type ())
-#define BTK_ICON_THEME(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_THEME, BtkIconTheme))
-#define BTK_ICON_THEME_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_THEME, BtkIconThemeClass))
-#define BTK_IS_ICON_THEME(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_THEME))
-#define BTK_IS_ICON_THEME_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_THEME))
-#define BTK_ICON_THEME_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_THEME, BtkIconThemeClass))
+#define BTK_ICON_THEME(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_THEME, BtkIconTheme))
+#define BTK_ICON_THEME_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_THEME, BtkIconThemeClass))
+#define BTK_IS_ICON_THEME(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_THEME))
+#define BTK_IS_ICON_THEME_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_THEME))
+#define BTK_ICON_THEME_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_THEME, BtkIconThemeClass))
 
 typedef struct _BtkIconInfo         BtkIconInfo;
 typedef struct _BtkIconTheme        BtkIconTheme;
@@ -46,14 +46,14 @@ typedef struct _BtkIconThemePrivate BtkIconThemePrivate;
 struct _BtkIconTheme
 {
   /*< private >*/
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkIconThemePrivate *GSEAL (priv);
 };
 
 struct _BtkIconThemeClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (* changed)  (BtkIconTheme *icon_theme);
 };

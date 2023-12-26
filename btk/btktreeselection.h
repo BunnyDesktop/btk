@@ -30,11 +30,11 @@ B_BEGIN_DECLS
 
 
 #define BTK_TYPE_TREE_SELECTION			(btk_tree_selection_get_type ())
-#define BTK_TREE_SELECTION(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelection))
-#define BTK_TREE_SELECTION_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
-#define BTK_IS_TREE_SELECTION(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_SELECTION))
-#define BTK_IS_TREE_SELECTION_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_SELECTION))
-#define BTK_TREE_SELECTION_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
+#define BTK_TREE_SELECTION(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelection))
+#define BTK_TREE_SELECTION_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
+#define BTK_IS_TREE_SELECTION(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_SELECTION))
+#define BTK_IS_TREE_SELECTION_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_SELECTION))
+#define BTK_TREE_SELECTION_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
 
 typedef gboolean (* BtkTreeSelectionFunc)    (BtkTreeSelection  *selection,
 					      BtkTreeModel      *model,
@@ -48,7 +48,7 @@ typedef void (* BtkTreeSelectionForeachFunc) (BtkTreeModel      *model,
 
 struct _BtkTreeSelection
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
 
@@ -61,7 +61,7 @@ struct _BtkTreeSelection
 
 struct _BtkTreeSelectionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (* changed) (BtkTreeSelection *selection);
 

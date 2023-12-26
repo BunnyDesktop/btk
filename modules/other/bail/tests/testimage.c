@@ -78,7 +78,7 @@ _print_image_info(BatkObject *obj) {
   gint height, width;
   const gchar *desc;
   const gchar *name = batk_object_get_name (obj);
-  const gchar *type_name = g_type_name(G_TYPE_FROM_INSTANCE (obj));
+  const gchar *type_name = g_type_name(B_TYPE_FROM_INSTANCE (obj));
 
   height = width = 0;
 
@@ -114,7 +114,7 @@ static void _traverse_children (BatkObject *obj)
     child = batk_object_ref_accessible_child (obj, i);
 	_print_image_info(child);
     _traverse_children (child);
-    g_object_unref (G_OBJECT (child));
+    g_object_unref (B_OBJECT (child));
   }
 }
 

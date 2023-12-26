@@ -88,10 +88,10 @@ static gboolean bail_widget_set_size       (BatkComponent    *component,
                                             gint            height);
 
 static gint       bail_widget_map_btk            (BtkWidget     *widget);
-static void       bail_widget_real_notify_btk    (GObject       *obj,
-                                                  GParamSpec    *pspec);
-static void       bail_widget_notify_btk         (GObject       *obj,
-                                                  GParamSpec    *pspec);
+static void       bail_widget_real_notify_btk    (BObject       *obj,
+                                                  BParamSpec    *pspec);
+static void       bail_widget_notify_btk         (BObject       *obj,
+                                                  BParamSpec    *pspec);
 static gboolean   bail_widget_focus_btk          (BtkWidget     *widget,
                                                   BdkEventFocus *event);
 static gboolean   bail_widget_real_focus_btk     (BtkWidget     *widget,
@@ -182,7 +182,7 @@ bail_widget_real_initialize (BatkObject *obj,
                     "unmap",
                     G_CALLBACK (bail_widget_map_btk),
                     NULL);
-  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+  g_object_set_data (B_OBJECT (obj), "batk-component-layer",
 		     GINT_TO_POINTER (BATK_LAYER_WIDGET));
 
   obj->role = BATK_ROLE_UNKNOWN;
@@ -191,7 +191,7 @@ bail_widget_real_initialize (BatkObject *obj,
 BatkObject* 
 bail_widget_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
@@ -332,7 +332,7 @@ find_label (BtkWidget *widget)
         {
           if (labels->next)
             {
-              g_warning ("Widget (%s) has more than one label", G_OBJECT_TYPE_NAME (widget));
+              g_warning ("Widget (%s) has more than one label", B_OBJECT_TYPE_NAME (widget));
               
             }
           else
@@ -525,7 +525,7 @@ bail_widget_ref_state_set (BatkObject *accessible)
         {
           BatkObject *focus_obj;
 
-          focus_obj = g_object_get_data (G_OBJECT (accessible), "bail-focus-object");
+          focus_obj = g_object_get_data (B_OBJECT (accessible), "bail-focus-object");
           if (focus_obj == NULL)
             batk_state_set_add_state (state_set, BATK_STATE_FOCUSED);
         }
@@ -562,7 +562,7 @@ bail_widget_get_index_in_parent (BatkObject *accessible)
       parent = accessible->accessible_parent;
 
       if (BAIL_IS_NOTEBOOK_PAGE (parent) ||
-          G_TYPE_CHECK_INSTANCE_TYPE ((parent), type))
+          B_TYPE_CHECK_INSTANCE_TYPE ((parent), type))
         return 0;
       else
         {
@@ -723,7 +723,7 @@ static BatkLayer
 bail_widget_get_layer (BatkComponent *component)
 {
   gint layer;
-  layer = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (component), "batk-component-layer"));
+  layer = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (component), "batk-component-layer"));
 
   return (BatkLayer) layer;
 }
@@ -948,8 +948,8 @@ bail_widget_map_btk (BtkWidget     *widget)
  * It calls a function for the BailWidget type
  */
 static void 
-bail_widget_notify_btk (GObject     *obj,
-                        GParamSpec  *pspec)
+bail_widget_notify_btk (BObject     *obj,
+                        BParamSpec  *pspec)
 {
   BailWidget *widget;
   BailWidgetClass *klass;
@@ -969,8 +969,8 @@ bail_widget_notify_btk (GObject     *obj,
  * to be called.
  */
 static void 
-bail_widget_real_notify_btk (GObject     *obj,
-                             GParamSpec  *pspec)
+bail_widget_real_notify_btk (BObject     *obj,
+                             BParamSpec  *pspec)
 {
   BtkWidget* widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);
@@ -986,7 +986,7 @@ bail_widget_real_notify_btk (GObject     *obj,
   else if (batk_obj->description == NULL &&
            strcmp (pspec->name, "tooltip-text") == 0)
     {
-      g_object_notify (G_OBJECT (batk_obj), "accessible-description");
+      g_object_notify (B_OBJECT (batk_obj), "accessible-description");
       return;
     }
   else if (strcmp (pspec->name, "visible") == 0)
@@ -1014,7 +1014,7 @@ bail_widget_focus_event (BatkObject   *obj,
 {
   BatkObject *focus_obj;
 
-  focus_obj = g_object_get_data (G_OBJECT (obj), "bail-focus-object");
+  focus_obj = g_object_get_data (B_OBJECT (obj), "bail-focus-object");
   if (focus_obj == NULL)
     focus_obj = obj;
   batk_object_notify_state_change (focus_obj, BATK_STATE_FOCUSED, focus_in);

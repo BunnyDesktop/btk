@@ -190,10 +190,10 @@ btk_dial_set_adjustment (BtkDial      *dial,
   dial->adjustment = adjustment;
   g_object_ref (BTK_OBJECT (dial->adjustment));
 
-  g_signal_connect (G_OBJECT (adjustment), "changed",
+  g_signal_connect (B_OBJECT (adjustment), "changed",
 		    G_CALLBACK (btk_dial_adjustment_changed),
 		    (gpointer) dial);
-  g_signal_connect (G_OBJECT (adjustment), "value_changed",
+  g_signal_connect (B_OBJECT (adjustment), "value_changed",
 		    G_CALLBACK (btk_dial_adjustment_value_changed),
 		    (gpointer) dial);
 

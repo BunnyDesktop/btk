@@ -113,7 +113,7 @@ static void       bail_clist_class_init            (BailCListClass    *klass);
 static void       bail_clist_init                  (BailCList         *clist);
 static void       bail_clist_real_initialize       (BatkObject         *obj,
                                                     gpointer          data);
-static void       bail_clist_finalize              (GObject           *object);
+static void       bail_clist_finalize              (BObject           *object);
 
 static gint       bail_clist_get_n_children        (BatkObject         *obj);
 static BatkObject* bail_clist_ref_child             (BatkObject         *obj,
@@ -275,7 +275,7 @@ static void
 bail_clist_class_init (BailCListClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   class->get_n_children = bail_clist_get_n_children;
   class->ref_child = bail_clist_ref_child;
@@ -350,7 +350,7 @@ bail_clist_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_clist_finalize (GObject            *object)
+bail_clist_finalize (BObject            *object)
 {
   BailCList *clist = BAIL_CLIST (object);
   gint i;
@@ -399,7 +399,7 @@ bail_clist_finalize (GObject            *object)
       g_list_free (clist->cell_data);
     }
 
-  G_OBJECT_CLASS (bail_clist_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_clist_parent_class)->finalize (object);
 }
 
 static gint
@@ -1009,10 +1009,10 @@ bail_clist_set_caption (BatkTable      *table,
   if (obj->caption)
     g_object_ref (obj->caption);
 
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, old_caption);
-  g_value_init (&values.new_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.new_value, obj->caption);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, old_caption);
+  b_value_init (&values.new_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.new_value, obj->caption);
 
   values.property_name = "accessible-table-caption";
   g_signal_emit_by_name (table, 
@@ -1041,8 +1041,8 @@ bail_clist_set_column_description (BatkTable      *table,
   g_free (clist->columns[actual_column].description);
   clist->columns[actual_column].description = g_strdup (description);
 
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, column);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, column);
 
   values.property_name = "accessible-table-column-description";
   g_signal_emit_by_name (table, 
@@ -1070,8 +1070,8 @@ bail_clist_set_column_header (BatkTable      *table,
     g_object_ref (header);
   clist->columns[actual_column].header = header;
 
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, column);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, column);
 
   values.property_name = "accessible-table-column-header";
   g_signal_emit_by_name (table, 
@@ -1108,10 +1108,10 @@ bail_clist_set_summary (BatkTable      *table,
   if (obj->summary)
     g_object_ref (obj->summary);
 
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, old_summary);
-  g_value_init (&values.new_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.new_value, obj->summary);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, old_summary);
+  b_value_init (&values.new_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.new_value, obj->summary);
 
   values.property_name = "accessible-table-summary";
   g_signal_emit_by_name (table, 
@@ -1403,8 +1403,8 @@ bail_clist_set_row_data (BatkTable      *table,
       g_array_append_val (array, row_data);
     }
 
-  g_value_init (&values.new_value, G_TYPE_INT);
-  g_value_set_int (&values.new_value, row);
+  b_value_init (&values.new_value, B_TYPE_INT);
+  b_value_set_int (&values.new_value, row);
 
   if (is_header)
     {
@@ -1508,7 +1508,7 @@ bail_clist_cell_data_new (BailCList     *clist,
   cell_data->row_number = row;
   clist->cell_data = g_list_append (clist->cell_data, cell_data);
 
-  g_object_weak_ref (G_OBJECT (cell),
+  g_object_weak_ref (B_OBJECT (cell),
                      (GWeakNotify) bail_clist_cell_destroyed,
                      cell);
 }

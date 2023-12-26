@@ -541,10 +541,10 @@ bdk_rgb_free_info (BdkRgbInfo *image_info)
   while (tmp_list)
     {
       BdkRgbCmapInfo *cmap_info = tmp_list->data;
-      cmap_info->cmap->info_list = g_slist_remove (cmap_info->cmap->info_list, cmap_info);
+      cmap_info->cmap->info_list = b_slist_remove (cmap_info->cmap->info_list, cmap_info);
       g_free (cmap_info);
     }
-  g_slist_free (image_info->cmap_info_list);
+  b_slist_free (image_info->cmap_info_list);
   
   g_free (image_info);
 }
@@ -667,7 +667,7 @@ bdk_rgb_create_info (BdkVisual *visual, BdkColormap *colormap)
   if (!bdk_rgb_quark)
     bdk_rgb_quark = g_quark_from_static_string (bdk_rgb_key);
 
-  g_object_set_qdata_full (G_OBJECT (image_info->cmap), bdk_rgb_quark,
+  g_object_set_qdata_full (B_OBJECT (image_info->cmap), bdk_rgb_quark,
 			   image_info, (GDestroyNotify)bdk_rgb_free_info);
   return image_info;
 }
@@ -695,7 +695,7 @@ bdk_rgb_get_info_from_colormap (BdkColormap *cmap)
   if (!bdk_rgb_quark)
     bdk_rgb_quark = g_quark_from_static_string (bdk_rgb_key);
 
-  image_info = g_object_get_qdata (G_OBJECT (cmap), bdk_rgb_quark);
+  image_info = g_object_get_qdata (B_OBJECT (cmap), bdk_rgb_quark);
   if (!image_info)
     image_info = bdk_rgb_create_info (bdk_colormap_get_visual (cmap), cmap);
 
@@ -3581,8 +3581,8 @@ bdk_rgb_cmap_get_info (BdkRgbCmap *cmap,
       cmap_info->lut[i] = image_info->colorcube[j];
     }
 
-  cmap->info_list = g_slist_prepend (cmap->info_list, cmap_info);
-  image_info->cmap_info_list = g_slist_prepend (image_info->cmap_info_list, cmap_info);
+  cmap->info_list = b_slist_prepend (cmap->info_list, cmap_info);
+  image_info->cmap_info_list = b_slist_prepend (image_info->cmap_info_list, cmap_info);
   
   return cmap_info;
 }
@@ -3614,11 +3614,11 @@ bdk_rgb_cmap_free (BdkRgbCmap *cmap)
   while (tmp_list)
     {
       BdkRgbCmapInfo *cmap_info = tmp_list->data;
-      cmap_info->image_info->cmap_info_list = g_slist_remove (cmap_info->image_info->cmap_info_list, cmap_info);
+      cmap_info->image_info->cmap_info_list = b_slist_remove (cmap_info->image_info->cmap_info_list, cmap_info);
       g_free (cmap_info);
       tmp_list = tmp_list->next;
     }
-  g_slist_free (cmap->info_list);
+  b_slist_free (cmap->info_list);
   
   g_free (cmap);
 }
@@ -3711,12 +3711,12 @@ bdk_screen_get_rgb_colormap (BdkScreen *screen)
 {
   BdkColormap *cmap;
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
-  cmap = g_object_get_data (G_OBJECT (screen), "rgb-colormap"); 
+  cmap = g_object_get_data (B_OBJECT (screen), "rgb-colormap"); 
   if (!cmap)
     {
       BdkRgbInfo *image_info = bdk_rgb_create_info (bdk_rgb_choose_visual (screen), NULL);
       cmap = image_info->cmap;
-      g_object_set_data (G_OBJECT (screen), "rgb-colormap", cmap);
+      g_object_set_data (B_OBJECT (screen), "rgb-colormap", cmap);
     }
 
   return cmap;

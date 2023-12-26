@@ -321,7 +321,7 @@ expose_func (BtkWidget *drawing_area, BdkEventExpose *event, gpointer data)
 {
 	BdkPixbuf *pixbuf;
 
-	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
 
 	if (bdk_pixbuf_get_has_alpha (pixbuf)) {
 		BdkPixbuf *dest;
@@ -367,7 +367,7 @@ config_func (BtkWidget *drawing_area, BdkEventConfigure *event, gpointer data)
 #if 0
 	BdkPixbuf *pixbuf;
     
-	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
 
 	if (((event->width) != bdk_pixbuf_get_width (pixbuf)) ||
 	    ((event->height) != bdk_pixbuf_get_height (pixbuf)))
@@ -417,7 +417,7 @@ new_testrgb_window (BdkPixbuf *pixbuf, gchar *title)
 	g_signal_connect (drawing_area, "configure_event",
 			  G_CALLBACK (config_func), NULL);
 
-	g_object_set_data (G_OBJECT (drawing_area), "pixbuf", pixbuf);
+	g_object_set_data (B_OBJECT (drawing_area), "pixbuf", pixbuf);
 
 	btk_widget_show (drawing_area);
 

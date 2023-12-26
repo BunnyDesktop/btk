@@ -44,14 +44,14 @@ static gint         bail_container_real_remove_btk     (BtkContainer       *cont
 static void          bail_container_real_initialize    (BatkObject          *obj,
                                                         gpointer           data);
 
-static void          bail_container_finalize           (GObject            *object);
+static void          bail_container_finalize           (BObject            *object);
 
 G_DEFINE_TYPE (BailContainer, bail_container, BAIL_TYPE_WIDGET)
 
 static void
 bail_container_class_init (BailContainerClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
   bobject_class->finalize = bail_container_finalize;
@@ -160,7 +160,7 @@ bail_container_real_add_btk (BtkContainer *container,
   BailContainer *bail_container = BAIL_CONTAINER (batk_parent);
   gint       index;
 
-  g_object_notify (G_OBJECT (batk_child), "accessible_parent");
+  g_object_notify (B_OBJECT (batk_child), "accessible_parent");
 
   g_list_free (bail_container->children);
   bail_container->children = btk_container_get_children (container);
@@ -187,8 +187,8 @@ bail_container_real_remove_btk (BtkContainer       *container,
 
   if (batk_child)
     {
-      g_value_init (&values.old_value, G_TYPE_POINTER);
-      g_value_set_pointer (&values.old_value, batk_parent);
+      b_value_init (&values.old_value, B_TYPE_POINTER);
+      b_value_set_pointer (&values.old_value, batk_parent);
     
       values.property_name = "accessible-parent";
 
@@ -227,13 +227,13 @@ bail_container_real_initialize (BatkObject *obj,
                                  "add",
                                  G_CALLBACK (bail_container_add_btk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "bail-add-handler-id", 
+  g_object_set_data (B_OBJECT (obj), "bail-add-handler-id", 
                      GUINT_TO_POINTER (handler_id));
   handler_id = g_signal_connect (data,
                                  "remove",
                                  G_CALLBACK (bail_container_remove_btk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "bail-remove-handler-id", 
+  g_object_set_data (B_OBJECT (obj), "bail-remove-handler-id", 
                      GUINT_TO_POINTER (handler_id));
 
   if (BTK_IS_TOOLBAR (data))
@@ -245,10 +245,10 @@ bail_container_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_container_finalize (GObject *object)
+bail_container_finalize (BObject *object)
 {
   BailContainer *container = BAIL_CONTAINER (object);
 
   g_list_free (container->children);
-  G_OBJECT_CLASS (bail_container_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_container_parent_class)->finalize (object);
 }

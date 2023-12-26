@@ -29,8 +29,8 @@ static void      bail_toggle_button_init              (BailToggleButton      *bu
 
 static void      bail_toggle_button_toggled_btk       (BtkWidget             *widget);
 
-static void      bail_toggle_button_real_notify_btk   (GObject               *obj,
-                                                       GParamSpec            *pspec);
+static void      bail_toggle_button_real_notify_btk   (BObject               *obj,
+                                                       BParamSpec            *pspec);
 
 static void      bail_toggle_button_real_initialize   (BatkObject             *obj,
                                                        gpointer              data);
@@ -115,8 +115,8 @@ bail_toggle_button_ref_state_set (BatkObject *accessible)
 }
 
 static void
-bail_toggle_button_real_notify_btk (GObject           *obj,
-                                    GParamSpec        *pspec)
+bail_toggle_button_real_notify_btk (BObject           *obj,
+                                    BParamSpec        *pspec)
 {
   BtkToggleButton *toggle_button = BTK_TOGGLE_BUTTON (obj);
   BatkObject *batk_obj;

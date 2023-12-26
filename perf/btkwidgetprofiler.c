@@ -28,9 +28,9 @@ struct _BtkWidgetProfilerPrivate {
   guint profiling : 1;
 };
 
-G_DEFINE_TYPE (BtkWidgetProfiler, btk_widget_profiler, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkWidgetProfiler, btk_widget_profiler, B_TYPE_OBJECT);
 
-static void btk_widget_profiler_finalize (GObject *object);
+static void btk_widget_profiler_finalize (BObject *object);
 
 enum {
   CREATE_WIDGET,
@@ -43,30 +43,30 @@ static guint signals[LAST_SIGNAL];
 static void
 btk_widget_profiler_class_init (BtkWidgetProfilerClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
 
   signals[CREATE_WIDGET] =
     g_signal_new ("create-widget",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, create_widget),
 		  NULL, NULL,
 		  _btk_marshal_OBJECT__VOID,
-		  G_TYPE_OBJECT, 0);
+		  B_TYPE_OBJECT, 0);
 
   signals[REPORT] =
     g_signal_new ("report",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, report),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_OBJECT_DOUBLE,
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_WIDGET_PROFILER_REPORT,
-		  G_TYPE_OBJECT,
-		  G_TYPE_DOUBLE);
+		  B_TYPE_OBJECT,
+		  B_TYPE_DOUBLE);
 
   object_class->finalize = btk_widget_profiler_finalize;
 }
@@ -111,7 +111,7 @@ reset_state (BtkWidgetProfiler *profiler)
 }
 
 static void
-btk_widget_profiler_finalize (GObject *object)
+btk_widget_profiler_finalize (BObject *object)
 {
   BtkWidgetProfiler *profiler;
   BtkWidgetProfilerPrivate *priv;
@@ -124,7 +124,7 @@ btk_widget_profiler_finalize (GObject *object)
 
   g_free (priv);
 
-  G_OBJECT_CLASS (btk_widget_profiler_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_widget_profiler_parent_class)->finalize (object);
 }
 
 BtkWidgetProfiler *

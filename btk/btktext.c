@@ -209,18 +209,18 @@ struct _LineParams
 
 
 static void  btk_text_class_init     (BtkTextClass   *klass);
-static void  btk_text_set_property   (GObject         *object,
+static void  btk_text_set_property   (BObject         *object,
 				      guint            prop_id,
-				      const GValue    *value,
-				      GParamSpec      *pspec);
-static void  btk_text_get_property   (GObject         *object,
+				      const BValue    *value,
+				      BParamSpec      *pspec);
+static void  btk_text_get_property   (BObject         *object,
 				      guint            prop_id,
-				      GValue          *value,
-				      GParamSpec      *pspec);
+				      BValue          *value,
+				      BParamSpec      *pspec);
 static void  btk_text_editable_init  (BtkEditableClass *iface);
 static void  btk_text_init           (BtkText        *text);
 static void  btk_text_destroy        (BtkObject      *object);
-static void  btk_text_finalize       (GObject        *object);
+static void  btk_text_finalize       (BObject        *object);
 static void  btk_text_realize        (BtkWidget      *widget);
 static void  btk_text_unrealize      (BtkWidget      *widget);
 static void  btk_text_style_set	     (BtkWidget      *widget,
@@ -491,12 +491,12 @@ btk_text_get_type (void)
 static void
 btk_text_class_init (BtkTextClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkOldEditableClass *old_editable_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
   old_editable_class = (BtkOldEditableClass*) class;
@@ -581,10 +581,10 @@ btk_text_class_init (BtkTextClass *class)
 }
 
 static void
-btk_text_set_property (GObject         *object,
+btk_text_set_property (BObject         *object,
 		       guint            prop_id,
-		       const GValue    *value,
-		       GParamSpec      *pspec)
+		       const BValue    *value,
+		       BParamSpec      *pspec)
 {
   BtkText *text;
   
@@ -594,31 +594,31 @@ btk_text_set_property (GObject         *object,
     {
     case PROP_HADJUSTMENT:
       btk_text_set_adjustments (text,
-				g_value_get_object (value),
+				b_value_get_object (value),
 				text->vadj);
       break;
     case PROP_VADJUSTMENT:
       btk_text_set_adjustments (text,
 				text->hadj,
-				g_value_get_object (value));
+				b_value_get_object (value));
       break;
     case PROP_LINE_WRAP:
-      btk_text_set_line_wrap (text, g_value_get_boolean (value));
+      btk_text_set_line_wrap (text, b_value_get_boolean (value));
       break;
     case PROP_WORD_WRAP:
-      btk_text_set_word_wrap (text, g_value_get_boolean (value));
+      btk_text_set_word_wrap (text, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_text_get_property (GObject         *object,
+btk_text_get_property (BObject         *object,
 		       guint            prop_id,
-		       GValue          *value,
-		       GParamSpec      *pspec)
+		       BValue          *value,
+		       BParamSpec      *pspec)
 {
   BtkText *text;
   
@@ -627,19 +627,19 @@ btk_text_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      g_value_set_object (value, text->hadj);
+      b_value_set_object (value, text->hadj);
       break;
     case PROP_VADJUSTMENT:
-      g_value_set_object (value, text->vadj);
+      b_value_set_object (value, text->vadj);
       break;
     case PROP_LINE_WRAP:
-      g_value_set_boolean (value, text->line_wrap);
+      b_value_set_boolean (value, text->line_wrap);
       break;
     case PROP_WORD_WRAP:
-      g_value_set_boolean (value, text->word_wrap);
+      b_value_set_boolean (value, text->word_wrap);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -731,7 +731,7 @@ btk_text_set_word_wrap (BtkText *text,
       btk_widget_queue_draw (BTK_WIDGET (text));
     }
   
-  g_object_notify (G_OBJECT (text), "word-wrap");
+  g_object_notify (B_OBJECT (text), "word-wrap");
 }
 
 void
@@ -748,7 +748,7 @@ btk_text_set_line_wrap (BtkText *text,
       btk_widget_queue_draw (BTK_WIDGET (text));
     }
   
-  g_object_notify (G_OBJECT (text), "line-wrap");
+  g_object_notify (B_OBJECT (text), "line-wrap");
 }
 
 void
@@ -805,7 +805,7 @@ btk_text_set_adjustments (BtkText       *text,
       g_object_unref (text->vadj);
     }
   
-  g_object_freeze_notify (G_OBJECT (text));
+  g_object_freeze_notify (B_OBJECT (text));
   if (text->hadj != hadj)
     {
       text->hadj = hadj;
@@ -822,7 +822,7 @@ btk_text_set_adjustments (BtkText       *text,
 			  text);
       btk_text_adjustment (hadj, text);
 
-      g_object_notify (G_OBJECT (text), "hadjustment");
+      g_object_notify (B_OBJECT (text), "hadjustment");
     }
   
   if (text->vadj != vadj)
@@ -841,9 +841,9 @@ btk_text_set_adjustments (BtkText       *text,
 			  text);
       btk_text_adjustment (vadj, text);
 
-      g_object_notify (G_OBJECT (text), "vadjustment");
+      g_object_notify (B_OBJECT (text), "vadjustment");
     }
-  g_object_thaw_notify (G_OBJECT (text));
+  g_object_thaw_notify (B_OBJECT (text));
 }
 
 void
@@ -1194,7 +1194,7 @@ btk_text_destroy (BtkObject *object)
 }
 
 static void
-btk_text_finalize (GObject *object)
+btk_text_finalize (BObject *object)
 {
   BtkText *text = BTK_TEXT (object);
   GList *tmp_list;
@@ -1228,7 +1228,7 @@ btk_text_finalize (GObject *object)
   
   g_list_free (text->tab_stops);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -4248,13 +4248,13 @@ set_vertical_scroll (BtkText* text)
   BtkPropertyMark mark = find_mark (text, 0);
   SetVerticalScrollData data;
   gint height;
-  gint orig_value;
+  gint orib_value;
   
   data.pixel_height = 0;
   line_params_iterate (text, &mark, NULL, FALSE, &data, set_vertical_scroll_iterator);
   
   text->vadj->upper = data.pixel_height;
-  orig_value = (gint) text->vadj->value;
+  orib_value = (gint) text->vadj->value;
   
   bdk_drawable_get_size (text->text_area, NULL, &height);
   
@@ -4268,7 +4268,7 @@ set_vertical_scroll (BtkText* text)
   
   btk_signal_emit_by_name (BTK_OBJECT (text->vadj), "changed");
   
-  if (text->vadj->value != orig_value)
+  if (text->vadj->value != orib_value)
     {
       /* We got clipped, and don't really know which line to put first. */
       data.pixel_height = 0;

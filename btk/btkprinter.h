@@ -31,7 +31,7 @@ B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_CAPABILITIES (btk_print_capabilities_get_type ())
 
-/* Note, this type is manually registered with GObject in btkprinter.c
+/* Note, this type is manually registered with BObject in btkprinter.c
  * If you add any flags, update the registration as well!
  */
 typedef enum
@@ -51,11 +51,11 @@ typedef enum
 GType btk_print_capabilities_get_type (void) B_GNUC_CONST;
 
 #define BTK_TYPE_PRINTER                  (btk_printer_get_type ())
-#define BTK_PRINTER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER, BtkPrinter))
-#define BTK_PRINTER_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER, BtkPrinterClass))
-#define BTK_IS_PRINTER(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER))
-#define BTK_IS_PRINTER_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER))
-#define BTK_PRINTER_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER, BtkPrinterClass))
+#define BTK_PRINTER(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER, BtkPrinter))
+#define BTK_PRINTER_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER, BtkPrinterClass))
+#define BTK_IS_PRINTER(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER))
+#define BTK_IS_PRINTER_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER))
+#define BTK_PRINTER_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER, BtkPrinterClass))
 
 typedef struct _BtkPrinter          BtkPrinter;
 typedef struct _BtkPrinterClass     BtkPrinterClass;
@@ -66,14 +66,14 @@ struct _BtkPrintBackend;
 
 struct _BtkPrinter
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrinterPrivate *GSEAL (priv);
 };
 
 struct _BtkPrinterClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*details_acquired) (BtkPrinter *printer,
                             gboolean    success);

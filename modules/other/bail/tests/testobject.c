@@ -10,7 +10,7 @@ static void _create_event_watcher (void);
 static void _focus_handler (BatkObject *obj, gboolean focus_in);
 static gboolean _children_changed (GSignalInvocationHint *ihint,
                                    guint                  n_param_values,
-                                   const GValue          *param_values,
+                                   const BValue          *param_values,
                                    gpointer               data);
 
 static guint id;
@@ -54,10 +54,10 @@ static void _print_type (BatkObject *obj)
       BtkWidget* widget = NULL;
 
       widget = BTK_ACCESSIBLE (obj)->widget;
-      typename = g_type_name (G_OBJECT_TYPE (widget));
+      typename = g_type_name (B_OBJECT_TYPE (widget));
       g_print ("Widget type name: %s\n", typename ? typename : "NULL");
     }
-  typename = g_type_name (G_OBJECT_TYPE (obj));
+  typename = g_type_name (B_OBJECT_TYPE (obj));
   g_print ("Accessible type name: %s\n", typename ? typename : "NULL");
   name = batk_object_get_name (obj);
   g_print("Accessible Name: %s\n", (name) ? name : "NULL");
@@ -114,7 +114,7 @@ static void _print_type (BatkObject *obj)
           if (!BATK_IS_COMPONENT (parent))
             {
               /* Assume toplevel */
-              g_object_unref (G_OBJECT (states));
+              g_object_unref (B_OBJECT (states));
               return;
             }
 #if 0
@@ -129,7 +129,7 @@ static void _print_type (BatkObject *obj)
             }
 #endif
         }
-      g_object_unref (G_OBJECT (states));
+      g_object_unref (B_OBJECT (states));
     }
 }
 
@@ -157,7 +157,7 @@ static void _print_accessible (BatkObject *obj)
       widget = BTK_ACCESSIBLE (obj)->widget;
       ref_obj = batk_implementor_ref_accessible (BATK_IMPLEMENTOR (widget));
       g_assert (ref_obj == obj);
-      g_object_unref (G_OBJECT (ref_obj));
+      g_object_unref (B_OBJECT (ref_obj));
     }
   /*
    * Add a focus handler so we see focus out events as well
@@ -258,7 +258,7 @@ static void _check_children (BatkObject *obj)
           if (parent)
             _print_type (parent);
         }
-      g_object_unref (G_OBJECT (child));
+      g_object_unref (B_OBJECT (child));
                  
       if (j != i)
         g_print ("*** Inconsistency between parent and children %d %d ***\n",
@@ -270,17 +270,17 @@ static void _check_children (BatkObject *obj)
 static gboolean
 _children_changed (GSignalInvocationHint *ihint,
                    guint                  n_param_values,
-                   const GValue          *param_values,
+                   const BValue          *param_values,
                    gpointer               data)
 {
-  GObject *object;
+  BObject *object;
   guint index;
   gpointer target;
   const gchar *target_name = "NotBatkObject";
 
-  object = g_value_get_object (param_values + 0);
-  index = g_value_get_uint (param_values + 1);
-  target = g_value_get_pointer (param_values + 2);
+  object = b_value_get_object (param_values + 0);
+  index = b_value_get_uint (param_values + 1);
+  target = b_value_get_pointer (param_values + 2);
   if (G_IS_OBJECT (target))
     {
       if (BATK_IS_OBJECT (target))
@@ -288,7 +288,7 @@ _children_changed (GSignalInvocationHint *ihint,
           target_name = batk_object_get_name (target);
         }
       if (!target_name) 
-        target_name = g_type_name (G_OBJECT_TYPE (G_OBJECT (target)));
+        target_name = g_type_name (B_OBJECT_TYPE (B_OBJECT (target)));
     }
   else
     {
@@ -299,13 +299,13 @@ _children_changed (GSignalInvocationHint *ihint,
           child = batk_object_ref_accessible_child (BATK_OBJECT (object), index);
           if (child)
             {
-              target_name = g_type_name (G_OBJECT_TYPE (G_OBJECT (child)));
+              target_name = g_type_name (B_OBJECT_TYPE (B_OBJECT (child)));
               g_object_unref (child);
             }
         }
     }
   g_print ("_children_watched: %s %s %s index: %d\n", 
-           g_type_name (G_OBJECT_TYPE (object)),
+           g_type_name (B_OBJECT_TYPE (object)),
            g_quark_to_string (ihint->detail),
            target_name, index);
   return TRUE;

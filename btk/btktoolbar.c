@@ -156,14 +156,14 @@ struct _BtkToolbarPrivate
   guint         animation : 1;
 };
 
-static void       btk_toolbar_set_property         (GObject             *object,
+static void       btk_toolbar_set_property         (BObject             *object,
 						    guint                prop_id,
-						    const GValue        *value,
-						    GParamSpec          *pspec);
-static void       btk_toolbar_get_property         (GObject             *object,
+						    const BValue        *value,
+						    BParamSpec          *pspec);
+static void       btk_toolbar_get_property         (BObject             *object,
 						    guint                prop_id,
-						    GValue              *value,
-						    GParamSpec          *pspec);
+						    BValue              *value,
+						    BParamSpec          *pspec);
 static gint       btk_toolbar_expose               (BtkWidget           *widget,
 						    BdkEventExpose      *event);
 static void       btk_toolbar_realize              (BtkWidget           *widget);
@@ -185,15 +185,15 @@ static void       btk_toolbar_unmap                (BtkWidget           *widget)
 static void       btk_toolbar_set_child_property   (BtkContainer        *container,
 						    BtkWidget           *child,
 						    guint                property_id,
-						    const GValue        *value,
-						    GParamSpec          *pspec);
+						    const BValue        *value,
+						    BParamSpec          *pspec);
 static void       btk_toolbar_get_child_property   (BtkContainer        *container,
 						    BtkWidget           *child,
 						    guint                property_id,
-						    GValue              *value,
-						    GParamSpec          *pspec);
-static void       btk_toolbar_dispose              (GObject             *object);
-static void       btk_toolbar_finalize             (GObject             *object);
+						    BValue              *value,
+						    BParamSpec          *pspec);
+static void       btk_toolbar_dispose              (BObject             *object);
+static void       btk_toolbar_finalize             (BObject             *object);
 static void       btk_toolbar_show_all             (BtkWidget           *widget);
 static void       btk_toolbar_hide_all             (BtkWidget           *widget);
 static void       btk_toolbar_add                  (BtkContainer        *container,
@@ -312,7 +312,7 @@ static BtkReliefStyle  toolbar_get_relief_style             (BtkToolShell       
 static void            toolbar_rebuild_menu                 (BtkToolShell        *shell);
 
 #define BTK_TOOLBAR_GET_PRIVATE(o)  \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_TOOLBAR, BtkToolbarPrivate))
+  (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_TOOLBAR, BtkToolbarPrivate))
 
 
 G_DEFINE_TYPE_WITH_CODE (BtkToolbar, btk_toolbar, BTK_TYPE_CONTAINER,
@@ -357,12 +357,12 @@ add_ctrl_tab_bindings (BtkBindingSet    *binding_set,
 static void
 btk_toolbar_class_init (BtkToolbarClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
   BtkBindingSet *binding_set;
   
-  bobject_class = (GObjectClass *)klass;
+  bobject_class = (BObjectClass *)klass;
   widget_class = (BtkWidgetClass *)klass;
   container_class = (BtkContainerClass *)klass;
   
@@ -413,12 +413,12 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
    */
   toolbar_signals[ORIENTATION_CHANGED] =
     g_signal_new (I_("orientation-changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkToolbarClass, orientation_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__ENUM,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_ORIENTATION);
   /**
    * BtkToolbar::style-changed:
@@ -429,12 +429,12 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
    */
   toolbar_signals[STYLE_CHANGED] =
     g_signal_new (I_("style-changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkToolbarClass, style_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__ENUM,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_TOOLBAR_STYLE);
   /**
    * BtkToolbar::popup-context-menu:
@@ -456,14 +456,14 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
    */
   toolbar_signals[POPUP_CONTEXT_MENU] =
     g_signal_new (I_("popup-context-menu"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkToolbarClass, popup_context_menu),
 		  _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__INT_INT_INT,
-		  G_TYPE_BOOLEAN, 3,
-		  G_TYPE_INT, G_TYPE_INT,
-		  G_TYPE_INT);
+		  B_TYPE_BOOLEAN, 3,
+		  B_TYPE_INT, B_TYPE_INT,
+		  B_TYPE_INT);
 
   /**
    * BtkToolbar::focus-home-or-end:
@@ -477,13 +477,13 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
    */
   toolbar_signals[FOCUS_HOME_OR_END] =
     g_signal_new_class_handler (I_("focus-home-or-end"),
-                                G_OBJECT_CLASS_TYPE (klass),
+                                B_OBJECT_CLASS_TYPE (klass),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_toolbar_focus_home_or_end),
                                 NULL, NULL,
                                 _btk_marshal_BOOLEAN__BOOLEAN,
-                                G_TYPE_BOOLEAN, 1,
-                                G_TYPE_BOOLEAN);
+                                B_TYPE_BOOLEAN, 1,
+                                B_TYPE_BOOLEAN);
 
   /* properties */
   g_object_class_override_property (bobject_class,
@@ -637,16 +637,16 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
   
   btk_binding_entry_add_signal (binding_set, BDK_KP_Home, 0,
                                 "focus-home-or-end", 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_BOOLEAN, TRUE);
   btk_binding_entry_add_signal (binding_set, BDK_Home, 0,
                                 "focus-home-or-end", 1,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_BOOLEAN, TRUE);
   btk_binding_entry_add_signal (binding_set, BDK_KP_End, 0,
                                 "focus-home-or-end", 1,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_End, 0,
                                 "focus-home-or-end", 1,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_BOOLEAN, FALSE);
   
   add_ctrl_tab_bindings (binding_set, 0, BTK_DIR_TAB_FORWARD);
   add_ctrl_tab_bindings (binding_set, BDK_SHIFT_MASK, BTK_DIR_TAB_BACKWARD);
@@ -711,10 +711,10 @@ btk_toolbar_init (BtkToolbar *toolbar)
 }
 
 static void
-btk_toolbar_set_property (GObject      *object,
+btk_toolbar_set_property (BObject      *object,
 			  guint         prop_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
+			  const BValue *value,
+			  BParamSpec   *pspec)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (object);
   
@@ -722,37 +722,37 @@ btk_toolbar_set_property (GObject      *object,
     {
     case PROP_ORIENTATION:
       g_signal_emit (toolbar, toolbar_signals[ORIENTATION_CHANGED], 0,
-                     g_value_get_enum (value));
+                     b_value_get_enum (value));
       break;
     case PROP_TOOLBAR_STYLE:
-      btk_toolbar_set_style (toolbar, g_value_get_enum (value));
+      btk_toolbar_set_style (toolbar, b_value_get_enum (value));
       break;
     case PROP_SHOW_ARROW:
-      btk_toolbar_set_show_arrow (toolbar, g_value_get_boolean (value));
+      btk_toolbar_set_show_arrow (toolbar, b_value_get_boolean (value));
       break;
     case PROP_TOOLTIPS:
-      btk_toolbar_set_tooltips (toolbar, g_value_get_boolean (value));
+      btk_toolbar_set_tooltips (toolbar, b_value_get_boolean (value));
       break;
     case PROP_ICON_SIZE:
-      btk_toolbar_set_icon_size (toolbar, g_value_get_int (value));
+      btk_toolbar_set_icon_size (toolbar, b_value_get_int (value));
       break;
     case PROP_ICON_SIZE_SET:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
 	toolbar->icon_size_set = TRUE;
       else
 	btk_toolbar_unset_icon_size (toolbar);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_toolbar_get_property (GObject    *object,
+btk_toolbar_get_property (BObject    *object,
 			  guint       prop_id,
-			  GValue     *value,
-			  GParamSpec *pspec)
+			  BValue     *value,
+			  BParamSpec *pspec)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (object);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -760,25 +760,25 @@ btk_toolbar_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, toolbar->orientation);
+      b_value_set_enum (value, toolbar->orientation);
       break;
     case PROP_TOOLBAR_STYLE:
-      g_value_set_enum (value, toolbar->style);
+      b_value_set_enum (value, toolbar->style);
       break;
     case PROP_SHOW_ARROW:
-      g_value_set_boolean (value, priv->show_arrow);
+      b_value_set_boolean (value, priv->show_arrow);
       break;
     case PROP_TOOLTIPS:
-      g_value_set_boolean (value, btk_toolbar_get_tooltips (toolbar));
+      b_value_set_boolean (value, btk_toolbar_get_tooltips (toolbar));
       break;
     case PROP_ICON_SIZE:
-      g_value_set_int (value, btk_toolbar_get_icon_size (toolbar));
+      b_value_set_int (value, btk_toolbar_get_icon_size (toolbar));
       break;
     case PROP_ICON_SIZE_SET:
-      g_value_set_boolean (value, toolbar->icon_size_set);
+      b_value_set_boolean (value, toolbar->icon_size_set);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -2039,7 +2039,7 @@ animation_change_notify (BtkToolbar *toolbar)
 
 static void
 settings_change_notify (BtkSettings      *settings,
-                        const GParamSpec *pspec,
+                        const BParamSpec *pspec,
                         BtkToolbar       *toolbar)
 {
   if (! strcmp (pspec->name, "btk-toolbar-style"))
@@ -2386,19 +2386,19 @@ static void
 btk_toolbar_get_child_property (BtkContainer *container,
 				BtkWidget    *child,
 				guint         property_id,
-				GValue       *value,
-				GParamSpec   *pspec)
+				BValue       *value,
+				BParamSpec   *pspec)
 {
   BtkToolItem *item = BTK_TOOL_ITEM (child);
   
   switch (property_id)
     {
     case CHILD_PROP_HOMOGENEOUS:
-      g_value_set_boolean (value, btk_tool_item_get_homogeneous (item));
+      b_value_set_boolean (value, btk_tool_item_get_homogeneous (item));
       break;
       
     case CHILD_PROP_EXPAND:
-      g_value_set_boolean (value, btk_tool_item_get_expand (item));
+      b_value_set_boolean (value, btk_tool_item_get_expand (item));
       break;
       
     default:
@@ -2411,17 +2411,17 @@ static void
 btk_toolbar_set_child_property (BtkContainer *container,
 				BtkWidget    *child,
 				guint         property_id,
-				const GValue *value,
-				GParamSpec   *pspec)
+				const BValue *value,
+				BParamSpec   *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_HOMOGENEOUS:
-      btk_tool_item_set_homogeneous (BTK_TOOL_ITEM (child), g_value_get_boolean (value));
+      btk_tool_item_set_homogeneous (BTK_TOOL_ITEM (child), b_value_get_boolean (value));
       break;
       
     case CHILD_PROP_EXPAND:
-      btk_tool_item_set_expand (BTK_TOOL_ITEM (child), g_value_get_boolean (value));
+      btk_tool_item_set_expand (BTK_TOOL_ITEM (child), b_value_get_boolean (value));
       break;
       
     default:
@@ -2577,7 +2577,7 @@ btk_toolbar_orientation_changed (BtkToolbar    *toolbar,
       btk_toolbar_reconfigured (toolbar);
       
       btk_widget_queue_resize (BTK_WIDGET (toolbar));
-      g_object_notify (G_OBJECT (toolbar), "orientation");
+      g_object_notify (B_OBJECT (toolbar), "orientation");
     }
 }
 
@@ -2592,7 +2592,7 @@ btk_toolbar_real_style_changed (BtkToolbar     *toolbar,
       btk_toolbar_reconfigured (toolbar);
       
       btk_widget_queue_resize (BTK_WIDGET (toolbar));
-      g_object_notify (G_OBJECT (toolbar), "toolbar-style");
+      g_object_notify (B_OBJECT (toolbar), "toolbar-style");
     }
 }
 
@@ -2944,7 +2944,7 @@ btk_toolbar_set_tooltips (BtkToolbar *toolbar,
   else
     btk_tooltips_disable (toolbar->tooltips);
 
-  g_object_notify (G_OBJECT (toolbar), "tooltips");
+  g_object_notify (B_OBJECT (toolbar), "tooltips");
 }
 
 /**
@@ -3102,7 +3102,7 @@ btk_toolbar_set_show_arrow (BtkToolbar *toolbar,
 	btk_widget_hide (priv->arrow_button);
       
       btk_widget_queue_resize (BTK_WIDGET (toolbar));      
-      g_object_notify (G_OBJECT (toolbar), "show-arrow");
+      g_object_notify (B_OBJECT (toolbar), "show-arrow");
     }
 }
 
@@ -3163,7 +3163,7 @@ btk_toolbar_get_drop_index (BtkToolbar *toolbar,
 }
 
 static void
-btk_toolbar_dispose (GObject *object)
+btk_toolbar_dispose (BObject *object)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (object);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -3177,11 +3177,11 @@ btk_toolbar_dispose (GObject *object)
   if (priv->menu)
     btk_widget_destroy (BTK_WIDGET (priv->menu));
 
-  G_OBJECT_CLASS (btk_toolbar_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_toolbar_parent_class)->dispose (object);
 }
 
 static void
-btk_toolbar_finalize (GObject *object)
+btk_toolbar_finalize (BObject *object)
 {
   GList *list;
   BtkToolbar *toolbar = BTK_TOOLBAR (object);
@@ -3205,7 +3205,7 @@ btk_toolbar_finalize (GObject *object)
   if (priv->idle_id)
     g_source_remove (priv->idle_id);
 
-  G_OBJECT_CLASS (btk_toolbar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_toolbar_parent_class)->finalize (object);
 }
 
 /**
@@ -3233,14 +3233,14 @@ btk_toolbar_set_icon_size (BtkToolbar  *toolbar,
   if (!toolbar->icon_size_set)
     {
       toolbar->icon_size_set = TRUE;  
-      g_object_notify (G_OBJECT (toolbar), "icon-size-set");
+      g_object_notify (B_OBJECT (toolbar), "icon-size-set");
     }
 
   if (toolbar->icon_size == icon_size)
     return;
   
   toolbar->icon_size = icon_size;
-  g_object_notify (G_OBJECT (toolbar), "icon-size");
+  g_object_notify (B_OBJECT (toolbar), "icon-size");
   
   btk_toolbar_reconfigured (toolbar);
   
@@ -3277,11 +3277,11 @@ btk_toolbar_unset_icon_size (BtkToolbar *toolbar)
       if (size != toolbar->icon_size)
 	{
 	  btk_toolbar_set_icon_size (toolbar, size);
-	  g_object_notify (G_OBJECT (toolbar), "icon-size");	  
+	  g_object_notify (B_OBJECT (toolbar), "icon-size");	  
 	}
       
       toolbar->icon_size_set = FALSE;
-      g_object_notify (G_OBJECT (toolbar), "icon-size-set");      
+      g_object_notify (B_OBJECT (toolbar), "icon-size-set");      
     }
 }
 

@@ -140,7 +140,7 @@ static gint         bdk_x11_get_depth      (BdkDrawable    *drawable);
 static BdkScreen *  bdk_x11_get_screen	   (BdkDrawable    *drawable);
 static BdkVisual*   bdk_x11_get_visual     (BdkDrawable    *drawable);
 
-static void bdk_drawable_impl_x11_finalize   (GObject *object);
+static void bdk_drawable_impl_x11_finalize   (BObject *object);
 
 static const bairo_user_data_key_t bdk_x11_bairo_key;
 
@@ -150,7 +150,7 @@ static void
 _bdk_drawable_impl_x11_class_init (BdkDrawableImplX11Class *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->finalize = bdk_drawable_impl_x11_finalize;
   
@@ -185,11 +185,11 @@ _bdk_drawable_impl_x11_init (BdkDrawableImplX11 *impl)
 }
 
 static void
-bdk_drawable_impl_x11_finalize (GObject *object)
+bdk_drawable_impl_x11_finalize (BObject *object)
 {
   bdk_drawable_set_colormap (BDK_DRAWABLE (object), NULL);
 
-  G_OBJECT_CLASS (_bdk_drawable_impl_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_drawable_impl_x11_parent_class)->finalize (object);
 }
 
 /**
@@ -1378,7 +1378,7 @@ get_shm_pixmap_for_image (Display           *xdisplay,
   if (image->type != BDK_IMAGE_SHARED)
     return FALSE;
   
-  info = g_object_get_data (G_OBJECT (image), "bdk-x11-shm-pixmap");
+  info = g_object_get_data (B_OBJECT (image), "bdk-x11-shm-pixmap");
   if (!info)
     {
       *pix = _bdk_x11_image_get_shm_pixmap (image);
@@ -1398,7 +1398,7 @@ get_shm_pixmap_for_image (Display           *xdisplay,
       else
 	info->mask = None;
 
-      g_object_set_data_full (G_OBJECT (image), "bdk-x11-shm-pixmap", info,
+      g_object_set_data_full (B_OBJECT (image), "bdk-x11-shm-pixmap", info,
 	  shm_pixmap_info_destroy);
     }
 

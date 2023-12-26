@@ -32,11 +32,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_IM_CONTEXT              (btk_im_context_get_type ())
-#define BTK_IM_CONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT, BtkIMContext))
-#define BTK_IM_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT, BtkIMContextClass))
-#define BTK_IS_IM_CONTEXT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT))
-#define BTK_IS_IM_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT))
-#define BTK_IM_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT, BtkIMContextClass))
+#define BTK_IM_CONTEXT(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT, BtkIMContext))
+#define BTK_IM_CONTEXT_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT, BtkIMContextClass))
+#define BTK_IS_IM_CONTEXT(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT))
+#define BTK_IS_IM_CONTEXT_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT))
+#define BTK_IM_CONTEXT_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT, BtkIMContextClass))
 
 
 typedef struct _BtkIMContext       BtkIMContext;
@@ -44,13 +44,13 @@ typedef struct _BtkIMContextClass  BtkIMContextClass;
 
 struct _BtkIMContext
 {
-  GObject parent_instance;
+  BObject parent_instance;
 };
 
 struct _BtkIMContextClass
 {
   /*< private >*/
-  /* Yes, this should be GObjectClass, be we can't fix it without breaking
+  /* Yes, this should be BObjectClass, be we can't fix it without breaking
    * binary compatibility - see bug #90935
    */
   BtkObjectClass parent_class;

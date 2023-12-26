@@ -459,7 +459,7 @@
 </tr>
 <tr>
 <td class="signal_type">
-<span class="returnvalue">GObject</span>*</td>
+<span class="returnvalue">BObject</span>*</td>
 <td class="signal_name"><a class="link" href="btk2-High-level-Printing-API.html#BtkPrintOperation-create-custom-widget" title="The “create-custom-widget” signal">create-custom-widget</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -564,7 +564,7 @@
 <a name="btk2-High-level-Printing-API.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="screen">    <a href="/usr/share/btk-doc/html/bobject/GTypeModule.html">GInterface</a>
     <span class="lineart">╰──</span> BtkPrintOperationPreview
-    GObject
+    BObject
     <span class="lineart">╰──</span> BtkPrintOperation
 </pre>
 </div>
@@ -572,7 +572,7 @@
 <a name="btk2-High-level-Printing-API.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 BtkPrintOperationPreview requires
- GObject.</p>
+ BObject.</p>
 </div>
 <div class="refsect1">
 <a name="btk2-High-level-Printing-API.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
@@ -2392,7 +2392,7 @@ set the number of pages with <a class="link" href="btk2-High-level-Printing-API.
 <hr>
 <div class="refsect2">
 <a name="BtkPrintOperation-create-custom-widget"></a><h3>The <code class="literal">“create-custom-widget”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">GObject</span>*
+<pre class="programlisting"><span class="returnvalue">BObject</span>*
 user_function (<a class="link" href="btk2-High-level-Printing-API.html#BtkPrintOperation"><span class="type">BtkPrintOperation</span></a> *operation,
                <span class="type">gpointer</span>           user_data)</pre>
 <p>Emitted when displaying the print dialog. If you return a

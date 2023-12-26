@@ -87,12 +87,12 @@ create_model (void)
 
   /* create list store */
   store = btk_list_store_new (NUM_COLUMNS,
-                              G_TYPE_BOOLEAN,
-                              G_TYPE_UINT,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_UINT,
-                              G_TYPE_BOOLEAN);
+                              B_TYPE_BOOLEAN,
+                              B_TYPE_UINT,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_UINT,
+                              B_TYPE_BOOLEAN);
 
   /* add data to the list store */
   for (i = 0; i < G_N_ELEMENTS (data); i++)

@@ -26,19 +26,19 @@ static void _display_header_info(gchar *type,
   BatkObject *header_obj, gint header_num);
 static void _process_child(BatkObject *child_obj);
 
-static void _notify_table_row_inserted (GObject *obj,
+static void _notify_table_row_inserted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_column_inserted (GObject *obj,
+static void _notify_table_column_inserted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_row_deleted (GObject *obj,
+static void _notify_table_row_deleted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_column_deleted (GObject *obj,
+static void _notify_table_column_deleted (BObject *obj,
   gint start_offset, gint length);
-static void _notify_table_row_reordered (GObject *obj);
-static void _notify_table_column_reordered (GObject *obj);
-static void _notify_table_child_added (GObject *obj,
+static void _notify_table_row_reordered (BObject *obj);
+static void _notify_table_column_reordered (BObject *obj);
+static void _notify_table_child_added (BObject *obj,
   gint index, BatkObject *child);
-static void _notify_table_child_removed (GObject *obj,
+static void _notify_table_child_removed (BObject *obj,
   gint index, BatkObject *child);
 static void _property_signal_connect (BatkObject	*obj);
 static void _property_change_handler (BatkObject	*obj,
@@ -134,7 +134,7 @@ static void _check_table (BatkObject *in_obj)
       g_print("Found BailCList in child!\n");
     else
     {
-      g_print("No object found %s\n", g_type_name (G_OBJECT_TYPE (in_obj)));
+      g_print("No object found %s\n", g_type_name (B_OBJECT_TYPE (in_obj)));
       return;
     }
   }
@@ -147,37 +147,37 @@ static void _check_table (BatkObject *in_obj)
 
     g_print ("Adding signal handler\n");
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_inserted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_inserted", B_OBJECT_TYPE (obj)),
 		0,
 		g_cclosure_new (G_CALLBACK (_notify_table_column_inserted),
 		NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_inserted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_inserted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_inserted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_deleted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_deleted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_column_deleted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_deleted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_deleted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_deleted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_reordered", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_reordered", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_column_reordered),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_reordered", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_reordered", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_reordered),
 			NULL, NULL),
@@ -547,52 +547,52 @@ btk_module_init(gint argc, char* argv[])
 }
 
 static void
-_notify_table_row_inserted (GObject *obj, gint start_offset, gint length)
+_notify_table_row_inserted (BObject *obj, gint start_offset, gint length)
 {
   g_print ("SIGNAL - Row inserted at position %d, num of rows inserted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_column_inserted (GObject *obj, gint start_offset, gint length)
+_notify_table_column_inserted (BObject *obj, gint start_offset, gint length)
 {
   g_print ("SIGNAL - Column inserted at position %d, num of columns inserted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_row_deleted (GObject *obj, gint start_offset, gint length)
+_notify_table_row_deleted (BObject *obj, gint start_offset, gint length)
 {
   g_print ("SIGNAL - Row deleted at position %d, num of rows deleted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_column_deleted (GObject *obj, gint start_offset, gint length)
+_notify_table_column_deleted (BObject *obj, gint start_offset, gint length)
 {
   g_print ("SIGNAL - Column deleted at position %d, num of columns deleted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_row_reordered (GObject *obj)
+_notify_table_row_reordered (BObject *obj)
 {
   g_print ("SIGNAL - Row reordered!\n");
 }
 
 static void
-_notify_table_column_reordered (GObject *obj)
+_notify_table_column_reordered (BObject *obj)
 {
   g_print ("SIGNAL - Column reordered!\n");
 }
 
-static void _notify_table_child_added (GObject *obj,
+static void _notify_table_child_added (BObject *obj,
   gint index, BatkObject *child)
 {
    g_print ("SIGNAL - Child added - index %d\n", index);
 }
 
-static void _notify_table_child_removed (GObject *obj,
+static void _notify_table_child_removed (BObject *obj,
   gint index, BatkObject *child)
 {
    g_print ("SIGNAL - Child removed - index %d\n", index);
@@ -647,7 +647,7 @@ static void _property_signal_connect (BatkObject *obj)
   if (g_properties && obj != NULL)
   {
     g_signal_connect_closure_by_id (obj,
-    g_signal_lookup ("property_change", G_OBJECT_TYPE (obj)),
+    g_signal_lookup ("property_change", B_OBJECT_TYPE (obj)),
       0,
       g_cclosure_new (G_CALLBACK (_property_change_handler),
       NULL, NULL),
@@ -671,7 +671,7 @@ _property_change_handler (BatkObject         *obj,
               batk_table_get_row_at_index(g_table, index),
               batk_table_get_column_at_index(g_table, index));
     else
-      g_print ("index: %d for %s\n", index, g_type_name (G_OBJECT_TYPE (obj)));
+      g_print ("index: %d for %s\n", index, g_type_name (B_OBJECT_TYPE (obj)));
   }
 
   if (BATK_IS_TEXT(obj))
@@ -693,11 +693,11 @@ _property_change_handler (BatkObject         *obj,
 
     switch (old_type)
     {
-    case G_TYPE_INT:
-      g_print("value was <%d>\n", g_value_get_int (&values->old_value));
+    case B_TYPE_INT:
+      g_print("value was <%d>\n", b_value_get_int (&values->old_value));
       break;
-    case G_TYPE_STRING:
-      name = g_value_get_string (&values->old_value);
+    case B_TYPE_STRING:
+      name = b_value_get_string (&values->old_value);
       if (name != NULL)
         g_print ("value was <%s>\n", name);
       else
@@ -719,11 +719,11 @@ _property_change_handler (BatkObject         *obj,
 
     switch (new_type)
     {
-    case G_TYPE_INT:
-      g_print("value is <%d>\n", g_value_get_int (&values->new_value));
+    case B_TYPE_INT:
+      g_print("value is <%d>\n", b_value_get_int (&values->new_value));
       break;
-    case G_TYPE_STRING:
-      name = g_value_get_string (&values->new_value);
+    case B_TYPE_STRING:
+      name = b_value_get_string (&values->new_value);
       if (name != NULL)
         g_print ("value is <%s>\n", name);
       else

@@ -33,11 +33,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_ORIENTABLE             (btk_orientable_get_type ())
-#define BTK_ORIENTABLE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ORIENTABLE, BtkOrientable))
-#define BTK_ORIENTABLE_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_ORIENTABLE, BtkOrientableIface))
-#define BTK_IS_ORIENTABLE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ORIENTABLE))
-#define BTK_IS_ORIENTABLE_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_ORIENTABLE))
-#define BTK_ORIENTABLE_GET_IFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_ORIENTABLE, BtkOrientableIface))
+#define BTK_ORIENTABLE(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ORIENTABLE, BtkOrientable))
+#define BTK_ORIENTABLE_CLASS(vtable)    (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_ORIENTABLE, BtkOrientableIface))
+#define BTK_IS_ORIENTABLE(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ORIENTABLE))
+#define BTK_IS_ORIENTABLE_CLASS(vtable) (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_ORIENTABLE))
+#define BTK_ORIENTABLE_GET_IFACE(inst)  (B_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_ORIENTABLE, BtkOrientableIface))
 
 
 typedef struct _BtkOrientable       BtkOrientable;         /* Dummy typedef */

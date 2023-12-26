@@ -41,8 +41,8 @@ typedef struct _BeagleQueryPartProperty BeagleQueryPartProperty;
 typedef struct _BeagleQueryPart BeagleQueryPart;
 
 #define BEAGLE_HIT(x) ((BeagleHit *)(x))
-#define BEAGLE_REQUEST(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_request_get_type(), BeagleRequest))
-#define BEAGLE_QUERY_PART(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_query_part_get_type(), BeagleQueryPart))
+#define BEAGLE_REQUEST(obj) (B_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_request_get_type(), BeagleRequest))
+#define BEAGLE_QUERY_PART(obj) (B_TYPE_CHECK_INSTANCE_CAST ((obj), beagle_query_part_get_type(), BeagleQueryPart))
 
 typedef enum 
 {
@@ -166,7 +166,7 @@ struct _BtkSearchEngineBeaglePrivate
 G_DEFINE_TYPE (BtkSearchEngineBeagle, _btk_search_engine_beagle, BTK_TYPE_SEARCH_ENGINE);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
   BtkSearchEngineBeagle *beagle;
   
@@ -192,7 +192,7 @@ finalize (GObject *object)
       beagle->priv->client = NULL;
     }
 
-  G_OBJECT_CLASS (_btk_search_engine_beagle_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_search_engine_beagle_parent_class)->finalize (object);
 }
 
 static void
@@ -361,10 +361,10 @@ btk_search_engine_beagle_set_query (BtkSearchEngine *engine,
 static void
 _btk_search_engine_beagle_class_init (BtkSearchEngineBeagleClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkSearchEngineClass *engine_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
   
   engine_class = BTK_SEARCH_ENGINE_CLASS (class);
@@ -379,7 +379,7 @@ _btk_search_engine_beagle_class_init (BtkSearchEngineBeagleClass *class)
 static void
 _btk_search_engine_beagle_init (BtkSearchEngineBeagle *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeaglePrivate);
+  engine->priv = B_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeaglePrivate);
 }
 
 

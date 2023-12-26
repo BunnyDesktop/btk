@@ -86,7 +86,7 @@ bdk_device_get_type (void)
 	  (GInstanceInitFunc) NULL,
 	};
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             g_intern_static_string ("BdkDevice"),
                                             &object_info, 0);
     }

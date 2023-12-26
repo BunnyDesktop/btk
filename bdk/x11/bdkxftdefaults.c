@@ -215,7 +215,7 @@ init_xft_settings (BdkScreen *screen)
 gboolean
 _bdk_x11_get_xft_setting (BdkScreen   *screen,
 			  const gchar *name,
-			  GValue      *value)
+			  BValue      *value)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   
@@ -228,12 +228,12 @@ _bdk_x11_get_xft_setting (BdkScreen   *screen,
 
   if (strcmp (name, "antialias") == 0)
     {
-      g_value_set_int (value, screen_x11->xft_antialias);
+      b_value_set_int (value, screen_x11->xft_antialias);
       return TRUE;
     }
   else if (strcmp (name, "hinting") == 0)
     {
-      g_value_set_int (value, screen_x11->xft_hinting);
+      b_value_set_int (value, screen_x11->xft_hinting);
       return TRUE;
     }
   else if (strcmp (name, "hintstyle") == 0)
@@ -258,7 +258,7 @@ _bdk_x11_get_xft_setting (BdkScreen   *screen,
 	  return FALSE;
 	}
 
-      g_value_set_string (value, str);
+      b_value_set_string (value, str);
       return TRUE;
     }
   else if (strcmp (name, "rgba") == 0)
@@ -287,12 +287,12 @@ _bdk_x11_get_xft_setting (BdkScreen   *screen,
 	  return FALSE;
 	}
 	
-      g_value_set_string (value, str);
+      b_value_set_string (value, str);
       return TRUE; 
    }
   else if (strcmp (name, "dpi") == 0)
     {
-      g_value_set_int (value, screen_x11->xft_dpi);
+      b_value_set_int (value, screen_x11->xft_dpi);
       return TRUE;
     }
 

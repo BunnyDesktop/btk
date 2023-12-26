@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define	BTK_TYPE_MENU_SHELL		(btk_menu_shell_get_type ())
-#define BTK_MENU_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShell))
-#define BTK_MENU_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU_SHELL, BtkMenuShellClass))
-#define BTK_IS_MENU_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU_SHELL))
-#define BTK_IS_MENU_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU_SHELL))
-#define BTK_MENU_SHELL_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShellClass))
+#define BTK_MENU_SHELL(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShell))
+#define BTK_MENU_SHELL_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU_SHELL, BtkMenuShellClass))
+#define BTK_IS_MENU_SHELL(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU_SHELL))
+#define BTK_IS_MENU_SHELL_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU_SHELL))
+#define BTK_MENU_SHELL_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShellClass))
 
 
 typedef struct _BtkMenuShell	   BtkMenuShell;

@@ -70,11 +70,11 @@ typedef struct _BtkTextTagTable BtkTextTagTable;
 typedef struct _BtkTextAttributes BtkTextAttributes;
 
 #define BTK_TYPE_TEXT_TAG            (btk_text_tag_get_type ())
-#define BTK_TEXT_TAG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG, BtkTextTag))
-#define BTK_TEXT_TAG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
-#define BTK_IS_TEXT_TAG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG))
-#define BTK_IS_TEXT_TAG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG))
-#define BTK_TEXT_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
+#define BTK_TEXT_TAG(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG, BtkTextTag))
+#define BTK_TEXT_TAG_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
+#define BTK_IS_TEXT_TAG(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG))
+#define BTK_IS_TEXT_TAG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG))
+#define BTK_TEXT_TAG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
 
 #define BTK_TYPE_TEXT_ATTRIBUTES     (btk_text_attributes_get_type ())
 
@@ -83,7 +83,7 @@ typedef struct _BtkTextTagClass BtkTextTagClass;
 
 struct _BtkTextTag
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkTextTagTable *GSEAL (table);
 
@@ -139,10 +139,10 @@ struct _BtkTextTag
 
 struct _BtkTextTagClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   gboolean (* event) (BtkTextTag        *tag,
-                      GObject           *event_object, /* widget, canvas item, whatever */
+                      BObject           *event_object, /* widget, canvas item, whatever */
                       BdkEvent          *event,        /* the event itself */
                       const BtkTextIter *iter);        /* location of event in buffer */
 
@@ -159,7 +159,7 @@ gint         btk_text_tag_get_priority (BtkTextTag        *tag);
 void         btk_text_tag_set_priority (BtkTextTag        *tag,
                                         gint               priority);
 gboolean     btk_text_tag_event        (BtkTextTag        *tag,
-                                        GObject           *event_object,
+                                        BObject           *event_object,
                                         BdkEvent          *event,
                                         const BtkTextIter *iter);
 

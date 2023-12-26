@@ -56,10 +56,10 @@ G_DEFINE_ABSTRACT_TYPE (BtkItem, btk_item, BTK_TYPE_BIN)
 static void
 btk_item_class_init (BtkItemClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
   widget_class->realize = btk_item_realize;
@@ -72,28 +72,28 @@ btk_item_class_init (BtkItemClass *class)
 
   item_signals[SELECT] =
     g_signal_new (I_("select"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, select),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   item_signals[DESELECT] =
     g_signal_new (I_("deselect"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, deselect),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   item_signals[TOGGLE] =
     g_signal_new (I_("toggle"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, toggle),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   widget_class->activate_signal = item_signals[TOGGLE];
 }
 

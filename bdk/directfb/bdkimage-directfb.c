@@ -49,9 +49,9 @@ static gpointer  parent_class = NULL;
 static void bdk_directfb_image_destroy (BdkImage      *image);
 static void bdk_image_init             (BdkImage      *image);
 static void bdk_image_class_init       (BdkImageClass *klass);
-static void bdk_image_finalize         (GObject       *object);
+static void bdk_image_finalize         (BObject       *object);
 
-G_DEFINE_TYPE (BdkImage, bdk_image, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkImage, bdk_image, B_TYPE_OBJECT)
 
 static void
 bdk_image_init (BdkImage *image)
@@ -65,7 +65,7 @@ bdk_image_init (BdkImage *image)
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -73,7 +73,7 @@ bdk_image_class_init (BdkImageClass *klass)
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image;
 
@@ -86,8 +86,8 @@ bdk_image_finalize (GObject *object)
 
   bdk_directfb_image_destroy (image);
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -95,7 +95,7 @@ bdk_image_finalize (GObject *object)
 void
 _bdk_image_exit (void)
 {
-  GObject *image;
+  BObject *image;
 
   while (image_list)
     {

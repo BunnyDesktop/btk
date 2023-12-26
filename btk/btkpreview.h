@@ -35,11 +35,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PREVIEW            (btk_preview_get_type ())
-#define BTK_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PREVIEW, BtkPreview))
-#define BTK_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PREVIEW, BtkPreviewClass))
-#define BTK_IS_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PREVIEW))
-#define BTK_IS_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PREVIEW))
-#define BTK_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PREVIEW, BtkPreviewClass))
+#define BTK_PREVIEW(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PREVIEW, BtkPreview))
+#define BTK_PREVIEW_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PREVIEW, BtkPreviewClass))
+#define BTK_IS_PREVIEW(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PREVIEW))
+#define BTK_IS_PREVIEW_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PREVIEW))
+#define BTK_PREVIEW_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PREVIEW, BtkPreviewClass))
 
 
 typedef struct _BtkPreview       BtkPreview;

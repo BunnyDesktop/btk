@@ -104,7 +104,7 @@
  *
  *     btk_container_add (BTK_CONTAINER (event_box), image);
  *
- *     g_signal_connect (G_OBJECT (event_box),
+ *     g_signal_connect (B_OBJECT (event_box),
  *                       "button_press_event",
  *                       G_CALLBACK (button_press_callback),
  *                       image);
@@ -140,7 +140,7 @@ struct _BtkImagePrivate
   guint need_calc_size : 1;
 };
 
-#define BTK_IMAGE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_IMAGE, BtkImagePrivate))
+#define BTK_IMAGE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_IMAGE, BtkImagePrivate))
 
 
 #define DEFAULT_ICON_SIZE BTK_ICON_SIZE_BUTTON
@@ -162,14 +162,14 @@ static void btk_image_update_size  (BtkImage       *image,
                                     gint            image_width,
                                     gint            image_height);
 
-static void btk_image_set_property      (GObject          *object,
+static void btk_image_set_property      (BObject          *object,
 					 guint             prop_id,
-					 const GValue     *value,
-					 GParamSpec       *pspec);
-static void btk_image_get_property      (GObject          *object,
+					 const BValue     *value,
+					 BParamSpec       *pspec);
+static void btk_image_get_property      (BObject          *object,
 					 guint             prop_id,
-					 GValue           *value,
-					 GParamSpec       *pspec);
+					 BValue           *value,
+					 BParamSpec       *pspec);
 
 static void icon_theme_changed          (BtkImage         *image);
 
@@ -196,11 +196,11 @@ G_DEFINE_TYPE (BtkImage, btk_image, BTK_TYPE_MISC)
 static void
 btk_image_class_init (BtkImageClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   
   bobject_class->set_property = btk_image_set_property;
   bobject_class->get_property = btk_image_get_property;
@@ -339,7 +339,7 @@ btk_image_class_init (BtkImageClass *class)
                                    g_param_spec_object ("gicon",
                                                         P_("Icon"),
                                                         P_("The GIcon being displayed"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
   
   g_object_class_install_property (bobject_class,
@@ -381,10 +381,10 @@ btk_image_destroy (BtkObject *object)
 }
 
 static void 
-btk_image_set_property (GObject      *object,
+btk_image_set_property (BObject      *object,
 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkImage *image;
 
@@ -394,32 +394,32 @@ btk_image_set_property (GObject      *object,
     {
     case PROP_PIXBUF:
       btk_image_set_from_pixbuf (image,
-                                 g_value_get_object (value));
+                                 b_value_get_object (value));
       break;
     case PROP_PIXMAP:
       btk_image_set_from_pixmap (image,
-                                 g_value_get_object (value),
+                                 b_value_get_object (value),
                                  image->mask);
       break;
     case PROP_IMAGE:
       btk_image_set_from_image (image,
-                                g_value_get_object (value),
+                                b_value_get_object (value),
                                 image->mask);
       break;
     case PROP_MASK:
       if (image->storage_type == BTK_IMAGE_PIXMAP)
         btk_image_set_from_pixmap (image,
                                    image->data.pixmap.pixmap,
-                                   g_value_get_object (value));
+                                   b_value_get_object (value));
       else if (image->storage_type == BTK_IMAGE_IMAGE)
         btk_image_set_from_image (image,
                                   image->data.image.image,
-                                  g_value_get_object (value));
+                                  b_value_get_object (value));
       else
         {
           BdkBitmap *mask;
 
-          mask = g_value_get_object (value);
+          mask = b_value_get_object (value);
 
           if (mask)
             g_object_ref (mask);
@@ -430,64 +430,64 @@ btk_image_set_property (GObject      *object,
         }
       break;
     case PROP_FILE:
-      btk_image_set_from_file (image, g_value_get_string (value));
+      btk_image_set_from_file (image, b_value_get_string (value));
       break;
     case PROP_STOCK:
-      btk_image_set_from_stock (image, g_value_get_string (value),
+      btk_image_set_from_stock (image, b_value_get_string (value),
                                 image->icon_size);
       break;
     case PROP_ICON_SET:
-      btk_image_set_from_icon_set (image, g_value_get_boxed (value),
+      btk_image_set_from_icon_set (image, b_value_get_boxed (value),
                                    image->icon_size);
       break;
     case PROP_ICON_SIZE:
       if (image->storage_type == BTK_IMAGE_STOCK)
         btk_image_set_from_stock (image,
                                   image->data.stock.stock_id,
-                                  g_value_get_int (value));
+                                  b_value_get_int (value));
       else if (image->storage_type == BTK_IMAGE_ICON_SET)
         btk_image_set_from_icon_set (image,
                                      image->data.icon_set.icon_set,
-                                     g_value_get_int (value));
+                                     b_value_get_int (value));
       else if (image->storage_type == BTK_IMAGE_ICON_NAME)
         btk_image_set_from_icon_name (image,
 				      image->data.name.icon_name,
-				      g_value_get_int (value));
+				      b_value_get_int (value));
       else if (image->storage_type == BTK_IMAGE_GICON)
         btk_image_set_from_gicon (image,
                                   image->data.gicon.icon,
-                                  g_value_get_int (value));
+                                  b_value_get_int (value));
       else
         /* Save to be used when STOCK, ICON_SET, ICON_NAME or GICON property comes in */
-        image->icon_size = g_value_get_int (value);
+        image->icon_size = b_value_get_int (value);
       break;
     case PROP_PIXEL_SIZE:
-      btk_image_set_pixel_size (image, g_value_get_int (value));
+      btk_image_set_pixel_size (image, b_value_get_int (value));
       break;
     case PROP_PIXBUF_ANIMATION:
       btk_image_set_from_animation (image,
-                                    g_value_get_object (value));
+                                    b_value_get_object (value));
       break;
     case PROP_ICON_NAME:
-      btk_image_set_from_icon_name (image, g_value_get_string (value),
+      btk_image_set_from_icon_name (image, b_value_get_string (value),
 				    image->icon_size);
       break;
     case PROP_GICON:
-      btk_image_set_from_gicon (image, g_value_get_object (value),
+      btk_image_set_from_gicon (image, b_value_get_object (value),
 				image->icon_size);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_image_get_property (GObject     *object,
+btk_image_get_property (BObject     *object,
 			guint        prop_id,
-			GValue      *value,
-			GParamSpec  *pspec)
+			BValue      *value,
+			BParamSpec  *pspec)
 {
   BtkImage *image;
   BtkImagePrivate *priv;
@@ -505,78 +505,78 @@ btk_image_get_property (GObject     *object,
     {
     case PROP_PIXBUF:
       if (image->storage_type != BTK_IMAGE_PIXBUF)
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       else
-        g_value_set_object (value,
+        b_value_set_object (value,
                             btk_image_get_pixbuf (image));
       break;
     case PROP_PIXMAP:
       if (image->storage_type != BTK_IMAGE_PIXMAP)
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       else
-        g_value_set_object (value,
+        b_value_set_object (value,
                             image->data.pixmap.pixmap);
       break;
     case PROP_MASK:
-      g_value_set_object (value, image->mask);
+      b_value_set_object (value, image->mask);
       break;
     case PROP_IMAGE:
       if (image->storage_type != BTK_IMAGE_IMAGE)
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       else
-        g_value_set_object (value,
+        b_value_set_object (value,
                             image->data.image.image);
       break;
     case PROP_FILE:
-      g_value_set_string (value, priv->filename);
+      b_value_set_string (value, priv->filename);
       break;
     case PROP_STOCK:
       if (image->storage_type != BTK_IMAGE_STOCK)
-        g_value_set_string (value, NULL);
+        b_value_set_string (value, NULL);
       else
-        g_value_set_string (value,
+        b_value_set_string (value,
                             image->data.stock.stock_id);
       break;
     case PROP_ICON_SET:
       if (image->storage_type != BTK_IMAGE_ICON_SET)
-        g_value_set_boxed (value, NULL);
+        b_value_set_boxed (value, NULL);
       else
-        g_value_set_boxed (value,
+        b_value_set_boxed (value,
                            image->data.icon_set.icon_set);
       break;      
     case PROP_ICON_SIZE:
-      g_value_set_int (value, image->icon_size);
+      b_value_set_int (value, image->icon_size);
       break;
     case PROP_PIXEL_SIZE:
-      g_value_set_int (value, priv->pixel_size);
+      b_value_set_int (value, priv->pixel_size);
       break;
     case PROP_PIXBUF_ANIMATION:
       if (image->storage_type != BTK_IMAGE_ANIMATION)
-        g_value_set_object (value, NULL);
+        b_value_set_object (value, NULL);
       else
-        g_value_set_object (value,
+        b_value_set_object (value,
                             image->data.anim.anim);
       break;
     case PROP_ICON_NAME:
       if (image->storage_type != BTK_IMAGE_ICON_NAME)
-	g_value_set_string (value, NULL);
+	b_value_set_string (value, NULL);
       else
-	g_value_set_string (value,
+	b_value_set_string (value,
 			    image->data.name.icon_name);
       break;
     case PROP_GICON:
       if (image->storage_type != BTK_IMAGE_GICON)
-	g_value_set_object (value, NULL);
+	b_value_set_object (value, NULL);
       else
-	g_value_set_object (value,
+	b_value_set_object (value,
 			    image->data.gicon.icon);
       break;
     case PROP_STORAGE_TYPE:
-      g_value_set_enum (value, image->storage_type);
+      b_value_set_enum (value, image->storage_type);
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -858,7 +858,7 @@ btk_image_set_from_pixmap (BtkImage  *image,
   g_return_if_fail (mask == NULL ||
                     BDK_IS_PIXMAP (mask));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (pixmap)
     g_object_ref (pixmap);
@@ -884,10 +884,10 @@ btk_image_set_from_pixmap (BtkImage  *image,
       btk_image_update_size (image, width, height);
     }
 
-  g_object_notify (G_OBJECT (image), "pixmap");
-  g_object_notify (G_OBJECT (image), "mask");
+  g_object_notify (B_OBJECT (image), "pixmap");
+  g_object_notify (B_OBJECT (image), "mask");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -909,7 +909,7 @@ btk_image_set_from_image  (BtkImage  *image,
   g_return_if_fail (mask == NULL ||
                     BDK_IS_PIXMAP (mask));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (bdk_image)
     g_object_ref (bdk_image);
@@ -935,10 +935,10 @@ btk_image_set_from_image  (BtkImage  *image,
         g_object_unref (mask);
     }
 
-  g_object_notify (G_OBJECT (image), "image");
-  g_object_notify (G_OBJECT (image), "mask");
+  g_object_notify (B_OBJECT (image), "image");
+  g_object_notify (B_OBJECT (image), "mask");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -957,14 +957,14 @@ btk_image_set_from_file   (BtkImage    *image,
   
   g_return_if_fail (BTK_IS_IMAGE (image));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   btk_image_clear (image);
 
   if (filename == NULL)
     {
       priv->filename = NULL;
-      g_object_thaw_notify (G_OBJECT (image));
+      g_object_thaw_notify (B_OBJECT (image));
       return;
     }
 
@@ -975,7 +975,7 @@ btk_image_set_from_file   (BtkImage    *image,
       btk_image_set_from_stock (image,
                                 BTK_STOCK_MISSING_IMAGE,
                                 BTK_ICON_SIZE_BUTTON);
-      g_object_thaw_notify (G_OBJECT (image));
+      g_object_thaw_notify (B_OBJECT (image));
       return;
     }
 
@@ -994,7 +994,7 @@ btk_image_set_from_file   (BtkImage    *image,
 
   priv->filename = g_strdup (filename);
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1012,7 +1012,7 @@ btk_image_set_from_pixbuf (BtkImage  *image,
   g_return_if_fail (pixbuf == NULL ||
                     BDK_IS_PIXBUF (pixbuf));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (pixbuf)
     g_object_ref (pixbuf);
@@ -1030,9 +1030,9 @@ btk_image_set_from_pixbuf (BtkImage  *image,
                              bdk_pixbuf_get_height (pixbuf));
     }
 
-  g_object_notify (G_OBJECT (image), "pixbuf");
+  g_object_notify (B_OBJECT (image), "pixbuf");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1052,7 +1052,7 @@ btk_image_set_from_stock  (BtkImage       *image,
   
   g_return_if_fail (BTK_IS_IMAGE (image));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
 
   /* in case stock_id == image->data.stock.stock_id */
   new_id = g_strdup (stock_id);
@@ -1072,10 +1072,10 @@ btk_image_set_from_stock  (BtkImage       *image,
        */
     }
 
-  g_object_notify (G_OBJECT (image), "stock");
-  g_object_notify (G_OBJECT (image), "icon-size");
+  g_object_notify (B_OBJECT (image), "stock");
+  g_object_notify (B_OBJECT (image), "icon-size");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1093,7 +1093,7 @@ btk_image_set_from_icon_set  (BtkImage       *image,
 {
   g_return_if_fail (BTK_IS_IMAGE (image));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (icon_set)
     btk_icon_set_ref (icon_set);
@@ -1112,10 +1112,10 @@ btk_image_set_from_icon_set  (BtkImage       *image,
        */
     }
   
-  g_object_notify (G_OBJECT (image), "icon-set");
-  g_object_notify (G_OBJECT (image), "icon-size");
+  g_object_notify (B_OBJECT (image), "icon-set");
+  g_object_notify (B_OBJECT (image), "icon-size");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1134,7 +1134,7 @@ btk_image_set_from_animation (BtkImage           *image,
   g_return_if_fail (animation == NULL ||
                     BDK_IS_PIXBUF_ANIMATION (animation));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (animation)
     g_object_ref (animation);
@@ -1154,9 +1154,9 @@ btk_image_set_from_animation (BtkImage           *image,
                              bdk_pixbuf_animation_get_height (animation));
     }
 
-  g_object_notify (G_OBJECT (image), "pixbuf-animation");
+  g_object_notify (B_OBJECT (image), "pixbuf-animation");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1178,7 +1178,7 @@ btk_image_set_from_icon_name  (BtkImage       *image,
   
   g_return_if_fail (BTK_IS_IMAGE (image));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
 
   /* in case icon_name == image->data.name.icon_name */
   new_name = g_strdup (icon_name);
@@ -1198,10 +1198,10 @@ btk_image_set_from_icon_name  (BtkImage       *image,
        */
     }
 
-  g_object_notify (G_OBJECT (image), "icon-name");
-  g_object_notify (G_OBJECT (image), "icon-size");
+  g_object_notify (B_OBJECT (image), "icon-name");
+  g_object_notify (B_OBJECT (image), "icon-size");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -1221,7 +1221,7 @@ btk_image_set_from_gicon  (BtkImage       *image,
 {
   g_return_if_fail (BTK_IS_IMAGE (image));
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
 
   /* in case icon == image->data.gicon.icon */
   if (icon)
@@ -1242,10 +1242,10 @@ btk_image_set_from_gicon  (BtkImage       *image,
        */
     }
 
-  g_object_notify (G_OBJECT (image), "gicon");
-  g_object_notify (G_OBJECT (image), "icon-size");
+  g_object_notify (B_OBJECT (image), "gicon");
+  g_object_notify (B_OBJECT (image), "icon-size");
   
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -2151,22 +2151,22 @@ btk_image_reset (BtkImage *image)
 
   priv = BTK_IMAGE_GET_PRIVATE (image);
 
-  g_object_freeze_notify (G_OBJECT (image));
+  g_object_freeze_notify (B_OBJECT (image));
   
   if (image->storage_type != BTK_IMAGE_EMPTY)
-    g_object_notify (G_OBJECT (image), "storage-type");
+    g_object_notify (B_OBJECT (image), "storage-type");
 
   if (image->mask)
     {
       g_object_unref (image->mask);
       image->mask = NULL;
-      g_object_notify (G_OBJECT (image), "mask");
+      g_object_notify (B_OBJECT (image), "mask");
     }
 
   if (image->icon_size != DEFAULT_ICON_SIZE)
     {
       image->icon_size = DEFAULT_ICON_SIZE;
-      g_object_notify (G_OBJECT (image), "icon-size");
+      g_object_notify (B_OBJECT (image), "icon-size");
     }
   
   switch (image->storage_type)
@@ -2177,7 +2177,7 @@ btk_image_reset (BtkImage *image)
         g_object_unref (image->data.pixmap.pixmap);
       image->data.pixmap.pixmap = NULL;
       
-      g_object_notify (G_OBJECT (image), "pixmap");
+      g_object_notify (B_OBJECT (image), "pixmap");
       
       break;
 
@@ -2187,7 +2187,7 @@ btk_image_reset (BtkImage *image)
         g_object_unref (image->data.image.image);
       image->data.image.image = NULL;
       
-      g_object_notify (G_OBJECT (image), "image");
+      g_object_notify (B_OBJECT (image), "image");
       
       break;
 
@@ -2196,7 +2196,7 @@ btk_image_reset (BtkImage *image)
       if (image->data.pixbuf.pixbuf)
         g_object_unref (image->data.pixbuf.pixbuf);
 
-      g_object_notify (G_OBJECT (image), "pixbuf");
+      g_object_notify (B_OBJECT (image), "pixbuf");
       
       break;
 
@@ -2206,7 +2206,7 @@ btk_image_reset (BtkImage *image)
 
       image->data.stock.stock_id = NULL;
       
-      g_object_notify (G_OBJECT (image), "stock");      
+      g_object_notify (B_OBJECT (image), "stock");      
       break;
 
     case BTK_IMAGE_ICON_SET:
@@ -2214,7 +2214,7 @@ btk_image_reset (BtkImage *image)
         btk_icon_set_unref (image->data.icon_set.icon_set);
       image->data.icon_set.icon_set = NULL;
       
-      g_object_notify (G_OBJECT (image), "icon-set");      
+      g_object_notify (B_OBJECT (image), "icon-set");      
       break;
 
     case BTK_IMAGE_ANIMATION:
@@ -2224,7 +2224,7 @@ btk_image_reset (BtkImage *image)
         g_object_unref (image->data.anim.anim);
       image->data.anim.anim = NULL;
       
-      g_object_notify (G_OBJECT (image), "pixbuf-animation");
+      g_object_notify (B_OBJECT (image), "pixbuf-animation");
       
       break;
 
@@ -2235,7 +2235,7 @@ btk_image_reset (BtkImage *image)
 	g_object_unref (image->data.name.pixbuf);
       image->data.name.pixbuf = NULL;
 
-      g_object_notify (G_OBJECT (image), "icon-name");
+      g_object_notify (B_OBJECT (image), "icon-name");
 
       break;
       
@@ -2247,7 +2247,7 @@ btk_image_reset (BtkImage *image)
 	g_object_unref (image->data.gicon.pixbuf);
       image->data.gicon.pixbuf = NULL;
 
-      g_object_notify (G_OBJECT (image), "gicon");
+      g_object_notify (B_OBJECT (image), "gicon");
 
       break;
       
@@ -2261,14 +2261,14 @@ btk_image_reset (BtkImage *image)
     {
       g_free (priv->filename);
       priv->filename = NULL;
-      g_object_notify (G_OBJECT (image), "file");
+      g_object_notify (B_OBJECT (image), "file");
     }
 
   image->storage_type = BTK_IMAGE_EMPTY;
 
   memset (&image->data, '\0', sizeof (image->data));
 
-  g_object_thaw_notify (G_OBJECT (image));
+  g_object_thaw_notify (B_OBJECT (image));
 }
 
 /**
@@ -2454,7 +2454,7 @@ btk_image_set_pixel_size (BtkImage *image,
 	  btk_image_update_size (image, pixel_size, pixel_size);
 	}
       
-      g_object_notify (G_OBJECT (image), "pixel-size");
+      g_object_notify (B_OBJECT (image), "pixel-size");
     }
 }
 

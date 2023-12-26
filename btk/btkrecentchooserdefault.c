@@ -169,22 +169,22 @@ enum {
 
 
 
-/* GObject */
+/* BObject */
 static void     _btk_recent_chooser_default_class_init  (BtkRecentChooserDefaultClass *klass);
 static void     _btk_recent_chooser_default_init        (BtkRecentChooserDefault      *impl);
-static GObject *btk_recent_chooser_default_constructor  (GType                         type,
+static BObject *btk_recent_chooser_default_constructor  (GType                         type,
 						         guint                         n_construct_prop,
-						         GObjectConstructParam        *construct_params);
-static void     btk_recent_chooser_default_finalize     (GObject                      *object);
-static void     btk_recent_chooser_default_dispose      (GObject                      *object);
-static void     btk_recent_chooser_default_set_property (GObject                      *object,
+						         BObjectConstructParam        *construct_params);
+static void     btk_recent_chooser_default_finalize     (BObject                      *object);
+static void     btk_recent_chooser_default_dispose      (BObject                      *object);
+static void     btk_recent_chooser_default_set_property (BObject                      *object,
 						         guint                         prop_id,
-						         const GValue                 *value,
-						         GParamSpec                   *pspec);
-static void     btk_recent_chooser_default_get_property (GObject                      *object,
+						         const BValue                 *value,
+						         BParamSpec                   *pspec);
+static void     btk_recent_chooser_default_get_property (BObject                      *object,
 						         guint                         prop_id,
-						         GValue                       *value,
-						         GParamSpec                   *pspec);
+						         BValue                       *value,
+						         BParamSpec                   *pspec);
 
 /* BtkRecentChooserIface */
 static void              btk_recent_chooser_iface_init                 (BtkRecentChooserIface  *iface);
@@ -329,7 +329,7 @@ btk_recent_chooser_activatable_iface_init (BtkActivatableIface *iface)
 static void
 _btk_recent_chooser_default_class_init (BtkRecentChooserDefaultClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
 
   bobject_class->constructor = btk_recent_chooser_default_constructor;
@@ -377,18 +377,18 @@ _btk_recent_chooser_default_init (BtkRecentChooserDefault *impl)
   impl->load_state = LOAD_EMPTY;
 }
 
-static GObject *
+static BObject *
 btk_recent_chooser_default_constructor (GType                  type,
 				        guint                  n_params,
-				        GObjectConstructParam *params)
+				        BObjectConstructParam *params)
 {
-  GObjectClass *parent_class;
+  BObjectClass *parent_class;
   BtkRecentChooserDefault *impl;
-  GObject *object;
+  BObject *object;
   BtkWidget *scrollw;
   BtkCellRenderer *renderer;
 
-  parent_class = G_OBJECT_CLASS (_btk_recent_chooser_default_parent_class);
+  parent_class = B_OBJECT_CLASS (_btk_recent_chooser_default_parent_class);
   object = parent_class->constructor (type, n_params, params);
   impl = BTK_RECENT_CHOOSER_DEFAULT (object);
   
@@ -423,7 +423,7 @@ btk_recent_chooser_default_constructor (GType                  type,
   g_signal_connect (impl->recent_view, "query-tooltip",
                     G_CALLBACK (recent_view_query_tooltip_cb), impl);
 
-  g_object_set_data (G_OBJECT (impl->recent_view),
+  g_object_set_data (B_OBJECT (impl->recent_view),
                      "BtkRecentChooserDefault", impl);
   
   btk_container_add (BTK_CONTAINER (scrollw), impl->recent_view);
@@ -448,7 +448,7 @@ btk_recent_chooser_default_constructor (GType                  type,
   btk_tree_view_column_set_resizable (impl->meta_column, FALSE);
   
   impl->meta_renderer = btk_cell_renderer_text_new ();
-  g_object_set (G_OBJECT (impl->meta_renderer),
+  g_object_set (B_OBJECT (impl->meta_renderer),
                 "ellipsize", BANGO_ELLIPSIZE_END,
                 NULL);
   btk_tree_view_column_pack_start (impl->meta_column, impl->meta_renderer, TRUE);
@@ -490,28 +490,28 @@ btk_recent_chooser_default_constructor (GType                  type,
   btk_widget_pop_composite_child ();
   
   impl->recent_store = btk_list_store_new (N_RECENT_COLUMNS,
-  					   G_TYPE_STRING,       /* uri */
-  					   G_TYPE_STRING,       /* display_name */
+  					   B_TYPE_STRING,       /* uri */
+  					   B_TYPE_STRING,       /* display_name */
   					   BTK_TYPE_RECENT_INFO /* info */);
   
   return object;
 }
 
 static void
-btk_recent_chooser_default_set_property (GObject      *object,
+btk_recent_chooser_default_set_property (BObject      *object,
 				         guint         prop_id,
-					 const GValue *value,
-					 GParamSpec   *pspec)
+					 const BValue *value,
+					 BParamSpec   *pspec)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (object);
   
   switch (prop_id)
     {
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
-      set_recent_manager (impl, g_value_get_object (value));
+      set_recent_manager (impl, b_value_get_object (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      impl->show_private = g_value_get_boolean (value);
+      impl->show_private = b_value_get_boolean (value);
       if (impl->recent_popup_menu_show_private_item)
 	{
           BtkCheckMenuItem *item = BTK_CHECK_MENU_ITEM (impl->recent_popup_menu_show_private_item);
@@ -522,18 +522,18 @@ btk_recent_chooser_default_set_property (GObject      *object,
       reload_recent_items (impl);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      impl->show_not_found = g_value_get_boolean (value);
+      impl->show_not_found = b_value_get_boolean (value);
       reload_recent_items (impl);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      impl->show_tips = g_value_get_boolean (value);
+      impl->show_tips = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      impl->show_icons = g_value_get_boolean (value);
+      impl->show_icons = b_value_get_boolean (value);
       btk_tree_view_column_set_visible (impl->icon_column, impl->show_icons);
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
-      impl->select_multiple = g_value_get_boolean (value);
+      impl->select_multiple = b_value_get_boolean (value);
       
       if (impl->select_multiple)
         btk_tree_selection_set_mode (impl->selection, BTK_SELECTION_MULTIPLE);
@@ -541,83 +541,83 @@ btk_recent_chooser_default_set_property (GObject      *object,
         btk_tree_selection_set_mode (impl->selection, BTK_SELECTION_SINGLE);
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      impl->local_only = g_value_get_boolean (value);
+      impl->local_only = b_value_get_boolean (value);
       reload_recent_items (impl);
       break;
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      impl->limit = g_value_get_int (value);
+      impl->limit = b_value_get_int (value);
       impl->limit_set = TRUE;
       reload_recent_items (impl);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      chooser_set_sort_type (impl, g_value_get_enum (value));
+      chooser_set_sort_type (impl, b_value_get_enum (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      set_current_filter (impl, g_value_get_object (value));
+      set_current_filter (impl, b_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      _btk_recent_chooser_set_related_action (BTK_RECENT_CHOOSER (impl), g_value_get_object (value));
+      _btk_recent_chooser_set_related_action (BTK_RECENT_CHOOSER (impl), b_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      _btk_recent_chooser_set_use_action_appearance (BTK_RECENT_CHOOSER (impl), g_value_get_boolean (value));
+      _btk_recent_chooser_set_use_action_appearance (BTK_RECENT_CHOOSER (impl), b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_recent_chooser_default_get_property (GObject    *object,
+btk_recent_chooser_default_get_property (BObject    *object,
 					 guint       prop_id,
-					 GValue     *value,
-					 GParamSpec *pspec)
+					 BValue     *value,
+					 BParamSpec *pspec)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (object);
   
   switch (prop_id)
     {
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      g_value_set_int (value, impl->limit);
+      b_value_set_int (value, impl->limit);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      g_value_set_enum (value, impl->sort_type);
+      b_value_set_enum (value, impl->sort_type);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      g_value_set_boolean (value, impl->show_private);
+      b_value_set_boolean (value, impl->show_private);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      g_value_set_boolean (value, impl->show_icons);
+      b_value_set_boolean (value, impl->show_icons);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      g_value_set_boolean (value, impl->show_not_found);
+      b_value_set_boolean (value, impl->show_not_found);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      g_value_set_boolean (value, impl->show_tips);
+      b_value_set_boolean (value, impl->show_tips);
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      g_value_set_boolean (value, impl->local_only);
+      b_value_set_boolean (value, impl->local_only);
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, impl->select_multiple);
+      b_value_set_boolean (value, impl->select_multiple);
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      g_value_set_object (value, impl->current_filter);
+      b_value_set_object (value, impl->current_filter);
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      g_value_set_object (value, _btk_recent_chooser_get_related_action (BTK_RECENT_CHOOSER (impl)));
+      b_value_set_object (value, _btk_recent_chooser_get_related_action (BTK_RECENT_CHOOSER (impl)));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      g_value_set_boolean (value, _btk_recent_chooser_get_use_action_appearance (BTK_RECENT_CHOOSER (impl)));
+      b_value_set_boolean (value, _btk_recent_chooser_get_use_action_appearance (BTK_RECENT_CHOOSER (impl)));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_recent_chooser_default_dispose (GObject *object)
+btk_recent_chooser_default_dispose (BObject *object)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (object);
 
@@ -643,8 +643,8 @@ btk_recent_chooser_default_dispose (GObject *object)
 
   if (impl->filters)
     {
-      g_slist_foreach (impl->filters, (GFunc) g_object_unref, NULL);
-      g_slist_free (impl->filters);
+      b_slist_foreach (impl->filters, (GFunc) g_object_unref, NULL);
+      b_slist_free (impl->filters);
       impl->filters = NULL;
     }
   
@@ -660,11 +660,11 @@ btk_recent_chooser_default_dispose (GObject *object)
       impl->recent_store = NULL;
     }
 
-  G_OBJECT_CLASS (_btk_recent_chooser_default_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_recent_chooser_default_parent_class)->dispose (object);
 }
 
 static void
-btk_recent_chooser_default_finalize (GObject *object)
+btk_recent_chooser_default_finalize (BObject *object)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (object);
 
@@ -679,7 +679,7 @@ btk_recent_chooser_default_finalize (GObject *object)
   impl->sort_data = NULL;
   impl->sort_func = NULL;
   
-  G_OBJECT_CLASS (_btk_recent_chooser_default_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_recent_chooser_default_parent_class)->finalize (object);
 }
 
 /* override BtkWidget::show_all since we have internal widgets we wish to keep
@@ -1284,14 +1284,14 @@ btk_recent_chooser_default_add_filter (BtkRecentChooser *chooser,
 
   impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
   
-  if (g_slist_find (impl->filters, filter))
+  if (b_slist_find (impl->filters, filter))
     {
       g_warning ("btk_recent_chooser_add_filter() called on filter already in list\n");
       return;
     }
   
   g_object_ref_sink (filter);
-  impl->filters = g_slist_append (impl->filters, filter);
+  impl->filters = b_slist_append (impl->filters, filter);
   
   /* display new filter */
   name = btk_recent_filter_get_name (filter);
@@ -1300,7 +1300,7 @@ btk_recent_chooser_default_add_filter (BtkRecentChooser *chooser,
 
   btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (impl->filter_combo), name);
 
-  if (!g_slist_find (impl->filters, impl->current_filter))
+  if (!b_slist_find (impl->filters, impl->current_filter))
     set_current_filter (impl, filter);
   
   show_filters (impl, TRUE);
@@ -1315,7 +1315,7 @@ btk_recent_chooser_default_remove_filter (BtkRecentChooser *chooser,
   BtkTreeIter iter;
   gint filter_idx;
   
-  filter_idx = g_slist_index (impl->filters, filter);
+  filter_idx = b_slist_index (impl->filters, filter);
   
   if (filter_idx < 0)
     {
@@ -1323,7 +1323,7 @@ btk_recent_chooser_default_remove_filter (BtkRecentChooser *chooser,
       return;  
     }
   
-  impl->filters = g_slist_remove (impl->filters, filter);
+  impl->filters = b_slist_remove (impl->filters, filter);
   
   if (filter == impl->current_filter)
     {
@@ -1348,7 +1348,7 @@ btk_recent_chooser_default_list_filters (BtkRecentChooser *chooser)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
   
-  return g_slist_copy (impl->filters);
+  return b_slist_copy (impl->filters);
 }
 
 static void
@@ -1359,7 +1359,7 @@ set_current_filter (BtkRecentChooserDefault *impl,
     {
       gint filter_idx;
       
-      filter_idx = g_slist_index (impl->filters, filter);
+      filter_idx = b_slist_index (impl->filters, filter);
       if (impl->filters && filter && filter_idx < 0)
         return;
       
@@ -1380,7 +1380,7 @@ set_current_filter (BtkRecentChooserDefault *impl,
       if (impl->recent_store)
         reload_recent_items (impl);
 
-      g_object_notify (G_OBJECT (impl), "filter");
+      g_object_notify (B_OBJECT (impl), "filter");
     }
 }
 
@@ -1393,7 +1393,7 @@ chooser_set_sort_type (BtkRecentChooserDefault *impl,
       impl->sort_type = sort_type;
       reload_recent_items (impl);
 
-      g_object_notify (G_OBJECT (impl), "sort-type");
+      g_object_notify (B_OBJECT (impl), "sort-type");
     }
 }
 
@@ -1437,7 +1437,7 @@ get_recent_files_limit (BtkWidget *widget)
   else
     settings = btk_settings_get_default ();
   
-  g_object_get (G_OBJECT (settings), "btk-recent-files-limit", &limit, NULL);
+  g_object_get (B_OBJECT (settings), "btk-recent-files-limit", &limit, NULL);
 
   return limit;
 }
@@ -1478,7 +1478,7 @@ filter_combo_changed_cb (BtkComboBox *combo_box,
   impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   
   new_index = btk_combo_box_get_active (combo_box);
-  filter = g_slist_nth_data (impl->filters, new_index);
+  filter = b_slist_nth_data (impl->filters, new_index);
   
   set_current_filter (impl, filter);
 }
@@ -1717,7 +1717,7 @@ show_private_toggled_cb (BtkCheckMenuItem *menu_item,
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   
-  g_object_set (G_OBJECT (impl),
+  g_object_set (B_OBJECT (impl),
   		"show-private", btk_check_menu_item_get_active (menu_item),
   		NULL);
 }
@@ -1728,7 +1728,7 @@ recent_popup_menu_detach_cb (BtkWidget *attach_widget,
 {
   BtkRecentChooserDefault *impl;
   
-  impl = g_object_get_data (G_OBJECT (attach_widget), "BtkRecentChooserDefault");
+  impl = g_object_get_data (B_OBJECT (attach_widget), "BtkRecentChooserDefault");
   g_assert (BTK_IS_RECENT_CHOOSER_DEFAULT (impl));
   
   impl->recent_popup_menu = NULL;
@@ -1749,7 +1749,7 @@ recent_view_menu_ensure_state (BtkRecentChooserDefault *impl)
   if (!impl->manager)
     count = 0;
   else
-    g_object_get (G_OBJECT (impl->manager), "size", &count, NULL);
+    g_object_get (B_OBJECT (impl->manager), "size", &count, NULL);
 
   if (count == 0)
     {

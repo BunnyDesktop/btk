@@ -67,7 +67,7 @@ print_selected (BtkFileChooser *chooser)
       g_free (uri);
     }
   g_print ("\n");
-  g_slist_free (uris);
+  b_slist_free (uris);
 }
 
 static void
@@ -92,7 +92,7 @@ response_cb (BtkDialog *dialog,
 	      g_free (l->data);
 	    }
 
-	  g_slist_free (list);
+	  b_slist_free (list);
 	}
       else
 	g_print ("No selected files\n");
@@ -415,7 +415,7 @@ kill_dependent (BtkWindow *win, BtkObject *dep)
 
 static void
 notify_multiple_cb (BtkWidget  *dialog,
-		    GParamSpec *pspec,
+		    BParamSpec *pspec,
 		    BtkWidget  *button)
 {
   gboolean multiple;
@@ -648,7 +648,7 @@ main (int argc, char **argv)
 
   /* Extra controls for manipulating the test environment
    */
-  prop_editor = create_prop_editor (G_OBJECT (dialog), BTK_TYPE_FILE_CHOOSER);
+  prop_editor = create_prop_editor (B_OBJECT (dialog), BTK_TYPE_FILE_CHOOSER);
 
   control_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 

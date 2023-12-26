@@ -46,11 +46,11 @@ typedef enum
 } BtkCellRendererMode;
 
 #define BTK_TYPE_CELL_RENDERER		  (btk_cell_renderer_get_type ())
-#define BTK_CELL_RENDERER(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRenderer))
-#define BTK_CELL_RENDERER_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER, BtkCellRendererClass))
-#define BTK_IS_CELL_RENDERER(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER))
-#define BTK_IS_CELL_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER))
-#define BTK_CELL_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRendererClass))
+#define BTK_CELL_RENDERER(obj)		  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRenderer))
+#define BTK_CELL_RENDERER_CLASS(klass)	  (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER, BtkCellRendererClass))
+#define BTK_IS_CELL_RENDERER(obj)	  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER))
+#define BTK_IS_CELL_RENDERER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER))
+#define BTK_CELL_RENDERER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRendererClass))
 
 typedef struct _BtkCellRenderer BtkCellRenderer;
 typedef struct _BtkCellRendererClass BtkCellRendererClass;

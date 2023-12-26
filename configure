@@ -25230,7 +25230,7 @@ if test -n "$export_dynamic"; then
 fi
 
 ##################################################
-# GObject introspection
+# BObject introspection
 ##################################################
 
 

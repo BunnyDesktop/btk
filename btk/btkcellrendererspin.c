@@ -28,7 +28,7 @@
 #include "btkcellrendererspin.h"
 #include "btkalias.h"
 
-#define BTK_CELL_RENDERER_SPIN_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpinPrivate))
+#define BTK_CELL_RENDERER_SPIN_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpinPrivate))
 
 struct _BtkCellRendererSpinPrivate
 {
@@ -37,16 +37,16 @@ struct _BtkCellRendererSpinPrivate
   guint   digits;
 };
 
-static void btk_cell_renderer_spin_finalize   (GObject                  *object);
+static void btk_cell_renderer_spin_finalize   (BObject                  *object);
 
-static void btk_cell_renderer_spin_get_property (GObject      *object,
+static void btk_cell_renderer_spin_get_property (BObject      *object,
 						 guint         prop_id,
-						 GValue       *value,
-						 GParamSpec   *spec);
-static void btk_cell_renderer_spin_set_property (GObject      *object,
+						 BValue       *value,
+						 BParamSpec   *spec);
+static void btk_cell_renderer_spin_set_property (BObject      *object,
 						 guint         prop_id,
-						 const GValue *value,
-						 GParamSpec   *spec);
+						 const BValue *value,
+						 BParamSpec   *spec);
 
 static BtkCellEditable * btk_cell_renderer_spin_start_editing (BtkCellRenderer     *cell,
 							       BdkEvent            *event,
@@ -70,7 +70,7 @@ G_DEFINE_TYPE (BtkCellRendererSpin, btk_cell_renderer_spin, BTK_TYPE_CELL_RENDER
 static void
 btk_cell_renderer_spin_class_init (BtkCellRendererSpinClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (klass);
 
   object_class->finalize     = btk_cell_renderer_spin_finalize;
@@ -141,7 +141,7 @@ btk_cell_renderer_spin_init (BtkCellRendererSpin *self)
 }
 
 static void
-btk_cell_renderer_spin_finalize (GObject *object)
+btk_cell_renderer_spin_finalize (BObject *object)
 {
   BtkCellRendererSpinPrivate *priv;
 
@@ -150,14 +150,14 @@ btk_cell_renderer_spin_finalize (GObject *object)
   if (priv && priv->adjustment)
     g_object_unref (priv->adjustment);
 
-  G_OBJECT_CLASS (btk_cell_renderer_spin_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_cell_renderer_spin_parent_class)->finalize (object);
 }
 
 static void
-btk_cell_renderer_spin_get_property (GObject      *object,
+btk_cell_renderer_spin_get_property (BObject      *object,
 				     guint         prop_id,
-				     GValue       *value,
-				     GParamSpec   *pspec)
+				     BValue       *value,
+				     BParamSpec   *pspec)
 {
   BtkCellRendererSpin *renderer;
   BtkCellRendererSpinPrivate *priv;
@@ -168,29 +168,29 @@ btk_cell_renderer_spin_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      g_value_set_object (value, priv->adjustment);
+      b_value_set_object (value, priv->adjustment);
       break;
     case PROP_CLIMB_RATE:
-      g_value_set_double (value, priv->climb_rate);
+      b_value_set_double (value, priv->climb_rate);
       break;
     case PROP_DIGITS:
-      g_value_set_uint (value, priv->digits);
+      b_value_set_uint (value, priv->digits);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_cell_renderer_spin_set_property (GObject      *object,
+btk_cell_renderer_spin_set_property (BObject      *object,
 				     guint         prop_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+				     const BValue *value,
+				     BParamSpec   *pspec)
 {
   BtkCellRendererSpin *renderer;
   BtkCellRendererSpinPrivate *priv;
-  GObject *obj;
+  BObject *obj;
 
   renderer = BTK_CELL_RENDERER_SPIN (object);
   priv = BTK_CELL_RENDERER_SPIN_GET_PRIVATE (renderer);
@@ -198,7 +198,7 @@ btk_cell_renderer_spin_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      obj = g_value_get_object (value);
+      obj = b_value_get_object (value);
 
       if (priv->adjustment)
 	{
@@ -210,13 +210,13 @@ btk_cell_renderer_spin_set_property (GObject      *object,
 	priv->adjustment = g_object_ref_sink (obj);
       break;
     case PROP_CLIMB_RATE:
-      priv->climb_rate = g_value_get_double (value);
+      priv->climb_rate = b_value_get_double (value);
       break;
     case PROP_DIGITS:
-      priv->digits = g_value_get_uint (value);
+      priv->digits = b_value_get_uint (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -242,7 +242,7 @@ btk_cell_renderer_spin_focus_out_event (BtkWidget *widget,
 
   if (!canceled)
     {
-      path = g_object_get_data (G_OBJECT (widget), BTK_CELL_RENDERER_SPIN_PATH);
+      path = g_object_get_data (B_OBJECT (widget), BTK_CELL_RENDERER_SPIN_PATH);
 
       new_text = btk_entry_get_text (BTK_ENTRY (widget));
       g_signal_emit_by_name (data, "edited", path, new_text);
@@ -321,13 +321,13 @@ btk_cell_renderer_spin_start_editing (BtkCellRenderer     *cell,
     btk_spin_button_set_value (BTK_SPIN_BUTTON (spin),
 			       g_ascii_strtod (cell_text->text, NULL));
 
-  g_object_set_data_full (G_OBJECT (spin), BTK_CELL_RENDERER_SPIN_PATH,
+  g_object_set_data_full (B_OBJECT (spin), BTK_CELL_RENDERER_SPIN_PATH,
 			  g_strdup (path), g_free);
 
-  g_signal_connect (G_OBJECT (spin), "focus-out-event",
+  g_signal_connect (B_OBJECT (spin), "focus-out-event",
 		    G_CALLBACK (btk_cell_renderer_spin_focus_out_event),
 		    cell);
-  g_signal_connect (G_OBJECT (spin), "key-press-event",
+  g_signal_connect (B_OBJECT (spin), "key-press-event",
 		    G_CALLBACK (btk_cell_renderer_spin_key_press_event),
 		    cell);
 

@@ -84,11 +84,11 @@ typedef enum
 } BtkButtonAction;
 
 #define BTK_TYPE_CLIST            (btk_clist_get_type ())
-#define BTK_CLIST(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIST, BtkCList))
-#define BTK_CLIST_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CLIST, BtkCListClass))
-#define BTK_IS_CLIST(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIST))
-#define BTK_IS_CLIST_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CLIST))
-#define BTK_CLIST_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CLIST, BtkCListClass))
+#define BTK_CLIST(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIST, BtkCList))
+#define BTK_CLIST_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CLIST, BtkCListClass))
+#define BTK_IS_CLIST(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIST))
+#define BTK_IS_CLIST_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CLIST))
+#define BTK_CLIST_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CLIST, BtkCListClass))
 
 
 #define BTK_CLIST_FLAGS(clist)             (BTK_CLIST (clist)->flags)

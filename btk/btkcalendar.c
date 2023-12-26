@@ -289,16 +289,16 @@ struct _BtkCalendarPrivate
 
 #define BTK_CALENDAR_GET_PRIVATE(widget)  (BTK_CALENDAR (widget)->priv)
 
-static void btk_calendar_finalize     (GObject      *calendar);
+static void btk_calendar_finalize     (BObject      *calendar);
 static void btk_calendar_destroy      (BtkObject    *calendar);
-static void btk_calendar_set_property (GObject      *object,
+static void btk_calendar_set_property (BObject      *object,
 				       guint         prop_id,
-				       const GValue *value,
-				       GParamSpec   *pspec);
-static void btk_calendar_get_property (GObject      *object,
+				       const BValue *value,
+				       BParamSpec   *pspec);
+static void btk_calendar_get_property (BObject      *object,
 				       guint         prop_id,
-				       GValue       *value,
-				       GParamSpec   *pspec);
+				       BValue       *value,
+				       BParamSpec   *pspec);
 
 static void     btk_calendar_realize        (BtkWidget        *widget);
 static void     btk_calendar_unrealize      (BtkWidget        *widget);
@@ -386,11 +386,11 @@ G_DEFINE_TYPE (BtkCalendar, btk_calendar, BTK_TYPE_WIDGET)
 static void
 btk_calendar_class_init (BtkCalendarClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkObjectClass   *object_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass*)  class;
+  bobject_class = (BObjectClass*)  class;
   object_class = (BtkObjectClass*)  class;
   widget_class = (BtkWidgetClass*) class;
   
@@ -621,60 +621,60 @@ btk_calendar_class_init (BtkCalendarClass *class)
    */
   btk_calendar_signals[MONTH_CHANGED_SIGNAL] =
     g_signal_new (I_("month-changed"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, month_changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[DAY_SELECTED_SIGNAL] =
     g_signal_new (I_("day-selected"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, day_selected),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[DAY_SELECTED_DOUBLE_CLICK_SIGNAL] =
     g_signal_new (I_("day-selected-double-click"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, day_selected_double_click),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[PREV_MONTH_SIGNAL] =
     g_signal_new (I_("prev-month"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, prev_month),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[NEXT_MONTH_SIGNAL] =
     g_signal_new (I_("next-month"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, next_month),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[PREV_YEAR_SIGNAL] =
     g_signal_new (I_("prev-year"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, prev_year),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   btk_calendar_signals[NEXT_YEAR_SIGNAL] =
     g_signal_new (I_("next-year"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkCalendarClass, next_year),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   g_type_class_add_private (bobject_class, sizeof (BtkCalendarPrivate));
 }
@@ -704,7 +704,7 @@ btk_calendar_init (BtkCalendar *calendar)
   gchar *week_start;
 #endif
 
-  priv = calendar->priv = G_TYPE_INSTANCE_GET_PRIVATE (calendar,
+  priv = calendar->priv = B_TYPE_INSTANCE_GET_PRIVATE (calendar,
 						       BTK_TYPE_CALENDAR,
 						       BtkCalendarPrivate);
 
@@ -1290,9 +1290,9 @@ calendar_set_month_prev (BtkCalendar *calendar)
  ****************************************/
 
 static void
-btk_calendar_finalize (GObject *object)
+btk_calendar_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (btk_calendar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_calendar_parent_class)->finalize (object);
 }
 
 static void
@@ -1335,10 +1335,10 @@ calendar_get_display_option (BtkCalendar              *calendar,
 }
 
 static void 
-btk_calendar_set_property (GObject      *object,
+btk_calendar_set_property (BObject      *object,
 			   guint         prop_id,
-			   const GValue *value,
-			   GParamSpec   *pspec)
+			   const BValue *value,
+			   BParamSpec   *pspec)
 {
   BtkCalendar *calendar;
 
@@ -1349,61 +1349,61 @@ btk_calendar_set_property (GObject      *object,
     case PROP_YEAR:
       btk_calendar_select_month (calendar,
 				 calendar->month,
-				 g_value_get_int (value));
+				 b_value_get_int (value));
       break;
     case PROP_MONTH:
       btk_calendar_select_month (calendar,
-				 g_value_get_int (value),
+				 b_value_get_int (value),
 				 calendar->year);
       break;
     case PROP_DAY:
       btk_calendar_select_day (calendar,
-			       g_value_get_int (value));
+			       b_value_get_int (value));
       break;
     case PROP_SHOW_HEADING:
       calendar_set_display_option (calendar,
 				   BTK_CALENDAR_SHOW_HEADING,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_SHOW_DAY_NAMES:
       calendar_set_display_option (calendar,
 				   BTK_CALENDAR_SHOW_DAY_NAMES,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_NO_MONTH_CHANGE:
       calendar_set_display_option (calendar,
 				   BTK_CALENDAR_NO_MONTH_CHANGE,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_SHOW_WEEK_NUMBERS:
       calendar_set_display_option (calendar,
 				   BTK_CALENDAR_SHOW_WEEK_NUMBERS,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_SHOW_DETAILS:
       calendar_set_display_option (calendar,
 				   BTK_CALENDAR_SHOW_DETAILS,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_DETAIL_WIDTH_CHARS:
       btk_calendar_set_detail_width_chars (calendar,
-                                           g_value_get_int (value));
+                                           b_value_get_int (value));
       break;
     case PROP_DETAIL_HEIGHT_ROWS:
       btk_calendar_set_detail_height_rows (calendar,
-                                           g_value_get_int (value));
+                                           b_value_get_int (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_calendar_get_property (GObject      *object,
+btk_calendar_get_property (BObject      *object,
 			   guint         prop_id,
-			   GValue       *value,
-			   GParamSpec   *pspec)
+			   BValue       *value,
+			   BParamSpec   *pspec)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (object);
   BtkCalendar *calendar = BTK_CALENDAR (object);
@@ -1411,42 +1411,42 @@ btk_calendar_get_property (GObject      *object,
   switch (prop_id) 
     {
     case PROP_YEAR:
-      g_value_set_int (value, calendar->year);
+      b_value_set_int (value, calendar->year);
       break;
     case PROP_MONTH:
-      g_value_set_int (value, calendar->month);
+      b_value_set_int (value, calendar->month);
       break;
     case PROP_DAY:
-      g_value_set_int (value, calendar->selected_day);
+      b_value_set_int (value, calendar->selected_day);
       break;
     case PROP_SHOW_HEADING:
-      g_value_set_boolean (value, calendar_get_display_option (calendar,
+      b_value_set_boolean (value, calendar_get_display_option (calendar,
 							       BTK_CALENDAR_SHOW_HEADING));
       break;
     case PROP_SHOW_DAY_NAMES:
-      g_value_set_boolean (value, calendar_get_display_option (calendar,
+      b_value_set_boolean (value, calendar_get_display_option (calendar,
 							       BTK_CALENDAR_SHOW_DAY_NAMES));
       break;
     case PROP_NO_MONTH_CHANGE:
-      g_value_set_boolean (value, calendar_get_display_option (calendar,
+      b_value_set_boolean (value, calendar_get_display_option (calendar,
 							       BTK_CALENDAR_NO_MONTH_CHANGE));
       break;
     case PROP_SHOW_WEEK_NUMBERS:
-      g_value_set_boolean (value, calendar_get_display_option (calendar,
+      b_value_set_boolean (value, calendar_get_display_option (calendar,
 							       BTK_CALENDAR_SHOW_WEEK_NUMBERS));
       break;
     case PROP_SHOW_DETAILS:
-      g_value_set_boolean (value, calendar_get_display_option (calendar,
+      b_value_set_boolean (value, calendar_get_display_option (calendar,
 							       BTK_CALENDAR_SHOW_DETAILS));
       break;
     case PROP_DETAIL_WIDTH_CHARS:
-      g_value_set_int (value, priv->detail_width_chars);
+      b_value_set_int (value, priv->detail_width_chars);
       break;
     case PROP_DETAIL_HEIGHT_ROWS:
-      g_value_set_int (value, priv->detail_height_rows);
+      b_value_set_int (value, priv->detail_height_rows);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -3435,7 +3435,7 @@ static void
 set_status_pending (BdkDragContext *context,
                     BdkDragAction   suggested_action)
 {
-  g_object_set_data (G_OBJECT (context),
+  g_object_set_data (B_OBJECT (context),
                      I_("btk-calendar-status-pending"),
                      GINT_TO_POINTER (suggested_action));
 }
@@ -3443,7 +3443,7 @@ set_status_pending (BdkDragContext *context,
 static BdkDragAction
 get_status_pending (BdkDragContext *context)
 {
-  return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (context),
+  return GPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
                                              "btk-calendar-status-pending"));
 }
 
@@ -3577,12 +3577,12 @@ btk_calendar_drag_data_received (BtkWidget        *widget,
   btk_drag_finish (context, TRUE, FALSE, time);
 
   
-  g_object_freeze_notify (G_OBJECT (calendar));
+  g_object_freeze_notify (B_OBJECT (calendar));
   if (!(calendar->display_flags & BTK_CALENDAR_NO_MONTH_CHANGE)
       && (calendar->display_flags & BTK_CALENDAR_SHOW_HEADING))
     btk_calendar_select_month (calendar, month - 1, year);
   btk_calendar_select_day (calendar, day);
-  g_object_thaw_notify (G_OBJECT (calendar));  
+  g_object_thaw_notify (B_OBJECT (calendar));  
 }
 
 
@@ -3763,16 +3763,16 @@ btk_calendar_set_display_options (BtkCalendar	       *calendar,
   else
     calendar->display_flags = flags;
   
-  g_object_freeze_notify (G_OBJECT (calendar));
+  g_object_freeze_notify (B_OBJECT (calendar));
   if ((old_flags ^ calendar->display_flags) & BTK_CALENDAR_SHOW_HEADING)
-    g_object_notify (G_OBJECT (calendar), "show-heading");
+    g_object_notify (B_OBJECT (calendar), "show-heading");
   if ((old_flags ^ calendar->display_flags) & BTK_CALENDAR_SHOW_DAY_NAMES)
-    g_object_notify (G_OBJECT (calendar), "show-day-names");
+    g_object_notify (B_OBJECT (calendar), "show-day-names");
   if ((old_flags ^ calendar->display_flags) & BTK_CALENDAR_NO_MONTH_CHANGE)
-    g_object_notify (G_OBJECT (calendar), "no-month-change");
+    g_object_notify (B_OBJECT (calendar), "no-month-change");
   if ((old_flags ^ calendar->display_flags) & BTK_CALENDAR_SHOW_WEEK_NUMBERS)
-    g_object_notify (G_OBJECT (calendar), "show-week-numbers");
-  g_object_thaw_notify (G_OBJECT (calendar));
+    g_object_notify (B_OBJECT (calendar), "show-week-numbers");
+  g_object_thaw_notify (B_OBJECT (calendar));
 }
 
 /**
@@ -3803,10 +3803,10 @@ btk_calendar_select_month (BtkCalendar *calendar,
   calendar_compute_days (calendar);
   calendar_queue_refresh (calendar);
 
-  g_object_freeze_notify (G_OBJECT (calendar));
-  g_object_notify (G_OBJECT (calendar), "month");
-  g_object_notify (G_OBJECT (calendar), "year");
-  g_object_thaw_notify (G_OBJECT (calendar));
+  g_object_freeze_notify (B_OBJECT (calendar));
+  g_object_notify (B_OBJECT (calendar), "month");
+  g_object_notify (B_OBJECT (calendar), "year");
+  g_object_thaw_notify (B_OBJECT (calendar));
 
   g_signal_emit (calendar,
 		 btk_calendar_signals[MONTH_CHANGED_SIGNAL],
@@ -3850,7 +3850,7 @@ btk_calendar_select_day (BtkCalendar *calendar,
 	calendar_invalidate_day_num (calendar, day);
     }
   
-  g_object_notify (G_OBJECT (calendar), "day");
+  g_object_notify (B_OBJECT (calendar), "day");
 
   g_signal_emit (calendar,
 		 btk_calendar_signals[DAY_SELECTED_SIGNAL],
@@ -4034,7 +4034,7 @@ btk_calendar_set_detail_width_chars (BtkCalendar *calendar,
   if (chars != priv->detail_width_chars)
     {
       priv->detail_width_chars = chars;
-      g_object_notify (G_OBJECT (calendar), "detail-width-chars");
+      g_object_notify (B_OBJECT (calendar), "detail-width-chars");
       btk_widget_queue_resize_no_redraw (BTK_WIDGET (calendar));
     }
 }
@@ -4062,7 +4062,7 @@ btk_calendar_set_detail_height_rows (BtkCalendar *calendar,
   if (rows != priv->detail_height_rows)
     {
       priv->detail_height_rows = rows;
-      g_object_notify (G_OBJECT (calendar), "detail-height-rows");
+      g_object_notify (B_OBJECT (calendar), "detail-height-rows");
       btk_widget_queue_resize_no_redraw (BTK_WIDGET (calendar));
     }
 }

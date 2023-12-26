@@ -31,11 +31,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_COMBO_BOX             (btk_combo_box_get_type ())
-#define BTK_COMBO_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX, BtkComboBox))
-#define BTK_COMBO_BOX_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
-#define BTK_IS_COMBO_BOX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX))
-#define BTK_IS_COMBO_BOX_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX))
-#define BTK_COMBO_BOX_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
+#define BTK_COMBO_BOX(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX, BtkComboBox))
+#define BTK_COMBO_BOX_CLASS(vtable)    (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
+#define BTK_IS_COMBO_BOX(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX))
+#define BTK_IS_COMBO_BOX_CLASS(vtable) (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX))
+#define BTK_COMBO_BOX_GET_CLASS(inst)  (B_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
 
 typedef struct _BtkComboBox        BtkComboBox;
 typedef struct _BtkComboBoxClass   BtkComboBoxClass;

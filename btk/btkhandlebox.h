@@ -43,11 +43,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_HANDLE_BOX            (btk_handle_box_get_type ())
-#define BTK_HANDLE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
-#define BTK_HANDLE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
-#define BTK_IS_HANDLE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HANDLE_BOX))
-#define BTK_IS_HANDLE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HANDLE_BOX))
-#define BTK_HANDLE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
+#define BTK_HANDLE_BOX(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
+#define BTK_HANDLE_BOX_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
+#define BTK_IS_HANDLE_BOX(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HANDLE_BOX))
+#define BTK_IS_HANDLE_BOX_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HANDLE_BOX))
+#define BTK_HANDLE_BOX_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
 
 
 typedef struct _BtkHandleBox       BtkHandleBox;

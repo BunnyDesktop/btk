@@ -26,11 +26,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_BOOLEAN_CELL            (bail_boolean_cell_get_type ())
-#define BAIL_BOOLEAN_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCell))
-#define BAIL_BOOLEAN_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_BOOLEAN_CELL, BailBooleanCellClass))
-#define BAIL_IS_BOOLEAN_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOOLEAN_CELL))
-#define BAIL_IS_BOOLEAN_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOOLEAN_CELL))
-#define BAIL_BOOLEAN_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCellClass))
+#define BAIL_BOOLEAN_CELL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCell))
+#define BAIL_BOOLEAN_CELL_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_BOOLEAN_CELL, BailBooleanCellClass))
+#define BAIL_IS_BOOLEAN_CELL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOOLEAN_CELL))
+#define BAIL_IS_BOOLEAN_CELL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOOLEAN_CELL))
+#define BAIL_BOOLEAN_CELL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCellClass))
 
 typedef struct _BailBooleanCell                  BailBooleanCell;
 typedef struct _BailBooleanCellClass             BailBooleanCellClass;

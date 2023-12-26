@@ -159,7 +159,7 @@ void add_handlers(BatkObject *obj)
 
     g_print ("Adding signal handler\n");
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("text_caret_moved", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("text_caret_moved", B_OBJECT_TYPE (obj)),
 		0,
 		g_cclosure_new (G_CALLBACK (_notify_caret_handler),
 			NULL, NULL),
@@ -186,7 +186,7 @@ void add_handlers(BatkObject *obj)
  * Text inserted singal handler
  **/
 void
-_notify_text_insert_handler (GObject *obj, int start_offset, int end_offset)
+_notify_text_insert_handler (BObject *obj, int start_offset, int end_offset)
 {
   g_print ("SIGNAL - Text inserted at position %d, length %d!\n",
     start_offset, end_offset);
@@ -201,7 +201,7 @@ _notify_text_insert_handler (GObject *obj, int start_offset, int end_offset)
  * Text deleted singal handler
  **/
 void
-_notify_text_delete_handler (GObject *obj, int start_offset, int end_offset)
+_notify_text_delete_handler (BObject *obj, int start_offset, int end_offset)
 {
   g_print ("SIGNAL - Text deleted at position %d, length %d!\n",
     start_offset, end_offset);
@@ -215,7 +215,7 @@ _notify_text_delete_handler (GObject *obj, int start_offset, int end_offset)
  * Caret (cursor) moved signal handler.
  **/
 void
-_notify_caret_handler (GObject *obj, int position)
+_notify_caret_handler (BObject *obj, int position)
 {
   g_print ("SIGNAL - The caret moved to position %d!\n", position);
 }

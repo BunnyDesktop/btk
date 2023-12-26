@@ -64,7 +64,7 @@ static void btk_list_get_arg         (BtkObject      *object,
 				      BtkArg         *arg,
 				      guint           arg_id);
 /*** BtkObject Methods ***/
-static void btk_list_dispose	     (GObject	     *object);
+static void btk_list_dispose	     (BObject	     *object);
 
 /*** BtkWidget Methods ***/
 static void btk_list_size_request    (BtkWidget	     *widget,
@@ -207,7 +207,7 @@ btk_list_get_type (void)
 static void
 btk_list_class_init (BtkListClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
@@ -347,11 +347,11 @@ btk_list_new (void)
  * btk_list_dispose
  */
 static void
-btk_list_dispose (GObject *object)
+btk_list_dispose (BObject *object)
 {
   btk_list_clear_items (BTK_LIST (object), 0, -1);
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+  B_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 

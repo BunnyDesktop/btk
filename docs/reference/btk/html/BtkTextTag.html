@@ -512,7 +512,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkTextTag.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkTextTag
 </pre>
 </div>
@@ -623,7 +623,7 @@ automatically.</p>
 <a name="btk-text-tag-event"></a><h3>btk_text_tag_event ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 btk_text_tag_event (<em class="parameter"><code><a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a> *tag</code></em>,
-                    <em class="parameter"><code><span class="type">GObject</span> *event_object</code></em>,
+                    <em class="parameter"><code><span class="type">BObject</span> *event_object</code></em>,
                     <em class="parameter"><code><a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
                     <em class="parameter"><code>const <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter</code></em>);</pre>
 <p>Emits the "event" signal on the <a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a>.</p>
@@ -1535,7 +1535,7 @@ locale, see also <a class="link" href="btk2-General.html#btk-get-default-languag
 <a name="BtkTextTag-event"></a><h3>The <code class="literal">“event”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 user_function (<a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a>  *tag,
-               <span class="type">GObject</span>     *object,
+               <span class="type">BObject</span>     *object,
                <a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a>    *event,
                <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter,
                <span class="type">gpointer</span>     user_data)</pre>

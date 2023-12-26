@@ -43,14 +43,14 @@ enum {
   CHILD_PROP_SECONDARY
 };
 
-static void btk_button_box_set_property       (GObject           *object,
+static void btk_button_box_set_property       (BObject           *object,
 					       guint              prop_id,
-					       const GValue      *value,
-					       GParamSpec        *pspec);
-static void btk_button_box_get_property       (GObject           *object,
+					       const BValue      *value,
+					       BParamSpec        *pspec);
+static void btk_button_box_get_property       (BObject           *object,
 					       guint              prop_id,
-					       GValue            *value,
-					       GParamSpec        *pspec);
+					       BValue            *value,
+					       BParamSpec        *pspec);
 static void btk_button_box_size_request       (BtkWidget         *widget,
                                                BtkRequisition    *requisition);
 static void btk_button_box_size_allocate      (BtkWidget         *widget,
@@ -58,13 +58,13 @@ static void btk_button_box_size_allocate      (BtkWidget         *widget,
 static void btk_button_box_set_child_property (BtkContainer      *container,
 					       BtkWidget         *child,
 					       guint              property_id,
-					       const GValue      *value,
-					       GParamSpec        *pspec);
+					       const BValue      *value,
+					       BParamSpec        *pspec);
 static void btk_button_box_get_child_property (BtkContainer      *container,
 					       BtkWidget         *child,
 					       guint              property_id,
-					       GValue            *value,
-					       GParamSpec        *pspec);
+					       BValue            *value,
+					       BParamSpec        *pspec);
 
 #define DEFAULT_CHILD_MIN_WIDTH 85
 #define DEFAULT_CHILD_MIN_HEIGHT 27
@@ -77,10 +77,10 @@ static void
 btk_button_box_class_init (BtkButtonBoxClass *class)
 {
   BtkWidgetClass *widget_class;
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkContainerClass *container_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -161,36 +161,36 @@ btk_button_box_init (BtkButtonBox *button_box)
 }
 
 static void
-btk_button_box_set_property (GObject         *object,
+btk_button_box_set_property (BObject         *object,
 			     guint            prop_id,
-			     const GValue    *value,
-			     GParamSpec      *pspec)
+			     const BValue    *value,
+			     BParamSpec      *pspec)
 {
   switch (prop_id)
     {
     case PROP_LAYOUT_STYLE:
       btk_button_box_set_layout (BTK_BUTTON_BOX (object),
-				 g_value_get_enum (value));
+				 b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_button_box_get_property (GObject         *object,
+btk_button_box_get_property (BObject         *object,
 			     guint            prop_id,
-			     GValue          *value,
-			     GParamSpec      *pspec)
+			     BValue          *value,
+			     BParamSpec      *pspec)
 {
   switch (prop_id)
     {
     case PROP_LAYOUT_STYLE:
-      g_value_set_enum (value, BTK_BUTTON_BOX (object)->layout_style);
+      b_value_set_enum (value, BTK_BUTTON_BOX (object)->layout_style);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -199,14 +199,14 @@ static void
 btk_button_box_set_child_property (BtkContainer    *container,
 				   BtkWidget       *child,
 				   guint            property_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec)
+				   const BValue    *value,
+				   BParamSpec      *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_SECONDARY:
       btk_button_box_set_child_secondary (BTK_BUTTON_BOX (container), child,
-					  g_value_get_boolean (value));
+					  b_value_get_boolean (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -218,13 +218,13 @@ static void
 btk_button_box_get_child_property (BtkContainer *container,
 				   BtkWidget    *child,
 				   guint         property_id,
-				   GValue       *value,
-				   GParamSpec   *pspec)
+				   BValue       *value,
+				   BParamSpec   *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_SECONDARY:
-      g_value_set_boolean (value, 
+      b_value_set_boolean (value, 
 			   btk_button_box_get_child_secondary (BTK_BUTTON_BOX (container), 
 							       child));
       break;
@@ -267,7 +267,7 @@ btk_button_box_set_layout (BtkButtonBox      *widget,
   if (widget->layout_style != layout_style)
     {
       widget->layout_style = layout_style;
-      g_object_notify (G_OBJECT (widget), "layout-style");
+      g_object_notify (B_OBJECT (widget), "layout-style");
       btk_widget_queue_resize (BTK_WIDGET (widget));
     }
 }

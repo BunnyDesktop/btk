@@ -36,11 +36,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PANED                  (btk_paned_get_type ())
-#define BTK_PANED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
-#define BTK_PANED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PANED, BtkPanedClass))
-#define BTK_IS_PANED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PANED))
-#define BTK_IS_PANED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PANED))
-#define BTK_PANED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PANED, BtkPanedClass))
+#define BTK_PANED(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
+#define BTK_PANED_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PANED, BtkPanedClass))
+#define BTK_IS_PANED(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PANED))
+#define BTK_IS_PANED_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PANED))
+#define BTK_PANED_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PANED, BtkPanedClass))
 
 
 typedef struct _BtkPaned        BtkPaned;

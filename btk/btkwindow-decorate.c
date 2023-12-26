@@ -144,7 +144,7 @@ btk_decorated_window_init (BtkWindow   *window)
   deco->maximizable = FALSE;
   deco->real_inner_move = FALSE;
  
-  g_object_set_data_full (G_OBJECT (window), I_("btk-window-decoration"), deco,
+  g_object_set_data_full (B_OBJECT (window), I_("btk-window-decoration"), deco,
 			  (GDestroyNotify) btk_decoration_free);
   
   btk_window_set_has_frame (window, TRUE);
@@ -174,7 +174,7 @@ btk_decorated_window_init (BtkWindow   *window)
 static inline BtkWindowDecoration *
 get_decoration (BtkWindow *window)
 {
-  return (BtkWindowDecoration *)g_object_get_data (G_OBJECT (window), "btk-window-decoration");
+  return (BtkWindowDecoration *)g_object_get_data (B_OBJECT (window), "btk-window-decoration");
 }
 
 void

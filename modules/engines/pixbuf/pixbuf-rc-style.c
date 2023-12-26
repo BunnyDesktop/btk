@@ -26,7 +26,7 @@
 
 static void      pixbuf_rc_style_init         (PixbufRcStyle      *style);
 static void      pixbuf_rc_style_class_init   (PixbufRcStyleClass *klass);
-static void      pixbuf_rc_style_finalize     (GObject            *object);
+static void      pixbuf_rc_style_finalize     (BObject            *object);
 static guint     pixbuf_rc_style_parse        (BtkRcStyle         *rc_style,
 					       BtkSettings  *settings,
 					       GScanner           *scanner);
@@ -172,7 +172,7 @@ static void
 pixbuf_rc_style_class_init (PixbufRcStyleClass *klass)
 {
   BtkRcStyleClass *rc_style_class = BTK_RC_STYLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -184,14 +184,14 @@ pixbuf_rc_style_class_init (PixbufRcStyleClass *klass)
 }
 
 static void
-pixbuf_rc_style_finalize (GObject *object)
+pixbuf_rc_style_finalize (BObject *object)
 {
   PixbufRcStyle *rc_style = PIXBUF_RC_STYLE (object);
   
   g_list_foreach (rc_style->img_list, (GFunc) theme_image_unref, NULL);
   g_list_free (rc_style->img_list);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static guint

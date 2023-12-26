@@ -1249,7 +1249,7 @@ btk_main (void)
   btk_main_loop_level++;
   
   loop = g_main_loop_new (NULL, TRUE);
-  main_loops = g_slist_prepend (main_loops, loop);
+  main_loops = b_slist_prepend (main_loops, loop);
 
   tmp_list = functions = init_functions;
   init_functions = NULL;
@@ -1309,7 +1309,7 @@ btk_main (void)
       bdk_flush ();
     }
     
-  main_loops = g_slist_remove (main_loops, loop);
+  main_loops = b_slist_remove (main_loops, loop);
 
   g_main_loop_unref (loop);
 
@@ -1890,7 +1890,7 @@ btk_grab_add (BtkWidget *widget)
 	old_grab_widget = NULL;
 
       g_object_ref (widget);
-      group->grabs = g_slist_prepend (group->grabs, widget);
+      group->grabs = b_slist_prepend (group->grabs, widget);
 
       btk_grab_notify (group, old_grab_widget, widget, TRUE);
     }
@@ -1929,7 +1929,7 @@ btk_grab_remove (BtkWidget *widget)
       _btk_widget_set_has_grab (widget, FALSE);
 
       group = btk_main_get_window_group (widget);
-      group->grabs = g_slist_remove (group->grabs, widget);
+      group->grabs = b_slist_remove (group->grabs, widget);
       
       if (group->grabs)
 	new_grab_widget = (BtkWidget *)group->grabs->data;
@@ -1968,7 +1968,7 @@ btk_key_snooper_install (BtkKeySnoopFunc snooper,
   data->func = snooper;
   data->func_data = func_data;
   data->id = snooper_id++;
-  key_snoopers = g_slist_prepend (key_snoopers, data);
+  key_snoopers = b_slist_prepend (key_snoopers, data);
 
   return data->id;
 }
@@ -1991,7 +1991,7 @@ btk_key_snooper_remove (guint snooper_id)
     }
   if (data)
     {
-      key_snoopers = g_slist_remove (key_snoopers, data);
+      key_snoopers = b_slist_remove (key_snoopers, data);
       g_free (data);
     }
 }
@@ -2277,7 +2277,7 @@ btk_invoke_idle_timeout (gpointer data)
   BtkArg args[1];
   gint ret_val = FALSE;
   args[0].name = NULL;
-  args[0].type = G_TYPE_BOOLEAN;
+  args[0].type = B_TYPE_BOOLEAN;
   args[0].d.pointer_data = &ret_val;
   closure->marshal (NULL, closure->data,  0, args);
   return ret_val;
@@ -2291,13 +2291,13 @@ btk_invoke_input (gpointer	    data,
   BtkClosure *closure = data;
 
   BtkArg args[3];
-  args[0].type = G_TYPE_INT;
+  args[0].type = B_TYPE_INT;
   args[0].name = NULL;
   BTK_VALUE_INT (args[0]) = source;
   args[1].type = BDK_TYPE_INPUT_CONDITION;
   args[1].name = NULL;
   BTK_VALUE_FLAGS (args[1]) = condition;
-  args[2].type = G_TYPE_NONE;
+  args[2].type = B_TYPE_NONE;
   args[2].name = NULL;
 
   closure->marshal (NULL, closure->data, 2, args);
@@ -2404,7 +2404,7 @@ btk_quit_invoke_function (BtkQuitFunction *quitf)
       gint ret_val = FALSE;
 
       args[0].name = NULL;
-      args[0].type = G_TYPE_BOOLEAN;
+      args[0].type = B_TYPE_BOOLEAN;
       args[0].d.pointer_data = &ret_val;
       ((BtkCallbackMarshal) quitf->marshal) (NULL,
 					     quitf->data,
@@ -2632,15 +2632,15 @@ btk_print (gchar *str)
 
 gboolean
 _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
-				  GValue                *return_accu,
-				  const GValue          *handler_return,
+				  BValue                *return_accu,
+				  const BValue          *handler_return,
 				  gpointer               dummy)
 {
   gboolean continue_emission;
   gboolean signal_handled;
   
-  signal_handled = g_value_get_boolean (handler_return);
-  g_value_set_boolean (return_accu, signal_handled);
+  signal_handled = b_value_get_boolean (handler_return);
+  b_value_set_boolean (return_accu, signal_handled);
   continue_emission = !signal_handled;
   
   return continue_emission;

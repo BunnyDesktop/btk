@@ -80,16 +80,16 @@ struct _BtkTreeViewColumnCellInfo
 /* Type methods */
 static void btk_tree_view_column_cell_layout_init              (BtkCellLayoutIface      *iface);
 
-/* GObject methods */
-static void btk_tree_view_column_set_property                  (GObject                 *object,
+/* BObject methods */
+static void btk_tree_view_column_set_property                  (BObject                 *object,
 								guint                    prop_id,
-								const GValue            *value,
-								GParamSpec              *pspec);
-static void btk_tree_view_column_get_property                  (GObject                 *object,
+								const BValue            *value,
+								BParamSpec              *pspec);
+static void btk_tree_view_column_get_property                  (BObject                 *object,
 								guint                    prop_id,
-								GValue                  *value,
-								GParamSpec              *pspec);
-static void btk_tree_view_column_finalize                      (GObject                 *object);
+								BValue                  *value,
+								BParamSpec              *pspec);
+static void btk_tree_view_column_finalize                      (BObject                 *object);
 
 /* BtkCellLayout implementation */
 static void btk_tree_view_column_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
@@ -167,9 +167,9 @@ G_DEFINE_TYPE_WITH_CODE (BtkTreeViewColumn, btk_tree_view_column, BTK_TYPE_OBJEC
 static void
 btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
 
   class->clicked = NULL;
 
@@ -179,12 +179,12 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
   
   tree_column_signals[CLICKED] =
     g_signal_new (I_("clicked"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTreeViewColumnClass, clicked),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  B_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_VISIBLE,
@@ -398,7 +398,7 @@ btk_tree_view_column_init (BtkTreeViewColumn *tree_column)
 }
 
 static void
-btk_tree_view_column_finalize (GObject *object)
+btk_tree_view_column_finalize (BObject *object)
 {
   BtkTreeViewColumn *tree_column = (BtkTreeViewColumn *) object;
   GList *list;
@@ -425,14 +425,14 @@ btk_tree_view_column_finalize (GObject *object)
   if (tree_column->child)
     g_object_unref (tree_column->child);
 
-  G_OBJECT_CLASS (btk_tree_view_column_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tree_view_column_parent_class)->finalize (object);
 }
 
 static void
-btk_tree_view_column_set_property (GObject         *object,
+btk_tree_view_column_set_property (BObject         *object,
                                    guint            prop_id,
-                                   const GValue    *value,
-                                   GParamSpec      *pspec)
+                                   const BValue    *value,
+                                   BParamSpec      *pspec)
 {
   BtkTreeViewColumn *tree_column;
 
@@ -442,95 +442,95 @@ btk_tree_view_column_set_property (GObject         *object,
     {
     case PROP_VISIBLE:
       btk_tree_view_column_set_visible (tree_column,
-                                        g_value_get_boolean (value));
+                                        b_value_get_boolean (value));
       break;
 
     case PROP_RESIZABLE:
       btk_tree_view_column_set_resizable (tree_column,
-					  g_value_get_boolean (value));
+					  b_value_get_boolean (value));
       break;
 
     case PROP_SIZING:
       btk_tree_view_column_set_sizing (tree_column,
-                                       g_value_get_enum (value));
+                                       b_value_get_enum (value));
       break;
 
     case PROP_FIXED_WIDTH:
       btk_tree_view_column_set_fixed_width (tree_column,
-					    g_value_get_int (value));
+					    b_value_get_int (value));
       break;
 
     case PROP_MIN_WIDTH:
       btk_tree_view_column_set_min_width (tree_column,
-                                          g_value_get_int (value));
+                                          b_value_get_int (value));
       break;
 
     case PROP_MAX_WIDTH:
       btk_tree_view_column_set_max_width (tree_column,
-                                          g_value_get_int (value));
+                                          b_value_get_int (value));
       break;
 
     case PROP_SPACING:
       btk_tree_view_column_set_spacing (tree_column,
-					g_value_get_int (value));
+					b_value_get_int (value));
       break;
 
     case PROP_TITLE:
       btk_tree_view_column_set_title (tree_column,
-                                      g_value_get_string (value));
+                                      b_value_get_string (value));
       break;
 
     case PROP_EXPAND:
       btk_tree_view_column_set_expand (tree_column,
-				       g_value_get_boolean (value));
+				       b_value_get_boolean (value));
       break;
 
     case PROP_CLICKABLE:
       btk_tree_view_column_set_clickable (tree_column,
-                                          g_value_get_boolean (value));
+                                          b_value_get_boolean (value));
       break;
 
     case PROP_WIDGET:
       btk_tree_view_column_set_widget (tree_column,
-                                       (BtkWidget*) g_value_get_object (value));
+                                       (BtkWidget*) b_value_get_object (value));
       break;
 
     case PROP_ALIGNMENT:
       btk_tree_view_column_set_alignment (tree_column,
-                                          g_value_get_float (value));
+                                          b_value_get_float (value));
       break;
 
     case PROP_REORDERABLE:
       btk_tree_view_column_set_reorderable (tree_column,
-					    g_value_get_boolean (value));
+					    b_value_get_boolean (value));
       break;
 
     case PROP_SORT_INDICATOR:
       btk_tree_view_column_set_sort_indicator (tree_column,
-                                               g_value_get_boolean (value));
+                                               b_value_get_boolean (value));
       break;
 
     case PROP_SORT_ORDER:
       btk_tree_view_column_set_sort_order (tree_column,
-                                           g_value_get_enum (value));
+                                           b_value_get_enum (value));
       break;
       
     case PROP_SORT_COLUMN_ID:
       btk_tree_view_column_set_sort_column_id (tree_column,
-                                               g_value_get_int (value));
+                                               b_value_get_int (value));
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_tree_view_column_get_property (GObject         *object,
+btk_tree_view_column_get_property (BObject         *object,
                                    guint            prop_id,
-                                   GValue          *value,
-                                   GParamSpec      *pspec)
+                                   BValue          *value,
+                                   BParamSpec      *pspec)
 {
   BtkTreeViewColumn *tree_column;
 
@@ -539,92 +539,92 @@ btk_tree_view_column_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_VISIBLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_tree_view_column_get_visible (tree_column));
       break;
 
     case PROP_RESIZABLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_tree_view_column_get_resizable (tree_column));
       break;
 
     case PROP_WIDTH:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_width (tree_column));
       break;
 
     case PROP_SPACING:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_spacing (tree_column));
       break;
 
     case PROP_SIZING:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_tree_view_column_get_sizing (tree_column));
       break;
 
     case PROP_FIXED_WIDTH:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_fixed_width (tree_column));
       break;
 
     case PROP_MIN_WIDTH:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_min_width (tree_column));
       break;
 
     case PROP_MAX_WIDTH:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_max_width (tree_column));
       break;
 
     case PROP_TITLE:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_tree_view_column_get_title (tree_column));
       break;
 
     case PROP_EXPAND:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                           btk_tree_view_column_get_expand (tree_column));
       break;
 
     case PROP_CLICKABLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_tree_view_column_get_clickable (tree_column));
       break;
 
     case PROP_WIDGET:
-      g_value_set_object (value,
-                          (GObject*) btk_tree_view_column_get_widget (tree_column));
+      b_value_set_object (value,
+                          (BObject*) btk_tree_view_column_get_widget (tree_column));
       break;
 
     case PROP_ALIGNMENT:
-      g_value_set_float (value,
+      b_value_set_float (value,
                          btk_tree_view_column_get_alignment (tree_column));
       break;
 
     case PROP_REORDERABLE:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
 			   btk_tree_view_column_get_reorderable (tree_column));
       break;
 
     case PROP_SORT_INDICATOR:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_tree_view_column_get_sort_indicator (tree_column));
       break;
 
     case PROP_SORT_ORDER:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_tree_view_column_get_sort_order (tree_column));
       break;
       
     case PROP_SORT_COLUMN_ID:
-      g_value_set_int (value,
+      b_value_set_int (value,
                        btk_tree_view_column_get_sort_column_id (tree_column));
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -715,8 +715,8 @@ btk_tree_view_column_cell_layout_add_attribute (BtkCellLayout   *cell_layout,
   info = btk_tree_view_column_get_cell_info (tree_column, cell);
   g_return_if_fail (info != NULL);
 
-  info->attributes = g_slist_prepend (info->attributes, GINT_TO_POINTER (column));
-  info->attributes = g_slist_prepend (info->attributes, g_strdup (attribute));
+  info->attributes = b_slist_prepend (info->attributes, GINT_TO_POINTER (column));
+  info->attributes = b_slist_prepend (info->attributes, g_strdup (attribute));
 
   if (tree_column->tree_view)
     _btk_tree_view_column_cell_set_dirty (tree_column, TRUE);
@@ -810,7 +810,7 @@ btk_tree_view_column_clear_attributes_by_info (BtkTreeViewColumn *tree_column,
       g_free (list->data);
       list = list->next->next;
     }
-  g_slist_free (info->attributes);
+  b_slist_free (info->attributes);
   info->attributes = NULL;
 
   if (tree_column->tree_view)
@@ -1784,7 +1784,7 @@ btk_tree_view_column_set_visible (BtkTreeViewColumn *tree_column,
     _btk_tree_view_column_cell_set_dirty (tree_column, TRUE);
 
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "visible");
+  g_object_notify (B_OBJECT (tree_column), "visible");
 }
 
 /**
@@ -1832,7 +1832,7 @@ btk_tree_view_column_set_resizable (BtkTreeViewColumn *tree_column,
 
   btk_tree_view_column_update_button (tree_column);
 
-  g_object_notify (G_OBJECT (tree_column), "resizable");
+  g_object_notify (B_OBJECT (tree_column), "resizable");
 }
 
 /**
@@ -1885,7 +1885,7 @@ btk_tree_view_column_set_sizing (BtkTreeViewColumn       *tree_column,
 
   btk_tree_view_column_update_button (tree_column);
 
-  g_object_notify (G_OBJECT (tree_column), "sizing");
+  g_object_notify (B_OBJECT (tree_column), "sizing");
 }
 
 /**
@@ -1948,7 +1948,7 @@ btk_tree_view_column_set_fixed_width (BtkTreeViewColumn *tree_column,
       btk_widget_queue_resize (tree_column->tree_view);
     }
 
-  g_object_notify (G_OBJECT (tree_column), "fixed-width");
+  g_object_notify (B_OBJECT (tree_column), "fixed-width");
 }
 
 /**
@@ -1995,14 +1995,14 @@ btk_tree_view_column_set_min_width (BtkTreeViewColumn *tree_column,
     }
 
   tree_column->min_width = min_width;
-  g_object_freeze_notify (G_OBJECT (tree_column));
+  g_object_freeze_notify (B_OBJECT (tree_column));
   if (tree_column->max_width != -1 && tree_column->max_width < min_width)
     {
       tree_column->max_width = min_width;
-      g_object_notify (G_OBJECT (tree_column), "max-width");
+      g_object_notify (B_OBJECT (tree_column), "max-width");
     }
-  g_object_notify (G_OBJECT (tree_column), "min-width");
-  g_object_thaw_notify (G_OBJECT (tree_column));
+  g_object_notify (B_OBJECT (tree_column), "min-width");
+  g_object_thaw_notify (B_OBJECT (tree_column));
 
   if (tree_column->column_type == BTK_TREE_VIEW_COLUMN_AUTOSIZE)
     _btk_tree_view_column_autosize (BTK_TREE_VIEW (tree_column->tree_view),
@@ -2055,14 +2055,14 @@ btk_tree_view_column_set_max_width (BtkTreeViewColumn *tree_column,
     }
 
   tree_column->max_width = max_width;
-  g_object_freeze_notify (G_OBJECT (tree_column));
+  g_object_freeze_notify (B_OBJECT (tree_column));
   if (max_width != -1 && max_width < tree_column->min_width)
     {
       tree_column->min_width = max_width;
-      g_object_notify (G_OBJECT (tree_column), "min-width");
+      g_object_notify (B_OBJECT (tree_column), "min-width");
     }
-  g_object_notify (G_OBJECT (tree_column), "max-width");
-  g_object_thaw_notify (G_OBJECT (tree_column));
+  g_object_notify (B_OBJECT (tree_column), "max-width");
+  g_object_thaw_notify (B_OBJECT (tree_column));
 
   if (tree_column->column_type == BTK_TREE_VIEW_COLUMN_AUTOSIZE)
     _btk_tree_view_column_autosize (BTK_TREE_VIEW (tree_column->tree_view),
@@ -2125,7 +2125,7 @@ btk_tree_view_column_set_title (BtkTreeViewColumn *tree_column,
   tree_column->title = new_title;
 
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "title");
+  g_object_notify (B_OBJECT (tree_column), "title");
 }
 
 /**
@@ -2182,7 +2182,7 @@ btk_tree_view_column_set_expand (BtkTreeViewColumn *tree_column,
       btk_widget_queue_resize (tree_column->tree_view);
     }
 
-  g_object_notify (G_OBJECT (tree_column), "expand");
+  g_object_notify (B_OBJECT (tree_column), "expand");
 }
 
 /**
@@ -2223,7 +2223,7 @@ btk_tree_view_column_set_clickable (BtkTreeViewColumn *tree_column,
 
   tree_column->clickable = clickable;
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "clickable");
+  g_object_notify (B_OBJECT (tree_column), "clickable");
 }
 
 /**
@@ -2265,7 +2265,7 @@ btk_tree_view_column_set_widget (BtkTreeViewColumn *tree_column,
 
   tree_column->child = widget;
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "widget");
+  g_object_notify (B_OBJECT (tree_column), "widget");
 }
 
 /**
@@ -2308,7 +2308,7 @@ btk_tree_view_column_set_alignment (BtkTreeViewColumn *tree_column,
 
   tree_column->xalign = xalign;
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "alignment");
+  g_object_notify (B_OBJECT (tree_column), "alignment");
 }
 
 /**
@@ -2350,7 +2350,7 @@ btk_tree_view_column_set_reorderable (BtkTreeViewColumn *tree_column,
 
   tree_column->reorderable = (reorderable?TRUE:FALSE);
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "reorderable");
+  g_object_notify (B_OBJECT (tree_column), "reorderable");
 }
 
 /**
@@ -2410,7 +2410,7 @@ btk_tree_view_column_set_sort_column_id (BtkTreeViewColumn *tree_column,
       btk_tree_view_column_set_sort_order (tree_column, BTK_SORT_ASCENDING);
       btk_tree_view_column_set_sort_indicator (tree_column, FALSE);
       btk_tree_view_column_set_clickable (tree_column, FALSE);
-      g_object_notify (G_OBJECT (tree_column), "sort-column-id");
+      g_object_notify (B_OBJECT (tree_column), "sort-column-id");
       return;
     }
 
@@ -2423,7 +2423,7 @@ btk_tree_view_column_set_sort_column_id (BtkTreeViewColumn *tree_column,
                                                          NULL);
 
   btk_tree_view_column_setup_sort_column_id_callback (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "sort-column-id");
+  g_object_notify (B_OBJECT (tree_column), "sort-column-id");
 }
 
 /**
@@ -2469,7 +2469,7 @@ btk_tree_view_column_set_sort_indicator (BtkTreeViewColumn     *tree_column,
 
   tree_column->show_sort_indicator = setting;
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "sort-indicator");
+  g_object_notify (B_OBJECT (tree_column), "sort-indicator");
 }
 
 /**
@@ -2516,7 +2516,7 @@ btk_tree_view_column_set_sort_order      (BtkTreeViewColumn     *tree_column,
 
   tree_column->sort_order = order;
   btk_tree_view_column_update_button (tree_column);
-  g_object_notify (G_OBJECT (tree_column), "sort-order");
+  g_object_notify (B_OBJECT (tree_column), "sort-order");
 }
 
 /**
@@ -2556,7 +2556,7 @@ btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
 					 gboolean           is_expanded)
 {
   GSList *list;
-  GValue value = { 0, };
+  BValue value = { 0, };
   GList *cell_list;
 
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
@@ -2567,7 +2567,7 @@ btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
   for (cell_list = tree_column->cell_list; cell_list; cell_list = cell_list->next)
     {
       BtkTreeViewColumnCellInfo *info = (BtkTreeViewColumnCellInfo *) cell_list->data;
-      GObject *cell = (GObject *) info->cell;
+      BObject *cell = (BObject *) info->cell;
 
       list = info->attributes;
 
@@ -2585,13 +2585,13 @@ btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
 				    GPOINTER_TO_INT (list->next->data),
 				    &value);
 	  g_object_set_property (cell, (gchar *) list->data, &value);
-	  g_value_unset (&value);
+	  b_value_unset (&value);
 	  list = list->next->next;
 	}
 
       if (info->func)
 	(* info->func) (tree_column, info->cell, tree_model, iter, info->func_data);
-      g_object_thaw_notify (G_OBJECT (info->cell));
+      g_object_thaw_notify (B_OBJECT (info->cell));
     }
 
 }

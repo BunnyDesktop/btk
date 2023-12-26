@@ -214,7 +214,7 @@ btk_stock_lookup (const gchar  *stock_id,
  * btk_stock_list_ids:
  * 
  * Retrieves a list of all known stock IDs added to a #BtkIconFactory
- * or registered with btk_stock_add(). The list must be freed with g_slist_free(),
+ * or registered with btk_stock_add(). The list must be freed with b_slist_free(),
  * and each string in the list must be freed with g_free().
  *
  * Return value: (element-type utf8) (transfer full): a list of known stock IDs
@@ -249,7 +249,7 @@ btk_stock_list_ids (void)
         }
       else
         {
-          retval = g_slist_prepend (retval, g_strdup (ids->data));
+          retval = b_slist_prepend (retval, g_strdup (ids->data));
           last_id = ids->data;
         }
 

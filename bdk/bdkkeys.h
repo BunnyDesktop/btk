@@ -57,21 +57,21 @@ typedef struct _BdkKeymap      BdkKeymap;
 typedef struct _BdkKeymapClass BdkKeymapClass;
 
 #define BDK_TYPE_KEYMAP              (bdk_keymap_get_type ())
-#define BDK_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP, BdkKeymap))
-#define BDK_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_KEYMAP, BdkKeymapClass))
-#define BDK_IS_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP))
-#define BDK_IS_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_KEYMAP))
-#define BDK_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_KEYMAP, BdkKeymapClass))
+#define BDK_KEYMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP, BdkKeymap))
+#define BDK_KEYMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_KEYMAP, BdkKeymapClass))
+#define BDK_IS_KEYMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP))
+#define BDK_IS_KEYMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_KEYMAP))
+#define BDK_KEYMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_KEYMAP, BdkKeymapClass))
 
 struct _BdkKeymap
 {
-  GObject     parent_instance;
+  BObject     parent_instance;
   BdkDisplay *GSEAL (display);
 };
 
 struct _BdkKeymapClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*direction_changed) (BdkKeymap *keymap);
   void (*keys_changed)      (BdkKeymap *keymap);

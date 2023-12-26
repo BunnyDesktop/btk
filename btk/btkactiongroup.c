@@ -45,7 +45,7 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-#define BTK_ACTION_GROUP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroupPrivate))
+#define BTK_ACTION_GROUP_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroupPrivate))
 
 struct _BtkActionGroupPrivate 
 {
@@ -78,15 +78,15 @@ enum
 
 static void       btk_action_group_init            (BtkActionGroup      *self);
 static void       btk_action_group_class_init      (BtkActionGroupClass *class);
-static void       btk_action_group_finalize        (GObject             *object);
-static void       btk_action_group_set_property    (GObject             *object,
+static void       btk_action_group_finalize        (BObject             *object);
+static void       btk_action_group_set_property    (BObject             *object,
 						    guint                prop_id,
-						    const GValue        *value,
-						    GParamSpec          *pspec);
-static void       btk_action_group_get_property    (GObject             *object,
+						    const BValue        *value,
+						    BParamSpec          *pspec);
+static void       btk_action_group_get_property    (BObject             *object,
 						    guint                prop_id,
-						    GValue              *value,
-						    GParamSpec          *pspec);
+						    BValue              *value,
+						    BParamSpec          *pspec);
 static BtkAction *btk_action_group_real_get_action (BtkActionGroup      *self,
 						    const gchar         *name);
 
@@ -94,20 +94,20 @@ static BtkAction *btk_action_group_real_get_action (BtkActionGroup      *self,
 static void btk_action_group_buildable_init (BtkBuildableIface *iface);
 static void btk_action_group_buildable_add_child (BtkBuildable  *buildable,
 						  BtkBuilder    *builder,
-						  GObject       *child,
+						  BObject       *child,
 						  const gchar   *type);
 static void btk_action_group_buildable_set_name (BtkBuildable *buildable,
 						 const gchar  *name);
 static const gchar* btk_action_group_buildable_get_name (BtkBuildable *buildable);
 static gboolean btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
 							     BtkBuilder       *builder,
-							     GObject          *child,
+							     BObject          *child,
 							     const gchar      *tagname,
 							     GMarkupParser    *parser,
 							     gpointer         *data);
 static void btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
-						       GObject      *child,
+						       BObject      *child,
 						       const gchar  *tagname,
 						       gpointer     *user_data);
 
@@ -138,7 +138,7 @@ btk_action_group_get_type (void)
 	NULL
       };
 
-      type = g_type_register_static (G_TYPE_OBJECT, I_("BtkActionGroup"),
+      type = g_type_register_static (B_TYPE_OBJECT, I_("BtkActionGroup"),
 				     &type_info, 0);
 
       g_type_add_interface_static (type,
@@ -148,15 +148,15 @@ btk_action_group_get_type (void)
   return type;
 }
 
-static GObjectClass *parent_class = NULL;
+static BObjectClass *parent_class = NULL;
 static guint         action_group_signals[LAST_SIGNAL] = { 0 };
 
 static void
 btk_action_group_class_init (BtkActionGroupClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   parent_class = g_type_class_peek_parent (klass);
 
   bobject_class->finalize = btk_action_group_finalize;
@@ -208,10 +208,10 @@ btk_action_group_class_init (BtkActionGroupClass *klass)
    */
   action_group_signals[CONNECT_PROXY] =
     g_signal_new (I_("connect-proxy"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ACTION, BTK_TYPE_WIDGET);
 
   /**
@@ -231,10 +231,10 @@ btk_action_group_class_init (BtkActionGroupClass *klass)
    */
   action_group_signals[DISCONNECT_PROXY] =
     g_signal_new (I_("disconnect-proxy"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2, 
+		  B_TYPE_NONE, 2, 
 		  BTK_TYPE_ACTION, BTK_TYPE_WIDGET);
 
   /**
@@ -252,10 +252,10 @@ btk_action_group_class_init (BtkActionGroupClass *klass)
    */
   action_group_signals[PRE_ACTIVATE] =
     g_signal_new (I_("pre-activate"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, 
+		  B_TYPE_NONE, 1, 
 		  BTK_TYPE_ACTION);
 
   /**
@@ -273,10 +273,10 @@ btk_action_group_class_init (BtkActionGroupClass *klass)
    */
   action_group_signals[POST_ACTIVATE] =
     g_signal_new (I_("post-activate"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  0, 0, NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, 
+		  B_TYPE_NONE, 1, 
 		  BTK_TYPE_ACTION);
 
   g_type_class_add_private (bobject_class, sizeof (BtkActionGroupPrivate));
@@ -321,7 +321,7 @@ btk_action_group_buildable_init (BtkBuildableIface *iface)
 static void
 btk_action_group_buildable_add_child (BtkBuildable  *buildable,
 				      BtkBuilder    *builder,
-				      GObject       *child,
+				      BObject       *child,
 				      const gchar   *type)
 {
   btk_action_group_add_action_with_accel (BTK_ACTION_GROUP (buildable),
@@ -347,7 +347,7 @@ btk_action_group_buildable_get_name (BtkBuildable *buildable)
 }
 
 typedef struct {
-  GObject         *child;
+  BObject         *child;
   guint            key;
   BdkModifierType  modifiers;
 } AcceleratorParserData;
@@ -399,7 +399,7 @@ static const GMarkupParser accelerator_parser =
 static gboolean
 btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
 					     BtkBuilder       *builder,
-					     GObject          *child,
+					     BObject          *child,
 					     const gchar      *tagname,
 					     GMarkupParser    *parser,
 					     gpointer         *user_data)
@@ -421,7 +421,7 @@ btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
 static void
 btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
-					   GObject      *child,
+					   BObject      *child,
 					   const gchar  *tagname,
 					   gpointer     *user_data)
 {
@@ -481,7 +481,7 @@ btk_action_group_new (const gchar *name)
 }
 
 static void
-btk_action_group_finalize (GObject *object)
+btk_action_group_finalize (BObject *object)
 {
   BtkActionGroup *self;
   BtkActionGroupPrivate *private;
@@ -502,10 +502,10 @@ btk_action_group_finalize (GObject *object)
 }
 
 static void
-btk_action_group_set_property (GObject         *object,
+btk_action_group_set_property (BObject         *object,
 			       guint            prop_id,
-			       const GValue    *value,
-			       GParamSpec      *pspec)
+			       const BValue    *value,
+			       BParamSpec      *pspec)
 {
   BtkActionGroup *self;
   BtkActionGroupPrivate *private;
@@ -518,26 +518,26 @@ btk_action_group_set_property (GObject         *object,
     {
     case PROP_NAME:
       tmp = private->name;
-      private->name = g_value_dup_string (value);
+      private->name = b_value_dup_string (value);
       g_free (tmp);
       break;
     case PROP_SENSITIVE:
-      btk_action_group_set_sensitive (self, g_value_get_boolean (value));
+      btk_action_group_set_sensitive (self, b_value_get_boolean (value));
       break;
     case PROP_VISIBLE:
-      btk_action_group_set_visible (self, g_value_get_boolean (value));
+      btk_action_group_set_visible (self, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_action_group_get_property (GObject    *object,
+btk_action_group_get_property (BObject    *object,
 			       guint       prop_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+			       BValue     *value,
+			       BParamSpec *pspec)
 {
   BtkActionGroup *self;
   BtkActionGroupPrivate *private;
@@ -548,16 +548,16 @@ btk_action_group_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, private->name);
+      b_value_set_string (value, private->name);
       break;
     case PROP_SENSITIVE:
-      g_value_set_boolean (value, private->sensitive);
+      b_value_set_boolean (value, private->sensitive);
       break;
     case PROP_VISIBLE:
-      g_value_set_boolean (value, private->visible);
+      b_value_set_boolean (value, private->visible);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -626,7 +626,7 @@ cb_set_action_sensitivity (const gchar *name,
 {
   /* Minor optimization, the action_groups state only affects actions 
    * that are themselves sensitive */
-  g_object_notify (G_OBJECT (action), "sensitive");
+  g_object_notify (B_OBJECT (action), "sensitive");
 
 }
 
@@ -656,7 +656,7 @@ btk_action_group_set_sensitive (BtkActionGroup *action_group,
       g_hash_table_foreach (private->actions, 
 			    (GHFunc) cb_set_action_sensitivity, NULL);
 
-      g_object_notify (G_OBJECT (action_group), "sensitive");
+      g_object_notify (B_OBJECT (action_group), "sensitive");
     }
 }
 
@@ -691,7 +691,7 @@ cb_set_action_visiblity (const gchar *name,
 {
   /* Minor optimization, the action_groups state only affects actions 
    * that are themselves visible */
-  g_object_notify (G_OBJECT (action), "visible");
+  g_object_notify (B_OBJECT (action), "visible");
 }
 
 /**
@@ -720,7 +720,7 @@ btk_action_group_set_visible (BtkActionGroup *action_group,
       g_hash_table_foreach (private->actions, 
 			    (GHFunc) cb_set_action_visiblity, NULL);
 
-      g_object_notify (G_OBJECT (action_group), "visible");
+      g_object_notify (B_OBJECT (action_group), "visible");
     }
 }
 

@@ -25,11 +25,11 @@
 B_BEGIN_DECLS
 
 #define BAIL_TYPE_MENU_SHELL                    (bail_menu_shell_get_type ())
-#define BAIL_MENU_SHELL(obj)                    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenuShell))
-#define BAIL_MENU_SHELL_CLASS(klass)            (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU_SHELL, BailMenuShellClass))
-#define BAIL_IS_MENU_SHELL(obj)                 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU_SHELL))
-#define BAIL_IS_MENU_SHELL_CLASS(klass)         (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU_SHELL))
-#define BAIL_MENU_SHELL_GET_CLASS(obj)          (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU_SHELL, BailMenuShellClass))
+#define BAIL_MENU_SHELL(obj)                    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenuShell))
+#define BAIL_MENU_SHELL_CLASS(klass)            (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU_SHELL, BailMenuShellClass))
+#define BAIL_IS_MENU_SHELL(obj)                 (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU_SHELL))
+#define BAIL_IS_MENU_SHELL_CLASS(klass)         (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU_SHELL))
+#define BAIL_MENU_SHELL_GET_CLASS(obj)          (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU_SHELL, BailMenuShellClass))
 
 typedef struct _BailMenuShell                   BailMenuShell;
 typedef struct _BailMenuShellClass              BailMenuShellClass;

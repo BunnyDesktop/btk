@@ -38,11 +38,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_HSEPARATOR                  (btk_hseparator_get_type ())
-#define BTK_HSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparator))
-#define BTK_HSEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
-#define BTK_IS_HSEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSEPARATOR))
-#define BTK_IS_HSEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSEPARATOR))
-#define BTK_HSEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
+#define BTK_HSEPARATOR(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparator))
+#define BTK_HSEPARATOR_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
+#define BTK_IS_HSEPARATOR(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSEPARATOR))
+#define BTK_IS_HSEPARATOR_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSEPARATOR))
+#define BTK_HSEPARATOR_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
 
 
 typedef struct _BtkHSeparator       BtkHSeparator;

@@ -59,7 +59,7 @@ struct _BdkAxisInfo
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkInputWindow

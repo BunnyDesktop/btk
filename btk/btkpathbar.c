@@ -78,8 +78,8 @@ struct _ButtonData
 
 G_DEFINE_TYPE (BtkPathBar, btk_path_bar, BTK_TYPE_CONTAINER)
 
-static void btk_path_bar_finalize                 (GObject          *object);
-static void btk_path_bar_dispose                  (GObject          *object);
+static void btk_path_bar_finalize                 (BObject          *object);
+static void btk_path_bar_dispose                  (BObject          *object);
 static void btk_path_bar_realize                  (BtkWidget        *widget);
 static void btk_path_bar_unrealize                (BtkWidget        *widget);
 static void btk_path_bar_size_request             (BtkWidget        *widget,
@@ -158,7 +158,7 @@ get_slider_button (BtkPathBar  *path_bar,
   btk_container_add (BTK_CONTAINER (path_bar), button);
   btk_widget_show_all (button);
 
-  g_signal_connect (G_OBJECT (button), "unmap",
+  g_signal_connect (B_OBJECT (button), "unmap",
 		    G_CALLBACK (on_slider_unmap), path_bar);
 
   btk_widget_pop_composite_child ();
@@ -202,12 +202,12 @@ btk_path_bar_init (BtkPathBar *path_bar)
 static void
 btk_path_bar_class_init (BtkPathBarClass *path_bar_class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = (GObjectClass *) path_bar_class;
+  bobject_class = (BObjectClass *) path_bar_class;
   object_class = (BtkObjectClass *) path_bar_class;
   widget_class = (BtkWidgetClass *) path_bar_class;
   container_class = (BtkContainerClass *) path_bar_class;
@@ -235,20 +235,20 @@ btk_path_bar_class_init (BtkPathBarClass *path_bar_class)
 
   path_bar_signals [PATH_CLICKED] =
     g_signal_new (I_("path-clicked"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkPathBarClass, path_clicked),
 		  NULL, NULL,
 		  _btk_marshal_VOID__POINTER_POINTER_BOOLEAN,
-		  G_TYPE_NONE, 3,
-		  G_TYPE_POINTER,
-		  G_TYPE_POINTER,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_NONE, 3,
+		  B_TYPE_POINTER,
+		  B_TYPE_POINTER,
+		  B_TYPE_BOOLEAN);
 }
 
 
 static void
-btk_path_bar_finalize (GObject *object)
+btk_path_bar_finalize (BObject *object)
 {
   BtkPathBar *path_bar;
 
@@ -274,7 +274,7 @@ btk_path_bar_finalize (GObject *object)
   if (path_bar->file_system)
     g_object_unref (path_bar->file_system);
 
-  G_OBJECT_CLASS (btk_path_bar_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_path_bar_parent_class)->finalize (object);
 }
 
 /* Removes the settings signal handler.  It's safe to call multiple times */
@@ -294,7 +294,7 @@ remove_settings_signal (BtkPathBar *path_bar,
 }
 
 static void
-btk_path_bar_dispose (GObject *object)
+btk_path_bar_dispose (BObject *object)
 {
   BtkPathBar *path_bar = BTK_PATH_BAR (object);
 
@@ -304,7 +304,7 @@ btk_path_bar_dispose (GObject *object)
     g_cancellable_cancel (path_bar->get_info_cancellable);
   path_bar->get_info_cancellable = NULL;
 
-  G_OBJECT_CLASS (btk_path_bar_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_path_bar_parent_class)->dispose (object);
 }
 
 /* Size requisition:
@@ -1095,8 +1095,8 @@ change_icon_theme (BtkPathBar *path_bar)
 }
 /* Callback used when a BtkSettings value changes */
 static void
-settings_notify_cb (GObject    *object,
-		    GParamSpec *pspec,
+settings_notify_cb (BObject    *object,
+		    BParamSpec *pspec,
 		    BtkPathBar *path_bar)
 {
   const char *name;
@@ -1506,7 +1506,7 @@ make_directory_button (BtkPathBar  *path_bar,
   g_signal_connect (button_data->button, "clicked",
 		    G_CALLBACK (button_clicked_cb),
 		    button_data);
-  g_object_weak_ref (G_OBJECT (button_data->button),
+  g_object_weak_ref (B_OBJECT (button_data->button),
 		     (GWeakNotify) button_data_free, button_data);
 
   btk_drag_source_set (button_data->button,

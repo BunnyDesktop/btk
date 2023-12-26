@@ -17,7 +17,7 @@
 #   STRING      for string types (gchar*)
 #   BOXED       for boxed (anonymous but reference counted) types (GBoxed*)
 #   POINTER     for anonymous pointer types (gpointer)
-#   OBJECT      for GObject or derived types (GObject*)
+#   OBJECT      for BObject or derived types (BObject*)
 #   NONE        deprecated alias for VOID
 #   BOOL        deprecated alias for BOOLEAN
 

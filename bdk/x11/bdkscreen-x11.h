@@ -37,11 +37,11 @@ typedef struct _BdkScreenX11 BdkScreenX11;
 typedef struct _BdkScreenX11Class BdkScreenX11Class;
 
 #define BDK_TYPE_SCREEN_X11              (_bdk_screen_x11_get_type ())
-#define BDK_SCREEN_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_X11, BdkScreenX11))
-#define BDK_SCREEN_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
-#define BDK_IS_SCREEN_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_X11))
-#define BDK_IS_SCREEN_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_X11))
-#define BDK_SCREEN_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
+#define BDK_SCREEN_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_X11, BdkScreenX11))
+#define BDK_SCREEN_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
+#define BDK_IS_SCREEN_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_X11))
+#define BDK_IS_SCREEN_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_X11))
+#define BDK_SCREEN_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
 
 typedef struct _BdkX11Monitor BdkX11Monitor;
 

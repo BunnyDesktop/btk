@@ -1586,7 +1586,7 @@ if test -n "$export_dynamic"; then
 fi
 
 ##################################################
-# GObject introspection
+# BObject introspection
 ##################################################
 
 BOBJECT_INTROSPECTION_CHECK([0.9.3])

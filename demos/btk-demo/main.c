@@ -712,7 +712,7 @@ selection_cb (BtkTreeSelection *selection,
 	      BtkTreeModel     *model)
 {
   BtkTreeIter iter;
-  GValue value = {0, };
+  BValue value = {0, };
 
   if (! btk_tree_selection_get_selected (selection, NULL, &iter))
     return;
@@ -720,9 +720,9 @@ selection_cb (BtkTreeSelection *selection,
   btk_tree_model_get_value (model, &iter,
 			    FILENAME_COLUMN,
 			    &value);
-  if (g_value_get_string (&value))
-    load_file (g_value_get_string (&value));
-  g_value_unset (&value);
+  if (b_value_get_string (&value))
+    load_file (b_value_get_string (&value));
+  b_value_unset (&value);
 }
 
 static BtkWidget *
@@ -785,7 +785,7 @@ create_tree (void)
 
   Demo *d = testbtk_demos;
 
-  model = btk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+  model = btk_tree_store_new (NUM_COLUMNS, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_POINTER, B_TYPE_INT);
   tree_view = btk_tree_view_new ();
   btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
   selection = btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view));

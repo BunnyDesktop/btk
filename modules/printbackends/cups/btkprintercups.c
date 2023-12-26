@@ -22,7 +22,7 @@
 
 static void btk_printer_cups_init       (BtkPrinterCups      *printer);
 static void btk_printer_cups_class_init (BtkPrinterCupsClass *class);
-static void btk_printer_cups_finalize   (GObject             *object);
+static void btk_printer_cups_finalize   (BObject             *object);
 
 static BtkPrinterClass *btk_printer_cups_parent_class;
 static GType btk_printer_cups_type = 0;
@@ -58,7 +58,7 @@ btk_printer_cups_get_type (void)
 static void
 btk_printer_cups_class_init (BtkPrinterCupsClass *class)
 {
-  GObjectClass *object_class = (GObjectClass *) class;
+  BObjectClass *object_class = (BObjectClass *) class;
 	
   btk_printer_cups_parent_class = g_type_class_peek_parent (class);
 
@@ -96,7 +96,7 @@ btk_printer_cups_init (BtkPrinterCups *printer)
 }
 
 static void
-btk_printer_cups_finalize (GObject *object)
+btk_printer_cups_finalize (BObject *object)
 {
   BtkPrinterCups *printer;
 
@@ -127,7 +127,7 @@ btk_printer_cups_finalize (GObject *object)
 
   btk_cups_connection_test_free (printer->remote_cups_connection_test);
 
-  G_OBJECT_CLASS (btk_printer_cups_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_cups_parent_class)->finalize (object);
 }
 
 /**
@@ -143,7 +143,7 @@ BtkPrinterCups *
 btk_printer_cups_new (const char      *name,
 		      BtkPrintBackend *backend)
 {
-  GObject *result;
+  BObject *result;
   gboolean accepts_pdf;
   BtkPrinterCups *printer;
 

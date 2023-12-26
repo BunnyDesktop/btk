@@ -30,8 +30,8 @@ static void bail_scale_button_class_init (BailScaleButtonClass *klass);
 static void bail_scale_button_init       (BailScaleButton      *button);
 
 /* BailWidget */
-static void bail_scale_button_notify_btk (GObject    *obj,
-                                          GParamSpec *pspec);
+static void bail_scale_button_notify_btk (BObject    *obj,
+                                          BParamSpec *pspec);
 
 /* BatkObject */
 static void bail_scale_button_initialize (BatkObject *obj,
@@ -55,15 +55,15 @@ static gboolean              bail_scale_button_set_description(BatkAction      *
 /* BatkValue */
 static void	batk_value_interface_init	        (BatkValueIface  *iface);
 static void	bail_scale_button_get_current_value     (BatkValue       *obj,
-                                                         GValue         *value);
+                                                         BValue         *value);
 static void	bail_scale_button_get_maximum_value     (BatkValue       *obj,
-                                                         GValue         *value);
+                                                         BValue         *value);
 static void	bail_scale_button_get_minimum_value     (BatkValue       *obj,
-                                                         GValue         *value);
+                                                         BValue         *value);
 static void	bail_scale_button_get_minimum_increment (BatkValue       *obj,
-                                                         GValue         *value);
+                                                         BValue         *value);
 static gboolean	bail_scale_button_set_current_value     (BatkValue       *obj,
-                                                         const GValue   *value);
+                                                         const BValue   *value);
 
 G_DEFINE_TYPE_WITH_CODE (BailScaleButton, bail_scale_button, BAIL_TYPE_BUTTON,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
@@ -185,7 +185,7 @@ batk_value_interface_init (BatkValueIface *iface)
 
 static void
 bail_scale_button_get_current_value (BatkValue *obj,
-                                     GValue   *value)
+                                     BValue   *value)
 {
   BtkScaleButton *btk_scale_button;
 
@@ -193,13 +193,13 @@ bail_scale_button_get_current_value (BatkValue *obj,
 
   btk_scale_button = BTK_SCALE_BUTTON (BTK_ACCESSIBLE (obj)->widget);
 
-  g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
+  b_value_set_double (b_value_init (value, B_TYPE_DOUBLE),
                       btk_scale_button_get_value (btk_scale_button));
 }
 
 static void
 bail_scale_button_get_maximum_value (BatkValue *obj,
-                                     GValue   *value)
+                                     BValue   *value)
 {
   BtkWidget *btk_widget;
   BtkAdjustment *adj;
@@ -212,13 +212,13 @@ bail_scale_button_get_maximum_value (BatkValue *obj,
 
   adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
-    g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
+    b_value_set_double (b_value_init (value, B_TYPE_DOUBLE),
                         adj->upper);
 }
 
 static void
 bail_scale_button_get_minimum_value (BatkValue *obj,
-                                     GValue   *value)
+                                     BValue   *value)
 {
   BtkWidget *btk_widget;
   BtkAdjustment *adj;
@@ -231,13 +231,13 @@ bail_scale_button_get_minimum_value (BatkValue *obj,
 
   adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
-    g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
+    b_value_set_double (b_value_init (value, B_TYPE_DOUBLE),
                         adj->lower);
 }
 
 static void
 bail_scale_button_get_minimum_increment (BatkValue *obj,
-                                         GValue   *value)
+                                         BValue   *value)
 {
   BtkWidget *btk_widget;
   BtkAdjustment *adj;
@@ -250,13 +250,13 @@ bail_scale_button_get_minimum_increment (BatkValue *obj,
 
   adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
-    g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
+    b_value_set_double (b_value_init (value, B_TYPE_DOUBLE),
                         adj->step_increment);
 }
 
 static gboolean
 bail_scale_button_set_current_value (BatkValue     *obj,
-                                     const GValue *value)
+                                     const BValue *value)
 {
   BtkWidget *btk_widget;
 
@@ -268,15 +268,15 @@ bail_scale_button_set_current_value (BatkValue     *obj,
 
   if (G_VALUE_HOLDS_DOUBLE (value))
     {
-      btk_scale_button_set_value (BTK_SCALE_BUTTON (btk_widget), g_value_get_double (value));
+      btk_scale_button_set_value (BTK_SCALE_BUTTON (btk_widget), b_value_get_double (value));
       return TRUE;
     }
   return FALSE;
 }
 
 static void
-bail_scale_button_notify_btk (GObject    *obj,
-                              GParamSpec *pspec)
+bail_scale_button_notify_btk (BObject    *obj,
+                              BParamSpec *pspec)
 {
   BtkScaleButton *btk_scale_button;
   BailScaleButton *scale_button;
@@ -288,7 +288,7 @@ bail_scale_button_notify_btk (GObject    *obj,
 
   if (strcmp (pspec->name, "value") == 0)
     {
-      g_object_notify (G_OBJECT (scale_button), "accessible-value");
+      g_object_notify (B_OBJECT (scale_button), "accessible-value");
     }
   else
     {

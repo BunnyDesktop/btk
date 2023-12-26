@@ -222,7 +222,7 @@ btk_tearoff_menu_item_activate (BtkMenuItem *menu_item)
 
 static void
 tearoff_state_changed (BtkMenu            *menu,
-		       GParamSpec         *pspec,
+		       BParamSpec         *pspec,
 		       gpointer            data)
 {
   BtkTearoffMenuItem *tearoff_menu_item = BTK_TEAROFF_MENU_ITEM (data);

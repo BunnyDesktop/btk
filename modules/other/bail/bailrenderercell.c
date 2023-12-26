@@ -25,14 +25,14 @@
 static void      bail_renderer_cell_class_init          (BailRendererCellClass *klass);
 static void      bail_renderer_cell_init                (BailRendererCell      *renderer_cell);
 
-static void      bail_renderer_cell_finalize            (GObject               *object);
+static void      bail_renderer_cell_finalize            (BObject               *object);
 
 G_DEFINE_TYPE (BailRendererCell, bail_renderer_cell, BAIL_TYPE_CELL)
 
 static void 
 bail_renderer_cell_class_init (BailRendererCellClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   klass->property_list = NULL;
 
@@ -46,13 +46,13 @@ bail_renderer_cell_init (BailRendererCell *renderer_cell)
 }
 
 static void
-bail_renderer_cell_finalize (GObject  *object)
+bail_renderer_cell_finalize (BObject  *object)
 {
   BailRendererCell *renderer_cell = BAIL_RENDERER_CELL (object);
 
   if (renderer_cell->renderer)
     g_object_unref (renderer_cell->renderer);
-  G_OBJECT_CLASS (bail_renderer_cell_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_renderer_cell_parent_class)->finalize (object);
 }
 
 gboolean
@@ -68,7 +68,7 @@ bail_renderer_cell_update_cache (BailRendererCell *cell,
 BatkObject*
 bail_renderer_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
 

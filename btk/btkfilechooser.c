@@ -633,7 +633,7 @@ btk_file_chooser_get_type (void)
 
   if (!file_chooser_type)
     {
-      file_chooser_type = g_type_register_static_simple (G_TYPE_INTERFACE,
+      file_chooser_type = g_type_register_static_simple (B_TYPE_INTERFACE,
 							 I_("BtkFileChooser"),
 							 sizeof (BtkFileChooserIface),
 							 (GClassInitFunc) btk_file_chooser_class_init,
@@ -647,15 +647,15 @@ btk_file_chooser_get_type (void)
 
 static gboolean
 confirm_overwrite_accumulator (GSignalInvocationHint *ihint,
-			       GValue                *return_accu,
-			       const GValue          *handler_return,
+			       BValue                *return_accu,
+			       const BValue          *handler_return,
 			       gpointer               dummy)
 {
   gboolean continue_emission;
   BtkFileChooserConfirmation conf;
 
-  conf = g_value_get_enum (handler_return);
-  g_value_set_enum (return_accu, conf);
+  conf = b_value_get_enum (handler_return);
+  b_value_set_enum (return_accu, conf);
   continue_emission = (conf == BTK_FILE_CHOOSER_CONFIRMATION_CONFIRM);
 
   return continue_emission;
@@ -664,7 +664,7 @@ confirm_overwrite_accumulator (GSignalInvocationHint *ihint,
 static void
 btk_file_chooser_class_init (gpointer g_iface)
 {
-  GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
+  GType iface_type = B_TYPE_FROM_INTERFACE (g_iface);
 
   /**
    * BtkFileChooser::current-folder-changed
@@ -690,7 +690,7 @@ btk_file_chooser_class_init (gpointer g_iface)
 		G_STRUCT_OFFSET (BtkFileChooserIface, current_folder_changed),
 		NULL, NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
 
   /**
    * BtkFileChooser::selection-changed
@@ -717,7 +717,7 @@ btk_file_chooser_class_init (gpointer g_iface)
 		G_STRUCT_OFFSET (BtkFileChooserIface, selection_changed),
 		NULL, NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
 
   /**
    * BtkFileChooser::update-preview
@@ -751,7 +751,7 @@ btk_file_chooser_class_init (gpointer g_iface)
 		G_STRUCT_OFFSET (BtkFileChooserIface, update_preview),
 		NULL, NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
 
   /**
    * BtkFileChooser::file-activated
@@ -775,7 +775,7 @@ btk_file_chooser_class_init (gpointer g_iface)
 		G_STRUCT_OFFSET (BtkFileChooserIface, file_activated),
 		NULL, NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE, 0);
+		B_TYPE_NONE, 0);
 
   /**
    * BtkFileChooser::confirm-overwrite:
@@ -1314,10 +1314,10 @@ files_to_strings (GSList  *files,
       string = (* convert_func) (file);
 
       if (string)
-	strings = g_slist_prepend (strings, string);
+	strings = b_slist_prepend (strings, string);
     }
 
-  return g_slist_reverse (strings);
+  return b_slist_reverse (strings);
 }
 
 static gchar *
@@ -1347,7 +1347,7 @@ file_to_uri_with_native_path (GFile *file)
  *
  * Return value: (element-type filename) (transfer full): a #GSList
  *    containing the filenames of all selected files and subfolders in
- *    the current folder. Free the returned list with g_slist_free(),
+ *    the current folder. Free the returned list with b_slist_free(),
  *    and the filenames with g_free().
  *
  * Since: 2.4
@@ -1362,8 +1362,8 @@ btk_file_chooser_get_filenames (BtkFileChooser *chooser)
   files = btk_file_chooser_get_files (chooser);
 
   result = files_to_strings (files, g_file_get_path);
-  g_slist_foreach (files, (GFunc) g_object_unref, NULL);
-  g_slist_free (files);
+  b_slist_foreach (files, (GFunc) g_object_unref, NULL);
+  b_slist_free (files);
 
   return result;
 }
@@ -1667,7 +1667,7 @@ btk_file_chooser_unselect_all (BtkFileChooser *chooser)
  *
  * Return value: (element-type utf8) (transfer full): a #GSList containing the URIs of all selected
  *   files and subfolders in the current folder. Free the returned list
- *   with g_slist_free(), and the filenames with g_free().
+ *   with b_slist_free(), and the filenames with g_free().
  *
  * Since: 2.4
  **/
@@ -1685,8 +1685,8 @@ btk_file_chooser_get_uris (BtkFileChooser *chooser)
   else
     result = files_to_strings (files, g_file_get_uri);
 
-  g_slist_foreach (files, (GFunc) g_object_unref, NULL);
-  g_slist_free (files);
+  b_slist_foreach (files, (GFunc) g_object_unref, NULL);
+  b_slist_free (files);
 
   return result;
 }
@@ -1862,7 +1862,7 @@ btk_file_chooser_unselect_file (BtkFileChooser *chooser,
  *
  * Return value: (element-type GFile) (transfer full): a #GSList
  *   containing a #GFile for each selected file and subfolder in the
- *   current folder.  Free the returned list with g_slist_free(), and
+ *   current folder.  Free the returned list with b_slist_free(), and
  *   the files with g_object_unref().
  *
  * Since: 2.14
@@ -1961,10 +1961,10 @@ btk_file_chooser_get_file (BtkFileChooser *chooser)
   if (list)
     {
       result = list->data;
-      list = g_slist_delete_link (list, list);
+      list = b_slist_delete_link (list, list);
 
-      g_slist_foreach (list, (GFunc) g_object_unref, NULL);
-      g_slist_free (list);
+      b_slist_foreach (list, (GFunc) g_object_unref, NULL);
+      b_slist_free (list);
     }
 
   return result;
@@ -2374,7 +2374,7 @@ btk_file_chooser_remove_filter (BtkFileChooser *chooser,
  * Return value: (element-type BtkFileFilter) (transfer container): a
  *  #GSList containing the current set of user selectable filters. The
  *  contents of the list are owned by BTK+, but you must free the list
- *  itself with g_slist_free() when you are done with it.
+ *  itself with b_slist_free() when you are done with it.
  *
  * Since: 2.4
  **/
@@ -2514,7 +2514,7 @@ btk_file_chooser_remove_shortcut_folder (BtkFileChooser    *chooser,
  *
  * Return value: (element-type filename) (transfer full): A list of
  * folder filenames, or %NULL if there are no shortcut folders.  Free
- * the returned list with g_slist_free(), and the filenames with
+ * the returned list with b_slist_free(), and the filenames with
  * g_free().
  *
  * Since: 2.4
@@ -2530,8 +2530,8 @@ btk_file_chooser_list_shortcut_folders (BtkFileChooser *chooser)
   folders = _btk_file_chooser_list_shortcut_folder_files (chooser);
 
   result = files_to_strings (folders, g_file_get_path);
-  g_slist_foreach (folders, (GFunc) g_object_unref, NULL);
-  g_slist_free (folders);
+  b_slist_foreach (folders, (GFunc) g_object_unref, NULL);
+  b_slist_free (folders);
 
   return result;
 }
@@ -2612,7 +2612,7 @@ btk_file_chooser_remove_shortcut_folder_uri (BtkFileChooser    *chooser,
  *
  * Return value: (element-type utf8) (transfer full): A list of folder
  * URIs, or %NULL if there are no shortcut folders.  Free the returned
- * list with g_slist_free(), and the URIs with g_free().
+ * list with b_slist_free(), and the URIs with g_free().
  *
  * Since: 2.4
  **/
@@ -2627,8 +2627,8 @@ btk_file_chooser_list_shortcut_folder_uris (BtkFileChooser *chooser)
   folders = _btk_file_chooser_list_shortcut_folder_files (chooser);
 
   result = files_to_strings (folders, g_file_get_uri);
-  g_slist_foreach (folders, (GFunc) g_object_unref, NULL);
-  g_slist_free (folders);
+  b_slist_foreach (folders, (GFunc) g_object_unref, NULL);
+  b_slist_free (folders);
 
   return result;
 }

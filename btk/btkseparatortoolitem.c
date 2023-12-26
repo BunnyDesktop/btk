@@ -35,14 +35,14 @@ enum {
 };
 
 static gboolean btk_separator_tool_item_create_menu_proxy (BtkToolItem               *item);
-static void     btk_separator_tool_item_set_property      (GObject                   *object,
+static void     btk_separator_tool_item_set_property      (BObject                   *object,
 							   guint                      prop_id,
-							   const GValue              *value,
-							   GParamSpec                *pspec);
-static void     btk_separator_tool_item_get_property       (GObject                   *object,
+							   const BValue              *value,
+							   BParamSpec                *pspec);
+static void     btk_separator_tool_item_get_property       (BObject                   *object,
 							   guint                      prop_id,
-							   GValue                    *value,
-							   GParamSpec                *pspec);
+							   BValue                    *value,
+							   BParamSpec                *pspec);
 static void     btk_separator_tool_item_size_request      (BtkWidget                 *widget,
 							   BtkRequisition            *requisition);
 static gboolean btk_separator_tool_item_expose            (BtkWidget                 *widget,
@@ -53,7 +53,7 @@ static gint     get_space_size                            (BtkToolItem          
 
 
 
-#define BTK_SEPARATOR_TOOL_ITEM_GET_PRIVATE(obj)(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemPrivate))
+#define BTK_SEPARATOR_TOOL_ITEM_GET_PRIVATE(obj)(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemPrivate))
 
 struct _BtkSeparatorToolItemPrivate
 {
@@ -81,12 +81,12 @@ get_space_size (BtkToolItem *tool_item)
 static void
 btk_separator_tool_item_class_init (BtkSeparatorToolItemClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkContainerClass *container_class;
   BtkToolItemClass *toolitem_class;
   BtkWidgetClass *widget_class;
   
-  object_class = (GObjectClass *)class;
+  object_class = (BObjectClass *)class;
   container_class = (BtkContainerClass *)class;
   toolitem_class = (BtkToolItemClass *)class;
   widget_class = (BtkWidgetClass *)class;
@@ -137,39 +137,39 @@ btk_separator_tool_item_create_menu_proxy (BtkToolItem *item)
 }
 
 static void
-btk_separator_tool_item_set_property (GObject      *object,
+btk_separator_tool_item_set_property (BObject      *object,
 				      guint         prop_id,
-				      const GValue *value,
-				      GParamSpec   *pspec)
+				      const BValue *value,
+				      BParamSpec   *pspec)
 {
   BtkSeparatorToolItem *item = BTK_SEPARATOR_TOOL_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_DRAW:
-      btk_separator_tool_item_set_draw (item, g_value_get_boolean (value));
+      btk_separator_tool_item_set_draw (item, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_separator_tool_item_get_property (GObject      *object,
+btk_separator_tool_item_get_property (BObject      *object,
 				      guint         prop_id,
-				      GValue       *value,
-				      GParamSpec   *pspec)
+				      BValue       *value,
+				      BParamSpec   *pspec)
 {
   BtkSeparatorToolItem *item = BTK_SEPARATOR_TOOL_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_DRAW:
-      g_value_set_boolean (value, btk_separator_tool_item_get_draw (item));
+      b_value_set_boolean (value, btk_separator_tool_item_get_draw (item));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -277,7 +277,7 @@ btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
 
       btk_widget_queue_draw (BTK_WIDGET (item));
 
-      g_object_notify (G_OBJECT (item), "draw");
+      g_object_notify (B_OBJECT (item), "draw");
     }
 }
 

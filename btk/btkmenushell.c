@@ -127,7 +127,7 @@ enum {
  *     Cancels the current selection
  */
 
-#define BTK_MENU_SHELL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShellPrivate))
+#define BTK_MENU_SHELL_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShellPrivate))
 
 typedef struct _BtkMenuShellPrivate BtkMenuShellPrivate;
 
@@ -144,16 +144,16 @@ struct _BtkMenuShellPrivate
   guint in_unselectable_item : 1;
 };
 
-static void btk_menu_shell_set_property      (GObject           *object,
+static void btk_menu_shell_set_property      (BObject           *object,
                                               guint              prop_id,
-                                              const GValue      *value,
-                                              GParamSpec        *pspec);
-static void btk_menu_shell_get_property      (GObject           *object,
+                                              const BValue      *value,
+                                              BParamSpec        *pspec);
+static void btk_menu_shell_get_property      (BObject           *object,
                                               guint              prop_id,
-                                              GValue            *value,
-                                              GParamSpec        *pspec);
+                                              BValue            *value,
+                                              BParamSpec        *pspec);
 static void btk_menu_shell_realize           (BtkWidget         *widget);
-static void btk_menu_shell_finalize          (GObject           *object);
+static void btk_menu_shell_finalize          (BObject           *object);
 static gint btk_menu_shell_button_press      (BtkWidget         *widget,
 					      BdkEventButton    *event);
 static gint btk_menu_shell_button_release    (BtkWidget         *widget,
@@ -210,13 +210,13 @@ G_DEFINE_ABSTRACT_TYPE (BtkMenuShell, btk_menu_shell, BTK_TYPE_CONTAINER)
 static void
 btk_menu_shell_class_init (BtkMenuShellClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
   BtkBindingSet *binding_set;
 
-  object_class = (GObjectClass*) klass;
+  object_class = (BObjectClass*) klass;
   widget_class = (BtkWidgetClass*) klass;
   container_class = (BtkContainerClass*) klass;
 
@@ -250,59 +250,59 @@ btk_menu_shell_class_init (BtkMenuShellClass *klass)
 
   menu_shell_signals[DEACTIVATE] =
     g_signal_new (I_("deactivate"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, deactivate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   menu_shell_signals[SELECTION_DONE] =
     g_signal_new (I_("selection-done"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, selection_done),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   menu_shell_signals[MOVE_CURRENT] =
     g_signal_new (I_("move-current"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, move_current),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU_DIRECTION_TYPE);
 
   menu_shell_signals[ACTIVATE_CURRENT] =
     g_signal_new (I_("activate-current"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, activate_current),
 		  NULL, NULL,
 		  _btk_marshal_VOID__BOOLEAN,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_BOOLEAN);
 
   menu_shell_signals[CANCEL] =
     g_signal_new (I_("cancel"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, cancel),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   menu_shell_signals[CYCLE_FOCUS] =
     g_signal_new_class_handler (I_("cycle-focus"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_real_menu_shell_cycle_focus),
                                 NULL, NULL,
                                 _btk_marshal_VOID__ENUM,
-                                G_TYPE_NONE, 1,
+                                B_TYPE_NONE, 1,
                                 BTK_TYPE_DIRECTION_TYPE);
 
   /**
@@ -319,13 +319,13 @@ btk_menu_shell_class_init (BtkMenuShellClass *klass)
    */
   menu_shell_signals[MOVE_SELECTED] =
     g_signal_new (I_("move-selected"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkMenuShellClass, move_selected),
 		  _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__INT,
-		  G_TYPE_BOOLEAN, 1,
-		  G_TYPE_INT);
+		  B_TYPE_BOOLEAN, 1,
+		  B_TYPE_INT);
 
   /**
    * BtkMenuShell::insert:
@@ -344,12 +344,12 @@ btk_menu_shell_class_init (BtkMenuShellClass *klass)
    **/
   menu_shell_signals[INSERT] =
     g_signal_new (I_("insert"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (BtkMenuShellClass, insert),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_INT,
-                  G_TYPE_NONE, 2, BTK_TYPE_WIDGET, G_TYPE_INT);
+                  B_TYPE_NONE, 2, BTK_TYPE_WIDGET, B_TYPE_INT);
 
   binding_set = btk_binding_set_by_class (klass);
   btk_binding_entry_add_signal (binding_set,
@@ -358,27 +358,27 @@ btk_menu_shell_class_init (BtkMenuShellClass *klass)
   btk_binding_entry_add_signal (binding_set,
 				BDK_Return, 0,
 				"activate-current", 1,
-				G_TYPE_BOOLEAN,
+				B_TYPE_BOOLEAN,
 				TRUE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_ISO_Enter, 0,
 				"activate-current", 1,
-				G_TYPE_BOOLEAN,
+				B_TYPE_BOOLEAN,
 				TRUE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_KP_Enter, 0,
 				"activate-current", 1,
-				G_TYPE_BOOLEAN,
+				B_TYPE_BOOLEAN,
 				TRUE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_space, 0,
 				"activate-current", 1,
-				G_TYPE_BOOLEAN,
+				B_TYPE_BOOLEAN,
 				FALSE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_KP_Space, 0,
 				"activate-current", 1,
-				G_TYPE_BOOLEAN,
+				B_TYPE_BOOLEAN,
 				FALSE);
   btk_binding_entry_add_signal (binding_set,
 				BDK_F10, 0,
@@ -436,45 +436,45 @@ btk_menu_shell_init (BtkMenuShell *menu_shell)
 }
 
 static void
-btk_menu_shell_set_property (GObject      *object,
+btk_menu_shell_set_property (BObject      *object,
                              guint         prop_id,
-                             const GValue *value,
-                             GParamSpec   *pspec)
+                             const BValue *value,
+                             BParamSpec   *pspec)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (object);
 
   switch (prop_id)
     {
     case PROP_TAKE_FOCUS:
-      btk_menu_shell_set_take_focus (menu_shell, g_value_get_boolean (value));
+      btk_menu_shell_set_take_focus (menu_shell, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_menu_shell_get_property (GObject     *object,
+btk_menu_shell_get_property (BObject     *object,
                              guint        prop_id,
-                             GValue      *value,
-                             GParamSpec  *pspec)
+                             BValue      *value,
+                             BParamSpec  *pspec)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (object);
 
   switch (prop_id)
     {
     case PROP_TAKE_FOCUS:
-      g_value_set_boolean (value, btk_menu_shell_get_take_focus (menu_shell));
+      b_value_set_boolean (value, btk_menu_shell_get_take_focus (menu_shell));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_menu_shell_finalize (GObject *object)
+btk_menu_shell_finalize (BObject *object)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (object);
   BtkMenuShellPrivate *priv = BTK_MENU_SHELL_GET_PRIVATE (menu_shell);
@@ -484,7 +484,7 @@ btk_menu_shell_finalize (GObject *object)
   if (priv->key_hash)
     _btk_key_hash_free (priv->key_hash);
 
-  G_OBJECT_CLASS (btk_menu_shell_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_menu_shell_parent_class)->finalize (object);
 }
 
 
@@ -715,7 +715,7 @@ btk_menu_shell_button_release (BtkWidget      *widget,
                                 "btk-menu-popdown-delay", &popdown_delay,
                                 NULL);
 
-                  popup_time = g_object_get_data (G_OBJECT (submenu),
+                  popup_time = g_object_get_data (B_OBJECT (submenu),
                                                   "btk-menu-exact-popup-time");
 
                   if (popup_time)
@@ -729,7 +729,7 @@ btk_menu_shell_button_release (BtkWidget      *widget,
                                           (gint64) popup_time->tv_sec * 1000 * 1000 -
                                           (gint64) popup_time->tv_usec);
 
-                      g_object_set_data (G_OBJECT (submenu),
+                      g_object_set_data (B_OBJECT (submenu),
                                          "btk-menu-exact-popup-time", NULL);
                     }
 
@@ -1261,11 +1261,11 @@ btk_menu_shell_activate_item (BtkMenuShell      *menu_shell,
       do
 	{
 	  g_object_ref (parent_menu_shell);
-	  shells = g_slist_prepend (shells, parent_menu_shell);
+	  shells = b_slist_prepend (shells, parent_menu_shell);
 	  parent_menu_shell = (BtkMenuShell*) parent_menu_shell->parent_menu_shell;
 	}
       while (parent_menu_shell);
-      shells = g_slist_reverse (shells);
+      shells = b_slist_reverse (shells);
 
       btk_menu_shell_deactivate (menu_shell);
   
@@ -1282,7 +1282,7 @@ btk_menu_shell_activate_item (BtkMenuShell      *menu_shell,
       g_signal_emit (slist->data, menu_shell_signals[SELECTION_DONE], 0);
       g_object_unref (slist->data);
     }
-  g_slist_free (shells);
+  b_slist_free (shells);
 
   g_object_unref (menu_shell);
   g_object_unref (menu_item);
@@ -1833,7 +1833,7 @@ btk_menu_shell_set_take_focus (BtkMenuShell *menu_shell,
   if (priv->take_focus != take_focus)
     {
       priv->take_focus = take_focus;
-      g_object_notify (G_OBJECT (menu_shell), "take-focus");
+      g_object_notify (B_OBJECT (menu_shell), "take-focus");
     }
 }
 

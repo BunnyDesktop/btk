@@ -58,17 +58,17 @@ enum {
 static void btk_tool_button_init          (BtkToolButton      *button,
 					   BtkToolButtonClass *klass);
 static void btk_tool_button_class_init    (BtkToolButtonClass *klass);
-static void btk_tool_button_set_property  (GObject            *object,
+static void btk_tool_button_set_property  (BObject            *object,
 					   guint               prop_id,
-					   const GValue       *value,
-					   GParamSpec         *pspec);
-static void btk_tool_button_get_property  (GObject            *object,
+					   const BValue       *value,
+					   BParamSpec         *pspec);
+static void btk_tool_button_get_property  (BObject            *object,
 					   guint               prop_id,
-					   GValue             *value,
-					   GParamSpec         *pspec);
-static void btk_tool_button_property_notify (GObject          *object,
-					     GParamSpec       *pspec);
-static void btk_tool_button_finalize      (GObject            *object);
+					   BValue             *value,
+					   BParamSpec         *pspec);
+static void btk_tool_button_property_notify (BObject          *object,
+					     BParamSpec       *pspec);
+static void btk_tool_button_finalize      (BObject            *object);
 
 static void btk_tool_button_toolbar_reconfigured (BtkToolItem *tool_item);
 static gboolean   btk_tool_button_create_menu_proxy (BtkToolItem     *item);
@@ -103,11 +103,11 @@ struct _BtkToolButtonPrivate
   guint contents_invalid : 1;
 };
 
-static GObjectClass        *parent_class = NULL;
+static BObjectClass        *parent_class = NULL;
 static BtkActivatableIface *parent_activatable_iface;
 static guint                toolbutton_signals[LAST_SIGNAL] = { 0 };
 
-#define BTK_TOOL_BUTTON_GET_PRIVATE(obj)(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOL_BUTTON, BtkToolButtonPrivate))
+#define BTK_TOOL_BUTTON_GET_PRIVATE(obj)(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOL_BUTTON, BtkToolButtonPrivate))
 
 GType
 btk_tool_button_get_type (void)
@@ -140,13 +140,13 @@ btk_tool_button_get_type (void)
 static void
 btk_tool_button_class_init (BtkToolButtonClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkToolItemClass *tool_item_class;
   
   parent_class = g_type_class_peek_parent (klass);
   
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   widget_class = (BtkWidgetClass *)klass;
   tool_item_class = (BtkToolItemClass *)klass;
   
@@ -276,12 +276,12 @@ btk_tool_button_class_init (BtkToolButtonClass *klass)
  **/
   toolbutton_signals[CLICKED] =
     g_signal_new (I_("clicked"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkToolButtonClass, clicked),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   g_type_class_add_private (object_class, sizeof (BtkToolButtonPrivate));
 }
@@ -545,42 +545,42 @@ btk_tool_button_construct_contents (BtkToolItem *tool_item)
 }
 
 static void
-btk_tool_button_set_property (GObject         *object,
+btk_tool_button_set_property (BObject         *object,
 			      guint            prop_id,
-			      const GValue    *value,
-			      GParamSpec      *pspec)
+			      const BValue    *value,
+			      BParamSpec      *pspec)
 {
   BtkToolButton *button = BTK_TOOL_BUTTON (object);
   
   switch (prop_id)
     {
     case PROP_LABEL:
-      btk_tool_button_set_label (button, g_value_get_string (value));
+      btk_tool_button_set_label (button, b_value_get_string (value));
       break;
     case PROP_USE_UNDERLINE:
-      btk_tool_button_set_use_underline (button, g_value_get_boolean (value));
+      btk_tool_button_set_use_underline (button, b_value_get_boolean (value));
       break;
     case PROP_LABEL_WIDGET:
-      btk_tool_button_set_label_widget (button, g_value_get_object (value));
+      btk_tool_button_set_label_widget (button, b_value_get_object (value));
       break;
     case PROP_STOCK_ID:
-      btk_tool_button_set_stock_id (button, g_value_get_string (value));
+      btk_tool_button_set_stock_id (button, b_value_get_string (value));
       break;
     case PROP_ICON_NAME:
-      btk_tool_button_set_icon_name (button, g_value_get_string (value));
+      btk_tool_button_set_icon_name (button, b_value_get_string (value));
       break;
     case PROP_ICON_WIDGET:
-      btk_tool_button_set_icon_widget (button, g_value_get_object (value));
+      btk_tool_button_set_icon_widget (button, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_tool_button_property_notify (GObject          *object,
-				 GParamSpec       *pspec)
+btk_tool_button_property_notify (BObject          *object,
+				 BParamSpec       *pspec)
 {
   BtkToolButton *button = BTK_TOOL_BUTTON (object);
 
@@ -593,41 +593,41 @@ btk_tool_button_property_notify (GObject          *object,
 }
 
 static void
-btk_tool_button_get_property (GObject         *object,
+btk_tool_button_get_property (BObject         *object,
 			      guint            prop_id,
-			      GValue          *value,
-			      GParamSpec      *pspec)
+			      BValue          *value,
+			      BParamSpec      *pspec)
 {
   BtkToolButton *button = BTK_TOOL_BUTTON (object);
 
   switch (prop_id)
     {
     case PROP_LABEL:
-      g_value_set_string (value, btk_tool_button_get_label (button));
+      b_value_set_string (value, btk_tool_button_get_label (button));
       break;
     case PROP_LABEL_WIDGET:
-      g_value_set_object (value, btk_tool_button_get_label_widget (button));
+      b_value_set_object (value, btk_tool_button_get_label_widget (button));
       break;
     case PROP_USE_UNDERLINE:
-      g_value_set_boolean (value, btk_tool_button_get_use_underline (button));
+      b_value_set_boolean (value, btk_tool_button_get_use_underline (button));
       break;
     case PROP_STOCK_ID:
-      g_value_set_string (value, button->priv->stock_id);
+      b_value_set_string (value, button->priv->stock_id);
       break;
     case PROP_ICON_NAME:
-      g_value_set_string (value, button->priv->icon_name);
+      b_value_set_string (value, button->priv->icon_name);
       break;
     case PROP_ICON_WIDGET:
-      g_value_set_object (value, button->priv->icon_widget);
+      b_value_set_object (value, button->priv->icon_widget);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_tool_button_finalize (GObject *object)
+btk_tool_button_finalize (BObject *object)
 {
   BtkToolButton *button = BTK_TOOL_BUTTON (object);
 
@@ -749,9 +749,9 @@ btk_tool_button_create_menu_proxy (BtkToolItem *item)
     btk_image_menu_item_set_image (BTK_IMAGE_MENU_ITEM (menu_item), menu_image);
 
   g_signal_connect_closure_by_id (menu_item,
-				  g_signal_lookup ("activate", G_OBJECT_TYPE (menu_item)), 0,
+				  g_signal_lookup ("activate", B_OBJECT_TYPE (menu_item)), 0,
 				  g_cclosure_new_object_swap (G_CALLBACK (btk_button_clicked),
-							      G_OBJECT (BTK_TOOL_BUTTON (button)->priv->button)),
+							      B_OBJECT (BTK_TOOL_BUTTON (button)->priv->button)),
 				  FALSE);
 
   btk_tool_item_set_proxy_menu_item (BTK_TOOL_ITEM (button), MENU_ID, menu_item);
@@ -994,7 +994,7 @@ btk_tool_button_set_label (BtkToolButton *button,
 
   g_free (old_label);
  
-  g_object_notify (G_OBJECT (button), "label");
+  g_object_notify (B_OBJECT (button), "label");
 }
 
 /**
@@ -1046,7 +1046,7 @@ btk_tool_button_set_use_underline (BtkToolButton *button,
       button->priv->use_underline = use_underline;
       button->priv->contents_invalid = TRUE;
 
-      g_object_notify (G_OBJECT (button), "use-underline");
+      g_object_notify (B_OBJECT (button), "use-underline");
     }
 }
 
@@ -1096,7 +1096,7 @@ btk_tool_button_set_stock_id (BtkToolButton *button,
 
   g_free (old_stock_id);
   
-  g_object_notify (G_OBJECT (button), "stock-id");
+  g_object_notify (B_OBJECT (button), "stock-id");
 }
 
 /**
@@ -1146,7 +1146,7 @@ btk_tool_button_set_icon_name (BtkToolButton *button,
 
   g_free (old_icon_name);
 
-  g_object_notify (G_OBJECT (button), "icon-name");
+  g_object_notify (B_OBJECT (button), "icon-name");
 }
 
 /**
@@ -1204,7 +1204,7 @@ btk_tool_button_set_icon_widget (BtkToolButton *button,
       button->priv->icon_widget = icon_widget;
       button->priv->contents_invalid = TRUE;
       
-      g_object_notify (G_OBJECT (button), "icon-widget");
+      g_object_notify (B_OBJECT (button), "icon-widget");
     }
 }
 
@@ -1245,7 +1245,7 @@ btk_tool_button_set_label_widget (BtkToolButton *button,
       button->priv->label_widget = label_widget;
       button->priv->contents_invalid = TRUE;
       
-      g_object_notify (G_OBJECT (button), "label-widget");
+      g_object_notify (B_OBJECT (button), "label-widget");
     }
 }
 

@@ -1167,7 +1167,7 @@ Sun Feb 24 23:23:28 2002  Owen Taylor  <otaylor@redhat.com>
 2002-02-24  Havoc Pennington  <hp@pobox.com>
 
 	* btk/btktextbuffer.c (parent_class): parent_class variable was
-	BtkObjectClass instead of GObjectClass
+	BtkObjectClass instead of BObjectClass
 
 	* btk/btktextview.c (widget_to_buffer): fix this the way 
 	buffer_to_widget was fixed, to avoid duplicating 
@@ -1664,7 +1664,7 @@ Tue Feb 19 20:56:32 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 2002-02-19  Sven Neumann  <sven@gimp.org>
 
 	* examples/*/*.c: finish conversion to g_signal_* functions by
-	using G_OBJECT and G_CALLBACK and other assorted changes.
+	using B_OBJECT and G_CALLBACK and other assorted changes.
 
 Tue Feb 19 17:36:31 2002  Kristian Rietveld  <kris@btk.org>
 
@@ -2357,7 +2357,7 @@ Fri Feb  8 18:46:13 2002  Owen Taylor  <otaylor@redhat.com>
 	binding set content as well as RC content.
 
 	* btk/btkbindings.c (binding_compose_params): Fix 
-	various GValue handling problems.
+	various BValue handling problems.
 
 	* btk/btkentry.c (btk_entry_class_init): Remove bindings 
 	for C-b, C-f, M-b, M-f, C-a, C-e, C-w, C-y, M-space, C-u,
@@ -2977,7 +2977,7 @@ Tue Jan 29 19:51:05 2002  Owen Taylor  <otaylor@redhat.com>
 Tue Jan 29 19:32:47 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktextview.c (btk_text_view_get/set_property): 
-	Fix wrong usage of g_value_set/get_object for PROP_TABS
+	Fix wrong usage of b_value_set/get_object for PROP_TABS
 	and memory leak in getter for PROP_TABS. (Jeff Franks)
 
 Tue Jan 29 19:04:41 2002  Owen Taylor  <otaylor@redhat.com>
@@ -3623,7 +3623,7 @@ Wed Jan 16 19:23:04 2002  Owen Taylor  <otaylor@redhat.com>
 	is as if it didn't exist all.
 
 	* btk/btkbindings.c (binding_compose_params): Switch
-	over to GValue.
+	over to BValue.
 
 	* btk/btknotebook.[ch]: Make the select_page() and
 	change_current_page() signals only take effect when
@@ -4011,7 +4011,7 @@ Wed Jan  9 11:23:39 2002  Tim Janik  <timj@btk.org>
 
 2002-01-08  Mike Kestner  <mkestner@speakeasy.net>
 
-	* btk/btkcelleditable.h : Use G_TYPE_INSTANCE_GET_INTERFACE.
+	* btk/btkcelleditable.h : Use B_TYPE_INSTANCE_GET_INTERFACE.
 	* btk/btktreednd.h : ditto.
 	* btk/btktreemodel.h : ditto.
 	* btk/btktreesortable.h : ditto.
@@ -5485,7 +5485,7 @@ Wed Nov 21 22:55:37 2001  Tim Janik  <timj@btk.org>
 Wed Nov 21 22:44:27 2001  Tim Janik  <timj@btk.org>
 
 	* tests/testtreeview.c: make hackery worse ;) by checking fundamental
-	type walks againts G_TYPE_FUNDAMENTAL_MAX.
+	type walks againts B_TYPE_FUNDAMENTAL_MAX.
 	
 	* tests/prop-editor.c: disable type hackery.
 
@@ -5848,7 +5848,7 @@ Sat Nov 17 18:26:45 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktexttagtable.c (btk_text_tag_table_class_init):
 	The first parameters of the signals are now registered as
-	BTK_TYPE_TEXT_TAG instead of G_TYPE_OBJECT.
+	BTK_TYPE_TEXT_TAG instead of B_TYPE_OBJECT.
 	
 2001-11-17  Tor Lillqvist  <tml@iki.fi>
 
@@ -7013,7 +7013,7 @@ Mon Oct 29 11:31:40 2001  Owen Taylor  <otaylor@redhat.com>
 Sun Oct 28 09:15:39 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkimcontext.h (struct _BtkIMContext): Fixed
-	structure to have GObject not BtkObject as
+	structure to have BObject not BtkObject as
 	parent_instance. (Jeff Franks.)
 
 2001-10-27  Matthias Clasen  <matthiasc@poet.de>
@@ -7163,7 +7163,7 @@ Thu Oct 25 16:27:29 2001  Jonathan Blandford  <jrb@redhat.com>
 	 (_btk_rbtree_node_mark_valid): New function.
 
 	* btk/btktreemodelsort.c (btk_tree_model_sort_class_init): We're a
-	GObject, not a BtkObject.
+	BObject, not a BtkObject.
 	(btk_tree_model_sort_row_has_child_toggled): Rewrote to be more
 	correct.
 	(btk_tree_model_sort_row_deleted): ditto.
@@ -7609,7 +7609,7 @@ Sat Oct 20 19:38:16 2001  Owen Taylor  <otaylor@redhat.com>
 Fri Oct 19 18:35:22 2001  Manish Singh  <yosh@gimp.org>
 
 	* btk/{btkentry.c,btktextview.c}: since BtkIMContext derives directly
-	from GObject now, we have to use the g_object_* functions, not
+	from BObject now, we have to use the g_object_* functions, not
 	btk_object_*.
 
 Fri Oct 19 22:46:54 2001  Kristian Rietveld  <kristian@planet.nl>
@@ -7631,7 +7631,7 @@ Fri Oct 19 15:08:30 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/{btkimcontext.c,btkimcontextsimple.c,btkimmulticontext.c}
 	modules/input/{btkimcontextxim.c,imcyrillic-translit.c,iminuktitut.c,
 	imipa.c,imthai-broken.c,imviqr.c}: Make BtkIMContext derive from
-	GObject, not BtkObject. (#62621)
+	BObject, not BtkObject. (#62621)
 
 Fri Oct 19 12:49:12 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -8125,7 +8125,7 @@ Sun Sep 30  07:01:42 2001 CEST <mikeh@bahnhof.se>
 
 	* btk/btkcellrenderertext.c: I reverted back to old "weight"
 	property code using g_param_spec_int and changed from
-	g_value_get_enum to g_value_get_int instead. Probably a better way
+	b_value_get_enum to b_value_get_int instead. Probably a better way
 	to fix the problem :-)
 
 Sun Sep 30  05:31:32 2001 CEST Mikael Hermansson <tyan@linux.se>
@@ -10197,7 +10197,7 @@ Tue Jul 31 22:59:33 2001  Tim Janik  <timj@btk.org>
 	* bdk/x11/bdkx.h:
 	Put all mentions of BdkFont inside #ifndef BDK_DISABLE_DEPRECATED.
 
-	* demos/btk-demo/menus.c: (do_menus): Cast to G_OBJECT, not
+	* demos/btk-demo/menus.c: (do_menus): Cast to B_OBJECT, not
 	BTK_OBJECT.
 
 Tue Jul 31 15:34:57 2001  Jonathan Blandford  <jrb@redhat.com>
@@ -10209,7 +10209,7 @@ Tue Jul 31 15:34:57 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* demos/btk-demo/appwindow.c
 	* demos/btk-demo/item_factory.c
-	* tests/testbtk.c: btk_accel_group_attach() takes a GObject.
+	* tests/testbtk.c: btk_accel_group_attach() takes a BObject.
 
 Mon Jul 30 10:49:16 PDT 2001 Suresh Chandrasekharan <suresh.chandrasekharan@sun.com>
 
@@ -10254,38 +10254,38 @@ Fri Jul 27 11:31:15 2001  Jonathan Blandford  <jrb@redhat.com>
 
 2001-07-15  James Henstridge  <james@daa.com.au>
 
-	* btk/btkwindow.c (btk_window_add_accel_group): cast to GObject.
+	* btk/btkwindow.c (btk_window_add_accel_group): cast to BObject.
 	(btk_window_remove_accel_group): same here.
 	(btk_window_key_press_event): same here.
 
-	* btk/btkwidget.c (btk_widget_add_accelerator): cast to GObject.
+	* btk/btkwidget.c (btk_widget_add_accelerator): cast to BObject.
 	(btk_widget_remove_accelerator): same here.
 	(btk_widget_remove_accelerators): same here.
 
 	* btk/btkplug.c (btk_plug_accel_entries_changed): same here.
 
-	* btk/btkmenushell.c (btk_menu_shell_key_press): cast to GObject
+	* btk/btkmenushell.c (btk_menu_shell_key_press): cast to BObject
 	instead of BtkObject.
 
 	* btk/btkmenu.c (btk_menu_key_press): update since BtkAccelGroup
-	now takes GObjects.
+	now takes BObjects.
 
 	* btk/btkitemfactory.c (btk_item_factory_propagate_accelerator):
-	pass a GObject to btk_accel_group_entries_from_object.
+	pass a BObject to btk_accel_group_entries_from_object.
 	(btk_item_factory_create_item): s/accel_widget/accel_object/
 
 	* btk/btk-boxed.defs: remove BtkAccelGroup boxed def.
 
-	* btk/btkaccellabel.c: convert to handle GObject accel objects.
+	* btk/btkaccellabel.c: convert to handle BObject accel objects.
 
 	* btk/btkaccellabel.h: fix header to reflect that arbitrary
-	GObjects can have accelerators set now.  Add compatibility
+	BObjects can have accelerators set now.  Add compatibility
 	defines.
 
 	* btk/btkmarshal.list: add missing marshallers.
 
-	* btk/btkaccelgroup.[ch]: convert to a GObject, and allow setting
-	accelerators on plain GObjects.  btk_accel_group_object_destroy
+	* btk/btkaccelgroup.[ch]: convert to a BObject, and allow setting
+	accelerators on plain BObjects.  btk_accel_group_object_destroy
 	has been converted into a weak reference, and
 	btk_accel_group_delete_entries is now a destroy notify for that
 	piece of data.
@@ -10369,7 +10369,7 @@ Fri Jul 27 11:31:15 2001  Jonathan Blandford  <jrb@redhat.com>
 	* bdk/win32/bdkinput.c :
 	* bdk/win32/bdkvisual-win32.c :
 	* bdk/win32/bdkwin32.h : mechanical adaption to BdkDevice and
-	BdkVisual GObjectification. UNTESTED for pen-devices because
+	BdkVisual BObjectification. UNTESTED for pen-devices because
 	I simply have none.
 
 	* bdk/bdk.def :
@@ -10812,14 +10812,14 @@ Mon Jul  2 06:35:10 2001  Tim Janik  <timj@btk.org>
 	* btk/btkwindow.c: 
 	* btk/btkwidget.c: 
 	* btk/btkobject.c:
-	* btk/btklist.c: s/shutdown/dispose/ for the GObject
+	* btk/btklist.c: s/shutdown/dispose/ for the BObject
 	method.
 
 Sat Jun 30 20:44:48 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktypeutils.c (btk_type_class): Remove
 	change check for BTK_TYPE_OBJECT derivation to
-	G_TYPE_OBJECTS - it's Tim-approved to use this 
+	B_TYPE_OBJECTS - it's Tim-approved to use this 
 	for arbitary objects.
 
 	* btk/btkwindow.c btk/btkcontainer.[ch]: underscore
@@ -10922,11 +10922,11 @@ Fri Jun 22 18:49:48 2001  Owen Taylor  <otaylor@redhat.com>
 	* bdk/linux-fb/bdkinput-none.c:
 	* bdk/linux-fb/bdkinput.c:
 	* bdk/linux-fb/bdkinputprivate.h:
-	Convert BdkDevice to a GObject.
+	Convert BdkDevice to a BObject.
 
 	* linux-fb/bdkprivate-fb.h:
 	* linux-fb/bdkvisual-fb.c:
-	Convert BdkVisual to a GObject.
+	Convert BdkVisual to a BObject.
 
 2001-06-29  Alex Larsson  <alexl@redhat.com>
 
@@ -10934,7 +10934,7 @@ Fri Jun 22 18:49:48 2001  Owen Taylor  <otaylor@redhat.com>
 	* bdk/bdkcolor.c:
 	* bdk/x11/bdkx.h:
 	* bdk/x11/bdkvisual-x11.c:
-	Convert BdkVisual to a GObject.
+	Convert BdkVisual to a BObject.
 
 	* bdk/bdkinput.h:
 	* bdk/bdkevents.c:
@@ -10944,7 +10944,7 @@ Fri Jun 22 18:49:48 2001  Owen Taylor  <otaylor@redhat.com>
 	* bdk/x11/bdkinput-x11.c:
 	* bdk/x11/bdkinput-xfree.c:
 	* bdk/x11/bdkinput.c:
-	Convert BdkDevice to a GObject.
+	Convert BdkDevice to a BObject.
 
 Fri Jun 29 22:13:28 2001  Jonathan Blandford  <jrb@redhat.com>
 
@@ -11763,11 +11763,11 @@ Wed Jun  6 10:37:07 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* demos/btk-demo/main.c (create_tree): Changed signal name from
 	selection_changed to changed in signal connection to BtkTreeSelection,
-	also used g_signal_connectc since BtkTreeSelection is now a GObject.
+	also used g_signal_connectc since BtkTreeSelection is now a BObject.
 
 Thu Jun  7 18:25:42 2001  Jonathan Blandford  <jrb@redhat.com>
 
-	* btk/btktreeselection.c: Now it's a GObject instead of a
+	* btk/btktreeselection.c: Now it's a BObject instead of a
 	BtkObject.  The BtkTreeSelection::selection_changed signal is now
 	the BtkTreeSelection::changed signal.
 
@@ -12175,8 +12175,8 @@ Wed May 30 15:56:30 2001  Owen Taylor  <otaylor@redhat.com>
 	value from BDK settings against parameter spec.
 
 	* bdk/x11/bdkevents-x11.c (bdk_setting_get): Add assignments
-	to temporary values and use g_value_transform(), since
-	thinking that GValue was going to be easy or efficient
+	to temporary values and use b_value_transform(), since
+	thinking that BValue was going to be easy or efficient
 	to use was, of course, a mistake.
 
         * btk/btksettings.c: Add cursor blink setting.
@@ -12491,7 +12491,7 @@ Thu May 17 17:10:13 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkwidget.c (btk_widget_get_property):
 	BdkExtensionMode is an enum, not a flag. Set it with
-	g_value_set_enum ().
+	b_value_set_enum ().
 
 	* tests/prop-editor.c:
 	Better propery editor.
@@ -12815,7 +12815,7 @@ Thu May  3 14:13:49 2001  Owen Taylor  <otaylor@redhat.com>
 Thu May  3 08:10:54 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktexttag.c (btk_text_tag_class_init): Fix return
-	value to be G_TYPE_BOOLEAN, not G_TYPE_INT, also,
+	value to be B_TYPE_BOOLEAN, not B_TYPE_INT, also,
 	use _btk_boolean_handled_accumulator.
 
 Thu May  3 07:00:09 2001  Owen Taylor  <otaylor@redhat.com>
@@ -13397,8 +13397,8 @@ Thu Apr 12 21:04:26 2001  Tim Janik  <timj@btk.org>
 	* btk/btkcellrendererpixbuf.c (btk_cell_renderer_pixbuf_render): Fix small typo.
 
 	* btk/btkcellrenderer.c (btk_cell_renderer_get_property): xpad and ypad
-	are unsigned insts, therefore use g_value_set_uint.
-	(btk_cell_renderer_set_property): Likewise, use g_value_get_uint.
+	are unsigned insts, therefore use b_value_set_uint.
+	(btk_cell_renderer_set_property): Likewise, use b_value_get_uint.
 
 Sun Apr  8 05:36:06 2001  Jonathan Blandford  <jrb@redhat.com>
 
@@ -14499,11 +14499,11 @@ Mon Mar 12 21:02:08 2001  Jonathan Blandford  <jrb@redhat.com>
 	g_mem_chunk.
 	(_btk_tree_data_list_alloc): use g_mem_chunk.
 	(_btk_tree_data_list_node_to_value): Fix to switch on
-	G_TYPE_FUNDAMENTAL.
+	B_TYPE_FUNDAMENTAL.
 	(_btk_tree_data_list_value_to_node): Fix to switch on
-	G_TYPE_FUNDAMENTAL.
+	B_TYPE_FUNDAMENTAL.
 	(_btk_tree_data_list_node_copy): Fix to switch on
-	G_TYPE_FUNDAMENTAL.
+	B_TYPE_FUNDAMENTAL.
 
 2001-03-12  Havoc Pennington  <hp@redhat.com>
 
@@ -14582,10 +14582,10 @@ Fri Mar  9 20:36:21 2001  Jonathan Blandford  <jrb@redhat.com>
 	(_btk_tree_data_list_node_copy): handle types more sanely.
 
 	* btk/btkliststore.c (btk_list_store_set_cell): fix to work with
-	GValue better. Converts the type as well.
+	BValue better. Converts the type as well.
 
 	* btk/btktreestore.c (btk_tree_store_set_cell): fix to work with
-	GValue better. Converts the type as well.
+	BValue better. Converts the type as well.
 
 Wed Mar  7 20:47:41 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -14868,7 +14868,7 @@ Wed Mar  7 13:24:57 2001  Tim Janik  <timj@btk.org>
 	* btk/btktreeview.c (btk_tree_view_class_init): disable interface
 	param spec for now.
 
-	* btk/btktexttag.c (btk_text_tag_set_property): use g_value_get_boxed()
+	* btk/btktexttag.c (btk_text_tag_set_property): use b_value_get_boxed()
 	where appliable.
 
 	* btk/btktypeutils.[hc]: updates to GLib API changes.
@@ -15439,7 +15439,7 @@ Wed Feb 21 20:56:50 2001  Jonathan Blandford  <jrb@redhat.com>
 Wed Feb 21 15:41:34 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* btk/btktreestore.c: removed signals.  Moved to inherit from
-	GObject instead of BtkObject.
+	BObject instead of BtkObject.
 
 	* btk/btkliststore.c: ditto.
 
@@ -16127,7 +16127,7 @@ Sun Feb  4 07:55:17 2001  Tim Janik  <timj@btk.org>
 
 Sun Feb  4 07:45:45 2001  Tim Janik  <timj@btk.org>
 
-	* btk/btkdebug.h: nuke BTK_DEBUG_OBJECTS and BTK_DEBUG_SIGNALS.
+	* btk/btkdebug.h: nuke BTK_DEBUB_OBJECTS and BTK_DEBUG_SIGNALS.
 
 2001-02-03  Havoc Pennington  <hp@pobox.com>
 
@@ -16616,7 +16616,7 @@ Sat Jan 27 15:52:02 2001  Jonathan Blandford  <jrb@redhat.com>
 	* btk/btktreeviewcolumn.c (update_button_contents): add/remove
 	children from the alignment, not the button
 	(btk_tree_view_column_init): ref/sink the column, to emulate
-	GObject refcounting.
+	BObject refcounting.
 
 	* btk/btkcellrenderer.c (btk_cell_renderer_init): ref/sink
 	
@@ -17238,7 +17238,7 @@ Thu Jan 11 13:16:50 GMT 2001  Tony Gale <gale@btk.org>
 	(btk_cell_renderer_pixbuf_set_property): allow setting a NULL pixbuf
 
 	* btk/btktreedatalist.c (_btk_tree_data_list_node_to_value):
-	handle any G_TYPE_OBJECT subclass, not just the base class, and 
+	handle any B_TYPE_OBJECT subclass, not just the base class, and 
 	also boxed types.
 	(_btk_tree_data_list_value_to_node): ditto
 
@@ -17549,7 +17549,7 @@ Thu Jan  4 15:46:18 2001  Jonathan Blandford  <jrb@redhat.com>
 	* btk/btktextbuffer.c (btk_text_buffer_class_init): Add
 	insert_pixbuf, change signal names as appropriate, change types of
 	signals taking marks/tags to have the specific type, not just
-	G_TYPE_OBJECT
+	B_TYPE_OBJECT
 	
 	* btk/btkmain.c (btk_get_current_event_state): Add this function; 
 	closes bug 40051
@@ -17637,7 +17637,7 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 	
 	* btk/btkcellrenderer.c: Remove definition of _ and include
 	btkintl.h
-	(btk_cell_renderer_get_property): remove calls to g_value_init
+	(btk_cell_renderer_get_property): remove calls to b_value_init
 
 	* btk/btkcellrendererpixbuf.c: Remove definition of _ and include
 	btkintl.h
@@ -17675,7 +17675,7 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktreemodelsort.c (btk_tree_model_sort_finalize): check
 	that child model is non-null before unrefing it
-	(g_value_int_compare_func): make this a qsort compare func, not 
+	(b_value_int_compare_func): make this a qsort compare func, not 
 	a boolean predicate
 
 	* btk/btktreemodelsort.h: rename btk_tree_model_set_sort_column,
@@ -17816,7 +17816,7 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 	
 2000-12-20  Jonathan Blandford  <jrb@redhat.com>
 
-	* btk/btkcellrenderer*.c (::get_property): remove g_value_init
+	* btk/btkcellrenderer*.c (::get_property): remove b_value_init
 	calls, as they are no longer needed.
 
 	* btk/btktreemodelsort.c: Fix up the comparison code.
@@ -17874,7 +17874,7 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 2000-12-16  Havoc Pennington  <hp@pobox.com>
 
 	* btk/bdk-pixbuf-loader.h, btk/bdk-pixbuf-loader.c: 
-	Port to GObject, can go back in bdk-pixbuf after setting up 
+	Port to BObject, can go back in bdk-pixbuf after setting up 
 	a bdk-pixbuf-marshal.h header over there.
 
 	* btk/btktreeview.c: s/SEPERATOR/SEPARATOR/g;
@@ -17967,10 +17967,10 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/btktextlayout.h, btk/btktextlayout.c, btk/btktexttag.h,
 	btk/btktexttag.c, btk/btktexttagtable.h, btk/btktexttagtable.c, 
 	btk/btktextbuffer.h, btk/btktextbuffer.c: Convert everything to 
-	GObject. No doubt will cause breakage.
+	BObject. No doubt will cause breakage.
 
 	* demos/btk-demo/textview.c: remove hacks around
-	non-GObject-ification of the text objects
+	non-BObject-ification of the text objects
 
 	* demos/btk-demo/main.c (main): use g_object_set() to manipulate 
 	the text tag
@@ -18026,7 +18026,7 @@ Thu Dec 14 20:22:31 2000  Owen Taylor  <otaylor@redhat.com>
 	* btk/btktextbtree.c (_btk_text_btree_validate_line): remove
 	unused call to get_last_line()
 
-	* btk/btkobject.c (btk_object_add_arg_type): add G_TYPE_POINTER
+	* btk/btkobject.c (btk_object_add_arg_type): add B_TYPE_POINTER
 	here until boxed is working (and maybe after that - we should
 	really not gratuitously break old code)
 
@@ -18193,7 +18193,7 @@ Tue Dec 12 08:24:42 2000  Tim Janik  <timj@btk.org>
 	* btk/testbtk.c:
 	(create_tooltips): 
 	(create_statusbar): get rid of object_signal:: BtkObject argument uses,
-	use GObject swapped_signal:: properties instead.
+	use BObject swapped_signal:: properties instead.
 
 	* btk/btkcellrenderertoggle.c: 
 	* btk/btkcellrenderertextpixbuf.c: 
@@ -19606,9 +19606,9 @@ Mon Nov 13 14:29:32 2000  Jonathan Blandford  <jrb@redhat.com>
 	BtkTreeStore and BtkTreeViewColumn constructors.
 
 	* btk/btktextbuffer.c (btk_text_buffer_new): ref/sink the
-	newly-created buffer to prepare for GObject semantics
+	newly-created buffer to prepare for BObject semantics
 
-	* btk/testtext.c: don't leak the buffer with GObject semantics
+	* btk/testtext.c: don't leak the buffer with BObject semantics
 
 	* btk/testtextbuffer.c: ditto
 	
@@ -19852,7 +19852,7 @@ Sat Sep 16 13:09:06 2000  Owen Taylor  <otaylor@redhat.com>
 	generic	code from btkthemes into a new abstraction
 	BtkModule which has the logic for implementing
 	a loadable module which implements a number of 
-	GObject types.
+	BObject types.
 
 Sat Sep 16 13:07:13 2000  Owen Taylor  <otaylor@redhat.com>
 
@@ -20179,7 +20179,7 @@ Sun Nov  5 05:32:39 2000  Tim Janik  <timj@btk.org>
 Sat Nov  4 05:37:17 2000  Tim Janik  <timj@btk.org>
 
 	* btk/btkthemes.c: added compat code that temporarily implements
-	BtkThemeEnginePlugin as a GObject exporting GTypePlugin. this is
+	BtkThemeEnginePlugin as a BObject exporting GTypePlugin. this is
 	going to be revamped by owen's upcoming BtkModule patches, but
 	untill then people want btk to build, right? ;)
 
@@ -20207,7 +20207,7 @@ Sat Nov  4 10:12:27 2000  Owen Taylor  <otaylor@redhat.com>
 	(btk_text_tag_table_size): return a signed int
 
 	* btk/btktexttag.c: s/tkxt/text/g; write documentation
-	(btk_text_tag_event): make the event_object a GObject
+	(btk_text_tag_event): make the event_object a BObject
 
 	* btk/btktextview.c: Write API docs for all functions.
 
@@ -20580,7 +20580,7 @@ Thu Oct 26 02:10:32 2000  Tim Janik  <timj@btk.org>
 Thu Oct 26 00:51:52 2000  Tim Janik  <timj@btk.org>
 
 	* btk/btksignal.c:
-	(btk_signal_emitv): use g_value_set_static_{string|boxed} where
+	(btk_signal_emitv): use b_value_set_static_{string|boxed} where
 	applicable.
 
 	* btk/btk-boxed.defs (BtkSelectionData): specify
@@ -20635,7 +20635,7 @@ Tue Oct 24 23:59:21 2000  Tim Janik  <timj@btk.org>
 	* btk/btkobject.c:
 	(btk_object_destroy):
 	(btk_object_shutdown): fixed recursion guards. basically we have to
-	catch the case where any of GObject.shutdown() or btk_object_destroy()
+	catch the case where any of BObject.shutdown() or btk_object_destroy()
 	is called during ::destroy, and avoid recursion there.
 
 	* btk/btktypeutils.c:
@@ -20643,7 +20643,7 @@ Tue Oct 24 23:59:21 2000  Tim Janik  <timj@btk.org>
 	boxed_copy/boxed_free. this needs a more general solution based on a
 	publically installed code-generator utility.
 
-	* btk/btktypeutils.[hc]: compat aliased BTK_TYPE_BOXED to G_TYPE_BOXED,
+	* btk/btktypeutils.[hc]: compat aliased BTK_TYPE_BOXED to B_TYPE_BOXED,
 	bunnylib's bobject has support for that now.
 	define BtkSignalMarshaller in terms of GSignalCMarshaller.
 
@@ -20687,7 +20687,7 @@ Sun Oct 22 23:14:39 2000  Tim Janik  <timj@btk.org>
 
 Fri Oct 20 15:26:33 2000  Tim Janik  <timj@btk.org>
 
-	* btk/btktypeutils.[hc]: removed G_TYPE_BTK_POINTER cludge.
+	* btk/btktypeutils.[hc]: removed B_TYPE_BTK_POINTER cludge.
 
 2000-10-25  Robert Brady  <robert@suse.co.uk>
 
@@ -21011,7 +21011,7 @@ Wed Oct 18 11:14:05 2000  Owen Taylor  <otaylor@redhat.com>
 2000-10-12  Jonathan Blandford  <jrb@redhat.com>
 
 	* btk/btktreedatalist.[ch] (btk_tree_data_list_value_to_node): Added
-	values other then G_TYPE_STRING.
+	values other then B_TYPE_STRING.
 	* btk/btktreeselection.c: Minor commenting updates.
 	* btk/btktreeview.c: Format updates.
 
@@ -22716,7 +22716,7 @@ Thu Jun 22 17:43:51 BST 2000  Tony Gale <gale@btk.org>
 	* bdk/bdkwindow.c (_bdk_window_destroy_hierarchy): Fix bug where
 	we didn't check window->bg_pixmap != BDK_NO_BG.
 
-	* btk/bdk-pixbuf-loader.c: Change to reflect GObject-ification of
+	* btk/bdk-pixbuf-loader.c: Change to reflect BObject-ification of
 	bdk-pixbuf
 
 Thu Jun 22 14:02:19 BST 2000  Tony Gale <gale@btk.org>
@@ -22768,13 +22768,13 @@ Wed Jun 21 16:38:13 2000  Owen Taylor  <otaylor@redhat.com>
 	bdk-pixbuf.
 
 	* btk/bdk-pixbuf-loader.c (bdk_pixbuf_loader_class_init):
-	fixups for GObject.
+	fixups for BObject.
 
 	* bdk/Makefile.am bdk/bdkpixbuf-render.[ch] bdk/bdkpixbuf.[ch]: Bits of 
 	bdk-pixbuf with BDK dependencies moved into BDK.
 	
 	* btk/Makefile.am btk/bdk-pixbuf-loader.[ch]: Temporarily
-	move bdk-pixbuf-loader here until GObject has signals.
+	move bdk-pixbuf-loader here until BObject has signals.
 
 	* demos/: New directory of demos. Move demos from
 	bdk-pixbuf here.
@@ -22905,33 +22905,33 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 	* bdk/bdk.c: s/bdk_window_init/_bdk_windowing_window_init/
 	s/bdk_image_init/_bdk_windowing_image_init
 
-	* bdk/bdkcolor.c: make ref/unref compat wrappers for GObject
+	* bdk/bdkcolor.c: make ref/unref compat wrappers for BObject
 	ref/unref
 
-	* bdk/bdkcolor.h: make BdkColormap a GObject subclass
+	* bdk/bdkcolor.h: make BdkColormap a BObject subclass
 
 	* bdk/bdkcompat.h: remove BdkWindowType compat, since
 	BdkWindowType is now non-deprecated; 
 	change bdk_window_get_type() compat to be
 	bdk_window_get_window_type().
 
-	* bdk/bdkdnd.h: make BdkDragContext a GObject.
+	* bdk/bdkdnd.h: make BdkDragContext a BObject.
 
 	* bdk/bdkdraw.c, bdk/bdkdraw.h: Convert BdkDrawable to a pure
-	virtual GObject. Make all functions call into the vtable.
+	virtual BObject. Make all functions call into the vtable.
 	Move bdk_image_put() guts in here. Remove BdkDrawableType
 	and bdk_drawable_get_type(), these are now BdkWindow-specific.
 	draw_image, get_depth, get_size, set_colormap, get_colormap,
 	get_visual added to the vtable.
 	
 	* bdk/bdkgc.h, bdk/bdkgc.c: Convert BdkGC to a pure virtual 
-	GObject. Virtualize everything. 
+	BObject. Virtualize everything. 
 	(bdk_gc_new_with_values): remove check for destroyed window,
 	because now BdkWindow::create_gc will check this.
 	(bdk_gc_set_values): New function to set GC values, this 
 	was already implemented but wasn't in the header
 
-	* bdk/bdkimage.h, bdk/bdkimage.c: Convert BdkImage to a GObject.
+	* bdk/bdkimage.h, bdk/bdkimage.c: Convert BdkImage to a BObject.
 
 	* bdk/bdkinternals.h: Remove _bdk_window_alloc(), remove
 	_bdk_window_draw_image(), remove _bdk_windowing_window_class,
@@ -22940,11 +22940,11 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 	_bdk_windowing_window_init, rename bdk_image_init to
 	_bdk_windowing_image_init.
 	
-	* bdk/bdkbango.c: Reflect GObject-ification of BangoContext.
+	* bdk/bdkbango.c: Reflect BObject-ification of BangoContext.
 	(bdk_draw_layout): Remove check for destroyed window, 
 	because all the drawable methods already check it.
 	
-	* bdk/bdkpixmap.h, bdk/bdkpixmap.c: Convert BdkPixmap to GObject.
+	* bdk/bdkpixmap.h, bdk/bdkpixmap.c: Convert BdkPixmap to BObject.
 	Add bdkpixmap.c which contains implementation of BdkDrawable
 	virtual table (by chaining to a platform-specific implementation
 	object).
@@ -22957,7 +22957,7 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/bdktypes.h: #include <bunnylib-object.h>
 
-	* bdk/bdkwindow.h, bdk/bdkwindow.c: Convert BdkWindow to GObject.
+	* bdk/bdkwindow.h, bdk/bdkwindow.c: Convert BdkWindow to BObject.
 	Move most functionality to platform-specific implementation
 	object. BdkWindow itself now handles the backing store, then
 	chains to the platform-specific implementation.
@@ -22978,7 +22978,7 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 	bdk_cursor_new().
 
 	* bdk/x11/bdkdnd-x11.c: Change the way we access private fields 
-	(private data member in the GObject). 
+	(private data member in the BObject). 
 	(xdnd_manager_source_filter): Function had broken 
 	error handling, fix it (use bdk_error_trap_push).
 
@@ -23007,14 +23007,14 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/x11/bdkim-x11.c: rename things that got renamed.
 
-	* bdk/x11/bdkimage-x11.c: implement in terms of GObject, and 
+	* bdk/x11/bdkimage-x11.c: implement in terms of BObject, and 
 	remove the image_put stuff that got transferred to BdkDrawable.
 	
 	* bdk/x11/bdkinput.c: renamings
 
 	* bdk/x11/bdkmain-x11.c: #include <bango/bangox.h>
 
-	* bdk/x11/bdkpixmap-x11.c: GObject conversion
+	* bdk/x11/bdkpixmap-x11.c: BObject conversion
 
 	* bdk/x11/bdkprivate-x11.h: indentation fixes
 
@@ -23031,21 +23031,21 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 	Fix all the macros to still work. 
 
 	* btk/btk-boxed.defs: Remove BtkStyle, BdkColormap, BdkWindow,
-	BdkDragContext from the boxed types since they are now GObjects.
+	BdkDragContext from the boxed types since they are now BObjects.
 
-	* btk/btkstyle.h, btk/btkstyle.c: Converted BtkStyle to a GObject,
+	* btk/btkstyle.h, btk/btkstyle.c: Converted BtkStyle to a BObject,
 	moved xthickness/ythickness into the instance. BtkStyleClass
 	functions are now in the standard vtable for BtkStyle, so you have
-	to create a GObject subclass to write a theme engine.
+	to create a BObject subclass to write a theme engine.
 	(btk_style_copy): fixed a leaked BangoFontDescription
 	(btk_style_init): renamed btk_style_realize, so btk_style_init
-	can be the standard GObject function.
+	can be the standard BObject function.
 	
 	* Throughout BTK:
 	s/style->klass->[xy]thickness/style->[xy]thickness
 	s/bango_layout_unref/g_object_unref/
 
-	* btk/btkrc.h, btk/btkrc.c: Converted BtkRcStyle to a GObject.
+	* btk/btkrc.h, btk/btkrc.c: Converted BtkRcStyle to a BObject.
 	
 	* btk/btksocket.c: Use bdk_window_get_user_data() instead of 
 	accessing BDK internals.
@@ -24172,9 +24172,9 @@ Fri May  5 13:02:09 2000  Tim Janik  <timj@btk.org>
 	GType, either to preserve memchunks allocation facilities,
 	or because Btk+ 1.0 BtkTypeInfo was still being used.
 
-	* btk/btkobject.[hc]: derive from GObject. ported various functions
+	* btk/btkobject.[hc]: derive from BObject. ported various functions
 	over. prepare for ::destroy to be emitted multiple times.
-	removed reference tracer magic. chain into GObjectClass.shutdown()
+	removed reference tracer magic. chain into BObjectClass.shutdown()
 	to emit ::destroy signal.
 
 	* btk/btksignal.c: removed assumptions about BTK_TYPE_OBJECT being
@@ -24192,7 +24192,7 @@ Fri May  5 13:02:09 2000  Tim Janik  <timj@btk.org>
 	not being a fundamental anymore, and to work with the new
 	type system (nuked fundamental type varargs clutter).
 
-	* btk/*.c: install finalize handlers in the GObjectClass
+	* btk/*.c: install finalize handlers in the BObjectClass
 	part of the class structure.
 	changed direct BTK_OBJECT()->klass accesses to
 	BTK_*_GET_CLASS().
@@ -26799,7 +26799,7 @@ Tue Apr  6 12:24:21 1999  Owen Taylor  <otaylor@redhat.com>
 Sat Mar 27 23:32:13 1999  Tim Janik  <timj@btk.org>
 
 	* btk/btkarg.[hc]: added functions from GLE, btk_arg_reset() to free
-	the value and reset type to BTK_TYPE_INVALID, and btk_arg_values_equal()
+	the value and reset type to BTK_TYPE_INVALID, and btk_arb_values_equal()
 	to compare two argument values. added btk_arg_to_valueloc() to set a
 	variable from an arg through its location (pointer).
 

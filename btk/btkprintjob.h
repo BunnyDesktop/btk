@@ -32,11 +32,11 @@
 B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_JOB                  (btk_print_job_get_type ())
-#define BTK_PRINT_JOB(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
-#define BTK_PRINT_JOB_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
-#define BTK_IS_PRINT_JOB(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_JOB))
-#define BTK_IS_PRINT_JOB_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_JOB))
-#define BTK_PRINT_JOB_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
+#define BTK_PRINT_JOB(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
+#define BTK_PRINT_JOB_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
+#define BTK_IS_PRINT_JOB(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_JOB))
+#define BTK_IS_PRINT_JOB_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_JOB))
+#define BTK_PRINT_JOB_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
 
 typedef struct _BtkPrintJob          BtkPrintJob;
 typedef struct _BtkPrintJobClass     BtkPrintJobClass;
@@ -50,7 +50,7 @@ struct _BtkPrinter;
 
 struct _BtkPrintJob
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrintJobPrivate *GSEAL (priv);
 
@@ -72,7 +72,7 @@ struct _BtkPrintJob
 
 struct _BtkPrintJobClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*status_changed) (BtkPrintJob *job);
 

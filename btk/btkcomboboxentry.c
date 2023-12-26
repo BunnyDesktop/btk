@@ -33,7 +33,7 @@
 #include "btkbuildable.h"
 #include "btkalias.h"
 
-#define BTK_COMBO_BOX_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryPrivate))
+#define BTK_COMBO_BOX_ENTRY_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryPrivate))
 
 struct _BtkComboBoxEntryPrivate
 {
@@ -41,14 +41,14 @@ struct _BtkComboBoxEntryPrivate
   gint text_column;
 };
 
-static void btk_combo_box_entry_set_property     (GObject               *object,
+static void btk_combo_box_entry_set_property     (BObject               *object,
                                                   guint                  prop_id,
-                                                  const GValue          *value,
-                                                  GParamSpec            *pspec);
-static void btk_combo_box_entry_get_property     (GObject               *object,
+                                                  const BValue          *value,
+                                                  BParamSpec            *pspec);
+static void btk_combo_box_entry_get_property     (BObject               *object,
                                                   guint                  prop_id,
-                                                  GValue                *value,
-                                                  GParamSpec            *pspec);
+                                                  BValue                *value,
+                                                  BParamSpec            *pspec);
 static void btk_combo_box_entry_add              (BtkContainer          *container,
 						  BtkWidget             *child);
 static void btk_combo_box_entry_remove           (BtkContainer          *container,
@@ -63,10 +63,10 @@ static gboolean btk_combo_box_entry_mnemonic_activate (BtkWidget        *entry,
 						       gboolean          group_cycling);
 static void btk_combo_box_entry_grab_focus       (BtkWidget *widget);
 static void has_frame_changed                    (BtkComboBoxEntry      *entry_box,
-						  GParamSpec            *pspec,
+						  BParamSpec            *pspec,
 						  gpointer               data);
 static void btk_combo_box_entry_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject * btk_combo_box_entry_buildable_get_internal_child (BtkBuildable *buildable,
+static BObject * btk_combo_box_entry_buildable_get_internal_child (BtkBuildable *buildable,
 						     BtkBuilder   *builder,
 						     const gchar  *childname);
 
@@ -83,12 +83,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkComboBoxEntry, btk_combo_box_entry, BTK_TYPE_COMBO_B
 static void
 btk_combo_box_entry_class_init (BtkComboBoxEntryClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
   BtkComboBoxClass *combo_class;
   
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   object_class->set_property = btk_combo_box_entry_set_property;
   object_class->get_property = btk_combo_box_entry_get_property;
 
@@ -113,7 +113,7 @@ btk_combo_box_entry_class_init (BtkComboBoxEntryClass *klass)
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
-  g_type_class_add_private ((GObjectClass *) klass,
+  g_type_class_add_private ((BObjectClass *) klass,
                             sizeof (BtkComboBoxEntryPrivate));
 }
 
@@ -146,22 +146,22 @@ btk_combo_box_entry_buildable_interface_init (BtkBuildableIface *iface)
   iface->get_internal_child = btk_combo_box_entry_buildable_get_internal_child;
 }
 
-static GObject *
+static BObject *
 btk_combo_box_entry_buildable_get_internal_child (BtkBuildable *buildable,
 						  BtkBuilder   *builder,
 						  const gchar  *childname)
 {
     if (strcmp (childname, "entry") == 0)
-      return G_OBJECT (btk_bin_get_child (BTK_BIN (buildable)));
+      return B_OBJECT (btk_bin_get_child (BTK_BIN (buildable)));
 
     return NULL;
 }
 
 static void
-btk_combo_box_entry_set_property (GObject      *object,
+btk_combo_box_entry_set_property (BObject      *object,
                                   guint         prop_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
+                                  const BValue *value,
+                                  BParamSpec   *pspec)
 {
   BtkComboBoxEntry *entry_box = BTK_COMBO_BOX_ENTRY (object);
 
@@ -169,31 +169,31 @@ btk_combo_box_entry_set_property (GObject      *object,
     {
       case PROP_TEXT_COLUMN:
         btk_combo_box_entry_set_text_column (entry_box,
-                                             g_value_get_int (value));
+                                             b_value_get_int (value));
         break;
 
       default:
-	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+	B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_combo_box_entry_get_property (GObject    *object,
+btk_combo_box_entry_get_property (BObject    *object,
                                   guint       prop_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
+                                  BValue     *value,
+                                  BParamSpec *pspec)
 {
   BtkComboBoxEntry *entry_box = BTK_COMBO_BOX_ENTRY (object);
 
   switch (prop_id)
     {
       case PROP_TEXT_COLUMN:
-        g_value_set_int (value, entry_box->priv->text_column);
+        b_value_set_int (value, entry_box->priv->text_column);
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
@@ -208,7 +208,7 @@ btk_combo_box_entry_add (BtkContainer *container,
     {
       g_warning ("Attempting to add a widget with type %s to a BtkComboBoxEntry "
 		 "(need an instance of BtkEntry or of a subclass)",
-                 G_OBJECT_TYPE_NAME (child));
+                 B_OBJECT_TYPE_NAME (child));
       return;
     }
 
@@ -275,7 +275,7 @@ btk_combo_box_entry_active_changed (BtkComboBox *combo_box,
 
 static void 
 has_frame_changed (BtkComboBoxEntry *entry_box,
-		   GParamSpec       *pspec,
+		   BParamSpec       *pspec,
 		   gpointer          data)
 {
   if (BTK_BIN (entry_box)->child)
@@ -455,7 +455,7 @@ btk_combo_box_entry_new_text (void)
   BtkWidget *entry_box;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
   entry_box = btk_combo_box_entry_new_with_model (BTK_TREE_MODEL (store), 0);
   g_object_unref (store);
 

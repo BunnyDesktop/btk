@@ -165,7 +165,7 @@ struct _BtkWindowGeometryInfo
   BtkWindowLastGeometryInfo last;
 };
 
-#define BTK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_WINDOW, BtkWindowPrivate))
+#define BTK_WINDOW_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_WINDOW, BtkWindowPrivate))
 
 typedef struct _BtkWindowPrivate BtkWindowPrivate;
 
@@ -198,9 +198,9 @@ struct _BtkWindowPrivate
   gchar *startup_id;
 };
 
-static void btk_window_dispose            (GObject           *object);
+static void btk_window_dispose            (BObject           *object);
 static void btk_window_destroy            (BtkObject         *object);
-static void btk_window_finalize           (GObject           *object);
+static void btk_window_finalize           (BObject           *object);
 static void btk_window_show               (BtkWidget         *widget);
 static void btk_window_hide               (BtkWidget         *widget);
 static void btk_window_map                (BtkWidget         *widget);
@@ -320,32 +320,32 @@ static GQuark       quark_btk_buildable_accels = 0;
 
 static BtkBuildableIface *parent_buildable_iface;
 
-static void btk_window_set_property (GObject         *object,
+static void btk_window_set_property (BObject         *object,
 				     guint            prop_id,
-				     const GValue    *value,
-				     GParamSpec      *pspec);
-static void btk_window_get_property (GObject         *object,
+				     const BValue    *value,
+				     BParamSpec      *pspec);
+static void btk_window_get_property (BObject         *object,
 				     guint            prop_id,
-				     GValue          *value,
-				     GParamSpec      *pspec);
+				     BValue          *value,
+				     BParamSpec      *pspec);
 
 /* BtkBuildable */
 static void btk_window_buildable_interface_init  (BtkBuildableIface *iface);
 static void btk_window_buildable_set_buildable_property (BtkBuildable        *buildable,
 							 BtkBuilder          *builder,
 							 const gchar         *name,
-							 const GValue        *value);
+							 const BValue        *value);
 static void btk_window_buildable_parser_finished (BtkBuildable     *buildable,
 						  BtkBuilder       *builder);
 static gboolean btk_window_buildable_custom_tag_start (BtkBuildable  *buildable,
 						       BtkBuilder    *builder,
-						       GObject       *child,
+						       BObject       *child,
 						       const gchar   *tagname,
 						       GMarkupParser *parser,
 						       gpointer      *data);
 static void btk_window_buildable_custom_finished (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
+						      BObject       *child,
 						      const gchar   *tagname,
 						      gpointer       user_data);
 
@@ -420,7 +420,7 @@ startup_id_is_fake (const gchar* startup_id)
 static void
 btk_window_class_init (BtkWindowClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
@@ -807,22 +807,22 @@ btk_window_class_init (BtkWindowClass *klass)
 
   window_signals[SET_FOCUS] =
     g_signal_new (I_("set-focus"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkWindowClass, set_focus),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT,
-                  G_TYPE_NONE, 1,
+                  B_TYPE_NONE, 1,
                   BTK_TYPE_WIDGET);
   
   window_signals[FRAME_EVENT] =
     g_signal_new (I_("frame-event"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET(BtkWindowClass, frame_event),
                   _btk_boolean_handled_accumulator, NULL,
                   _btk_marshal_BOOLEAN__BOXED,
-                  G_TYPE_BOOLEAN, 1,
+                  B_TYPE_BOOLEAN, 1,
                   BDK_TYPE_EVENT);
 
   /**
@@ -836,12 +836,12 @@ btk_window_class_init (BtkWindowClass *klass)
    */
   window_signals[ACTIVATE_FOCUS] =
     g_signal_new (I_("activate-focus"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkWindowClass, activate_focus),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /**
@@ -855,12 +855,12 @@ btk_window_class_init (BtkWindowClass *klass)
    */
   window_signals[ACTIVATE_DEFAULT] =
     g_signal_new (I_("activate-default"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkWindowClass, activate_default),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /**
@@ -872,12 +872,12 @@ btk_window_class_init (BtkWindowClass *klass)
    */
   window_signals[KEYS_CHANGED] =
     g_signal_new (I_("keys-changed"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (BtkWindowClass, keys_changed),
                   NULL, NULL,
                   _btk_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 
   /*
@@ -964,7 +964,7 @@ btk_window_init (BtkWindow *window)
   
   g_object_ref_sink (window);
   window->has_user_ref_count = TRUE;
-  toplevel_list = g_slist_prepend (toplevel_list, window);
+  toplevel_list = b_slist_prepend (toplevel_list, window);
 
   btk_decorated_window_init (window);
 
@@ -973,10 +973,10 @@ btk_window_init (BtkWindow *window)
 }
 
 static void
-btk_window_set_property (GObject      *object,
+btk_window_set_property (BObject      *object,
 			 guint         prop_id,
-			 const GValue *value,
-			 GParamSpec   *pspec)
+			 const BValue *value,
+			 BParamSpec   *pspec)
 {
   BtkWindow  *window;
   BtkWindowPrivate *priv;
@@ -988,113 +988,113 @@ btk_window_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_TYPE:
-      window->type = g_value_get_enum (value);
+      window->type = b_value_get_enum (value);
       break;
     case PROP_TITLE:
-      btk_window_set_title (window, g_value_get_string (value));
+      btk_window_set_title (window, b_value_get_string (value));
       break;
     case PROP_ROLE:
-      btk_window_set_role (window, g_value_get_string (value));
+      btk_window_set_role (window, b_value_get_string (value));
       break;
     case PROP_STARTUP_ID:
-      btk_window_set_startup_id (window, g_value_get_string (value));
+      btk_window_set_startup_id (window, b_value_get_string (value));
       break; 
     case PROP_ALLOW_SHRINK:
-      window->allow_shrink = g_value_get_boolean (value);
+      window->allow_shrink = b_value_get_boolean (value);
       btk_widget_queue_resize (BTK_WIDGET (window));
       break;
     case PROP_ALLOW_GROW:
-      window->allow_grow = g_value_get_boolean (value);
+      window->allow_grow = b_value_get_boolean (value);
       btk_widget_queue_resize (BTK_WIDGET (window));
-      g_object_notify (G_OBJECT (window), "resizable");
+      g_object_notify (B_OBJECT (window), "resizable");
       break;
     case PROP_RESIZABLE:
-      window->allow_grow = g_value_get_boolean (value);
+      window->allow_grow = b_value_get_boolean (value);
       btk_widget_queue_resize (BTK_WIDGET (window));
-      g_object_notify (G_OBJECT (window), "allow-grow");
+      g_object_notify (B_OBJECT (window), "allow-grow");
       break;
     case PROP_MODAL:
-      btk_window_set_modal (window, g_value_get_boolean (value));
+      btk_window_set_modal (window, b_value_get_boolean (value));
       break;
     case PROP_WIN_POS:
-      btk_window_set_position (window, g_value_get_enum (value));
+      btk_window_set_position (window, b_value_get_enum (value));
       break;
     case PROP_DEFAULT_WIDTH:
       btk_window_set_default_size_internal (window,
-                                            TRUE, g_value_get_int (value),
+                                            TRUE, b_value_get_int (value),
                                             FALSE, -1, FALSE);
       break;
     case PROP_DEFAULT_HEIGHT:
       btk_window_set_default_size_internal (window,
                                             FALSE, -1,
-                                            TRUE, g_value_get_int (value), FALSE);
+                                            TRUE, b_value_get_int (value), FALSE);
       break;
     case PROP_DESTROY_WITH_PARENT:
-      btk_window_set_destroy_with_parent (window, g_value_get_boolean (value));
+      btk_window_set_destroy_with_parent (window, b_value_get_boolean (value));
       break;
     case PROP_ICON:
       btk_window_set_icon (window,
-                           g_value_get_object (value));
+                           b_value_get_object (value));
       break;
     case PROP_ICON_NAME:
-      btk_window_set_icon_name (window, g_value_get_string (value));
+      btk_window_set_icon_name (window, b_value_get_string (value));
       break;
     case PROP_SCREEN:
-      btk_window_set_screen (window, g_value_get_object (value));
+      btk_window_set_screen (window, b_value_get_object (value));
       break;
     case PROP_TYPE_HINT:
       btk_window_set_type_hint (window,
-                                g_value_get_enum (value));
+                                b_value_get_enum (value));
       break;
     case PROP_SKIP_TASKBAR_HINT:
       btk_window_set_skip_taskbar_hint (window,
-                                        g_value_get_boolean (value));
+                                        b_value_get_boolean (value));
       break;
     case PROP_SKIP_PAGER_HINT:
       btk_window_set_skip_pager_hint (window,
-                                      g_value_get_boolean (value));
+                                      b_value_get_boolean (value));
       break;
     case PROP_URGENCY_HINT:
       btk_window_set_urgency_hint (window,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_ACCEPT_FOCUS:
       btk_window_set_accept_focus (window,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_FOCUS_ON_MAP:
       btk_window_set_focus_on_map (window,
-				   g_value_get_boolean (value));
+				   b_value_get_boolean (value));
       break;
     case PROP_DECORATED:
-      btk_window_set_decorated (window, g_value_get_boolean (value));
+      btk_window_set_decorated (window, b_value_get_boolean (value));
       break;
     case PROP_DELETABLE:
-      btk_window_set_deletable (window, g_value_get_boolean (value));
+      btk_window_set_deletable (window, b_value_get_boolean (value));
       break;
     case PROP_GRAVITY:
-      btk_window_set_gravity (window, g_value_get_enum (value));
+      btk_window_set_gravity (window, b_value_get_enum (value));
       break;
     case PROP_TRANSIENT_FOR:
-      btk_window_set_transient_for (window, g_value_get_object (value));
+      btk_window_set_transient_for (window, b_value_get_object (value));
       break;
     case PROP_OPACITY:
-      btk_window_set_opacity (window, g_value_get_double (value));
+      btk_window_set_opacity (window, b_value_get_double (value));
       break;
     case PROP_MNEMONICS_VISIBLE:
-      btk_window_set_mnemonics_visible (window, g_value_get_boolean (value));
+      btk_window_set_mnemonics_visible (window, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_window_get_property (GObject      *object,
+btk_window_get_property (BObject      *object,
 			 guint         prop_id,
-			 GValue       *value,
-			 GParamSpec   *pspec)
+			 BValue       *value,
+			 BParamSpec   *pspec)
 {
   BtkWindow  *window;
   BtkWindowPrivate *priv;
@@ -1106,104 +1106,104 @@ btk_window_get_property (GObject      *object,
     {
       BtkWindowGeometryInfo *info;
     case PROP_TYPE:
-      g_value_set_enum (value, window->type);
+      b_value_set_enum (value, window->type);
       break;
     case PROP_ROLE:
-      g_value_set_string (value, window->wm_role);
+      b_value_set_string (value, window->wm_role);
       break;
     case PROP_TITLE:
-      g_value_set_string (value, window->title);
+      b_value_set_string (value, window->title);
       break;
     case PROP_ALLOW_SHRINK:
-      g_value_set_boolean (value, window->allow_shrink);
+      b_value_set_boolean (value, window->allow_shrink);
       break;
     case PROP_ALLOW_GROW:
-      g_value_set_boolean (value, window->allow_grow);
+      b_value_set_boolean (value, window->allow_grow);
       break;
     case PROP_RESIZABLE:
-      g_value_set_boolean (value, window->allow_grow);
+      b_value_set_boolean (value, window->allow_grow);
       break;
     case PROP_MODAL:
-      g_value_set_boolean (value, window->modal);
+      b_value_set_boolean (value, window->modal);
       break;
     case PROP_WIN_POS:
-      g_value_set_enum (value, window->position);
+      b_value_set_enum (value, window->position);
       break;
     case PROP_DEFAULT_WIDTH:
       info = btk_window_get_geometry_info (window, FALSE);
       if (!info)
-	g_value_set_int (value, -1);
+	b_value_set_int (value, -1);
       else
-	g_value_set_int (value, info->default_width);
+	b_value_set_int (value, info->default_width);
       break;
     case PROP_DEFAULT_HEIGHT:
       info = btk_window_get_geometry_info (window, FALSE);
       if (!info)
-	g_value_set_int (value, -1);
+	b_value_set_int (value, -1);
       else
-	g_value_set_int (value, info->default_height);
+	b_value_set_int (value, info->default_height);
       break;
     case PROP_DESTROY_WITH_PARENT:
-      g_value_set_boolean (value, window->destroy_with_parent);
+      b_value_set_boolean (value, window->destroy_with_parent);
       break;
     case PROP_ICON:
-      g_value_set_object (value, btk_window_get_icon (window));
+      b_value_set_object (value, btk_window_get_icon (window));
       break;
     case PROP_ICON_NAME:
-      g_value_set_string (value, btk_window_get_icon_name (window));
+      b_value_set_string (value, btk_window_get_icon_name (window));
       break;
     case PROP_SCREEN:
-      g_value_set_object (value, window->screen);
+      b_value_set_object (value, window->screen);
       break;
     case PROP_IS_ACTIVE:
-      g_value_set_boolean (value, window->is_active);
+      b_value_set_boolean (value, window->is_active);
       break;
     case PROP_HAS_TOPLEVEL_FOCUS:
-      g_value_set_boolean (value, window->has_toplevel_focus);
+      b_value_set_boolean (value, window->has_toplevel_focus);
       break;
     case PROP_TYPE_HINT:
-      g_value_set_enum (value, priv->type_hint);
+      b_value_set_enum (value, priv->type_hint);
       break;
     case PROP_SKIP_TASKBAR_HINT:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_window_get_skip_taskbar_hint (window));
       break;
     case PROP_SKIP_PAGER_HINT:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_window_get_skip_pager_hint (window));
       break;
     case PROP_URGENCY_HINT:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_window_get_urgency_hint (window));
       break;
     case PROP_ACCEPT_FOCUS:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_window_get_accept_focus (window));
       break;
     case PROP_FOCUS_ON_MAP:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_window_get_focus_on_map (window));
       break;
     case PROP_DECORATED:
-      g_value_set_boolean (value, btk_window_get_decorated (window));
+      b_value_set_boolean (value, btk_window_get_decorated (window));
       break;
     case PROP_DELETABLE:
-      g_value_set_boolean (value, btk_window_get_deletable (window));
+      b_value_set_boolean (value, btk_window_get_deletable (window));
       break;
     case PROP_GRAVITY:
-      g_value_set_enum (value, btk_window_get_gravity (window));
+      b_value_set_enum (value, btk_window_get_gravity (window));
       break;
     case PROP_TRANSIENT_FOR:
-      g_value_set_object (value, btk_window_get_transient_for (window));
+      b_value_set_object (value, btk_window_get_transient_for (window));
       break;
     case PROP_OPACITY:
-      g_value_set_double (value, btk_window_get_opacity (window));
+      b_value_set_double (value, btk_window_get_opacity (window));
       break;
     case PROP_MNEMONICS_VISIBLE:
-      g_value_set_boolean (value, priv->mnemonics_visible);
+      b_value_set_boolean (value, priv->mnemonics_visible);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1222,11 +1222,11 @@ static void
 btk_window_buildable_set_buildable_property (BtkBuildable        *buildable,
 					     BtkBuilder          *builder,
 					     const gchar         *name,
-					     const GValue        *value)
+					     const BValue        *value)
 {
   BtkWindowPrivate *priv = BTK_WINDOW_GET_PRIVATE (buildable);
 
-  if (strcmp (name, "visible") == 0 && g_value_get_boolean (value))
+  if (strcmp (name, "visible") == 0 && b_value_get_boolean (value))
     priv->builder_visible = TRUE;
   else
     parent_buildable_iface->set_buildable_property (buildable, builder, name, value);
@@ -1237,13 +1237,13 @@ btk_window_buildable_parser_finished (BtkBuildable *buildable,
 				      BtkBuilder   *builder)
 {
   BtkWindowPrivate *priv = BTK_WINDOW_GET_PRIVATE (buildable);
-  GObject *object;
+  BObject *object;
   GSList *accels, *l;
 
   if (priv->builder_visible)
     btk_widget_show (BTK_WIDGET (buildable));
 
-  accels = g_object_get_qdata (G_OBJECT (buildable), quark_btk_buildable_accels);
+  accels = g_object_get_qdata (B_OBJECT (buildable), quark_btk_buildable_accels);
   for (l = accels; l; l = l->next)
     {
       object = btk_builder_get_object (builder, l->data);
@@ -1258,13 +1258,13 @@ btk_window_buildable_parser_finished (BtkBuildable *buildable,
       g_free (l->data);
     }
 
-  g_object_set_qdata (G_OBJECT (buildable), quark_btk_buildable_accels, NULL);
+  g_object_set_qdata (B_OBJECT (buildable), quark_btk_buildable_accels, NULL);
 
   parent_buildable_iface->parser_finished (buildable, builder);
 }
 
 typedef struct {
-  GObject *object;
+  BObject *object;
   GSList *items;
 } GSListSubParserData;
 
@@ -1284,7 +1284,7 @@ window_start_element (GMarkupParseContext *context,
       for (i = 0; names[i]; i++)
 	{
 	  if (strcmp (names[i], "name") == 0)
-	    data->items = g_slist_prepend (data->items, g_strdup (values[i]));
+	    data->items = b_slist_prepend (data->items, g_strdup (values[i]));
 	}
     }
   else if (strcmp (element_name, "accel-groups") == 0)
@@ -1303,7 +1303,7 @@ static const GMarkupParser window_parser =
 static gboolean
 btk_window_buildable_custom_tag_start (BtkBuildable  *buildable,
 				       BtkBuilder    *builder,
-				       GObject       *child,
+				       BObject       *child,
 				       const gchar   *tagname,
 				       GMarkupParser *parser,
 				       gpointer      *data)
@@ -1318,7 +1318,7 @@ btk_window_buildable_custom_tag_start (BtkBuildable  *buildable,
     {
       parser_data = g_slice_new0 (GSListSubParserData);
       parser_data->items = NULL;
-      parser_data->object = G_OBJECT (buildable);
+      parser_data->object = B_OBJECT (buildable);
 
       *parser = window_parser;
       *data = parser_data;
@@ -1331,7 +1331,7 @@ btk_window_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_window_buildable_custom_finished (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
-					  GObject       *child,
+					  BObject       *child,
 					  const gchar   *tagname,
 					  gpointer       user_data)
 {
@@ -1345,8 +1345,8 @@ btk_window_buildable_custom_finished (BtkBuildable  *buildable,
   
   data = (GSListSubParserData*)user_data;
 
-  g_object_set_qdata_full (G_OBJECT (buildable), quark_btk_buildable_accels, 
-			   data->items, (GDestroyNotify) g_slist_free);
+  g_object_set_qdata_full (B_OBJECT (buildable), quark_btk_buildable_accels, 
+			   data->items, (GDestroyNotify) b_slist_free);
 
   g_slice_free (GSListSubParserData, data);
 }
@@ -1418,7 +1418,7 @@ btk_window_set_title (BtkWindow   *window,
       btk_decorated_window_set_title (window, title);
     }
 
-  g_object_notify (G_OBJECT (window), "title");
+  g_object_notify (B_OBJECT (window), "title");
 }
 
 /**
@@ -1506,7 +1506,7 @@ btk_window_set_role (BtkWindow   *window,
   if (btk_widget_get_realized (BTK_WIDGET (window)))
     bdk_window_set_role (BTK_WIDGET (window)->window, window->wm_role);
 
-  g_object_notify (G_OBJECT (window), "role");
+  g_object_notify (B_OBJECT (window), "role");
 }
 
 /**
@@ -1566,7 +1566,7 @@ btk_window_set_startup_id (BtkWindow   *window,
         }
     }
 
-  g_object_notify (G_OBJECT (window), "startup-id");
+  g_object_notify (B_OBJECT (window), "startup-id");
 }
 
 /**
@@ -1694,11 +1694,11 @@ btk_window_set_default (BtkWindow *window,
 	}
 
       if (old_default_widget)
-	g_object_notify (G_OBJECT (old_default_widget), "has-default");
+	g_object_notify (B_OBJECT (old_default_widget), "has-default");
       
       if (default_widget)
 	{
-	  g_object_notify (G_OBJECT (default_widget), "has-default");
+	  g_object_notify (B_OBJECT (default_widget), "has-default");
 	  g_object_unref (default_widget);
 	}
     }
@@ -1732,11 +1732,11 @@ btk_window_set_policy_internal (BtkWindow *window,
   window->allow_shrink = (allow_shrink != FALSE);
   window->allow_grow = (allow_grow != FALSE);
 
-  g_object_freeze_notify (G_OBJECT (window));
-  g_object_notify (G_OBJECT (window), "allow-shrink");
-  g_object_notify (G_OBJECT (window), "allow-grow");
-  g_object_notify (G_OBJECT (window), "resizable");
-  g_object_thaw_notify (G_OBJECT (window));
+  g_object_freeze_notify (B_OBJECT (window));
+  g_object_notify (B_OBJECT (window), "allow-shrink");
+  g_object_notify (B_OBJECT (window), "allow-grow");
+  g_object_notify (B_OBJECT (window), "resizable");
+  g_object_thaw_notify (B_OBJECT (window));
 
   btk_widget_queue_resize_no_redraw (BTK_WIDGET (window));
 }
@@ -1793,7 +1793,7 @@ btk_window_add_accel_group (BtkWindow     *window,
   g_return_if_fail (BTK_IS_WINDOW (window));
   g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
 
-  _btk_accel_group_attach (accel_group, G_OBJECT (window));
+  _btk_accel_group_attach (accel_group, B_OBJECT (window));
   g_signal_connect_object (accel_group, "accel-changed",
 			   G_CALLBACK (btk_window_notify_keys_changed),
 			   window, G_CONNECT_SWAPPED);
@@ -1817,7 +1817,7 @@ btk_window_remove_accel_group (BtkWindow     *window,
   g_signal_handlers_disconnect_by_func (accel_group,
 					btk_window_notify_keys_changed,
 					window);
-  _btk_accel_group_detach (accel_group, G_OBJECT (window));
+  _btk_accel_group_detach (accel_group, B_OBJECT (window));
   btk_window_notify_keys_changed (window);
 }
 
@@ -1970,7 +1970,7 @@ btk_window_set_position (BtkWindow         *window,
 
   window->position = position;
   
-  g_object_notify (G_OBJECT (window), "window-position");
+  g_object_notify (B_OBJECT (window), "window-position");
 }
 
 /**
@@ -2083,7 +2083,7 @@ btk_window_set_modal (BtkWindow *window,
 	btk_grab_remove (widget);
     }
 
-  g_object_notify (G_OBJECT (window), "modal");
+  g_object_notify (B_OBJECT (window), "modal");
 }
 
 /**
@@ -2134,13 +2134,13 @@ btk_window_add_embedded_xid (BtkWindow *window, BdkNativeWindow xid)
 
   g_return_if_fail (BTK_IS_WINDOW (window));
 
-  embedded_windows = g_object_get_qdata (G_OBJECT (window), quark_btk_embedded);
+  embedded_windows = g_object_get_qdata (B_OBJECT (window), quark_btk_embedded);
   if (embedded_windows)
-    g_object_steal_qdata (G_OBJECT (window), quark_btk_embedded);
+    g_object_steal_qdata (B_OBJECT (window), quark_btk_embedded);
   embedded_windows = g_list_prepend (embedded_windows,
 				     GUINT_TO_POINTER (xid));
 
-  g_object_set_qdata_full (G_OBJECT (window), quark_btk_embedded, 
+  g_object_set_qdata_full (B_OBJECT (window), quark_btk_embedded, 
 			   embedded_windows,
 			   embedded_windows ?
 			   (GDestroyNotify) g_list_free : NULL);
@@ -2154,9 +2154,9 @@ btk_window_remove_embedded_xid (BtkWindow *window, BdkNativeWindow xid)
 
   g_return_if_fail (BTK_IS_WINDOW (window));
   
-  embedded_windows = g_object_get_qdata (G_OBJECT (window), quark_btk_embedded);
+  embedded_windows = g_object_get_qdata (B_OBJECT (window), quark_btk_embedded);
   if (embedded_windows)
-    g_object_steal_qdata (G_OBJECT (window), quark_btk_embedded);
+    g_object_steal_qdata (B_OBJECT (window), quark_btk_embedded);
 
   node = g_list_find (embedded_windows, GUINT_TO_POINTER (xid));
   if (node)
@@ -2165,7 +2165,7 @@ btk_window_remove_embedded_xid (BtkWindow *window, BdkNativeWindow xid)
       g_list_free_1 (node);
     }
   
-  g_object_set_qdata_full (G_OBJECT (window), quark_btk_embedded,
+  g_object_set_qdata_full (B_OBJECT (window), quark_btk_embedded,
 			   embedded_windows,
 			   embedded_windows ?
 			   (GDestroyNotify) g_list_free : NULL);
@@ -2182,14 +2182,14 @@ _btk_window_reposition (BtkWindow *window,
 }
 
 static void
-btk_window_dispose (GObject *object)
+btk_window_dispose (BObject *object)
 {
   BtkWindow *window = BTK_WINDOW (object);
 
   btk_window_set_focus (window, NULL);
   btk_window_set_default (window, NULL);
 
-  G_OBJECT_CLASS (btk_window_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_window_parent_class)->dispose (object);
 }
 
 static void
@@ -2240,7 +2240,7 @@ btk_window_transient_parent_unrealized (BtkWidget *parent,
 
 static void
 btk_window_transient_parent_screen_changed (BtkWindow	*parent,
-					    GParamSpec	*pspec,
+					    BParamSpec	*pspec,
 					    BtkWindow   *window)
 {
   btk_window_set_screen (window, parent->screen);
@@ -2519,7 +2519,7 @@ btk_window_set_skip_taskbar_hint (BtkWindow *window,
       if (btk_widget_get_realized (BTK_WIDGET (window)))
         bdk_window_set_skip_taskbar_hint (BTK_WIDGET (window)->window,
                                           priv->skips_taskbar);
-      g_object_notify (G_OBJECT (window), "skip-taskbar-hint");
+      g_object_notify (B_OBJECT (window), "skip-taskbar-hint");
     }
 }
 
@@ -2576,7 +2576,7 @@ btk_window_set_skip_pager_hint (BtkWindow *window,
       if (btk_widget_get_realized (BTK_WIDGET (window)))
         bdk_window_set_skip_pager_hint (BTK_WIDGET (window)->window,
                                         priv->skips_pager);
-      g_object_notify (G_OBJECT (window), "skip-pager-hint");
+      g_object_notify (B_OBJECT (window), "skip-pager-hint");
     }
 }
 
@@ -2630,7 +2630,7 @@ btk_window_set_urgency_hint (BtkWindow *window,
       if (btk_widget_get_realized (BTK_WIDGET (window)))
         bdk_window_set_urgency_hint (BTK_WIDGET (window)->window,
 				     priv->urgent);
-      g_object_notify (G_OBJECT (window), "urgency-hint");
+      g_object_notify (B_OBJECT (window), "urgency-hint");
     }
 }
 
@@ -2684,7 +2684,7 @@ btk_window_set_accept_focus (BtkWindow *window,
       if (btk_widget_get_realized (BTK_WIDGET (window)))
         bdk_window_set_accept_focus (BTK_WIDGET (window)->window,
 				     priv->accept_focus);
-      g_object_notify (G_OBJECT (window), "accept-focus");
+      g_object_notify (B_OBJECT (window), "accept-focus");
     }
 }
 
@@ -2739,7 +2739,7 @@ btk_window_set_focus_on_map (BtkWindow *window,
       if (btk_widget_get_realized (BTK_WIDGET (window)))
         bdk_window_set_focus_on_map (BTK_WIDGET (window)->window,
 				     priv->focus_on_map);
-      g_object_notify (G_OBJECT (window), "focus-on-map");
+      g_object_notify (B_OBJECT (window), "focus-on-map");
     }
 }
 
@@ -2796,7 +2796,7 @@ btk_window_set_destroy_with_parent  (BtkWindow *window,
   
   window->destroy_with_parent = setting;
 
-  g_object_notify (G_OBJECT (window), "destroy-with-parent");
+  g_object_notify (B_OBJECT (window), "destroy-with-parent");
 }
 
 /**
@@ -2940,7 +2940,7 @@ btk_window_set_decorated (BtkWindow *window,
                                     0);
     }
 
-  g_object_notify (G_OBJECT (window), "decorated");
+  g_object_notify (B_OBJECT (window), "decorated");
 }
 
 /**
@@ -3005,7 +3005,7 @@ btk_window_set_deletable (BtkWindow *window,
 				  BDK_FUNC_ALL | BDK_FUNC_CLOSE);
     }
 
-  g_object_notify (G_OBJECT (window), "deletable");  
+  g_object_notify (B_OBJECT (window), "deletable");  
 }
 
 /**
@@ -3034,7 +3034,7 @@ btk_window_get_deletable (BtkWindow *window)
 static BtkWindowIconInfo*
 get_icon_info (BtkWindow *window)
 {
-  return g_object_get_qdata (G_OBJECT (window), quark_btk_window_icon_info);
+  return g_object_get_qdata (B_OBJECT (window), quark_btk_window_icon_info);
 }
      
 static void
@@ -3055,7 +3055,7 @@ ensure_icon_info (BtkWindow *window)
   if (info == NULL)
     {
       info = g_slice_new0 (BtkWindowIconInfo);
-      g_object_set_qdata_full (G_OBJECT (window),
+      g_object_set_qdata_full (B_OBJECT (window),
                               quark_btk_window_icon_info,
                               info,
                               (GDestroyNotify)free_icon_info);
@@ -3073,12 +3073,12 @@ typedef struct {
 static ScreenIconInfo *
 get_screen_icon_info (BdkScreen *screen)
 {
-  ScreenIconInfo *info = g_object_get_qdata (G_OBJECT (screen), 
+  ScreenIconInfo *info = g_object_get_qdata (B_OBJECT (screen), 
 					     quark_btk_window_default_icon_pixmap);
   if (!info)
     {
       info = g_slice_new0 (ScreenIconInfo);
-      g_object_set_qdata (G_OBJECT (screen), 
+      g_object_set_qdata (B_OBJECT (screen), 
 			  quark_btk_window_default_icon_pixmap, info);
     }
 
@@ -3086,13 +3086,13 @@ get_screen_icon_info (BdkScreen *screen)
     {
       if (info->pixmap)
 	{
-	  g_object_remove_weak_pointer (G_OBJECT (info->pixmap), (gpointer*)&info->pixmap);
+	  g_object_remove_weak_pointer (B_OBJECT (info->pixmap), (gpointer*)&info->pixmap);
 	  info->pixmap = NULL;
 	}
 	  
       if (info->mask)
 	{
-	  g_object_remove_weak_pointer (G_OBJECT (info->mask), (gpointer*)&info->mask);
+	  g_object_remove_weak_pointer (B_OBJECT (info->mask), (gpointer*)&info->mask);
 	  info->mask = NULL;
 	}
 
@@ -3206,10 +3206,10 @@ get_pixmap_and_mask (BdkWindow		*window,
           default_icon_info->mask = *mask_return;
 
           if (default_icon_info->pixmap)
-	    g_object_add_weak_pointer (G_OBJECT (default_icon_info->pixmap),
+	    g_object_add_weak_pointer (B_OBJECT (default_icon_info->pixmap),
 				       (gpointer*)&default_icon_info->pixmap);
           if (default_icon_info->mask) 
-	    g_object_add_weak_pointer (G_OBJECT (default_icon_info->mask),
+	    g_object_add_weak_pointer (B_OBJECT (default_icon_info->mask),
 				       (gpointer*)&default_icon_info->mask);
         }
     }
@@ -3438,7 +3438,7 @@ btk_window_set_icon_list (BtkWindow  *window,
 
   info->icon_list = g_list_copy (list);
 
-  g_object_notify (G_OBJECT (window), "icon");
+  g_object_notify (B_OBJECT (window), "icon");
   
   btk_window_unrealize_icon (window);
   
@@ -3523,7 +3523,7 @@ static void
 update_themed_icon (BtkIconTheme *icon_theme,
 		    BtkWindow    *window)
 {
-  g_object_notify (G_OBJECT (window), "icon");
+  g_object_notify (B_OBJECT (window), "icon");
   
   btk_window_unrealize_icon (window);
   
@@ -3568,7 +3568,7 @@ btk_window_set_icon_name (BtkWindow   *window,
   
   update_themed_icon (NULL, window);
 
-  g_object_notify (G_OBJECT (window), "icon-name");
+  g_object_notify (B_OBJECT (window), "icon-name");
 }
 
 /**
@@ -3885,7 +3885,7 @@ btk_window_set_default_size_internal (BtkWindow    *window,
 
   info = btk_window_get_geometry_info (window, TRUE);
 
-  g_object_freeze_notify (G_OBJECT (window));
+  g_object_freeze_notify (B_OBJECT (window));
 
   info->default_is_geometry = is_geometry != FALSE;
 
@@ -3899,7 +3899,7 @@ btk_window_set_default_size_internal (BtkWindow    *window,
 
       info->default_width = width;
 
-      g_object_notify (G_OBJECT (window), "default-width");
+      g_object_notify (B_OBJECT (window), "default-width");
     }
 
   if (change_height)
@@ -3912,10 +3912,10 @@ btk_window_set_default_size_internal (BtkWindow    *window,
 
       info->default_height = height;
       
-      g_object_notify (G_OBJECT (window), "default-height");
+      g_object_notify (B_OBJECT (window), "default-height");
     }
   
-  g_object_thaw_notify (G_OBJECT (window));
+  g_object_thaw_notify (B_OBJECT (window));
   
   btk_widget_queue_resize_no_redraw (BTK_WIDGET (window));
 }
@@ -4418,7 +4418,7 @@ btk_window_destroy (BtkObject *object)
 {
   BtkWindow *window = BTK_WINDOW (object);
   
-  toplevel_list = g_slist_remove (toplevel_list, window);
+  toplevel_list = b_slist_remove (toplevel_list, window);
 
   if (window->transient_parent)
     btk_window_set_transient_for (window, NULL);
@@ -4441,7 +4441,7 @@ btk_window_destroy (BtkObject *object)
 }
 
 static void
-btk_window_finalize (GObject *object)
+btk_window_finalize (BObject *object)
 {
   BtkWindow *window = BTK_WINDOW (object);
   BtkWindowPrivate *priv = BTK_WINDOW_GET_PRIVATE (window);
@@ -4477,7 +4477,7 @@ btk_window_finalize (GObject *object)
 
   g_free (priv->startup_id);
 
-  G_OBJECT_CLASS (btk_window_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_window_parent_class)->finalize (object);
 }
 
 static void
@@ -5354,7 +5354,7 @@ send_client_message_to_embedded_windows (BtkWidget *widget,
 {
   GList *embedded_windows;
 
-  embedded_windows = g_object_get_qdata (G_OBJECT (widget), quark_btk_embedded);
+  embedded_windows = g_object_get_qdata (B_OBJECT (widget), quark_btk_embedded);
   if (embedded_windows)
     {
       BdkEvent *send_event = bdk_event_new (BDK_CLIENT_EVENT);
@@ -5477,13 +5477,13 @@ btk_window_real_set_focus (BtkWindow *window,
   if (old_focus)
     {
       g_object_ref (old_focus);
-      g_object_freeze_notify (G_OBJECT (old_focus));
+      g_object_freeze_notify (B_OBJECT (old_focus));
       old_focus_had_default = btk_widget_has_default (old_focus);
     }
   if (focus)
     {
       g_object_ref (focus);
-      g_object_freeze_notify (G_OBJECT (focus));
+      g_object_freeze_notify (B_OBJECT (focus));
       focus_had_default = btk_widget_has_default (focus);
     }
   
@@ -5507,7 +5507,7 @@ btk_window_real_set_focus (BtkWindow *window,
       if (window->has_focus)
 	do_focus_change (old_focus, FALSE);
 
-      g_object_notify (G_OBJECT (old_focus), "is-focus");
+      g_object_notify (B_OBJECT (old_focus), "is-focus");
     }
 
   /* The above notifications may have set a new focus widget,
@@ -5530,7 +5530,7 @@ btk_window_real_set_focus (BtkWindow *window,
       if (window->has_focus)
 	do_focus_change (window->focus_widget, TRUE);
 
-      g_object_notify (G_OBJECT (window->focus_widget), "is-focus");
+      g_object_notify (B_OBJECT (window->focus_widget), "is-focus");
     }
 
   /* If the default widget changed, a redraw will have been queued
@@ -5548,7 +5548,7 @@ btk_window_real_set_focus (BtkWindow *window,
       if (old_focus_had_default != btk_widget_has_default (old_focus))
 	btk_widget_queue_draw (old_focus);
 	
-      g_object_thaw_notify (G_OBJECT (old_focus));
+      g_object_thaw_notify (B_OBJECT (old_focus));
       g_object_unref (old_focus);
     }
   if (focus)
@@ -5556,7 +5556,7 @@ btk_window_real_set_focus (BtkWindow *window,
       if (focus_had_default != btk_widget_has_default (focus))
 	btk_widget_queue_draw (focus);
 
-      g_object_thaw_notify (G_OBJECT (focus));
+      g_object_thaw_notify (B_OBJECT (focus));
       g_object_unref (focus);
     }
 }
@@ -7300,7 +7300,7 @@ btk_window_set_gravity (BtkWindow *window,
        */
       btk_widget_queue_resize_no_redraw (BTK_WIDGET (window));
 
-      g_object_notify (G_OBJECT (window), "gravity");
+      g_object_notify (B_OBJECT (window), "gravity");
     }
 }
 
@@ -7492,7 +7492,7 @@ btk_window_set_screen (BtkWindow *window,
       _btk_widget_propagate_screen_changed (widget, previous_screen);
       _btk_widget_propagate_composited_changed (widget);
     }
-  g_object_notify (G_OBJECT (window), "screen");
+  g_object_notify (B_OBJECT (window), "screen");
 
   if (was_mapped)
     btk_widget_map (widget);
@@ -7607,7 +7607,7 @@ btk_window_group_get_type (void)
 	(GInstanceInitFunc) NULL,
       };
 
-      window_group_type = g_type_register_static (G_TYPE_OBJECT, I_("BtkWindowGroup"), 
+      window_group_type = g_type_register_static (B_TYPE_OBJECT, I_("BtkWindowGroup"), 
 						  &window_group_info, 0);
     }
 
@@ -7639,7 +7639,7 @@ window_group_cleanup_grabs (BtkWindowGroup *group,
   while (tmp_list)
     {
       if (btk_widget_get_toplevel (tmp_list->data) == (BtkWidget*) window)
-	to_remove = g_slist_prepend (to_remove, g_object_ref (tmp_list->data));
+	to_remove = b_slist_prepend (to_remove, g_object_ref (tmp_list->data));
       tmp_list = tmp_list->next;
     }
 
@@ -7647,7 +7647,7 @@ window_group_cleanup_grabs (BtkWindowGroup *group,
     {
       btk_grab_remove (to_remove->data);
       g_object_unref (to_remove->data);
-      to_remove = g_slist_delete_link (to_remove, to_remove);
+      to_remove = b_slist_delete_link (to_remove, to_remove);
     }
 }
 
@@ -8179,7 +8179,7 @@ _btk_window_keys_foreach (BtkWindow                *window,
     _btk_mnemonic_hash_foreach (mnemonic_hash,
 				btk_window_mnemonic_hash_foreach, &info);
 
-  groups = btk_accel_groups_from_object (G_OBJECT (window));
+  groups = btk_accel_groups_from_object (B_OBJECT (window));
   while (groups)
     {
       BtkAccelGroup *group = groups->data;
@@ -8252,7 +8252,7 @@ static BtkKeyHash *
 btk_window_get_key_hash (BtkWindow *window)
 {
   BdkScreen *screen = btk_window_check_screen (window);
-  BtkKeyHash *key_hash = g_object_get_qdata (G_OBJECT (window), quark_btk_window_key_hash);
+  BtkKeyHash *key_hash = g_object_get_qdata (B_OBJECT (window), quark_btk_window_key_hash);
   
   if (key_hash)
     return key_hash;
@@ -8260,7 +8260,7 @@ btk_window_get_key_hash (BtkWindow *window)
   key_hash = _btk_key_hash_new (bdk_keymap_get_for_display (bdk_screen_get_display (screen)),
 				(GDestroyNotify)window_key_entry_destroy);
   _btk_window_keys_foreach (window, add_to_key_hash, key_hash);
-  g_object_set_qdata (G_OBJECT (window), quark_btk_window_key_hash, key_hash);
+  g_object_set_qdata (B_OBJECT (window), quark_btk_window_key_hash, key_hash);
 
   return key_hash;
 }
@@ -8268,11 +8268,11 @@ btk_window_get_key_hash (BtkWindow *window)
 static void
 btk_window_free_key_hash (BtkWindow *window)
 {
-  BtkKeyHash *key_hash = g_object_get_qdata (G_OBJECT (window), quark_btk_window_key_hash);
+  BtkKeyHash *key_hash = g_object_get_qdata (B_OBJECT (window), quark_btk_window_key_hash);
   if (key_hash)
     {
       _btk_key_hash_free (key_hash);
-      g_object_set_qdata (G_OBJECT (window), quark_btk_window_key_hash, NULL);
+      g_object_set_qdata (B_OBJECT (window), quark_btk_window_key_hash, NULL);
     }
 }
 
@@ -8338,7 +8338,7 @@ btk_window_activate_key (BtkWindow   *window,
             }
 	}
 
-      g_slist_free (entries);
+      b_slist_free (entries);
     }
 
   if (found_entry)
@@ -8352,7 +8352,7 @@ btk_window_activate_key (BtkWindow   *window,
       else
         {
           if (enable_accels)
-            return btk_accel_groups_activate (G_OBJECT (window), found_entry->keyval,
+            return btk_accel_groups_activate (B_OBJECT (window), found_entry->keyval,
                                               found_entry->modifiers);
         }
     }
@@ -8409,7 +8409,7 @@ _btk_window_set_is_active (BtkWindow *window,
       window->is_active = is_active;
       window_update_has_focus (window);
 
-      g_object_notify (G_OBJECT (window), "is-active");
+      g_object_notify (B_OBJECT (window), "is-active");
     }
 }
 
@@ -8433,9 +8433,9 @@ _btk_window_set_is_toplevel (BtkWindow *window,
   widget = BTK_WIDGET (window);
 
   if (btk_widget_is_toplevel (widget))
-    g_assert (g_slist_find (toplevel_list, window) != NULL);
+    g_assert (b_slist_find (toplevel_list, window) != NULL);
   else
-    g_assert (g_slist_find (toplevel_list, window) == NULL);
+    g_assert (b_slist_find (toplevel_list, window) == NULL);
 
   if (is_toplevel == btk_widget_is_toplevel (widget))
     return;
@@ -8443,12 +8443,12 @@ _btk_window_set_is_toplevel (BtkWindow *window,
   if (is_toplevel)
     {
       _btk_widget_set_is_toplevel (widget, TRUE);
-      toplevel_list = g_slist_prepend (toplevel_list, window);
+      toplevel_list = b_slist_prepend (toplevel_list, window);
     }
   else
     {
       _btk_widget_set_is_toplevel (widget, FALSE);
-      toplevel_list = g_slist_remove (toplevel_list, window);
+      toplevel_list = b_slist_remove (toplevel_list, window);
     }
 }
 
@@ -8473,7 +8473,7 @@ _btk_window_set_has_toplevel_focus (BtkWindow *window,
       window->has_toplevel_focus = has_toplevel_focus;
       window_update_has_focus (window);
 
-      g_object_notify (G_OBJECT (window), "has-toplevel-focus");
+      g_object_notify (B_OBJECT (window), "has-toplevel-focus");
     }
 }
 
@@ -8563,7 +8563,7 @@ btk_window_set_mnemonics_visible (BtkWindow *window,
   if (priv->mnemonics_visible != setting)
     {
       priv->mnemonics_visible = setting;
-      g_object_notify (G_OBJECT (window), "mnemonics-visible");
+      g_object_notify (B_OBJECT (window), "mnemonics-visible");
     }
 
   priv->mnemonics_visible_set = TRUE;

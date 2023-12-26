@@ -1168,7 +1168,7 @@ show_window_recurse (BdkWindow *window, gboolean hide_window)
 	      child = children->data;
 	      show_window_recurse (child, hide_window);
 
-	      children = g_slist_next (children);
+	      children = b_slist_next (children);
 	    }
 	}
 

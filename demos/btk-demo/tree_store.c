@@ -170,14 +170,14 @@ create_model (void)
 
   /* create tree store */
   model = btk_tree_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN);
+			      B_TYPE_STRING,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN);
 
   /* add data to the tree store */
   while (month->label)
@@ -234,7 +234,7 @@ item_toggled (BtkCellRendererToggle *cell,
 
   gint *column;
 
-  column = g_object_get_data (G_OBJECT (cell), "column");
+  column = g_object_get_data (B_OBJECT (cell), "column");
 
   /* get toggled iter */
   btk_tree_model_get_iter (model, &iter, path);
@@ -274,7 +274,7 @@ add_columns (BtkTreeView *treeview)
   /* alex column */
   renderer = btk_cell_renderer_toggle_new ();
   g_object_set (renderer, "xalign", 0.0, NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", (gint *)ALEX_COLUMN);
+  g_object_set_data (B_OBJECT (renderer), "column", (gint *)ALEX_COLUMN);
 
   g_signal_connect (renderer, "toggled", G_CALLBACK (item_toggled), model);
 
@@ -297,7 +297,7 @@ add_columns (BtkTreeView *treeview)
   /* havoc column */
   renderer = btk_cell_renderer_toggle_new ();
   g_object_set (renderer, "xalign", 0.0, NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", (gint *)HAVOC_COLUMN);
+  g_object_set_data (B_OBJECT (renderer), "column", (gint *)HAVOC_COLUMN);
 
   g_signal_connect (renderer, "toggled", G_CALLBACK (item_toggled), model);
 
@@ -319,7 +319,7 @@ add_columns (BtkTreeView *treeview)
   /* tim column */
   renderer = btk_cell_renderer_toggle_new ();
   g_object_set (renderer, "xalign", 0.0, NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", (gint *)TIM_COLUMN);
+  g_object_set_data (B_OBJECT (renderer), "column", (gint *)TIM_COLUMN);
 
   g_signal_connect (renderer, "toggled", G_CALLBACK (item_toggled), model);
 
@@ -342,7 +342,7 @@ add_columns (BtkTreeView *treeview)
   /* owen column */
   renderer = btk_cell_renderer_toggle_new ();
   g_object_set (renderer, "xalign", 0.0, NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", (gint *)OWEN_COLUMN);
+  g_object_set_data (B_OBJECT (renderer), "column", (gint *)OWEN_COLUMN);
 
   g_signal_connect (renderer, "toggled", G_CALLBACK (item_toggled), model);
 
@@ -364,7 +364,7 @@ add_columns (BtkTreeView *treeview)
   /* dave column */
   renderer = btk_cell_renderer_toggle_new ();
   g_object_set (renderer, "xalign", 0.0, NULL);
-  g_object_set_data (G_OBJECT (renderer), "column", (gint *)DAVE_COLUMN);
+  g_object_set_data (B_OBJECT (renderer), "column", (gint *)DAVE_COLUMN);
 
   g_signal_connect (renderer, "toggled", G_CALLBACK (item_toggled), model);
 
