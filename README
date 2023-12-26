@@ -6,20 +6,16 @@ creating graphical user interfaces. Offering a complete set of widgets,
 BTK+ is suitable for projects ranging from small one-off projects to
 complete application suites.
 
-BTK+ is free software and part of the GNU Project. However, the
+BTK+ is free software and part of the Bunny Desktop project. However, the
 licensing terms for BTK+, the GNU LGPL, allow it to be used by all
 developers, including those developing proprietary software, without any
 license fees or royalties.
 
-The official ftp site is:
-  ftp://ftp.btk.org/pub/btk
+The official GitHub repository site is:
+  https://github.com/BunnyDesktop/btk/
 
 The official web site is:
-  http://www.btk.org/
-
-Information about mailing lists can be found at
-  http://www.btk.org/mailinglists.html
-
+  TODO
 
 Installation
 ============
@@ -421,7 +417,7 @@ How to report bugs
 ==================
 
 Bugs should be reported to the BUNNY bug tracking system.
-(http://bugzilla.bunny.org, product btk+.) You will need to create an
+(https://github.com/BunnyDesktop/btk/issues, project "btk") You will need to create an
 account for yourself.
   
 In the bug report please include:
@@ -454,8 +450,8 @@ In the bug report please include:
 Patches
 =======
 
-Patches should also be submitted to bugzilla.bunny.org. If the patch
-fixes an existing bug, add the patch as an attachment to that bug
+Patches should also be submitted to https://github.com/BunnyDesktop/btk/issues. 
+If the patch fixes an existing bug, add the patch as an attachment to that bug
 report.
 
 Otherwise, enter a new bug report that describes the patch, and attach
