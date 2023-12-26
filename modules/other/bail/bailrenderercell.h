@@ -23,7 +23,7 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_RENDERER_CELL            (bail_renderer_cell_get_type ())
 #define BAIL_RENDERER_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RENDERER_CELL, BailRendererCell))
@@ -55,6 +55,6 @@ bail_renderer_cell_update_cache (BailRendererCell *cell, gboolean emit_change_si
 
 BatkObject *bail_renderer_cell_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

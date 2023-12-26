@@ -25,7 +25,7 @@
 #include <bunnylib.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 typedef enum
@@ -106,8 +106,8 @@ struct _BtkRBNode
 #define BTK_RBNODE_GET_COLOR(node)		(node?(((node->flags&BTK_RBNODE_RED)==BTK_RBNODE_RED)?BTK_RBNODE_RED:BTK_RBNODE_BLACK):BTK_RBNODE_BLACK)
 #define BTK_RBNODE_SET_COLOR(node,color) 	if((node->flags&color)!=color)node->flags=node->flags^(BTK_RBNODE_RED|BTK_RBNODE_BLACK)
 #define BTK_RBNODE_GET_HEIGHT(node) 		(node->offset-(node->left->offset+node->right->offset+(node->children?node->children->root->offset:0)))
-#define BTK_RBNODE_SET_FLAG(node, flag)   	G_STMT_START{ (node->flags|=flag); }G_STMT_END
-#define BTK_RBNODE_UNSET_FLAG(node, flag) 	G_STMT_START{ (node->flags&=~(flag)); }G_STMT_END
+#define BTK_RBNODE_SET_FLAG(node, flag)   	B_STMT_START{ (node->flags|=flag); }B_STMT_END
+#define BTK_RBNODE_UNSET_FLAG(node, flag) 	B_STMT_START{ (node->flags&=~(flag)); }B_STMT_END
 #define BTK_RBNODE_FLAG_SET(node, flag) 	(node?(((node->flags&flag)==flag)?TRUE:FALSE):FALSE)
 
 
@@ -178,7 +178,7 @@ void       _btk_rbtree_debug_spew       (BtkRBTree              *tree);
 #endif
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_RBTREE_H__ */

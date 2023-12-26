@@ -25,7 +25,7 @@
 
 #include <btk/btkrc.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* -- type macros --- */
@@ -75,7 +75,7 @@ struct _BtkSettingsValue
 
 
 /* --- functions --- */
-GType		btk_settings_get_type		     (void) G_GNUC_CONST;
+GType		btk_settings_get_type		     (void) B_GNUC_CONST;
 #ifndef BDK_MULTIHEAD_SAFE
 BtkSettings*	btk_settings_get_default	     (void);
 #endif
@@ -134,6 +134,6 @@ gboolean	    _btk_settings_parse_convert       (BtkRcPropertyParser parser,
 						       GValue	          *dest_value);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SETTINGS_H__ */

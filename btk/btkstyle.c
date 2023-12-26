@@ -1784,7 +1784,7 @@ btk_style_get_style_property (BtkStyle     *style,
   if (!pspec)
     {
       g_warning ("%s: widget class `%s' has no property named `%s'",
-                 G_STRLOC,
+                 B_STRLOC,
                  g_type_name (widget_type),
                  property_name);
       return;
@@ -1846,7 +1846,7 @@ btk_style_get_valist (BtkStyle    *style,
       if (!pspec)
         {
           g_warning ("%s: widget class `%s' has no property named `%s'",
-                     G_STRLOC,
+                     B_STRLOC,
                      g_type_name (widget_type),
                      property_name);
           break;
@@ -1859,7 +1859,7 @@ btk_style_get_valist (BtkStyle    *style,
       G_VALUE_LCOPY (peek_value, var_args, 0, &error);
       if (error)
         {
-          g_warning ("%s: %s", G_STRLOC, error);
+          g_warning ("%s: %s", B_STRLOC, error);
           g_free (error);
           break;
         }
@@ -2355,7 +2355,7 @@ btk_default_render_icon (BtkStyle            *style,
 
   if (size != (BtkIconSize) -1 && !lookup_icon_size(style, widget, size, &width, &height))
     {
-      g_warning (G_STRLOC ": invalid icon size '%d'", size);
+      g_warning (B_STRLOC ": invalid icon size '%d'", size);
       return NULL;
     }
 

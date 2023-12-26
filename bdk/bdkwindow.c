@@ -1368,7 +1368,7 @@ bdk_window_new (BdkWindow     *parent,
    */
   if (attributes->wclass == BDK_INPUT_ONLY &&
       private->parent->window_type == BDK_WINDOW_ROOT &&
-      !G_LIKELY (BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (parent))->trusted_client))
+      !B_LIKELY (BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (parent))->trusted_client))
     {
       g_warning ("Coercing BDK_INPUT_ONLY toplevel window to BDK_INPUT_OUTPUT to work around bug in Xorg server");
       attributes->wclass = BDK_INPUT_OUTPUT;
@@ -1397,13 +1397,13 @@ bdk_window_new (BdkWindow     *parent,
     case BDK_WINDOW_TEMP:
     case BDK_WINDOW_OFFSCREEN:
       if (BDK_WINDOW_TYPE (parent) != BDK_WINDOW_ROOT)
-	g_warning (G_STRLOC "Toplevel windows must be created as children of\n"
+	g_warning (B_STRLOC "Toplevel windows must be created as children of\n"
 		   "of a window of type BDK_WINDOW_ROOT or BDK_WINDOW_FOREIGN");
     case BDK_WINDOW_CHILD:
       break;
       break;
     default:
-      g_warning (G_STRLOC "cannot make windows of type %d", private->window_type);
+      g_warning (B_STRLOC "cannot make windows of type %d", private->window_type);
       return NULL;
     }
 
@@ -3153,7 +3153,7 @@ bdk_window_end_paint (BdkWindow *window)
 
   if (private->paint_stack == NULL)
     {
-      g_warning (G_STRLOC": no preceding call to bdk_window_begin_paint_rebunnyion(), see documentation");
+      g_warning (B_STRLOC": no preceding call to bdk_window_begin_paint_rebunnyion(), see documentation");
       return;
     }
 
@@ -9872,7 +9872,7 @@ static const guint type_masks[] = {
   0, /* BDK_GRAB_BROKEN = 35 */
   0, /* BDK_DAMAGE = 36 */
 };
-G_STATIC_ASSERT (G_N_ELEMENTS (type_masks) == BDK_EVENT_LAST);
+B_STATIC_ASSERT (G_N_ELEMENTS (type_masks) == BDK_EVENT_LAST);
 
 /* send motion events if the right buttons are down */
 static guint

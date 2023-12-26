@@ -38,7 +38,7 @@
 
 typedef struct _BtkTextRealIter BtkTextRealIter;
 
-struct G_GNUC_MAY_ALIAS _BtkTextRealIter
+struct B_GNUC_MAY_ALIAS _BtkTextRealIter
 {
   /* Always-valid information */
   BtkTextBTree *tree;
@@ -3817,7 +3817,7 @@ btk_text_iter_set_line_index (BtkTextIter *iter,
     g_warning ("%s: Incorrect byte offset %d falls in the middle of a UTF-8 "
                "character; this will crash the text buffer. "
                "Byte indexes must refer to the start of a character.",
-               G_STRLOC, byte_on_line);
+               B_STRLOC, byte_on_line);
 
   check_invariants (iter);
 }

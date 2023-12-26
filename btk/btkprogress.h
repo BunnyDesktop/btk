@@ -32,7 +32,7 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PROGRESS_C__) || defined (__BTK_PROGRESS_BAR_C__)
 
@@ -85,7 +85,7 @@ struct _BtkProgressClass
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PROGRESS_C__) || defined (__BTK_PROGRESS_BAR_C__)
 
-GType      btk_progress_get_type            (void) G_GNUC_CONST;
+GType      btk_progress_get_type            (void) B_GNUC_CONST;
 void       btk_progress_set_show_text       (BtkProgress   *progress,
 					     gboolean       show_text);
 void       btk_progress_set_text_alignment  (BtkProgress   *progress,
@@ -115,6 +115,6 @@ gdouble    btk_progress_get_percentage_from_value (BtkProgress *progress,
 
 #endif /* !BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PROGRESS_H__ */

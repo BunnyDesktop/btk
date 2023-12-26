@@ -177,7 +177,7 @@ _btk_tree_data_list_node_to_value (BtkTreeDataList *list,
       g_value_set_object (value, (GObject *) list->data.v_pointer);
       break;
     default:
-      g_warning ("%s: Unsupported type (%s) retrieved.", G_STRLOC, g_type_name (value->g_type));
+      g_warning ("%s: Unsupported type (%s) retrieved.", B_STRLOC, g_type_name (value->g_type));
       break;
     }
 }
@@ -245,7 +245,7 @@ _btk_tree_data_list_value_to_node (BtkTreeDataList *list,
       list->data.v_pointer = g_value_dup_boxed (value);
       break;
     default:
-      g_warning ("%s: Unsupported type (%s) stored.", G_STRLOC, g_type_name (G_VALUE_TYPE (value)));
+      g_warning ("%s: Unsupported type (%s) stored.", B_STRLOC, g_type_name (G_VALUE_TYPE (value)));
       break;
     }
 }

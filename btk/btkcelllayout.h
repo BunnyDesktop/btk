@@ -29,7 +29,7 @@
 #include <btk/btkbuildable.h>
 #include <btk/btkbuilder.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_LAYOUT            (btk_cell_layout_get_type ())
 #define BTK_CELL_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
@@ -75,7 +75,7 @@ struct _BtkCellLayoutIface
   GList* (* get_cells)        (BtkCellLayout         *cell_layout);
 };
 
-GType btk_cell_layout_get_type           (void) G_GNUC_CONST;
+GType btk_cell_layout_get_type           (void) B_GNUC_CONST;
 void  btk_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
                                           gboolean               expand);
@@ -86,7 +86,7 @@ GList *btk_cell_layout_get_cells         (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_clear              (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_set_attributes     (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          ...) G_GNUC_NULL_TERMINATED;
+                                          ...) B_GNUC_NULL_TERMINATED;
 void  btk_cell_layout_add_attribute      (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
                                           const gchar           *attribute,
@@ -117,6 +117,6 @@ void _btk_cell_layout_buildable_add_child            (BtkBuildable  *buildable,
 						      GObject       *child,
 						      const gchar   *type);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_LAYOUT_H__ */

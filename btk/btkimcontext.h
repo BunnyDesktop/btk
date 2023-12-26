@@ -29,7 +29,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IM_CONTEXT              (btk_im_context_get_type ())
 #define BTK_IM_CONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT, BtkIMContext))
@@ -99,7 +99,7 @@ struct _BtkIMContextClass
   void (*_btk_reserved6) (void);
 };
 
-GType    btk_im_context_get_type            (void) G_GNUC_CONST;
+GType    btk_im_context_get_type            (void) B_GNUC_CONST;
 
 void     btk_im_context_set_client_window   (BtkIMContext       *context,
 					     BdkWindow          *window);
@@ -127,6 +127,6 @@ gboolean btk_im_context_delete_surrounding  (BtkIMContext       *context,
 					     gint                offset,
 					     gint                n_chars);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_H__ */

@@ -33,7 +33,7 @@
 
 #include <btk/btktexttag.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, gpointer data);
 
@@ -72,7 +72,7 @@ struct _BtkTextTagTableClass
   void (*_btk_reserved4) (void);
 };
 
-GType          btk_text_tag_table_get_type (void) G_GNUC_CONST;
+GType          btk_text_tag_table_get_type (void) B_GNUC_CONST;
 
 BtkTextTagTable *btk_text_tag_table_new      (void);
 void             btk_text_tag_table_add      (BtkTextTagTable        *table,
@@ -95,7 +95,7 @@ void _btk_text_tag_table_add_buffer    (BtkTextTagTable *table,
 void _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
                                         gpointer         buffer);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

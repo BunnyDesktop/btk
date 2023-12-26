@@ -36,7 +36,7 @@
 #include <btk/btkmenu.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LABEL		  (btk_label_get_type ())
 #define BTK_LABEL(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LABEL, BtkLabel))
@@ -106,7 +106,7 @@ struct _BtkLabelClass
   void (*_btk_reserved3) (void);
 };
 
-GType                 btk_label_get_type          (void) G_GNUC_CONST;
+GType                 btk_label_get_type          (void) B_GNUC_CONST;
 BtkWidget*            btk_label_new               (const gchar   *str);
 BtkWidget*            btk_label_new_with_mnemonic (const gchar   *str);
 void                  btk_label_set_text          (BtkLabel      *label,
@@ -202,6 +202,6 @@ guint btk_label_parse_uline            (BtkLabel    *label,
 void _btk_label_mnemonics_visible_apply_recursively (BtkWidget *widget,
                                                      gboolean   mnemonics_visible);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LABEL_H__ */

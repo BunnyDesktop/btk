@@ -24,7 +24,7 @@
 #include "btkfilesystem.h"
 #include "btkfilechooser.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_ENTRY    (_btk_file_chooser_entry_get_type ())
 #define BTK_FILE_CHOOSER_ENTRY(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntry))
@@ -32,7 +32,7 @@ G_BEGIN_DECLS
 
 typedef struct _BtkFileChooserEntry      BtkFileChooserEntry;
 
-GType              _btk_file_chooser_entry_get_type           (void) G_GNUC_CONST;
+GType              _btk_file_chooser_entry_get_type           (void) B_GNUC_CONST;
 BtkWidget *        _btk_file_chooser_entry_new                (gboolean             eat_tab);
 void               _btk_file_chooser_entry_set_action         (BtkFileChooserEntry *chooser_entry,
 							       BtkFileChooserAction action);
@@ -48,6 +48,6 @@ void               _btk_file_chooser_entry_set_local_only     (BtkFileChooserEnt
                                                                gboolean             local_only);
 gboolean           _btk_file_chooser_entry_get_local_only     (BtkFileChooserEntry *chooser_entry);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_ENTRY_H__ */

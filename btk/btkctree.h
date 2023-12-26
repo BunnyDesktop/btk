@@ -35,7 +35,7 @@
 
 #include <btk/btkclist.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CTREE            (btk_ctree_get_type ())
 #define BTK_CTREE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CTREE, BtkCTree))
@@ -172,7 +172,7 @@ struct _BtkCTreeNode {
  *           Creation, insertion, deletion                 *
  ***********************************************************/
 
-GType   btk_ctree_get_type                       (void) G_GNUC_CONST;
+GType   btk_ctree_get_type                       (void) B_GNUC_CONST;
 BtkWidget * btk_ctree_new_with_titles            (gint          columns, 
 						  gint          tree_column,
 						  gchar        *titles[]);
@@ -436,9 +436,9 @@ void btk_ctree_sort_recursive                    (BtkCTree     *ctree,
  * no-op's for the copy and free routines.  It is defined in order to
  * provide type information for the signal arguments
  */
-GType   btk_ctree_node_get_type                  (void) G_GNUC_CONST;
+GType   btk_ctree_node_get_type                  (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif				/* __BTK_CTREE_H__ */
 

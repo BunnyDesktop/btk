@@ -36,7 +36,7 @@
 #include <btk/btktextiter.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkTargetList    BtkTargetList;
 typedef struct _BtkTargetEntry   BtkTargetEntry;
@@ -210,12 +210,12 @@ gboolean _btk_selection_notify		  (BtkWidget         *widget,
 gboolean _btk_selection_property_notify	  (BtkWidget         *widget,
 					   BdkEventProperty  *event);
 
-GType             btk_selection_data_get_type (void) G_GNUC_CONST;
+GType             btk_selection_data_get_type (void) B_GNUC_CONST;
 BtkSelectionData *btk_selection_data_copy     (BtkSelectionData *data);
 void		  btk_selection_data_free     (BtkSelectionData *data);
 
-GType             btk_target_list_get_type    (void) G_GNUC_CONST;
+GType             btk_target_list_get_type    (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SELECTION_H__ */

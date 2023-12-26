@@ -34,11 +34,11 @@
 
 #include <bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 gboolean _bdk_use_medialib (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* USE_MEDIALIB */
 #endif /* __BDK_MEDIALIB_H__ */

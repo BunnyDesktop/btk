@@ -26,7 +26,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Maximum size of text buffer, in bytes */
 #define BTK_ENTRY_BUFFER_MAX_SIZE        G_MAXUSHORT
@@ -90,7 +90,7 @@ struct _BtkEntryBufferClass
   void (*_btk_reserved5) (void);
 };
 
-GType                     btk_entry_buffer_get_type               (void) G_GNUC_CONST;
+GType                     btk_entry_buffer_get_type               (void) B_GNUC_CONST;
 
 BtkEntryBuffer*           btk_entry_buffer_new                    (const gchar     *initial_chars,
                                                                    gint             n_initial_chars);
@@ -128,6 +128,6 @@ void                      btk_entry_buffer_emit_deleted_text      (BtkEntryBuffe
                                                                    guint            position,
                                                                    guint            n_chars);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ENTRY_BUFFER_H__ */

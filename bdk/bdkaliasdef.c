@@ -4,7 +4,7 @@
 
 #include <bunnylib.h>
 
-#ifdef G_HAVE_GNUC_VISIBILITY
+#ifdef B_HAVE_GNUC_VISIBILITY
 
 #undef IN_FILE
 #define IN_FILE defined
@@ -2914,5 +2914,5 @@ extern __typeof (bdk_window_impl_get_type) bdk_window_impl_get_type __attribute(
 #ifdef BDK_WINDOWING_X11
 #endif
 
-#endif /* G_HAVE_GNUC_VISIBILITY */
+#endif /* B_HAVE_GNUC_VISIBILITY */
 #endif /* DISABLE_VISIBILITY */

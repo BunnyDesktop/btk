@@ -38,7 +38,7 @@
 #include <btk/btkhbox.h>
 #include <btk/btkenums.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * Type checking and casting macros
@@ -84,7 +84,7 @@ struct _BtkInfoBarClass
   void (*_btk_reserved6) (void);
 };
 
-GType          btk_info_bar_get_type               (void) G_GNUC_CONST;
+GType          btk_info_bar_get_type               (void) B_GNUC_CONST;
 BtkWidget     *btk_info_bar_new                    (void);
 
 BtkWidget     *btk_info_bar_new_with_buttons       (const gchar    *first_button_text,
@@ -115,6 +115,6 @@ void           btk_info_bar_set_message_type       (BtkInfoBar     *info_bar,
                                                     BtkMessageType  message_type);
 BtkMessageType btk_info_bar_get_message_type       (BtkInfoBar     *info_bar);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_INFO_BAR_H__  */

@@ -36,7 +36,7 @@
 #include <btk/btktextbuffer.h>
 #include <btk/btkmenu.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TEXT_VIEW             (btk_text_view_get_type ())
 #define BTK_TEXT_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_VIEW, BtkTextView))
@@ -214,7 +214,7 @@ struct _BtkTextViewClass
   void (*_btk_reserved7) (void);
 };
 
-GType          btk_text_view_get_type              (void) G_GNUC_CONST;
+GType          btk_text_view_get_type              (void) B_GNUC_CONST;
 BtkWidget *    btk_text_view_new                   (void);
 BtkWidget *    btk_text_view_new_with_buffer       (BtkTextBuffer *buffer);
 void           btk_text_view_set_buffer            (BtkTextView   *text_view,
@@ -371,6 +371,6 @@ BangoTabArray*   btk_text_view_get_tabs               (BtkTextView      *text_vi
 /* note that the return value of this changes with the theme */
 BtkTextAttributes* btk_text_view_get_default_attributes (BtkTextView    *text_view);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_VIEW_H__ */

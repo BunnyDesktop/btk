@@ -38,7 +38,7 @@
 #include <btk/btkaction.h>
 #include <btk/btktypeutils.h> /* for BtkTranslateFunc */
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTION_GROUP              (btk_action_group_get_type ())
 #define BTK_ACTION_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroup))
@@ -108,7 +108,7 @@ struct _BtkRadioActionEntry
   gint   value; 
 };
 
-GType           btk_action_group_get_type                (void) G_GNUC_CONST;
+GType           btk_action_group_get_type                (void) B_GNUC_CONST;
 BtkActionGroup *btk_action_group_new                     (const gchar                *name);
 const gchar *btk_action_group_get_name          (BtkActionGroup             *action_group);
 gboolean        btk_action_group_get_sensitive           (BtkActionGroup             *action_group);
@@ -179,6 +179,6 @@ void _btk_action_group_emit_pre_activate     (BtkActionGroup *action_group,
 void _btk_action_group_emit_post_activate    (BtkActionGroup *action_group,
                                               BtkAction      *action);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_ACTION_GROUP_H__ */

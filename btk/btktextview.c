@@ -1777,7 +1777,7 @@ btk_text_view_scroll_to_iter (BtkTextView   *text_view,
   
   widget = BTK_WIDGET (text_view);
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   btk_text_layout_get_iter_location (text_view->layout,
                                      iter,
@@ -1897,11 +1897,11 @@ btk_text_view_scroll_to_iter (BtkTextView   *text_view,
   
   if (retval)
     {
-      DV(g_print (">Actually scrolled ("G_STRLOC")\n"));
+      DV(g_print (">Actually scrolled ("B_STRLOC")\n"));
     }
   else
     {
-      DV(g_print (">Didn't end up scrolling ("G_STRLOC")\n"));
+      DV(g_print (">Didn't end up scrolling ("B_STRLOC")\n"));
     }
   
   return retval;
@@ -1938,7 +1938,7 @@ btk_text_view_queue_scroll (BtkTextView   *text_view,
   BtkTextIter iter;
   BtkTextPendingScroll *scroll;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   scroll = g_new (BtkTextPendingScroll, 1);
 
@@ -1971,7 +1971,7 @@ btk_text_view_flush_scroll (BtkTextView *text_view)
 
   widget = BTK_WIDGET (text_view);
   
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   if (text_view->pending_scroll == NULL)
     {
@@ -1993,12 +1993,12 @@ btk_text_view_flush_scroll (BtkTextView *text_view)
    * in one place, but may push the target iter off the bottom of
    * the screen.
    */
-  DV(g_print (">Validating scroll destination ("G_STRLOC")\n"));
+  DV(g_print (">Validating scroll destination ("B_STRLOC")\n"));
   btk_text_layout_validate_yrange (text_view->layout, &iter,
                                    - (widget->allocation.height * 2),
                                    widget->allocation.height * 2);
   
-  DV(g_print (">Done validating scroll destination ("G_STRLOC")\n"));
+  DV(g_print (">Done validating scroll destination ("B_STRLOC")\n"));
 
   /* Ensure we have updated width/height */
   btk_text_view_update_adjustments (text_view);
@@ -2032,11 +2032,11 @@ btk_text_view_set_adjustment_upper (BtkAdjustment *adj, gdouble upper)
         }
 
       btk_adjustment_changed (adj);
-      DV(g_print(">Changed adj upper to %g ("G_STRLOC")\n", upper));
+      DV(g_print(">Changed adj upper to %g ("B_STRLOC")\n", upper));
       
       if (value_changed)
         {
-          DV(g_print(">Changed adj value because upper decreased ("G_STRLOC")\n"));
+          DV(g_print(">Changed adj value because upper decreased ("B_STRLOC")\n"));
 	  btk_adjustment_value_changed (adj);
         }
     }
@@ -2047,7 +2047,7 @@ btk_text_view_update_adjustments (BtkTextView *text_view)
 {
   gint width = 0, height = 0;
 
-  DV(g_print(">Updating adjustments ("G_STRLOC")\n"));
+  DV(g_print(">Updating adjustments ("B_STRLOC")\n"));
 
   if (text_view->layout)
     btk_text_layout_get_size (text_view->layout, &width, &height);
@@ -2091,7 +2091,7 @@ btk_text_view_update_adjustments (BtkTextView *text_view)
 static void
 btk_text_view_update_layout_width (BtkTextView *text_view)
 {
-  DV(g_print(">Updating layout width ("G_STRLOC")\n"));
+  DV(g_print(">Updating layout width ("B_STRLOC")\n"));
   
   btk_text_view_ensure_layout (text_view);
 
@@ -2874,7 +2874,7 @@ btk_text_view_remove_validate_idles (BtkTextView *text_view)
 {
   if (text_view->first_validate_idle != 0)
     {
-      DV (g_print ("Removing first validate idle: %s\n", G_STRLOC));
+      DV (g_print ("Removing first validate idle: %s\n", B_STRLOC));
       g_source_remove (text_view->first_validate_idle);
       text_view->first_validate_idle = 0;
     }
@@ -3286,7 +3286,7 @@ btk_text_view_allocate_children (BtkTextView *text_view)
 {
   GSList *tmp_list;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   tmp_list = text_view->children;
   while (tmp_list != NULL)
@@ -3362,7 +3362,7 @@ btk_text_view_size_allocate (BtkWidget *widget,
   
   text_view = BTK_TEXT_VIEW (widget);
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
 
   size_changed =
     widget->allocation.width != allocation->width ||
@@ -3539,7 +3539,7 @@ btk_text_view_validate_onscreen (BtkTextView *text_view)
 {
   BtkWidget *widget = BTK_WIDGET (text_view);
   
-  DV(g_print(">Validating onscreen ("G_STRLOC")\n"));
+  DV(g_print(">Validating onscreen ("B_STRLOC")\n"));
   
   if (SCREEN_HEIGHT (widget) > 0)
     {
@@ -3560,7 +3560,7 @@ btk_text_view_validate_onscreen (BtkTextView *text_view)
 
   text_view->onscreen_validated = TRUE;
 
-  DV(g_print(">Done validating onscreen, onscreen_validated = TRUE ("G_STRLOC")\n"));
+  DV(g_print(">Done validating onscreen, onscreen_validated = TRUE ("B_STRLOC")\n"));
   
   /* This can have the odd side effect of triggering a scroll, which should
    * flip "onscreen_validated" back to FALSE, but should also get us
@@ -3581,7 +3581,7 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
    * occurs during any of this process, a new first_validate_callback
    * will be installed, and we'll start again.
    */
-  DV (g_print ("removing first validate in %s\n", G_STRLOC));
+  DV (g_print ("removing first validate in %s\n", B_STRLOC));
   g_source_remove (text_view->first_validate_idle);
   text_view->first_validate_idle = 0;
   
@@ -3595,7 +3595,7 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
    */
   if (text_view->first_validate_idle != 0)
     {
-      DV(g_print(">Width change forced requeue ("G_STRLOC")\n"));
+      DV(g_print(">Width change forced requeue ("B_STRLOC")\n"));
     }
   else
     {
@@ -3609,7 +3609,7 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
           !text_view->onscreen_validated)
 	btk_text_view_validate_onscreen (text_view);
       
-      DV(g_print(">Leaving first validate idle ("G_STRLOC")\n"));
+      DV(g_print(">Leaving first validate idle ("B_STRLOC")\n"));
       
       g_assert (text_view->onscreen_validated);
     }
@@ -3624,7 +3624,7 @@ first_validate_callback (gpointer data)
    * keep in sync with that.
    */
   
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
 
   btk_text_view_flush_first_validate (text_view);
   
@@ -3637,7 +3637,7 @@ incremental_validate_callback (gpointer data)
   BtkTextView *text_view = data;
   gboolean result = TRUE;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   btk_text_layout_validate (text_view->layout, 2000);
 
@@ -3655,7 +3655,7 @@ incremental_validate_callback (gpointer data)
 static void
 btk_text_view_invalidate (BtkTextView *text_view)
 {  
-  DV (g_print (">Invalidate, onscreen_validated = %d now FALSE ("G_STRLOC")\n",
+  DV (g_print (">Invalidate, onscreen_validated = %d now FALSE ("B_STRLOC")\n",
                text_view->onscreen_validated));
 
   text_view->onscreen_validated = FALSE;
@@ -3667,14 +3667,14 @@ btk_text_view_invalidate (BtkTextView *text_view)
   if (!text_view->first_validate_idle)
     {
       text_view->first_validate_idle = bdk_threads_add_idle_full (BTK_PRIORITY_RESIZE - 2, first_validate_callback, text_view, NULL);
-      DV (g_print (G_STRLOC": adding first validate idle %d\n",
+      DV (g_print (B_STRLOC": adding first validate idle %d\n",
                    text_view->first_validate_idle));
     }
       
   if (!text_view->incremental_validate_idle)
     {
       text_view->incremental_validate_idle = bdk_threads_add_idle_full (BTK_TEXT_VIEW_PRIORITY_VALIDATE, incremental_validate_callback, text_view, NULL);
-      DV (g_print (G_STRLOC": adding incremental validate idle %d\n",
+      DV (g_print (B_STRLOC": adding incremental validate idle %d\n",
                    text_view->incremental_validate_idle));
     }
 }
@@ -3706,7 +3706,7 @@ changed_handler (BtkTextLayout     *layout,
   text_view = BTK_TEXT_VIEW (data);
   widget = BTK_WIDGET (data);
   
-  DV(g_print(">Lines Validated ("G_STRLOC")\n"));
+  DV(g_print(">Lines Validated ("B_STRLOC")\n"));
 
   if (btk_widget_get_realized (widget))
     {      
@@ -3786,7 +3786,7 @@ changed_handler (BtkTextLayout     *layout,
 
       if (yoffset_changed)
         {
-          DV(g_print ("Changing scroll position (%s)\n", G_STRLOC));
+          DV(g_print ("Changing scroll position (%s)\n", B_STRLOC));
           btk_adjustment_value_changed (get_vadjustment (text_view));
         }
 
@@ -4487,7 +4487,7 @@ btk_text_view_focus_in_event (BtkWidget *widget, BdkEventFocus *event)
 
   btk_widget_queue_draw (widget);
 
-  DV(g_print (G_STRLOC": focus_in_event\n"));
+  DV(g_print (B_STRLOC": focus_in_event\n"));
 
   btk_text_view_reset_blink_time (text_view);
 
@@ -4520,7 +4520,7 @@ btk_text_view_focus_out_event (BtkWidget *widget, BdkEventFocus *event)
 
   btk_widget_queue_draw (widget);
 
-  DV(g_print (G_STRLOC": focus_out_event\n"));
+  DV(g_print (B_STRLOC": focus_out_event\n"));
   
   if (text_view->cursor_visible && text_view->layout)
     {
@@ -4600,14 +4600,14 @@ btk_text_view_paint (BtkWidget      *widget,
 
   while (text_view->first_validate_idle != 0)
     {
-      DV (g_print (G_STRLOC": first_validate_idle: %d\n",
+      DV (g_print (B_STRLOC": first_validate_idle: %d\n",
                    text_view->first_validate_idle));
       btk_text_view_flush_first_validate (text_view);
     }
 
   if (!text_view->onscreen_validated)
     {
-      g_warning (G_STRLOC ": somehow some text lines were modified or scrolling occurred since the last validation of lines on the screen - may be a text widget bug.");
+      g_warning (B_STRLOC ": somehow some text lines were modified or scrolling occurred since the last validation of lines on the screen - may be a text widget bug.");
       g_assert_not_reached ();
     }
   
@@ -4653,7 +4653,7 @@ btk_text_view_expose_event (BtkWidget *widget, BdkEventExpose *event)
   if (event->window == btk_text_view_get_window (BTK_TEXT_VIEW (widget),
                                                  BTK_TEXT_WINDOW_TEXT))
     {
-      DV(g_print (">Exposed ("G_STRLOC")\n"));
+      DV(g_print (">Exposed ("B_STRLOC")\n"));
       btk_text_view_paint (widget, &event->area, event);
     }
 
@@ -5309,7 +5309,7 @@ btk_text_view_move_cursor_internal (BtkTextView     *text_view,
 
   if (!btk_text_iter_equal (&insert, &newplace))
     {
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
 
@@ -5497,7 +5497,7 @@ btk_text_view_scroll_pages (BtkTextView *text_view,
   /* Adjust to have the cursor _entirely_ onscreen, move_mark_onscreen
    * only guarantees 1 pixel onscreen.
    */
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, insert_mark);
 
   return !btk_text_iter_equal (&old_insert, &new_insert);
@@ -5584,7 +5584,7 @@ btk_text_view_scroll_hpages (BtkTextView *text_view,
   /* Adjust to have the cursor _entirely_ onscreen, move_mark_onscreen
    * only guarantees 1 pixel onscreen.
    */
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, insert_mark);
 
   return !btk_text_iter_equal (&old_insert, &new_insert);
@@ -5764,7 +5764,7 @@ btk_text_view_delete_from_cursor (BtkTextView   *text_view,
       btk_text_buffer_end_user_action (get_buffer (text_view));
       btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
 
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
     }
@@ -5794,7 +5794,7 @@ btk_text_view_backspace (BtkTextView *text_view)
 				 TRUE, text_view->editable))
     {
       btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
     }
@@ -5813,7 +5813,7 @@ btk_text_view_cut_clipboard (BtkTextView *text_view)
   btk_text_buffer_cut_clipboard (get_buffer (text_view),
 				 clipboard,
 				 text_view->editable);
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view,
                                       btk_text_buffer_get_insert (get_buffer (text_view)));
 }
@@ -5854,7 +5854,7 @@ btk_text_view_paste_done_handler (BtkTextBuffer *buffer,
 
   if (priv->scroll_after_paste)
     {
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view, btk_text_buffer_get_insert (buffer));
     }
 
@@ -6051,17 +6051,17 @@ move_mark_to_pointer_and_scroll (BtkTextView *text_view,
   mark = btk_text_buffer_get_mark (get_buffer (text_view), mark_name);
   
   /* This may invalidate the layout */
-  DV(g_print (G_STRLOC": move mark\n"));
+  DV(g_print (B_STRLOC": move mark\n"));
   
   btk_text_buffer_move_mark (get_buffer (text_view),
 			     mark,
 			     &newplace);
   
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, mark);
 
   DV (g_print ("first validate idle leaving %s is %d\n",
-               G_STRLOC, text_view->first_validate_idle));
+               B_STRLOC, text_view->first_validate_idle));
 }
 
 static gboolean
@@ -6071,7 +6071,7 @@ selection_scan_timeout (gpointer data)
 
   text_view = BTK_TEXT_VIEW (data);
 
-  DV(g_print (G_STRLOC": calling move_mark_to_pointer_and_scroll\n"));
+  DV(g_print (B_STRLOC": calling move_mark_to_pointer_and_scroll\n"));
   btk_text_view_scroll_mark_onscreen (text_view, 
 				      btk_text_buffer_get_insert (get_buffer (text_view)));
 
@@ -6451,7 +6451,7 @@ btk_text_view_ensure_layout (BtkTextView *text_view)
       BangoContext *ltr_context, *rtl_context;
       GSList *tmp_list;
 
-      DV(g_print(G_STRLOC"\n"));
+      DV(g_print(B_STRLOC"\n"));
       
       text_view->layout = btk_text_layout_new ();
 
@@ -7323,7 +7323,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
   
   text_view->onscreen_validated = FALSE;
 
-  DV(g_print(">Scroll offset changed %s/%g, onscreen_validated = FALSE ("G_STRLOC")\n",
+  DV(g_print(">Scroll offset changed %s/%g, onscreen_validated = FALSE ("B_STRLOC")\n",
              adj == text_view->hadjustment ? "hadj" : adj == text_view->vadjustment ? "vadj" : "none",
              adj ? adj->value : 0.0));
   
@@ -7426,7 +7426,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
   /* process exposes */
   if (btk_widget_get_realized (BTK_WIDGET (text_view)))
     {
-      DV (g_print ("Processing updates (%s)\n", G_STRLOC));
+      DV (g_print ("Processing updates (%s)\n", B_STRLOC));
       
       if (text_view->left_window)
         bdk_window_process_updates (text_view->left_window->bin_window, TRUE);
@@ -7455,7 +7455,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
    */
   btk_text_view_update_im_spot_location (text_view);
   
-  DV(g_print(">End scroll offset changed handler ("G_STRLOC")\n"));
+  DV(g_print(">End scroll offset changed handler ("B_STRLOC")\n"));
 }
 
 static void
@@ -7511,7 +7511,7 @@ btk_text_view_commit_text (BtkTextView   *text_view,
   btk_text_buffer_end_user_action (get_buffer (text_view));
 
   btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view,
                                       btk_text_buffer_get_insert (get_buffer (text_view)));
 }
@@ -8284,7 +8284,7 @@ text_window_invalidate_rect (BtkTextWindow *win,
       break;
 
     default:
-      g_warning ("%s: bug!", G_STRFUNC);
+      g_warning ("%s: bug!", B_STRFUNC);
       return;
       break;
     }
@@ -8451,12 +8451,12 @@ btk_text_view_get_window (BtkTextView *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: You can't get BTK_TEXT_WINDOW_PRIVATE, it has \"PRIVATE\" in the name because it is private.", G_STRFUNC);
+      g_warning ("%s: You can't get BTK_TEXT_WINDOW_PRIVATE, it has \"PRIVATE\" in the name because it is private.", B_STRFUNC);
       return NULL;
       break;
     }
 
-  g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+  g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
   return NULL;
 }
 
@@ -8624,11 +8624,11 @@ btk_text_view_buffer_to_window_coords (BtkTextView      *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: can't get coords for private windows", G_STRFUNC);
+      g_warning ("%s: can't get coords for private windows", B_STRFUNC);
       break;
 
     default:
-      g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+      g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
       break;
     }
 }
@@ -8764,11 +8764,11 @@ btk_text_view_window_to_buffer_coords (BtkTextView      *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: can't get coords for private windows", G_STRFUNC);
+      g_warning ("%s: can't get coords for private windows", B_STRFUNC);
       break;
 
     default:
-      g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+      g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
       break;
     }
 }

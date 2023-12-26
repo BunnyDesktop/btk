@@ -48,7 +48,7 @@ bdk_event_get_root_coords
 bdk_event_get_screen
 bdk_event_get_state
 bdk_event_get_time
-bdk_event_get_type G_GNUC_CONST
+bdk_event_get_type B_GNUC_CONST
 bdk_event_handler_set
 bdk_event_new
 bdk_event_peek
@@ -166,10 +166,10 @@ bdk_input_add_full
 
 #if IN_HEADER(__BDK_H__)
 #if IN_FILE(__BDK_SCREEN_C__)
-bdk_screen_width G_GNUC_CONST
-bdk_screen_width_mm G_GNUC_CONST
-bdk_screen_height G_GNUC_CONST
-bdk_screen_height_mm G_GNUC_CONST
+bdk_screen_width B_GNUC_CONST
+bdk_screen_width_mm B_GNUC_CONST
+bdk_screen_height B_GNUC_CONST
+bdk_screen_height_mm B_GNUC_CONST
 #endif
 #endif
 
@@ -223,54 +223,54 @@ bdk_x11_free_text_list
 
 #if IN_HEADER(__BDK_ENUM_TYPES_H__)
 #if IN_FILE(__BDK_ENUM_TYPES_C__)
-bdk_rgb_dither_get_type G_GNUC_CONST
-bdk_drag_protocol_get_type G_GNUC_CONST
-bdk_input_source_get_type G_GNUC_CONST
-bdk_input_condition_get_type G_GNUC_CONST
-bdk_input_mode_get_type G_GNUC_CONST
-bdk_axis_use_get_type G_GNUC_CONST
-bdk_byte_order_get_type G_GNUC_CONST
-bdk_cap_style_get_type G_GNUC_CONST
-bdk_crossing_mode_get_type G_GNUC_CONST
-bdk_extension_mode_get_type G_GNUC_CONST
-bdk_event_mask_get_type G_GNUC_CONST
-bdk_event_type_get_type G_GNUC_CONST
-bdk_fill_get_type G_GNUC_CONST
+bdk_rgb_dither_get_type B_GNUC_CONST
+bdk_drag_protocol_get_type B_GNUC_CONST
+bdk_input_source_get_type B_GNUC_CONST
+bdk_input_condition_get_type B_GNUC_CONST
+bdk_input_mode_get_type B_GNUC_CONST
+bdk_axis_use_get_type B_GNUC_CONST
+bdk_byte_order_get_type B_GNUC_CONST
+bdk_cap_style_get_type B_GNUC_CONST
+bdk_crossing_mode_get_type B_GNUC_CONST
+bdk_extension_mode_get_type B_GNUC_CONST
+bdk_event_mask_get_type B_GNUC_CONST
+bdk_event_type_get_type B_GNUC_CONST
+bdk_fill_get_type B_GNUC_CONST
 #ifndef BDK_DISABLE_DEPRECATED
-bdk_fill_rule_get_type G_GNUC_CONST
+bdk_fill_rule_get_type B_GNUC_CONST
 #endif
-bdk_filter_return_get_type G_GNUC_CONST
-bdk_function_get_type G_GNUC_CONST
-bdk_grab_status_get_type G_GNUC_CONST
-bdk_gravity_get_type G_GNUC_CONST
-bdk_join_style_get_type G_GNUC_CONST
-bdk_line_style_get_type G_GNUC_CONST
-bdk_modifier_type_get_type G_GNUC_CONST
-bdk_notify_type_get_type G_GNUC_CONST
-bdk_overlap_type_get_type G_GNUC_CONST
-bdk_owner_change_get_type G_GNUC_CONST
-bdk_property_state_get_type G_GNUC_CONST
-bdk_prop_mode_get_type G_GNUC_CONST
-bdk_scroll_direction_get_type G_GNUC_CONST
-bdk_setting_action_get_type G_GNUC_CONST
-bdk_status_get_type G_GNUC_CONST
-bdk_subwindow_mode_get_type G_GNUC_CONST
-bdk_visibility_state_get_type G_GNUC_CONST
-bdk_wm_decoration_get_type G_GNUC_CONST
-bdk_wm_function_get_type G_GNUC_CONST
-bdk_font_type_get_type G_GNUC_CONST
-bdk_cursor_type_get_type G_GNUC_CONST
-bdk_drag_action_get_type G_GNUC_CONST
-bdk_gc_values_mask_get_type G_GNUC_CONST
-bdk_window_attributes_type_get_type G_GNUC_CONST
-bdk_window_class_get_type G_GNUC_CONST
-bdk_window_edge_get_type G_GNUC_CONST
-bdk_window_hints_get_type G_GNUC_CONST
-bdk_window_state_get_type G_GNUC_CONST
-bdk_window_type_get_type G_GNUC_CONST
-bdk_window_type_hint_get_type G_GNUC_CONST
-bdk_image_type_get_type G_GNUC_CONST
-bdk_visual_type_get_type G_GNUC_CONST
+bdk_filter_return_get_type B_GNUC_CONST
+bdk_function_get_type B_GNUC_CONST
+bdk_grab_status_get_type B_GNUC_CONST
+bdk_gravity_get_type B_GNUC_CONST
+bdk_join_style_get_type B_GNUC_CONST
+bdk_line_style_get_type B_GNUC_CONST
+bdk_modifier_type_get_type B_GNUC_CONST
+bdk_notify_type_get_type B_GNUC_CONST
+bdk_overlap_type_get_type B_GNUC_CONST
+bdk_owner_change_get_type B_GNUC_CONST
+bdk_property_state_get_type B_GNUC_CONST
+bdk_prop_mode_get_type B_GNUC_CONST
+bdk_scroll_direction_get_type B_GNUC_CONST
+bdk_setting_action_get_type B_GNUC_CONST
+bdk_status_get_type B_GNUC_CONST
+bdk_subwindow_mode_get_type B_GNUC_CONST
+bdk_visibility_state_get_type B_GNUC_CONST
+bdk_wm_decoration_get_type B_GNUC_CONST
+bdk_wm_function_get_type B_GNUC_CONST
+bdk_font_type_get_type B_GNUC_CONST
+bdk_cursor_type_get_type B_GNUC_CONST
+bdk_drag_action_get_type B_GNUC_CONST
+bdk_gc_values_mask_get_type B_GNUC_CONST
+bdk_window_attributes_type_get_type B_GNUC_CONST
+bdk_window_class_get_type B_GNUC_CONST
+bdk_window_edge_get_type B_GNUC_CONST
+bdk_window_hints_get_type B_GNUC_CONST
+bdk_window_state_get_type B_GNUC_CONST
+bdk_window_type_get_type B_GNUC_CONST
+bdk_window_type_hint_get_type B_GNUC_CONST
+bdk_image_type_get_type B_GNUC_CONST
+bdk_visual_type_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -279,7 +279,7 @@ bdk_visual_type_get_type G_GNUC_CONST
 #ifndef BDK_DISABLE_DEPRECATED
 bdk_font_from_description
 #endif
-bdk_font_get_type G_GNUC_CONST
+bdk_font_get_type B_GNUC_CONST
 bdk_font_ref
 bdk_font_unref
 #ifndef BDK_DISABLE_DEPRECATED
@@ -340,7 +340,7 @@ bdk_color_alloc
 bdk_color_copy
 bdk_color_equal
 bdk_color_free
-bdk_color_get_type G_GNUC_CONST
+bdk_color_get_type B_GNUC_CONST
 bdk_color_hash
 bdk_colormap_alloc_color
 bdk_colormap_get_system
@@ -357,7 +357,7 @@ bdk_color_to_string
 #if IN_HEADER(__BDK_COLOR_H__)
 #if IN_FILE(__BDK_COLOR_X11_C__)
 bdk_colormap_new
-bdk_colormap_get_type G_GNUC_CONST
+bdk_colormap_get_type B_GNUC_CONST
 #ifndef BDK_DISABLE_DEPRECATED
 bdk_colormap_change
 bdk_colors_alloc
@@ -374,7 +374,7 @@ bdk_colormap_get_screen
 
 #if IN_HEADER(__BDK_CURSOR_H__)
 #if IN_FILE(__BDK_CURSOR_C__)
-bdk_cursor_get_type G_GNUC_CONST
+bdk_cursor_get_type B_GNUC_CONST
 bdk_cursor_get_cursor_type
 bdk_cursor_new
 bdk_cursor_ref
@@ -406,7 +406,7 @@ bdk_device_get_name
 bdk_device_get_n_axes
 bdk_device_get_n_keys
 bdk_device_get_source
-bdk_device_get_type G_GNUC_CONST
+bdk_device_get_type B_GNUC_CONST
 bdk_device_set_axis_use
 bdk_device_set_key
 bdk_device_set_source
@@ -452,7 +452,7 @@ bdk_display_close
 bdk_display_get_core_pointer
 bdk_display_get_event
 bdk_display_get_pointer
-bdk_display_get_type G_GNUC_CONST
+bdk_display_get_type B_GNUC_CONST
 bdk_display_get_window_at_pointer
 bdk_display_is_closed
 bdk_display_peek_event
@@ -527,7 +527,7 @@ bdk_display_set_double_click_time
 #if IN_HEADER(__BDK_DISPLAY_MANAGER_H__)
 #if IN_FILE(__BDK_DISPLAY_MANAGER_C__)
 bdk_display_manager_get
-bdk_display_manager_get_type G_GNUC_CONST
+bdk_display_manager_get_type B_GNUC_CONST
 bdk_display_manager_list_displays
 bdk_display_manager_set_default_display
 bdk_display_manager_get_default_display
@@ -538,7 +538,7 @@ bdk_display_manager_get_default_display
 #if IN_FILE(__BDK_DND_X11_C__)
 bdk_drag_abort
 bdk_drag_begin
-bdk_drag_context_get_type G_GNUC_CONST
+bdk_drag_context_get_type B_GNUC_CONST
 #ifndef BDK_DISABLE_DEPRECATED
 bdk_drag_context_new
 bdk_drag_context_ref
@@ -592,7 +592,7 @@ bdk_drawable_get_visual
 #endif
 bdk_drawable_get_depth
 bdk_drawable_get_image
-bdk_drawable_get_type G_GNUC_CONST
+bdk_drawable_get_type B_GNUC_CONST
 bdk_drawable_get_visible_rebunnyion
 bdk_drawable_set_colormap
 bdk_draw_arc
@@ -624,7 +624,7 @@ bdk_draw_layout_with_colors
 #if IN_HEADER(__BDK_GC_H__)
 #if IN_FILE(__BDK_GC_C__)
 bdk_gc_new
-bdk_gc_get_type G_GNUC_CONST
+bdk_gc_get_type B_GNUC_CONST
 bdk_gc_new_with_values
 #ifndef BDK_DISABLE_DEPRECATED
 bdk_gc_ref
@@ -666,7 +666,7 @@ bdk_gc_get_screen
 #if IN_HEADER(__BDK_PIXMAP_X11_H__)
 #if IN_FILE(__BDK_PIXMAP_X11_C__)
 #ifdef BDK_WINDOWING_X11
-bdk_pixmap_impl_x11_get_type G_GNUC_CONST
+bdk_pixmap_impl_x11_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
@@ -674,7 +674,7 @@ bdk_pixmap_impl_x11_get_type G_GNUC_CONST
 #if IN_HEADER(__BDK_WINDOW_X11_H__)
 #if IN_FILE(__BDK_WINDOW_X11_C__)
 #ifdef BDK_WINDOWING_X11
-bdk_window_impl_x11_get_type G_GNUC_CONST
+bdk_window_impl_x11_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
@@ -761,7 +761,7 @@ bdk_window_is_input_only
 bdk_window_is_shaped
 bdk_window_is_viewable
 bdk_window_is_visible
-bdk_window_object_get_type G_GNUC_CONST
+bdk_window_object_get_type B_GNUC_CONST
 bdk_window_peek_children
 bdk_window_process_all_updates
 bdk_window_process_updates
@@ -795,7 +795,7 @@ bdk_offscreen_window_get_embedder
 
 #if IN_HEADER(__BDK_INTERNALS_H__)
 #if IN_FILE(__BDK_OFFSCREEN_WINDOW_C__)
-bdk_offscreen_window_get_type G_GNUC_CONST
+bdk_offscreen_window_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -886,25 +886,25 @@ bdk_image_new_bitmap
 #endif
 bdk_image_get_pixel
 bdk_image_put_pixel
-bdk_image_get_type G_GNUC_CONST
+bdk_image_get_type B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BDK_KEYS_H__)
 #if IN_FILE(__BDK_KEYS_C__)
 bdk_keymap_get_default
-bdk_keymap_get_type G_GNUC_CONST
-bdk_keyval_is_lower G_GNUC_CONST
-bdk_keyval_is_upper G_GNUC_CONST
-bdk_keyval_to_lower G_GNUC_CONST
-bdk_keyval_to_upper G_GNUC_CONST
+bdk_keymap_get_type B_GNUC_CONST
+bdk_keyval_is_lower B_GNUC_CONST
+bdk_keyval_is_upper B_GNUC_CONST
+bdk_keyval_to_lower B_GNUC_CONST
+bdk_keyval_to_upper B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BDK_KEYS_H__)
 #if IN_FILE(__BDK_KEYUNI_C__)
-bdk_keyval_to_unicode G_GNUC_CONST
-bdk_unicode_to_keyval G_GNUC_CONST
+bdk_keyval_to_unicode B_GNUC_CONST
+bdk_unicode_to_keyval B_GNUC_CONST
 #endif
 #endif
 
@@ -922,7 +922,7 @@ bdk_keymap_add_virtual_modifiers
 bdk_keymap_map_virtual_modifiers
 bdk_keyval_convert_case
 bdk_keyval_from_name
-bdk_keyval_name G_GNUC_CONST
+bdk_keyval_name B_GNUC_CONST
 #endif
 #endif
 
@@ -938,7 +938,7 @@ bdk_keymap_translate_keyboard_state
 bdk_keymap_add_virtual_modifiers
 bdk_keymap_map_virtual_modifiers
 bdk_keyval_from_name
-bdk_keyval_name G_GNUC_CONST
+bdk_keyval_name B_GNUC_CONST
 #endif
 #endif
 
@@ -968,7 +968,7 @@ bdk_visual_get_best_with_both
 bdk_visual_get_best_with_depth
 bdk_visual_get_best_with_type
 bdk_visual_get_screen
-bdk_visual_get_type G_GNUC_CONST
+bdk_visual_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -993,7 +993,7 @@ bdk_bango_context_set_colormap
 bdk_bango_layout_get_clip_rebunnyion
 bdk_bango_layout_line_get_clip_rebunnyion
 bdk_bango_renderer_get_default
-bdk_bango_renderer_get_type G_GNUC_CONST
+bdk_bango_renderer_get_type B_GNUC_CONST
 bdk_bango_renderer_new
 bdk_bango_renderer_set_drawable
 bdk_bango_renderer_set_gc
@@ -1030,7 +1030,7 @@ bdk_pixmap_create_from_xpm
 bdk_pixmap_colormap_create_from_xpm_d
 bdk_pixmap_create_from_xpm_d
 bdk_pixmap_get_size
-bdk_pixmap_get_type G_GNUC_CONST
+bdk_pixmap_get_type B_GNUC_CONST
 bdk_pixmap_new
 #endif
 #endif
@@ -1094,7 +1094,7 @@ bdk_rgb_get_colormap
 bdk_rgb_get_visual
 #ifndef BDK_DISABLE_DEPRECATED
 bdk_rgb_init
-bdk_rgb_xpixel_from_rgb G_GNUC_CONST
+bdk_rgb_xpixel_from_rgb B_GNUC_CONST
 bdk_rgb_gc_set_background
 bdk_rgb_gc_set_foreground
 #endif
@@ -1112,7 +1112,7 @@ bdk_draw_rgb_image_dithalign
 
 #if IN_HEADER(__BDK_SCREEN_H__)
 #if IN_FILE(__BDK_SCREEN_C__)
-bdk_screen_get_type G_GNUC_CONST
+bdk_screen_get_type B_GNUC_CONST
 bdk_screen_get_monitor_at_point
 bdk_screen_get_monitor_at_window
 bdk_screen_set_font_options
@@ -1285,7 +1285,7 @@ bdk_win32_selection_add_targets
 
 #if IN_HEADER(__BDK_WIN32_H__)
 #if IN_FILE(__BDK_KEYS_WIN32_C__)
-bdk_win32_keymap_get_type G_GNUC_CONST
+bdk_win32_keymap_get_type B_GNUC_CONST
 bdk_win32_keymap_check_compose
 #endif
 #endif
@@ -1400,7 +1400,7 @@ bdk_xid_table_lookup_for_display
 
 #if IN_HEADER(__BDK_APP_LAUNCH_CONTEXT_H__)
 #if IN_FILE(__BDK_APP_LAUNCH_CONTEXT_C__)
-bdk_app_launch_context_get_type G_GNUC_CONST
+bdk_app_launch_context_get_type B_GNUC_CONST
 bdk_app_launch_context_new
 bdk_app_launch_context_set_display
 bdk_app_launch_context_set_screen
@@ -1413,7 +1413,7 @@ bdk_app_launch_context_set_icon_name
 
 #if IN_HEADER(__BDK_WINDOW_IMPL_H__)
 #if IN_FILE(__BDK_WINDOW_IMPL_C__)
-bdk_window_impl_get_type G_GNUC_CONST
+bdk_window_impl_get_type B_GNUC_CONST
 #endif
 #endif
 

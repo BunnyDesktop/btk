@@ -23,7 +23,7 @@
 
 #include "btkprintoperation.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Page drawing states */
 typedef enum
@@ -146,6 +146,6 @@ void             _btk_print_context_set_hard_margins                (BtkPrintCon
 								     gdouble            left,
 								     gdouble            right);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_OPERATION_PRIVATE_H__ */

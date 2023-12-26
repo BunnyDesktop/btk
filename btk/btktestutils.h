@@ -25,7 +25,7 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* --- Btk+ Test Utility API --- */
 void            btk_test_init                   (int            *argcp,
@@ -66,6 +66,6 @@ BtkWidget*      btk_test_find_sibling           (BtkWidget      *base_widget,
                                                  GType           widget_type);
 BtkWidget*      btk_test_find_label             (BtkWidget      *widget,
                                                  const gchar    *label_pattern);
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEST_UTILS_H__ */

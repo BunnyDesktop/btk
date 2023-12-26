@@ -30,7 +30,7 @@
 #include <btk/btkdnd.h>
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_PALETTE           (btk_tool_palette_get_type ())
 #define BTK_TOOL_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_PALETTE, BtkToolPalette))
@@ -85,7 +85,7 @@ struct _BtkToolPaletteClass
   void (*_btk_reserved6) (void);
 };
 
-GType                          btk_tool_palette_get_type              (void) G_GNUC_CONST;
+GType                          btk_tool_palette_get_type              (void) B_GNUC_CONST;
 BtkWidget*                     btk_tool_palette_new                   (void);
 
 void                           btk_tool_palette_set_group_position    (BtkToolPalette            *palette,
@@ -135,10 +135,10 @@ void                           btk_tool_palette_add_drag_dest         (BtkToolPa
 BtkAdjustment*                 btk_tool_palette_get_hadjustment       (BtkToolPalette            *palette);
 BtkAdjustment*                 btk_tool_palette_get_vadjustment       (BtkToolPalette            *palette);
 
-const BtkTargetEntry *         btk_tool_palette_get_drag_target_item  (void) G_GNUC_CONST;
-const BtkTargetEntry *         btk_tool_palette_get_drag_target_group (void) G_GNUC_CONST;
+const BtkTargetEntry *         btk_tool_palette_get_drag_target_item  (void) B_GNUC_CONST;
+const BtkTargetEntry *         btk_tool_palette_get_drag_target_group (void) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOL_PALETTE_H__ */

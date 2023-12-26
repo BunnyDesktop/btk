@@ -39,7 +39,7 @@
 #include <btk/btksettings.h>
 #include <batk/batk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /**
  * BtkWidgetFlags:
@@ -456,7 +456,7 @@ typedef enum
  *   btk_widget_set_sensitive() or btk_widget_set_visible().
  *
  */
-#define BTK_WIDGET_SET_FLAGS(wid,flag)	  G_STMT_START{ (BTK_WIDGET_FLAGS (wid) |= (flag)); }G_STMT_END
+#define BTK_WIDGET_SET_FLAGS(wid,flag)	  B_STMT_START{ (BTK_WIDGET_FLAGS (wid) |= (flag)); }B_STMT_END
 /* FIXME: Deprecating BTK_WIDGET_SET_FLAGS requires fixing BTK internals. */
 
 /**
@@ -468,7 +468,7 @@ typedef enum
  *
  * Deprecated: 2.22: Use the proper function instead. See BTK_WIDGET_SET_FLAGS().
  */
-#define BTK_WIDGET_UNSET_FLAGS(wid,flag)  G_STMT_START{ (BTK_WIDGET_FLAGS (wid) &= ~(flag)); }G_STMT_END
+#define BTK_WIDGET_UNSET_FLAGS(wid,flag)  B_STMT_START{ (BTK_WIDGET_FLAGS (wid) &= ~(flag)); }B_STMT_END
 /* FIXME: Deprecating BTK_WIDGET_UNSET_FLAGS requires fixing BTK internals. */
 
 #define BTK_TYPE_REQUISITION              (btk_requisition_get_type ())
@@ -830,7 +830,7 @@ struct _BtkWidgetShapeInfo
   BdkBitmap *shape_mask;
 };
 
-GType	   btk_widget_get_type		  (void) G_GNUC_CONST;
+GType	   btk_widget_get_type		  (void) B_GNUC_CONST;
 BtkWidget* btk_widget_new		  (GType		type,
 					   const gchar	       *first_property_name,
 					   ...);
@@ -842,7 +842,7 @@ BtkWidget* btk_widget_ref		  (BtkWidget	       *widget);
 void	   btk_widget_unref		  (BtkWidget	       *widget);
 void	   btk_widget_set		  (BtkWidget	       *widget,
 					   const gchar         *first_property_name,
-					   ...) G_GNUC_NULL_TERMINATED;
+					   ...) B_GNUC_NULL_TERMINATED;
 #endif /* BTK_DISABLE_DEPRECATED */
 #if !defined(BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
 void       btk_widget_hide_all            (BtkWidget           *widget);
@@ -1232,7 +1232,7 @@ void btk_widget_style_get_valist   (BtkWidget	     *widget,
 				    va_list         var_args);
 void btk_widget_style_get          (BtkWidget	     *widget,
 				    const gchar    *first_property_name,
-				    ...) G_GNUC_NULL_TERMINATED;
+				    ...) B_GNUC_NULL_TERMINATED;
 
 
 /* Set certain default values to be used at widget creation time.
@@ -1305,7 +1305,7 @@ void       btk_widget_set_has_tooltip       (BtkWidget   *widget,
 					     gboolean     has_tooltip);
 gboolean   btk_widget_get_has_tooltip       (BtkWidget   *widget);
 
-GType           btk_requisition_get_type (void) G_GNUC_CONST;
+GType           btk_requisition_get_type (void) B_GNUC_CONST;
 BtkRequisition *btk_requisition_copy     (const BtkRequisition *requisition);
 void            btk_requisition_free     (BtkRequisition       *requisition);
 
@@ -1346,6 +1346,6 @@ void         _btk_widget_buildable_finish_accelerator (BtkWidget *widget,
 						       BtkWidget *toplevel,
 						       gpointer   user_data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_WIDGET_H__ */

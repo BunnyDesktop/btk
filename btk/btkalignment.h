@@ -35,7 +35,7 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ALIGNMENT                  (btk_alignment_get_type ())
 #define BTK_ALIGNMENT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ALIGNMENT, BtkAlignment))
@@ -65,7 +65,7 @@ struct _BtkAlignmentClass
 };
 
 
-GType      btk_alignment_get_type   (void) G_GNUC_CONST;
+GType      btk_alignment_get_type   (void) B_GNUC_CONST;
 BtkWidget* btk_alignment_new        (gfloat             xalign,
 				     gfloat             yalign,
 				     gfloat             xscale,
@@ -88,7 +88,7 @@ void       btk_alignment_get_padding (BtkAlignment      *alignment,
 				      guint             *padding_left,
 				      guint             *padding_right);
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_ALIGNMENT_H__ */

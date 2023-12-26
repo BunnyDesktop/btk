@@ -32,12 +32,12 @@
 
 
 #define INITIALIZE_TREE_ITER(Iter) \
-    G_STMT_START{ \
+    B_STMT_START{ \
       (Iter)->stamp = 0; \
       (Iter)->user_data  = NULL; \
       (Iter)->user_data2 = NULL; \
       (Iter)->user_data3 = NULL; \
-    }G_STMT_END
+    }B_STMT_END
 
 #define ROW_REF_DATA_STRING "btk-tree-row-refs"
 
@@ -426,7 +426,7 @@ btk_tree_path_new_from_string (const gchar *path)
       i = strtol (path, &ptr, 10);
       if (i < 0)
 	{
-	  g_warning (G_STRLOC ": Negative numbers in path %s passed to btk_tree_path_new_from_string", orig_path);
+	  g_warning (B_STRLOC ": Negative numbers in path %s passed to btk_tree_path_new_from_string", orig_path);
 	  btk_tree_path_free (retval);
 	  return NULL;
 	}
@@ -437,7 +437,7 @@ btk_tree_path_new_from_string (const gchar *path)
 	break;
       if (ptr == path || *ptr != ':')
 	{
-	  g_warning (G_STRLOC ": Invalid path %s passed to btk_tree_path_new_from_string", orig_path);
+	  g_warning (B_STRLOC ": Invalid path %s passed to btk_tree_path_new_from_string", orig_path);
 	  btk_tree_path_free (retval);
 	  return NULL;
 	}
@@ -1461,7 +1461,7 @@ btk_tree_model_get_valist (BtkTreeModel *tree_model,
 
       if (column >= btk_tree_model_get_n_columns (tree_model))
 	{
-	  g_warning ("%s: Invalid column number %d accessed (remember to end your list of columns with a -1)", G_STRLOC, column);
+	  g_warning ("%s: Invalid column number %d accessed (remember to end your list of columns with a -1)", B_STRLOC, column);
 	  break;
 	}
 
@@ -1470,7 +1470,7 @@ btk_tree_model_get_valist (BtkTreeModel *tree_model,
       G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 
  	  /* we purposely leak the value here, it might not be
@@ -2111,7 +2111,7 @@ btk_tree_row_reference_free (BtkTreeRowReference *reference)
 
   if (refs == NULL)
     {
-      g_warning (G_STRLOC": bad row reference, proxy has no outstanding row references");
+      g_warning (B_STRLOC": bad row reference, proxy has no outstanding row references");
       return;
     }
 

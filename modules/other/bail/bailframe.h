@@ -22,7 +22,7 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_FRAME                      (bail_frame_get_type ())
 #define BAIL_FRAME(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_FRAME, BailFrame))
@@ -46,6 +46,6 @@ struct _BailFrameClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_FRAME_H__ */

@@ -524,7 +524,7 @@ theme_pixbuf_new (void)
 void
 theme_pixbuf_destroy (ThemePixbuf *theme_pb)
 {
-  if (G_LIKELY (theme_pb))
+  if (B_LIKELY (theme_pb))
     {
       theme_pixbuf_set_filename (theme_pb, NULL);
       g_free (theme_pb);

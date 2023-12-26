@@ -1551,7 +1551,7 @@ btk_text_buffer_insert_with_tags_by_name  (BtkTextBuffer *buffer,
 
       if (tag == NULL)
         {
-          g_warning ("%s: no tag with name '%s'!", G_STRLOC, tag_name);
+          g_warning ("%s: no tag with name '%s'!", B_STRLOC, tag_name);
           va_end (args);
           return;
         }
@@ -2263,7 +2263,7 @@ btk_text_buffer_move_mark_by_name (BtkTextBuffer     *buffer,
 
   if (mark == NULL)
     {
-      g_warning ("%s: no mark named '%s'", G_STRLOC, name);
+      g_warning ("%s: no mark named '%s'", B_STRLOC, name);
       return;
     }
 
@@ -2291,7 +2291,7 @@ btk_text_buffer_delete_mark_by_name (BtkTextBuffer *buffer,
 
   if (mark == NULL)
     {
-      g_warning ("%s: no mark named '%s'", G_STRLOC, name);
+      g_warning ("%s: no mark named '%s'", B_STRLOC, name);
       return;
     }
 

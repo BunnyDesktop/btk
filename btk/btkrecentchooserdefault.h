@@ -23,7 +23,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_RECENT_CHOOSER_DEFAULT    (_btk_recent_chooser_default_get_type ())
@@ -33,10 +33,10 @@ G_BEGIN_DECLS
 
 typedef struct _BtkRecentChooserDefault BtkRecentChooserDefault;
 
-GType      _btk_recent_chooser_default_get_type (void) G_GNUC_CONST;
+GType      _btk_recent_chooser_default_get_type (void) B_GNUC_CONST;
 BtkWidget *_btk_recent_chooser_default_new      (BtkRecentManager *recent_manager);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_DEFAULT_H__ */

@@ -35,7 +35,7 @@
 #include <btk/btkprogress.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PROGRESS_BAR            (btk_progress_bar_get_type ())
 #define BTK_PROGRESS_BAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS_BAR, BtkProgressBar))
@@ -95,7 +95,7 @@ struct _BtkProgressBarClass
 };
 
 
-GType      btk_progress_bar_get_type             (void) G_GNUC_CONST;
+GType      btk_progress_bar_get_type             (void) B_GNUC_CONST;
 BtkWidget* btk_progress_bar_new                  (void);
 
 /*
@@ -167,6 +167,6 @@ void       btk_progress_bar_update               (BtkProgressBar *pbar,
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PROGRESS_BAR_H__ */

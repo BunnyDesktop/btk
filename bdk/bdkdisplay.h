@@ -31,7 +31,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkevents.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayClass BdkDisplayClass;
 typedef struct _BdkDisplayPointerHooks BdkDisplayPointerHooks;
@@ -138,7 +138,7 @@ struct _BdkDisplayPointerHooks
 				    gint            *win_y);
 };
 
-GType       bdk_display_get_type (void) G_GNUC_CONST;
+GType       bdk_display_get_type (void) B_GNUC_CONST;
 BdkDisplay *bdk_display_open                (const gchar *display_name);
 
 const gchar * bdk_display_get_name         (BdkDisplay *display);
@@ -224,6 +224,6 @@ gboolean bdk_display_supports_shapes           (BdkDisplay    *display);
 gboolean bdk_display_supports_input_shapes     (BdkDisplay    *display);
 gboolean bdk_display_supports_composite        (BdkDisplay    *display);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif	/* __BDK_DISPLAY_H__ */

@@ -23,7 +23,7 @@
 #include <bail/bailwidget.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_ENTRY                      (bail_entry_get_type ())
 #define BAIL_ENTRY(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ENTRY, BailEntry))
@@ -65,6 +65,6 @@ struct _BailEntryClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_ENTRY_H__ */

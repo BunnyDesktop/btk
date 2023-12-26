@@ -24,7 +24,7 @@
 #include <bail/bailcontainer.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TREE_VIEW                  (bail_tree_view_get_type ())
 #define BAIL_TREE_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TREE_VIEW, BailTreeView))
@@ -66,6 +66,6 @@ struct _BailTreeViewClass
 
 BatkObject* bail_tree_view_ref_focus_cell (BtkTreeView *treeview);
  
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_H__ */

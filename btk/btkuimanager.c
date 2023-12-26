@@ -2002,7 +2002,7 @@ find_menu_position (GNode      *node,
 			      NODE_INFO (parent)->proxy) + 1;
 	  break;
 	default:
-	  g_warning ("%s: bad parent node type %d", G_STRLOC,
+	  g_warning ("%s: bad parent node type %d", B_STRLOC,
 		     NODE_INFO (parent)->type);
 	  return FALSE;
 	}
@@ -2070,7 +2070,7 @@ find_toolbar_position (GNode      *node,
 					    BTK_TOOL_ITEM (NODE_INFO (parent)->proxy)) + 1;
 	  break;
 	default:
-	  g_warning ("%s: bad parent node type %d", G_STRLOC,
+	  g_warning ("%s: bad parent node type %d", B_STRLOC,
 		     NODE_INFO (parent)->type);
 	  return FALSE;
 	}

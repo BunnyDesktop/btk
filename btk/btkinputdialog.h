@@ -43,7 +43,7 @@
 #include <btk/btkdialog.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_INPUT_DIALOG              (btk_input_dialog_get_type ())
 #define BTK_INPUT_DIALOG(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_INPUT_DIALOG, BtkInputDialog))
@@ -90,10 +90,10 @@ struct _BtkInputDialogClass
   void (*_btk_reserved4) (void);
 };
 
-GType      btk_input_dialog_get_type     (void) G_GNUC_CONST;
+GType      btk_input_dialog_get_type     (void) B_GNUC_CONST;
 BtkWidget* btk_input_dialog_new          (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_INPUTDIALOG_H__ */
 

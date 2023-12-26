@@ -35,7 +35,7 @@
 #include <btk/btkbox.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HBOX            (btk_hbox_get_type ())
 #define BTK_HBOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HBOX, BtkHBox))
@@ -59,10 +59,10 @@ struct _BtkHBoxClass
 };
 
 
-GType       btk_hbox_get_type (void) G_GNUC_CONST;
+GType       btk_hbox_get_type (void) B_GNUC_CONST;
 BtkWidget * btk_hbox_new      (gboolean homogeneous,
                                gint     spacing);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HBOX_H__ */

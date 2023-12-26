@@ -38,7 +38,7 @@
 #include <btk/btktextmark.h>
 #include <btk/btktextchild.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * This is the PUBLIC representation of a text buffer.
@@ -154,7 +154,7 @@ struct _BtkTextBufferClass
   void (*_btk_reserved5) (void);
 };
 
-GType        btk_text_buffer_get_type       (void) G_GNUC_CONST;
+GType        btk_text_buffer_get_type       (void) B_GNUC_CONST;
 
 
 
@@ -205,14 +205,14 @@ void    btk_text_buffer_insert_with_tags          (BtkTextBuffer     *buffer,
                                                    const gchar       *text,
                                                    gint               len,
                                                    BtkTextTag        *first_tag,
-                                                   ...) G_GNUC_NULL_TERMINATED;
+                                                   ...) B_GNUC_NULL_TERMINATED;
 
 void    btk_text_buffer_insert_with_tags_by_name  (BtkTextBuffer     *buffer,
                                                    BtkTextIter       *iter,
                                                    const gchar       *text,
                                                    gint               len,
                                                    const gchar       *first_tag_name,
-                                                   ...) G_GNUC_NULL_TERMINATED;
+                                                   ...) B_GNUC_NULL_TERMINATED;
 
 /* Delete from the buffer */
 void     btk_text_buffer_delete             (BtkTextBuffer *buffer,
@@ -404,6 +404,6 @@ const BangoLogAttr* _btk_text_buffer_get_line_log_attrs (BtkTextBuffer     *buff
 void _btk_text_buffer_notify_will_remove_tag (BtkTextBuffer *buffer,
                                               BtkTextTag    *tag);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif

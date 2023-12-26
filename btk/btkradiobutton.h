@@ -35,7 +35,7 @@
 #include <btk/btkcheckbutton.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RADIO_BUTTON		       (btk_radio_button_get_type ())
 #define BTK_RADIO_BUTTON(obj)		       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_BUTTON, BtkRadioButton))
@@ -69,7 +69,7 @@ struct _BtkRadioButtonClass
 };
 
 
-GType	   btk_radio_button_get_type	     (void) G_GNUC_CONST;
+GType	   btk_radio_button_get_type	     (void) B_GNUC_CONST;
 
 BtkWidget* btk_radio_button_new                           (GSList         *group);
 BtkWidget* btk_radio_button_new_from_widget               (BtkRadioButton *radio_group_member);
@@ -89,6 +89,6 @@ void       btk_radio_button_set_group                     (BtkRadioButton *radio
 #define btk_radio_button_group btk_radio_button_get_group
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RADIO_BUTTON_H__ */

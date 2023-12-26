@@ -44,7 +44,7 @@
 
 extern BdkWindow * _bdk_parent_root;
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_ROOT_WINDOW()      _bdk_parent_root
 
@@ -86,6 +86,6 @@ BdkWindow *bdk_directfb_create_child_window (BdkWindow        *parent,
                                              IDirectFBSurface *subsurface);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DIRECTFB_H__ */

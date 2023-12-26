@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_OLD_EDITABLE            (btk_old_editable_get_type ())
 #define BTK_OLD_EDITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_OLD_EDITABLE, BtkOldEditable))
@@ -113,13 +113,13 @@ struct _BtkOldEditableClass
 			 gint             position);
 };
 
-GType      btk_old_editable_get_type        (void) G_GNUC_CONST;
+GType      btk_old_editable_get_type        (void) B_GNUC_CONST;
 void       btk_old_editable_claim_selection (BtkOldEditable *old_editable,
 					     gboolean        claim,
 					     guint32         time_);
 void       btk_old_editable_changed         (BtkOldEditable *old_editable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OLD_EDITABLE_H__ */
 

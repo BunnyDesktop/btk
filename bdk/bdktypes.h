@@ -60,7 +60,7 @@
 
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* Type definitions for the basic structures.
@@ -220,7 +220,7 @@ struct _BdkSpan
   gint width;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BDK_TYPES_H__ */

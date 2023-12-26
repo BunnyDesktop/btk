@@ -972,7 +972,7 @@ btk_tree_view_column_update_button (BtkTreeViewColumn *tree_column)
 	    break;
 
 	  default:
-	    g_warning (G_STRLOC": bad sort order");
+	    g_warning (B_STRLOC": bad sort order");
 	    break;
 	}
     }

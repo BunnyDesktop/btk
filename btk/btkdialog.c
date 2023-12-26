@@ -1246,7 +1246,7 @@ btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
       if (child != NULL)
         btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
-        g_warning ("%s : no child button with response id %d.", G_STRFUNC,
+        g_warning ("%s : no child button with response id %d.", B_STRFUNC,
                    response_id);
 
       response_id = va_arg (args, gint);
@@ -1360,7 +1360,7 @@ btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
       if (child != NULL)
         btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
-        g_warning ("%s : no child button with response id %d.", G_STRFUNC,
+        g_warning ("%s : no child button with response id %d.", B_STRFUNC,
                    new_order[position]);
     }
 }

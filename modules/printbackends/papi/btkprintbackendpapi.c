@@ -467,7 +467,7 @@ btk_print_backend_papi_dispose (GObject *object)
   BtkPrintBackendPapi *backend_papi;
 
   BTK_NOTE (PRINTING,
-            g_print ("PAPI Backend: %s\n", G_STRFUNC));
+            g_print ("PAPI Backend: %s\n", B_STRFUNC));
 
   backend_papi = BTK_PRINT_BACKEND_PAPI (object);
 

@@ -34,7 +34,7 @@
 #include <btk/btkbutton.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* BtkFontButton is a button widget that allow user to select a font.
  */
@@ -71,7 +71,7 @@ struct _BtkFontButtonClass {
 };
 
 
-GType                 btk_font_button_get_type       (void) G_GNUC_CONST;
+GType                 btk_font_button_get_type       (void) B_GNUC_CONST;
 BtkWidget            *btk_font_button_new            (void);
 BtkWidget            *btk_font_button_new_with_font  (const gchar   *fontname);
 
@@ -94,7 +94,7 @@ gboolean              btk_font_button_get_show_size  (BtkFontButton *font_button
 void                  btk_font_button_set_show_size  (BtkFontButton *font_button,
                                                       gboolean       show_size);
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FONT_BUTTON_H__ */

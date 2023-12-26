@@ -22,7 +22,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkIMContextInfo BtkIMContextInfo;
 
@@ -53,6 +53,6 @@ void          im_module_exit   (void);
 BtkIMContext *im_module_create (const gchar              *context_id);
 */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_MODULE_H__ */

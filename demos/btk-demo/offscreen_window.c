@@ -30,7 +30,7 @@ struct _BtkRotatedBinClass
   BtkContainerClass parent_class;
 };
 
-GType      btk_rotated_bin_get_type  (void) G_GNUC_CONST;
+GType      btk_rotated_bin_get_type  (void) B_GNUC_CONST;
 BtkWidget* btk_rotated_bin_new       (void);
 void       btk_rotated_bin_set_angle (BtkRotatedBin *bin,
                                       gdouble        angle);

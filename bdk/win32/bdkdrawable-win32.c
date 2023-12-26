@@ -2014,13 +2014,13 @@ bdk_win32_drawable_get_handle (BdkDrawable *drawable)
 
       if (!BDK_WINDOW_IS_WIN32 (window))
 	{
-	  g_warning (G_STRLOC " drawable is not a native Win32 window");
+	  g_warning (B_STRLOC " drawable is not a native Win32 window");
 	  return NULL;
 	}
     }
   else if (!BDK_IS_PIXMAP (drawable))
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return NULL;
     }
 

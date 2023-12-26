@@ -29,7 +29,7 @@
 #include <btk/btktreeviewcolumn.h>
 #include <btk/btktreemodelfilter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ENTRY_COMPLETION            (btk_entry_completion_get_type ())
 #define BTK_ENTRY_COMPLETION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_COMPLETION, BtkEntryCompletion))
@@ -77,7 +77,7 @@ struct _BtkEntryCompletionClass
 };
 
 /* core */
-GType               btk_entry_completion_get_type               (void) G_GNUC_CONST;
+GType               btk_entry_completion_get_type               (void) B_GNUC_CONST;
 BtkEntryCompletion *btk_entry_completion_new                    (void);
 
 BtkWidget          *btk_entry_completion_get_entry              (BtkEntryCompletion          *completion);
@@ -127,6 +127,6 @@ void                btk_entry_completion_set_text_column        (BtkEntryComplet
                                                                  gint                         column);
 gint                btk_entry_completion_get_text_column        (BtkEntryCompletion          *completion);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ENTRY_COMPLETION_H__ */

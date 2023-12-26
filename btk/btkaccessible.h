@@ -27,7 +27,7 @@
 #include <batk/batk.h>
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACCESSIBLE                  (btk_accessible_get_type ())
 #define BTK_ACCESSIBLE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACCESSIBLE, BtkAccessible))
@@ -66,14 +66,14 @@ struct _BtkAccessibleClass
   void (*_btk_reserved4) (void);
 };
 
-GType btk_accessible_get_type (void) G_GNUC_CONST;
+GType btk_accessible_get_type (void) B_GNUC_CONST;
 
 void        btk_accessible_set_widget                  (BtkAccessible     *accessible,
                                                         BtkWidget         *widget);
 BtkWidget*  btk_accessible_get_widget                  (BtkAccessible     *accessible);
 void        btk_accessible_connect_widget_destroyed    (BtkAccessible     *accessible);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ACCESSIBLE_H__ */
 

@@ -23,7 +23,7 @@
 #include "btkcontainer.h"
 #include "btkfilesystem.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPathBar      BtkPathBar;
 typedef struct _BtkPathBarClass BtkPathBarClass;
@@ -81,7 +81,7 @@ struct _BtkPathBarClass
 			 gboolean     child_is_hidden);
 };
 
-GType    btk_path_bar_get_type (void) G_GNUC_CONST;
+GType    btk_path_bar_get_type (void) B_GNUC_CONST;
 void     _btk_path_bar_set_file_system (BtkPathBar         *path_bar,
 					BtkFileSystem      *file_system);
 gboolean _btk_path_bar_set_file        (BtkPathBar         *path_bar,
@@ -91,6 +91,6 @@ gboolean _btk_path_bar_set_file        (BtkPathBar         *path_bar,
 void     _btk_path_bar_up              (BtkPathBar *path_bar);
 void     _btk_path_bar_down            (BtkPathBar *path_bar);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PATH_BAR_H__ */

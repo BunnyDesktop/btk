@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_OPTION_MENU              (btk_option_menu_get_type ())
 #define BTK_OPTION_MENU(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_OPTION_MENU, BtkOptionMenu))
@@ -70,7 +70,7 @@ struct _BtkOptionMenuClass
 };
 
 
-GType      btk_option_menu_get_type    (void) G_GNUC_CONST;
+GType      btk_option_menu_get_type    (void) B_GNUC_CONST;
 BtkWidget* btk_option_menu_new         (void);
 BtkWidget* btk_option_menu_get_menu    (BtkOptionMenu *option_menu);
 void       btk_option_menu_set_menu    (BtkOptionMenu *option_menu,
@@ -81,7 +81,7 @@ void       btk_option_menu_set_history (BtkOptionMenu *option_menu,
 					guint          index_);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OPTION_MENU_H__ */
 

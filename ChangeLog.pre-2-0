@@ -2302,7 +2302,7 @@ Sat Feb  9 22:57:43 2002  Kristian Rietveld  <kris@btk.org>
 	* btk/btktextchild.c (CHECK_IN_BUFFER_RETURN): Add missing
 	curled braces so that it doesn't always return.  Also indent
 	both CHECK_IN_BUFFER* macros properly, and make use of
-	G_STMT_START/G_STMT_END.
+	B_STMT_START/B_STMT_END.
 
 Sat Feb  9 13:27:14 2002  Owen Taylor  <otaylor@redhat.com>
 
@@ -2421,7 +2421,7 @@ Fri Feb  8 14:30:14 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-02-08  Laszlo Peter  <laca@ireland.sun.com>
 
-	* btk/btktextchild.c: s/__FUNCTION__/G_GNUC_FUNCTION/
+	* btk/btktextchild.c: s/__FUNCTION__/B_GNUC_FUNCTION/
 	* btk/btktextview.c: ditto
 
 2002-02-07  Havoc Pennington  <hp@pobox.com>
@@ -12200,7 +12200,7 @@ Tue May 29 17:40:29 2001  Owen Taylor  <otaylor@redhat.com>
 	* configure.in (BTK_DEP_CFLAGS): Use $PKG_CONFIG,
 	not pkg-config. (#51032)
 
-	* bdk/bdkproperty.h: Remove inappropriate G_GNUC_CONST
+	* bdk/bdkproperty.h: Remove inappropriate B_GNUC_CONST
 	(fixes #51952, James Henstridge)
 	
 2001-05-27  Alexander Larsson  <alla@lysator.liu.se>
@@ -19448,7 +19448,7 @@ Mon Nov 13 14:43:48 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-11-13 Elliot Lee <sopwith@redhat.com>
 
-	* bdk/bdk.h: Add a couple of missing G_GNUC_CONST's.
+	* bdk/bdk.h: Add a couple of missing B_GNUC_CONST's.
 
 Mon Nov 13 14:29:32 2000  Jonathan Blandford  <jrb@redhat.com>
 
@@ -21683,7 +21683,7 @@ Fri Aug 25 12:16:15 2000  Owen Taylor  <otaylor@redhat.com>
 	s/BDK_IS_WINDOW/BDK_IS_DRAWABLE/.
 
 2000-08-29 Elliot Lee <sopwith@redhat.com>
-	* */*.h: Use G_GNUC_CONST.
+	* */*.h: Use B_GNUC_CONST.
 
 2000-08-27  Havoc Pennington  <hp@pobox.com>
 

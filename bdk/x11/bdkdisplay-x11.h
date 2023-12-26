@@ -33,7 +33,7 @@
 #include <bdk/bdkinternals.h>
 #include <bdk/bdk.h>		/* For bdk_get_program_class() */
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayX11 BdkDisplayX11;
 typedef struct _BdkDisplayX11Class BdkDisplayX11Class;
@@ -166,6 +166,6 @@ GType      _bdk_display_x11_get_type            (void);
 BdkScreen *_bdk_x11_display_screen_for_xrootwin (BdkDisplay *display,
 						 Window      xrootwin);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif				/* __BDK_DISPLAY_X11__ */

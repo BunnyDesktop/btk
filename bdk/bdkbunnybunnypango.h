@@ -26,7 +26,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Bango interaction */
 
@@ -86,7 +86,7 @@ struct _BdkBangoRendererClass
   BangoRendererClass parent_class;
 };
 
-GType bdk_bango_renderer_get_type (void) G_GNUC_CONST;
+GType bdk_bango_renderer_get_type (void) B_GNUC_CONST;
 
 BangoRenderer *bdk_bango_renderer_new         (BdkScreen *screen);
 BangoRenderer *bdk_bango_renderer_get_default (BdkScreen *screen);
@@ -161,6 +161,6 @@ BangoAttribute *bdk_bango_attr_stipple_new  (BdkBitmap *stipple);
 BangoAttribute *bdk_bango_attr_embossed_new (gboolean embossed);
 BangoAttribute *bdk_bango_attr_emboss_color_new (const BdkColor *color);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_FONT_H__ */

@@ -35,7 +35,7 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_FRAME                  (btk_frame_get_type ())
@@ -69,7 +69,7 @@ struct _BtkFrameClass
 };
 
 
-GType      btk_frame_get_type         (void) G_GNUC_CONST;
+GType      btk_frame_get_type         (void) B_GNUC_CONST;
 BtkWidget* btk_frame_new              (const gchar   *label);
 
 void                  btk_frame_set_label (BtkFrame    *frame,
@@ -90,7 +90,7 @@ void       btk_frame_set_shadow_type  (BtkFrame      *frame,
 BtkShadowType btk_frame_get_shadow_type (BtkFrame    *frame);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FRAME_H__ */

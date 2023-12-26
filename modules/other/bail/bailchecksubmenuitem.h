@@ -22,7 +22,7 @@
 
 #include <bail/bailsubmenuitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CHECK_SUB_MENU_ITEM              (bail_check_sub_menu_item_get_type ())
 #define BAIL_CHECK_SUB_MENU_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CHECK_SUB_MENU_ITEM, BailCheckSubMenuItem))
@@ -48,6 +48,6 @@ struct _BailCheckSubMenuItemClass
 
 BatkObject* bail_check_sub_menu_item_new (BtkWidget *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CHECK_SUB_MENU_ITEM_H__ */

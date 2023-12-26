@@ -22,7 +22,7 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_PROGRESS_BAR                      (bail_progress_bar_get_type ())
 #define BAIL_PROGRESS_BAR(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBar))
@@ -48,6 +48,6 @@ struct _BailProgressBarClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_PROGRESS_BAR_H__ */

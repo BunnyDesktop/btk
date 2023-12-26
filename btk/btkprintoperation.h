@@ -35,7 +35,7 @@
 #include <btk/btkprintoperationpreview.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_OPERATION		(btk_print_operation_get_type ())
 #define BTK_PRINT_OPERATION(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION, BtkPrintOperation))
@@ -138,7 +138,7 @@ typedef enum
 
 GQuark btk_print_error_quark (void);
 
-GType                   btk_print_operation_get_type               (void) G_GNUC_CONST;
+GType                   btk_print_operation_get_type               (void) B_GNUC_CONST;
 BtkPrintOperation *     btk_print_operation_new                    (void);
 void                    btk_print_operation_set_default_page_setup (BtkPrintOperation  *op,
 								    BtkPageSetup       *default_page_setup);
@@ -202,6 +202,6 @@ void                    btk_print_run_page_setup_dialog_async      (BtkWindow   
                                                                     BtkPageSetupDoneFunc  done_cb,
                                                                     gpointer              data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_OPERATION_H__ */

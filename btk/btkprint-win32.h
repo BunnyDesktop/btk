@@ -23,7 +23,7 @@
 
 #include "win32/bdkwin32.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifndef START_PAGE_GENERAL
 #define START_PAGE_GENERAL 0xffffffff
@@ -56,6 +56,6 @@ BtkPrintWin32Devnames *btk_print_win32_devnames_from_printer_name (const char *p
 HGLOBAL btk_print_win32_devnames_to_win32 (const BtkPrintWin32Devnames *devnames);
 HGLOBAL btk_print_win32_devnames_to_win32_from_printer_name (const char *printer);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_WIN32_H__ */

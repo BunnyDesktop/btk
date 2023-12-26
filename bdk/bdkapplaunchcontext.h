@@ -30,7 +30,7 @@
 #include <bunnyio/bunnyio.h>
 #include <bdk/bdkscreen.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_APP_LAUNCH_CONTEXT         (bdk_app_launch_context_get_type ())
 #define BDK_APP_LAUNCH_CONTEXT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContext))
@@ -71,6 +71,6 @@ void                 bdk_app_launch_context_set_icon      (BdkAppLaunchContext *
 void                 bdk_app_launch_context_set_icon_name (BdkAppLaunchContext *context,
 							   const char          *icon_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_APP_LAUNCH_CONTEXT_H__ */

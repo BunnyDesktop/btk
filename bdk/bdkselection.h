@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Predefined atoms relating to selections. In general, one will need to use
  * bdk_intern_atom
@@ -106,6 +106,6 @@ void       bdk_selection_send_notify_for_display (BdkDisplay      *display,
 						  BdkAtom     	   property,
 						  guint32     	   time_);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_SELECTION_H__ */

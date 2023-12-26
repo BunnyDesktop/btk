@@ -33,7 +33,7 @@
 #include <btk/btktextchild.h>
 #include <btk/btktextchildprivate.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * Segments: each line is divided into one or more segments, where each
@@ -166,7 +166,7 @@ BtkTextLineSegment *_btk_toggle_segment_new                (BtkTextTagInfo *info
                                                             gboolean        on);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

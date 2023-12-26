@@ -62,7 +62,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkTextIter BtkTextIter;
 typedef struct _BtkTextTagTable BtkTextTagTable;
@@ -153,7 +153,7 @@ struct _BtkTextTagClass
   void (*_btk_reserved4) (void);
 };
 
-GType        btk_text_tag_get_type     (void) G_GNUC_CONST;
+GType        btk_text_tag_get_type     (void) B_GNUC_CONST;
 BtkTextTag  *btk_text_tag_new          (const gchar       *name);
 gint         btk_text_tag_get_priority (BtkTextTag        *tag);
 void         btk_text_tag_set_priority (BtkTextTag        *tag,
@@ -280,10 +280,10 @@ void               btk_text_attributes_copy_values (BtkTextAttributes *src,
 void               btk_text_attributes_unref       (BtkTextAttributes *values);
 BtkTextAttributes *btk_text_attributes_ref         (BtkTextAttributes *values);
 
-GType              btk_text_attributes_get_type    (void) G_GNUC_CONST;
+GType              btk_text_attributes_get_type    (void) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

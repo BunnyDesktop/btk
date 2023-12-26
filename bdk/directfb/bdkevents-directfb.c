@@ -181,7 +181,7 @@ dfb_events_io_func (BUNNYIOChannel   *channel,
 
   if (result == G_IO_STATUS_ERROR)
     {
-      g_warning ("%s: BUNNYIOError occured", G_STRFUNC);
+      g_warning ("%s: BUNNYIOError occured", B_STRFUNC);
       return TRUE;
     }
 
@@ -454,7 +454,7 @@ bdk_event_translate (BdkEvent       *event,
   g_return_val_if_fail (dfbevent != NULL, FALSE);
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  D_DEBUG_AT (BDKDFB_Events, "%s( %p, %p, %p )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Events, "%s( %p, %p, %p )\n", B_STRFUNC,
               event, dfbevent, window);
 
   private = BDK_WINDOW_OBJECT (window);

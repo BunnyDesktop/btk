@@ -249,7 +249,7 @@ btk_object_add_arg_type (const gchar *arg_name,
     {
       if (oclass->get_property && oclass->get_property != btk_arg_proxy_get_property)
 	{
-	  g_warning (G_STRLOC ": BtkArg compatibility code can't be mixed with customized %s.get_property() implementation",
+	  g_warning (B_STRLOC ": BtkArg compatibility code can't be mixed with customized %s.get_property() implementation",
 		     g_type_name (type));
 	  return;
 	}
@@ -259,7 +259,7 @@ btk_object_add_arg_type (const gchar *arg_name,
     {
       if (oclass->set_property && oclass->set_property != btk_arg_proxy_set_property)
 	{
-	  g_warning (G_STRLOC ": BtkArg compatibility code can't be mixed with customized %s.set_property() implementation",
+	  g_warning (B_STRLOC ": BtkArg compatibility code can't be mixed with customized %s.set_property() implementation",
 		     g_type_name (type));
 	  return;
 	}
@@ -310,7 +310,7 @@ btk_object_add_arg_type (const gchar *arg_name,
 	  break;
 	}
     default:
-      g_warning (G_STRLOC ": Property type `%s' is not supported by the BtkArg compatibility code",
+      g_warning (B_STRLOC ": Property type `%s' is not supported by the BtkArg compatibility code",
 		 g_type_name (arg_type));
       return;
     }

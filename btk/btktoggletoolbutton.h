@@ -29,7 +29,7 @@
 
 #include <btk/btktoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOGGLE_TOOL_BUTTON             (btk_toggle_tool_button_get_type ())
 #define BTK_TOGGLE_TOOL_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButton))
@@ -64,7 +64,7 @@ struct _BtkToggleToolButtonClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_toggle_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_toggle_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem *btk_toggle_tool_button_new            (void);
 BtkToolItem *btk_toggle_tool_button_new_from_stock (const gchar *stock_id);
 
@@ -72,6 +72,6 @@ void         btk_toggle_tool_button_set_active     (BtkToggleToolButton *button,
 						    gboolean             is_active);
 gboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOGGLE_TOOL_BUTTON_H__ */

@@ -617,7 +617,7 @@ btk_container_child_get_valist (BtkContainer *container,
       if (!pspec)
 	{
 	  g_warning ("%s: container class `%s' has no child property named `%s'",
-		     G_STRLOC,
+		     B_STRLOC,
 		     G_OBJECT_TYPE_NAME (container),
 		     name);
 	  break;
@@ -625,7 +625,7 @@ btk_container_child_get_valist (BtkContainer *container,
       if (!(pspec->flags & G_PARAM_READABLE))
 	{
 	  g_warning ("%s: child property `%s' of container class `%s' is not readable",
-		     G_STRLOC,
+		     B_STRLOC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (container));
 	  break;
@@ -635,7 +635,7 @@ btk_container_child_get_valist (BtkContainer *container,
       G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 	  g_value_unset (&value);
 	  break;
@@ -677,12 +677,12 @@ btk_container_child_get_property (BtkContainer *container,
 				    G_OBJECT_TYPE (container), TRUE);
   if (!pspec)
     g_warning ("%s: container class `%s' has no child property named `%s'",
-	       G_STRLOC,
+	       B_STRLOC,
 	       G_OBJECT_TYPE_NAME (container),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_READABLE))
     g_warning ("%s: child property `%s' of container class `%s' is not readable",
-	       G_STRLOC,
+	       B_STRLOC,
 	       pspec->name,
 	       G_OBJECT_TYPE_NAME (container));
   else
@@ -761,7 +761,7 @@ btk_container_child_set_valist (BtkContainer *container,
       if (!pspec)
 	{
 	  g_warning ("%s: container class `%s' has no child property named `%s'",
-		     G_STRLOC,
+		     B_STRLOC,
 		     G_OBJECT_TYPE_NAME (container),
 		     name);
 	  break;
@@ -769,7 +769,7 @@ btk_container_child_set_valist (BtkContainer *container,
       if (!(pspec->flags & G_PARAM_WRITABLE))
 	{
 	  g_warning ("%s: child property `%s' of container class `%s' is not writable",
-		     G_STRLOC,
+		     B_STRLOC,
 		     pspec->name,
 		     G_OBJECT_TYPE_NAME (container));
 	  break;
@@ -778,7 +778,7 @@ btk_container_child_set_valist (BtkContainer *container,
       G_VALUE_COLLECT (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 
 	  /* we purposely leak the value here, it might not be
@@ -828,12 +828,12 @@ btk_container_child_set_property (BtkContainer *container,
 				    G_OBJECT_TYPE (container), TRUE);
   if (!pspec)
     g_warning ("%s: container class `%s' has no child property named `%s'",
-	       G_STRLOC,
+	       B_STRLOC,
 	       G_OBJECT_TYPE_NAME (container),
 	       property_name);
   else if (!(pspec->flags & G_PARAM_WRITABLE))
     g_warning ("%s: child property `%s' of container class `%s' is not writable",
-	       G_STRLOC,
+	       B_STRLOC,
 	       pspec->name,
 	       G_OBJECT_TYPE_NAME (container));
   else
@@ -965,7 +965,7 @@ btk_container_class_install_child_property (BtkContainerClass *cclass,
 
   if (g_param_spec_pool_lookup (_btk_widget_child_property_pool, pspec->name, G_OBJECT_CLASS_TYPE (cclass), FALSE))
     {
-      g_warning (G_STRLOC ": class `%s' already contains a child property named `%s'",
+      g_warning (B_STRLOC ": class `%s' already contains a child property named `%s'",
 		 G_OBJECT_CLASS_NAME (cclass),
 		 pspec->name);
       return;

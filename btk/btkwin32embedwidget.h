@@ -31,7 +31,7 @@
 #include "win32/bdkwin32.h"
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_WIN32_EMBED_WIDGET            (btk_win32_embed_widget_get_type ())
 #define BTK_WIN32_EMBED_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WIN32_EMBED_WIDGET, BtkWin32EmbedWidget))
@@ -65,12 +65,12 @@ struct _BtkWin32EmbedWidgetClass
 };
 
 
-GType      btk_win32_embed_widget_get_type (void) G_GNUC_CONST;
+GType      btk_win32_embed_widget_get_type (void) B_GNUC_CONST;
 BtkWidget* _btk_win32_embed_widget_new              (BdkNativeWindow  parent_id);
 BOOL       _btk_win32_embed_widget_dialog_procedure (BtkWin32EmbedWidget *embed_widget,
 						     HWND wnd, UINT message, WPARAM wparam, LPARAM lparam);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_WIN32_EMBED_WIDGET_H__ */

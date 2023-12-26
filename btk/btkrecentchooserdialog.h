@@ -28,7 +28,7 @@
 #include <btk/btkdialog.h>
 #include <btk/btkrecentchooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_CHOOSER_DIALOG		  (btk_recent_chooser_dialog_get_type ())
 #define BTK_RECENT_CHOOSER_DIALOG(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialog))
@@ -57,18 +57,18 @@ struct _BtkRecentChooserDialogClass
 };
 
 
-GType      btk_recent_chooser_dialog_get_type        (void) G_GNUC_CONST;
+GType      btk_recent_chooser_dialog_get_type        (void) B_GNUC_CONST;
 
 BtkWidget *btk_recent_chooser_dialog_new             (const gchar      *title,
 					              BtkWindow        *parent,
 					              const gchar      *first_button_text,
-					              ...) G_GNUC_NULL_TERMINATED;
+					              ...) B_GNUC_NULL_TERMINATED;
 BtkWidget *btk_recent_chooser_dialog_new_for_manager (const gchar      *title,
 						      BtkWindow        *parent,
 						      BtkRecentManager *manager,
 						      const gchar      *first_button_text,
-						      ...) G_GNUC_NULL_TERMINATED;
+						      ...) B_GNUC_NULL_TERMINATED;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_DIALOG_H__ */

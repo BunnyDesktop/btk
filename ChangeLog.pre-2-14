@@ -7890,7 +7890,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-28  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btktextchild.c
-	* btk/btktextview.c: meant to use G_STRFUNC, not G_STRLOC...
+	* btk/btktextview.c: meant to use B_STRFUNC, not B_STRLOC...
 
 2008-01-28  Michael Natterer  <mitch@imendio.com>
 
@@ -7901,7 +7901,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-28  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btktextchild.c
-	* btk/btktextview.c: use G_STRLOC instead of G_GNUC_FUNCTION (which
+	* btk/btktextview.c: use B_STRLOC instead of B_GNUC_FUNCTION (which
 	is deprecated now).
 
 2008-01-26  Johan Dahlin  <johan@bunny.org>
@@ -8631,7 +8631,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2007-12-25  Christian Persch  <chpe@bunny.org>
 
-        * modules/other/bail/*.h: Use G_BEGIN_DECLS/G_END_DECLS. Bug #505268.
+        * modules/other/bail/*.h: Use B_BEGIN_DECLS/B_END_DECLS. Bug #505268.
 	
 2007-12-25  Christian Persch  <chpe@bunny.org>
 

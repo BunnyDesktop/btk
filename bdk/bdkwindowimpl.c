@@ -35,7 +35,7 @@ bdk_window_impl_get_type (void)
 {
   static GType gtype = 0;
 
-  if (G_UNLIKELY (!gtype))
+  if (B_UNLIKELY (!gtype))
     {
       gtype = g_type_register_static_simple (G_TYPE_INTERFACE,
                                              "BdkWindowImpl",

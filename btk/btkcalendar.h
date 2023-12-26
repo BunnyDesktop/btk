@@ -40,7 +40,7 @@
 #include <btk/btksignal.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CALENDAR                  (btk_calendar_get_type ())
 #define BTK_CALENDAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CALENDAR, BtkCalendar))
@@ -156,7 +156,7 @@ struct _BtkCalendarClass
 };
 
 
-GType	   btk_calendar_get_type	(void) G_GNUC_CONST;
+GType	   btk_calendar_get_type	(void) B_GNUC_CONST;
 BtkWidget* btk_calendar_new		(void);
 
 gboolean   btk_calendar_select_month	(BtkCalendar *calendar,
@@ -204,6 +204,6 @@ void	   btk_calendar_freeze		(BtkCalendar *calendar);
 void	   btk_calendar_thaw		(BtkCalendar *calendar);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CALENDAR_H__ */

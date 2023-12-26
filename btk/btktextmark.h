@@ -54,7 +54,7 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* The BtkTextMark data type */
 
@@ -86,7 +86,7 @@ struct _BtkTextMarkClass
   void (*_btk_reserved4) (void);
 };
 
-GType        btk_text_mark_get_type   (void) G_GNUC_CONST;
+GType        btk_text_mark_get_type   (void) B_GNUC_CONST;
 
 void           btk_text_mark_set_visible (BtkTextMark *mark,
                                           gboolean     setting);
@@ -99,7 +99,7 @@ gboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
 BtkTextBuffer*        btk_text_mark_get_buffer       (BtkTextMark *mark);
 gboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

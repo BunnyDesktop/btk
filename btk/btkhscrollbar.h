@@ -35,7 +35,7 @@
 #include <btk/btkscrollbar.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_HSCROLLBAR            (btk_hscrollbar_get_type ())
@@ -60,11 +60,11 @@ struct _BtkHScrollbarClass
 };
 
 
-GType      btk_hscrollbar_get_type (void) G_GNUC_CONST;
+GType      btk_hscrollbar_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_hscrollbar_new      (BtkAdjustment *adjustment);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_HSCROLLBAR_H__ */

@@ -29,7 +29,7 @@
 
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_BUTTON            (btk_tool_button_get_type ())
 #define BTK_TOOL_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOL_BUTTON, BtkToolButton))
@@ -66,7 +66,7 @@ struct _BtkToolButtonClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem *btk_tool_button_new            (BtkWidget   *icon_widget,
 					     const gchar *label);
 BtkToolItem *btk_tool_button_new_from_stock (const gchar *stock_id);
@@ -94,6 +94,6 @@ BtkWidget *           btk_tool_button_get_label_widget  (BtkToolButton *button);
 /* internal function */
 BtkWidget *_btk_tool_button_get_button (BtkToolButton *button);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOL_BUTTON_H__ */

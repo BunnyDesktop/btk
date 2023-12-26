@@ -214,7 +214,7 @@ static const BtkTargetEntry notebook_targets [] = {
 
 #ifdef G_DISABLE_CHECKS
 #define CHECK_FIND_CHILD(notebook, child)                           \
- btk_notebook_find_child (notebook, child, G_STRLOC)
+ btk_notebook_find_child (notebook, child, B_STRLOC)
 #else
 #define CHECK_FIND_CHILD(notebook, child)                           \
  btk_notebook_find_child (notebook, child, NULL)

@@ -6118,7 +6118,7 @@ Mon Nov  3 23:12:41 2003  Matthias Clasen  <maclas@gmx.de>
 
 Mon Nov  3 22:45:58 2003  Matthias Clasen  <maclas@gmx.de>
 
-	* btk/btkwindow-decorate.h: Add G_BEGIN_DECLS/G_END_DECLS to make 
+	* btk/btkwindow-decorate.h: Add B_BEGIN_DECLS/B_END_DECLS to make 
 	these usable in C++. Forgot this file in my Oct 11 commit.
 
 2003-11-03  Federico Mena Quintero  <federico@ximian.com>
@@ -6606,7 +6606,7 @@ Sat Oct 11 23:14:36 2003  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkseparatortoolitem.h: 
 	* btk/btktoggleaction.h: 
 	* btk/btktoolitem.h: 
-	* btk/btkuimanager.h: Add G_BEGIN_DECLS/G_END_DECLS to make 
+	* btk/btkuimanager.h: Add B_BEGIN_DECLS/B_END_DECLS to make 
 	these usable in C++.  (#124351, Murray Cumming)
 
 Sat Oct 11 19:09:05 2003  Kristian Rietveld  <kris@btk.org>

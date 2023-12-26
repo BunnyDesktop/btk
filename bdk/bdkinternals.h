@@ -37,7 +37,7 @@
 #include <bdk/bdkmedialib.h>
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /**********************
  * General Facilities * 
@@ -117,9 +117,9 @@ extern gboolean _bdk_native_windows;
 
 #ifdef G_ENABLE_DEBUG
 
-#define BDK_NOTE(type,action)		     G_STMT_START { \
+#define BDK_NOTE(type,action)		     B_STMT_START { \
     if (_bdk_debug_flags & BDK_DEBUG_##type)		    \
-       { action; };			     } G_STMT_END
+       { action; };			     } B_STMT_END
 
 #else /* !G_ENABLE_DEBUG */
 
@@ -538,11 +538,11 @@ struct _BdkPaintableIface
   void (* end_paint)                (BdkPaintable    *paintable);
 };
 
-GType _bdk_paintable_get_type (void) G_GNUC_CONST;
+GType _bdk_paintable_get_type (void) B_GNUC_CONST;
 
 /* Implementation types */
-GType _bdk_window_impl_get_type (void) G_GNUC_CONST;
-GType _bdk_pixmap_impl_get_type (void) G_GNUC_CONST;
+GType _bdk_window_impl_get_type (void) B_GNUC_CONST;
+GType _bdk_pixmap_impl_get_type (void) B_GNUC_CONST;
 
 
 /**
@@ -709,6 +709,6 @@ void       _bdk_offscreen_window_new                 (BdkWindow     *window,
 void _bdk_image_exit  (void);
 void _bdk_windowing_exit (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_INTERNALS_H__ */

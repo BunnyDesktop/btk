@@ -26,7 +26,7 @@
 #include <btk/btkentrycompletion.h>
 #include <btk/btkentry.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 struct _BtkEntryCompletionPrivate
 {
@@ -83,6 +83,6 @@ void      _btk_entry_get_borders            (BtkEntry  *entry,
 void     _btk_entry_effective_inner_border (BtkEntry  *entry,
 					    BtkBorder *border);
 void     _btk_entry_reset_im_context       (BtkEntry  *entry);
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ENTRY_PRIVATE_H__ */

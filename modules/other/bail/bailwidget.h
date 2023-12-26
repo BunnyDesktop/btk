@@ -22,7 +22,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_WIDGET                     (bail_widget_get_type ())
 #define BAIL_WIDGET(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WIDGET, BailWidget))
@@ -60,6 +60,6 @@ struct _BailWidgetClass
 
 BatkObject*     bail_widget_new         (BtkWidget       *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_WIDGET_H__ */

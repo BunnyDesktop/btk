@@ -22,11 +22,11 @@
 #ifndef __PROP_EDITOR_H__
 #define __PROP_EDITOR_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BtkWidget *create_prop_editor (GObject   *object,
 			       GType      type);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __PROP_EDITOR_H__ */

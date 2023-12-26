@@ -31,7 +31,7 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MOUNT_OPERATION         (btk_mount_operation_get_type ())
 #define BTK_MOUNT_OPERATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperation))
@@ -78,6 +78,6 @@ void             btk_mount_operation_set_screen (BtkMountOperation *op,
                                                  BdkScreen         *screen);
 BdkScreen       *btk_mount_operation_get_screen (BtkMountOperation *op);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MOUNT_OPERATION_H__ */

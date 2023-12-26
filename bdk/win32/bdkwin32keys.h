@@ -21,7 +21,7 @@
 
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /**
  * BdkWin32KeymapMatch:
@@ -63,6 +63,6 @@ BdkWin32KeymapMatch bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
                                                     guint16        *output,
                                                     gsize          *output_len);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WIN32_KEYMAP_H__ */

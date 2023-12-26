@@ -327,7 +327,7 @@ btk_signal_emitv (BtkObject *object,
       if (!btk_arg_static_to_value (arg, value))
 	{
 	  g_warning ("%s: failed to convert arg type `%s' to value type `%s'",
-		     G_STRLOC, g_type_name (arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
+		     B_STRLOC, g_type_name (arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
 		     g_type_name (G_VALUE_TYPE (value)));
 	  return;
 	}

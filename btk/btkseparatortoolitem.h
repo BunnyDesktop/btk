@@ -28,7 +28,7 @@
 
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEPARATOR_TOOL_ITEM            (btk_separator_tool_item_get_type ())
 #define BTK_SEPARATOR_TOOL_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItem))
@@ -60,13 +60,13 @@ struct _BtkSeparatorToolItemClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_separator_tool_item_get_type (void) G_GNUC_CONST;
+GType        btk_separator_tool_item_get_type (void) B_GNUC_CONST;
 BtkToolItem *btk_separator_tool_item_new      (void);
 
 gboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
 void         btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
 					       gboolean              draw);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEPARATOR_TOOL_ITEM_H__ */

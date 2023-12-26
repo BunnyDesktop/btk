@@ -33,7 +33,7 @@
 #include <btk/btkoldeditable.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TEXT                  (btk_text_get_type ())
 #define BTK_TEXT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT, BtkText))
@@ -175,7 +175,7 @@ struct _BtkTextClass
 };
 
 
-GType      btk_text_get_type        (void) G_GNUC_CONST;
+GType      btk_text_get_type        (void) B_GNUC_CONST;
 BtkWidget* btk_text_new             (BtkAdjustment *hadj,
 				     BtkAdjustment *vadj);
 void       btk_text_set_editable    (BtkText       *text,
@@ -210,7 +210,7 @@ gboolean   btk_text_forward_delete  (BtkText       *text,
 	: ((index) < (t)->gap_position ? (t)->text.ch[index] : \
 					(t)->text.ch[(index)+(t)->gap_size]))
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_H__ */
 

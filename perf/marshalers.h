@@ -4,7 +4,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* OBJECT:VOID (./marshalers.list:1) */
 extern
@@ -25,6 +25,6 @@ void _btk_marshal_VOID__ENUM_OBJECT_DOUBLE (GClosure     *closure,
                                             gpointer      marshal_data);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ___BTK_MARSHAL_MARSHAL_H__ */

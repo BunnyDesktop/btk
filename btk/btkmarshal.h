@@ -5,7 +5,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* BOOL:NONE (./btkmarshal.list:1) */
 extern
@@ -333,7 +333,7 @@ void btk_marshal_VOID__UINT_STRING (GClosure     *closure,
 #define btk_marshal_NONE__UINT_STRING	btk_marshal_VOID__UINT_STRING
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MARSHAL_MARSHAL_H__ */
 #endif /* BTK_DISABLE_DEPRECATED */

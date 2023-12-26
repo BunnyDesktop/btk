@@ -29,7 +29,7 @@
 
 #include <btk/btktextiter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #include <btk/btktextiter.h>
 #include <btk/btktextbtree.h>
@@ -47,7 +47,7 @@ gint                _btk_text_iter_get_segment_char           (const BtkTextIter
 /* debug */
 void _btk_text_iter_check (const BtkTextIter *iter);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

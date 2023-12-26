@@ -36,7 +36,7 @@
 #include <btk/btkmisc.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IMAGE                  (btk_image_get_type ())
 #define BTK_IMAGE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IMAGE, BtkImage))
@@ -187,7 +187,7 @@ struct _BtkImageClass
 #define btk_image_set_from_file btk_image_set_from_file_utf8
 #endif
 
-GType      btk_image_get_type (void) G_GNUC_CONST;
+GType      btk_image_get_type (void) B_GNUC_CONST;
 
 BtkWidget* btk_image_new                (void);
 BtkWidget* btk_image_new_from_pixmap    (BdkPixmap       *pixmap,
@@ -269,6 +269,6 @@ void       btk_image_get      (BtkImage   *image,
 			       BdkBitmap **mask);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IMAGE_H__ */

@@ -34,7 +34,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkdisplay.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayManager      BdkDisplayManager;
 typedef struct _BdkDisplayManagerClass BdkDisplayManagerClass;
@@ -54,7 +54,7 @@ struct _BdkDisplayManagerClass
 			  BdkDisplay *display);
 };
 
-GType bdk_display_manager_get_type (void) G_GNUC_CONST;
+GType bdk_display_manager_get_type (void) B_GNUC_CONST;
 
 BdkDisplayManager *bdk_display_manager_get                 (void);
 BdkDisplay *       bdk_display_manager_get_default_display (BdkDisplayManager *display_manager);
@@ -62,6 +62,6 @@ void               bdk_display_manager_set_default_display (BdkDisplayManager *d
 							    BdkDisplay        *display);
 GSList     *       bdk_display_manager_list_displays       (BdkDisplayManager *display_manager);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DISPLAY_MANAGER_H__ */

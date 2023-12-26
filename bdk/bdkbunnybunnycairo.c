@@ -253,7 +253,7 @@ bdk_bairo_set_source_pixbuf (bairo_t         *cr,
 	  guchar *end = p + 4 * width;
 	  guint t1,t2,t3;
 	    
-#define MULT(d,c,a,t) G_STMT_START { t = c * a + 0x80; d = ((t >> 8) + t) >> 8; } G_STMT_END
+#define MULT(d,c,a,t) B_STMT_START { t = c * a + 0x80; d = ((t >> 8) + t) >> 8; } B_STMT_END
 
 	  while (p < end)
 	    {

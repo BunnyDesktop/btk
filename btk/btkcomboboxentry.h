@@ -27,7 +27,7 @@
 #include <btk/btkcombobox.h>
 #include <btk/btktreemodel.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifndef BTK_DISABLE_DEPRECATED
 
@@ -62,7 +62,7 @@ struct _BtkComboBoxEntryClass
 };
 
 
-GType       btk_combo_box_entry_get_type        (void) G_GNUC_CONST;
+GType       btk_combo_box_entry_get_type        (void) B_GNUC_CONST;
 BtkWidget  *btk_combo_box_entry_new             (void);
 BtkWidget  *btk_combo_box_entry_new_with_model  (BtkTreeModel     *model,
                                                  gint              text_column);
@@ -76,6 +76,6 @@ BtkWidget  *btk_combo_box_entry_new_text        (void);
 
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_COMBO_BOX_ENTRY_H__ */

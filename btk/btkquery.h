@@ -25,7 +25,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_QUERY		(_btk_query_get_type ())
 #define BTK_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_QUERY, BtkQuery))
@@ -69,6 +69,6 @@ void      _btk_query_set_mime_types (BtkQuery    *query,
 void      _btk_query_add_mime_type  (BtkQuery    *query, 
 				     const gchar *mime_type);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_QUERY_H__ */

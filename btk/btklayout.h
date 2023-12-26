@@ -40,7 +40,7 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LAYOUT            (btk_layout_get_type ())
 #define BTK_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LAYOUT, BtkLayout))
@@ -91,7 +91,7 @@ struct _BtkLayoutClass
   void (*_btk_reserved4) (void);
 };
 
-GType          btk_layout_get_type        (void) G_GNUC_CONST;
+GType          btk_layout_get_type        (void) B_GNUC_CONST;
 BtkWidget*     btk_layout_new             (BtkAdjustment *hadjustment,
 				           BtkAdjustment *vadjustment);
 BdkWindow*     btk_layout_get_bin_window  (BtkLayout     *layout);
@@ -133,6 +133,6 @@ void           btk_layout_freeze          (BtkLayout     *layout);
 void           btk_layout_thaw            (BtkLayout     *layout);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LAYOUT_H__ */

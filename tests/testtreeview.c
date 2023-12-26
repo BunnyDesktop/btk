@@ -125,7 +125,7 @@ struct _BtkTreeModelTypesClass
 				    BtkTreePath  *path);
 };
 
-GType              btk_tree_model_types_get_type      (void) G_GNUC_CONST;
+GType              btk_tree_model_types_get_type      (void) B_GNUC_CONST;
 BtkTreeModelTypes *btk_tree_model_types_new           (void);
 
 typedef enum
@@ -220,7 +220,7 @@ toggled_callback (BtkCellRendererToggle *celltoggle,
   if (!btk_tree_model_get_iter (model,
                                 &iter, path))
     {
-      g_warning ("%s: bad path?", G_STRLOC);
+      g_warning ("%s: bad path?", B_STRLOC);
       return;
     }
   btk_tree_path_free (path);
@@ -293,7 +293,7 @@ edited_callback (BtkCellRendererText *renderer,
   if (!btk_tree_model_get_iter (model,
                                 &iter, path))
     {
-      g_warning ("%s: bad path?", G_STRLOC);
+      g_warning ("%s: bad path?", B_STRLOC);
       return;
     }
   btk_tree_path_free (path);
@@ -627,7 +627,7 @@ create_tree_model (void)
   BtkTreeStore *store;
   gint i;
   GType *t;
-  volatile GType dummy; /* G_GNUC_CONST makes the optimizer remove
+  volatile GType dummy; /* B_GNUC_CONST makes the optimizer remove
                          * get_type calls if you don't do something
                          * like this
                          */

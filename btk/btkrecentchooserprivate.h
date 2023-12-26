@@ -27,7 +27,7 @@
 #include "btkrecentchooser.h"
 #include "btkactivatable.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BtkRecentManager *_btk_recent_chooser_get_recent_manager     (BtkRecentChooser  *chooser);
 GList *           _btk_recent_chooser_get_items              (BtkRecentChooser  *chooser,
@@ -50,6 +50,6 @@ void              _btk_recent_chooser_set_use_action_appearance (BtkRecentChoose
 								 gboolean           use_appearance);
 gboolean          _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser  *recent_chooser);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ! __BTK_RECENT_CHOOSER_PRIVATE_H__ */

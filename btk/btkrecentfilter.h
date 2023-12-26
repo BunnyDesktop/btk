@@ -27,7 +27,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_FILTER		(btk_recent_filter_get_type ())
 #define BTK_RECENT_FILTER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
@@ -61,7 +61,7 @@ struct _BtkRecentFilterInfo
   gint age;
 };
 
-GType                 btk_recent_filter_get_type (void) G_GNUC_CONST;
+GType                 btk_recent_filter_get_type (void) B_GNUC_CONST;
 
 BtkRecentFilter *     btk_recent_filter_new      (void);
 void                  btk_recent_filter_set_name (BtkRecentFilter *filter,
@@ -89,6 +89,6 @@ BtkRecentFilterFlags btk_recent_filter_get_needed (BtkRecentFilter           *fi
 gboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
 						   const BtkRecentFilterInfo *filter_info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ! __BTK_RECENT_FILTER_H__ */

@@ -60,7 +60,7 @@
 
 #undef __BDK_H_INSIDE__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* Initialization, exit and events
@@ -131,11 +131,11 @@ void          bdk_pointer_ungrab     (guint32       time_);
 void          bdk_keyboard_ungrab    (guint32       time_);
 gboolean      bdk_pointer_is_grabbed (void);
 
-gint bdk_screen_width  (void) G_GNUC_CONST;
-gint bdk_screen_height (void) G_GNUC_CONST;
+gint bdk_screen_width  (void) B_GNUC_CONST;
+gint bdk_screen_height (void) B_GNUC_CONST;
 
-gint bdk_screen_width_mm  (void) G_GNUC_CONST;
-gint bdk_screen_height_mm (void) G_GNUC_CONST;
+gint bdk_screen_width_mm  (void) B_GNUC_CONST;
+gint bdk_screen_height_mm (void) B_GNUC_CONST;
 
 void bdk_beep (void);
 #endif /* BDK_MULTIHEAD_SAFE */
@@ -155,7 +155,7 @@ void     bdk_rectangle_union     (const BdkRectangle *src1,
 				  const BdkRectangle *src2,
 				  BdkRectangle       *dest);
 
-GType bdk_rectangle_get_type (void) G_GNUC_CONST;
+GType bdk_rectangle_get_type (void) B_GNUC_CONST;
 
 #define BDK_TYPE_RECTANGLE (bdk_rectangle_get_type ())
 
@@ -222,20 +222,20 @@ guint    bdk_threads_add_timeout_seconds      (guint          interval,
                                                gpointer       data);
 
 #ifdef	G_THREADS_ENABLED
-#  define BDK_THREADS_ENTER()	G_STMT_START {	\
+#  define BDK_THREADS_ENTER()	B_STMT_START {	\
       if (bdk_threads_lock)                 	\
         (*bdk_threads_lock) ();			\
-   } G_STMT_END
-#  define BDK_THREADS_LEAVE()	G_STMT_START { 	\
+   } B_STMT_END
+#  define BDK_THREADS_LEAVE()	B_STMT_START { 	\
       if (bdk_threads_unlock)                 	\
         (*bdk_threads_unlock) ();		\
-   } G_STMT_END
+   } B_STMT_END
 #else	/* !G_THREADS_ENABLED */
 #  define BDK_THREADS_ENTER()
 #  define BDK_THREADS_LEAVE()
 #endif	/* !G_THREADS_ENABLED */
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BDK_H__ */

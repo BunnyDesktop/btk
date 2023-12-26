@@ -11118,11 +11118,11 @@ definitions, we wrap the entire header file in:</para>
 <programlisting role="C">
 #include &lt;bunnylib.h&gt;
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 .
 .
 .
-G_END_DECLS
+B_END_DECLS
 </programlisting>
 
 <para>Along with the functions and structures, we declare five standard
@@ -14521,7 +14521,7 @@ which are not included in complete form elsewhere.</para>
 #include &lt;btk/btktable.h&gt;
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define TICTACTOE_TYPE            (tictactoe_get_type ())
 #define TICTACTOE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
@@ -14551,7 +14551,7 @@ GType          tictactoe_get_type        (void);
 BtkWidget*     tictactoe_new             (void);
 void	       tictactoe_clear           (Tictactoe *ttt);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __TICTACTOE_H__ */
 

@@ -35,7 +35,7 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_BOX            (btk_box_get_type ())
@@ -101,7 +101,7 @@ struct _BtkBoxChild
 };
 #endif
 
-GType       btk_box_get_type            (void) G_GNUC_CONST;
+GType       btk_box_get_type            (void) B_GNUC_CONST;
 BtkWidget* _btk_box_new                 (BtkOrientation  orientation,
                                          gboolean        homogeneous,
                                          gint            spacing);
@@ -154,6 +154,6 @@ gboolean    _btk_box_get_spacing_set    (BtkBox         *box);
 void        _btk_box_set_spacing_set    (BtkBox         *box,
                                          gboolean        spacing_set);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BOX_H__ */

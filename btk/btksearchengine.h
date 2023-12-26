@@ -25,7 +25,7 @@
 
 #include "btkquery.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEARCH_ENGINE		(_btk_search_engine_get_type ())
 #define BTK_SEARCH_ENGINE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngine))
@@ -85,6 +85,6 @@ void	         _btk_search_engine_finished        (BtkSearchEngine *engine);
 void	         _btk_search_engine_error           (BtkSearchEngine *engine, 
 						     const gchar     *error_message);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEARCH_ENGINE_H__ */

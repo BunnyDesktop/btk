@@ -4769,7 +4769,7 @@ btk_window_realize (BtkWidget *widget)
       attributes.window_type = BDK_WINDOW_TEMP;
       break;
     default:
-      g_warning (G_STRLOC": Unknown window type %d!", window->type);
+      g_warning (B_STRLOC": Unknown window type %d!", window->type);
       break;
     }
    
@@ -5804,7 +5804,7 @@ clamp_window_to_rectangle (gint               *x,
                            const BdkRectangle *rect)
 {
 #ifdef DEBUGGING_OUTPUT
-  g_print ("%s: %+d%+d %dx%d: %+d%+d: %dx%d", G_STRFUNC, rect->x, rect->y, rect->width, rect->height, *x, *y, w, h);
+  g_print ("%s: %+d%+d %dx%d: %+d%+d: %dx%d", B_STRFUNC, rect->x, rect->y, rect->width, rect->height, *x, *y, w, h);
 #endif
 
   /* If it is too large, center it. If it fits on the monitor but is

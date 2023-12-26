@@ -29,7 +29,7 @@
 #include <btk/btktreesortable.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_LIST_STORE	       (btk_list_store_get_type ())
@@ -74,7 +74,7 @@ struct _BtkListStoreClass
 };
 
 
-GType         btk_list_store_get_type         (void) G_GNUC_CONST;
+GType         btk_list_store_get_type         (void) B_GNUC_CONST;
 BtkListStore *btk_list_store_new              (gint          n_columns,
 					       ...);
 BtkListStore *btk_list_store_newv             (gint          n_columns,
@@ -141,7 +141,7 @@ void          btk_list_store_move_before      (BtkListStore *store,
                                                BtkTreeIter  *position);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_LIST_STORE_H__ */

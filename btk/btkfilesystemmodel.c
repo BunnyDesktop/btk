@@ -228,11 +228,11 @@ static void remove_file (BtkFileSystemModel *model,
  */
 #define ITER_INDEX(iter) GPOINTER_TO_UINT((iter)->user_data2)
 #define ITER_IS_VALID(model, iter) ((model) == (iter)->user_data)
-#define ITER_INIT_FROM_INDEX(model, _iter, _index) G_STMT_START {\
+#define ITER_INIT_FROM_INDEX(model, _iter, _index) B_STMT_START {\
   g_assert (_index < (model)->files->len); \
   (_iter)->user_data = (model); \
   (_iter)->user_data2 = GUINT_TO_POINTER (_index); \
-}G_STMT_END
+}B_STMT_END
 
 /*** FileModelNode ***/
 
@@ -1333,7 +1333,7 @@ btk_file_system_model_set_n_columns (BtkFileSystemModel *model,
       GType type = va_arg (args, GType);
       if (! _btk_tree_data_list_check_type (type))
 	{
-	  g_error ("%s: type %s cannot be a column type for BtkFileSystemModel\n", G_STRLOC, g_type_name (type));
+	  g_error ("%s: type %s cannot be a column type for BtkFileSystemModel\n", B_STRLOC, g_type_name (type));
           return; /* not reached */
 	}
 

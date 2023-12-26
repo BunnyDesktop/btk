@@ -27,7 +27,7 @@
 #include <btk/btkaction.h>
 #include <btk/btktypeutils.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTIVATABLE            (btk_activatable_get_type ())
 #define BTK_ACTIVATABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
@@ -66,7 +66,7 @@ struct _BtkActivatableIface
 };
 
 
-GType      btk_activatable_get_type                   (void) G_GNUC_CONST;
+GType      btk_activatable_get_type                   (void) B_GNUC_CONST;
 
 void       btk_activatable_sync_action_properties     (BtkActivatable *activatable,
 						       BtkAction      *action);
@@ -83,6 +83,6 @@ gboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatab
 void       btk_activatable_do_set_related_action      (BtkActivatable *activatable,
 						       BtkAction      *action);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ACTIVATABLE_H__ */

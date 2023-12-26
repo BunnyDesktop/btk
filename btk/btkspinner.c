@@ -501,7 +501,7 @@ btk_spinner_accessible_get_type (void)
 
   /* Action interface
      Name etc. ... */
-  if (G_UNLIKELY (type == 0))
+  if (B_UNLIKELY (type == 0))
     {
       const GInterfaceInfo batk_image_info = {
               (GInterfaceInitFunc) btk_spinner_accessible_image_interface_init,

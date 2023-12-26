@@ -7,7 +7,7 @@ GType
 btk_widget_profiler_report_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_WIDGET_PROFILER_REPORT_CREATE, "BTK_WIDGET_PROFILER_REPORT_CREATE", "create" },
             { BTK_WIDGET_PROFILER_REPORT_MAP, "BTK_WIDGET_PROFILER_REPORT_MAP", "map" },

@@ -35,7 +35,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkevents.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkGeometry          BdkGeometry;
 typedef struct _BdkWindowAttr        BdkWindowAttr;
@@ -328,7 +328,7 @@ struct _BdkWindowObjectClass
 
 /* Windows
  */
-GType         bdk_window_object_get_type       (void) G_GNUC_CONST;
+GType         bdk_window_object_get_type       (void) B_GNUC_CONST;
 BdkWindow*    bdk_window_new                   (BdkWindow     *parent,
                                                 BdkWindowAttr *attributes,
                                                 gint           attributes_mask);
@@ -738,6 +738,6 @@ BdkPointerHooks *bdk_set_pointer_hooks (const BdkPointerHooks *new_hooks);
    bdk_draw_pixmap(drawable,gc,source_drawable,source_x,source_y,x,y,width,height)
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_H__ */

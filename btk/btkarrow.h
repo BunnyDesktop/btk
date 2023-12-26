@@ -35,7 +35,7 @@
 #include <btk/btkmisc.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_ARROW                  (btk_arrow_get_type ())
@@ -63,7 +63,7 @@ struct _BtkArrowClass
 };
 
 
-GType      btk_arrow_get_type   (void) G_GNUC_CONST;
+GType      btk_arrow_get_type   (void) B_GNUC_CONST;
 BtkWidget* btk_arrow_new        (BtkArrowType   arrow_type,
 				 BtkShadowType  shadow_type);
 void       btk_arrow_set        (BtkArrow      *arrow,
@@ -71,7 +71,7 @@ void       btk_arrow_set        (BtkArrow      *arrow,
 				 BtkShadowType  shadow_type);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_ARROW_H__ */

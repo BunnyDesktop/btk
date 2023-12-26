@@ -28,7 +28,7 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOLTIP                 (btk_tooltip_get_type ())
 #define BTK_TOOLTIP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIP, BtkTooltip))
@@ -72,6 +72,6 @@ BtkWidget * _btk_widget_find_at_coords   (BdkWindow          *window,
                                           gint               *widget_x,
                                           gint               *widget_y);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOLTIP_H__ */

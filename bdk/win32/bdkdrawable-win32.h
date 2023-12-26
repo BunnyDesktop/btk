@@ -30,7 +30,7 @@
 #include <bdk/bdkdrawable.h>
 #include <bdk/win32/bdkwin32.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Drawable implementation for Win32
  */
@@ -69,6 +69,6 @@ HDC  _bdk_win32_drawable_acquire_dc (BdkDrawable *drawable);
 void _bdk_win32_drawable_release_dc (BdkDrawable *drawable);
 void _bdk_win32_drawable_finish     (BdkDrawable *drawable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_WIN32_H__ */

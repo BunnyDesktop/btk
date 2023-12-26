@@ -31,7 +31,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LIST                  (btk_list_get_type ())
 #define BTK_LIST(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST, BtkList))
@@ -81,7 +81,7 @@ struct _BtkListClass
 };
 
 
-GType      btk_list_get_type		  (void) G_GNUC_CONST;
+GType      btk_list_get_type		  (void) B_GNUC_CONST;
 BtkWidget* btk_list_new			  (void);
 void	   btk_list_insert_items	  (BtkList	    *list,
 					   GList	    *items,
@@ -131,7 +131,7 @@ void       btk_list_toggle_row            (BtkList          *list,
 void       btk_list_undo_selection        (BtkList          *list);
 void       btk_list_end_drag_selection    (BtkList          *list);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LIST_H__ */
 

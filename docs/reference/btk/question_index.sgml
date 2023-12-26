@@ -527,7 +527,7 @@ macro ?
 <para>
 The <literal>BTK_TYPE_BLAH</literal> macros are defined as calls to 
 <literal>btk_blah_get_type()</literal>, and the <literal>_get_type()</literal> i
-functions are declared as %G_GNUC_CONST which allows the compiler to optimize
+functions are declared as %B_GNUC_CONST which allows the compiler to optimize
 the call away if it appears that the value is not being used.
 </para>
 

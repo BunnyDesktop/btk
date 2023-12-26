@@ -796,7 +796,7 @@ btk_recent_manager_new (void)
 BtkRecentManager *
 btk_recent_manager_get_default (void)
 {
-  if (G_UNLIKELY (!recent_manager_singleton))
+  if (B_UNLIKELY (!recent_manager_singleton))
     recent_manager_singleton = btk_recent_manager_new ();
 
   return recent_manager_singleton;
@@ -931,7 +931,7 @@ btk_recent_manager_add_item_query_info (GObject      *source_object,
 
       content_type = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
 
-      if (G_LIKELY (content_type))
+      if (B_LIKELY (content_type))
         recent_data.mime_type = g_content_type_get_mime_type (content_type);
       else
         recent_data.mime_type = g_strdup (BTK_RECENT_DEFAULT_MIME);
@@ -1572,7 +1572,7 @@ btk_recent_manager_clamp_to_age (BtkRecentManager *manager,
   gsize n_uris, i;
   time_t now;
 
-  if (G_UNLIKELY (!priv->recent_items))
+  if (B_UNLIKELY (!priv->recent_items))
     return;
 
   now = time (NULL);
@@ -1602,7 +1602,7 @@ btk_recent_manager_clamp_to_size (BtkRecentManager *manager,
   gchar **uris;
   gsize n_uris, i;
 
-  if (G_UNLIKELY (!priv->recent_items) || G_UNLIKELY (size < 0))
+  if (B_UNLIKELY (!priv->recent_items) || B_UNLIKELY (size < 0))
     return;
 
   uris = g_bookmark_file_get_uris (priv->recent_items, &n_uris);

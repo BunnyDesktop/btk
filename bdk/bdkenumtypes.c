@@ -9,7 +9,7 @@ GType
 bdk_cursor_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_X_CURSOR, "BDK_X_CURSOR", "x-cursor" },
             { BDK_ARROW, "BDK_ARROW", "arrow" },
@@ -102,7 +102,7 @@ GType
 bdk_drag_action_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_ACTION_DEFAULT, "BDK_ACTION_DEFAULT", "default" },
             { BDK_ACTION_COPY, "BDK_ACTION_COPY", "copy" },
@@ -120,7 +120,7 @@ GType
 bdk_drag_protocol_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_DRAG_PROTO_MOTIF, "BDK_DRAG_PROTO_MOTIF", "motif" },
             { BDK_DRAG_PROTO_XDND, "BDK_DRAG_PROTO_XDND", "xdnd" },
@@ -140,7 +140,7 @@ GType
 bdk_filter_return_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_FILTER_CONTINUE, "BDK_FILTER_CONTINUE", "continue" },
             { BDK_FILTER_TRANSLATE, "BDK_FILTER_TRANSLATE", "translate" },
@@ -155,7 +155,7 @@ GType
 bdk_event_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_NOTHING, "BDK_NOTHING", "nothing" },
             { BDK_DELETE, "BDK_DELETE", "delete" },
@@ -206,7 +206,7 @@ GType
 bdk_event_mask_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_EXPOSURE_MASK, "BDK_EXPOSURE_MASK", "exposure-mask" },
             { BDK_POINTER_MOTION_MASK, "BDK_POINTER_MOTION_MASK", "pointer-motion-mask" },
@@ -240,7 +240,7 @@ GType
 bdk_visibility_state_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_VISIBILITY_UNOBSCURED, "BDK_VISIBILITY_UNOBSCURED", "unobscured" },
             { BDK_VISIBILITY_PARTIAL, "BDK_VISIBILITY_PARTIAL", "partial" },
@@ -255,7 +255,7 @@ GType
 bdk_scroll_direction_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_SCROLL_UP, "BDK_SCROLL_UP", "up" },
             { BDK_SCROLL_DOWN, "BDK_SCROLL_DOWN", "down" },
@@ -271,7 +271,7 @@ GType
 bdk_notify_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_NOTIFY_ANCESTOR, "BDK_NOTIFY_ANCESTOR", "ancestor" },
             { BDK_NOTIFY_VIRTUAL, "BDK_NOTIFY_VIRTUAL", "virtual" },
@@ -289,7 +289,7 @@ GType
 bdk_crossing_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_CROSSING_NORMAL, "BDK_CROSSING_NORMAL", "normal" },
             { BDK_CROSSING_GRAB, "BDK_CROSSING_GRAB", "grab" },
@@ -307,7 +307,7 @@ GType
 bdk_property_state_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_PROPERTY_NEW_VALUE, "BDK_PROPERTY_NEW_VALUE", "new-value" },
             { BDK_PROPERTY_DELETE, "BDK_PROPERTY_DELETE", "delete" },
@@ -321,7 +321,7 @@ GType
 bdk_window_state_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_WINDOW_STATE_WITHDRAWN, "BDK_WINDOW_STATE_WITHDRAWN", "withdrawn" },
             { BDK_WINDOW_STATE_ICONIFIED, "BDK_WINDOW_STATE_ICONIFIED", "iconified" },
@@ -340,7 +340,7 @@ GType
 bdk_setting_action_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_SETTING_ACTION_NEW, "BDK_SETTING_ACTION_NEW", "new" },
             { BDK_SETTING_ACTION_CHANGED, "BDK_SETTING_ACTION_CHANGED", "changed" },
@@ -355,7 +355,7 @@ GType
 bdk_owner_change_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_OWNER_CHANGE_NEW_OWNER, "BDK_OWNER_CHANGE_NEW_OWNER", "new-owner" },
             { BDK_OWNER_CHANGE_DESTROY, "BDK_OWNER_CHANGE_DESTROY", "destroy" },
@@ -371,7 +371,7 @@ GType
 bdk_font_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_FONT_FONT, "BDK_FONT_FONT", "font" },
             { BDK_FONT_FONTSET, "BDK_FONT_FONTSET", "fontset" },
@@ -386,7 +386,7 @@ GType
 bdk_cap_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_CAP_NOT_LAST, "BDK_CAP_NOT_LAST", "not-last" },
             { BDK_CAP_BUTT, "BDK_CAP_BUTT", "butt" },
@@ -402,7 +402,7 @@ GType
 bdk_fill_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_SOLID, "BDK_SOLID", "solid" },
             { BDK_TILED, "BDK_TILED", "tiled" },
@@ -418,7 +418,7 @@ GType
 bdk_function_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_COPY, "BDK_COPY", "copy" },
             { BDK_INVERT, "BDK_INVERT", "invert" },
@@ -446,7 +446,7 @@ GType
 bdk_join_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_JOIN_MITER, "BDK_JOIN_MITER", "miter" },
             { BDK_JOIN_ROUND, "BDK_JOIN_ROUND", "round" },
@@ -461,7 +461,7 @@ GType
 bdk_line_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_LINE_SOLID, "BDK_LINE_SOLID", "solid" },
             { BDK_LINE_ON_OFF_DASH, "BDK_LINE_ON_OFF_DASH", "on-off-dash" },
@@ -476,7 +476,7 @@ GType
 bdk_subwindow_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_CLIP_BY_CHILDREN, "BDK_CLIP_BY_CHILDREN", "clip-by-children" },
             { BDK_INCLUDE_INFERIORS, "BDK_INCLUDE_INFERIORS", "include-inferiors" },
@@ -490,7 +490,7 @@ GType
 bdk_gc_values_mask_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_GC_FOREGROUND, "BDK_GC_FOREGROUND", "foreground" },
             { BDK_GC_BACKGROUND, "BDK_GC_BACKGROUND", "background" },
@@ -521,7 +521,7 @@ GType
 bdk_image_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_IMAGE_NORMAL, "BDK_IMAGE_NORMAL", "normal" },
             { BDK_IMAGE_SHARED, "BDK_IMAGE_SHARED", "shared" },
@@ -537,7 +537,7 @@ GType
 bdk_extension_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_EXTENSION_EVENTS_NONE, "BDK_EXTENSION_EVENTS_NONE", "none" },
             { BDK_EXTENSION_EVENTS_ALL, "BDK_EXTENSION_EVENTS_ALL", "all" },
@@ -552,7 +552,7 @@ GType
 bdk_input_source_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_SOURCE_MOUSE, "BDK_SOURCE_MOUSE", "mouse" },
             { BDK_SOURCE_PEN, "BDK_SOURCE_PEN", "pen" },
@@ -568,7 +568,7 @@ GType
 bdk_input_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_MODE_DISABLED, "BDK_MODE_DISABLED", "disabled" },
             { BDK_MODE_SCREEN, "BDK_MODE_SCREEN", "screen" },
@@ -583,7 +583,7 @@ GType
 bdk_axis_use_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_AXIS_IGNORE, "BDK_AXIS_IGNORE", "ignore" },
             { BDK_AXIS_X, "BDK_AXIS_X", "x" },
@@ -604,7 +604,7 @@ GType
 bdk_prop_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_PROP_MODE_REPLACE, "BDK_PROP_MODE_REPLACE", "replace" },
             { BDK_PROP_MODE_PREPEND, "BDK_PROP_MODE_PREPEND", "prepend" },
@@ -620,7 +620,7 @@ GType
 bdk_fill_rule_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_EVEN_ODD_RULE, "BDK_EVEN_ODD_RULE", "even-odd-rule" },
             { BDK_WINDING_RULE, "BDK_WINDING_RULE", "winding-rule" },
@@ -634,7 +634,7 @@ GType
 bdk_overlap_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_OVERLAP_RECTANGLE_IN, "BDK_OVERLAP_RECTANGLE_IN", "in" },
             { BDK_OVERLAP_RECTANGLE_OUT, "BDK_OVERLAP_RECTANGLE_OUT", "out" },
@@ -650,7 +650,7 @@ GType
 bdk_rgb_dither_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_RGB_DITHER_NONE, "BDK_RGB_DITHER_NONE", "none" },
             { BDK_RGB_DITHER_NORMAL, "BDK_RGB_DITHER_NORMAL", "normal" },
@@ -666,7 +666,7 @@ GType
 bdk_byte_order_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_LSB_FIRST, "BDK_LSB_FIRST", "lsb-first" },
             { BDK_MSB_FIRST, "BDK_MSB_FIRST", "msb-first" },
@@ -680,7 +680,7 @@ GType
 bdk_modifier_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_SHIFT_MASK, "BDK_SHIFT_MASK", "shift-mask" },
             { BDK_LOCK_MASK, "BDK_LOCK_MASK", "lock-mask" },
@@ -710,7 +710,7 @@ GType
 bdk_input_condition_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_INPUT_READ, "BDK_INPUT_READ", "read" },
             { BDK_INPUT_WRITE, "BDK_INPUT_WRITE", "write" },
@@ -725,7 +725,7 @@ GType
 bdk_status_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_OK, "BDK_OK", "ok" },
             { BDK_ERROR, "BDK_ERROR", "error" },
@@ -742,7 +742,7 @@ GType
 bdk_grab_status_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_GRAB_SUCCESS, "BDK_GRAB_SUCCESS", "success" },
             { BDK_GRAB_ALREADY_GRABBED, "BDK_GRAB_ALREADY_GRABBED", "already-grabbed" },
@@ -760,7 +760,7 @@ GType
 bdk_visual_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_VISUAL_STATIC_GRAY, "BDK_VISUAL_STATIC_GRAY", "static-gray" },
             { BDK_VISUAL_GRAYSCALE, "BDK_VISUAL_GRAYSCALE", "grayscale" },
@@ -779,7 +779,7 @@ GType
 bdk_window_class_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_INPUT_OUTPUT, "BDK_INPUT_OUTPUT", "output" },
             { BDK_INPUT_ONLY, "BDK_INPUT_ONLY", "only" },
@@ -793,7 +793,7 @@ GType
 bdk_window_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_WINDOW_ROOT, "BDK_WINDOW_ROOT", "root" },
             { BDK_WINDOW_TOPLEVEL, "BDK_WINDOW_TOPLEVEL", "toplevel" },
@@ -812,7 +812,7 @@ GType
 bdk_window_attributes_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_WA_TITLE, "BDK_WA_TITLE", "title" },
             { BDK_WA_X, "BDK_WA_X", "x" },
@@ -833,7 +833,7 @@ GType
 bdk_window_hints_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_HINT_POS, "BDK_HINT_POS", "pos" },
             { BDK_HINT_MIN_SIZE, "BDK_HINT_MIN_SIZE", "min-size" },
@@ -854,7 +854,7 @@ GType
 bdk_window_type_hint_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_WINDOW_TYPE_HINT_NORMAL, "BDK_WINDOW_TYPE_HINT_NORMAL", "normal" },
             { BDK_WINDOW_TYPE_HINT_DIALOG, "BDK_WINDOW_TYPE_HINT_DIALOG", "dialog" },
@@ -880,7 +880,7 @@ GType
 bdk_wm_decoration_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_DECOR_ALL, "BDK_DECOR_ALL", "all" },
             { BDK_DECOR_BORDER, "BDK_DECOR_BORDER", "border" },
@@ -899,7 +899,7 @@ GType
 bdk_wm_function_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BDK_FUNC_ALL, "BDK_FUNC_ALL", "all" },
             { BDK_FUNC_RESIZE, "BDK_FUNC_RESIZE", "resize" },
@@ -917,7 +917,7 @@ GType
 bdk_gravity_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_GRAVITY_NORTH_WEST, "BDK_GRAVITY_NORTH_WEST", "north-west" },
             { BDK_GRAVITY_NORTH, "BDK_GRAVITY_NORTH", "north" },
@@ -939,7 +939,7 @@ GType
 bdk_window_edge_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BDK_WINDOW_EDGE_NORTH_WEST, "BDK_WINDOW_EDGE_NORTH_WEST", "north-west" },
             { BDK_WINDOW_EDGE_NORTH, "BDK_WINDOW_EDGE_NORTH", "north" },

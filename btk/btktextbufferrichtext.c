@@ -352,7 +352,7 @@ btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer *buffer,
   format_name = bdk_atom_name (format);
   g_warning ("%s: \"%s\" is not registered as deserializable format "
              "with text buffer %p",
-             G_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
+             B_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
   g_free (format_name);
 }
 
@@ -394,7 +394,7 @@ btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer *buffer,
   format_name = bdk_atom_name (format);
   g_warning ("%s: \"%s\" is not registered as deserializable format "
              "with text buffer %p",
-             G_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
+             B_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
   g_free (format_name);
 
   return FALSE;

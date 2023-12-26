@@ -36,7 +36,7 @@
 #include <btk/btkenums.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_STYLE              (btk_style_get_type ())
 #define BTK_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_STYLE, BtkStyle))
@@ -437,11 +437,11 @@ struct _BtkBorder
   gint bottom;
 };
 
-GType     btk_style_get_type                 (void) G_GNUC_CONST;
+GType     btk_style_get_type                 (void) B_GNUC_CONST;
 BtkStyle* btk_style_new			     (void);
 BtkStyle* btk_style_copy		     (BtkStyle	   *style);
 BtkStyle* btk_style_attach		     (BtkStyle	   *style,
-					      BdkWindow	   *window) G_GNUC_WARN_UNUSED_RESULT;
+					      BdkWindow	   *window) B_GNUC_WARN_UNUSED_RESULT;
 void	  btk_style_detach		     (BtkStyle	   *style);
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -878,8 +878,8 @@ void btk_paint_spinner     (BtkStyle           *style,
 			    gint                width,
 			    gint                height);
 
-GType      btk_border_get_type (void) G_GNUC_CONST;
-BtkBorder *btk_border_new      (void) G_GNUC_MALLOC;
+GType      btk_border_get_type (void) B_GNUC_CONST;
+BtkBorder *btk_border_new      (void) B_GNUC_MALLOC;
 BtkBorder *btk_border_copy     (const BtkBorder *border_);
 void       btk_border_free     (BtkBorder       *border_);
 
@@ -894,7 +894,7 @@ void btk_style_get_valist         (BtkStyle    *style,
 void btk_style_get                (BtkStyle    *style,
                                    GType        widget_type,
                                    const gchar *first_property_name,
-                                   ...) G_GNUC_NULL_TERMINATED;
+                                   ...) B_GNUC_NULL_TERMINATED;
 
 /* --- private API --- */
 const GValue* _btk_style_peek_property_value (BtkStyle           *style,
@@ -940,6 +940,6 @@ BdkGC *_btk_widget_get_cursor_gc    (BtkWidget          *widget);
 void   _btk_widget_get_cursor_color (BtkWidget          *widget,
 				     BdkColor           *color);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_STYLE_H__ */

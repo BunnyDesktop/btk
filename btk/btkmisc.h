@@ -35,7 +35,7 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MISC		       (btk_misc_get_type ())
 #define BTK_MISC(obj)		       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MISC, BtkMisc))
@@ -65,7 +65,7 @@ struct _BtkMiscClass
 };
 
 
-GType   btk_misc_get_type      (void) G_GNUC_CONST;
+GType   btk_misc_get_type      (void) B_GNUC_CONST;
 void	btk_misc_set_alignment (BtkMisc *misc,
 				gfloat	 xalign,
 				gfloat	 yalign);
@@ -80,6 +80,6 @@ void    btk_misc_get_padding   (BtkMisc *misc,
 				gint    *ypad);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MISC_H__ */

@@ -40,7 +40,7 @@
 #include <btk/btkvbox.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FONT_SELECTION              (btk_font_selection_get_type ())
 #define BTK_FONT_SELECTION(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_SELECTION, BtkFontSelection))
@@ -142,7 +142,7 @@ struct _BtkFontSelectionDialogClass
  *   see the comments in the BtkFontSelectionDialog functions.
  *****************************************************************************/
 
-GType	     btk_font_selection_get_type	  (void) G_GNUC_CONST;
+GType	     btk_font_selection_get_type	  (void) B_GNUC_CONST;
 BtkWidget *  btk_font_selection_new               (void);
 BtkWidget *  btk_font_selection_get_family_list   (BtkFontSelection *fontsel);
 BtkWidget *  btk_font_selection_get_face_list     (BtkFontSelection *fontsel);
@@ -172,7 +172,7 @@ void         btk_font_selection_set_preview_text  (BtkFontSelection *fontsel,
  *   BtkFontSelection.
  *****************************************************************************/
 
-GType	   btk_font_selection_dialog_get_type	       (void) G_GNUC_CONST;
+GType	   btk_font_selection_dialog_get_type	       (void) B_GNUC_CONST;
 BtkWidget *btk_font_selection_dialog_new	       (const gchar            *title);
 
 BtkWidget *btk_font_selection_dialog_get_ok_button     (BtkFontSelectionDialog *fsd);
@@ -214,7 +214,7 @@ void	  btk_font_selection_dialog_set_preview_text   (BtkFontSelectionDialog *fsd
                                                         const gchar	       *text);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FONTSEL_H__ */

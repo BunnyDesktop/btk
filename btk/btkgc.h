@@ -35,7 +35,7 @@
 #include <bdk/bdk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BdkGC* btk_gc_get     (gint             depth,
 		       BdkColormap     *colormap,
@@ -44,6 +44,6 @@ BdkGC* btk_gc_get     (gint             depth,
 void   btk_gc_release (BdkGC           *gc);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_GC_H__ */

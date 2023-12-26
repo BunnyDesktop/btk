@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkRgbCmap BdkRgbCmap;
 
@@ -56,7 +56,7 @@ struct _BdkRgbCmap {
 
 void bdk_rgb_init (void);
 
-gulong bdk_rgb_xpixel_from_rgb   (guint32      rgb) G_GNUC_CONST;
+gulong bdk_rgb_xpixel_from_rgb   (guint32      rgb) B_GNUC_CONST;
 void   bdk_rgb_gc_set_foreground (BdkGC       *gc,
 				  guint32      rgb);
 void   bdk_rgb_gc_set_background (BdkGC       *gc,
@@ -143,7 +143,7 @@ gboolean     bdk_rgb_colormap_ditherable (BdkColormap *cmap);
 #endif
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BDK_RGB_H__ */

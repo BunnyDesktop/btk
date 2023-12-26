@@ -29,7 +29,7 @@
 
 #include <bdk/bdkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_WINDOW_IMPL           (bdk_window_impl_get_type ())
 #define BDK_WINDOW_IMPL(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
@@ -150,7 +150,7 @@ struct _BdkWindowImplIface
 };
 
 /* Interface Functions */
-GType bdk_window_impl_get_type (void) G_GNUC_CONST;
+GType bdk_window_impl_get_type (void) B_GNUC_CONST;
 
 /* private definitions from bdkwindow.h */
 
@@ -170,6 +170,6 @@ struct _BdkWindowRedirect
   guint damage_idle;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_IMPL_H__ */

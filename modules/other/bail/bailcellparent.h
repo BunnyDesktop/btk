@@ -24,7 +24,7 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * The BailCellParent interface should be supported by any object which
@@ -79,6 +79,6 @@ void  bail_cell_parent_get_cell_area           (BailCellParent        *parent,
 gboolean bail_cell_parent_grab_focus           (BailCellParent        *parent,
                                                 BailCell              *cell);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CELL_PARENT_H__ */

@@ -29,7 +29,7 @@
 #include <btk/btkenums.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPaperSize BtkPaperSize;
 
@@ -44,7 +44,7 @@ typedef struct _BtkPaperSize BtkPaperSize;
 #define BTK_PAPER_NAME_EXECUTIVE "na_executive"
 #define BTK_PAPER_NAME_LEGAL "na_legal"
 
-GType btk_paper_size_get_type (void) G_GNUC_CONST;
+GType btk_paper_size_get_type (void) B_GNUC_CONST;
 
 BtkPaperSize *btk_paper_size_new          (const gchar  *name);
 BtkPaperSize *btk_paper_size_new_from_ppd (const gchar  *ppd_name,
@@ -96,6 +96,6 @@ void     btk_paper_size_to_key_file            (BtkPaperSize *size,
 					        GKeyFile     *key_file,
 					        const gchar  *group_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PAPER_SIZE_H__ */

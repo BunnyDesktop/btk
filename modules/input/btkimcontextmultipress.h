@@ -21,7 +21,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IM_CONTEXT_MULTIPRESS            (btk_im_context_multipress_get_type ())
 #define BTK_IM_CONTEXT_MULTIPRESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipress))
@@ -77,6 +77,6 @@ void btk_im_context_multipress_register_type (GTypeModule* type_module);
 GType btk_im_context_multipress_get_type (void);
 BtkIMContext *btk_im_context_multipress_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_MULTIPRESS_H__ */

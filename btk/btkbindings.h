@@ -39,7 +39,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* Binding sets
@@ -153,6 +153,6 @@ void	 _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
 					 const gchar	*signal_name,
 					 GSList		*binding_args);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BINDINGS_H__ */

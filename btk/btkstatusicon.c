@@ -724,7 +724,7 @@ wndproc (HWND   hwnd,
 	  /* taskbar_created_msg is also fired when DPI changes. Try to delete existing icons if possible. */
 	  if (!Shell_NotifyIconW (NIM_DELETE, &priv->nid))
 	  {
-		g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_DELETE) on existing icon failed");
+		g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_DELETE) on existing icon failed");
 	  }
 
 	  priv->nid.hWnd = hwnd;
@@ -734,7 +734,7 @@ wndproc (HWND   hwnd,
 
 	  if (!Shell_NotifyIconW (NIM_ADD, &priv->nid))
 	    {
-	      g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_ADD) failed");
+	      g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_ADD) failed");
 	      priv->nid.hWnd = NULL;
 	      continue;
 	    }
@@ -947,7 +947,7 @@ btk_status_icon_init (BtkStatusIcon *status_icon)
 
   if (!Shell_NotifyIconW (NIM_ADD, &priv->nid))
     {
-      g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_ADD) failed");
+      g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_ADD) failed");
       priv->nid.hWnd = NULL;
     }
 
@@ -1436,7 +1436,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
       priv->nid.uFlags |= NIF_ICON;
       if (priv->nid.hWnd != NULL && priv->visible)
 	if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-	  g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+	  g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
       if (prev_hicon)
 	DestroyIcon (prev_hicon);
 #endif
@@ -1485,7 +1485,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
 	    priv->nid.uFlags |= NIF_ICON;
 	    if (priv->nid.hWnd != NULL && priv->visible)
 	      if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-		  g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+		  g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
 	    if (prev_hicon)
 	      DestroyIcon (prev_hicon);
 #endif
@@ -1506,7 +1506,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
 	    priv->nid.uFlags &= ~NIF_ICON;
 	    if (priv->nid.hWnd != NULL && priv->visible)
 	      if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-		g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+		g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
 #endif
 #ifdef BDK_WINDOWING_QUARTZ
       [priv->status_item setImage:NULL];
@@ -1536,7 +1536,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
 	  priv->nid.uFlags |= NIF_ICON;
 	  if (priv->nid.hWnd != NULL && priv->visible)
 	    if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-	      g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+	      g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
 	  if (prev_hicon)
 	    DestroyIcon (prev_hicon);
 	  g_object_unref (pixbuf);
@@ -1580,7 +1580,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
 	  priv->nid.uFlags |= NIF_ICON;
 	  if (priv->nid.hWnd != NULL && priv->visible)
 	    if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-	      g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+	      g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
 	  if (prev_hicon)
 	    DestroyIcon (prev_hicon);
 	  g_object_unref (pixbuf);
@@ -1627,7 +1627,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
         priv->nid.uFlags |= NIF_ICON;
         if (priv->nid.hWnd != NULL && priv->visible)
           if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-            g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+            g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
           if (prev_hicon)
             DestroyIcon (prev_hicon);
           g_object_unref (pixbuf);
@@ -1660,7 +1660,7 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
       priv->nid.uFlags &= ~NIF_ICON;
       if (priv->nid.hWnd != NULL && priv->visible)
 	if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-	  g_warning (G_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
+	  g_warning (B_STRLOC ": Shell_NotifyIcon(NIM_MODIFY) failed");
 #endif
 #ifdef BDK_WINDOWING_QUARTZ
         {
@@ -2791,7 +2791,7 @@ btk_status_icon_set_tooltip_text (BtkStatusIcon *status_icon,
     }
   if (priv->nid.hWnd != NULL && priv->visible)
     if (!Shell_NotifyIconW (NIM_MODIFY, &priv->nid))
-      g_warning (G_STRLOC ": Shell_NotifyIconW(NIM_MODIFY) failed");
+      g_warning (B_STRLOC ": Shell_NotifyIconW(NIM_MODIFY) failed");
 
   g_free (priv->tooltip_text);
   priv->tooltip_text = g_strdup (text);

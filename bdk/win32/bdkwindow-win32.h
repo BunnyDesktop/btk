@@ -29,7 +29,7 @@
 
 #include <bdk/win32/bdkdrawable-win32.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkWin32PositionInfo    BdkWin32PositionInfo;
 
@@ -122,6 +122,6 @@ void  _bdk_win32_window_tmp_reset_bg  (BdkWindow *window,
 void  _bdk_win32_window_tmp_unset_parent_bg (BdkWindow *window);
 void  _bdk_win32_window_tmp_reset_parent_bg (BdkWindow *window);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_WIN32_H__ */

@@ -30,7 +30,7 @@
 #include <btk/btk.h>
 #include <btk/btktexttagprivate.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkTextCounter BtkTextCounter;
 typedef struct _BtkTextLineSegment BtkTextLineSegment;
@@ -74,7 +74,7 @@ VARIABLE const gchar btk_text_unknown_char_utf8[];
 
 gboolean btk_text_byte_begins_utf8_char (const gchar *byte);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

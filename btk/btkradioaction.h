@@ -37,7 +37,7 @@
 
 #include <btk/btktoggleaction.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RADIO_ACTION            (btk_radio_action_get_type ())
 #define BTK_RADIO_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_ACTION, BtkRadioAction))
@@ -72,7 +72,7 @@ struct _BtkRadioActionClass
   void (*_btk_reserved4) (void);
 };
 
-GType           btk_radio_action_get_type          (void) G_GNUC_CONST;
+GType           btk_radio_action_get_type          (void) B_GNUC_CONST;
 BtkRadioAction *btk_radio_action_new               (const gchar           *name,
                                                     const gchar           *label,
                                                     const gchar           *tooltip,
@@ -85,6 +85,6 @@ gint            btk_radio_action_get_current_value (BtkRadioAction        *actio
 void            btk_radio_action_set_current_value (BtkRadioAction        *action,
                                                     gint                   current_value);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_RADIO_ACTION_H__ */

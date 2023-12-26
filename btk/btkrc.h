@@ -34,7 +34,7 @@
 
 #include <btk/btkstyle.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Forward declarations */
 typedef struct _BtkIconFactory  BtkIconFactory;
@@ -169,7 +169,7 @@ void	  btk_rc_add_class_style	(BtkRcStyle   *rc_style,
 #endif /* BTK_DISABLE_DEPRECATED */
 
 
-GType       btk_rc_style_get_type   (void) G_GNUC_CONST;
+GType       btk_rc_style_get_type   (void) B_GNUC_CONST;
 BtkRcStyle* btk_rc_style_new        (void);
 BtkRcStyle* btk_rc_style_copy       (BtkRcStyle *orig);
 
@@ -266,6 +266,6 @@ GSList     * _btk_rc_style_get_color_hashes        (BtkRcStyle *rc_style);
 const gchar* _btk_rc_context_get_default_font_name (BtkSettings *settings);
 void         _btk_rc_context_destroy               (BtkSettings *settings);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RC_H__ */

@@ -31,7 +31,7 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LINK_BUTTON		(btk_link_button_get_type ())
 #define BTK_LINK_BUTTON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButton))
@@ -65,7 +65,7 @@ struct _BtkLinkButtonClass
   void (*_btk_padding4) (void);
 };
 
-GType                 btk_link_button_get_type          (void) G_GNUC_CONST;
+GType                 btk_link_button_get_type          (void) B_GNUC_CONST;
 
 BtkWidget *           btk_link_button_new               (const gchar   *uri);
 BtkWidget *           btk_link_button_new_with_label    (const gchar   *uri,
@@ -86,6 +86,6 @@ void                  btk_link_button_set_visited       (BtkLinkButton *link_but
                                                          gboolean       visited);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LINK_BUTTON_H__ */

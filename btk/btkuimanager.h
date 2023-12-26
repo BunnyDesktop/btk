@@ -40,7 +40,7 @@
 #include <btk/btkaction.h>
 #include <btk/btkactiongroup.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_UI_MANAGER            (btk_ui_manager_get_type ())
 #define BTK_UI_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
@@ -110,7 +110,7 @@ typedef enum {
 #define btk_ui_manager_add_ui_from_file btk_ui_manager_add_ui_from_file_utf8
 #endif
 
-GType          btk_ui_manager_get_type            (void) G_GNUC_CONST;
+GType          btk_ui_manager_get_type            (void) B_GNUC_CONST;
 BtkUIManager  *btk_ui_manager_new                 (void);
 void           btk_ui_manager_set_add_tearoffs    (BtkUIManager          *self,
 						   gboolean               add_tearoffs);
@@ -148,6 +148,6 @@ gchar         *btk_ui_manager_get_ui              (BtkUIManager          *self);
 void           btk_ui_manager_ensure_update       (BtkUIManager          *self);
 guint          btk_ui_manager_new_merge_id        (BtkUIManager          *self);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_UI_MANAGER_H__ */

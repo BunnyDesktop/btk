@@ -39,7 +39,7 @@
 #include <btk/btkvscrollbar.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* clist flags */
@@ -440,7 +440,7 @@ struct _BtkCell
   } u;
 };
 
-GType btk_clist_get_type (void) G_GNUC_CONST;
+GType btk_clist_get_type (void) B_GNUC_CONST;
 
 /* create a new BtkCList */
 BtkWidget* btk_clist_new             (gint   columns);
@@ -784,7 +784,7 @@ BangoLayout *_btk_clist_create_cell_layout (BtkCList       *clist,
 					    gint            column);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif				/* __BTK_CLIST_H__ */

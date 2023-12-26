@@ -36,7 +36,7 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CONTAINER              (btk_container_get_type ())
 #define BTK_CONTAINER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CONTAINER, BtkContainer))
@@ -104,7 +104,7 @@ struct _BtkContainerClass
 
 /* Application-level methods */
 
-GType   btk_container_get_type		 (void) G_GNUC_CONST;
+GType   btk_container_get_type		 (void) B_GNUC_CONST;
 void    btk_container_set_border_width	 (BtkContainer	   *container,
 					  guint		    border_width);
 guint   btk_container_get_border_width   (BtkContainer     *container);
@@ -176,15 +176,15 @@ GParamSpec** btk_container_class_list_child_properties	(GObjectClass	   *cclass,
 void         btk_container_add_with_properties		(BtkContainer	   *container,
 							 BtkWidget	   *widget,
 							 const gchar	   *first_prop_name,
-							 ...) G_GNUC_NULL_TERMINATED;
+							 ...) B_GNUC_NULL_TERMINATED;
 void         btk_container_child_set			(BtkContainer	   *container,
 							 BtkWidget	   *child,
 							 const gchar	   *first_prop_name,
-							 ...) G_GNUC_NULL_TERMINATED;
+							 ...) B_GNUC_NULL_TERMINATED;
 void         btk_container_child_get			(BtkContainer	   *container,
 							 BtkWidget	   *child,
 							 const gchar	   *first_prop_name,
-							 ...) G_GNUC_NULL_TERMINATED;
+							 ...) B_GNUC_NULL_TERMINATED;
 void         btk_container_child_set_valist		(BtkContainer	   *container,
 							 BtkWidget	   *child,
 							 const gchar	   *first_property_name,
@@ -225,6 +225,6 @@ GList *_btk_container_focus_sort             (BtkContainer     *container,
 #define	btk_container_border_width		btk_container_set_border_width
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CONTAINER_H__ */

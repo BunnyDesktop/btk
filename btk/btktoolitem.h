@@ -32,7 +32,7 @@
 #include <btk/btkmenuitem.h>
 #include <btk/btksizegroup.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_ITEM            (btk_tool_item_get_type ())
 #define BTK_TOOL_ITEM(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_TOOL_ITEM, BtkToolItem))
@@ -76,7 +76,7 @@ struct _BtkToolItemClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_tool_item_get_type (void) G_GNUC_CONST;
+GType        btk_tool_item_get_type (void) B_GNUC_CONST;
 BtkToolItem *btk_tool_item_new      (void);
 
 void            btk_tool_item_set_homogeneous          (BtkToolItem *tool_item,
@@ -137,6 +137,6 @@ void            btk_tool_item_toolbar_reconfigured     (BtkToolItem *tool_item);
 
 gboolean       _btk_tool_item_create_menu_proxy        (BtkToolItem *tool_item);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOL_ITEM_H__ */

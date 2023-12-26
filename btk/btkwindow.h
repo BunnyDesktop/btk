@@ -36,7 +36,7 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_WINDOW			(btk_window_get_type ())
 #define BTK_WINDOW(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WINDOW, BtkWindow))
@@ -175,7 +175,7 @@ struct _BtkWindowGroupClass
 #define btk_window_set_default_icon_from_file btk_window_set_default_icon_from_file_utf8
 #endif
 
-GType      btk_window_get_type                 (void) G_GNUC_CONST;
+GType      btk_window_get_type                 (void) B_GNUC_CONST;
 BtkWidget* btk_window_new                      (BtkWindowType        type);
 void       btk_window_set_title                (BtkWindow           *window,
 						const gchar         *title);
@@ -394,7 +394,7 @@ BtkWindowType btk_window_get_window_type     (BtkWindow     *window);
 
 /* Window groups
  */
-GType            btk_window_group_get_type      (void) G_GNUC_CONST;
+GType            btk_window_group_get_type      (void) B_GNUC_CONST;
 
 BtkWindowGroup * btk_window_group_new           (void);
 void             btk_window_group_add_window    (BtkWindowGroup     *window_group,
@@ -447,6 +447,6 @@ gboolean	_btk_window_query_nonaccels	(BtkWindow	*window,
 						 guint		 accel_key,
 						 BdkModifierType accel_mods);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_WINDOW_H__ */

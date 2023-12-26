@@ -29,7 +29,7 @@
 #include <btk/btkmenu.h>
 #include <btk/btktoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MENU_TOOL_BUTTON         (btk_menu_tool_button_get_type ())
 #define BTK_MENU_TOOL_BUTTON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButton))
@@ -63,7 +63,7 @@ struct _BtkMenuToolButtonClass
   void (*_btk_reserved4) (void);
 };
 
-GType         btk_menu_tool_button_get_type       (void) G_GNUC_CONST;
+GType         btk_menu_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem  *btk_menu_tool_button_new            (BtkWidget   *icon_widget,
                                                    const gchar *label);
 BtkToolItem  *btk_menu_tool_button_new_from_stock (const gchar *stock_id);
@@ -84,6 +84,6 @@ void          btk_menu_tool_button_set_arrow_tooltip_text   (BtkMenuToolButton *
 void          btk_menu_tool_button_set_arrow_tooltip_markup (BtkMenuToolButton *button,
 							     const gchar       *markup);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MENU_TOOL_BUTTON_H__ */

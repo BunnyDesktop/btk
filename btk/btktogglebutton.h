@@ -35,7 +35,7 @@
 #include <btk/btkbutton.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOGGLE_BUTTON                  (btk_toggle_button_get_type ())
 #define BTK_TOGGLE_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_BUTTON, BtkToggleButton))
@@ -71,7 +71,7 @@ struct _BtkToggleButtonClass
 };
 
 
-GType      btk_toggle_button_get_type          (void) G_GNUC_CONST;
+GType      btk_toggle_button_get_type          (void) B_GNUC_CONST;
 
 BtkWidget* btk_toggle_button_new               (void);
 BtkWidget* btk_toggle_button_new_with_label    (const gchar     *label);
@@ -92,6 +92,6 @@ gboolean   btk_toggle_button_get_inconsistent  (BtkToggleButton *toggle_button);
 #define	btk_toggle_button_set_state		btk_toggle_button_set_active
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOGGLE_BUTTON_H__ */

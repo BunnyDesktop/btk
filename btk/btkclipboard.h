@@ -28,7 +28,7 @@
 
 #include <btk/btkselection.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CLIPBOARD            (btk_clipboard_get_type ())
 #define BTK_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
@@ -67,7 +67,7 @@ typedef void (* BtkClipboardGetFunc)          (BtkClipboard     *clipboard,
 typedef void (* BtkClipboardClearFunc)        (BtkClipboard     *clipboard,
 					       gpointer          user_data_or_owner);
 
-GType         btk_clipboard_get_type (void) G_GNUC_CONST;
+GType         btk_clipboard_get_type (void) B_GNUC_CONST;
 
 BtkClipboard *btk_clipboard_get_for_display (BdkDisplay   *display,
 					     BdkAtom       selection);
@@ -152,6 +152,6 @@ void     _btk_clipboard_handle_event    (BdkEventOwnerChange *event);
 
 void     _btk_clipboard_store_all       (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CLIPBOARD_H__ */

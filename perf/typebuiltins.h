@@ -6,12 +6,12 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* enumerations from "btkwidgetprofiler.h" */
-GType btk_widget_profiler_report_get_type (void) G_GNUC_CONST;
+GType btk_widget_profiler_report_get_type (void) B_GNUC_CONST;
 #define BTK_TYPE_WIDGET_PROFILER_REPORT (btk_widget_profiler_report_get_type ())
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __TYPE_BUILTINS_H__ */
 

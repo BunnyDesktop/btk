@@ -23,7 +23,7 @@
 #include <bail/bailnotebook.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_NOTEBOOK_PAGE            (bail_notebook_page_get_type ())
 #define BAIL_NOTEBOOK_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
@@ -61,6 +61,6 @@ struct _BailNotebookPageClass
 
 BatkObject *bail_notebook_page_new(BtkNotebook *notebook, gint pagenum);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_NOTEBOOK_PAGE_H__ */

@@ -24,7 +24,7 @@
 #include <btk/btk.h>
 #include <bango/bango.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BatkAttributeSet* bail_misc_add_attribute          (BatkAttributeSet   *attrib_set,
                                                    BatkTextAttribute   attr,
@@ -77,6 +77,6 @@ BatkAttributeSet* bail_misc_buffer_get_run_attributes
                                                    gint              *start_offset,
                                                    gint              *end_offset);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*__BAIL_MISC_H__ */

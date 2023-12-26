@@ -31,7 +31,7 @@
 #include <btk/btkimage.h>
 #include <btk/btkmenu.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_STATUS_ICON         (btk_status_icon_get_type ())
 #define BTK_STATUS_ICON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_STATUS_ICON, BtkStatusIcon))
@@ -77,7 +77,7 @@ struct _BtkStatusIconClass
   void *__btk_reserved2;
 };
 
-GType                 btk_status_icon_get_type           (void) G_GNUC_CONST;
+GType                 btk_status_icon_get_type           (void) B_GNUC_CONST;
 
 BtkStatusIcon        *btk_status_icon_new                (void);
 BtkStatusIcon        *btk_status_icon_new_from_pixbuf    (BdkPixbuf          *pixbuf);
@@ -152,6 +152,6 @@ gchar                *btk_status_icon_get_tooltip_markup (BtkStatusIcon      *st
 
 guint32               btk_status_icon_get_x11_window_id  (BtkStatusIcon      *status_icon);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_STATUS_ICON_H__ */

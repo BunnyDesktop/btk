@@ -28,7 +28,7 @@
 #include <bdk/bdkpixbuf.h>
 #include <bango/bangobairo.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 bairo_t *bdk_bairo_create            (BdkDrawable        *drawable);
 void     bdk_bairo_reset_clip        (bairo_t            *cr,
@@ -54,6 +54,6 @@ void     bdk_bairo_rectangle         (bairo_t            *cr,
 void     bdk_bairo_rebunnyion            (bairo_t            *cr,
                                       const BdkRebunnyion    *rebunnyion);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_BAIRO_H__ */

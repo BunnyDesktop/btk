@@ -28,7 +28,7 @@
 #include <btk/btkfilechooser.h>
 #include <btk/btkvbox.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_WIDGET             (btk_file_chooser_widget_get_type ())
 #define BTK_FILE_CHOOSER_WIDGET(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_WIDGET, BtkFileChooserWidget))
@@ -53,7 +53,7 @@ struct _BtkFileChooserWidgetClass
   BtkVBoxClass parent_class;
 };
 
-GType      btk_file_chooser_widget_get_type         (void) G_GNUC_CONST;
+GType      btk_file_chooser_widget_get_type         (void) B_GNUC_CONST;
 BtkWidget *btk_file_chooser_widget_new              (BtkFileChooserAction  action);
 
 
@@ -62,6 +62,6 @@ BtkWidget *btk_file_chooser_widget_new_with_backend (BtkFileChooserAction  actio
 						     const gchar          *backend);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_WIDGET_H__ */

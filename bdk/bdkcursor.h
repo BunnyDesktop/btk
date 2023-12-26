@@ -34,7 +34,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk-pixbuf/bdk-pixbuf.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_CURSOR (bdk_cursor_get_type ())
 
@@ -134,7 +134,7 @@ struct _BdkCursor
 /* Cursors
  */
 
-GType      bdk_cursor_get_type           (void) G_GNUC_CONST;
+GType      bdk_cursor_get_type           (void) B_GNUC_CONST;
 
 BdkCursor* bdk_cursor_new_for_display	 (BdkDisplay      *display,
 					  BdkCursorType    cursor_type);
@@ -163,6 +163,6 @@ BdkCursorType bdk_cursor_get_cursor_type (BdkCursor       *cursor);
 #define bdk_cursor_destroy             bdk_cursor_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_CURSOR_H__ */

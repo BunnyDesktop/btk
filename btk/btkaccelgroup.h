@@ -35,7 +35,7 @@
 #include <bdk/bdk.h>
 #include <btk/btkenums.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* --- type macros --- */
@@ -119,7 +119,7 @@ struct _BtkAccelKey
 
 
 /* -- Accelerator Groups --- */
-GType          btk_accel_group_get_type           (void) G_GNUC_CONST;
+GType          btk_accel_group_get_type           (void) B_GNUC_CONST;
 BtkAccelGroup* btk_accel_group_new	      	  (void);
 gboolean       btk_accel_group_get_is_locked      (BtkAccelGroup  *accel_group);
 BdkModifierType 
@@ -163,7 +163,7 @@ BtkAccelGroup*	btk_accel_group_from_accel_closure (GClosure    *closure);
 
 /* --- Accelerators--- */
 gboolean btk_accelerator_valid		      (guint	        keyval,
-					       BdkModifierType  modifiers) G_GNUC_CONST;
+					       BdkModifierType  modifiers) B_GNUC_CONST;
 void	 btk_accelerator_parse		      (const gchar     *accelerator,
 					       guint	       *accelerator_key,
 					       BdkModifierType *accelerator_mods);
@@ -210,7 +210,7 @@ struct _BtkAccelGroupEntry
 #define	btk_accel_group_unref	g_object_unref
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_ACCEL_GROUP_H__ */

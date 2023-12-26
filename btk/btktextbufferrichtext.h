@@ -28,7 +28,7 @@
 
 #include <btk/btktextbuffer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef guint8 * (* BtkTextBufferSerializeFunc)   (BtkTextBuffer     *register_buffer,
                                                    BtkTextBuffer     *content_buffer,
@@ -91,6 +91,6 @@ gboolean  btk_text_buffer_deserialize                 (BtkTextBuffer            
                                                        gsize                         length,
                                                        GError                      **error);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_BUFFER_RICH_TEXT_H__ */

@@ -1261,7 +1261,7 @@ btk_print_capabilities_get_type (void)
 {
   static GType etype = 0;
 
-  if (G_UNLIKELY (etype == 0))
+  if (B_UNLIKELY (etype == 0))
     {
       static const GFlagsValue values[] = {
         { BTK_PRINT_CAPABILITY_PAGE_SET, "BTK_PRINT_CAPABILITY_PAGE_SET", "page-set" },

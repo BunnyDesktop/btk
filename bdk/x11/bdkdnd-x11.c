@@ -540,7 +540,7 @@ bdk_window_cache_new (BdkScreen *screen)
   XGetWindowAttributes (xdisplay, BDK_WINDOW_XWINDOW (root_window), &xwa);
   result->old_event_mask = xwa.your_event_mask;
 
-  if (G_UNLIKELY (!BDK_DISPLAY_X11 (BDK_SCREEN_X11 (screen)->display)->trusted_client)) 
+  if (B_UNLIKELY (!BDK_DISPLAY_X11 (BDK_SCREEN_X11 (screen)->display)->trusted_client)) 
     {
       GList *toplevel_windows, *list;
       BdkWindow *window;
@@ -1508,7 +1508,7 @@ motif_send_enter (BdkDragContext  *context,
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
   XEvent xev;
 
-  if (!G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return; /* Motif Dnd requires getting properties on the root window */
 
   xev.xclient.type = ClientMessage;

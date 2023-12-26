@@ -26,7 +26,7 @@
 
 #include <btk/btkcellrenderertext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_SPIN		(btk_cell_renderer_spin_get_type ())
 #define BTK_CELL_RENDERER_SPIN(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpin))
@@ -52,6 +52,6 @@ struct _BtkCellRendererSpinClass
 GType            btk_cell_renderer_spin_get_type (void);
 BtkCellRenderer *btk_cell_renderer_spin_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_CELL_RENDERER_SPIN_H__ */

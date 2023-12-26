@@ -24,7 +24,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 extern GType btk_type_im_context_thai;
 
@@ -72,6 +72,6 @@ BtkIMContextThaiISCMode
   btk_im_context_thai_set_isc_mode (BtkIMContextThai *context_thai,
                                     BtkIMContextThaiISCMode mode);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_THAI_H__ */

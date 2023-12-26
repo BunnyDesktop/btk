@@ -51,10 +51,10 @@
 /* VOID:POINTER,POINTER,POINTER (./bdkmarshalers.list:3) */
 void
 _bdk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
-                                            GValue       *return_value G_GNUC_UNUSED,
+                                            GValue       *return_value B_GNUC_UNUSED,
                                             guint         n_param_values,
                                             const GValue *param_values,
-                                            gpointer      invocation_hint G_GNUC_UNUSED,
+                                            gpointer      invocation_hint B_GNUC_UNUSED,
                                             gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__POINTER_POINTER_POINTER) (gpointer data1,
@@ -93,7 +93,7 @@ _bdk_marshal_OBJECT__VOID (GClosure     *closure,
                            GValue       *return_value,
                            guint         n_param_values,
                            const GValue *param_values,
-                           gpointer      invocation_hint G_GNUC_UNUSED,
+                           gpointer      invocation_hint B_GNUC_UNUSED,
                            gpointer      marshal_data)
 {
   typedef GObject* (*GMarshalFunc_OBJECT__VOID) (gpointer data1,
@@ -130,7 +130,7 @@ _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
                                     GValue       *return_value,
                                     guint         n_param_values,
                                     const GValue *param_values,
-                                    gpointer      invocation_hint G_GNUC_UNUSED,
+                                    gpointer      invocation_hint B_GNUC_UNUSED,
                                     gpointer      marshal_data)
 {
   typedef GObject* (*GMarshalFunc_OBJECT__DOUBLE_DOUBLE) (gpointer data1,
@@ -168,10 +168,10 @@ _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
 /* VOID:DOUBLE,DOUBLE,POINTER,POINTER (./bdkmarshalers.list:6) */
 void
 _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER (GClosure     *closure,
-                                                  GValue       *return_value G_GNUC_UNUSED,
+                                                  GValue       *return_value B_GNUC_UNUSED,
                                                   guint         n_param_values,
                                                   const GValue *param_values,
-                                                  gpointer      invocation_hint G_GNUC_UNUSED,
+                                                  gpointer      invocation_hint B_GNUC_UNUSED,
                                                   gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE_POINTER_POINTER) (gpointer data1,

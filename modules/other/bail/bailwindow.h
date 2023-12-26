@@ -22,7 +22,7 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_WINDOW                        (bail_window_get_type ())
 #define BAIL_WINDOW(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WINDOW, BailWindow))
@@ -49,6 +49,6 @@ struct _BailWindowClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_WINDOW_H__ */

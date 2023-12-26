@@ -30,7 +30,7 @@
 
 #include <btk/btkbin.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_EXPANDER            (btk_expander_get_type ())
 #define BTK_EXPANDER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EXPANDER, BtkExpander))
@@ -60,7 +60,7 @@ struct _BtkExpanderClass
   void        (* activate) (BtkExpander *expander);
 };
 
-GType                 btk_expander_get_type          (void) G_GNUC_CONST;
+GType                 btk_expander_get_type          (void) B_GNUC_CONST;
 
 BtkWidget            *btk_expander_new               (const gchar *label);
 BtkWidget            *btk_expander_new_with_mnemonic (const gchar *label);
@@ -93,6 +93,6 @@ void                  btk_expander_set_label_fill    (BtkExpander *expander,
 						      gboolean     label_fill);
 gboolean              btk_expander_get_label_fill    (BtkExpander *expander);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_EXPANDER_H__ */

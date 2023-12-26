@@ -34,7 +34,7 @@
 #include "btktreeview.h"
 #include "btkvbox.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_FILE_CHOOSER_GET_IFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_FILE_CHOOSER, BtkFileChooserIface))
 
@@ -305,6 +305,6 @@ struct _BtkFileChooserDefault
 };
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_PRIVATE_H__ */

@@ -29,7 +29,7 @@
 
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_PARENT_RELATIVE_BG ((BdkPixmap *)1L)
 #define BDK_NO_BG ((BdkPixmap *)2L)
@@ -49,12 +49,12 @@ void bdk_synthesize_window_state (BdkWindow     *window,
  * units (multiplied by BANGO_SCALE).  We don't allow the entire range, leave
  * some space for additions afterwards, to be safe...
  */
-#define BDK_BANGO_UNITS_OVERFLOWS(x,y) (G_UNLIKELY ( \
+#define BDK_BANGO_UNITS_OVERFLOWS(x,y) (B_UNLIKELY ( \
 	(y) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
 	(x) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
 	(y) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
 	(x) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2))
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PRIVATE_H__ */

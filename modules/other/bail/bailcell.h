@@ -22,7 +22,7 @@
 
 #include <batk/batk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CELL                           (bail_cell_get_type ())
 #define BAIL_CELL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL, BailCell))
@@ -97,6 +97,6 @@ gboolean bail_cell_remove_action         (BailCell        *cell,
 gboolean bail_cell_remove_action_by_name (BailCell        *cell,
                                           const gchar     *action_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CELL_H__ */

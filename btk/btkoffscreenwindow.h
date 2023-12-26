@@ -27,7 +27,7 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_OFFSCREEN_WINDOW         (btk_offscreen_window_get_type ())
 #define BTK_OFFSCREEN_WINDOW(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindow))
@@ -49,12 +49,12 @@ struct _BtkOffscreenWindowClass
   BtkWindowClass parent_class;
 };
 
-GType      btk_offscreen_window_get_type   (void) G_GNUC_CONST;
+GType      btk_offscreen_window_get_type   (void) B_GNUC_CONST;
 
 BtkWidget *btk_offscreen_window_new        (void);
 BdkPixmap *btk_offscreen_window_get_pixmap (BtkOffscreenWindow *offscreen);
 BdkPixbuf *btk_offscreen_window_get_pixbuf (BtkOffscreenWindow *offscreen);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OFFSCREEN_WINDOW_H__ */

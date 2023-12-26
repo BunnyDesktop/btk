@@ -22,7 +22,7 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CONTAINER                  (bail_container_get_type ())
 #define BAIL_CONTAINER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER, BailContainer))
@@ -58,6 +58,6 @@ struct _BailContainerClass
                       gpointer     data);
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CONTAINER_H__ */

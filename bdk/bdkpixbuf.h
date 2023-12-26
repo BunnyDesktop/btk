@@ -36,7 +36,7 @@
 #include <bdk/bdkrgb.h>
 #include <bdk-pixbuf/bdk-pixbuf.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Rendering to a drawable */
 
@@ -110,6 +110,6 @@ BdkPixbuf *bdk_pixbuf_get_from_image    (BdkPixbuf   *dest,
                                          int          width,
                                          int          height);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXBUF_H__ */

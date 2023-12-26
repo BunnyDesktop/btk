@@ -30,7 +30,7 @@
 #include <btk/btkdnd.h>
 #include <btk/btkentry.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 typedef enum
@@ -137,7 +137,7 @@ typedef void     (*BtkTreeViewSearchPositionFunc) (BtkTreeView  *tree_view,
 
 
 /* Creators */
-GType                  btk_tree_view_get_type                      (void) G_GNUC_CONST;
+GType                  btk_tree_view_get_type                      (void) B_GNUC_CONST;
 BtkWidget             *btk_tree_view_new                           (void);
 BtkWidget             *btk_tree_view_new_with_model                (BtkTreeModel              *model);
 
@@ -175,7 +175,7 @@ gint                   btk_tree_view_insert_column_with_attributes (BtkTreeView 
 								    gint                       position,
 								    const gchar               *title,
 								    BtkCellRenderer           *cell,
-								    ...) G_GNUC_NULL_TERMINATED;
+								    ...) B_GNUC_NULL_TERMINATED;
 gint                   btk_tree_view_insert_column_with_data_func  (BtkTreeView               *tree_view,
 								    gint                       position,
 								    const gchar               *title,
@@ -425,7 +425,7 @@ void          btk_tree_view_set_tooltip_column (BtkTreeView       *tree_view,
 					        gint               column);
 gint          btk_tree_view_get_tooltip_column (BtkTreeView       *tree_view);
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_TREE_VIEW_H__ */

@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_LIST_ITEM              (btk_list_item_get_type ())
@@ -75,7 +75,7 @@ struct _BtkListItemClass
 };
 
 
-GType      btk_list_item_get_type       (void) G_GNUC_CONST;
+GType      btk_list_item_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_list_item_new            (void);
 BtkWidget* btk_list_item_new_with_label (const gchar      *label);
 void       btk_list_item_select         (BtkListItem      *list_item);
@@ -83,7 +83,7 @@ void       btk_list_item_deselect       (BtkListItem      *list_item);
 
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_LIST_ITEM_H__ */

@@ -35,7 +35,7 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PLUG            (btk_plug_get_type ())
 #define BTK_PLUG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PLUG, BtkPlug))
@@ -75,7 +75,7 @@ struct _BtkPlugClass
 };
 
 
-GType      btk_plug_get_type  (void) G_GNUC_CONST;
+GType      btk_plug_get_type  (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 void       btk_plug_construct (BtkPlug         *plug,
@@ -100,6 +100,6 @@ void _btk_plug_add_to_socket      (BtkPlug   *plug,
 void _btk_plug_remove_from_socket (BtkPlug   *plug,
 				   BtkSocket *socket_);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PLUG_H__ */

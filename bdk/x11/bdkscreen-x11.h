@@ -31,7 +31,7 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
   
 typedef struct _BdkScreenX11 BdkScreenX11;
 typedef struct _BdkScreenX11Class BdkScreenX11Class;
@@ -130,6 +130,6 @@ void _bdk_x11_screen_size_changed           (BdkScreen *screen,
 void _bdk_x11_screen_process_owner_change   (BdkScreen *screen,
 					     XEvent    *event);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_SCREEN_X11_H__ */

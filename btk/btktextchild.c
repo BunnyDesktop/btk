@@ -56,23 +56,23 @@
 #include "btkalias.h"
 
 #define CHECK_IN_BUFFER(anchor)                                         \
-  G_STMT_START {                                                        \
+  B_STMT_START {                                                        \
     if ((anchor)->segment == NULL)                                      \
       {                                                                 \
         g_warning ("%s: BtkTextChildAnchor hasn't been in a buffer yet",\
-                   G_STRFUNC);                                          \
+                   B_STRFUNC);                                          \
       }                                                                 \
-  } G_STMT_END
+  } B_STMT_END
 
 #define CHECK_IN_BUFFER_RETURN(anchor, val)                             \
-  G_STMT_START {                                                        \
+  B_STMT_START {                                                        \
     if ((anchor)->segment == NULL)                                      \
       {                                                                 \
         g_warning ("%s: BtkTextChildAnchor hasn't been in a buffer yet",\
-                   G_STRFUNC);                                          \
+                   B_STRFUNC);                                          \
         return (val);                                                   \
       }                                                                 \
-  } G_STMT_END
+  } B_STMT_END
 
 static BtkTextLineSegment *
 pixbuf_segment_cleanup_func (BtkTextLineSegment *seg,

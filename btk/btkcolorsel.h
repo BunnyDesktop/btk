@@ -35,7 +35,7 @@
 #include <btk/btkdialog.h>
 #include <btk/btkvbox.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_COLOR_SELECTION			(btk_color_selection_get_type ())
 #define BTK_COLOR_SELECTION(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_SELECTION, BtkColorSelection))
@@ -79,7 +79,7 @@ struct _BtkColorSelectionClass
 
 /* ColorSelection */
 
-GType      btk_color_selection_get_type                (void) G_GNUC_CONST;
+GType      btk_color_selection_get_type                (void) B_GNUC_CONST;
 BtkWidget *btk_color_selection_new                     (void);
 gboolean   btk_color_selection_get_has_opacity_control (BtkColorSelection *colorsel);
 void       btk_color_selection_set_has_opacity_control (BtkColorSelection *colorsel,
@@ -130,6 +130,6 @@ void btk_color_selection_set_update_policy (BtkColorSelection *colorsel,
 					    BtkUpdateType      policy);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_COLOR_SELECTION_H__ */

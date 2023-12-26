@@ -26,7 +26,7 @@
 
 #include <btk/btkcelleditable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum
 {
@@ -122,7 +122,7 @@ struct _BtkCellRendererClass
   void (*_btk_reserved2) (void);
 };
 
-GType            btk_cell_renderer_get_type       (void) G_GNUC_CONST;
+GType            btk_cell_renderer_get_type       (void) B_GNUC_CONST;
 
 void             btk_cell_renderer_get_size       (BtkCellRenderer      *cell,
 						   BtkWidget            *widget,
@@ -190,6 +190,6 @@ void btk_cell_renderer_stop_editing     (BtkCellRenderer *cell,
 				         gboolean         canceled);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_H__ */

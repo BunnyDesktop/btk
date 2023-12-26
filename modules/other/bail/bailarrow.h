@@ -22,7 +22,7 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_ARROW                      (bail_arrow_get_type ())
 #define BAIL_ARROW(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ARROW, BailArrow))
@@ -48,6 +48,6 @@ struct _BailArrowClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_ARROW_H__ */

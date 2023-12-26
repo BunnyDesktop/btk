@@ -22,7 +22,7 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CALENDAR                   (bail_calendar_get_type ())
 #define BAIL_CALENDAR(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CALENDAR, BailCalendar))
@@ -46,6 +46,6 @@ struct _BailCalendarClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CALENDAR_H__ */

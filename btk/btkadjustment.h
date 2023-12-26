@@ -35,7 +35,7 @@
 #include <bdk/bdk.h>
 #include <btk/btkobject.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ADJUSTMENT                  (btk_adjustment_get_type ())
 #define BTK_ADJUSTMENT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ADJUSTMENT, BtkAdjustment))
@@ -75,7 +75,7 @@ struct _BtkAdjustmentClass
 };
 
 
-GType	   btk_adjustment_get_type		(void) G_GNUC_CONST;
+GType	   btk_adjustment_get_type		(void) B_GNUC_CONST;
 BtkObject* btk_adjustment_new			(gdouble	  value,
 						 gdouble	  lower,
 						 gdouble	  upper,
@@ -116,6 +116,6 @@ void       btk_adjustment_configure             (BtkAdjustment   *adjustment,
 						 gdouble          page_increment,
 						 gdouble          page_size);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ADJUSTMENT_H__ */

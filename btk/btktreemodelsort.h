@@ -28,7 +28,7 @@
 #include <btk/btktreemodel.h>
 #include <btk/btktreesortable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL_SORT			(btk_tree_model_sort_get_type ())
 #define BTK_TREE_MODEL_SORT(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSort))
@@ -81,7 +81,7 @@ struct _BtkTreeModelSortClass
 };
 
 
-GType         btk_tree_model_sort_get_type                   (void) G_GNUC_CONST;
+GType         btk_tree_model_sort_get_type                   (void) B_GNUC_CONST;
 BtkTreeModel *btk_tree_model_sort_new_with_model             (BtkTreeModel     *child_model);
 
 BtkTreeModel *btk_tree_model_sort_get_model                  (BtkTreeModelSort *tree_model);
@@ -101,6 +101,6 @@ gboolean      btk_tree_model_sort_iter_is_valid              (BtkTreeModelSort *
                                                               BtkTreeIter      *iter);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_MODEL_SORT_H__ */

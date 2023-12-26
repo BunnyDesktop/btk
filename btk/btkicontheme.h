@@ -27,7 +27,7 @@
 #include <bdk-pixbuf/bdk-pixbuf.h>
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ICON_INFO              (btk_icon_info_get_type ())
 
@@ -111,7 +111,7 @@ GQuark btk_icon_theme_error_quark (void);
 #define btk_icon_info_get_filename btk_icon_info_get_filename_utf8
 #endif
 
-GType         btk_icon_theme_get_type              (void) G_GNUC_CONST;
+GType         btk_icon_theme_get_type              (void) B_GNUC_CONST;
 
 BtkIconTheme *btk_icon_theme_new                   (void);
 BtkIconTheme *btk_icon_theme_get_default           (void);
@@ -167,7 +167,7 @@ void          btk_icon_theme_add_builtin_icon      (const gchar *icon_name,
 					            gint         size,
 					            BdkPixbuf   *pixbuf);
 
-GType                 btk_icon_info_get_type           (void) G_GNUC_CONST;
+GType                 btk_icon_info_get_type           (void) B_GNUC_CONST;
 BtkIconInfo *         btk_icon_info_copy               (BtkIconInfo  *icon_info);
 void                  btk_icon_info_free               (BtkIconInfo  *icon_info);
 
@@ -193,6 +193,6 @@ const gchar *         btk_icon_info_get_display_name  (BtkIconInfo    *icon_info
 void _btk_icon_theme_check_reload                     (BdkDisplay *display);
 void _btk_icon_theme_ensure_builtin_cache             (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ICON_THEME_H__ */

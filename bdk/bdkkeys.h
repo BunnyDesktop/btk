@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkKeymapKey BdkKeymapKey;
 
@@ -78,7 +78,7 @@ struct _BdkKeymapClass
   void (*state_changed)     (BdkKeymap *keymap);
 };
 
-GType bdk_keymap_get_type (void) G_GNUC_CONST;
+GType bdk_keymap_get_type (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 BdkKeymap* bdk_keymap_get_default     (void);
@@ -115,20 +115,20 @@ gboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
 
 /* Key values
  */
-gchar*   bdk_keyval_name         (guint        keyval) G_GNUC_CONST;
+gchar*   bdk_keyval_name         (guint        keyval) B_GNUC_CONST;
 guint    bdk_keyval_from_name    (const gchar *keyval_name);
 void     bdk_keyval_convert_case (guint        symbol,
 				  guint       *lower,
 				  guint       *upper);
-guint    bdk_keyval_to_upper     (guint        keyval) G_GNUC_CONST;
-guint    bdk_keyval_to_lower     (guint        keyval) G_GNUC_CONST;
-gboolean bdk_keyval_is_upper     (guint        keyval) G_GNUC_CONST;
-gboolean bdk_keyval_is_lower     (guint        keyval) G_GNUC_CONST;
+guint    bdk_keyval_to_upper     (guint        keyval) B_GNUC_CONST;
+guint    bdk_keyval_to_lower     (guint        keyval) B_GNUC_CONST;
+gboolean bdk_keyval_is_upper     (guint        keyval) B_GNUC_CONST;
+gboolean bdk_keyval_is_lower     (guint        keyval) B_GNUC_CONST;
 
-guint32  bdk_keyval_to_unicode   (guint        keyval) G_GNUC_CONST;
-guint    bdk_unicode_to_keyval   (guint32      wc) G_GNUC_CONST;
+guint32  bdk_keyval_to_unicode   (guint        keyval) B_GNUC_CONST;
+guint    bdk_unicode_to_keyval   (guint32      wc) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_KEYS_H__ */

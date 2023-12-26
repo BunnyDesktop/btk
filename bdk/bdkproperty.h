@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum
 {
@@ -123,6 +123,6 @@ void bdk_free_text_list             (gchar        **list);
 void bdk_free_compound_text         (guchar        *ctext);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PROPERTY_H__ */

@@ -34,7 +34,7 @@
 #include <bdk/bdk.h>
 #include <btk/btkrc.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkIconFactoryClass BtkIconFactoryClass;
 
@@ -71,7 +71,7 @@ struct _BtkIconFactoryClass
 #define btk_icon_source_get_filename btk_icon_source_get_filename_utf8
 #endif
 
-GType           btk_icon_factory_get_type (void) G_GNUC_CONST;
+GType           btk_icon_factory_get_type (void) B_GNUC_CONST;
 BtkIconFactory* btk_icon_factory_new      (void);
 void            btk_icon_factory_add      (BtkIconFactory *factory,
                                            const gchar    *stock_id,
@@ -116,7 +116,7 @@ const gchar *         btk_icon_size_get_name       (BtkIconSize  size);
 
 /* Icon sets */
 
-GType       btk_icon_set_get_type        (void) G_GNUC_CONST;
+GType       btk_icon_set_get_type        (void) B_GNUC_CONST;
 BtkIconSet* btk_icon_set_new             (void);
 BtkIconSet* btk_icon_set_new_from_pixbuf (BdkPixbuf       *pixbuf);
 
@@ -143,7 +143,7 @@ void           btk_icon_set_get_sizes    (BtkIconSet          *icon_set,
                                           BtkIconSize        **sizes,
                                           gint                *n_sizes);
 
-GType          btk_icon_source_get_type                 (void) G_GNUC_CONST;
+GType          btk_icon_source_get_type                 (void) B_GNUC_CONST;
 BtkIconSource* btk_icon_source_new                      (void);
 BtkIconSource* btk_icon_source_copy                     (const BtkIconSource *source);
 void           btk_icon_source_free                     (BtkIconSource       *source);
@@ -184,6 +184,6 @@ void _btk_icon_set_invalidate_caches (void);
 GList* _btk_icon_factory_list_ids (void);
 void _btk_icon_factory_ensure_default_icons (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ICON_FACTORY_H__ */

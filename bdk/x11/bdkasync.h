@@ -24,7 +24,7 @@
 #include <X11/Xlib.h>
 #include "bdk.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkChildInfoX11 BdkChildInfoX11;
 
@@ -70,6 +70,6 @@ void _bdk_x11_roundtrip_async           (BdkDisplay           *display,
 					 BdkRoundTripCallback callback,
 					 gpointer              data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_ASYNC_H__ */

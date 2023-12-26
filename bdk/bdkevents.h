@@ -36,7 +36,7 @@
 #include <bdk/bdkdnd.h>
 #include <bdk/bdkinput.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_EVENT          (bdk_event_get_type ())
 
@@ -513,7 +513,7 @@ union _BdkEvent
   BdkEventGrabBroken        grab_broken;
 };
 
-GType     bdk_event_get_type            (void) G_GNUC_CONST;
+GType     bdk_event_get_type            (void) B_GNUC_CONST;
 
 gboolean  bdk_events_pending	 	(void);
 BdkEvent* bdk_event_get			(void);
@@ -561,6 +561,6 @@ gboolean bdk_setting_get (const gchar *name,
 			  GValue      *value); 
 #endif /* BDK_MULTIHEAD_SAFE */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_EVENTS_H__ */

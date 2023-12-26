@@ -34,7 +34,7 @@
 #include <bdk/bdkcolor.h>
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkGCValues	      BdkGCValues;
 typedef struct _BdkGCClass	      BdkGCClass;
@@ -221,7 +221,7 @@ struct _BdkGCClass
 
 
 #ifndef BDK_DISABLE_DEPRECATED
-GType  bdk_gc_get_type            (void) G_GNUC_CONST;
+GType  bdk_gc_get_type            (void) B_GNUC_CONST;
 BdkGC *bdk_gc_new		  (BdkDrawable	    *drawable);
 BdkGC *bdk_gc_new_with_values	  (BdkDrawable	    *drawable,
 				   BdkGCValues	    *values,
@@ -293,6 +293,6 @@ BdkScreen *  bdk_gc_get_screen	     (BdkGC          *gc);
 #define bdk_gc_destroy                 g_object_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_H__ */

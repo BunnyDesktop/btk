@@ -27,7 +27,7 @@
 #include <btk/btktreemodel.h>
 #include <btk/btkcellrenderertext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_COMBO		(btk_cell_renderer_combo_get_type ())
 #define BTK_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererCombo))
@@ -56,9 +56,9 @@ struct _BtkCellRendererComboClass
   BtkCellRendererTextClass parent;
 };
 
-GType            btk_cell_renderer_combo_get_type (void) G_GNUC_CONST;
+GType            btk_cell_renderer_combo_get_type (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_combo_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_COMBO_H__ */

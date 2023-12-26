@@ -32,7 +32,7 @@
 #include <bdk/bdktypes.h>
 #include <bango/bango.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_FONT bdk_font_get_type ()
 
@@ -53,7 +53,7 @@ struct _BdkFont
   gint descent;
 };
 
-GType    bdk_font_get_type  (void) G_GNUC_CONST;
+GType    bdk_font_get_type  (void) B_GNUC_CONST;
 
 BdkFont* bdk_font_ref	    (BdkFont        *font);
 void	 bdk_font_unref	    (BdkFont        *font);
@@ -131,7 +131,7 @@ BdkDisplay * bdk_font_get_display (BdkFont *font);
 
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_FONT_H__ */
 

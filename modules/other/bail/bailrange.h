@@ -22,7 +22,7 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_RANGE                          (bail_range_get_type ())
 #define BAIL_RANGE(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RANGE, BailRange))
@@ -52,6 +52,6 @@ struct _BailRangeClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_RANGE_H__ */

@@ -23,7 +23,7 @@
 #include <bail/bailrange.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_SCALE                         (bail_scale_get_type ())
 #define BAIL_SCALE(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE, BailScale))
@@ -49,6 +49,6 @@ struct _BailScaleClass
   BailRangeClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_SCALE_H__ */

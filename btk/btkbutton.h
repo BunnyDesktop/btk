@@ -36,7 +36,7 @@
 #include <btk/btkimage.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_BUTTON                 (btk_button_get_type ())
 #define BTK_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUTTON, BtkButton))
@@ -88,7 +88,7 @@ struct _BtkButtonClass
 };
 
 
-GType          btk_button_get_type          (void) G_GNUC_CONST;
+GType          btk_button_get_type          (void) B_GNUC_CONST;
 BtkWidget*     btk_button_new               (void);
 BtkWidget*     btk_button_new_with_label    (const gchar    *label);
 BtkWidget*     btk_button_new_from_stock    (const gchar    *stock_id);
@@ -142,6 +142,6 @@ void _btk_button_paint                     (BtkButton          *button,
 					    const gchar        *main_detail,
 					    const gchar        *default_detail);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BUTTON_H__ */

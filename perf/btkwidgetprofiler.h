@@ -3,7 +3,7 @@
 #ifndef BTK_WIDGET_PROFILER_H
 #define BTK_WIDGET_PROFILER_H
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_WIDGET_PROFILER		(btk_widget_profiler_get_type ())
 #define BTK_WIDGET_PROFILER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_WIDGET_PROFILER, BtkWidgetProfiler))
@@ -43,7 +43,7 @@ struct _BtkWidgetProfilerClass {
 			 gdouble                 elapsed);
 };
 
-GType btk_widget_profiler_get_type (void) G_GNUC_CONST;
+GType btk_widget_profiler_get_type (void) B_GNUC_CONST;
 
 BtkWidgetProfiler *btk_widget_profiler_new (void);
 
@@ -55,6 +55,6 @@ void btk_widget_profiler_profile_boot (BtkWidgetProfiler *profiler);
 void btk_widget_profiler_profile_expose (BtkWidgetProfiler *profiler);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif

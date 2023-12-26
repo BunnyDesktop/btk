@@ -30,7 +30,7 @@
 #include <bdk/win32/bdkdrawable-win32.h>
 #include <bdk/bdkpixmap.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Pixmap implementation for Win32
  */
@@ -63,6 +63,6 @@ struct _BdkPixmapImplWin32Class
 
 GType _bdk_pixmap_impl_win32_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_WIN32_H__ */

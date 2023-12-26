@@ -37,7 +37,7 @@
 #include <btk/btkselection.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum {
   BTK_DEST_DEFAULT_MOTION     = 1 << 0, /* respond to "drag_motion" */
@@ -183,6 +183,6 @@ void btk_drag_set_default_icon (BdkColormap   *colormap,
 			        gint           hot_y);
 #endif /* !BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_DND_H__ */

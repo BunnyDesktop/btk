@@ -27,7 +27,7 @@
 #include <btk/btkimcontext.h>
 #include <btk/btkmenushell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IM_MULTICONTEXT              (btk_im_multicontext_get_type ())
 #define BTK_IM_MULTICONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontext))
@@ -63,7 +63,7 @@ struct _BtkIMMulticontextClass
   void (*_btk_reserved4) (void);
 };
 
-GType         btk_im_multicontext_get_type (void) G_GNUC_CONST;
+GType         btk_im_multicontext_get_type (void) B_GNUC_CONST;
 BtkIMContext *btk_im_multicontext_new      (void);
 
 void          btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
@@ -73,6 +73,6 @@ const char  * btk_im_multicontext_get_context_id   (BtkIMMulticontext *context);
 void          btk_im_multicontext_set_context_id   (BtkIMMulticontext *context,
                                                     const char        *context_id);
  
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_MULTICONTEXT_H__ */

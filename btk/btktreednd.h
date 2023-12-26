@@ -27,7 +27,7 @@
 #include <btk/btktreemodel.h>
 #include <btk/btkdnd.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_DRAG_SOURCE            (btk_tree_drag_source_get_type ())
 #define BTK_TREE_DRAG_SOURCE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_DRAG_SOURCE, BtkTreeDragSource))
@@ -54,7 +54,7 @@ struct _BtkTreeDragSourceIface
                                          BtkTreePath       *path);
 };
 
-GType           btk_tree_drag_source_get_type   (void) G_GNUC_CONST;
+GType           btk_tree_drag_source_get_type   (void) B_GNUC_CONST;
 
 /* Returns whether the given row can be dragged */
 gboolean btk_tree_drag_source_row_draggable    (BtkTreeDragSource *drag_source,
@@ -94,7 +94,7 @@ struct _BtkTreeDragDestIface
 				       BtkSelectionData  *selection_data);
 };
 
-GType           btk_tree_drag_dest_get_type   (void) G_GNUC_CONST;
+GType           btk_tree_drag_dest_get_type   (void) B_GNUC_CONST;
 
 /* Inserts a row before dest which contains data in selection_data,
  * or returns FALSE if it can't
@@ -120,6 +120,6 @@ gboolean btk_tree_get_row_drag_data            (BtkSelectionData  *selection_dat
 						BtkTreeModel     **tree_model,
 						BtkTreePath      **path);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_DND_H__ */

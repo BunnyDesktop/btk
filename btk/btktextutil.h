@@ -27,7 +27,7 @@
 #ifndef __BTK_TEXT_UTIL_H__
 #define __BTK_TEXT_UTIL_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* This is a private uninstalled header shared between
  * BtkTextView and BtkEntry
@@ -53,6 +53,6 @@ gboolean _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
 						   BangoRectangle *rectangle,
 						   gboolean       *at_line_end);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_UTIL_H__ */

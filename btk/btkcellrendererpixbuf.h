@@ -27,7 +27,7 @@
 #include <btk/btkcellrenderer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_CELL_RENDERER_PIXBUF			(btk_cell_renderer_pixbuf_get_type ())
@@ -61,11 +61,11 @@ struct _BtkCellRendererPixbufClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_pixbuf_get_type (void) G_GNUC_CONST;
+GType            btk_cell_renderer_pixbuf_get_type (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_pixbuf_new      (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_CELL_RENDERER_PIXBUF_H__ */

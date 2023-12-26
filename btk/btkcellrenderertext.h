@@ -28,7 +28,7 @@
 #include <btk/btkcellrenderer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_CELL_RENDERER_TEXT		(btk_cell_renderer_text_get_type ())
@@ -93,13 +93,13 @@ struct _BtkCellRendererTextClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_text_get_type (void) G_GNUC_CONST;
+GType            btk_cell_renderer_text_get_type (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_text_new      (void);
 
 void             btk_cell_renderer_text_set_fixed_height_from_font (BtkCellRendererText *renderer,
 								    gint                 number_of_rows);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_TEXT_H__ */

@@ -35,7 +35,7 @@
 #include <windows.h>
 #include <commctrl.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifdef INSIDE_BDK_WIN32
 
@@ -124,6 +124,6 @@ BdkWindow *   bdk_win32_window_lookup_for_display (BdkDisplay *display,
                                                    BdkNativeWindow anid);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WIN32_H__ */

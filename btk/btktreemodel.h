@@ -29,7 +29,7 @@
 /* Not needed, retained for compatibility -Yosh */
 #include <btk/btkobject.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL            (btk_tree_model_get_type ())
 #define BTK_TREE_MODEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL, BtkTreeModel))
@@ -138,7 +138,7 @@ gint        *btk_tree_path_get_indices_with_depth (BtkTreePath *path,
                                                    gint        *depth);
 void         btk_tree_path_free             (BtkTreePath       *path);
 BtkTreePath *btk_tree_path_copy             (const BtkTreePath *path);
-GType        btk_tree_path_get_type         (void) G_GNUC_CONST;
+GType        btk_tree_path_get_type         (void) B_GNUC_CONST;
 gint         btk_tree_path_compare          (const BtkTreePath *a,
 					     const BtkTreePath *b);
 void         btk_tree_path_next             (BtkTreePath       *path);
@@ -160,7 +160,7 @@ gboolean     btk_tree_path_is_descendant    (BtkTreePath       *path,
  * want to call btk_tree_row_reference_new.
  */
 
-GType                btk_tree_row_reference_get_type (void) G_GNUC_CONST;
+GType                btk_tree_row_reference_get_type (void) B_GNUC_CONST;
 BtkTreeRowReference *btk_tree_row_reference_new       (BtkTreeModel        *model,
 						       BtkTreePath         *path);
 BtkTreeRowReference *btk_tree_row_reference_new_proxy (GObject             *proxy,
@@ -185,9 +185,9 @@ void                 btk_tree_row_reference_reordered (GObject     *proxy,
 /* BtkTreeIter operations */
 BtkTreeIter *     btk_tree_iter_copy             (BtkTreeIter  *iter);
 void              btk_tree_iter_free             (BtkTreeIter  *iter);
-GType             btk_tree_iter_get_type         (void) G_GNUC_CONST;
+GType             btk_tree_iter_get_type         (void) B_GNUC_CONST;
 
-GType             btk_tree_model_get_type        (void) G_GNUC_CONST;
+GType             btk_tree_model_get_type        (void) B_GNUC_CONST;
 BtkTreeModelFlags btk_tree_model_get_flags       (BtkTreeModel *tree_model);
 gint              btk_tree_model_get_n_columns   (BtkTreeModel *tree_model);
 GType             btk_tree_model_get_column_type (BtkTreeModel *tree_model,
@@ -265,6 +265,6 @@ void btk_tree_model_rows_reordered        (BtkTreeModel *tree_model,
 					   BtkTreeIter  *iter,
 					   gint         *new_order);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_MODEL_H__ */

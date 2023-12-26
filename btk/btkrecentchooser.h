@@ -30,7 +30,7 @@
 #include <btk/btkrecentmanager.h>
 #include <btk/btkrecentfilter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_CHOOSER			(btk_recent_chooser_get_type ())
 #define BTK_RECENT_CHOOSER(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER, BtkRecentChooser))
@@ -115,7 +115,7 @@ struct _BtkRecentChooserIface
   void		    (* selection_changed)  (BtkRecentChooser  *chooser);
 };
 
-GType   btk_recent_chooser_get_type    (void) G_GNUC_CONST;
+GType   btk_recent_chooser_get_type    (void) B_GNUC_CONST;
 
 /*
  * Configuration
@@ -186,6 +186,6 @@ void 		 btk_recent_chooser_set_filter    (BtkRecentChooser *chooser,
 BtkRecentFilter *btk_recent_chooser_get_filter    (BtkRecentChooser *chooser);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_H__ */

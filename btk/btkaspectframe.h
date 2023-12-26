@@ -35,7 +35,7 @@
 #include <btk/btkframe.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ASPECT_FRAME            (btk_aspect_frame_get_type ())
 #define BTK_ASPECT_FRAME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrame))
@@ -66,7 +66,7 @@ struct _BtkAspectFrameClass
 };
 
 
-GType      btk_aspect_frame_get_type   (void) G_GNUC_CONST;
+GType      btk_aspect_frame_get_type   (void) B_GNUC_CONST;
 BtkWidget* btk_aspect_frame_new        (const gchar     *label,
 					gfloat           xalign,
 					gfloat           yalign,
@@ -79,6 +79,6 @@ void       btk_aspect_frame_set        (BtkAspectFrame  *aspect_frame,
 					gboolean         obey_child);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ASPECT_FRAME_H__ */

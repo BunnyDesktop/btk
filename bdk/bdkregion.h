@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifndef BDK_DISABLE_DEPRECATED
 /* GC fill rule for polygons
@@ -121,7 +121,7 @@ void   bdk_rebunnyion_spans_intersect_foreach (BdkRebunnyion          *rebunnyio
                                            gpointer            data);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_REBUNNYION_H__ */
 

@@ -534,7 +534,7 @@ get_keymap (BdkKeymapX11 *keymap_x11)
   return keymap_x11->keymap;
 }
 
-#define GET_EFFECTIVE_KEYMAP(keymap) get_effective_keymap ((keymap), G_STRFUNC)
+#define GET_EFFECTIVE_KEYMAP(keymap) get_effective_keymap ((keymap), B_STRFUNC)
 
 static BdkKeymap *
 get_effective_keymap (BdkKeymap  *keymap,

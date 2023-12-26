@@ -30,7 +30,7 @@
 #include <btk/btktexttypes.h>
 #include <btk/btktextlayout.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_IS_TEXT_MARK_SEGMENT(mark) (((BtkTextLineSegment*)mark)->type == &btk_text_left_mark_type || \
                                 ((BtkTextLineSegment*)mark)->type == &btk_text_right_mark_type)
@@ -52,7 +52,7 @@ struct _BtkTextMarkBody {
 void _btk_mark_segment_set_tree (BtkTextLineSegment *mark,
 				 BtkTextBTree       *tree);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

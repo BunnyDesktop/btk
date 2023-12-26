@@ -44,7 +44,7 @@
 #include <btk/btktextsegment.h>
 #include <btk/btktextiter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BtkTextBTree  *_btk_text_btree_new        (BtkTextTagTable *table,
                                            BtkTextBuffer   *buffer);
@@ -341,7 +341,7 @@ void _btk_text_btree_release_mark_segment (BtkTextBTree       *tree,
 void _btk_text_btree_notify_will_remove_tag (BtkTextBTree *tree,
                                              BtkTextTag   *tag);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

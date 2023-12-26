@@ -35,7 +35,7 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TABLE			(btk_table_get_type ())
 #define BTK_TABLE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TABLE, BtkTable))
@@ -99,7 +99,7 @@ struct _BtkTableRowCol
 };
 
 
-GType	   btk_table_get_type	      (void) G_GNUC_CONST;
+GType	   btk_table_get_type	      (void) B_GNUC_CONST;
 BtkWidget* btk_table_new	      (guint		rows,
 				       guint		columns,
 				       gboolean		homogeneous);
@@ -146,6 +146,6 @@ void       btk_table_get_size         (BtkTable        *table,
                                        guint           *columns);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TABLE_H__ */

@@ -27,7 +27,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SIZE_GROUP            (btk_size_group_get_type ())
 #define BTK_SIZE_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
@@ -84,7 +84,7 @@ typedef enum {
   BTK_SIZE_GROUP_BOTH
 } BtkSizeGroupMode;
 
-GType            btk_size_group_get_type      (void) G_GNUC_CONST;
+GType            btk_size_group_get_type      (void) B_GNUC_CONST;
 
 BtkSizeGroup *   btk_size_group_new           (BtkSizeGroupMode  mode);
 void             btk_size_group_set_mode      (BtkSizeGroup     *size_group,
@@ -106,6 +106,6 @@ void _btk_size_group_compute_requisition   (BtkWidget      *widget,
 					    BtkRequisition *requisition);
 void _btk_size_group_queue_resize          (BtkWidget      *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SIZE_GROUP_H__ */

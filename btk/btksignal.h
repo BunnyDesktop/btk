@@ -34,7 +34,7 @@
 #include <btk/btkobject.h>
 #include <btk/btkmarshal.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define	btk_signal_default_marshaller	g_cclosure_marshal_VOID__VOID
 
@@ -144,7 +144,7 @@ void	btk_signal_compat_matched		(BtkObject	    *object,
 						 GSignalMatchType    match,
 						 guint               action);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SIGNAL_H__ */
 

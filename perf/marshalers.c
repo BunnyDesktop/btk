@@ -53,7 +53,7 @@ _btk_marshal_OBJECT__VOID (GClosure     *closure,
                            GValue       *return_value,
                            guint         n_param_values,
                            const GValue *param_values,
-                           gpointer      invocation_hint G_GNUC_UNUSED,
+                           gpointer      invocation_hint B_GNUC_UNUSED,
                            gpointer      marshal_data)
 {
   typedef GObject* (*GMarshalFunc_OBJECT__VOID) (gpointer data1,
@@ -87,10 +87,10 @@ _btk_marshal_OBJECT__VOID (GClosure     *closure,
 /* VOID:ENUM,OBJECT,DOUBLE (./marshalers.list:2) */
 void
 _btk_marshal_VOID__ENUM_OBJECT_DOUBLE (GClosure     *closure,
-                                       GValue       *return_value G_GNUC_UNUSED,
+                                       GValue       *return_value B_GNUC_UNUSED,
                                        guint         n_param_values,
                                        const GValue *param_values,
-                                       gpointer      invocation_hint G_GNUC_UNUSED,
+                                       gpointer      invocation_hint B_GNUC_UNUSED,
                                        gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__ENUM_OBJECT_DOUBLE) (gpointer data1,

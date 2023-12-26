@@ -36,7 +36,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* --- type macros --- */
 #define	BTK_TYPE_TIPS_QUERY		(btk_tips_query_get_type ())
@@ -93,7 +93,7 @@ struct	_BtkTipsQueryClass
 
 
 /* --- prototypes --- */
-GType		btk_tips_query_get_type		(void) G_GNUC_CONST;
+GType		btk_tips_query_get_type		(void) B_GNUC_CONST;
 BtkWidget*	btk_tips_query_new		(void);
 void		btk_tips_query_start_query	(BtkTipsQuery	*tips_query);
 void		btk_tips_query_stop_query	(BtkTipsQuery	*tips_query);
@@ -103,7 +103,7 @@ void		btk_tips_query_set_labels 	(BtkTipsQuery   *tips_query,
 						 const gchar    *label_inactive,
 						 const gchar    *label_no_tip);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif	/* __BTK_TIPS_QUERY_H__ */
 

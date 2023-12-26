@@ -29,7 +29,7 @@
 #include <btk/btk.h>
 #include <btk/btkprinter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_JOB                  (btk_print_job_get_type ())
 #define BTK_PRINT_JOB(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
@@ -86,7 +86,7 @@ struct _BtkPrintJobClass
   void (*_btk_reserved7) (void);
 };
 
-GType                    btk_print_job_get_type               (void) G_GNUC_CONST;
+GType                    btk_print_job_get_type               (void) B_GNUC_CONST;
 BtkPrintJob             *btk_print_job_new                    (const gchar              *title,
 							       BtkPrinter               *printer,
 							       BtkPrintSettings         *settings,
@@ -108,6 +108,6 @@ void                     btk_print_job_send                   (BtkPrintJob      
 							       gpointer                  user_data,
 							       GDestroyNotify            dnotify);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_JOB_H__ */

@@ -25,7 +25,7 @@
 #include <btk/btktable.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define TICTACTOE_TYPE            (tictactoe_get_type ())
 #define TICTACTOE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
@@ -55,7 +55,7 @@ GType          tictactoe_get_type        (void);
 BtkWidget*     tictactoe_new             (void);
 void	       tictactoe_clear           (Tictactoe *ttt);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __TICTACTOE_H__ */
 

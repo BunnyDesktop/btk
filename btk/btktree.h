@@ -33,7 +33,7 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* set this flag to enable tree debugging output */
 /* #define TREE_DEBUG */
@@ -88,7 +88,7 @@ struct _BtkTreeClass
 };
 
 
-GType      btk_tree_get_type           (void) G_GNUC_CONST;
+GType      btk_tree_get_type           (void) B_GNUC_CONST;
 BtkWidget* btk_tree_new                (void);
 void       btk_tree_append             (BtkTree          *tree,
 				        BtkWidget        *tree_item);
@@ -125,7 +125,7 @@ void       btk_tree_remove_item        (BtkTree          *tree,
 				        BtkWidget        *child);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_H__ */
 

@@ -11,7 +11,7 @@ GType
 btk_accel_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_ACCEL_VISIBLE, "BTK_ACCEL_VISIBLE", "visible" },
             { BTK_ACCEL_LOCKED, "BTK_ACCEL_LOCKED", "locked" },
@@ -27,7 +27,7 @@ GType
 btk_assistant_page_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ASSISTANT_PAGE_CONTENT, "BTK_ASSISTANT_PAGE_CONTENT", "content" },
             { BTK_ASSISTANT_PAGE_INTRO, "BTK_ASSISTANT_PAGE_INTRO", "intro" },
@@ -45,7 +45,7 @@ GType
 btk_builder_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION, "BTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION", "invalid-type-function" },
             { BTK_BUILDER_ERROR_UNHANDLED_TAG, "BTK_BUILDER_ERROR_UNHANDLED_TAG", "unhandled-tag" },
@@ -67,7 +67,7 @@ GType
 btk_calendar_display_options_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_CALENDAR_SHOW_HEADING, "BTK_CALENDAR_SHOW_HEADING", "show-heading" },
             { BTK_CALENDAR_SHOW_DAY_NAMES, "BTK_CALENDAR_SHOW_DAY_NAMES", "show-day-names" },
@@ -86,7 +86,7 @@ GType
 btk_cell_renderer_state_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_CELL_RENDERER_SELECTED, "BTK_CELL_RENDERER_SELECTED", "selected" },
             { BTK_CELL_RENDERER_PRELIT, "BTK_CELL_RENDERER_PRELIT", "prelit" },
@@ -103,7 +103,7 @@ GType
 btk_cell_renderer_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CELL_RENDERER_MODE_INERT, "BTK_CELL_RENDERER_MODE_INERT", "inert" },
             { BTK_CELL_RENDERER_MODE_ACTIVATABLE, "BTK_CELL_RENDERER_MODE_ACTIVATABLE", "activatable" },
@@ -119,7 +119,7 @@ GType
 btk_cell_renderer_accel_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CELL_RENDERER_ACCEL_MODE_BTK, "BTK_CELL_RENDERER_ACCEL_MODE_BTK", "btk" },
             { BTK_CELL_RENDERER_ACCEL_MODE_OTHER, "BTK_CELL_RENDERER_ACCEL_MODE_OTHER", "other" },
@@ -134,7 +134,7 @@ GType
 btk_cell_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CELL_EMPTY, "BTK_CELL_EMPTY", "empty" },
             { BTK_CELL_TEXT, "BTK_CELL_TEXT", "text" },
@@ -151,7 +151,7 @@ GType
 btk_clist_drag_pos_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CLIST_DRAG_NONE, "BTK_CLIST_DRAG_NONE", "none" },
             { BTK_CLIST_DRAG_BEFORE, "BTK_CLIST_DRAG_BEFORE", "before" },
@@ -167,7 +167,7 @@ GType
 btk_button_action_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_BUTTON_IGNORED, "BTK_BUTTON_IGNORED", "ignored" },
             { BTK_BUTTON_SELECTS, "BTK_BUTTON_SELECTS", "selects" },
@@ -184,7 +184,7 @@ GType
 btk_ctree_pos_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CTREE_POS_BEFORE, "BTK_CTREE_POS_BEFORE", "before" },
             { BTK_CTREE_POS_AS_CHILD, "BTK_CTREE_POS_AS_CHILD", "as-child" },
@@ -199,7 +199,7 @@ GType
 btk_ctree_line_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CTREE_LINES_NONE, "BTK_CTREE_LINES_NONE", "none" },
             { BTK_CTREE_LINES_SOLID, "BTK_CTREE_LINES_SOLID", "solid" },
@@ -215,7 +215,7 @@ GType
 btk_ctree_expander_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CTREE_EXPANDER_NONE, "BTK_CTREE_EXPANDER_NONE", "none" },
             { BTK_CTREE_EXPANDER_SQUARE, "BTK_CTREE_EXPANDER_SQUARE", "square" },
@@ -231,7 +231,7 @@ GType
 btk_ctree_expansion_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CTREE_EXPANSION_EXPAND, "BTK_CTREE_EXPANSION_EXPAND", "expand" },
             { BTK_CTREE_EXPANSION_EXPAND_RECURSIVE, "BTK_CTREE_EXPANSION_EXPAND_RECURSIVE", "expand-recursive" },
@@ -250,7 +250,7 @@ GType
 btk_debug_flag_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_DEBUG_MISC, "BTK_DEBUG_MISC", "misc" },
             { BTK_DEBUG_PLUGSOCKET, "BTK_DEBUG_PLUGSOCKET", "plugsocket" },
@@ -275,7 +275,7 @@ GType
 btk_dialog_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_DIALOG_MODAL, "BTK_DIALOG_MODAL", "modal" },
             { BTK_DIALOG_DESTROY_WITH_PARENT, "BTK_DIALOG_DESTROY_WITH_PARENT", "destroy-with-parent" },
@@ -290,7 +290,7 @@ GType
 btk_response_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RESPONSE_NONE, "BTK_RESPONSE_NONE", "none" },
             { BTK_RESPONSE_REJECT, "BTK_RESPONSE_REJECT", "reject" },
@@ -314,7 +314,7 @@ GType
 btk_dest_defaults_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_DEST_DEFAULT_MOTION, "BTK_DEST_DEFAULT_MOTION", "motion" },
             { BTK_DEST_DEFAULT_HIGHLIGHT, "BTK_DEST_DEFAULT_HIGHLIGHT", "highlight" },
@@ -330,7 +330,7 @@ GType
 btk_target_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_TARGET_SAME_APP, "BTK_TARGET_SAME_APP", "same-app" },
             { BTK_TARGET_SAME_WIDGET, "BTK_TARGET_SAME_WIDGET", "same-widget" },
@@ -347,7 +347,7 @@ GType
 btk_entry_icon_position_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ENTRY_ICON_PRIMARY, "BTK_ENTRY_ICON_PRIMARY", "primary" },
             { BTK_ENTRY_ICON_SECONDARY, "BTK_ENTRY_ICON_SECONDARY", "secondary" },
@@ -362,7 +362,7 @@ GType
 btk_anchor_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ANCHOR_CENTER, "BTK_ANCHOR_CENTER", "center" },
             { BTK_ANCHOR_NORTH, "BTK_ANCHOR_NORTH", "north" },
@@ -391,7 +391,7 @@ GType
 btk_arrow_placement_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ARROWS_BOTH, "BTK_ARROWS_BOTH", "both" },
             { BTK_ARROWS_START, "BTK_ARROWS_START", "start" },
@@ -406,7 +406,7 @@ GType
 btk_arrow_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ARROW_UP, "BTK_ARROW_UP", "up" },
             { BTK_ARROW_DOWN, "BTK_ARROW_DOWN", "down" },
@@ -423,7 +423,7 @@ GType
 btk_attach_options_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_EXPAND, "BTK_EXPAND", "expand" },
             { BTK_SHRINK, "BTK_SHRINK", "shrink" },
@@ -438,7 +438,7 @@ GType
 btk_button_box_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_BUTTONBOX_DEFAULT_STYLE, "BTK_BUTTONBOX_DEFAULT_STYLE", "default-style" },
             { BTK_BUTTONBOX_SPREAD, "BTK_BUTTONBOX_SPREAD", "spread" },
@@ -456,7 +456,7 @@ GType
 btk_curve_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CURVE_TYPE_LINEAR, "BTK_CURVE_TYPE_LINEAR", "linear" },
             { BTK_CURVE_TYPE_SPLINE, "BTK_CURVE_TYPE_SPLINE", "spline" },
@@ -471,7 +471,7 @@ GType
 btk_delete_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_DELETE_CHARS, "BTK_DELETE_CHARS", "chars" },
             { BTK_DELETE_WORD_ENDS, "BTK_DELETE_WORD_ENDS", "word-ends" },
@@ -491,7 +491,7 @@ GType
 btk_direction_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_DIR_TAB_FORWARD, "BTK_DIR_TAB_FORWARD", "tab-forward" },
             { BTK_DIR_TAB_BACKWARD, "BTK_DIR_TAB_BACKWARD", "tab-backward" },
@@ -509,7 +509,7 @@ GType
 btk_expander_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_EXPANDER_COLLAPSED, "BTK_EXPANDER_COLLAPSED", "collapsed" },
             { BTK_EXPANDER_SEMI_COLLAPSED, "BTK_EXPANDER_SEMI_COLLAPSED", "semi-collapsed" },
@@ -525,7 +525,7 @@ GType
 btk_icon_size_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ICON_SIZE_INVALID, "BTK_ICON_SIZE_INVALID", "invalid" },
             { BTK_ICON_SIZE_MENU, "BTK_ICON_SIZE_MENU", "menu" },
@@ -544,7 +544,7 @@ GType
 btk_sensitivity_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SENSITIVITY_AUTO, "BTK_SENSITIVITY_AUTO", "auto" },
             { BTK_SENSITIVITY_ON, "BTK_SENSITIVITY_ON", "on" },
@@ -559,7 +559,7 @@ GType
 btk_side_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SIDE_TOP, "BTK_SIDE_TOP", "top" },
             { BTK_SIDE_BOTTOM, "BTK_SIDE_BOTTOM", "bottom" },
@@ -575,7 +575,7 @@ GType
 btk_text_direction_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TEXT_DIR_NONE, "BTK_TEXT_DIR_NONE", "none" },
             { BTK_TEXT_DIR_LTR, "BTK_TEXT_DIR_LTR", "ltr" },
@@ -590,7 +590,7 @@ GType
 btk_justification_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_JUSTIFY_LEFT, "BTK_JUSTIFY_LEFT", "left" },
             { BTK_JUSTIFY_RIGHT, "BTK_JUSTIFY_RIGHT", "right" },
@@ -606,7 +606,7 @@ GType
 btk_match_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_MATCH_ALL, "BTK_MATCH_ALL", "all" },
             { BTK_MATCH_ALL_TAIL, "BTK_MATCH_ALL_TAIL", "all-tail" },
@@ -624,7 +624,7 @@ GType
 btk_menu_direction_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_MENU_DIR_PARENT, "BTK_MENU_DIR_PARENT", "parent" },
             { BTK_MENU_DIR_CHILD, "BTK_MENU_DIR_CHILD", "child" },
@@ -640,7 +640,7 @@ GType
 btk_message_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_MESSAGE_INFO, "BTK_MESSAGE_INFO", "info" },
             { BTK_MESSAGE_WARNING, "BTK_MESSAGE_WARNING", "warning" },
@@ -657,7 +657,7 @@ GType
 btk_metric_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PIXELS, "BTK_PIXELS", "pixels" },
             { BTK_INCHES, "BTK_INCHES", "inches" },
@@ -672,7 +672,7 @@ GType
 btk_movement_step_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_MOVEMENT_LOGICAL_POSITIONS, "BTK_MOVEMENT_LOGICAL_POSITIONS", "logical-positions" },
             { BTK_MOVEMENT_VISUAL_POSITIONS, "BTK_MOVEMENT_VISUAL_POSITIONS", "visual-positions" },
@@ -694,7 +694,7 @@ GType
 btk_scroll_step_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SCROLL_STEPS, "BTK_SCROLL_STEPS", "steps" },
             { BTK_SCROLL_PAGES, "BTK_SCROLL_PAGES", "pages" },
@@ -712,7 +712,7 @@ GType
 btk_orientation_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ORIENTATION_HORIZONTAL, "BTK_ORIENTATION_HORIZONTAL", "horizontal" },
             { BTK_ORIENTATION_VERTICAL, "BTK_ORIENTATION_VERTICAL", "vertical" },
@@ -726,7 +726,7 @@ GType
 btk_corner_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_CORNER_TOP_LEFT, "BTK_CORNER_TOP_LEFT", "top-left" },
             { BTK_CORNER_BOTTOM_LEFT, "BTK_CORNER_BOTTOM_LEFT", "bottom-left" },
@@ -742,7 +742,7 @@ GType
 btk_pack_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PACK_START, "BTK_PACK_START", "start" },
             { BTK_PACK_END, "BTK_PACK_END", "end" },
@@ -756,7 +756,7 @@ GType
 btk_path_priority_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PATH_PRIO_LOWEST, "BTK_PATH_PRIO_LOWEST", "lowest" },
             { BTK_PATH_PRIO_BTK, "BTK_PATH_PRIO_BTK", "btk" },
@@ -774,7 +774,7 @@ GType
 btk_path_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PATH_WIDGET, "BTK_PATH_WIDGET", "widget" },
             { BTK_PATH_WIDGET_CLASS, "BTK_PATH_WIDGET_CLASS", "widget-class" },
@@ -789,7 +789,7 @@ GType
 btk_policy_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_POLICY_ALWAYS, "BTK_POLICY_ALWAYS", "always" },
             { BTK_POLICY_AUTOMATIC, "BTK_POLICY_AUTOMATIC", "automatic" },
@@ -804,7 +804,7 @@ GType
 btk_position_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_POS_LEFT, "BTK_POS_LEFT", "left" },
             { BTK_POS_RIGHT, "BTK_POS_RIGHT", "right" },
@@ -820,7 +820,7 @@ GType
 btk_preview_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PREVIEW_COLOR, "BTK_PREVIEW_COLOR", "color" },
             { BTK_PREVIEW_GRAYSCALE, "BTK_PREVIEW_GRAYSCALE", "grayscale" },
@@ -834,7 +834,7 @@ GType
 btk_relief_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RELIEF_NORMAL, "BTK_RELIEF_NORMAL", "normal" },
             { BTK_RELIEF_HALF, "BTK_RELIEF_HALF", "half" },
@@ -849,7 +849,7 @@ GType
 btk_resize_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RESIZE_PARENT, "BTK_RESIZE_PARENT", "parent" },
             { BTK_RESIZE_QUEUE, "BTK_RESIZE_QUEUE", "queue" },
@@ -864,7 +864,7 @@ GType
 btk_signal_run_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_RUN_FIRST, "BTK_RUN_FIRST", "first" },
             { BTK_RUN_LAST, "BTK_RUN_LAST", "last" },
@@ -882,7 +882,7 @@ GType
 btk_scroll_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SCROLL_NONE, "BTK_SCROLL_NONE", "none" },
             { BTK_SCROLL_JUMP, "BTK_SCROLL_JUMP", "jump" },
@@ -910,7 +910,7 @@ GType
 btk_selection_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SELECTION_NONE, "BTK_SELECTION_NONE", "none" },
             { BTK_SELECTION_SINGLE, "BTK_SELECTION_SINGLE", "single" },
@@ -927,7 +927,7 @@ GType
 btk_shadow_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SHADOW_NONE, "BTK_SHADOW_NONE", "none" },
             { BTK_SHADOW_IN, "BTK_SHADOW_IN", "in" },
@@ -944,7 +944,7 @@ GType
 btk_state_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_STATE_NORMAL, "BTK_STATE_NORMAL", "normal" },
             { BTK_STATE_ACTIVE, "BTK_STATE_ACTIVE", "active" },
@@ -961,7 +961,7 @@ GType
 btk_submenu_direction_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_DIRECTION_LEFT, "BTK_DIRECTION_LEFT", "left" },
             { BTK_DIRECTION_RIGHT, "BTK_DIRECTION_RIGHT", "right" },
@@ -975,7 +975,7 @@ GType
 btk_submenu_placement_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TOP_BOTTOM, "BTK_TOP_BOTTOM", "top-bottom" },
             { BTK_LEFT_RIGHT, "BTK_LEFT_RIGHT", "left-right" },
@@ -989,7 +989,7 @@ GType
 btk_toolbar_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TOOLBAR_ICONS, "BTK_TOOLBAR_ICONS", "icons" },
             { BTK_TOOLBAR_TEXT, "BTK_TOOLBAR_TEXT", "text" },
@@ -1005,7 +1005,7 @@ GType
 btk_update_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_UPDATE_CONTINUOUS, "BTK_UPDATE_CONTINUOUS", "continuous" },
             { BTK_UPDATE_DISCONTINUOUS, "BTK_UPDATE_DISCONTINUOUS", "discontinuous" },
@@ -1020,7 +1020,7 @@ GType
 btk_visibility_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_VISIBILITY_NONE, "BTK_VISIBILITY_NONE", "none" },
             { BTK_VISIBILITY_PARTIAL, "BTK_VISIBILITY_PARTIAL", "partial" },
@@ -1035,7 +1035,7 @@ GType
 btk_window_position_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_WIN_POS_NONE, "BTK_WIN_POS_NONE", "none" },
             { BTK_WIN_POS_CENTER, "BTK_WIN_POS_CENTER", "center" },
@@ -1052,7 +1052,7 @@ GType
 btk_window_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_WINDOW_TOPLEVEL, "BTK_WINDOW_TOPLEVEL", "toplevel" },
             { BTK_WINDOW_POPUP, "BTK_WINDOW_POPUP", "popup" },
@@ -1066,7 +1066,7 @@ GType
 btk_wrap_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_WRAP_NONE, "BTK_WRAP_NONE", "none" },
             { BTK_WRAP_CHAR, "BTK_WRAP_CHAR", "char" },
@@ -1082,7 +1082,7 @@ GType
 btk_sort_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SORT_ASCENDING, "BTK_SORT_ASCENDING", "ascending" },
             { BTK_SORT_DESCENDING, "BTK_SORT_DESCENDING", "descending" },
@@ -1096,7 +1096,7 @@ GType
 btk_im_preedit_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_IM_PREEDIT_NOTHING, "BTK_IM_PREEDIT_NOTHING", "nothing" },
             { BTK_IM_PREEDIT_CALLBACK, "BTK_IM_PREEDIT_CALLBACK", "callback" },
@@ -1111,7 +1111,7 @@ GType
 btk_im_status_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_IM_STATUS_NOTHING, "BTK_IM_STATUS_NOTHING", "nothing" },
             { BTK_IM_STATUS_CALLBACK, "BTK_IM_STATUS_CALLBACK", "callback" },
@@ -1126,7 +1126,7 @@ GType
 btk_pack_direction_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PACK_DIRECTION_LTR, "BTK_PACK_DIRECTION_LTR", "ltr" },
             { BTK_PACK_DIRECTION_RTL, "BTK_PACK_DIRECTION_RTL", "rtl" },
@@ -1142,7 +1142,7 @@ GType
 btk_print_pages_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_PAGES_ALL, "BTK_PRINT_PAGES_ALL", "all" },
             { BTK_PRINT_PAGES_CURRENT, "BTK_PRINT_PAGES_CURRENT", "current" },
@@ -1158,7 +1158,7 @@ GType
 btk_page_set_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PAGE_SET_ALL, "BTK_PAGE_SET_ALL", "all" },
             { BTK_PAGE_SET_EVEN, "BTK_PAGE_SET_EVEN", "even" },
@@ -1173,7 +1173,7 @@ GType
 btk_number_up_layout_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM, "BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM", "lrtb" },
             { BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP, "BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP", "lrbt" },
@@ -1193,7 +1193,7 @@ GType
 btk_page_orientation_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PAGE_ORIENTATION_PORTRAIT, "BTK_PAGE_ORIENTATION_PORTRAIT", "portrait" },
             { BTK_PAGE_ORIENTATION_LANDSCAPE, "BTK_PAGE_ORIENTATION_LANDSCAPE", "landscape" },
@@ -1209,7 +1209,7 @@ GType
 btk_print_quality_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_QUALITY_LOW, "BTK_PRINT_QUALITY_LOW", "low" },
             { BTK_PRINT_QUALITY_NORMAL, "BTK_PRINT_QUALITY_NORMAL", "normal" },
@@ -1225,7 +1225,7 @@ GType
 btk_print_duplex_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_DUPLEX_SIMPLEX, "BTK_PRINT_DUPLEX_SIMPLEX", "simplex" },
             { BTK_PRINT_DUPLEX_HORIZONTAL, "BTK_PRINT_DUPLEX_HORIZONTAL", "horizontal" },
@@ -1240,7 +1240,7 @@ GType
 btk_unit_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_UNIT_PIXEL, "BTK_UNIT_PIXEL", "pixel" },
             { BTK_UNIT_POINTS, "BTK_UNIT_POINTS", "points" },
@@ -1256,7 +1256,7 @@ GType
 btk_tree_view_grid_lines_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TREE_VIEW_GRID_LINES_NONE, "BTK_TREE_VIEW_GRID_LINES_NONE", "none" },
             { BTK_TREE_VIEW_GRID_LINES_HORIZONTAL, "BTK_TREE_VIEW_GRID_LINES_HORIZONTAL", "horizontal" },
@@ -1272,7 +1272,7 @@ GType
 btk_drag_result_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_DRAG_RESULT_SUCCESS, "BTK_DRAG_RESULT_SUCCESS", "success" },
             { BTK_DRAG_RESULT_NO_TARGET, "BTK_DRAG_RESULT_NO_TARGET", "no-target" },
@@ -1291,7 +1291,7 @@ GType
 btk_file_chooser_action_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_FILE_CHOOSER_ACTION_OPEN, "BTK_FILE_CHOOSER_ACTION_OPEN", "open" },
             { BTK_FILE_CHOOSER_ACTION_SAVE, "BTK_FILE_CHOOSER_ACTION_SAVE", "save" },
@@ -1307,7 +1307,7 @@ GType
 btk_file_chooser_confirmation_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_FILE_CHOOSER_CONFIRMATION_CONFIRM, "BTK_FILE_CHOOSER_CONFIRMATION_CONFIRM", "confirm" },
             { BTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME, "BTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME", "accept-filename" },
@@ -1322,7 +1322,7 @@ GType
 btk_file_chooser_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_FILE_CHOOSER_ERROR_NONEXISTENT, "BTK_FILE_CHOOSER_ERROR_NONEXISTENT", "nonexistent" },
             { BTK_FILE_CHOOSER_ERROR_BAD_FILENAME, "BTK_FILE_CHOOSER_ERROR_BAD_FILENAME", "bad-filename" },
@@ -1339,7 +1339,7 @@ GType
 btk_file_filter_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_FILE_FILTER_FILENAME, "BTK_FILE_FILTER_FILENAME", "filename" },
             { BTK_FILE_FILTER_URI, "BTK_FILE_FILTER_URI", "uri" },
@@ -1356,7 +1356,7 @@ GType
 btk_icon_lookup_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_ICON_LOOKUP_NO_SVG, "BTK_ICON_LOOKUP_NO_SVG", "no-svg" },
             { BTK_ICON_LOOKUP_FORCE_SVG, "BTK_ICON_LOOKUP_FORCE_SVG", "force-svg" },
@@ -1373,7 +1373,7 @@ GType
 btk_icon_theme_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ICON_THEME_NOT_FOUND, "BTK_ICON_THEME_NOT_FOUND", "not-found" },
             { BTK_ICON_THEME_FAILED, "BTK_ICON_THEME_FAILED", "failed" },
@@ -1388,7 +1388,7 @@ GType
 btk_icon_view_drop_position_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_ICON_VIEW_NO_DROP, "BTK_ICON_VIEW_NO_DROP", "no-drop" },
             { BTK_ICON_VIEW_DROP_INTO, "BTK_ICON_VIEW_DROP_INTO", "drop-into" },
@@ -1407,7 +1407,7 @@ GType
 btk_image_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_IMAGE_EMPTY, "BTK_IMAGE_EMPTY", "empty" },
             { BTK_IMAGE_PIXMAP, "BTK_IMAGE_PIXMAP", "pixmap" },
@@ -1429,7 +1429,7 @@ GType
 btk_buttons_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_BUTTONS_NONE, "BTK_BUTTONS_NONE", "none" },
             { BTK_BUTTONS_OK, "BTK_BUTTONS_OK", "ok" },
@@ -1448,7 +1448,7 @@ GType
 btk_notebook_tab_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_NOTEBOOK_TAB_FIRST, "BTK_NOTEBOOK_TAB_FIRST", "first" },
             { BTK_NOTEBOOK_TAB_LAST, "BTK_NOTEBOOK_TAB_LAST", "last" },
@@ -1463,7 +1463,7 @@ GType
 btk_object_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_IN_DESTRUCTION, "BTK_IN_DESTRUCTION", "in-destruction" },
             { BTK_FLOATING, "BTK_FLOATING", "floating" },
@@ -1479,7 +1479,7 @@ GType
 btk_arg_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_ARG_READABLE, "BTK_ARG_READABLE", "readable" },
             { BTK_ARG_WRITABLE, "BTK_ARG_WRITABLE", "writable" },
@@ -1497,7 +1497,7 @@ GType
 btk_print_status_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_STATUS_INITIAL, "BTK_PRINT_STATUS_INITIAL", "initial" },
             { BTK_PRINT_STATUS_PREPARING, "BTK_PRINT_STATUS_PREPARING", "preparing" },
@@ -1518,7 +1518,7 @@ GType
 btk_print_operation_result_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_OPERATION_RESULT_ERROR, "BTK_PRINT_OPERATION_RESULT_ERROR", "error" },
             { BTK_PRINT_OPERATION_RESULT_APPLY, "BTK_PRINT_OPERATION_RESULT_APPLY", "apply" },
@@ -1534,7 +1534,7 @@ GType
 btk_print_operation_action_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, "BTK_PRINT_OPERATION_ACTION_PRINT_DIALOG", "print-dialog" },
             { BTK_PRINT_OPERATION_ACTION_PRINT, "BTK_PRINT_OPERATION_ACTION_PRINT", "print" },
@@ -1550,7 +1550,7 @@ GType
 btk_print_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PRINT_ERROR_GENERAL, "BTK_PRINT_ERROR_GENERAL", "general" },
             { BTK_PRINT_ERROR_INTERNAL_ERROR, "BTK_PRINT_ERROR_INTERNAL_ERROR", "internal-error" },
@@ -1567,7 +1567,7 @@ GType
 btk_private_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { PRIVATE_BTK_USER_STYLE, "PRIVATE_BTK_USER_STYLE", "user-style" },
             { PRIVATE_BTK_RESIZE_PENDING, "PRIVATE_BTK_RESIZE_PENDING", "resize-pending" },
@@ -1593,7 +1593,7 @@ GType
 btk_progress_bar_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PROGRESS_CONTINUOUS, "BTK_PROGRESS_CONTINUOUS", "continuous" },
             { BTK_PROGRESS_DISCRETE, "BTK_PROGRESS_DISCRETE", "discrete" },
@@ -1607,7 +1607,7 @@ GType
 btk_progress_bar_orientation_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_PROGRESS_LEFT_TO_RIGHT, "BTK_PROGRESS_LEFT_TO_RIGHT", "left-to-right" },
             { BTK_PROGRESS_RIGHT_TO_LEFT, "BTK_PROGRESS_RIGHT_TO_LEFT", "right-to-left" },
@@ -1624,7 +1624,7 @@ GType
 btk_rc_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_RC_FG, "BTK_RC_FG", "fg" },
             { BTK_RC_BG, "BTK_RC_BG", "bg" },
@@ -1640,7 +1640,7 @@ GType
 btk_rc_token_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RC_TOKEN_INVALID, "BTK_RC_TOKEN_INVALID", "invalid" },
             { BTK_RC_TOKEN_INCLUDE, "BTK_RC_TOKEN_INCLUDE", "include" },
@@ -1693,7 +1693,7 @@ GType
 btk_recent_sort_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RECENT_SORT_NONE, "BTK_RECENT_SORT_NONE", "none" },
             { BTK_RECENT_SORT_MRU, "BTK_RECENT_SORT_MRU", "mru" },
@@ -1709,7 +1709,7 @@ GType
 btk_recent_chooser_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RECENT_CHOOSER_ERROR_NOT_FOUND, "BTK_RECENT_CHOOSER_ERROR_NOT_FOUND", "not-found" },
             { BTK_RECENT_CHOOSER_ERROR_INVALID_URI, "BTK_RECENT_CHOOSER_ERROR_INVALID_URI", "invalid-uri" },
@@ -1724,7 +1724,7 @@ GType
 btk_recent_filter_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_RECENT_FILTER_URI, "BTK_RECENT_FILTER_URI", "uri" },
             { BTK_RECENT_FILTER_DISPLAY_NAME, "BTK_RECENT_FILTER_DISPLAY_NAME", "display-name" },
@@ -1743,7 +1743,7 @@ GType
 btk_recent_manager_error_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_RECENT_MANAGER_ERROR_NOT_FOUND, "BTK_RECENT_MANAGER_ERROR_NOT_FOUND", "not-found" },
             { BTK_RECENT_MANAGER_ERROR_INVALID_URI, "BTK_RECENT_MANAGER_ERROR_INVALID_URI", "invalid-uri" },
@@ -1763,7 +1763,7 @@ GType
 btk_size_group_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SIZE_GROUP_NONE, "BTK_SIZE_GROUP_NONE", "none" },
             { BTK_SIZE_GROUP_HORIZONTAL, "BTK_SIZE_GROUP_HORIZONTAL", "horizontal" },
@@ -1780,7 +1780,7 @@ GType
 btk_spin_button_update_policy_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_UPDATE_ALWAYS, "BTK_UPDATE_ALWAYS", "always" },
             { BTK_UPDATE_IF_VALID, "BTK_UPDATE_IF_VALID", "if-valid" },
@@ -1794,7 +1794,7 @@ GType
 btk_spin_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_SPIN_STEP_FORWARD, "BTK_SPIN_STEP_FORWARD", "step-forward" },
             { BTK_SPIN_STEP_BACKWARD, "BTK_SPIN_STEP_BACKWARD", "step-backward" },
@@ -1814,7 +1814,7 @@ GType
 btk_text_buffer_target_info_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TEXT_BUFFER_TARGET_INFO_BUFFER_CONTENTS, "BTK_TEXT_BUFFER_TARGET_INFO_BUFFER_CONTENTS", "buffer-contents" },
             { BTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT, "BTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT", "rich-text" },
@@ -1830,7 +1830,7 @@ GType
 btk_text_search_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_TEXT_SEARCH_VISIBLE_ONLY, "BTK_TEXT_SEARCH_VISIBLE_ONLY", "visible-only" },
             { BTK_TEXT_SEARCH_TEXT_ONLY, "BTK_TEXT_SEARCH_TEXT_ONLY", "text-only" },
@@ -1845,7 +1845,7 @@ GType
 btk_text_window_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TEXT_WINDOW_PRIVATE, "BTK_TEXT_WINDOW_PRIVATE", "private" },
             { BTK_TEXT_WINDOW_WIDGET, "BTK_TEXT_WINDOW_WIDGET", "widget" },
@@ -1865,7 +1865,7 @@ GType
 btk_toolbar_child_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TOOLBAR_CHILD_SPACE, "BTK_TOOLBAR_CHILD_SPACE", "space" },
             { BTK_TOOLBAR_CHILD_BUTTON, "BTK_TOOLBAR_CHILD_BUTTON", "button" },
@@ -1882,7 +1882,7 @@ GType
 btk_toolbar_space_style_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TOOLBAR_SPACE_EMPTY, "BTK_TOOLBAR_SPACE_EMPTY", "empty" },
             { BTK_TOOLBAR_SPACE_LINE, "BTK_TOOLBAR_SPACE_LINE", "line" },
@@ -1897,7 +1897,7 @@ GType
 btk_tool_palette_drag_targets_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_TOOL_PALETTE_DRAG_ITEMS, "BTK_TOOL_PALETTE_DRAG_ITEMS", "items" },
             { BTK_TOOL_PALETTE_DRAG_GROUPS, "BTK_TOOL_PALETTE_DRAG_GROUPS", "groups" },
@@ -1912,7 +1912,7 @@ GType
 btk_tree_view_mode_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TREE_VIEW_LINE, "BTK_TREE_VIEW_LINE", "line" },
             { BTK_TREE_VIEW_ITEM, "BTK_TREE_VIEW_ITEM", "item" },
@@ -1927,7 +1927,7 @@ GType
 btk_tree_model_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_TREE_MODEL_ITERS_PERSIST, "BTK_TREE_MODEL_ITERS_PERSIST", "iters-persist" },
             { BTK_TREE_MODEL_LIST_ONLY, "BTK_TREE_MODEL_LIST_ONLY", "list-only" },
@@ -1942,7 +1942,7 @@ GType
 btk_tree_view_drop_position_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TREE_VIEW_DROP_BEFORE, "BTK_TREE_VIEW_DROP_BEFORE", "before" },
             { BTK_TREE_VIEW_DROP_AFTER, "BTK_TREE_VIEW_DROP_AFTER", "after" },
@@ -1959,7 +1959,7 @@ GType
 btk_tree_view_column_sizing_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_TREE_VIEW_COLUMN_GROW_ONLY, "BTK_TREE_VIEW_COLUMN_GROW_ONLY", "grow-only" },
             { BTK_TREE_VIEW_COLUMN_AUTOSIZE, "BTK_TREE_VIEW_COLUMN_AUTOSIZE", "autosize" },
@@ -1975,7 +1975,7 @@ GType
 btk_ui_manager_item_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_UI_MANAGER_AUTO, "BTK_UI_MANAGER_AUTO", "auto" },
             { BTK_UI_MANAGER_MENUBAR, "BTK_UI_MANAGER_MENUBAR", "menubar" },
@@ -1999,7 +1999,7 @@ GType
 btk_widget_flags_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GFlagsValue values[] = {
             { BTK_TOPLEVEL, "BTK_TOPLEVEL", "toplevel" },
             { BTK_NO_WINDOW, "BTK_NO_WINDOW", "no-window" },
@@ -2030,7 +2030,7 @@ GType
 btk_widget_help_type_get_type (void)
 {
     static GType etype = 0;
-    if (G_UNLIKELY(etype == 0)) {
+    if (B_UNLIKELY(etype == 0)) {
         static const GEnumValue values[] = {
             { BTK_WIDGET_HELP_TOOLTIP, "BTK_WIDGET_HELP_TOOLTIP", "tooltip" },
             { BTK_WIDGET_HELP_WHATS_THIS, "BTK_WIDGET_HELP_WHATS_THIS", "whats-this" },

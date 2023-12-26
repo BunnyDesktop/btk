@@ -4,7 +4,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* VOID:OBJECT (./bdkmarshalers.list:1) */
 #define _bdk_marshal_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
@@ -49,6 +49,6 @@ void _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER (GClosure     *closure,
                                                        gpointer      marshal_data);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ___BDK_MARSHAL_MARSHAL_H__ */

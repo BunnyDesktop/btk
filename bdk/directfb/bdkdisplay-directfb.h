@@ -22,7 +22,7 @@
 #include <bdk/bdkdisplay.h>
 #include <bdk/bdkkeys.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayDFB BdkDisplayDFB;
 typedef struct _BdkDisplayDFBClass BdkDisplayDFBClass;
@@ -56,6 +56,6 @@ IDirectFBSurface *bdk_display_dfb_create_surface (BdkDisplayDFB *display,
                                                   int format,
                                                   int width, int height);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* BDK_DISPLAY_DFB_H */

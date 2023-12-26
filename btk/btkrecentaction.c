@@ -528,7 +528,7 @@ btk_recent_action_set_property (GObject      *bobject,
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
       g_warning ("%s: Choosers of type `%s' do not support selecting multiple items.",
-                 G_STRFUNC,
+                 B_STRFUNC,
                  G_OBJECT_TYPE_NAME (bobject));
       return;
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:

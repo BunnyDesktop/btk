@@ -42,7 +42,7 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE_BUTTON                 (btk_scale_button_get_type ())
 #define BTK_SCALE_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButton))
@@ -81,7 +81,7 @@ struct _BtkScaleButtonClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_scale_button_get_type         (void) G_GNUC_CONST;
+GType            btk_scale_button_get_type         (void) B_GNUC_CONST;
 BtkWidget *      btk_scale_button_new              (BtkIconSize      size,
                                                     gdouble          min,
                                                     gdouble          max,
@@ -107,6 +107,6 @@ void             btk_scale_button_set_orientation  (BtkScaleButton  *button,
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SCALE_BUTTON_H__ */

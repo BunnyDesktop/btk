@@ -28,7 +28,7 @@
 #include <bdkconfig.h>
 #include <btk/btktreemodel.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL_FILTER              (btk_tree_model_filter_get_type ())
 #define BTK_TREE_MODEL_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilter))
@@ -70,7 +70,7 @@ struct _BtkTreeModelFilterClass
 };
 
 /* base */
-GType         btk_tree_model_filter_get_type                   (void) G_GNUC_CONST;
+GType         btk_tree_model_filter_get_type                   (void) B_GNUC_CONST;
 BtkTreeModel *btk_tree_model_filter_new                        (BtkTreeModel                 *child_model,
                                                                 BtkTreePath                  *root);
 void          btk_tree_model_filter_set_visible_func           (BtkTreeModelFilter           *filter,
@@ -104,6 +104,6 @@ BtkTreePath  *btk_tree_model_filter_convert_path_to_child_path (BtkTreeModelFilt
 void          btk_tree_model_filter_refilter                   (BtkTreeModelFilter           *filter);
 void          btk_tree_model_filter_clear_cache                (BtkTreeModelFilter           *filter);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_MODEL_FILTER_H__ */

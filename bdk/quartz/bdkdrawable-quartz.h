@@ -23,7 +23,7 @@
 
 #include <bdk/bdkdrawable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Drawable implementation for Quartz
  */
@@ -64,6 +64,6 @@ CGContextRef bdk_quartz_drawable_get_context     (BdkDrawable  *drawable,
 void         bdk_quartz_drawable_release_context (BdkDrawable  *drawable, 
 						  CGContextRef  context);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_QUARTZ_H__ */

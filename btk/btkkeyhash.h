@@ -24,7 +24,7 @@
 
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkKeyHash BtkKeyHash;
 
@@ -46,6 +46,6 @@ GSList *    _btk_key_hash_lookup_keyval (BtkKeyHash      *key_hash,
 					 BdkModifierType  modifiers);
 void        _btk_key_hash_free          (BtkKeyHash      *key_hash);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_KEY_HASH_H__ */

@@ -28,7 +28,7 @@
 #include <btk/btkfilefilter.h>
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER             (btk_file_chooser_get_type ())
 #define BTK_FILE_CHOOSER(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER, BtkFileChooser))
@@ -85,7 +85,7 @@ typedef enum
   BTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN
 } BtkFileChooserConfirmation;
 
-GType btk_file_chooser_get_type (void) G_GNUC_CONST;
+GType btk_file_chooser_get_type (void) B_GNUC_CONST;
 
 /* GError enumeration for BtkFileChooser */
 /**
@@ -259,6 +259,6 @@ gboolean btk_file_chooser_remove_shortcut_folder_uri (BtkFileChooser *chooser,
 						      GError        **error);
 GSList *btk_file_chooser_list_shortcut_folder_uris   (BtkFileChooser *chooser);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_H__ */

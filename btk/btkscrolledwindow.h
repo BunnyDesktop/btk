@@ -37,7 +37,7 @@
 #include <btk/btkviewport.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_SCROLLED_WINDOW            (btk_scrolled_window_get_type ())
@@ -99,7 +99,7 @@ struct _BtkScrolledWindowClass
 };
 
 
-GType          btk_scrolled_window_get_type          (void) G_GNUC_CONST;
+GType          btk_scrolled_window_get_type          (void) B_GNUC_CONST;
 BtkWidget*     btk_scrolled_window_new               (BtkAdjustment     *hadjustment,
 						      BtkAdjustment     *vadjustment);
 void           btk_scrolled_window_set_hadjustment   (BtkScrolledWindow *scrolled_window,
@@ -130,7 +130,7 @@ void	       btk_scrolled_window_add_with_viewport (BtkScrolledWindow *scrolled_w
 gint _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_SCROLLED_WINDOW_H__ */

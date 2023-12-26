@@ -23,7 +23,7 @@
 #ifndef __BTK_WIN32_EMBED_H__
 #define __BTK_WIN32_EMBED_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_WIN32_EMBED_PROTOCOL_VERSION 1
 
@@ -90,6 +90,6 @@ void _btk_win32_embed_send_focus_message (BdkWindow		  *recipient,
 void     _btk_win32_embed_set_focus_wrapped  (void);
 gboolean _btk_win32_embed_get_focus_wrapped  (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*  __BTK_WIN32_EMBED_H__ */

@@ -27,7 +27,7 @@
 #include <bairo.h>
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_CAPABILITIES (btk_print_capabilities_get_type ())
 
@@ -48,7 +48,7 @@ typedef enum
   BTK_PRINT_CAPABILITY_NUMBER_UP_LAYOUT = 1 << 9
 } BtkPrintCapabilities;
 
-GType btk_print_capabilities_get_type (void) G_GNUC_CONST;
+GType btk_print_capabilities_get_type (void) B_GNUC_CONST;
 
 #define BTK_TYPE_PRINTER                  (btk_printer_get_type ())
 #define BTK_PRINTER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER, BtkPrinter))
@@ -88,7 +88,7 @@ struct _BtkPrinterClass
   void (*_btk_reserved7) (void);
 };
 
-GType                    btk_printer_get_type              (void) G_GNUC_CONST;
+GType                    btk_printer_get_type              (void) B_GNUC_CONST;
 BtkPrinter              *btk_printer_new                   (const gchar     *name,
 							    BtkPrintBackend *backend,
 							    gboolean         virtual_);
@@ -127,6 +127,6 @@ void                     btk_enumerate_printers        (BtkPrinterFunc   func,
 							GDestroyNotify   destroy,
 							gboolean         wait);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINTER_H__ */

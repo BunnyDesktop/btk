@@ -6,7 +6,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_OFFSCREEN_BOX              (btk_offscreen_box_get_type ())
 #define BTK_OFFSCREEN_BOX(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_OFFSCREEN_BOX, BtkOffscreenBox))
@@ -36,7 +36,7 @@ struct _BtkOffscreenBoxClass
   BtkBinClass parent_class;
 };
 
-GType	   btk_offscreen_box_get_type           (void) G_GNUC_CONST;
+GType	   btk_offscreen_box_get_type           (void) B_GNUC_CONST;
 BtkWidget* btk_offscreen_box_new       (void);
 void       btk_offscreen_box_add1      (BtkOffscreenBox *offscreen,
 					BtkWidget       *child);
@@ -47,6 +47,6 @@ void       btk_offscreen_box_set_angle (BtkOffscreenBox *offscreen,
 
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OFFSCREEN_BOX_H__ */

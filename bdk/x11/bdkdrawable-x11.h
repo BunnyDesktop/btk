@@ -32,7 +32,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrender.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Drawable implementation for X11
  */
@@ -93,6 +93,6 @@ void _bdk_x11_drawable_update_size      (BdkDrawable  *drawable);
 BdkDrawable *bdk_x11_window_get_drawable_impl (BdkWindow *window);
 BdkDrawable *bdk_x11_pixmap_get_drawable_impl (BdkPixmap *pixmap);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_X11_H__ */

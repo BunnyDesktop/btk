@@ -39,7 +39,7 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SPIN_BUTTON                  (btk_spin_button_get_type ())
 #define BTK_SPIN_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
@@ -120,7 +120,7 @@ struct _BtkSpinButtonClass
 };
 
 
-GType		btk_spin_button_get_type	   (void) G_GNUC_CONST;
+GType		btk_spin_button_get_type	   (void) B_GNUC_CONST;
 
 void		btk_spin_button_configure	   (BtkSpinButton  *spin_button,
 						    BtkAdjustment  *adjustment,
@@ -191,6 +191,6 @@ void            btk_spin_button_update             (BtkSpinButton  *spin_button)
 #define btk_spin_button_get_value_as_float btk_spin_button_get_value
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SPIN_BUTTON_H__ */

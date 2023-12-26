@@ -36,7 +36,7 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_VIEWPORT            (btk_viewport_get_type ())
@@ -71,7 +71,7 @@ struct _BtkViewportClass
 };
 
 
-GType          btk_viewport_get_type        (void) G_GNUC_CONST;
+GType          btk_viewport_get_type        (void) B_GNUC_CONST;
 BtkWidget*     btk_viewport_new             (BtkAdjustment *hadjustment,
 					     BtkAdjustment *vadjustment);
 BtkAdjustment* btk_viewport_get_hadjustment (BtkViewport   *viewport);
@@ -87,7 +87,7 @@ BdkWindow*     btk_viewport_get_bin_window  (BtkViewport   *viewport);
 BdkWindow*     btk_viewport_get_view_window (BtkViewport   *viewport);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_VIEWPORT_H__ */

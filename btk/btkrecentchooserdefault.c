@@ -1838,7 +1838,7 @@ popup_position_func (BtkMenu   *menu,
   gint monitor_num;
   BdkRectangle monitor;
 
-  if (G_UNLIKELY (!btk_widget_get_realized (widget)))
+  if (B_UNLIKELY (!btk_widget_get_realized (widget)))
     return;
 
   bdk_window_get_origin (widget->window, x, y);

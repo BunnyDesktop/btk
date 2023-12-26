@@ -28,7 +28,7 @@
 #include <btk/btkhbox.h>
 #include <btk/btkfilechooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_BUTTON            (btk_file_chooser_button_get_type ())
 #define BTK_FILE_CHOOSER_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButton))
@@ -66,7 +66,7 @@ struct _BtkFileChooserButtonClass
 };
 
 
-GType                 btk_file_chooser_button_get_type         (void) G_GNUC_CONST;
+GType                 btk_file_chooser_button_get_type         (void) B_GNUC_CONST;
 BtkWidget *           btk_file_chooser_button_new              (const gchar          *title,
 								BtkFileChooserAction  action);
 
@@ -87,6 +87,6 @@ gboolean              btk_file_chooser_button_get_focus_on_click (BtkFileChooser
 void                  btk_file_chooser_button_set_focus_on_click (BtkFileChooserButton *button,
                                                                   gboolean              focus_on_click);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* !__BTK_FILE_CHOOSER_BUTTON_H__ */

@@ -3158,7 +3158,7 @@ _bdk_windowing_get_pointer (BdkDisplay       *display,
   xdisplay = BDK_SCREEN_XDISPLAY (default_screen);
   xwindow = BDK_SCREEN_XROOTWIN (default_screen);
   
-  if (G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client)) 
+  if (B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client)) 
     {
       XQueryPointer (xdisplay, xwindow,
 		     &root, &child, &rootx, &rooty, &winx, &winy, &xmask);
@@ -3208,7 +3208,7 @@ bdk_window_x11_get_pointer (BdkWindow       *window,
   return_val = TRUE;
   if (!BDK_WINDOW_DESTROYED (window))
     {
-      if (G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+      if (B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
 	{
 	  if (XQueryPointer (BDK_WINDOW_XDISPLAY (window),
 			     BDK_WINDOW_XID (window),
@@ -3302,7 +3302,7 @@ _bdk_windowing_window_at_pointer (BdkDisplay *display,
    * and the result.
    */
   bdk_x11_display_grab (display);
-  if (G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client)) 
+  if (B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client)) 
     {
       XQueryPointer (xdisplay, xwindow,
 		     &root, &child, &rootx, &rooty, &winx, &winy, &xmask);

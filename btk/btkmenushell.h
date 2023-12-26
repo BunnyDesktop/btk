@@ -35,7 +35,7 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define	BTK_TYPE_MENU_SHELL		(btk_menu_shell_get_type ())
 #define BTK_MENU_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU_SHELL, BtkMenuShell))
@@ -97,7 +97,7 @@ struct _BtkMenuShellClass
 };
 
 
-GType btk_menu_shell_get_type          (void) G_GNUC_CONST;
+GType btk_menu_shell_get_type          (void) B_GNUC_CONST;
 void  btk_menu_shell_append            (BtkMenuShell *menu_shell,
 					BtkWidget    *child);
 void  btk_menu_shell_prepend           (BtkMenuShell *menu_shell,
@@ -135,6 +135,6 @@ void     _btk_menu_shell_set_keyboard_mode (BtkMenuShell *menu_shell,
                                             gboolean      keyboard_mode);
 gboolean _btk_menu_shell_get_keyboard_mode (BtkMenuShell *menu_shell);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MENU_SHELL_H__ */

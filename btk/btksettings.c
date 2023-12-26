@@ -1565,14 +1565,14 @@ settings_install_property_parser (BtkSettingsClass   *class,
     default:
       if (!parser)
         {
-          g_warning (G_STRLOC ": parser needs to be specified for property \"%s\" of type `%s'",
+          g_warning (B_STRLOC ": parser needs to be specified for property \"%s\" of type `%s'",
                      pspec->name, g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
           return 0;
         }
     }
   if (g_object_class_find_property (G_OBJECT_CLASS (class), pspec->name))
     {
-      g_warning (G_STRLOC ": an rc-data property \"%s\" already exists",
+      g_warning (B_STRLOC ": an rc-data property \"%s\" already exists",
 		 pspec->name);
       return 0;
     }
@@ -1684,7 +1684,7 @@ btk_settings_set_property_value_internal (BtkSettings            *settings,
       !G_VALUE_HOLDS_STRING (&new_value->value) &&
       !G_VALUE_HOLDS (&new_value->value, G_TYPE_GSTRING))
     {
-      g_warning (G_STRLOC ": value type invalid");
+      g_warning (B_STRLOC ": value type invalid");
       return;
     }
   

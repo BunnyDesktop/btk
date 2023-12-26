@@ -28,7 +28,7 @@
 
 #include <bdk/bdkscreen.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifndef BDK_DISABLE_DEPRECATED
 gboolean bdk_spawn_on_screen              (BdkScreen             *screen,
@@ -59,6 +59,6 @@ gboolean bdk_spawn_command_line_on_screen (BdkScreen             *screen,
 					   GError               **error);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_SPAWN_H__ */

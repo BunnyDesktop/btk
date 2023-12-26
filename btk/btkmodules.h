@@ -28,7 +28,7 @@
 #include <btk/btksettings.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* Functions for use within BTK+
@@ -48,7 +48,7 @@ typedef void	 (*BtkModuleInitFunc)        (gint	  *argc,
 typedef void	 (*BtkModuleDisplayInitFunc) (BdkDisplay   *display);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_MODULES_H__ */

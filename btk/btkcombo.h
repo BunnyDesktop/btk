@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_COMBO              (btk_combo_get_type ())
 #define BTK_COMBO(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO, BtkCombo))
@@ -84,7 +84,7 @@ struct _BtkComboClass {
         void (*_btk_reserved4) (void);
 };
 
-GType      btk_combo_get_type              (void) G_GNUC_CONST;
+GType      btk_combo_get_type              (void) B_GNUC_CONST;
 
 BtkWidget* btk_combo_new                   (void);
 /* the text in the entry must be or not be in the list */
@@ -111,7 +111,7 @@ void       btk_combo_set_popdown_strings   (BtkCombo*    combo,
 
 void       btk_combo_disable_activate      (BtkCombo*    combo);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SMART_COMBO_H__ */
 

@@ -883,7 +883,7 @@ _btk_socket_add_window (BtkSocket       *socket,
 
       if (!BTK_IS_PLUG (child_widget))
 	{
-	  g_warning (G_STRLOC ": Can't add non-BtkPlug to BtkSocket");
+	  g_warning (B_STRLOC ": Can't add non-BtkPlug to BtkSocket");
 	  socket->plug_window = NULL;
 	  bdk_error_trap_pop ();
 	  

@@ -24,7 +24,7 @@
 #include "xembed.h"
 #include "x11/bdkx.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Latest version we implement */
 #define BTK_XEMBED_PROTOCOL_VERSION 1
@@ -44,6 +44,6 @@ void        _btk_xembed_set_focus_wrapped  (void);
 gboolean    _btk_xembed_get_focus_wrapped  (void);
 const char *_btk_xembed_message_name       (XEmbedMessageType message);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*  __BTK_XEMBED_H__ */

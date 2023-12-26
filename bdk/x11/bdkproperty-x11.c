@@ -322,7 +322,7 @@ bdk_x11_xatom_to_atom_for_display (BdkDisplay *display,
       name = XGetAtomName (BDK_DISPLAY_XDISPLAY (display), xatom);
       if (bdk_error_trap_pop ())
 	{
-	  g_warning (G_STRLOC " invalid X atom: %ld", xatom);
+	  g_warning (B_STRLOC " invalid X atom: %ld", xatom);
 	}
       else
 	{

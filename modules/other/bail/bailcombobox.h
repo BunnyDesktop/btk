@@ -22,7 +22,7 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_COMBO_BOX                      (bail_combo_box_get_type ())
 #define BAIL_COMBO_BOX(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO_BOX, BailComboBox))
@@ -54,6 +54,6 @@ struct _BailComboBoxClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_COMBO_BOX_H__ */

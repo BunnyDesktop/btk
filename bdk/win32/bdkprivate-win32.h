@@ -359,9 +359,9 @@ void    _bdk_win32_api_failed        (const gchar *where,
 void    _bdk_other_api_failed        (const gchar *where,
 				     const gchar *api);
 
-#define WIN32_API_FAILED(api) _bdk_win32_api_failed (G_STRLOC , api)
+#define WIN32_API_FAILED(api) _bdk_win32_api_failed (B_STRLOC , api)
 #define WIN32_GDI_FAILED(api) WIN32_API_FAILED (api)
-#define OTHER_API_FAILED(api) _bdk_other_api_failed (G_STRLOC, api)
+#define OTHER_API_FAILED(api) _bdk_other_api_failed (B_STRLOC, api)
  
 /* These two macros call a GDI or other Win32 API and if the return
  * value is zero or NULL, print a warning message. The majority of GDI

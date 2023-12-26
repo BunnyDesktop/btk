@@ -35,7 +35,7 @@
 #include <btk/btkseparator.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HSEPARATOR                  (btk_hseparator_get_type ())
 #define BTK_HSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparator))
@@ -59,10 +59,10 @@ struct _BtkHSeparatorClass
 };
 
 
-GType      btk_hseparator_get_type (void) G_GNUC_CONST;
+GType      btk_hseparator_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_hseparator_new      (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HSEPARATOR_H__ */

@@ -45,7 +45,7 @@
 #include <btk/btkselection.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ENTRY                  (btk_entry_get_type ())
 #define BTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY, BtkEntry))
@@ -163,7 +163,7 @@ struct _BtkEntryClass
   void (*_btk_reserved2)      (void);
 };
 
-GType      btk_entry_get_type       		(void) G_GNUC_CONST;
+GType      btk_entry_get_type       		(void) B_GNUC_CONST;
 BtkWidget* btk_entry_new            		(void);
 BtkWidget* btk_entry_new_with_buffer            (BtkEntryBuffer *buffer);
 
@@ -329,6 +329,6 @@ void       btk_entry_set_editable   		(BtkEntry      *entry,
 						 gboolean       editable);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ENTRY_H__ */

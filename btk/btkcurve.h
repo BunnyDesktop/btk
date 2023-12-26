@@ -33,7 +33,7 @@
 #include <btk/btkdrawingarea.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CURVE                  (btk_curve_get_type ())
 #define BTK_CURVE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CURVE, BtkCurve))
@@ -85,7 +85,7 @@ struct _BtkCurveClass
 };
 
 
-GType		btk_curve_get_type	(void) G_GNUC_CONST;
+GType		btk_curve_get_type	(void) B_GNUC_CONST;
 BtkWidget*	btk_curve_new		(void);
 void		btk_curve_reset		(BtkCurve *curve);
 void		btk_curve_set_gamma	(BtkCurve *curve, gfloat gamma_);
@@ -99,7 +99,7 @@ void		btk_curve_set_vector	(BtkCurve *curve,
 void		btk_curve_set_curve_type (BtkCurve *curve, BtkCurveType type);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CURVE_H__ */
 

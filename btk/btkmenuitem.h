@@ -35,7 +35,7 @@
 #include <btk/btkitem.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define	BTK_TYPE_MENU_ITEM		(btk_menu_item_get_type ())
 #define BTK_MENU_ITEM(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU_ITEM, BtkMenuItem))
@@ -96,7 +96,7 @@ struct _BtkMenuItemClass
 };
 
 
-GType	   btk_menu_item_get_type	      (void) G_GNUC_CONST;
+GType	   btk_menu_item_get_type	      (void) B_GNUC_CONST;
 BtkWidget* btk_menu_item_new                  (void);
 BtkWidget* btk_menu_item_new_with_label       (const gchar         *label);
 BtkWidget* btk_menu_item_new_with_mnemonic    (const gchar         *label);
@@ -140,6 +140,6 @@ void       btk_menu_item_remove_submenu       (BtkMenuItem         *menu_item);
 #define btk_menu_item_right_justify(menu_item) btk_menu_item_set_right_justified ((menu_item), TRUE)
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MENU_ITEM_H__ */

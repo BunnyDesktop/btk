@@ -274,7 +274,7 @@ btk_tree_store_new (gint n_columns,
       GType type = va_arg (args, GType);
       if (! _btk_tree_data_list_check_type (type))
 	{
-	  g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (type));
+	  g_warning ("%s: Invalid type %s\n", B_STRLOC, g_type_name (type));
 	  g_object_unref (retval);
           va_end (args);
 	  return NULL;
@@ -310,7 +310,7 @@ btk_tree_store_newv (gint   n_columns,
     {
       if (! _btk_tree_data_list_check_type (types[i]))
 	{
-	  g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
+	  g_warning ("%s: Invalid type %s\n", B_STRLOC, g_type_name (types[i]));
 	  g_object_unref (retval);
 	  return NULL;
 	}
@@ -347,7 +347,7 @@ btk_tree_store_set_column_types (BtkTreeStore *tree_store,
     {
       if (! _btk_tree_data_list_check_type (types[i]))
 	{
-	  g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
+	  g_warning ("%s: Invalid type %s\n", B_STRLOC, g_type_name (types[i]));
 	  continue;
 	}
       btk_tree_store_set_column_type (tree_store, i, types[i]);
@@ -393,7 +393,7 @@ btk_tree_store_set_column_type (BtkTreeStore *tree_store,
 {
   if (!_btk_tree_data_list_check_type (type))
     {
-      g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (type));
+      g_warning ("%s: Invalid type %s\n", B_STRLOC, g_type_name (type));
       return;
     }
   tree_store->column_headers[column] = type;
@@ -760,7 +760,7 @@ btk_tree_store_real_set_value (BtkTreeStore *tree_store,
 	     g_value_type_compatible (tree_store->column_headers[column], G_VALUE_TYPE (value))))
 	{
 	  g_warning ("%s: Unable to convert from %s to %s\n",
-		     G_STRLOC,
+		     B_STRLOC,
 		     g_type_name (G_VALUE_TYPE (value)),
 		     g_type_name (tree_store->column_headers[column]));
 	  return retval;
@@ -768,7 +768,7 @@ btk_tree_store_real_set_value (BtkTreeStore *tree_store,
       if (!g_value_transform (value, &real_value))
 	{
 	  g_warning ("%s: Unable to make conversion from %s to %s\n",
-		     G_STRLOC,
+		     B_STRLOC,
 		     g_type_name (G_VALUE_TYPE (value)),
 		     g_type_name (tree_store->column_headers[column]));
 	  g_value_unset (&real_value);
@@ -943,7 +943,7 @@ btk_tree_store_set_valist_internal (BtkTreeStore *tree_store,
 
       if (column < 0 || column >= tree_store->n_columns)
 	{
-	  g_warning ("%s: Invalid column number %d added to iter (remember to end your list of columns with a -1)", G_STRLOC, column);
+	  g_warning ("%s: Invalid column number %d added to iter (remember to end your list of columns with a -1)", B_STRLOC, column);
 	  break;
 	}
       g_value_init (&value, tree_store->column_headers[column]);
@@ -951,7 +951,7 @@ btk_tree_store_set_valist_internal (BtkTreeStore *tree_store,
       G_VALUE_COLLECT (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 
  	  /* we purposely leak the value here, it might not be

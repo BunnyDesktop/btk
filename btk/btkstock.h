@@ -35,7 +35,7 @@
 #include <bdk/bdk.h>
 #include <btk/btktypeutils.h> /* for BtkTranslateFunc */
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkStockItem BtkStockItem;
 
@@ -1011,6 +1011,6 @@ void          btk_stock_set_translate_func (const gchar      *domain,
  */
 #define BTK_STOCK_ZOOM_OUT         "btk-zoom-out"
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_STOCK_H__ */

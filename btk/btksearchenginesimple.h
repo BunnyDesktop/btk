@@ -25,7 +25,7 @@
 
 #include "btksearchengine.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEARCH_ENGINE_SIMPLE		(_btk_search_engine_simple_get_type ())
 #define BTK_SEARCH_ENGINE_SIMPLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimple))
@@ -54,6 +54,6 @@ GType            _btk_search_engine_simple_get_type (void);
 
 BtkSearchEngine* _btk_search_engine_simple_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEARCH_ENGINE_SIMPLE_H__ */

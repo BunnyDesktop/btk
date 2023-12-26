@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_FILE_SELECTION            (btk_file_selection_get_type ())
@@ -99,7 +99,7 @@ struct _BtkFileSelectionClass
 #define btk_file_selection_get_selections btk_file_selection_get_selections_utf8
 #endif
 
-GType      btk_file_selection_get_type            (void) G_GNUC_CONST;
+GType      btk_file_selection_get_type            (void) B_GNUC_CONST;
 BtkWidget* btk_file_selection_new                 (const gchar      *title);
 void       btk_file_selection_set_filename        (BtkFileSelection *filesel,
 						   const gchar      *filename);
@@ -117,7 +117,7 @@ void       btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
 gboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FILESEL_H__ */

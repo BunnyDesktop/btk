@@ -30,7 +30,7 @@
 #include <btk/btkselection.h>
 #include <btk/btktooltip.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ICON_VIEW            (btk_icon_view_get_type ())
 #define BTK_ICON_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW, BtkIconView))
@@ -87,7 +87,7 @@ struct _BtkIconViewClass
   gboolean (* activate_cursor_item)  (BtkIconView      *icon_view);
 };
 
-GType          btk_icon_view_get_type          (void) G_GNUC_CONST;
+GType          btk_icon_view_get_type          (void) B_GNUC_CONST;
 BtkWidget *    btk_icon_view_new               (void);
 BtkWidget *    btk_icon_view_new_with_model    (BtkTreeModel   *model);
 
@@ -237,6 +237,6 @@ void     btk_icon_view_set_tooltip_column                     (BtkIconView      
 gint     btk_icon_view_get_tooltip_column                     (BtkIconView       *icon_view);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ICON_VIEW_H__ */

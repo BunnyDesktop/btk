@@ -776,12 +776,12 @@
 2007-09-10  Richard Hult  <richard@imendio.com>
 
 	* btk/btksearchenginesimple.h: Build fix, correct a typo in the
-	G_BEGIN_DECLS fix below.
+	B_BEGIN_DECLS fix below.
 
 2007-09-10  Matthias Clasen  <mclasen@redhat.com>
 
-	* btk/btksearchenginesimple.h: Replace a duplicate G_END_DECLS by
-	G_BEGIN_DECLS.  (#475439, Nigel Tao)
+	* btk/btksearchenginesimple.h: Replace a duplicate B_END_DECLS by
+	B_BEGIN_DECLS.  (#475439, Nigel Tao)
 
 2007-09-10  Kristian Rietveld  <kris@imendio.com>
 
@@ -2477,7 +2477,7 @@ Fri Jun 22 00:34:34 2007  Tim Janik  <timj@btk.org>
 
 2007-06-19  Mathias Hasselmann  <mathias.hasselmann@gmx.de>
 
-	* bdk/bdkinternals.h: Restore G_BEGIN_DECLS at the
+	* bdk/bdkinternals.h: Restore B_BEGIN_DECLS at the
 	top of this file to make C++ compilers happy.
 
 2007-06-19  Matthias Clasen <mclasen@redhat.com>
@@ -6475,7 +6475,7 @@ Fri Jan 26 13:07:07 2007  Tim Janik  <timj@imendio.com>
 
 2007-01-22  Chris Wilson <chris@chris-wilson.co.uk>
 
-	Bug 399314 – Add G_GNUC_WARN_UNUSED_RESULT to btk_style_attach
+	Bug 399314 – Add B_GNUC_WARN_UNUSED_RESULT to btk_style_attach
 
 	* btk/btkstyle.h:
 		Cause gcc to issue a warning if the style returned from
@@ -7500,7 +7500,7 @@ Fri Jan 26 13:07:07 2007  Tim Janik  <timj@imendio.com>
 	* modules/engines/pixbuf/pixbuf.h:
 	* modules/engines/pixbuf/pixbuf-rc-style.h:
 	* modules/engines/pixbuf/pixbuf-style.h: Move 
-	G_GNUC_INTERNAL before function declarations.  (#352276,
+	B_GNUC_INTERNAL before function declarations.  (#352276,
 	Damien Carbery)
 
 2006-12-22  Matthias Clasen  <mclasen@redhat.com>

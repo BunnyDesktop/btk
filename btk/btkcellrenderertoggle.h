@@ -27,7 +27,7 @@
 #include <btk/btkcellrenderer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_CELL_RENDERER_TOGGLE			(btk_cell_renderer_toggle_get_type ())
@@ -64,7 +64,7 @@ struct _BtkCellRendererToggleClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_toggle_get_type       (void) G_GNUC_CONST;
+GType            btk_cell_renderer_toggle_get_type       (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_toggle_new            (void);
 
 gboolean         btk_cell_renderer_toggle_get_radio      (BtkCellRendererToggle *toggle);
@@ -80,6 +80,6 @@ void            btk_cell_renderer_toggle_set_activatable (BtkCellRendererToggle 
                                                           gboolean               setting);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_TOGGLE_H__ */

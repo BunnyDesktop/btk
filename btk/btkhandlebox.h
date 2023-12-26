@@ -40,7 +40,7 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HANDLE_BOX            (btk_handle_box_get_type ())
 #define BTK_HANDLE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
@@ -94,7 +94,7 @@ struct _BtkHandleBoxClass
 };
 
 
-GType         btk_handle_box_get_type             (void) G_GNUC_CONST;
+GType         btk_handle_box_get_type             (void) B_GNUC_CONST;
 BtkWidget*    btk_handle_box_new                  (void);
 void          btk_handle_box_set_shadow_type      (BtkHandleBox    *handle_box,
                                                    BtkShadowType    type);
@@ -107,6 +107,6 @@ void          btk_handle_box_set_snap_edge        (BtkHandleBox    *handle_box,
 BtkPositionType btk_handle_box_get_snap_edge      (BtkHandleBox    *handle_box);
 gboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HANDLE_BOX_H__ */

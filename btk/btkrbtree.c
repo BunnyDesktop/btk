@@ -386,7 +386,7 @@ _btk_rbtree_remove (BtkRBTree *tree)
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
   
   tmp_tree = tree->parent_tree;
@@ -419,7 +419,7 @@ _btk_rbtree_remove (BtkRBTree *tree)
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tmp_tree);
+    _btk_rbtree_test (B_STRLOC, tmp_tree);
 #endif
 }
 
@@ -440,7 +440,7 @@ _btk_rbtree_insert_after (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_insert_after: %p\n", current);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 
@@ -502,7 +502,7 @@ _btk_rbtree_insert_after (BtkRBTree *tree,
       g_print ("_btk_rbtree_insert_after finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 
@@ -525,7 +525,7 @@ _btk_rbtree_insert_before (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_insert_before: %p\n", current);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -588,7 +588,7 @@ _btk_rbtree_insert_before (BtkRBTree *tree,
       g_print ("_btk_rbtree_insert_before finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -641,7 +641,7 @@ _btk_rbtree_node_set_height (BtkRBTree *tree,
     }
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
 }
 
@@ -1124,7 +1124,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_remove_node: %p\n", node);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -1135,7 +1135,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
   
   if (node->left == tree->nil || node->right == tree->nil)
@@ -1268,7 +1268,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
       g_print ("_btk_rbtree_remove_node finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 }

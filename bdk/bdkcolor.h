@@ -34,7 +34,7 @@
 #include <bairo.h>
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* The color type.
  *   A color consists of red, green and blue values in the
@@ -86,7 +86,7 @@ struct _BdkColormapClass
 
 };
 
-GType        bdk_colormap_get_type (void) G_GNUC_CONST;
+GType        bdk_colormap_get_type (void) B_GNUC_CONST;
 
 BdkColormap* bdk_colormap_new	  (BdkVisual   *visual,
 				   gboolean	allocate);
@@ -140,7 +140,7 @@ gboolean  bdk_color_equal     (const BdkColor *colora,
 			       const BdkColor *colorb);
 gchar *   bdk_color_to_string (const BdkColor *color);
 
-GType     bdk_color_get_type (void) G_GNUC_CONST;
+GType     bdk_color_get_type (void) B_GNUC_CONST;
 
 /* The following functions are deprecated */
 #ifndef BDK_DISABLE_DEPRECATED
@@ -171,6 +171,6 @@ void bdk_colors_free	 (BdkColormap	*colormap,
 			  gulong	 planes);
 #endif /* !BDK_DISABLE_DEPRECATED || BDK_COMPILATION */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_COLOR_H__ */

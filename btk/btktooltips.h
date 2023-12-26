@@ -33,7 +33,7 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOLTIPS                  (btk_tooltips_get_type ())
 #define BTK_TOOLTIPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIPS, BtkTooltips))
@@ -84,7 +84,7 @@ struct _BtkTooltipsClass
   void (*_btk_reserved4) (void);
 };
 
-GType		 btk_tooltips_get_type	   (void) G_GNUC_CONST;
+GType		 btk_tooltips_get_type	   (void) B_GNUC_CONST;
 BtkTooltips*	 btk_tooltips_new	   (void);
 
 void		 btk_tooltips_enable	   (BtkTooltips   *tooltips);
@@ -102,7 +102,7 @@ gboolean         btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window
                                                         BtkTooltips **tooltips,
                                                         BtkWidget   **current_widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOLTIPS_H__ */
 

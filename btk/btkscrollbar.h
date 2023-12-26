@@ -35,7 +35,7 @@
 #include <btk/btkrange.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SCROLLBAR            (btk_scrollbar_get_type ())
 #define BTK_SCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCROLLBAR, BtkScrollbar))
@@ -65,8 +65,8 @@ struct _BtkScrollbarClass
 };
 
 
-GType       btk_scrollbar_get_type (void) G_GNUC_CONST;
+GType       btk_scrollbar_get_type (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SCROLLBAR_H__ */

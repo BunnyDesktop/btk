@@ -279,7 +279,7 @@ correct_localedir_prefix (gchar **path)
 #endif
 
 
-G_GNUC_UNUSED static BtkIMModule *
+B_GNUC_UNUSED static BtkIMModule *
 add_builtin_module (const gchar             *module_name,
 		    const BtkIMContextInfo **contexts,
 		    int                      n_contexts)

@@ -28,7 +28,7 @@
 #include <btk/btkcellrenderer.h>
 #include <btk/btktreemodel.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_VIEW                (btk_cell_view_get_type ())
 #define BTK_CELL_VIEW(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
@@ -54,7 +54,7 @@ struct _BtkCellViewClass
   BtkWidgetClass parent_class;
 };
 
-GType             btk_cell_view_get_type               (void) G_GNUC_CONST;
+GType             btk_cell_view_get_type               (void) B_GNUC_CONST;
 BtkWidget        *btk_cell_view_new                    (void);
 BtkWidget        *btk_cell_view_new_with_text          (const gchar     *text);
 BtkWidget        *btk_cell_view_new_with_markup        (const gchar     *markup);
@@ -76,6 +76,6 @@ void              btk_cell_view_set_background_color    (BtkCellView     *cell_v
 GList            *btk_cell_view_get_cell_renderers      (BtkCellView     *cell_view);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_VIEW_H__ */

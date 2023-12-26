@@ -33,7 +33,7 @@
 
 #include <btk/btkcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PANED                  (btk_paned_get_type ())
 #define BTK_PANED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
@@ -106,7 +106,7 @@ struct _BtkPanedClass
 };
 
 
-GType       btk_paned_get_type     (void) G_GNUC_CONST;
+GType       btk_paned_get_type     (void) B_GNUC_CONST;
 void        btk_paned_add1         (BtkPaned       *paned,
                                     BtkWidget      *child);
 void        btk_paned_add2         (BtkPaned       *paned,
@@ -139,6 +139,6 @@ void    btk_paned_compute_position (BtkPaned  *paned,
 #define	btk_paned_set_gutter_size(p,s)		(void) 0
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PANED_H__ */

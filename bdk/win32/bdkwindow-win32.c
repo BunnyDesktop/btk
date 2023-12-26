@@ -3846,14 +3846,14 @@ bdk_window_set_type_hint (BdkWindow        *window,
     return;
 
   BDK_NOTE (MISC,
-	    G_STMT_START{
+	    B_STMT_START{
 	      static GEnumClass *class = NULL;
 	      if (!class)
 		class = g_type_class_ref (BDK_TYPE_WINDOW_TYPE_HINT);
 	      g_print ("bdk_window_set_type_hint: %p: %s\n",
 		       BDK_WINDOW_HWND (window),
 		       g_enum_get_value (class, hint)->value_name);
-	    }G_STMT_END);
+	    }B_STMT_END);
 
   ((BdkWindowImplWin32 *)((BdkWindowObject *)window)->impl)->type_hint = hint;
 

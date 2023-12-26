@@ -23,7 +23,7 @@
 #include <batk/batk.h>
 #include <bail/bailrenderercell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_BOOLEAN_CELL            (bail_boolean_cell_get_type ())
 #define BAIL_BOOLEAN_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCell))
@@ -51,6 +51,6 @@ struct _BailBooleanCellClass
 
 BatkObject *bail_boolean_cell_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_BOOLEAN_CELL_H__ */

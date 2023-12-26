@@ -637,7 +637,7 @@ btk_tree_model_sort_row_inserted (BtkTreeModel          *s_model,
 	  g_warning ("%s: A node was inserted with a parent that's not in the tree.\n"
 		     "This possibly means that a BtkTreeModel inserted a child node\n"
 		     "before the parent was inserted.",
-		     G_STRLOC);
+		     B_STRLOC);
 	  goto done;
 	}
 
@@ -2121,7 +2121,7 @@ btk_tree_model_sort_convert_child_iter_to_iter (BtkTreeModelSort *tree_model_sor
 
   if (!path)
     {
-      g_warning ("%s: The conversion of the child path to a BtkTreeModel sort path failed", G_STRLOC);
+      g_warning ("%s: The conversion of the child path to a BtkTreeModel sort path failed", B_STRLOC);
       return FALSE;
     }
 
@@ -2323,7 +2323,7 @@ btk_tree_model_sort_build_level (BtkTreeModelSort *tree_model_sort,
 		  g_warning ("%s: There is a discrepancy between the sort model "
 			     "and the child model.  The child model is "
 			     "advertising a wrong length for level %s:.",
-			     G_STRLOC, str);
+			     B_STRLOC, str);
 		  g_free (str);
 		}
 	      else
@@ -2331,7 +2331,7 @@ btk_tree_model_sort_build_level (BtkTreeModelSort *tree_model_sort,
 		  g_warning ("%s: There is a discrepancy between the sort model "
 			     "and the child model.  The child model is "
 			     "advertising a wrong length for the root level.",
-			     G_STRLOC);
+			     B_STRLOC);
 		}
 
 	      return;

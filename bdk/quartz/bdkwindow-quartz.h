@@ -25,7 +25,7 @@
 #import <bdk/quartz/BdkQuartzView.h>
 #import <bdk/quartz/BdkQuartzWindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Window implementation for Quartz
  */
@@ -69,6 +69,6 @@ struct _BdkWindowImplQuartzClass
 
 GType _bdk_window_impl_quartz_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_QUARTZ_H__ */

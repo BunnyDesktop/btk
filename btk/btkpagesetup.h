@@ -29,7 +29,7 @@
 #include <btk/btkpapersize.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPageSetup BtkPageSetup;
 
@@ -37,7 +37,7 @@ typedef struct _BtkPageSetup BtkPageSetup;
 #define BTK_PAGE_SETUP(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetup))
 #define BTK_IS_PAGE_SETUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP))
 
-GType              btk_page_setup_get_type          (void) G_GNUC_CONST;
+GType              btk_page_setup_get_type          (void) B_GNUC_CONST;
 BtkPageSetup *     btk_page_setup_new               (void);
 BtkPageSetup *     btk_page_setup_copy              (BtkPageSetup       *other);
 BtkPageOrientation btk_page_setup_get_orientation   (BtkPageSetup       *setup);
@@ -103,6 +103,6 @@ void		   btk_page_setup_to_key_file	    (BtkPageSetup        *setup,
 						     GKeyFile            *key_file,
 						     const gchar         *group_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PAGE_SETUP_H__ */

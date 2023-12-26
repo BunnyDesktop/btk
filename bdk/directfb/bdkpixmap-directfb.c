@@ -136,7 +136,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
       format = DSPF_RGB32;
       break;
     default:
-      g_message ("unimplemented %s for depth %d", G_STRFUNC, depth);
+      g_message ("unimplemented %s for depth %d", B_STRFUNC, depth);
       return NULL;
     }
 

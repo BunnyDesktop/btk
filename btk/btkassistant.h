@@ -32,7 +32,7 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ASSISTANT         (btk_assistant_get_type ())
 #define BTK_ASSISTANT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_ASSISTANT, BtkAssistant))
@@ -119,7 +119,7 @@ struct _BtkAssistantClass
  */
 typedef gint (*BtkAssistantPageFunc) (gint current_page, gpointer data);
 
-GType                 btk_assistant_get_type              (void) G_GNUC_CONST;
+GType                 btk_assistant_get_type              (void) B_GNUC_CONST;
 BtkWidget            *btk_assistant_new                   (void);
 gint                  btk_assistant_get_current_page      (BtkAssistant         *assistant);
 void                  btk_assistant_set_current_page      (BtkAssistant         *assistant,
@@ -171,6 +171,6 @@ void                  btk_assistant_remove_action_widget  (BtkAssistant         
 void                  btk_assistant_update_buttons_state  (BtkAssistant *assistant);
 void                  btk_assistant_commit                (BtkAssistant *assistant);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ASSISTANT_H__ */

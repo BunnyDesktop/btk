@@ -24,7 +24,7 @@
 #include "btkenums.h"
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define MM_PER_INCH 25.4
 #define POINTS_PER_INCH 72
@@ -32,6 +32,6 @@ G_BEGIN_DECLS
 gdouble _btk_print_convert_to_mm   (gdouble len, BtkUnit unit);
 gdouble _btk_print_convert_from_mm (gdouble len, BtkUnit unit);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_UTILS_H__ */

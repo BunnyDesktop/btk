@@ -34,7 +34,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkdrawable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkPixmapObject BdkPixmapObject;
 typedef struct _BdkPixmapObjectClass BdkPixmapObjectClass;
@@ -62,7 +62,7 @@ struct _BdkPixmapObjectClass
 
 };
 
-GType      bdk_pixmap_get_type          (void) G_GNUC_CONST;
+GType      bdk_pixmap_get_type          (void) B_GNUC_CONST;
 
 /* Pixmaps
  */
@@ -131,6 +131,6 @@ BdkPixmap*    bdk_pixmap_foreign_new_for_screen  (BdkScreen       *screen,
 #define bdk_pixmap_unref               g_object_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_H__ */

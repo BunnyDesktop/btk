@@ -35,11 +35,11 @@
  */
 #include <btk/btktypebuiltins.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* urg */
 #define BTK_TYPE_IDENTIFIER (btk_identifier_get_type ())
-GType btk_identifier_get_type (void) G_GNUC_CONST;
+GType btk_identifier_get_type (void) B_GNUC_CONST;
 
 /* --- typedefs --- */
 /* here we come with some necessary forward declarations for structures and
@@ -259,6 +259,6 @@ BtkFlagValue*	btk_type_flags_find_value	(BtkType	 flags_type,
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TYPE_UTILS_H__ */

@@ -32,7 +32,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #if (!defined (BDK_DISABLE_DEPRECATED) && !defined (BDK_MULTIHEAD_SAFE)) || defined (BDK_COMPILATION)
 extern Display          *bdk_display;
@@ -156,7 +156,7 @@ void          bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
 
 void bdk_x11_display_broadcast_startup_message (BdkDisplay *display,
 						const char *message_type,
-						...) G_GNUC_NULL_TERMINATED;
+						...) B_GNUC_NULL_TERMINATED;
 
 /* returns TRUE if we support the given WM spec feature */
 gboolean bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
@@ -251,6 +251,6 @@ gboolean bdk_x11_display_utf8_to_compound_text      (BdkDisplay   *display,
 void     bdk_x11_free_compound_text                 (guchar       *ctext);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_X_H__ */

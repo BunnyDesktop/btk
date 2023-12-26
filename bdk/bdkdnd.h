@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDragContext        BdkDragContext;
 
@@ -103,7 +103,7 @@ struct _BdkDragContextClass {
 
 /* Drag and Drop */
 
-GType            bdk_drag_context_get_type   (void) G_GNUC_CONST;
+GType            bdk_drag_context_get_type   (void) B_GNUC_CONST;
 #if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
 BdkDragContext * bdk_drag_context_new        (void);
 #endif
@@ -181,6 +181,6 @@ void            bdk_drag_abort       (BdkDragContext *context,
 				      guint32         time_);
 gboolean        bdk_drag_drop_succeeded (BdkDragContext *context);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DND_H__ */

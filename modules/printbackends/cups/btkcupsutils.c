@@ -719,7 +719,7 @@ _post_send (BtkCupsRequest *request)
   struct stat data_info;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
 
@@ -773,7 +773,7 @@ _post_write_request (BtkCupsRequest *request)
   ipp_state_t ipp_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
   
@@ -814,7 +814,7 @@ _post_write_data (BtkCupsRequest *request)
   http_status_t http_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
   
@@ -973,7 +973,7 @@ _post_check (BtkCupsRequest *request)
   http_status = request->last_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - status %i\n", G_STRFUNC, http_status));
+            g_print ("CUPS Backend: %s - status %i\n", B_STRFUNC, http_status));
 
   request->poll_state = BTK_CUPS_HTTP_READ;
 
@@ -1166,7 +1166,7 @@ _post_read_response (BtkCupsRequest *request)
   ipp_state_t ipp_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_READ;
 
@@ -1203,7 +1203,7 @@ static void
 _get_send (BtkCupsRequest *request)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
 
@@ -1266,7 +1266,7 @@ _get_check (BtkCupsRequest *request)
   http_status_t http_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   http_status = request->last_status;
 
@@ -1438,7 +1438,7 @@ _get_read_data (BtkCupsRequest *request)
   GError *error;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   error = NULL;
 

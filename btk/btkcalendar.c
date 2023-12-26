@@ -731,7 +731,7 @@ btk_calendar_init (BtkCalendar *calendar)
       {
 #ifndef G_OS_WIN32
 	tmp_time=i*2764800;
-	if (G_UNLIKELY (month_format == NULL))
+	if (B_UNLIKELY (month_format == NULL))
 	  {
 	    buffer[0] = '\0';
 	    month_format = "%OB";

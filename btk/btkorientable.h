@@ -30,7 +30,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ORIENTABLE             (btk_orientable_get_type ())
 #define BTK_ORIENTABLE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ORIENTABLE, BtkOrientable))
@@ -49,12 +49,12 @@ struct _BtkOrientableIface
 };
 
 
-GType          btk_orientable_get_type        (void) G_GNUC_CONST;
+GType          btk_orientable_get_type        (void) B_GNUC_CONST;
 
 void           btk_orientable_set_orientation (BtkOrientable  *orientable,
                                                BtkOrientation  orientation);
 BtkOrientation btk_orientable_get_orientation (BtkOrientable  *orientable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ORIENTABLE_H__ */

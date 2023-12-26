@@ -34,7 +34,7 @@
 #include <btk/btkbox.h>
 
 
-G_BEGIN_DECLS  
+B_BEGIN_DECLS  
 
 #define BTK_TYPE_BUTTON_BOX             (btk_button_box_get_type ())
 #define BTK_BUTTON_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUTTON_BOX, BtkButtonBox))
@@ -65,7 +65,7 @@ struct _BtkButtonBoxClass
 };
 
 
-GType btk_button_box_get_type (void) G_GNUC_CONST;
+GType btk_button_box_get_type (void) B_GNUC_CONST;
 
 BtkButtonBoxStyle btk_button_box_get_layout          (BtkButtonBox      *widget);
 void              btk_button_box_set_layout          (BtkButtonBox      *widget,
@@ -100,6 +100,6 @@ void _btk_button_box_child_requisition (BtkWidget *widget,
 					int       *nvis_secondaries,
 					int       *width,
 					int       *height);
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BUTTON_BOX_H__ */

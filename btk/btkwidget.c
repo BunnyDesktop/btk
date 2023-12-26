@@ -389,7 +389,7 @@ btk_widget_get_type (void)
 {
   static GType widget_type = 0;
 
-  if (G_UNLIKELY (widget_type == 0))
+  if (B_UNLIKELY (widget_type == 0))
     {
       const GTypeInfo widget_info =
       {
@@ -2959,7 +2959,7 @@ btk_widget_child_notify (BtkWidget    *widget,
 				    TRUE);
   if (!pspec)
     g_warning ("%s: container class `%s' has no child property named `%s'",
-	       G_STRLOC,
+	       B_STRLOC,
 	       G_OBJECT_TYPE_NAME (widget->parent),
 	       child_property);
   else
@@ -2993,7 +2993,7 @@ btk_widget_thaw_child_notify (BtkWidget *widget)
   g_object_ref (widget);
   nqueue = g_object_notify_queue_from_object (G_OBJECT (widget), _btk_widget_child_property_notify_context);
   if (!nqueue || !nqueue->freeze_count)
-    g_warning (G_STRLOC ": child-property-changed notification for %s(%p) is not frozen",
+    g_warning (B_STRLOC ": child-property-changed notification for %s(%p) is not frozen",
 	       G_OBJECT_TYPE_NAME (widget), widget);
   else
     g_object_notify_queue_thaw (G_OBJECT (widget), nqueue);
@@ -4490,7 +4490,7 @@ btk_widget_add_accelerator (BtkWidget      *widget,
       query.n_params)
     {
       /* hmm, should be elaborate enough */
-      g_warning (G_STRLOC ": widget `%s' has no activatable signal \"%s\" without arguments",
+      g_warning (B_STRLOC ": widget `%s' has no activatable signal \"%s\" without arguments",
 		 G_OBJECT_TYPE_NAME (widget), accel_signal);
       return;
     }
@@ -4557,7 +4557,7 @@ btk_widget_remove_accelerator (BtkWidget      *widget,
     }
   g_list_free (clist);
 
-  g_warning (G_STRLOC ": no accelerator (%u,%u) installed in accel group (%p) for %s (%p)",
+  g_warning (B_STRLOC ": no accelerator (%u,%u) installed in accel group (%p) for %s (%p)",
 	     accel_key, accel_mods, accel_group,
 	     G_OBJECT_TYPE_NAME (widget), widget);
 
@@ -5087,7 +5087,7 @@ btk_widget_set_scroll_adjustments (BtkWidget     *widget,
       query.param_types[0] != BTK_TYPE_ADJUSTMENT ||
       query.param_types[1] != BTK_TYPE_ADJUSTMENT)
     {
-      g_warning (G_STRLOC ": signal \"%s::%s\" has wrong signature",
+      g_warning (B_STRLOC ": signal \"%s::%s\" has wrong signature",
 		 G_OBJECT_TYPE_NAME (widget), query.signal_name);
       return FALSE;
     }
@@ -5706,7 +5706,7 @@ btk_widget_grab_default (BtkWidget *widget)
   if (window && btk_widget_is_toplevel (window))
     btk_window_set_default (BTK_WINDOW (window), widget);
   else
-    g_warning (G_STRLOC ": widget not within a BtkWindow");
+    g_warning (B_STRLOC ": widget not within a BtkWindow");
 }
 
 /**
@@ -7628,7 +7628,7 @@ btk_widget_get_screen (BtkWidget *widget)
   else
     {
 #if 0
-      g_warning (G_STRLOC ": Can't get associated screen"
+      g_warning (B_STRLOC ": Can't get associated screen"
 		 " for a widget unless it is inside a toplevel BtkWindow\n"
 		 " widget type is %s associated top level type is %s",
 		 g_type_name (G_OBJECT_TYPE(G_OBJECT (widget))),
@@ -9815,7 +9815,7 @@ btk_widget_class_install_style_property_parser (BtkWidgetClass     *klass,
   
   if (g_param_spec_pool_lookup (style_property_spec_pool, pspec->name, G_OBJECT_CLASS_TYPE (klass), FALSE))
     {
-      g_warning (G_STRLOC ": class `%s' already contains a style property named `%s'",
+      g_warning (B_STRLOC ": class `%s' already contains a style property named `%s'",
 		 G_OBJECT_CLASS_NAME (klass),
 		 pspec->name);
       return;
@@ -9925,7 +9925,7 @@ btk_widget_style_get_property (BtkWidget   *widget,
 				    TRUE);
   if (!pspec)
     g_warning ("%s: widget class `%s' has no property named `%s'",
-	       G_STRLOC,
+	       B_STRLOC,
 	       G_OBJECT_TYPE_NAME (widget),
 	       property_name);
   else
@@ -9988,7 +9988,7 @@ btk_widget_style_get_valist (BtkWidget   *widget,
       if (!pspec)
 	{
 	  g_warning ("%s: widget class `%s' has no property named `%s'",
-		     G_STRLOC,
+		     B_STRLOC,
 		     G_OBJECT_TYPE_NAME (widget),
 		     name);
 	  break;
@@ -10002,7 +10002,7 @@ btk_widget_style_get_valist (BtkWidget   *widget,
       G_VALUE_LCOPY (peek_value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 	  break;
 	}

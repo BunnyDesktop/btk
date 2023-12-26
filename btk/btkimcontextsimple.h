@@ -27,7 +27,7 @@
 #include <btk/btkimcontext.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_IM_CONTEXT_SIMPLE              (btk_im_context_simple_get_type ())
@@ -62,7 +62,7 @@ struct _BtkIMContextSimpleClass
   BtkIMContextClass parent_class;
 };
 
-GType         btk_im_context_simple_get_type  (void) G_GNUC_CONST;
+GType         btk_im_context_simple_get_type  (void) B_GNUC_CONST;
 BtkIMContext *btk_im_context_simple_new       (void);
 
 void          btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
@@ -71,7 +71,7 @@ void          btk_im_context_simple_add_table (BtkIMContextSimple *context_simpl
 					       gint                n_seqs);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_IM_CONTEXT_SIMPLE_H__ */

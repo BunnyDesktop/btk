@@ -939,7 +939,7 @@ convert_real_slow (BdkImage    *image,
     {
       g_warning ("%s: The depth of the source image (%d) doesn't "
                  "match the depth of the colormap passed in (%d).",
-                 G_STRLOC, image->depth, v->depth);
+                 B_STRLOC, image->depth, v->depth);
       return;
     } 
  
@@ -1059,7 +1059,7 @@ rgbconvert (BdkImage    *image,
     {
       g_warning ("%s: The depth of the source image (%d) doesn't "
                  "match the depth of the colormap passed in (%d).",
-                 G_STRLOC, image->depth, v->depth);
+                 B_STRLOC, image->depth, v->depth);
       return;
     } 
  
@@ -1246,7 +1246,7 @@ bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
     {
       g_warning ("%s: Source drawable has no colormap; either pass "
                  "in a colormap, or set the colormap on the drawable "
-                 "with bdk_drawable_set_colormap()", G_STRLOC);
+                 "with bdk_drawable_set_colormap()", B_STRLOC);
       return NULL;
     }
   
@@ -1254,7 +1254,7 @@ bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
     {
       g_warning ("%s: Depth of the source drawable is %d where as "
                  "the visual depth of the colormap passed is %d",
-                 G_STRLOC, depth, cmap->visual->depth);
+                 B_STRLOC, depth, cmap->visual->depth);
       return NULL;
     } 
  
@@ -1363,7 +1363,7 @@ bdk_pixbuf_get_from_image (BdkPixbuf   *dest,
     {
       g_warning ("%s: Source image has no colormap; either pass "
                  "in a colormap, or set the colormap on the image "
-                 "with bdk_image_set_colormap()", G_STRLOC);
+                 "with bdk_image_set_colormap()", B_STRLOC);
       return NULL;
     }
   
@@ -1371,7 +1371,7 @@ bdk_pixbuf_get_from_image (BdkPixbuf   *dest,
     {
       g_warning ("%s: Depth of the Source image is %d where as "
                  "the visual depth of the colormap passed is %d",
-                 G_STRLOC, src->depth, cmap->visual->depth);
+                 B_STRLOC, src->depth, cmap->visual->depth);
       return NULL;
     } 
  

@@ -33,7 +33,7 @@
 #include <btk/btkunixprint.h>
 #include <btk/btkprinteroptionset.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPrintBackendClass    BtkPrintBackendClass;
 typedef struct _BtkPrintBackendPrivate  BtkPrintBackendPrivate;
@@ -139,7 +139,7 @@ struct _BtkPrintBackendClass
   void (*_btk_reserved4) (void);
 };
 
-GType   btk_print_backend_get_type       (void) G_GNUC_CONST;
+GType   btk_print_backend_get_type       (void) B_GNUC_CONST;
 
 GList      *btk_print_backend_get_printer_list     (BtkPrintBackend         *print_backend);
 gboolean    btk_print_backend_printer_list_is_done (BtkPrintBackend         *print_backend);
@@ -196,6 +196,6 @@ gboolean    btk_printer_set_state_message     (BtkPrinter      *printer,
 					       const gchar     *message);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_BACKEND_H__ */

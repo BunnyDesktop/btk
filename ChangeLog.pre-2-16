@@ -3575,7 +3575,7 @@
 
 2008-09-30  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btk.symbols: forgot the G_GNUC_CONST of
+	* btk/btk.symbols: forgot the B_GNUC_CONST of
 	btk_orientable_get_type().
 
 2008-09-30  Michael Natterer  <mitch@imendio.com>

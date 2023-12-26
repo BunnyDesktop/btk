@@ -2754,7 +2754,7 @@ bdk_x11_screen_get_window_manager_name (BdkScreen *screen)
 
   screen_x11 = BDK_SCREEN_X11 (screen);
   
-  if (!G_LIKELY (BDK_DISPLAY_X11 (screen_x11->display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (screen_x11->display)->trusted_client))
     return screen_x11->window_manager_name;
 
   fetch_net_wm_check_window (screen);
@@ -2861,7 +2861,7 @@ bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
   screen_x11 = BDK_SCREEN_X11 (screen);
   display = screen_x11->display;
 
-  if (!G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return FALSE;
 
   supported_atoms = g_object_get_data (G_OBJECT (screen), "bdk-net-wm-supported-atoms");

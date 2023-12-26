@@ -27,7 +27,7 @@
 
 #include <btk/btkaccelgroup.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* --- global BtkAccelMap object --- */
 #define BTK_TYPE_ACCEL_MAP                (btk_accel_map_get_type ())
@@ -82,7 +82,7 @@ void	btk_accel_map_foreach_unfiltered (gpointer		 data,
 					  BtkAccelMapForeach	 foreach_func);
 
 /* --- notification --- */
-GType        btk_accel_map_get_type (void) G_GNUC_CONST;
+GType        btk_accel_map_get_type (void) B_GNUC_CONST;
 BtkAccelMap *btk_accel_map_get      (void);
 
 
@@ -96,6 +96,6 @@ void            _btk_accel_map_remove_group 	 (const gchar   *accel_path,
 gboolean	_btk_accel_path_is_valid	 (const gchar	*accel_path);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ACCEL_MAP_H__ */

@@ -34,7 +34,7 @@
 #include <bdkconfig.h>
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* A BtkTextChildAnchor is a spot in the buffer where child widgets
  * can be "anchored" (inserted inline, as if they were characters).
@@ -70,13 +70,13 @@ struct _BtkTextChildAnchorClass
   void (*_btk_reserved4) (void);
 };
 
-GType btk_text_child_anchor_get_type (void) G_GNUC_CONST;
+GType btk_text_child_anchor_get_type (void) B_GNUC_CONST;
 
 BtkTextChildAnchor* btk_text_child_anchor_new (void);
 
 GList*   btk_text_child_anchor_get_widgets (BtkTextChildAnchor *anchor);
 gboolean btk_text_child_anchor_get_deleted (BtkTextChildAnchor *anchor);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif

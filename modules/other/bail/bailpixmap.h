@@ -22,7 +22,7 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_PIXMAP                      (bail_pixmap_get_type ())
 #define BAIL_PIXMAP(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PIXMAP, BailPixmap))
@@ -49,6 +49,6 @@ struct _BailPixmapClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_PIXMAP_H__ */

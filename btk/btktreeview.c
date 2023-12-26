@@ -3602,7 +3602,7 @@ btk_tree_view_motion_draw_column_motion_arrow (BtkTreeView *tree_view)
    }
   else
     {
-      g_warning (G_STRLOC"Invalid BtkTreeViewColumnReorder struct");
+      g_warning (B_STRLOC"Invalid BtkTreeViewColumnReorder struct");
       bdk_window_hide (tree_view->priv->drag_highlight_window);
       return;
     }
@@ -8766,7 +8766,7 @@ btk_tree_view_get_background_xrange (BtkTreeView       *tree_view,
 
   if (tmp_column != column)
     {
-      g_warning (G_STRLOC": passed-in column isn't in the tree");
+      g_warning (B_STRLOC": passed-in column isn't in the tree");
       return;
     }
 

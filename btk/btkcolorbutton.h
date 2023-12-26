@@ -39,7 +39,7 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* The BtkColorButton widget is a simple color picker in a button.
@@ -80,7 +80,7 @@ struct _BtkColorButtonClass {
 };
 
 
-GType      btk_color_button_get_type       (void) G_GNUC_CONST;
+GType      btk_color_button_get_type       (void) B_GNUC_CONST;
 BtkWidget *btk_color_button_new            (void);
 BtkWidget *btk_color_button_new_with_color (const BdkColor *color);
 void       btk_color_button_set_color      (BtkColorButton *color_button,
@@ -98,6 +98,6 @@ void       btk_color_button_set_title      (BtkColorButton *color_button,
 const gchar *btk_color_button_get_title (BtkColorButton *color_button);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_COLOR_BUTTON_H__ */

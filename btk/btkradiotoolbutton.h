@@ -29,7 +29,7 @@
 
 #include <btk/btktoggletoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RADIO_TOOL_BUTTON            (btk_radio_tool_button_get_type ())
 #define BTK_RADIO_TOOL_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButton))
@@ -57,7 +57,7 @@ struct _BtkRadioToolButtonClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_radio_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_radio_tool_button_get_type       (void) B_GNUC_CONST;
 
 BtkToolItem *btk_radio_tool_button_new                        (GSList             *group);
 BtkToolItem *btk_radio_tool_button_new_from_stock             (GSList             *group,
@@ -69,6 +69,6 @@ GSList *     btk_radio_tool_button_get_group                  (BtkRadioToolButto
 void         btk_radio_tool_button_set_group                  (BtkRadioToolButton *button,
 							       GSList             *group);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RADIO_TOOL_BUTTON_H__ */

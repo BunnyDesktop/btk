@@ -23,7 +23,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_EMBED             (_btk_file_chooser_embed_get_type ())
 #define BTK_FILE_CHOOSER_EMBED(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
@@ -53,7 +53,7 @@ struct _BtkFileChooserEmbedIface
   void (*response_requested)      (BtkFileChooserEmbed *chooser_embed);
 };
 
-GType _btk_file_chooser_embed_get_type (void) G_GNUC_CONST;
+GType _btk_file_chooser_embed_get_type (void) B_GNUC_CONST;
 
 void  _btk_file_chooser_embed_get_default_size    (BtkFileChooserEmbed *chooser_embed,
 						   gint                *default_width,
@@ -66,6 +66,6 @@ void _btk_file_chooser_embed_delegate_iface_init  (BtkFileChooserEmbedIface *ifa
 void _btk_file_chooser_embed_set_delegate         (BtkFileChooserEmbed *receiver,
 						   BtkFileChooserEmbed *delegate);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_EMBED_H__ */

@@ -494,11 +494,11 @@ _bdk_x11_copy_to_image (BdkDrawable    *drawable,
   
   have_grab = FALSE;
 
-#define UNGRAB() G_STMT_START {					\
+#define UNGRAB() B_STMT_START {					\
     if (have_grab) {						\
       bdk_x11_display_ungrab (display);				\
       have_grab = FALSE; }					\
-  } G_STMT_END
+  } B_STMT_END
 
   if (!image && !BDK_IS_WINDOW_IMPL_X11 (drawable))
     return get_full_image (drawable, src_x, src_y, width, height);

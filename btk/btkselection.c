@@ -1331,7 +1331,7 @@ selection_set_compound_text (BtkSelectionData *selection_data,
 #elif defined(BDK_WINDOWING_WIN32) || defined(BDK_WINDOWING_QUARTZ)
   result = FALSE; /* not needed on Win32 or Quartz */
 #else
-  g_warning ("%s is not implemented", G_STRFUNC);
+  g_warning ("%s is not implemented", B_STRFUNC);
   result = FALSE;
 #endif
 
@@ -2290,7 +2290,7 @@ _btk_selection_request (BtkWidget *widget,
   if (!info->requestor)
     info->requestor = bdk_win32_window_foreign_new_for_display (display, event->requestor);
 #else
-  g_warning ("%s is not implemented", G_STRFUNC);
+  g_warning ("%s is not implemented", B_STRFUNC);
   info->requestor = NULL;
 #endif
 

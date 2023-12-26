@@ -4,7 +4,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* BOOLEAN:BOXED (./btkmarshalers.list:24) */
 extern
@@ -748,6 +748,6 @@ void _btk_marshal_VOID__POINTER_POINTER_POINTER_POINTER_STRING (GClosure     *cl
                                                                 gpointer      marshal_data);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ___BTK_MARSHAL_MARSHAL_H__ */

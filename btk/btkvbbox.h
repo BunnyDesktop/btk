@@ -35,7 +35,7 @@
 #include <btk/btkbbox.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_VBUTTON_BOX            (btk_vbutton_box_get_type ())
@@ -60,7 +60,7 @@ struct _BtkVButtonBoxClass
 };
 
 
-GType      btk_vbutton_box_get_type (void) G_GNUC_CONST;
+GType      btk_vbutton_box_get_type (void) B_GNUC_CONST;
 BtkWidget *btk_vbutton_box_new      (void);
 
 /* buttons can be added by btk_container_add() */
@@ -76,7 +76,7 @@ void btk_vbutton_box_set_layout_default (BtkButtonBoxStyle layout);
 /* private API */
 BtkButtonBoxStyle _btk_vbutton_box_get_layout_default (void);
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_VBBOX_H__ */

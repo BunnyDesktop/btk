@@ -29,7 +29,7 @@
 #include <bdk/bdk.h>
 #include <time.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_INFO			(btk_recent_info_get_type ())
 
@@ -135,7 +135,7 @@ typedef enum
 GQuark 	btk_recent_manager_error_quark (void);
 
 
-GType 		  btk_recent_manager_get_type       (void) G_GNUC_CONST;
+GType 		  btk_recent_manager_get_type       (void) B_GNUC_CONST;
 
 BtkRecentManager *btk_recent_manager_new            (void);
 BtkRecentManager *btk_recent_manager_get_default    (void);
@@ -171,7 +171,7 @@ gint              btk_recent_manager_purge_items    (BtkRecentManager     *manag
 						     GError              **error);
 
 
-GType	              btk_recent_info_get_type             (void) G_GNUC_CONST;
+GType	              btk_recent_info_get_type             (void) B_GNUC_CONST;
 
 BtkRecentInfo *       btk_recent_info_ref                  (BtkRecentInfo  *info);
 void                  btk_recent_info_unref                (BtkRecentInfo  *info);
@@ -190,18 +190,18 @@ gboolean              btk_recent_info_get_application_info (BtkRecentInfo  *info
 							    guint          *count,
 							    time_t         *time_);
 gchar **              btk_recent_info_get_applications     (BtkRecentInfo  *info,
-							    gsize          *length) G_GNUC_MALLOC;
-gchar *               btk_recent_info_last_application     (BtkRecentInfo  *info) G_GNUC_MALLOC;
+							    gsize          *length) B_GNUC_MALLOC;
+gchar *               btk_recent_info_last_application     (BtkRecentInfo  *info) B_GNUC_MALLOC;
 gboolean              btk_recent_info_has_application      (BtkRecentInfo  *info,
 							    const gchar    *app_name);
 gchar **              btk_recent_info_get_groups           (BtkRecentInfo  *info,
-							    gsize          *length) G_GNUC_MALLOC;
+							    gsize          *length) B_GNUC_MALLOC;
 gboolean              btk_recent_info_has_group            (BtkRecentInfo  *info,
 							    const gchar    *group_name);
 BdkPixbuf *           btk_recent_info_get_icon             (BtkRecentInfo  *info,
 							    gint            size);
-gchar *               btk_recent_info_get_short_name       (BtkRecentInfo  *info) G_GNUC_MALLOC;
-gchar *               btk_recent_info_get_uri_display      (BtkRecentInfo  *info) G_GNUC_MALLOC;
+gchar *               btk_recent_info_get_short_name       (BtkRecentInfo  *info) B_GNUC_MALLOC;
+gchar *               btk_recent_info_get_uri_display      (BtkRecentInfo  *info) B_GNUC_MALLOC;
 gint                  btk_recent_info_get_age              (BtkRecentInfo  *info);
 gboolean              btk_recent_info_is_local             (BtkRecentInfo  *info);
 gboolean              btk_recent_info_exists               (BtkRecentInfo  *info);
@@ -211,6 +211,6 @@ gboolean              btk_recent_info_match                (BtkRecentInfo  *info
 /* private */
 void _btk_recent_manager_sync (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_MANAGER_H__ */

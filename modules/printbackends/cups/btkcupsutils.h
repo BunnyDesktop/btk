@@ -26,7 +26,7 @@
 #include <cups/http.h>
 #include <cups/ipp.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkCupsRequest        BtkCupsRequest;
 typedef struct _BtkCupsResult         BtkCupsResult;
@@ -196,5 +196,5 @@ BtkCupsConnectionTest * btk_cups_connection_test_new       (const char         *
 BtkCupsConnectionState  btk_cups_connection_test_get_state (BtkCupsConnectionTest *test);
 void                    btk_cups_connection_test_free      (BtkCupsConnectionTest *test);
 
-G_END_DECLS
+B_END_DECLS
 #endif 

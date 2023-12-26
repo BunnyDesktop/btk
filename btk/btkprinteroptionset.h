@@ -32,7 +32,7 @@
 #include <bunnylib-object.h>
 #include "btkprinteroption.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION_SET             (btk_printer_option_set_get_type ())
 #define BTK_PRINTER_OPTION_SET(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_SET, BtkPrinterOptionSet))
@@ -71,7 +71,7 @@ typedef void (*BtkPrinterOptionSetFunc) (BtkPrinterOption  *option,
 					 gpointer           user_data);
 
 
-GType   btk_printer_option_set_get_type       (void) G_GNUC_CONST;
+GType   btk_printer_option_set_get_type       (void) B_GNUC_CONST;
 
 BtkPrinterOptionSet *btk_printer_option_set_new              (void);
 void                 btk_printer_option_set_add              (BtkPrinterOptionSet     *set,
@@ -90,6 +90,6 @@ void                 btk_printer_option_set_foreach_in_group (BtkPrinterOptionSe
 							      BtkPrinterOptionSetFunc  func,
 							      gpointer                 user_data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINTER_OPTION_SET_H__ */

@@ -192,7 +192,7 @@ _btk_file_chooser_delegate_get_quark (void)
 {
   static GQuark quark = 0;
 
-  if (G_UNLIKELY (quark == 0))
+  if (B_UNLIKELY (quark == 0))
     quark = g_quark_from_static_string ("btk-file-chooser-delegate");
   
   return quark;

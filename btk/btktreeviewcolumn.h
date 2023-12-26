@@ -32,7 +32,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_TREE_VIEW_COLUMN	     (btk_tree_view_column_get_type ())
@@ -123,11 +123,11 @@ struct _BtkTreeViewColumnClass
   void (*_btk_reserved4) (void);
 };
 
-GType                   btk_tree_view_column_get_type            (void) G_GNUC_CONST;
+GType                   btk_tree_view_column_get_type            (void) B_GNUC_CONST;
 BtkTreeViewColumn      *btk_tree_view_column_new                 (void);
 BtkTreeViewColumn      *btk_tree_view_column_new_with_attributes (const gchar             *title,
 								  BtkCellRenderer         *cell,
-								  ...) G_GNUC_NULL_TERMINATED;
+								  ...) B_GNUC_NULL_TERMINATED;
 void                    btk_tree_view_column_pack_start          (BtkTreeViewColumn       *tree_column,
 								  BtkCellRenderer         *cell,
 								  gboolean                 expand);
@@ -144,7 +144,7 @@ void                    btk_tree_view_column_add_attribute       (BtkTreeViewCol
 								  gint                     column);
 void                    btk_tree_view_column_set_attributes      (BtkTreeViewColumn       *tree_column,
 								  BtkCellRenderer         *cell_renderer,
-								  ...) G_GNUC_NULL_TERMINATED;
+								  ...) B_GNUC_NULL_TERMINATED;
 void                    btk_tree_view_column_set_cell_data_func  (BtkTreeViewColumn       *tree_column,
 								  BtkCellRenderer         *cell_renderer,
 								  BtkTreeCellDataFunc      func,
@@ -239,7 +239,7 @@ void                    btk_tree_view_column_queue_resize        (BtkTreeViewCol
 BtkWidget              *btk_tree_view_column_get_tree_view       (BtkTreeViewColumn       *tree_column);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_TREE_VIEW_COLUMN_H__ */

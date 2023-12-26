@@ -206,7 +206,7 @@ _bdk_windowing_pointer_grab (BdkWindow *window,
 					time);
 
   if (return_val == GrabSuccess ||
-      G_UNLIKELY (!display_x11->trusted_client && return_val == AlreadyGrabbed))
+      B_UNLIKELY (!display_x11->trusted_client && return_val == AlreadyGrabbed))
     {
       if (!BDK_WINDOW_DESTROYED (native))
 	{
@@ -293,7 +293,7 @@ bdk_keyboard_grab (BdkWindow *	   window,
 				    owner_events,
 				    GrabModeAsync, GrabModeAsync,
 				    time);
-	if (G_UNLIKELY (!display_x11->trusted_client && 
+	if (B_UNLIKELY (!display_x11->trusted_client && 
 			return_val == AlreadyGrabbed))
 	  /* we can't grab the keyboard, but we can do a BTK-local grab */
 	  return_val = GrabSuccess;

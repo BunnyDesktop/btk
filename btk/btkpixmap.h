@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PIXMAP			 (btk_pixmap_get_type ())
 #define BTK_PIXMAP(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
@@ -62,7 +62,7 @@ struct _BtkPixmapClass
 };
 
 
-GType	   btk_pixmap_get_type	 (void) G_GNUC_CONST;
+GType	   btk_pixmap_get_type	 (void) B_GNUC_CONST;
 BtkWidget* btk_pixmap_new	 (BdkPixmap  *pixmap,
 				  BdkBitmap  *mask);
 void	   btk_pixmap_set	 (BtkPixmap  *pixmap,
@@ -76,7 +76,7 @@ void       btk_pixmap_set_build_insensitive (BtkPixmap *pixmap,
 		                             gboolean   build);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PIXMAP_H__ */
 

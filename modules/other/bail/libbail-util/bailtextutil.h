@@ -23,7 +23,7 @@
 #include <bunnylib-object.h>
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TEXT_UTIL                  (bail_text_util_get_type ())
 #define BAIL_TEXT_UTIL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtil))
@@ -82,6 +82,6 @@ gchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
                                             gint            start_pos,
                                             gint            end_pos);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*__BAIL_TEXT_UTIL_H__ */

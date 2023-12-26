@@ -26,7 +26,7 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_DIAL(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
@@ -83,7 +83,7 @@ void           btk_dial_set_adjustment         (BtkDial      *dial,
 						BtkAdjustment *adjustment);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_DIAL_H__ */

@@ -21,7 +21,7 @@
 #define __BTK_TREE_PRIVATE_H__
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #include <btk/btktreeview.h>
@@ -65,8 +65,8 @@ enum
   RUBBER_BAND_ACTIVE = 2
 };
 
-#define BTK_TREE_VIEW_SET_FLAG(tree_view, flag)   G_STMT_START{ (tree_view->priv->flags|=flag); }G_STMT_END
-#define BTK_TREE_VIEW_UNSET_FLAG(tree_view, flag) G_STMT_START{ (tree_view->priv->flags&=~(flag)); }G_STMT_END
+#define BTK_TREE_VIEW_SET_FLAG(tree_view, flag)   B_STMT_START{ (tree_view->priv->flags|=flag); }B_STMT_END
+#define BTK_TREE_VIEW_UNSET_FLAG(tree_view, flag) B_STMT_START{ (tree_view->priv->flags&=~(flag)); }B_STMT_END
 #define BTK_TREE_VIEW_FLAG_SET(tree_view, flag)   ((tree_view->priv->flags&flag)==flag)
 #define TREE_VIEW_HEADER_HEIGHT(tree_view)        (BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_HEADERS_VISIBLE)?tree_view->priv->header_height:0)
 #define TREE_VIEW_COLUMN_REQUESTED_WIDTH(column)  (CLAMP (column->requested_width, (column->min_width!=-1)?column->min_width:column->requested_width, (column->max_width!=-1)?column->max_width:column->requested_width))
@@ -304,7 +304,7 @@ struct _BtkTreeViewPrivate
 
 #ifdef __GNUC__
 
-#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -314,13 +314,13 @@ struct _BtkTreeViewPrivate
 		"and the BtkTreeModel.  This generally means that the model has changed\n"\
 		"without letting the view know.  Any display from now on is likely to\n"  \
 		"be incorrect.\n",                                                        \
-                G_STRLOC,                                               \
-                G_STRFUNC,                                              \
+                B_STRLOC,                                               \
+                B_STRFUNC,                                              \
                 #expr);                                                 \
          return ret;                                                    \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
-#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -330,15 +330,15 @@ struct _BtkTreeViewPrivate
 		"and the BtkTreeModel.  This generally means that the model has changed\n"\
 		"without letting the view know.  Any display from now on is likely to\n"  \
 		"be incorrect.\n",                                                        \
-                G_STRLOC,                                               \
-                G_STRFUNC,                                              \
+                B_STRLOC,                                               \
+                B_STRFUNC,                                              \
                 #expr);                                                 \
          return;                                                        \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
 #else
 
-#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -352,9 +352,9 @@ struct _BtkTreeViewPrivate
                 __LINE__,                                               \
                 #expr);                                                 \
          return ret;                                                    \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
-#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -368,7 +368,7 @@ struct _BtkTreeViewPrivate
                 __LINE__,                                               \
                 #expr);                                                 \
          return;                                                        \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 #endif
 
 
@@ -465,7 +465,7 @@ void              _btk_tree_view_column_get_neighbor_sizes (BtkTreeViewColumn *c
 							    gint              *right);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_TREE_PRIVATE_H__ */

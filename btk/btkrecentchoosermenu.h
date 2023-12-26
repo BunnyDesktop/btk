@@ -28,7 +28,7 @@
 #include <btk/btkmenu.h>
 #include <btk/btkrecentchooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_CHOOSER_MENU		(btk_recent_chooser_menu_get_type ())
 #define BTK_RECENT_CHOOSER_MENU(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenu))
@@ -60,7 +60,7 @@ struct _BtkRecentChooserMenuClass
   void (* btk_recent4) (void);
 };
 
-GType      btk_recent_chooser_menu_get_type         (void) G_GNUC_CONST;
+GType      btk_recent_chooser_menu_get_type         (void) B_GNUC_CONST;
 
 BtkWidget *btk_recent_chooser_menu_new              (void);
 BtkWidget *btk_recent_chooser_menu_new_for_manager  (BtkRecentManager     *manager);
@@ -69,6 +69,6 @@ gboolean   btk_recent_chooser_menu_get_show_numbers (BtkRecentChooserMenu *menu)
 void       btk_recent_chooser_menu_set_show_numbers (BtkRecentChooserMenu *menu,
 						     gboolean              show_numbers);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ! __BTK_RECENT_CHOOSER_MENU_H__ */

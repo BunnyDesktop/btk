@@ -22,7 +22,7 @@
 
 #include <bunnylib.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 enum {
   CHECK_OFFSETS = 1,
@@ -39,6 +39,6 @@ typedef struct {
 
 gboolean _btk_icon_cache_validate (CacheInfo *info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_ICON_CACHE_VALIDATOR_H__ */

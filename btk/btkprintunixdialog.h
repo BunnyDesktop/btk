@@ -28,7 +28,7 @@
 #include <btk/btkprinter.h>
 #include <btk/btkprintjob.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_UNIX_DIALOG                  (btk_print_unix_dialog_get_type ())
 #define BTK_PRINT_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
@@ -64,7 +64,7 @@ struct _BtkPrintUnixDialogClass
   void (*_btk_reserved7) (void);
 };
 
-GType                btk_print_unix_dialog_get_type                (void) G_GNUC_CONST;
+GType                btk_print_unix_dialog_get_type                (void) B_GNUC_CONST;
 BtkWidget *          btk_print_unix_dialog_new                     (const gchar *title,
                                                                     BtkWindow   *parent);
 
@@ -95,6 +95,6 @@ void                 btk_print_unix_dialog_set_embed_page_setup    (BtkPrintUnix
 gboolean             btk_print_unix_dialog_get_embed_page_setup    (BtkPrintUnixDialog *dialog);
 gboolean             btk_print_unix_dialog_get_page_setup_set      (BtkPrintUnixDialog *dialog);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_UNIX_DIALOG_H__ */

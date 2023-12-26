@@ -30,7 +30,7 @@
 #include <bdk/x11/bdkdrawable-x11.h>
 #include <bdk/bdkpixmap.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Pixmap implementation for X11
  */
@@ -63,6 +63,6 @@ struct _BdkPixmapImplX11Class
 
 GType bdk_pixmap_impl_x11_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_X11_H__ */

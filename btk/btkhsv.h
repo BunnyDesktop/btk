@@ -38,7 +38,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HSV            (btk_hsv_get_type ())
 #define BTK_HSV(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
@@ -78,7 +78,7 @@ struct _BtkHSVClass
 };
 
 
-GType      btk_hsv_get_type     (void) G_GNUC_CONST;
+GType      btk_hsv_get_type     (void) B_GNUC_CONST;
 BtkWidget* btk_hsv_new          (void);
 void       btk_hsv_set_color    (BtkHSV    *hsv,
 				 double     h,
@@ -110,6 +110,6 @@ void       btk_rgb_to_hsv       (gdouble    r,
 				 gdouble   *s,
 				 gdouble   *v);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HSV_H__ */

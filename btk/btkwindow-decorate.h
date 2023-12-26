@@ -24,7 +24,7 @@
 #ifndef __BTK_WINDOW_DECORATE_H__
 #define __BTK_WINDOW_DECORATE_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 void btk_decorated_window_init                 (BtkWindow   *window);
 void btk_decorated_window_calculate_frame_size (BtkWindow   *window);
@@ -36,6 +36,6 @@ void btk_decorated_window_move_resize_window   (BtkWindow   *window,
 						gint         width,
 						gint         height);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_WINDOW_DECORATE_H__ */

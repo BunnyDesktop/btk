@@ -28,7 +28,7 @@ struct _BtkMirrorBinClass
   BtkContainerClass parent_class;
 };
 
-GType      btk_mirror_bin_get_type  (void) G_GNUC_CONST;
+GType      btk_mirror_bin_get_type  (void) B_GNUC_CONST;
 BtkWidget* btk_mirror_bin_new       (void);
 
 /*** implementation ***/

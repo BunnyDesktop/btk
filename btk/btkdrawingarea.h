@@ -35,7 +35,7 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_DRAWING_AREA            (btk_drawing_area_get_type ())
 #define BTK_DRAWING_AREA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingArea))
@@ -67,7 +67,7 @@ struct _BtkDrawingAreaClass
 };
 
 
-GType      btk_drawing_area_get_type   (void) G_GNUC_CONST;
+GType      btk_drawing_area_get_type   (void) B_GNUC_CONST;
 BtkWidget* btk_drawing_area_new        (void);
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -77,6 +77,6 @@ void       btk_drawing_area_size       (BtkDrawingArea      *darea,
 #endif /* BTK_DISABLE_DEPRECATED */
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_DRAWING_AREA_H__ */

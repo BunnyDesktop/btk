@@ -23,7 +23,7 @@
 #include <btk/btk.h>
 #include "x11/bdkx.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 extern GType btk_type_im_context_xim;
 
@@ -48,6 +48,6 @@ BtkIMContext *btk_im_context_xim_new (void);
 
 void btk_im_context_xim_shutdown (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_XIM_H__ */

@@ -33,7 +33,7 @@
 #include <btk/btkvbox.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_GAMMA_CURVE            (btk_gamma_curve_get_type ())
 #define BTK_GAMMA_CURVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurve))
@@ -71,11 +71,11 @@ struct _BtkGammaCurveClass
 };
 
 
-GType      btk_gamma_curve_get_type (void) G_GNUC_CONST;
+GType      btk_gamma_curve_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_gamma_curve_new      (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_GAMMA_CURVE_H__ */
 

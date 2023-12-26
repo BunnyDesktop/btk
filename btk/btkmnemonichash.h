@@ -25,7 +25,7 @@
 #include <bdk/bdk.h>
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkMnemnonicHash BtkMnemonicHash;
 
@@ -49,6 +49,6 @@ void             _btk_mnemonic_hash_foreach  (BtkMnemonicHash        *mnemonic_h
 					      BtkMnemonicHashForeach  func,
 					      gpointer                func_data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MNEMONIC_HASH_H__ */

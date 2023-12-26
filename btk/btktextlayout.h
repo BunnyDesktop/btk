@@ -91,7 +91,7 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* forward declarations that have to be here to avoid including
  * btktextbtree.h
@@ -267,7 +267,7 @@ struct _BtkTextLineDisplay
 
 extern BangoAttrType btk_text_attr_appearance_type;
 
-GType         btk_text_layout_get_type    (void) G_GNUC_CONST;
+GType         btk_text_layout_get_type    (void) B_GNUC_CONST;
 
 BtkTextLayout*     btk_text_layout_new                   (void);
 void               btk_text_layout_set_buffer            (BtkTextLayout     *layout,
@@ -434,6 +434,6 @@ void btk_text_anchored_child_set_layout     (BtkWidget          *child,
 
 void btk_text_layout_spew (BtkTextLayout *layout);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_TEXT_LAYOUT_H__ */

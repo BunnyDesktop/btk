@@ -23,7 +23,7 @@
 #include <btk/btk.h>
 #include <bail/bailbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_SCALE_BUTTON                     (bail_scale_button_get_type ())
 #define BAIL_SCALE_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE_BUTTON, BailScaleButton))
@@ -47,6 +47,6 @@ struct _BailScaleButtonClass
 
 GType bail_scale_button_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_SCALE_BUTTON_H__ */

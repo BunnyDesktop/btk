@@ -3743,7 +3743,7 @@ get_area (BtkRange     *range,
       break;
     }
 
-  g_warning (G_STRLOC": bug");
+  g_warning (B_STRLOC": bug");
   return NULL;
 }
 

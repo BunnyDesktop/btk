@@ -934,7 +934,7 @@ btk_file_chooser_button_set_property (GObject      *object,
 	    eclass = g_type_class_peek (BTK_TYPE_FILE_CHOOSER_ACTION);
 	    eval = g_enum_get_value (eclass, g_value_get_enum (value));
 	    g_warning ("%s: Choosers of type `%s' do not support `%s'.",
-		       G_STRFUNC, G_OBJECT_TYPE_NAME (object), eval->value_name);
+		       B_STRFUNC, G_OBJECT_TYPE_NAME (object), eval->value_name);
 
 	    g_value_set_enum ((GValue *) value, BTK_FILE_CHOOSER_ACTION_OPEN);
 	  }
@@ -985,7 +985,7 @@ btk_file_chooser_button_set_property (GObject      *object,
 
     case BTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE:
       g_warning ("%s: Choosers of type `%s` do not support selecting multiple files.",
-		 G_STRFUNC, G_OBJECT_TYPE_NAME (object));
+		 B_STRFUNC, G_OBJECT_TYPE_NAME (object));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);

@@ -25,7 +25,7 @@
 #include <bdk/quartz/bdkdrawable-quartz.h>
 #include <bdk/bdkpixmap.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Pixmap implementation for Quartz
  */
@@ -58,6 +58,6 @@ struct _BdkPixmapImplQuartzClass
 
 GType _bdk_pixmap_impl_quartz_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_QUARTZ_H__ */

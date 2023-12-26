@@ -82,10 +82,10 @@ COLUMN_FROM_XPIXEL (BtkCList * clist,
 }
 
 #define CLIST_UNFROZEN(clist)     (((BtkCList*) (clist))->freeze_count == 0)
-#define CLIST_REFRESH(clist)    G_STMT_START { \
+#define CLIST_REFRESH(clist)    B_STMT_START { \
   if (CLIST_UNFROZEN (clist)) \
     BTK_CLIST_GET_CLASS (clist)->refresh ((BtkCList*) (clist)); \
-} G_STMT_END
+} B_STMT_END
 
 
 enum {

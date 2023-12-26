@@ -34,7 +34,7 @@
 #include <btk/btktexttag.h>
 #include <btk/btktextchild.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum {
   BTK_TEXT_SEARCH_VISIBLE_ONLY = 1 << 0,
@@ -87,7 +87,7 @@ BtkTextBuffer *btk_text_iter_get_buffer (const BtkTextIter *iter);
 BtkTextIter *btk_text_iter_copy     (const BtkTextIter *iter);
 void         btk_text_iter_free     (BtkTextIter       *iter);
 
-GType        btk_text_iter_get_type (void) G_GNUC_CONST;
+GType        btk_text_iter_get_type (void) B_GNUC_CONST;
 
 /*
  * Convert to different kinds of index
@@ -300,7 +300,7 @@ gboolean btk_text_iter_in_range        (const BtkTextIter *iter,
 void     btk_text_iter_order           (BtkTextIter *first,
                                         BtkTextIter *second);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

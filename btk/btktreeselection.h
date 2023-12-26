@@ -26,7 +26,7 @@
 
 #include <btk/btktreeview.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_TREE_SELECTION			(btk_tree_selection_get_type ())
@@ -73,7 +73,7 @@ struct _BtkTreeSelectionClass
 };
 
 
-GType            btk_tree_selection_get_type            (void) G_GNUC_CONST;
+GType            btk_tree_selection_get_type            (void) B_GNUC_CONST;
 
 void             btk_tree_selection_set_mode            (BtkTreeSelection            *selection,
 							 BtkSelectionMode             type);
@@ -120,6 +120,6 @@ void             btk_tree_selection_unselect_range      (BtkTreeSelection       
 							 BtkTreePath                 *end_path);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_SELECTION_H__ */

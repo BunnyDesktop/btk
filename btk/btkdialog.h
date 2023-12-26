@@ -35,7 +35,7 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Parameters for dialog construction */
 typedef enum
@@ -124,7 +124,7 @@ struct _BtkDialogClass
 };
 
 
-GType      btk_dialog_get_type (void) G_GNUC_CONST;
+GType      btk_dialog_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_dialog_new      (void);
 
 BtkWidget* btk_dialog_new_with_buttons (const gchar     *title,
@@ -141,7 +141,7 @@ BtkWidget* btk_dialog_add_button        (BtkDialog   *dialog,
                                          gint         response_id);
 void       btk_dialog_add_buttons       (BtkDialog   *dialog,
                                          const gchar *first_button_text,
-                                         ...) G_GNUC_NULL_TERMINATED;
+                                         ...) B_GNUC_NULL_TERMINATED;
 
 void btk_dialog_set_response_sensitive (BtkDialog *dialog,
                                         gint       response_id,
@@ -181,6 +181,6 @@ BtkWidget * btk_dialog_get_content_area (BtkDialog *dialog);
 void _btk_dialog_set_ignore_separator (BtkDialog *dialog,
 				       gboolean   ignore_separator);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_DIALOG_H__ */

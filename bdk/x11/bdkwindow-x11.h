@@ -37,7 +37,7 @@
 #include <X11/extensions/sync.h>
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkToplevelX11 BdkToplevelX11;
 typedef struct _BdkWindowImplX11 BdkWindowImplX11;
@@ -157,6 +157,6 @@ void            _bdk_x11_window_get_offsets   (BdkWindow *window,
                                                gint      *x_offset,
                                                gint      *y_offset);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_X11_H__ */

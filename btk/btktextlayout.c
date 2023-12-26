@@ -359,7 +359,7 @@ btk_text_layout_default_style_changed (BtkTextLayout *layout)
 {
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
 
-  DV (g_print ("invalidating all due to default style change (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating all due to default style change (%s)\n", B_STRLOC));
   btk_text_layout_invalidate_all (layout);
 }
 
@@ -408,7 +408,7 @@ btk_text_layout_set_contexts (BtkTextLayout *layout,
       g_object_ref (layout->rtl_context);
     }
 
-  DV (g_print ("invalidating all due to new bango contexts (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating all due to new bango contexts (%s)\n", B_STRLOC));
   btk_text_layout_invalidate_all (layout);
 }
 
@@ -503,7 +503,7 @@ btk_text_layout_set_screen_width (BtkTextLayout *layout, gint width)
 
   layout->screen_width = width;
 
-  DV (g_print ("invalidating all due to new screen width (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating all due to new screen width (%s)\n", B_STRLOC));
   btk_text_layout_invalidate_all (layout);
 }
 
@@ -2179,7 +2179,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
         }
     }
 
-  DV (g_print ("creating one line display cache (%s)\n", G_STRLOC));
+  DV (g_print ("creating one line display cache (%s)\n", B_STRLOC));
 
   display = g_new0 (BtkTextLineDisplay, 1);
 

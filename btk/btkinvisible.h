@@ -33,7 +33,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_INVISIBLE		(btk_invisible_get_type ())
 #define BTK_INVISIBLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_INVISIBLE, BtkInvisible))
@@ -65,7 +65,7 @@ struct _BtkInvisibleClass
   void (*_btk_reserved4) (void);
 };
 
-GType btk_invisible_get_type (void) G_GNUC_CONST;
+GType btk_invisible_get_type (void) B_GNUC_CONST;
 
 BtkWidget* btk_invisible_new            (void);
 BtkWidget* btk_invisible_new_for_screen (BdkScreen    *screen);
@@ -73,6 +73,6 @@ void	   btk_invisible_set_screen	(BtkInvisible *invisible,
 					 BdkScreen    *screen);
 BdkScreen* btk_invisible_get_screen	(BtkInvisible *invisible);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_INVISIBLE_H__ */

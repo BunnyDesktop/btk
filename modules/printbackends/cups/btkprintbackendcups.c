@@ -481,7 +481,7 @@ static void
 cups_free_print_stream_data (CupsPrintStreamData *data)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (data->dnotify)
     data->dnotify (data->user_data);
@@ -500,7 +500,7 @@ cups_print_cb (BtkPrintBackendCups *print_backend,
   BDK_THREADS_ENTER ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC)); 
+            g_print ("CUPS Backend: %s\n", B_STRFUNC)); 
 
   if (btk_cups_result_is_error (result))
     error = g_error_new_literal (btk_print_error_quark (),
@@ -618,7 +618,7 @@ btk_print_backend_cups_print_stream (BtkPrintBackend         *print_backend,
   char  printer_absolute_uri[HTTP_MAX_URI];
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));   
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));   
 
   cups_printer = BTK_PRINTER_CUPS (btk_print_job_get_printer (job));
   settings = btk_print_job_get_settings (job);
@@ -832,7 +832,7 @@ btk_print_backend_cups_dispose (GObject *object)
 #endif
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   backend_cups = BTK_PRINT_BACKEND_CUPS (object);
 
@@ -1325,7 +1325,7 @@ cups_dispatch_watch_check (GSource *source)
   gboolean result;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source)); 
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source)); 
 
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
@@ -1363,7 +1363,7 @@ cups_dispatch_watch_prepare (GSource *source,
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   *timeout_ = -1;
 
@@ -1392,7 +1392,7 @@ cups_dispatch_watch_dispatch (GSource     *source,
   result = btk_cups_request_get_result (dispatch->request);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   if (btk_cups_result_is_error (result))
     {
@@ -1416,7 +1416,7 @@ cups_dispatch_watch_finalize (GSource *source)
   BtkCupsResult *result;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
@@ -1497,7 +1497,7 @@ cups_request_execute (BtkPrintBackendCups              *print_backend,
   g_source_set_name (&dispatch->source, "BTK+ CUPS backend");
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p> - Executing cups request on server '%s' and resource '%s'\n", G_STRFUNC, dispatch, request->server, request->resource));
+            g_print ("CUPS Backend: %s <source %p> - Executing cups request on server '%s' and resource '%s'\n", B_STRFUNC, dispatch, request->server, request->resource));
 
   dispatch->request = request;
   dispatch->backend = g_object_ref (print_backend);
@@ -1547,7 +1547,7 @@ cups_request_printer_info_cb (BtkPrintBackendCups *backend,
 					    printer_name);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - Got printer info for printer '%s'\n", G_STRFUNC, printer_name));
+            g_print ("CUPS Backend: %s - Got printer info for printer '%s'\n", B_STRFUNC, printer_name));
 
   if (!printer)
     {
@@ -1633,7 +1633,7 @@ cups_request_printer_info (BtkPrintBackendCups *print_backend,
                                    "printer-uri", NULL, printer_uri);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - Requesting printer info for URI '%s'\n", G_STRFUNC, printer_uri));
+            g_print ("CUPS Backend: %s - Requesting printer info for URI '%s'\n", B_STRFUNC, printer_uri));
 
   g_free (printer_uri);
 
@@ -2433,7 +2433,7 @@ cups_request_avahi_printer_info_cb (BtkPrintBackendCups *cups_backend,
   bdk_threads_enter ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (btk_cups_result_is_error (result))
     {
@@ -3005,7 +3005,7 @@ cups_request_printer_list_cb (BtkPrintBackendCups *cups_backend,
   list_has_changed = FALSE;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   cups_backend->list_printers_pending = FALSE;
 
@@ -3325,7 +3325,7 @@ static void
 get_ppd_data_free (GetPPDData *data)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
   httpClose (data->http);
   g_io_channel_unref (data->ppd_io);
   g_object_unref (data->printer);
@@ -3343,7 +3343,7 @@ cups_request_ppd_cb (BtkPrintBackendCups *print_backend,
   BDK_THREADS_ENTER ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   printer = BTK_PRINTER (data->printer);
   BTK_PRINTER_CUPS (printer)->reading_ppd = FALSE;
@@ -3404,7 +3404,7 @@ cups_request_ppd (BtkPrinter *printer)
   error = NULL;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (cups_printer->remote)
     {

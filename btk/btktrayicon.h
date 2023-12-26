@@ -22,7 +22,7 @@
 
 #include "btkplug.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TRAY_ICON		(btk_tray_icon_get_type ())
 #define BTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
@@ -54,7 +54,7 @@ struct _BtkTrayIconClass
   void (*__btk_reserved6);
 };
 
-GType          btk_tray_icon_get_type         (void) G_GNUC_CONST;
+GType          btk_tray_icon_get_type         (void) B_GNUC_CONST;
 
 BtkTrayIcon   *_btk_tray_icon_new_for_screen  (BdkScreen   *screen,
 					       const gchar *name);
@@ -70,6 +70,6 @@ void           _btk_tray_icon_cancel_message  (BtkTrayIcon *icon,
 
 BtkOrientation _btk_tray_icon_get_orientation (BtkTrayIcon *icon);
 					    
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TRAY_ICON_H__ */

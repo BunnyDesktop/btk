@@ -38,7 +38,7 @@
 #include <btk/btklabel.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACCEL_LABEL		(btk_accel_label_get_type ())
 #define BTK_ACCEL_LABEL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACCEL_LABEL, BtkAccelLabel))
@@ -94,7 +94,7 @@ struct _BtkAccelLabelClass
 #define	btk_accel_label_accelerator_width	btk_accel_label_get_accel_width
 #endif /* BTK_DISABLE_DEPRECATED */
 
-GType	   btk_accel_label_get_type	     (void) G_GNUC_CONST;
+GType	   btk_accel_label_get_type	     (void) B_GNUC_CONST;
 BtkWidget* btk_accel_label_new		     (const gchar   *string);
 BtkWidget* btk_accel_label_get_accel_widget  (BtkAccelLabel *accel_label);
 guint	   btk_accel_label_get_accel_width   (BtkAccelLabel *accel_label);
@@ -109,6 +109,6 @@ gchar *    _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *kla
 							 guint               accelerator_key,
 							 BdkModifierType     accelerator_mods);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ACCEL_LABEL_H__ */

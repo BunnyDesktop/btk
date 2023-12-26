@@ -47,7 +47,7 @@ check_property (const char *output,
 			 pspec->name,
 			 dv, v);
   g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__,
-		       G_STRFUNC, msg);
+		       B_STRFUNC, msg);
   g_free (msg);
   
   g_free (v);

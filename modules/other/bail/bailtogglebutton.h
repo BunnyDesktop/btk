@@ -22,7 +22,7 @@
 
 #include <bail/bailbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TOGGLE_BUTTON              (bail_toggle_button_get_type ())
 #define BAIL_TOGGLE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButton))
@@ -46,6 +46,6 @@ struct _BailToggleButtonClass
   BailButtonClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TOGGLE_BUTTON_H__ */

@@ -32,7 +32,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PREVIEW            (btk_preview_get_type ())
 #define BTK_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PREVIEW, BtkPreview))
@@ -86,7 +86,7 @@ struct _BtkPreviewClass
 };
 
 
-GType           btk_preview_get_type           (void) G_GNUC_CONST;
+GType           btk_preview_get_type           (void) B_GNUC_CONST;
 void            btk_preview_uninit             (void);
 BtkWidget*      btk_preview_new                (BtkPreviewType   type);
 void            btk_preview_size               (BtkPreview      *preview,
@@ -130,7 +130,7 @@ BtkPreviewInfo* btk_preview_get_info           (void);
 void            btk_preview_reset              (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PREVIEW_H__ */
 

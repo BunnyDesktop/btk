@@ -35,7 +35,7 @@
 #include <btk/btkrange.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE            (btk_scale_get_type ())
 #define BTK_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
@@ -76,7 +76,7 @@ struct _BtkScaleClass
   void (*_btk_reserved3) (void);
 };
 
-GType             btk_scale_get_type           (void) G_GNUC_CONST;
+GType             btk_scale_get_type           (void) B_GNUC_CONST;
 void              btk_scale_set_digits         (BtkScale        *scale,
                                                 gint             digits);
 gint              btk_scale_get_digits         (BtkScale        *scale);
@@ -106,6 +106,6 @@ void              _btk_scale_get_value_size    (BtkScale        *scale,
 gchar           * _btk_scale_format_value      (BtkScale        *scale,
                                                 gdouble          value);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SCALE_H__ */

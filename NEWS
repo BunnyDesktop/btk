@@ -3708,7 +3708,7 @@ Overview of Changes from BTK+ 2.11.6 to 2.12.0
  474897 rendering problem with latest btk+
  475400 Fix a typo in btkentry.c
  436576 BtkFileChooserButton title from supplied dialog
- 475439 btk/btksearchenginesimple.h is missing a G_BEGIN_DECLS
+ 475439 btk/btksearchenginesimple.h is missing a B_BEGIN_DECLS
  105895 Please add common keybindings for the TreeView
  306445 stock icon for the "open recent" menu
  449371 Open with menu has no effect

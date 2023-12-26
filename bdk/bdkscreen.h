@@ -32,7 +32,7 @@
 #include "bdk/bdktypes.h"
 #include "bdk/bdkdisplay.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkScreenClass BdkScreenClass;
 
@@ -66,7 +66,7 @@ struct _BdkScreenClass
   void (*monitors_changed) (BdkScreen *screen);
 };
 
-GType        bdk_screen_get_type              (void) G_GNUC_CONST;
+GType        bdk_screen_get_type              (void) B_GNUC_CONST;
 BdkColormap *bdk_screen_get_default_colormap  (BdkScreen   *screen);
 void         bdk_screen_set_default_colormap  (BdkScreen   *screen,
 					       BdkColormap *colormap);
@@ -127,6 +127,6 @@ gdouble bdk_screen_get_resolution (BdkScreen *screen);
 BdkWindow *bdk_screen_get_active_window (BdkScreen *screen);
 GList     *bdk_screen_get_window_stack  (BdkScreen *screen);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif				/* __BDK_SCREEN_H__ */

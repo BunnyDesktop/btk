@@ -39,7 +39,7 @@
 #include <btk/btkwindow.h>
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Priorities for redrawing and resizing
  */
@@ -149,8 +149,8 @@ gboolean   btk_main_iteration	   (void);
 /* btk_main_iteration() calls btk_main_iteration_do(TRUE) */
 gboolean   btk_main_iteration_do   (gboolean blocking);
 
-gboolean   btk_true		   (void) G_GNUC_CONST;
-gboolean   btk_false		   (void) G_GNUC_CONST;
+gboolean   btk_true		   (void) B_GNUC_CONST;
+gboolean   btk_false		   (void) B_GNUC_CONST;
 
 void	   btk_grab_add		   (BtkWidget	       *widget);
 BtkWidget* btk_grab_get_current	   (void);
@@ -228,6 +228,6 @@ gchar *_btk_get_lc_ctype (void);
 gboolean _btk_module_has_mixed_deps (GModule *module);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MAIN_H__ */

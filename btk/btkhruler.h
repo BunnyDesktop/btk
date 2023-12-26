@@ -47,7 +47,7 @@
 #include <btk/btkruler.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_HRULER	           (btk_hruler_get_type ())
@@ -72,11 +72,11 @@ struct _BtkHRulerClass
 };
 
 
-GType      btk_hruler_get_type (void) G_GNUC_CONST;
+GType      btk_hruler_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_hruler_new      (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_HRULER_H__ */

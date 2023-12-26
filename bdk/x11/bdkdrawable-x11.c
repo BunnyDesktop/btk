@@ -871,7 +871,7 @@ get_impl_drawable (BdkDrawable *drawable)
     return ((BdkPixmapObject *)drawable)->impl;
   else
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return NULL;
     }
 }
@@ -939,7 +939,7 @@ bdk_x11_drawable_get_xid (BdkDrawable *drawable)
       
       if (!BDK_WINDOW_IS_X11 (window))
         {
-          g_warning (G_STRLOC " drawable is not a native X11 window");
+          g_warning (B_STRLOC " drawable is not a native X11 window");
           return None;
         }
       
@@ -949,7 +949,7 @@ bdk_x11_drawable_get_xid (BdkDrawable *drawable)
     impl = ((BdkPixmapObject *)drawable)->impl;
   else
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return None;
     }
 
@@ -1234,7 +1234,7 @@ _bdk_x11_convert_to_format (guchar           *src_buf,
 	    guchar *end = p + 4 * width;
 	    guint t1,t2,t3;
 	    
-#define MULT(d,c,a,t) G_STMT_START { t = c * a; d = ((t >> 8) + t) >> 8; } G_STMT_END
+#define MULT(d,c,a,t) B_STMT_START { t = c * a; d = ((t >> 8) + t) >> 8; } B_STMT_END
 	    
 	    if (dest_byteorder == BDK_LSB_FIRST)
 	      {

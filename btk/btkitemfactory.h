@@ -35,7 +35,7 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef void	(*BtkPrintFunc)		   (gpointer		 func_data,
 					    const gchar		*str);
@@ -129,7 +129,7 @@ struct _BtkItemFactoryItem
 };
 
 
-GType		btk_item_factory_get_type	    (void) G_GNUC_CONST;
+GType		btk_item_factory_get_type	    (void) B_GNUC_CONST;
 
 /* `container_type' must be of BTK_TYPE_MENU_BAR, BTK_TYPE_MENU,
  * or BTK_TYPE_OPTION_MENU.
@@ -228,7 +228,7 @@ void	btk_item_factory_create_menu_entries (guint		 n_entries,
 void	btk_item_factories_path_delete	   (const gchar		*ifactory_path,
 					    const gchar		*path);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* !BTK_DISABLE_DEPRECATED */
 

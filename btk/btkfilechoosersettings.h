@@ -25,7 +25,7 @@
 
 #include "btkfilechooserprivate.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_FILE_CHOOSER_SETTINGS_TYPE (_btk_file_chooser_settings_get_type ())
 
@@ -65,7 +65,7 @@ struct _BtkFileChooserSettingsClass
   GObjectClass parent_class;
 };
 
-GType _btk_file_chooser_settings_get_type (void) G_GNUC_CONST;
+GType _btk_file_chooser_settings_get_type (void) B_GNUC_CONST;
 
 BtkFileChooserSettings *_btk_file_chooser_settings_new (void);
 
@@ -113,6 +113,6 @@ gboolean _btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
  * - show_hidden
  */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif

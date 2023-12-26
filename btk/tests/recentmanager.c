@@ -108,7 +108,7 @@ check_bulk (BtkRecentManager *manager,
   AddManyClosure *closure = data;
 
   if (g_test_verbose ())
-    g_print (G_STRLOC ": counter = %d\n", closure->counter);
+    g_print (B_STRLOC ": counter = %d\n", closure->counter);
 
   g_assert_cmpint (closure->counter, ==, 100);
 
@@ -140,7 +140,7 @@ recent_manager_add_many (void)
       data->app_exec = "testrecentchooser %u";
 
       if (g_test_verbose ())
-        g_print (G_STRLOC ": adding item %d\n", i);
+        g_print (B_STRLOC ": adding item %d\n", i);
 
       new_uri = g_strdup_printf ("file:///doesnotexist-%d.txt", i);
       btk_recent_manager_add_full (manager, new_uri, data);

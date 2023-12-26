@@ -38,7 +38,7 @@
 #include <btk/btkdebug.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* macros for casting a pointer to a BtkObject or BtkObjectClass pointer,
  * and to test whether `object' and `klass' are of type BTK_TYPE_OBJECT.
@@ -97,8 +97,8 @@ typedef enum
 
 /* Macros for setting and clearing bits in the object_flags field of BtkObject.
  */
-#define BTK_OBJECT_SET_FLAGS(obj,flag)	  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) |= (flag)); }G_STMT_END
-#define BTK_OBJECT_UNSET_FLAGS(obj,flag)  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) &= ~(flag)); }G_STMT_END
+#define BTK_OBJECT_SET_FLAGS(obj,flag)	  B_STMT_START{ (BTK_OBJECT_FLAGS (obj) |= (flag)); }B_STMT_END
+#define BTK_OBJECT_UNSET_FLAGS(obj,flag)  B_STMT_START{ (BTK_OBJECT_FLAGS (obj) &= ~(flag)); }B_STMT_END
 #endif
 
 typedef struct _BtkObjectClass	BtkObjectClass;
@@ -143,7 +143,7 @@ struct _BtkObjectClass
 
 /* Application-level methods */
 
-GType btk_object_get_type (void) G_GNUC_CONST;
+GType btk_object_get_type (void) B_GNUC_CONST;
 
 #ifndef BTK_DISABLE_DEPRECATED
 void btk_object_sink	  (BtkObject *object);
@@ -234,10 +234,10 @@ typedef enum
 #define	BTK_ARG_READWRITE	(BTK_ARG_READABLE | BTK_ARG_WRITABLE)
 void	btk_object_get		(BtkObject	*object,
 				 const gchar	*first_property_name,
-				 ...) G_GNUC_NULL_TERMINATED;
+				 ...) B_GNUC_NULL_TERMINATED;
 void	btk_object_set		(BtkObject	*object,
 				 const gchar	*first_property_name,
-				 ...) G_GNUC_NULL_TERMINATED;
+				 ...) B_GNUC_NULL_TERMINATED;
 void	btk_object_add_arg_type		(const gchar    *arg_name,
 					 GType           arg_type,
 					 guint           arg_flags,
@@ -245,6 +245,6 @@ void	btk_object_add_arg_type		(const gchar    *arg_name,
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OBJECT_H__ */

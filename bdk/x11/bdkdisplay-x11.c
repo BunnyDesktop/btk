@@ -306,7 +306,7 @@ bdk_display_open (const gchar *display_name)
 		   BDK_SCREEN_X11 (display_x11->default_screen)->xroot_window,
 		   &root, &child, &rootx, &rooty, &winx, &winy, &xmask);
     bdk_flush ();
-    if (G_UNLIKELY (bdk_error_trap_pop () == BadWindow)) 
+    if (B_UNLIKELY (bdk_error_trap_pop () == BadWindow)) 
       {
 	g_warning ("Connection to display %s appears to be untrusted. Pointer and keyboard grabs and inter-client communication may not work as expected.", bdk_display_get_name (display));
 	display_x11->trusted_client = FALSE;
@@ -1042,7 +1042,7 @@ broadcast_xmessage (BdkDisplay *display,
   Atom type_atom_begin;
   Window xwindow;
 
-  if (!G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return;
 
   {

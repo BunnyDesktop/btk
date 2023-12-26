@@ -27,7 +27,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_FILTER              (btk_file_filter_get_type ())
 #define BTK_FILE_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
@@ -56,7 +56,7 @@ struct _BtkFileFilterInfo
   const gchar *mime_type;
 };
 
-GType btk_file_filter_get_type (void) G_GNUC_CONST;
+GType btk_file_filter_get_type (void) B_GNUC_CONST;
 
 BtkFileFilter *       btk_file_filter_new      (void);
 void                  btk_file_filter_set_name (BtkFileFilter *filter,
@@ -78,6 +78,6 @@ BtkFileFilterFlags btk_file_filter_get_needed (BtkFileFilter           *filter);
 gboolean           btk_file_filter_filter     (BtkFileFilter           *filter,
 					       const BtkFileFilterInfo *filter_info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_FILTER_H__ */

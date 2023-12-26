@@ -27,7 +27,7 @@
 
 #include <btk/btkpapersize.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPrintSettings BtkPrintSettings;
 
@@ -46,7 +46,7 @@ struct _BtkPageRange
   gint end;
 };
 
-GType             btk_print_settings_get_type                (void) G_GNUC_CONST;
+GType             btk_print_settings_get_type                (void) B_GNUC_CONST;
 BtkPrintSettings *btk_print_settings_new                     (void);
 
 BtkPrintSettings *btk_print_settings_copy                    (BtkPrintSettings     *other);
@@ -229,6 +229,6 @@ const gchar *         btk_print_settings_get_output_bin        (BtkPrintSettings
 void                  btk_print_settings_set_output_bin        (BtkPrintSettings   *settings,
 								const gchar        *output_bin);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_SETTINGS_H__ */

@@ -29,7 +29,7 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* The private flags that are used in the private_flags member of BtkWidget.
  */
@@ -71,8 +71,8 @@ typedef enum
  * we use a preprocessor string concatenation here for a clear
  * flags/private_flags distinction at the cost of single flag operations.
  */
-#define BTK_PRIVATE_SET_FLAG(wid,flag)    G_STMT_START{ (BTK_PRIVATE_FLAGS (wid) |= (PRIVATE_ ## flag)); }G_STMT_END
-#define BTK_PRIVATE_UNSET_FLAG(wid,flag)  G_STMT_START{ (BTK_PRIVATE_FLAGS (wid) &= ~(PRIVATE_ ## flag)); }G_STMT_END
+#define BTK_PRIVATE_SET_FLAG(wid,flag)    B_STMT_START{ (BTK_PRIVATE_FLAGS (wid) |= (PRIVATE_ ## flag)); }B_STMT_END
+#define BTK_PRIVATE_UNSET_FLAG(wid,flag)  B_STMT_START{ (BTK_PRIVATE_FLAGS (wid) &= ~(PRIVATE_ ## flag)); }B_STMT_END
 
 #if defined G_OS_WIN32 \
   || (defined BDK_WINDOWING_QUARTZ && defined QUARTZ_RELOCATION)
@@ -152,6 +152,6 @@ gboolean _btk_translate_keyboard_accel_state     (BdkKeymap       *keymap,
                                                   BdkModifierType *consumed_modifiers);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRIVATE_H__ */

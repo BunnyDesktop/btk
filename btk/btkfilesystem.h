@@ -24,7 +24,7 @@
 #include <bunnyio/bunnyio.h>
 #include <btk/btkwidget.h>	/* For icon handling */
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_SYSTEM         (_btk_file_system_get_type ())
 #define BTK_FILE_SYSTEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystem))
@@ -93,7 +93,7 @@ typedef void (* BtkFileSystemVolumeMountCallback)  (GCancellable        *cancell
 						    gpointer             data);
 
 /* BtkFileSystem methods */
-GType           _btk_file_system_get_type     (void) G_GNUC_CONST;
+GType           _btk_file_system_get_type     (void) B_GNUC_CONST;
 
 BtkFileSystem * _btk_file_system_new          (void);
 
@@ -166,6 +166,6 @@ gboolean	_btk_file_info_consider_as_directory (GFileInfo *info);
 /* GFile helper functions */
 gboolean	_btk_file_has_native_path (GFile *file);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_SYSTEM_H__ */

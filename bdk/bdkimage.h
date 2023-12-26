@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Types of images.
  *   Normal: Normal X image type. These are slow as they involve passing
@@ -90,7 +90,7 @@ struct _BdkImageClass
   GObjectClass parent_class;
 };
 
-GType     bdk_image_get_type   (void) G_GNUC_CONST;
+GType     bdk_image_get_type   (void) B_GNUC_CONST;
 
 #ifndef BDK_DISABLE_DEPRECATED
 BdkImage*  bdk_image_new       (BdkImageType  type,
@@ -140,6 +140,6 @@ BdkImage* bdk_image_new_bitmap (BdkVisual     *visual,
 #define bdk_image_destroy              g_object_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_IMAGE_H__ */

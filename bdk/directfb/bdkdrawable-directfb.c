@@ -161,7 +161,7 @@ bdk_directfb_set_colormap (BdkDrawable *drawable,
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p ) <- old %p\n",
-              G_STRFUNC, drawable, colormap, impl->colormap);
+              B_STRFUNC, drawable, colormap, impl->colormap);
 
   if (impl->colormap == colormap)
     return;
@@ -237,7 +237,7 @@ bdk_directfb_clip_rebunnyion (BdkDrawable  *drawable,
   g_return_if_fail (ret_clip != NULL);
 
   D_DEBUG_AT (BDKDFB_DrawClip, "%s( %p, %p, %p )\n",
-              G_STRFUNC, drawable, gc, draw_rect);
+              B_STRFUNC, drawable, gc, draw_rect);
 
   private = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
@@ -437,7 +437,7 @@ bdk_directfb_draw_rectangle (BdkDrawable *drawable,
 
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %4d,%4d - %4dx%4d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %4d,%4d - %4dx%4d )\n", B_STRFUNC,
               drawable, gc, filled ? " filled" : "outline", x, y, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -597,7 +597,7 @@ bdk_directfb_draw_polygon (BdkDrawable *drawable,
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %p, %d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %p, %d )\n", B_STRFUNC,
               drawable, gc, filled ? " filled" : "outline", points, npoints);
 
   if (npoints < 3)
@@ -709,7 +709,7 @@ bdk_directfb_draw_drawable (BdkDrawable *drawable,
   DFBRectangle rect = { xsrc, ysrc, width, height };
   gint i;
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n", B_STRFUNC,
               drawable, gc, src, xsrc, ysrc, xdest, ydest, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -757,7 +757,7 @@ bdk_directfb_draw_points (BdkDrawable *drawable,
   DFBRebunnyion rebunnyion = { points->x, points->y, points->x, points->y };
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n",
-              G_STRFUNC, drawable, gc, points, npoints);
+              B_STRFUNC, drawable, gc, points, npoints);
 
   if (npoints < 1)
     return;
@@ -807,7 +807,7 @@ bdk_directfb_draw_segments (BdkDrawable *drawable,
   //  DFBRebunnyion rebunnyion = { segs->x1, segs->y1, segs->x2, segs->y2 };
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n",
-              G_STRFUNC, drawable, gc, segs, nsegs);
+              B_STRFUNC, drawable, gc, segs, nsegs);
 
   if (nsegs < 1)
     return;
@@ -887,7 +887,7 @@ bdk_directfb_draw_lines (BdkDrawable *drawable,
 
   DFBRebunnyion rebunnyion = { points->x, points->y, points->x, points->y };
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n", B_STRFUNC,
               drawable, gc, points, npoints);
 
   if (npoints < 2)
@@ -964,7 +964,7 @@ bdk_directfb_draw_image (BdkDrawable *drawable,
   g_return_if_fail (image != NULL);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n",
-              G_STRFUNC,
+              B_STRFUNC,
               drawable, gc, image, xsrc, ysrc, xdest, ydest, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -1226,7 +1226,7 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
   g_return_if_fail (src_y >= 0 && src_y + height <= pb_height);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n",
-              G_STRFUNC,
+              B_STRFUNC,
               drawable, gc, pixbuf, src_x, src_y, dest_x, dest_y, width, height);
 
   /* Clip to the drawable; this is required for get_from_drawable() so
@@ -1523,7 +1523,7 @@ bdk_drawable_impl_directfb_finalize (GObject *object)
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (object);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p ) <- %dx%d (%s at %4d,%4d)\n",
-              G_STRFUNC,
+              B_STRFUNC,
               object, impl->width, impl->height,
               drawable_impl_type_name (object),
               impl->abs_x, impl->abs_y);

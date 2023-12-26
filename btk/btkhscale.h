@@ -35,7 +35,7 @@
 #include <btk/btkscale.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HSCALE            (btk_hscale_get_type ())
 #define BTK_HSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSCALE, BtkHScale))
@@ -59,13 +59,13 @@ struct _BtkHScaleClass
 };
 
 
-GType      btk_hscale_get_type       (void) G_GNUC_CONST;
+GType      btk_hscale_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_hscale_new            (BtkAdjustment *adjustment);
 BtkWidget* btk_hscale_new_with_range (gdouble        min,
                                       gdouble        max,
                                       gdouble        step);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HSCALE_H__ */

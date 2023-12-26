@@ -758,7 +758,7 @@ _btk_text_btree_delete (BtkTextIter *start,
     _btk_text_btree_check (tree);
   
   /* Broadcast the need for redisplay before we break the iterators */
-  DV (g_print ("invalidating due to deleting some text (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to deleting some text (%s)\n", B_STRLOC));
   _btk_text_btree_invalidate_rebunnyion (tree, start, end, FALSE);
 
   /* Save the byte offset so we can reset the iterators */
@@ -1243,7 +1243,7 @@ _btk_text_btree_insert (BtkTextIter *iter,
        above. FIXME */
     btk_text_iter_forward_chars (&end, char_count_delta);
 
-    DV (g_print ("invalidating due to inserting some text (%s)\n", G_STRLOC));
+    DV (g_print ("invalidating due to inserting some text (%s)\n", B_STRLOC));
     _btk_text_btree_invalidate_rebunnyion (tree, &start, &end, FALSE);
 
 
@@ -1293,7 +1293,7 @@ insert_pixbuf_or_widget_segment (BtkTextIter        *iter,
   *iter = start;
   btk_text_iter_forward_char (iter); /* skip forward past the segment */
 
-  DV (g_print ("invalidating due to inserting pixbuf/widget (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to inserting pixbuf/widget (%s)\n", B_STRLOC));
   _btk_text_btree_invalidate_rebunnyion (tree, &start, iter, FALSE);
 }
      
@@ -1317,7 +1317,7 @@ _btk_text_btree_insert_child_anchor (BtkTextIter        *iter,
 
   if (anchor->segment != NULL)
     {
-      g_warning (G_STRLOC": Same child anchor can't be inserted twice");
+      g_warning (B_STRLOC": Same child anchor can't be inserted twice");
       return;
     }
   
@@ -1745,7 +1745,7 @@ queue_tag_redisplay (BtkTextBTree      *tree,
 {
   if (_btk_text_tag_affects_size (tag))
     {
-      DV (g_print ("invalidating due to size-affecting tag (%s)\n", G_STRLOC));
+      DV (g_print ("invalidating due to size-affecting tag (%s)\n", B_STRLOC));
       _btk_text_btree_invalidate_rebunnyion (tree, start, end, FALSE);
     }
   else if (_btk_text_tag_affects_nonsize_appearance (tag))
@@ -2671,7 +2671,7 @@ redisplay_mark (BtkTextLineSegment *mark)
   end = iter;
   btk_text_iter_forward_char (&end);
 
-  DV (g_print ("invalidating due to moving visible mark (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to moving visible mark (%s)\n", B_STRLOC));
   cursor_only = mark == mark->body.mark.tree->insert_mark->segment;
   _btk_text_btree_invalidate_rebunnyion (mark->body.mark.tree, &iter, &end, cursor_only);
 }
@@ -4016,7 +4016,7 @@ _btk_text_line_byte_locate (BtkTextLine *line,
     {
       /* We went off the end of the line */
       if (offset != 0)
-        g_warning ("%s: byte index off the end of the line", G_STRLOC);
+        g_warning ("%s: byte index off the end of the line", B_STRLOC);
 
       return FALSE;
     }
@@ -4093,7 +4093,7 @@ _btk_text_line_char_locate     (BtkTextLine     *line,
     {
       /* end of the line */
       if (offset != 0)
-        g_warning ("%s: char offset off the end of the line", G_STRLOC);
+        g_warning ("%s: char offset off the end of the line", B_STRLOC);
 
       return FALSE;
     }
@@ -5661,7 +5661,7 @@ tag_changed_cb (BtkTextTagTable *table,
         {
           /* Must be a last toggle if there was a first one. */
           _btk_text_btree_get_iter_at_last_toggle (tree, &end, tag);
-          DV (g_print ("invalidating due to tag change (%s)\n", G_STRLOC));
+          DV (g_print ("invalidating due to tag change (%s)\n", B_STRLOC));
           _btk_text_btree_invalidate_rebunnyion (tree, &start, &end, FALSE);
 
         }
@@ -6324,7 +6324,7 @@ _btk_change_node_toggle_count (BtkTextBTreeNode *node,
                */
 
               g_error ("%s: bad toggle count (%d) max (%d)",
-                       G_STRLOC, summary->toggle_count, info->toggle_count);
+                       B_STRLOC, summary->toggle_count, info->toggle_count);
             }
 
           /*

@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_DEVICE              (bdk_device_get_type ())
 #define BDK_DEVICE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
@@ -123,7 +123,7 @@ struct _BdkTimeCoord
   gdouble axes[BDK_MAX_TIMECOORD_AXES];
 };
 
-GType          bdk_device_get_type      (void) G_GNUC_CONST;
+GType          bdk_device_get_type      (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 /* Returns a list of BdkDevice * */	  
@@ -187,6 +187,6 @@ void bdk_input_set_extension_events (BdkWindow        *window,
 BdkDevice *bdk_device_get_core_pointer (void);
 #endif
  
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_INPUT_H__ */

@@ -24,7 +24,7 @@
 
 #if IN_HEADER(__BTK_ABOUT_DIALOG_H__)
 #if IN_FILE(__BTK_ABOUT_DIALOG_C__)
-btk_show_about_dialog G_GNUC_NULL_TERMINATED
+btk_show_about_dialog B_GNUC_NULL_TERMINATED
 btk_about_dialog_get_artists
 btk_about_dialog_get_authors
 btk_about_dialog_get_comments
@@ -40,7 +40,7 @@ btk_about_dialog_set_name
 btk_about_dialog_get_program_name
 btk_about_dialog_set_program_name
 btk_about_dialog_get_translator_credits
-btk_about_dialog_get_type G_GNUC_CONST
+btk_about_dialog_get_type B_GNUC_CONST
 btk_about_dialog_get_version
 btk_about_dialog_get_website
 btk_about_dialog_get_website_label
@@ -73,7 +73,7 @@ btk_accelerator_get_label
 btk_accelerator_name
 btk_accelerator_parse
 btk_accelerator_set_default_mod_mask
-btk_accelerator_valid G_GNUC_CONST
+btk_accelerator_valid B_GNUC_CONST
 
 btk_accel_group_activate
 btk_accel_group_connect
@@ -82,7 +82,7 @@ btk_accel_group_disconnect
 btk_accel_group_disconnect_key
 btk_accel_group_find
 btk_accel_group_from_accel_closure
-btk_accel_group_get_type G_GNUC_CONST
+btk_accel_group_get_type B_GNUC_CONST
 btk_accel_group_get_is_locked
 btk_accel_group_get_modifier_mask
 btk_accel_group_lock
@@ -98,7 +98,7 @@ btk_accel_group_unlock
 #if IN_FILE(__BTK_ACCEL_LABEL_C__)
 btk_accel_label_get_accel_widget
 btk_accel_label_get_accel_width
-btk_accel_label_get_type G_GNUC_CONST
+btk_accel_label_get_type B_GNUC_CONST
 btk_accel_label_new
 btk_accel_label_refetch
 btk_accel_label_set_accel_closure
@@ -114,7 +114,7 @@ btk_accel_map_change_entry
 btk_accel_map_foreach
 btk_accel_map_foreach_unfiltered
 btk_accel_map_get
-btk_accel_map_get_type G_GNUC_CONST
+btk_accel_map_get_type B_GNUC_CONST
 #ifndef _WIN64
 btk_accel_map_load PRIVATE
 #endif
@@ -139,7 +139,7 @@ btk_accel_map_unlock_path
 #if IN_HEADER(__BTK_ACCESSIBLE_H__)
 #if IN_FILE(__BTK_ACCESSIBLE_C__)
 btk_accessible_connect_widget_destroyed
-btk_accessible_get_type G_GNUC_CONST
+btk_accessible_get_type B_GNUC_CONST
 btk_accessible_get_widget
 btk_accessible_set_widget
 #endif
@@ -180,7 +180,7 @@ btk_action_get_sensitive
 btk_action_get_short_label
 btk_action_get_stock_id
 btk_action_get_tooltip
-btk_action_get_type G_GNUC_CONST
+btk_action_get_type B_GNUC_CONST
 btk_action_get_visible
 btk_action_get_visible_horizontal
 btk_action_get_visible_vertical
@@ -221,7 +221,7 @@ btk_action_group_add_toggle_actions_full
 btk_action_group_get_action
 btk_action_group_get_name
 btk_action_group_get_sensitive
-btk_action_group_get_type G_GNUC_CONST
+btk_action_group_get_type B_GNUC_CONST
 btk_action_group_get_visible
 btk_action_group_list_actions
 btk_action_group_new
@@ -238,7 +238,7 @@ btk_action_group_translate_string
 #if IN_FILE(__BTK_ACTIVATABLE_C__)
 btk_activatable_do_set_related_action
 btk_activatable_get_related_action
-btk_activatable_get_type G_GNUC_CONST
+btk_activatable_get_type B_GNUC_CONST
 btk_activatable_get_use_action_appearance
 btk_activatable_sync_action_properties
 btk_activatable_set_related_action
@@ -251,7 +251,7 @@ btk_activatable_set_use_action_appearance
 btk_adjustment_changed
 btk_adjustment_clamp_page
 btk_adjustment_configure
-btk_adjustment_get_type G_GNUC_CONST
+btk_adjustment_get_type B_GNUC_CONST
 btk_adjustment_get_value
 btk_adjustment_get_lower
 btk_adjustment_get_upper
@@ -272,7 +272,7 @@ btk_adjustment_value_changed
 #if IN_HEADER(__BTK_ALIGNMENT_H__)
 #if IN_FILE(__BTK_ALIGNMENT_C__)
 btk_alignment_get_padding
-btk_alignment_get_type G_GNUC_CONST
+btk_alignment_get_type B_GNUC_CONST
 btk_alignment_new
 btk_alignment_set
 btk_alignment_set_padding
@@ -282,7 +282,7 @@ btk_alignment_set_padding
 
 #if IN_HEADER(__BTK_ASSISTANT_H__)
 #if IN_FILE(__BTK_ASSISTANT_C__)
-btk_assistant_get_type G_GNUC_CONST
+btk_assistant_get_type B_GNUC_CONST
 btk_assistant_new
 btk_assistant_get_current_page
 btk_assistant_set_current_page
@@ -311,129 +311,129 @@ btk_assistant_commit
 
 #if IN_HEADER(__BTK_TYPE_BUILTINS_H__)
 #if IN_FILE(__BTK_TYPE_BUILTINS_C__)
-btk_pack_direction_get_type G_GNUC_CONST
-btk_ui_manager_item_type_get_type G_GNUC_CONST
-btk_spin_button_update_policy_get_type G_GNUC_CONST
-btk_notebook_tab_get_type G_GNUC_CONST
-btk_number_up_layout_get_type G_GNUC_CONST
-btk_anchor_type_get_type G_GNUC_CONST
-btk_arg_flags_get_type G_GNUC_CONST
-btk_arrow_type_get_type G_GNUC_CONST
-btk_arrow_placement_get_type G_GNUC_CONST
-btk_assistant_page_type_get_type G_GNUC_CONST
-btk_attach_options_get_type G_GNUC_CONST
-btk_builder_error_get_type G_GNUC_CONST
-btk_button_action_get_type G_GNUC_CONST
-btk_buttons_type_get_type G_GNUC_CONST
-btk_calendar_display_options_get_type G_GNUC_CONST
-btk_cell_renderer_mode_get_type G_GNUC_CONST
-btk_cell_renderer_state_get_type G_GNUC_CONST
+btk_pack_direction_get_type B_GNUC_CONST
+btk_ui_manager_item_type_get_type B_GNUC_CONST
+btk_spin_button_update_policy_get_type B_GNUC_CONST
+btk_notebook_tab_get_type B_GNUC_CONST
+btk_number_up_layout_get_type B_GNUC_CONST
+btk_anchor_type_get_type B_GNUC_CONST
+btk_arg_flags_get_type B_GNUC_CONST
+btk_arrow_type_get_type B_GNUC_CONST
+btk_arrow_placement_get_type B_GNUC_CONST
+btk_assistant_page_type_get_type B_GNUC_CONST
+btk_attach_options_get_type B_GNUC_CONST
+btk_builder_error_get_type B_GNUC_CONST
+btk_button_action_get_type B_GNUC_CONST
+btk_buttons_type_get_type B_GNUC_CONST
+btk_calendar_display_options_get_type B_GNUC_CONST
+btk_cell_renderer_mode_get_type B_GNUC_CONST
+btk_cell_renderer_state_get_type B_GNUC_CONST
 btk_cell_renderer_accel_mode_get_type
-btk_corner_type_get_type G_GNUC_CONST
-btk_debug_flag_get_type G_GNUC_CONST
-btk_delete_type_get_type G_GNUC_CONST
-btk_dest_defaults_get_type G_GNUC_CONST
-btk_drag_result_get_type G_GNUC_CONST
-btk_clist_drag_pos_get_type G_GNUC_CONST
-btk_dialog_flags_get_type G_GNUC_CONST
-btk_direction_type_get_type G_GNUC_CONST
-btk_entry_icon_position_get_type G_GNUC_CONST
-btk_expander_style_get_type G_GNUC_CONST
-btk_file_chooser_action_get_type G_GNUC_CONST
-btk_file_chooser_confirmation_get_type G_GNUC_CONST
-btk_file_filter_flags_get_type G_GNUC_CONST
-btk_icon_view_drop_position_get_type G_GNUC_CONST
-btk_sensitivity_type_get_type G_GNUC_CONST
-btk_window_type_get_type G_GNUC_CONST
-btk_wrap_mode_get_type G_GNUC_CONST
-btk_widget_flags_get_type G_GNUC_CONST
-btk_widget_help_type_get_type G_GNUC_CONST
-btk_window_position_get_type G_GNUC_CONST
-btk_tree_view_column_sizing_get_type G_GNUC_CONST
-btk_tree_view_drop_position_get_type G_GNUC_CONST
-btk_button_box_style_get_type G_GNUC_CONST
-btk_cell_type_get_type G_GNUC_CONST
-btk_ctree_expander_style_get_type G_GNUC_CONST
-btk_ctree_expansion_type_get_type G_GNUC_CONST
-btk_ctree_line_style_get_type G_GNUC_CONST
-btk_ctree_pos_get_type G_GNUC_CONST
-btk_curve_type_get_type G_GNUC_CONST
-btk_icon_lookup_flags_get_type G_GNUC_CONST
-btk_image_type_get_type G_GNUC_CONST
-btk_im_preedit_style_get_type G_GNUC_CONST
-btk_im_status_style_get_type G_GNUC_CONST
-btk_justification_get_type G_GNUC_CONST
-btk_match_type_get_type G_GNUC_CONST
-btk_menu_direction_type_get_type G_GNUC_CONST
-btk_message_type_get_type G_GNUC_CONST
-btk_metric_type_get_type G_GNUC_CONST
-btk_movement_step_get_type G_GNUC_CONST
-btk_orientation_get_type G_GNUC_CONST
-btk_pack_type_get_type G_GNUC_CONST
-btk_page_orientation_get_type G_GNUC_CONST
-btk_print_operation_result_get_type G_GNUC_CONST
-btk_print_pages_get_type G_GNUC_CONST
-btk_print_quality_get_type G_GNUC_CONST
-btk_print_status_get_type G_GNUC_CONST
-btk_page_set_get_type G_GNUC_CONST
-btk_path_priority_type_get_type G_GNUC_CONST
-btk_path_type_get_type G_GNUC_CONST
-btk_policy_type_get_type G_GNUC_CONST
-btk_position_type_get_type G_GNUC_CONST
-btk_preview_type_get_type G_GNUC_CONST
-btk_print_duplex_get_type G_GNUC_CONST
-btk_print_error_get_type G_GNUC_CONST
-btk_recent_filter_flags_get_type G_GNUC_CONST
-btk_print_operation_action_get_type G_GNUC_CONST
-btk_private_flags_get_type G_GNUC_CONST
-btk_progress_bar_orientation_get_type G_GNUC_CONST
-btk_progress_bar_style_get_type G_GNUC_CONST
-btk_rc_flags_get_type G_GNUC_CONST
-btk_rc_token_type_get_type G_GNUC_CONST
-btk_recent_chooser_error_get_type G_GNUC_CONST
-btk_recent_manager_error_get_type G_GNUC_CONST
-btk_recent_sort_type_get_type G_GNUC_CONST
-btk_unit_get_type G_GNUC_CONST
-btk_relief_style_get_type G_GNUC_CONST
-btk_resize_mode_get_type G_GNUC_CONST
-btk_response_type_get_type G_GNUC_CONST
-btk_scroll_step_get_type G_GNUC_CONST
-btk_scroll_type_get_type G_GNUC_CONST
-btk_selection_mode_get_type G_GNUC_CONST
-btk_shadow_type_get_type G_GNUC_CONST
-btk_side_type_get_type G_GNUC_CONST
-btk_signal_run_type_get_type G_GNUC_CONST
-btk_size_group_mode_get_type G_GNUC_CONST
-btk_sort_type_get_type G_GNUC_CONST
-btk_spin_type_get_type G_GNUC_CONST
-btk_state_type_get_type G_GNUC_CONST
-btk_submenu_direction_get_type G_GNUC_CONST
-btk_submenu_placement_get_type G_GNUC_CONST
-btk_target_flags_get_type G_GNUC_CONST
-btk_text_direction_get_type G_GNUC_CONST
-btk_text_buffer_target_info_get_type G_GNUC_CONST
-btk_text_search_flags_get_type G_GNUC_CONST
-btk_text_window_type_get_type G_GNUC_CONST
-btk_tool_palette_drag_targets_get_type G_GNUC_CONST
-btk_tree_model_flags_get_type G_GNUC_CONST
-btk_tree_view_mode_get_type G_GNUC_CONST
-btk_tree_view_grid_lines_get_type G_GNUC_CONST
-btk_update_type_get_type G_GNUC_CONST
-btk_visibility_get_type G_GNUC_CONST
-btk_object_flags_get_type G_GNUC_CONST
-btk_accel_flags_get_type G_GNUC_CONST
-btk_icon_size_get_type G_GNUC_CONST
-btk_file_chooser_error_get_type G_GNUC_CONST
-btk_icon_theme_error_get_type G_GNUC_CONST
-btk_toolbar_child_type_get_type G_GNUC_CONST
-btk_toolbar_space_style_get_type G_GNUC_CONST
-btk_toolbar_style_get_type G_GNUC_CONST
+btk_corner_type_get_type B_GNUC_CONST
+btk_debug_flag_get_type B_GNUC_CONST
+btk_delete_type_get_type B_GNUC_CONST
+btk_dest_defaults_get_type B_GNUC_CONST
+btk_drag_result_get_type B_GNUC_CONST
+btk_clist_drag_pos_get_type B_GNUC_CONST
+btk_dialog_flags_get_type B_GNUC_CONST
+btk_direction_type_get_type B_GNUC_CONST
+btk_entry_icon_position_get_type B_GNUC_CONST
+btk_expander_style_get_type B_GNUC_CONST
+btk_file_chooser_action_get_type B_GNUC_CONST
+btk_file_chooser_confirmation_get_type B_GNUC_CONST
+btk_file_filter_flags_get_type B_GNUC_CONST
+btk_icon_view_drop_position_get_type B_GNUC_CONST
+btk_sensitivity_type_get_type B_GNUC_CONST
+btk_window_type_get_type B_GNUC_CONST
+btk_wrap_mode_get_type B_GNUC_CONST
+btk_widget_flags_get_type B_GNUC_CONST
+btk_widget_help_type_get_type B_GNUC_CONST
+btk_window_position_get_type B_GNUC_CONST
+btk_tree_view_column_sizing_get_type B_GNUC_CONST
+btk_tree_view_drop_position_get_type B_GNUC_CONST
+btk_button_box_style_get_type B_GNUC_CONST
+btk_cell_type_get_type B_GNUC_CONST
+btk_ctree_expander_style_get_type B_GNUC_CONST
+btk_ctree_expansion_type_get_type B_GNUC_CONST
+btk_ctree_line_style_get_type B_GNUC_CONST
+btk_ctree_pos_get_type B_GNUC_CONST
+btk_curve_type_get_type B_GNUC_CONST
+btk_icon_lookup_flags_get_type B_GNUC_CONST
+btk_image_type_get_type B_GNUC_CONST
+btk_im_preedit_style_get_type B_GNUC_CONST
+btk_im_status_style_get_type B_GNUC_CONST
+btk_justification_get_type B_GNUC_CONST
+btk_match_type_get_type B_GNUC_CONST
+btk_menu_direction_type_get_type B_GNUC_CONST
+btk_message_type_get_type B_GNUC_CONST
+btk_metric_type_get_type B_GNUC_CONST
+btk_movement_step_get_type B_GNUC_CONST
+btk_orientation_get_type B_GNUC_CONST
+btk_pack_type_get_type B_GNUC_CONST
+btk_page_orientation_get_type B_GNUC_CONST
+btk_print_operation_result_get_type B_GNUC_CONST
+btk_print_pages_get_type B_GNUC_CONST
+btk_print_quality_get_type B_GNUC_CONST
+btk_print_status_get_type B_GNUC_CONST
+btk_page_set_get_type B_GNUC_CONST
+btk_path_priority_type_get_type B_GNUC_CONST
+btk_path_type_get_type B_GNUC_CONST
+btk_policy_type_get_type B_GNUC_CONST
+btk_position_type_get_type B_GNUC_CONST
+btk_preview_type_get_type B_GNUC_CONST
+btk_print_duplex_get_type B_GNUC_CONST
+btk_print_error_get_type B_GNUC_CONST
+btk_recent_filter_flags_get_type B_GNUC_CONST
+btk_print_operation_action_get_type B_GNUC_CONST
+btk_private_flags_get_type B_GNUC_CONST
+btk_progress_bar_orientation_get_type B_GNUC_CONST
+btk_progress_bar_style_get_type B_GNUC_CONST
+btk_rc_flags_get_type B_GNUC_CONST
+btk_rc_token_type_get_type B_GNUC_CONST
+btk_recent_chooser_error_get_type B_GNUC_CONST
+btk_recent_manager_error_get_type B_GNUC_CONST
+btk_recent_sort_type_get_type B_GNUC_CONST
+btk_unit_get_type B_GNUC_CONST
+btk_relief_style_get_type B_GNUC_CONST
+btk_resize_mode_get_type B_GNUC_CONST
+btk_response_type_get_type B_GNUC_CONST
+btk_scroll_step_get_type B_GNUC_CONST
+btk_scroll_type_get_type B_GNUC_CONST
+btk_selection_mode_get_type B_GNUC_CONST
+btk_shadow_type_get_type B_GNUC_CONST
+btk_side_type_get_type B_GNUC_CONST
+btk_signal_run_type_get_type B_GNUC_CONST
+btk_size_group_mode_get_type B_GNUC_CONST
+btk_sort_type_get_type B_GNUC_CONST
+btk_spin_type_get_type B_GNUC_CONST
+btk_state_type_get_type B_GNUC_CONST
+btk_submenu_direction_get_type B_GNUC_CONST
+btk_submenu_placement_get_type B_GNUC_CONST
+btk_target_flags_get_type B_GNUC_CONST
+btk_text_direction_get_type B_GNUC_CONST
+btk_text_buffer_target_info_get_type B_GNUC_CONST
+btk_text_search_flags_get_type B_GNUC_CONST
+btk_text_window_type_get_type B_GNUC_CONST
+btk_tool_palette_drag_targets_get_type B_GNUC_CONST
+btk_tree_model_flags_get_type B_GNUC_CONST
+btk_tree_view_mode_get_type B_GNUC_CONST
+btk_tree_view_grid_lines_get_type B_GNUC_CONST
+btk_update_type_get_type B_GNUC_CONST
+btk_visibility_get_type B_GNUC_CONST
+btk_object_flags_get_type B_GNUC_CONST
+btk_accel_flags_get_type B_GNUC_CONST
+btk_icon_size_get_type B_GNUC_CONST
+btk_file_chooser_error_get_type B_GNUC_CONST
+btk_icon_theme_error_get_type B_GNUC_CONST
+btk_toolbar_child_type_get_type B_GNUC_CONST
+btk_toolbar_space_style_get_type B_GNUC_CONST
+btk_toolbar_style_get_type B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BTK_ARROW_H__)
 #if IN_FILE(__BTK_ARROW_C__)
-btk_arrow_get_type G_GNUC_CONST
+btk_arrow_get_type B_GNUC_CONST
 btk_arrow_new
 btk_arrow_set
 #endif
@@ -441,7 +441,7 @@ btk_arrow_set
 
 #if IN_HEADER(__BTK_ASPECT_FRAME_H__)
 #if IN_FILE(__BTK_ASPECT_FRAME_C__)
-btk_aspect_frame_get_type G_GNUC_CONST
+btk_aspect_frame_get_type B_GNUC_CONST
 btk_aspect_frame_new
 btk_aspect_frame_set
 #endif
@@ -470,7 +470,7 @@ btk_binding_set_new
 #if IN_HEADER(__BTK_BIN_H__)
 #if IN_FILE(__BTK_BIN_C__)
 btk_bin_get_child
-btk_bin_get_type G_GNUC_CONST
+btk_bin_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -478,7 +478,7 @@ btk_bin_get_type G_GNUC_CONST
 #if IN_FILE(__BTK_BOX_C__)
 btk_box_get_homogeneous
 btk_box_get_spacing
-btk_box_get_type G_GNUC_CONST
+btk_box_get_type B_GNUC_CONST
 btk_box_pack_end
 btk_box_pack_start
 #ifndef BTK_DISABLE_DEPRECATED
@@ -502,7 +502,7 @@ btk_buildable_custom_tag_end
 btk_buildable_custom_finished
 btk_buildable_get_internal_child
 btk_buildable_get_name
-btk_buildable_get_type G_GNUC_CONST
+btk_buildable_get_type B_GNUC_CONST
 btk_buildable_parser_finished
 btk_buildable_set_name
 btk_buildable_set_buildable_property
@@ -519,7 +519,7 @@ btk_builder_error_quark
 btk_builder_get_object
 btk_builder_get_objects
 btk_builder_get_translation_domain
-btk_builder_get_type G_GNUC_CONST
+btk_builder_get_type B_GNUC_CONST
 btk_builder_get_type_from_name
 btk_builder_new
 btk_builder_set_translation_domain
@@ -540,7 +540,7 @@ btk_button_box_get_child_size
 #endif
 btk_button_box_get_child_secondary
 btk_button_box_get_layout
-btk_button_box_get_type G_GNUC_CONST
+btk_button_box_get_type B_GNUC_CONST
 btk_button_box_set_child_secondary
 btk_button_box_set_layout
 #endif
@@ -559,7 +559,7 @@ btk_button_get_image
 btk_button_get_image_position
 btk_button_get_label
 btk_button_get_relief
-btk_button_get_type G_GNUC_CONST
+btk_button_get_type B_GNUC_CONST
 btk_button_get_use_stock
 btk_button_get_use_underline
 #ifndef BTK_DISABLE_DEPRECATED
@@ -596,7 +596,7 @@ btk_calendar_get_date
 btk_calendar_get_detail_height_rows
 btk_calendar_get_detail_width_chars
 btk_calendar_get_display_options
-btk_calendar_get_type G_GNUC_CONST
+btk_calendar_get_type B_GNUC_CONST
 btk_calendar_mark_day
 btk_calendar_new
 btk_calendar_select_day
@@ -612,7 +612,7 @@ btk_calendar_unmark_day
 #if IN_HEADER(__BTK_CELL_EDITABLE_H__)
 #if IN_FILE(__BTK_CELL_EDITABLE_C__)
 btk_cell_editable_editing_done
-btk_cell_editable_get_type G_GNUC_CONST
+btk_cell_editable_get_type B_GNUC_CONST
 btk_cell_editable_remove_widget
 btk_cell_editable_start_editing
 #endif
@@ -623,12 +623,12 @@ btk_cell_editable_start_editing
 btk_cell_layout_add_attribute
 btk_cell_layout_clear
 btk_cell_layout_clear_attributes
-btk_cell_layout_get_type G_GNUC_CONST
+btk_cell_layout_get_type B_GNUC_CONST
 btk_cell_layout_pack_end
 btk_cell_layout_pack_start
 btk_cell_layout_get_cells
 btk_cell_layout_reorder
-btk_cell_layout_set_attributes G_GNUC_NULL_TERMINATED
+btk_cell_layout_set_attributes B_GNUC_NULL_TERMINATED
 btk_cell_layout_set_cell_data_func
 #endif
 #endif
@@ -644,7 +644,7 @@ btk_cell_renderer_get_fixed_size
 btk_cell_renderer_get_padding
 btk_cell_renderer_get_sensitive
 btk_cell_renderer_get_size
-btk_cell_renderer_get_type G_GNUC_CONST
+btk_cell_renderer_get_type B_GNUC_CONST
 btk_cell_renderer_get_visible
 btk_cell_renderer_render
 btk_cell_renderer_set_alignment
@@ -659,49 +659,49 @@ btk_cell_renderer_stop_editing
 
 #if IN_HEADER(__BTK_CELL_RENDERER_ACCEL_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_ACCEL_C__)
-btk_cell_renderer_accel_get_type G_GNUC_CONST
+btk_cell_renderer_accel_get_type B_GNUC_CONST
 btk_cell_renderer_accel_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_COMBO_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_COMBO_C__)
-btk_cell_renderer_combo_get_type G_GNUC_CONST
+btk_cell_renderer_combo_get_type B_GNUC_CONST
 btk_cell_renderer_combo_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_PIXBUF_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_PIXBUF_C__)
-btk_cell_renderer_pixbuf_get_type G_GNUC_CONST
+btk_cell_renderer_pixbuf_get_type B_GNUC_CONST
 btk_cell_renderer_pixbuf_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_SPIN_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_SPIN_C__)
-btk_cell_renderer_spin_get_type G_GNUC_CONST
+btk_cell_renderer_spin_get_type B_GNUC_CONST
 btk_cell_renderer_spin_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_SPINNER_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_SPINNER_C__)
-btk_cell_renderer_spinner_get_type G_GNUC_CONST
+btk_cell_renderer_spinner_get_type B_GNUC_CONST
 btk_cell_renderer_spinner_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_PROGRESS_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_PROGRESS_C__)
-btk_cell_renderer_progress_get_type G_GNUC_CONST
+btk_cell_renderer_progress_get_type B_GNUC_CONST
 btk_cell_renderer_progress_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_CELL_RENDERER_TEXT_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_TEXT_C__)
-btk_cell_renderer_text_get_type G_GNUC_CONST
+btk_cell_renderer_text_get_type B_GNUC_CONST
 btk_cell_renderer_text_new
 btk_cell_renderer_text_set_fixed_height_from_font
 #endif
@@ -712,7 +712,7 @@ btk_cell_renderer_text_set_fixed_height_from_font
 btk_cell_renderer_toggle_get_activatable
 btk_cell_renderer_toggle_get_active
 btk_cell_renderer_toggle_get_radio
-btk_cell_renderer_toggle_get_type G_GNUC_CONST
+btk_cell_renderer_toggle_get_type B_GNUC_CONST
 btk_cell_renderer_toggle_new
 btk_cell_renderer_toggle_set_activatable
 btk_cell_renderer_toggle_set_active
@@ -728,7 +728,7 @@ btk_cell_view_get_cell_renderers
 btk_cell_view_get_displayed_row
 btk_cell_view_get_model
 btk_cell_view_get_size_of_row
-btk_cell_view_get_type G_GNUC_CONST
+btk_cell_view_get_type B_GNUC_CONST
 btk_cell_view_new
 btk_cell_view_new_with_markup
 btk_cell_view_new_with_pixbuf
@@ -741,7 +741,7 @@ btk_cell_view_set_model
 
 #if IN_HEADER(__BTK_CHECK_BUTTON_H__)
 #if IN_FILE(__BTK_CHECK_BUTTON_C__)
-btk_check_button_get_type G_GNUC_CONST
+btk_check_button_get_type B_GNUC_CONST
 btk_check_button_new
 btk_check_button_new_with_label
 btk_check_button_new_with_mnemonic
@@ -753,7 +753,7 @@ btk_check_button_new_with_mnemonic
 btk_check_menu_item_get_active
 btk_check_menu_item_get_draw_as_radio
 btk_check_menu_item_get_inconsistent
-btk_check_menu_item_get_type G_GNUC_CONST
+btk_check_menu_item_get_type B_GNUC_CONST
 btk_check_menu_item_new
 btk_check_menu_item_new_with_label
 btk_check_menu_item_new_with_mnemonic
@@ -774,7 +774,7 @@ btk_clipboard_get
 btk_clipboard_get_display
 btk_clipboard_get_for_display
 btk_clipboard_get_owner
-btk_clipboard_get_type G_GNUC_CONST
+btk_clipboard_get_type B_GNUC_CONST
 btk_clipboard_request_contents
 btk_clipboard_request_image
 btk_clipboard_request_rich_text
@@ -827,7 +827,7 @@ btk_clist_get_row_style
 btk_clist_get_selectable
 btk_clist_get_selection_info
 btk_clist_get_text
-btk_clist_get_type G_GNUC_CONST
+btk_clist_get_type B_GNUC_CONST
 btk_clist_get_vadjustment
 btk_clist_insert
 btk_clist_moveto
@@ -887,7 +887,7 @@ btk_clist_unselect_row
 btk_color_button_get_alpha
 btk_color_button_get_color
 btk_color_button_get_title
-btk_color_button_get_type G_GNUC_CONST
+btk_color_button_get_type B_GNUC_CONST
 btk_color_button_get_use_alpha
 btk_color_button_new
 btk_color_button_new_with_color
@@ -906,7 +906,7 @@ btk_color_selection_get_has_opacity_control
 btk_color_selection_get_has_palette
 btk_color_selection_get_previous_alpha
 btk_color_selection_get_previous_color
-btk_color_selection_get_type G_GNUC_CONST
+btk_color_selection_get_type B_GNUC_CONST
 btk_color_selection_is_adjusting
 btk_color_selection_new
 btk_color_selection_palette_from_string
@@ -929,7 +929,7 @@ btk_color_selection_set_previous_color
 
 #if IN_HEADER(__BTK_COLOR_SELECTION_DIALOG_H__)
 #if IN_FILE(__BTK_COLOR_SELECTION_DIALOG_C__)
-btk_color_selection_dialog_get_type G_GNUC_CONST
+btk_color_selection_dialog_get_type B_GNUC_CONST
 btk_color_selection_dialog_new
 btk_color_selection_dialog_get_color_selection
 #endif
@@ -952,7 +952,7 @@ btk_combo_box_get_row_separator_func
 btk_combo_box_get_row_span_column
 btk_combo_box_get_button_sensitivity
 btk_combo_box_get_title
-btk_combo_box_get_type G_GNUC_CONST
+btk_combo_box_get_type B_GNUC_CONST
 btk_combo_box_get_wrap_width
 btk_combo_box_insert_text
 btk_combo_box_new
@@ -983,7 +983,7 @@ btk_combo_box_set_wrap_width
 #if IN_FILE(__BTK_COMBO_BOX_TEXT_C__)
 btk_combo_box_text_append_text
 btk_combo_box_text_get_active_text
-btk_combo_box_text_get_type G_GNUC_CONST
+btk_combo_box_text_get_type B_GNUC_CONST
 btk_combo_box_text_insert_text
 btk_combo_box_text_new
 btk_combo_box_text_new_with_entry
@@ -996,7 +996,7 @@ btk_combo_box_text_remove
 #if IN_FILE(__BTK_COMBO_BOX_ENTRY_C__)
 #ifndef BTK_DISABLE_DEPRECATED
 btk_combo_box_entry_get_text_column
-btk_combo_box_entry_get_type G_GNUC_CONST
+btk_combo_box_entry_get_type B_GNUC_CONST
 btk_combo_box_entry_new
 btk_combo_box_entry_new_text
 btk_combo_box_entry_new_with_model
@@ -1009,7 +1009,7 @@ btk_combo_box_entry_set_text_column
 #if IN_FILE(__BTK_SMART_COMBO_C__)
 #ifndef BTK_DISABLE_DEPRECATED
 btk_combo_disable_activate
-btk_combo_get_type G_GNUC_CONST
+btk_combo_get_type B_GNUC_CONST
 btk_combo_new
 btk_combo_set_case_sensitive
 btk_combo_set_item_string
@@ -1024,12 +1024,12 @@ btk_combo_set_value_in_list
 #if IN_HEADER(__BTK_CONTAINER_H__)
 #if IN_FILE(__BTK_CONTAINER_C__)
 btk_container_add
-btk_container_add_with_properties G_GNUC_NULL_TERMINATED
+btk_container_add_with_properties B_GNUC_NULL_TERMINATED
 btk_container_check_resize
-btk_container_child_get G_GNUC_NULL_TERMINATED
+btk_container_child_get B_GNUC_NULL_TERMINATED
 btk_container_child_get_property
 btk_container_child_get_valist
-btk_container_child_set G_GNUC_NULL_TERMINATED
+btk_container_child_set B_GNUC_NULL_TERMINATED
 btk_container_child_set_property
 btk_container_child_set_valist
 btk_container_child_type
@@ -1048,7 +1048,7 @@ btk_container_get_focus_child
 btk_container_get_focus_hadjustment
 btk_container_get_focus_vadjustment
 btk_container_get_resize_mode
-btk_container_get_type G_GNUC_CONST
+btk_container_get_type B_GNUC_CONST
 btk_container_propagate_expose
 btk_container_remove
 btk_container_resize_children
@@ -1080,7 +1080,7 @@ btk_ctree_find_by_row_data
 btk_ctree_find_by_row_data_custom
 btk_ctree_find_node_ptr
 btk_ctree_get_node_info
-btk_ctree_get_type G_GNUC_CONST
+btk_ctree_get_type B_GNUC_CONST
 btk_ctree_insert_gnode
 btk_ctree_insert_node
 btk_ctree_is_ancestor
@@ -1098,7 +1098,7 @@ btk_ctree_node_get_row_data
 btk_ctree_node_get_row_style
 btk_ctree_node_get_selectable
 btk_ctree_node_get_text
-btk_ctree_node_get_type G_GNUC_CONST
+btk_ctree_node_get_type B_GNUC_CONST
 btk_ctree_node_is_visible
 btk_ctree_node_moveto
 btk_ctree_node_nth
@@ -1141,7 +1141,7 @@ btk_ctree_unselect_recursive
 #if IN_HEADER(__BTK_CURVE_H__)
 #if IN_FILE(__BTK_CURVE_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-btk_curve_get_type G_GNUC_CONST
+btk_curve_get_type B_GNUC_CONST
 btk_curve_get_vector
 btk_curve_new
 btk_curve_reset
@@ -1166,12 +1166,12 @@ btk_decorated_window_set_title
 #if IN_FILE(__BTK_DIALOG_C__)
 btk_dialog_add_action_widget
 btk_dialog_add_button
-btk_dialog_add_buttons G_GNUC_NULL_TERMINATED
+btk_dialog_add_buttons B_GNUC_NULL_TERMINATED
 btk_dialog_get_action_area
 btk_dialog_get_content_area
 btk_dialog_get_widget_for_response
 btk_dialog_get_response_for_widget
-btk_dialog_get_type G_GNUC_CONST
+btk_dialog_get_type B_GNUC_CONST
 btk_dialog_new
 btk_dialog_new_with_buttons
 btk_dialog_response
@@ -1233,7 +1233,7 @@ btk_drag_unhighlight
 
 #if IN_HEADER(__BTK_STATUS_ICON_H__)
 #if IN_FILE(__BTK_STATUS_ICON_C__)
-btk_status_icon_get_type G_GNUC_CONST
+btk_status_icon_get_type B_GNUC_CONST
 btk_status_icon_new
 btk_status_icon_new_from_pixbuf
 btk_status_icon_new_from_file
@@ -1329,15 +1329,15 @@ btk_paint_slider
 btk_paint_spinner
 btk_paint_tab
 btk_paint_vline
-btk_border_new G_GNUC_MALLOC
+btk_border_new B_GNUC_MALLOC
 btk_border_copy
 btk_border_free
-btk_border_get_type G_GNUC_CONST
+btk_border_get_type B_GNUC_CONST
 btk_style_apply_default_background
 btk_style_attach
 btk_style_copy
 btk_style_detach
-btk_style_get_type G_GNUC_CONST
+btk_style_get_type B_GNUC_CONST
 btk_style_lookup_icon_set
 btk_style_lookup_color
 btk_style_new
@@ -1352,7 +1352,7 @@ btk_style_get
 
 #if IN_HEADER(__BTK_DRAWING_AREA_H__)
 #if IN_FILE(__BTK_DRAWING_AREA_C__)
-btk_drawing_area_get_type G_GNUC_CONST
+btk_drawing_area_get_type B_GNUC_CONST
 btk_drawing_area_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_drawing_area_size
@@ -1370,7 +1370,7 @@ btk_editable_get_chars
 btk_editable_get_editable
 btk_editable_get_position
 btk_editable_get_selection_bounds
-btk_editable_get_type G_GNUC_CONST
+btk_editable_get_type B_GNUC_CONST
 btk_editable_insert_text
 btk_editable_paste_clipboard
 btk_editable_select_rebunnyion
@@ -1409,7 +1409,7 @@ btk_entry_get_progress_fraction
 btk_entry_get_progress_pulse_step
 btk_entry_get_text
 btk_entry_get_text_length
-btk_entry_get_type G_GNUC_CONST
+btk_entry_get_type B_GNUC_CONST
 btk_entry_get_visibility
 btk_entry_get_width_chars
 btk_entry_get_text_window
@@ -1470,7 +1470,7 @@ btk_entry_completion_get_popup_completion
 btk_entry_completion_get_popup_set_width
 btk_entry_completion_get_popup_single_match
 btk_entry_completion_get_text_column
-btk_entry_completion_get_type G_GNUC_CONST
+btk_entry_completion_get_type B_GNUC_CONST
 btk_entry_completion_insert_action_markup
 btk_entry_completion_insert_action_text
 btk_entry_completion_insert_prefix
@@ -1489,7 +1489,7 @@ btk_entry_completion_set_text_column
 
 #if IN_HEADER(__BTK_ENTRY_BUFFER_H__)
 #if IN_FILE(__BTK_ENTRY_BUFFER_C__)
-btk_entry_buffer_get_type G_GNUC_CONST
+btk_entry_buffer_get_type B_GNUC_CONST
 btk_entry_buffer_new
 btk_entry_buffer_get_bytes
 btk_entry_buffer_get_length
@@ -1507,7 +1507,7 @@ btk_entry_buffer_emit_deleted_text
 #if IN_HEADER(__BTK_EVENT_BOX_H__)
 #if IN_FILE(__BTK_EVENT_BOX_C__)
 btk_event_box_get_above_child
-btk_event_box_get_type G_GNUC_CONST
+btk_event_box_get_type B_GNUC_CONST
 btk_event_box_get_visible_window
 btk_event_box_new
 btk_event_box_set_above_child
@@ -1522,7 +1522,7 @@ btk_expander_get_label
 btk_expander_get_label_fill
 btk_expander_get_label_widget
 btk_expander_get_spacing
-btk_expander_get_type G_GNUC_CONST
+btk_expander_get_type B_GNUC_CONST
 btk_expander_get_use_markup
 btk_expander_get_use_underline
 btk_expander_new
@@ -1590,7 +1590,7 @@ btk_file_chooser_set_do_overwrite_confirmation
 btk_file_chooser_get_do_overwrite_confirmation
 btk_file_chooser_set_create_folders
 btk_file_chooser_get_create_folders
-btk_file_chooser_get_type G_GNUC_CONST
+btk_file_chooser_get_type B_GNUC_CONST
 btk_file_chooser_get_uri
 btk_file_chooser_get_uris
 btk_file_chooser_get_use_preview_label
@@ -1659,7 +1659,7 @@ btk_file_chooser_unselect_uri
 
 #if IN_HEADER(__BTK_FILE_CHOOSER_DIALOG_H__)
 #if IN_FILE(__BTK_FILE_CHOOSER_DIALOG_C__)
-btk_file_chooser_dialog_get_type G_GNUC_CONST
+btk_file_chooser_dialog_get_type B_GNUC_CONST
 btk_file_chooser_dialog_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_file_chooser_dialog_new_with_backend
@@ -1669,7 +1669,7 @@ btk_file_chooser_dialog_new_with_backend
 
 #if IN_HEADER(__BTK_FILE_CHOOSER_WIDGET_H__)
 #if IN_FILE(__BTK_FILE_CHOOSER_WIDGET_C__)
-btk_file_chooser_widget_get_type G_GNUC_CONST
+btk_file_chooser_widget_get_type B_GNUC_CONST
 btk_file_chooser_widget_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_file_chooser_widget_new_with_backend
@@ -1680,7 +1680,7 @@ btk_file_chooser_widget_new_with_backend
 #if IN_HEADER(__BTK_FILE_CHOOSER_BUTTON_H__)
 #if IN_FILE(__BTK_FILE_CHOOSER_BUTTON_C__)
 btk_file_chooser_button_get_title
-btk_file_chooser_button_get_type G_GNUC_CONST
+btk_file_chooser_button_get_type B_GNUC_CONST
 btk_file_chooser_button_get_width_chars
 btk_file_chooser_button_new
 #ifndef BTK_DISABLE_DEPRECATED
@@ -1703,7 +1703,7 @@ btk_file_filter_add_pixbuf_formats
 btk_file_filter_filter
 btk_file_filter_get_name
 btk_file_filter_get_needed
-btk_file_filter_get_type G_GNUC_CONST
+btk_file_filter_get_type B_GNUC_CONST
 btk_file_filter_new
 btk_file_filter_set_name
 #endif
@@ -1726,7 +1726,7 @@ btk_file_selection_get_selections PRIVATE
 btk_file_selection_get_selections_utf8
 #endif
 btk_file_selection_get_select_multiple
-btk_file_selection_get_type G_GNUC_CONST
+btk_file_selection_get_type B_GNUC_CONST
 btk_file_selection_hide_fileop_buttons
 btk_file_selection_new
 #ifndef _WIN64
@@ -1743,7 +1743,7 @@ btk_file_selection_show_fileop_buttons
 
 #if IN_HEADER(__BTK_FIXED_H__)
 #if IN_FILE(__BTK_FIXED_C__)
-btk_fixed_get_type G_GNUC_CONST
+btk_fixed_get_type B_GNUC_CONST
 btk_fixed_move
 btk_fixed_new
 btk_fixed_put
@@ -1760,7 +1760,7 @@ btk_font_button_get_font_name
 btk_font_button_get_show_size
 btk_font_button_get_show_style
 btk_font_button_get_title
-btk_font_button_get_type G_GNUC_CONST
+btk_font_button_get_type B_GNUC_CONST
 btk_font_button_get_use_font
 btk_font_button_get_use_size
 btk_font_button_new
@@ -1781,7 +1781,7 @@ btk_font_selection_dialog_get_font_name
 btk_font_selection_dialog_get_font_selection
 btk_font_selection_dialog_get_ok_button
 btk_font_selection_dialog_get_preview_text
-btk_font_selection_dialog_get_type G_GNUC_CONST
+btk_font_selection_dialog_get_type B_GNUC_CONST
 btk_font_selection_dialog_new
 btk_font_selection_dialog_set_font_name
 btk_font_selection_dialog_set_preview_text
@@ -1800,7 +1800,7 @@ btk_font_selection_get_preview_text
 btk_font_selection_get_size
 btk_font_selection_get_size_entry
 btk_font_selection_get_size_list
-btk_font_selection_get_type G_GNUC_CONST
+btk_font_selection_get_type B_GNUC_CONST
 btk_font_selection_new
 btk_font_selection_set_font_name
 btk_font_selection_set_preview_text
@@ -1813,7 +1813,7 @@ btk_frame_get_label
 btk_frame_get_label_align
 btk_frame_get_label_widget
 btk_frame_get_shadow_type
-btk_frame_get_type G_GNUC_CONST
+btk_frame_get_type B_GNUC_CONST
 btk_frame_new
 btk_frame_set_label
 btk_frame_set_label_align
@@ -1825,7 +1825,7 @@ btk_frame_set_shadow_type
 #if IN_HEADER(__BTK_GAMMA_CURVE_H__)
 #if IN_FILE(__BTK_GAMMA_CURVE_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-btk_gamma_curve_get_type G_GNUC_CONST
+btk_gamma_curve_get_type B_GNUC_CONST
 btk_gamma_curve_new
 #endif
 #endif
@@ -1844,7 +1844,7 @@ btk_handle_box_get_handle_position
 btk_handle_box_get_shadow_type
 btk_handle_box_get_snap_edge
 btk_handle_box_get_child_detached
-btk_handle_box_get_type G_GNUC_CONST
+btk_handle_box_get_type B_GNUC_CONST
 btk_handle_box_new
 btk_handle_box_set_handle_position
 btk_handle_box_set_shadow_type
@@ -1854,7 +1854,7 @@ btk_handle_box_set_snap_edge
 
 #if IN_HEADER(__BTK_HBOX_H__)
 #if IN_FILE(__BTK_HBOX_C__)
-btk_hbox_get_type G_GNUC_CONST
+btk_hbox_get_type B_GNUC_CONST
 btk_hbox_new
 #endif
 #endif
@@ -1862,7 +1862,7 @@ btk_hbox_new
 #if IN_HEADER(__BTK_HBUTTON_BOX_H__)
 #if IN_FILE(__BTK_HBUTTON_BOX_C__)
 btk_hbutton_box_new
-btk_hbutton_box_get_type G_GNUC_CONST
+btk_hbutton_box_get_type B_GNUC_CONST
 #ifndef BTK_DISABLE_DEPRECATED
 btk_hbutton_box_get_layout_default
 btk_hbutton_box_get_spacing_default
@@ -1874,7 +1874,7 @@ btk_hbutton_box_set_spacing_default
 
 #if IN_HEADER(__BTK_HPANED_H__)
 #if IN_FILE(__BTK_HPANED_C__)
-btk_hpaned_get_type G_GNUC_CONST
+btk_hpaned_get_type B_GNUC_CONST
 btk_hpaned_new
 #endif
 #endif
@@ -1882,7 +1882,7 @@ btk_hpaned_new
 #if IN_HEADER(__BTK_HRULER_H__)
 #if IN_FILE(__BTK_HRULER_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-btk_hruler_get_type G_GNUC_CONST
+btk_hruler_get_type B_GNUC_CONST
 btk_hruler_new
 #endif
 #endif
@@ -1890,7 +1890,7 @@ btk_hruler_new
 
 #if IN_HEADER(__BTK_HSCALE_H__)
 #if IN_FILE(__BTK_HSCALE_C__)
-btk_hscale_get_type G_GNUC_CONST
+btk_hscale_get_type B_GNUC_CONST
 btk_hscale_new
 btk_hscale_new_with_range
 #endif
@@ -1898,14 +1898,14 @@ btk_hscale_new_with_range
 
 #if IN_HEADER(__BTK_HSCROLLBAR_H__)
 #if IN_FILE(__BTK_HSCROLLBAR_C__)
-btk_hscrollbar_get_type G_GNUC_CONST
+btk_hscrollbar_get_type B_GNUC_CONST
 btk_hscrollbar_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_HSEPARATOR_H__)
 #if IN_FILE(__BTK_HSEPARATOR_C__)
-btk_hseparator_get_type G_GNUC_CONST
+btk_hseparator_get_type B_GNUC_CONST
 btk_hseparator_new
 #endif
 #endif
@@ -1914,7 +1914,7 @@ btk_hseparator_new
 #if IN_FILE(__BTK_HSV_C__)
 btk_hsv_get_color
 btk_hsv_get_metrics
-btk_hsv_get_type G_GNUC_CONST
+btk_hsv_get_type B_GNUC_CONST
 btk_hsv_is_adjusting
 btk_hsv_new
 btk_hsv_set_color
@@ -1928,7 +1928,7 @@ btk_rgb_to_hsv
 #if IN_FILE(__BTK_ICON_FACTORY_C__)
 btk_icon_factory_add
 btk_icon_factory_add_default
-btk_icon_factory_get_type G_GNUC_CONST
+btk_icon_factory_get_type B_GNUC_CONST
 btk_icon_factory_lookup
 btk_icon_factory_lookup_default
 btk_icon_factory_new
@@ -1942,7 +1942,7 @@ btk_icon_size_register_alias
 btk_icon_set_add_source
 btk_icon_set_copy
 btk_icon_set_get_sizes
-btk_icon_set_get_type G_GNUC_CONST
+btk_icon_set_get_type B_GNUC_CONST
 btk_icon_set_new
 btk_icon_set_new_from_pixbuf
 btk_icon_set_ref
@@ -1964,7 +1964,7 @@ btk_icon_source_get_size
 btk_icon_source_get_size_wildcarded
 btk_icon_source_get_state
 btk_icon_source_get_state_wildcarded
-btk_icon_source_get_type G_GNUC_CONST
+btk_icon_source_get_type B_GNUC_CONST
 btk_icon_source_new
 btk_icon_source_set_direction
 btk_icon_source_set_direction_wildcarded
@@ -1999,7 +1999,7 @@ btk_icon_info_get_filename PRIVATE
 #ifdef G_OS_WIN32
 btk_icon_info_get_filename_utf8
 #endif
-btk_icon_info_get_type G_GNUC_CONST
+btk_icon_info_get_type B_GNUC_CONST
 btk_icon_info_load_icon
 btk_icon_info_set_raw_coordinates
 btk_icon_theme_add_builtin_icon
@@ -2020,7 +2020,7 @@ btk_icon_theme_get_search_path PRIVATE
 #ifdef G_OS_WIN32
 btk_icon_theme_get_search_path_utf8
 #endif
-btk_icon_theme_get_type G_GNUC_CONST
+btk_icon_theme_get_type B_GNUC_CONST
 btk_icon_theme_has_icon
 btk_icon_theme_list_contexts
 btk_icon_theme_list_icons
@@ -2068,7 +2068,7 @@ btk_icon_view_get_selected_items
 btk_icon_view_get_selection_mode
 btk_icon_view_get_spacing
 btk_icon_view_get_text_column
-btk_icon_view_get_type G_GNUC_CONST
+btk_icon_view_get_type B_GNUC_CONST
 btk_icon_view_get_visible_range
 btk_icon_view_item_activated
 btk_icon_view_new
@@ -2132,7 +2132,7 @@ btk_image_get_pixmap
 btk_image_get_stock
 btk_image_get_gicon
 btk_image_get_storage_type
-btk_image_get_type G_GNUC_CONST
+btk_image_get_type B_GNUC_CONST
 btk_image_new
 btk_image_new_from_animation
 #ifndef _WIN64
@@ -2170,7 +2170,7 @@ btk_image_set_pixel_size
 #if IN_FILE(__BTK_IMAGE_MENU_ITEM_C__)
 btk_image_menu_item_get_always_show_image
 btk_image_menu_item_get_image
-btk_image_menu_item_get_type G_GNUC_CONST
+btk_image_menu_item_get_type B_GNUC_CONST
 btk_image_menu_item_get_use_stock
 btk_image_menu_item_new
 btk_image_menu_item_new_from_stock
@@ -2191,7 +2191,7 @@ btk_im_context_focus_in
 btk_im_context_focus_out
 btk_im_context_get_preedit_string
 btk_im_context_get_surrounding
-btk_im_context_get_type G_GNUC_CONST
+btk_im_context_get_type B_GNUC_CONST
 btk_im_context_reset
 btk_im_context_set_client_window
 btk_im_context_set_cursor_location
@@ -2203,7 +2203,7 @@ btk_im_context_set_use_preedit
 #if IN_HEADER(__BTK_IM_CONTEXT_SIMPLE_H__)
 #if IN_FILE(__BTK_IM_CONTEXT_SIMPLE_C__)
 btk_im_context_simple_add_table
-btk_im_context_simple_get_type G_GNUC_CONST
+btk_im_context_simple_get_type B_GNUC_CONST
 btk_im_context_simple_new
 #endif
 #endif
@@ -2213,7 +2213,7 @@ btk_im_context_simple_new
 btk_im_multicontext_append_menuitems
 btk_im_multicontext_get_context_id
 btk_im_multicontext_set_context_id
-btk_im_multicontext_get_type G_GNUC_CONST
+btk_im_multicontext_get_type B_GNUC_CONST
 btk_im_multicontext_new
 #endif
 #endif
@@ -2221,7 +2221,7 @@ btk_im_multicontext_new
 #if IN_HEADER(__BTK_INVISIBLE_H__)
 #if IN_FILE(__BTK_INVISIBLE_C__)
 btk_invisible_get_screen
-btk_invisible_get_type G_GNUC_CONST
+btk_invisible_get_type B_GNUC_CONST
 btk_invisible_new
 btk_invisible_new_for_screen
 btk_invisible_set_screen
@@ -2230,7 +2230,7 @@ btk_invisible_set_screen
 
 #if IN_HEADER(__BTK_ITEM_H__)
 #if IN_FILE(__BTK_ITEM_C__)
-btk_item_get_type G_GNUC_CONST
+btk_item_get_type B_GNUC_CONST
 #ifndef BTK_DISABLE_DEPRECATED
 btk_item_deselect
 btk_item_select
@@ -2256,7 +2256,7 @@ btk_item_factory_from_path
 btk_item_factory_from_widget
 btk_item_factory_get_item
 btk_item_factory_get_item_by_action
-btk_item_factory_get_type G_GNUC_CONST
+btk_item_factory_get_type B_GNUC_CONST
 btk_item_factory_get_widget
 btk_item_factory_get_widget_by_action
 btk_item_factory_new
@@ -2292,7 +2292,7 @@ btk_label_get_selectable
 btk_label_get_selection_bounds
 btk_label_get_single_line_mode
 btk_label_get_text
-btk_label_get_type G_GNUC_CONST
+btk_label_get_type B_GNUC_CONST
 btk_label_get_use_markup
 btk_label_get_use_underline
 btk_label_get_width_chars
@@ -2329,7 +2329,7 @@ btk_label_get_track_visited_links
 btk_layout_get_bin_window
 btk_layout_get_hadjustment
 btk_layout_get_size
-btk_layout_get_type G_GNUC_CONST
+btk_layout_get_type B_GNUC_CONST
 btk_layout_get_vadjustment
 btk_layout_move
 btk_layout_new
@@ -2346,7 +2346,7 @@ btk_layout_thaw
 
 #if IN_HEADER(__BTK_LINK_BUTTON_H__)
 #if IN_FILE(__BTK_LINK_BUTTON_C__)
-btk_link_button_get_type G_GNUC_CONST
+btk_link_button_get_type B_GNUC_CONST
 btk_link_button_new
 btk_link_button_new_with_label
 btk_link_button_get_uri
@@ -2368,7 +2368,7 @@ btk_list_clear_items
 btk_list_end_drag_selection
 btk_list_end_selection
 btk_list_extend_selection
-btk_list_get_type G_GNUC_CONST
+btk_list_get_type B_GNUC_CONST
 btk_list_insert_items
 btk_list_new
 btk_list_prepend_items
@@ -2396,7 +2396,7 @@ btk_list_unselect_item
 #if IN_FILE(__BTK_LIST_ITEM_C__)
 #ifndef BTK_DISABLE_DEPRECATED
 btk_list_item_deselect
-btk_list_item_get_type G_GNUC_CONST
+btk_list_item_get_type B_GNUC_CONST
 btk_list_item_new
 btk_list_item_new_with_label
 btk_list_item_select
@@ -2408,7 +2408,7 @@ btk_list_item_select
 #if IN_FILE(__BTK_LIST_STORE_C__)
 btk_list_store_append
 btk_list_store_clear
-btk_list_store_get_type G_GNUC_CONST
+btk_list_store_get_type B_GNUC_CONST
 btk_list_store_insert
 btk_list_store_insert_after
 btk_list_store_insert_before
@@ -2451,8 +2451,8 @@ btk_timeout_remove
 btk_input_add_full
 btk_input_remove
 #endif
-btk_false G_GNUC_CONST
-btk_true G_GNUC_CONST
+btk_false B_GNUC_CONST
+btk_true B_GNUC_CONST
 btk_events_pending
 btk_disable_setlocale
 btk_check_version
@@ -2492,7 +2492,7 @@ btk_main_quit
 #if IN_HEADER(__BTK_INPUTDIALOG_H__)
 #if IN_FILE(__BTK_INPUTDIALOG_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-btk_input_dialog_get_type G_GNUC_CONST
+btk_input_dialog_get_type B_GNUC_CONST
 btk_input_dialog_new
 #endif
 #endif
@@ -2533,7 +2533,7 @@ btk_marshal_VOID__UINT_STRING
 
 #if IN_HEADER(__BTK_MENU_BAR_H__)
 #if IN_FILE(__BTK_MENU_BAR_C__)
-btk_menu_bar_get_type G_GNUC_CONST
+btk_menu_bar_get_type B_GNUC_CONST
 btk_menu_bar_new
 btk_menu_bar_get_child_pack_direction
 btk_menu_bar_set_child_pack_direction
@@ -2556,7 +2556,7 @@ btk_menu_get_for_attach_widget
 btk_menu_get_reserve_toggle_size
 btk_menu_get_tearoff_state
 btk_menu_get_title
-btk_menu_get_type G_GNUC_CONST
+btk_menu_get_type B_GNUC_CONST
 btk_menu_new
 btk_menu_popdown
 btk_menu_popup
@@ -2581,7 +2581,7 @@ btk_menu_item_get_accel_path
 btk_menu_item_get_label
 btk_menu_item_get_right_justified
 btk_menu_item_get_submenu
-btk_menu_item_get_type G_GNUC_CONST
+btk_menu_item_get_type B_GNUC_CONST
 btk_menu_item_get_use_underline
 btk_menu_item_new
 btk_menu_item_new_with_label
@@ -2607,7 +2607,7 @@ btk_menu_shell_append
 btk_menu_shell_cancel
 btk_menu_shell_deactivate
 btk_menu_shell_deselect
-btk_menu_shell_get_type G_GNUC_CONST
+btk_menu_shell_get_type B_GNUC_CONST
 btk_menu_shell_insert
 btk_menu_shell_prepend
 btk_menu_shell_select_first
@@ -2620,7 +2620,7 @@ btk_menu_shell_get_take_focus
 #if IN_HEADER(__BTK_MENU_TOOL_BUTTON_H__)
 #if IN_FILE(__BTK_MENU_TOOL_BUTTON_C__)
 btk_menu_tool_button_get_menu
-btk_menu_tool_button_get_type G_GNUC_CONST
+btk_menu_tool_button_get_type B_GNUC_CONST
 btk_menu_tool_button_new
 btk_menu_tool_button_new_from_stock
 #ifndef BTK_DISABLE_DEPRECATED
@@ -2634,12 +2634,12 @@ btk_menu_tool_button_set_menu
 
 #if IN_HEADER(__BTK_MESSAGE_DIALOG_H__)
 #if IN_FILE(__BTK_MESSAGE_DIALOG_C__)
-btk_message_dialog_format_secondary_markup G_GNUC_PRINTF(2,3)
-btk_message_dialog_format_secondary_text G_GNUC_PRINTF(2,3)
+btk_message_dialog_format_secondary_markup B_GNUC_PRINTF(2,3)
+btk_message_dialog_format_secondary_text B_GNUC_PRINTF(2,3)
 btk_message_dialog_get_message_area
-btk_message_dialog_get_type G_GNUC_CONST
-btk_message_dialog_new G_GNUC_PRINTF(5,6)
-btk_message_dialog_new_with_markup G_GNUC_PRINTF(5,6)
+btk_message_dialog_get_type B_GNUC_CONST
+btk_message_dialog_new B_GNUC_PRINTF(5,6)
+btk_message_dialog_new_with_markup B_GNUC_PRINTF(5,6)
 btk_message_dialog_set_markup
 btk_message_dialog_set_image
 btk_message_dialog_get_image
@@ -2650,7 +2650,7 @@ btk_message_dialog_get_image
 #if IN_FILE(__BTK_MISC_C__)
 btk_misc_get_alignment
 btk_misc_get_padding
-btk_misc_get_type G_GNUC_CONST
+btk_misc_get_type B_GNUC_CONST
 btk_misc_set_alignment
 btk_misc_set_padding
 #endif
@@ -2658,7 +2658,7 @@ btk_misc_set_padding
 
 #if IN_HEADER(__BTK_MOUNT_OPERATION_H__)
 #if IN_FILE(__BTK_MOUNT_OPERATION_C__)
-btk_mount_operation_get_type G_GNUC_CONST
+btk_mount_operation_get_type B_GNUC_CONST
 btk_mount_operation_new
 btk_mount_operation_is_showing
 btk_mount_operation_set_parent
@@ -2683,7 +2683,7 @@ btk_notebook_get_show_tabs
 btk_notebook_get_tab_label
 btk_notebook_get_tab_label_text
 btk_notebook_get_tab_pos
-btk_notebook_get_type G_GNUC_CONST
+btk_notebook_get_type B_GNUC_CONST
 btk_notebook_insert_page
 btk_notebook_insert_page_menu
 btk_notebook_new
@@ -2741,8 +2741,8 @@ btk_notebook_set_action_widget
 #if IN_FILE(__BTK_OBJECT_C__)
 #ifndef BTK_DISABLE_DEPRECATED
 btk_object_add_arg_type
-btk_object_get G_GNUC_NULL_TERMINATED
-btk_object_set G_GNUC_NULL_TERMINATED
+btk_object_get B_GNUC_NULL_TERMINATED
+btk_object_set B_GNUC_NULL_TERMINATED
 btk_object_get_data
 btk_object_get_data_by_id
 btk_object_get_user_data
@@ -2763,13 +2763,13 @@ btk_object_set_user_data
 btk_object_sink
 #endif
 btk_object_destroy
-btk_object_get_type G_GNUC_CONST
+btk_object_get_type B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BTK_OFFSCREEN_WINDOW_H__)
 #if IN_FILE(__BTK_OFFSCREEN_WINDOW_C__)
-btk_offscreen_window_get_type G_GNUC_CONST
+btk_offscreen_window_get_type B_GNUC_CONST
 btk_offscreen_window_new
 btk_offscreen_window_get_pixmap
 btk_offscreen_window_get_pixbuf
@@ -2779,7 +2779,7 @@ btk_offscreen_window_get_pixbuf
 #if IN_HEADER(__BTK_ORIENTABLE_H__)
 #if IN_FILE(__BTK_ORIENTABLE_C__)
 btk_orientable_get_orientation
-btk_orientable_get_type G_GNUC_CONST
+btk_orientable_get_type B_GNUC_CONST
 btk_orientable_set_orientation
 #endif
 #endif
@@ -2788,7 +2788,7 @@ btk_orientable_set_orientation
 #if IN_FILE(__BTK_OLD_EDITABLE_C__)
 btk_old_editable_changed
 btk_old_editable_claim_selection
-btk_old_editable_get_type G_GNUC_CONST
+btk_old_editable_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -2796,7 +2796,7 @@ btk_old_editable_get_type G_GNUC_CONST
 #if IN_FILE(__BTK_OPTION_MENU_C__)
 btk_option_menu_get_history
 btk_option_menu_get_menu
-btk_option_menu_get_type G_GNUC_CONST
+btk_option_menu_get_type B_GNUC_CONST
 btk_option_menu_new
 btk_option_menu_remove_menu
 btk_option_menu_set_history
@@ -2812,7 +2812,7 @@ btk_paned_get_child1
 btk_paned_get_child2
 btk_paned_get_handle_window
 btk_paned_get_position
-btk_paned_get_type G_GNUC_CONST
+btk_paned_get_type B_GNUC_CONST
 btk_paned_pack1
 btk_paned_pack2
 btk_paned_set_position
@@ -2824,7 +2824,7 @@ btk_paned_compute_position
 
 #if IN_HEADER(__BTK_PATH_BAR_H__)
 #if IN_FILE(__BTK_PATH_BAR_C__)
-btk_path_bar_get_type G_GNUC_CONST
+btk_path_bar_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -2832,7 +2832,7 @@ btk_path_bar_get_type G_GNUC_CONST
 #if IN_FILE(__BTK_PIXMAP_C__)
 #ifndef BTK_DISABLE_DEPRECATED
 btk_pixmap_get
-btk_pixmap_get_type G_GNUC_CONST
+btk_pixmap_get_type B_GNUC_CONST
 btk_pixmap_new
 btk_pixmap_set
 btk_pixmap_set_build_insensitive
@@ -2847,7 +2847,7 @@ btk_plug_construct_for_display
 btk_plug_get_id
 btk_plug_get_embedded
 btk_plug_get_socket_window
-btk_plug_get_type G_GNUC_CONST
+btk_plug_get_type B_GNUC_CONST
 btk_plug_new
 btk_plug_new_for_display
 #endif
@@ -2859,7 +2859,7 @@ btk_plug_new_for_display
 btk_preview_draw_row
 btk_preview_get_cmap
 btk_preview_get_info
-btk_preview_get_type G_GNUC_CONST
+btk_preview_get_type B_GNUC_CONST
 btk_preview_get_visual
 btk_preview_new
 btk_preview_put
@@ -2878,7 +2878,7 @@ btk_preview_uninit
 
 #if IN_HEADER(__BTK_PAGE_SETUP_H__)
 #if IN_FILE(__BTK_PAGE_SETUP_C__)
-btk_page_setup_get_type G_GNUC_CONST
+btk_page_setup_get_type B_GNUC_CONST
 btk_page_setup_new
 btk_page_setup_new_from_file
 btk_page_setup_new_from_key_file
@@ -2910,7 +2910,7 @@ btk_page_setup_get_page_height
 #if IN_HEADER(__BTK_PAGE_SETUP_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_PAGE_SETUP_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-btk_page_setup_unix_dialog_get_type G_GNUC_CONST
+btk_page_setup_unix_dialog_get_type B_GNUC_CONST
 btk_page_setup_unix_dialog_new
 btk_page_setup_unix_dialog_set_page_setup
 btk_page_setup_unix_dialog_get_page_setup
@@ -2922,7 +2922,7 @@ btk_page_setup_unix_dialog_get_print_settings
 
 #if IN_HEADER(__BTK_PAPER_SIZE_H__)
 #if IN_FILE(__BTK_PAPER_SIZE_C__)
-btk_paper_size_get_type G_GNUC_CONST
+btk_paper_size_get_type B_GNUC_CONST
 btk_paper_size_new
 btk_paper_size_new_from_ppd
 btk_paper_size_new_custom
@@ -2950,7 +2950,7 @@ btk_paper_size_get_default
 #if IN_HEADER(__BTK_CUSTOM_PAPER_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_CUSTOM_PAPER_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-btk_custom_paper_unix_dialog_get_type G_GNUC_CONST
+btk_custom_paper_unix_dialog_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
@@ -2959,7 +2959,7 @@ btk_custom_paper_unix_dialog_get_type G_GNUC_CONST
 #if IN_FILE(__BTK_PRINT_BACKEND_C__)
 #ifdef G_OS_UNIX
 btk_print_backend_error_quark
-btk_print_backend_get_type G_GNUC_CONST
+btk_print_backend_get_type B_GNUC_CONST
 btk_print_backend_add_printer
 btk_print_backend_remove_printer
 btk_print_backend_set_list_done
@@ -2976,7 +2976,7 @@ btk_print_backend_set_password
 
 #if IN_HEADER(__BTK_PRINT_CONTEXT_H__)
 #if IN_FILE(__BTK_PRINT_CONTEXT_C__)
-btk_print_context_get_type G_GNUC_CONST
+btk_print_context_get_type B_GNUC_CONST
 btk_print_context_get_bairo_context
 btk_print_context_get_page_setup
 btk_print_context_get_width
@@ -2994,7 +2994,7 @@ btk_print_context_set_bairo_context
 #if IN_HEADER(__BTK_PRINTER_H__)
 #if IN_FILE(__BTK_PRINTER_C__)
 #ifdef G_OS_UNIX
-btk_printer_get_type G_GNUC_CONST
+btk_printer_get_type B_GNUC_CONST
 btk_printer_get_backend
 btk_printer_get_name
 btk_printer_get_description
@@ -3013,7 +3013,7 @@ btk_printer_request_details
 btk_printer_get_capabilities
 btk_printer_get_hard_margins
 btk_enumerate_printers
-btk_print_capabilities_get_type G_GNUC_CONST
+btk_print_capabilities_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
@@ -3065,7 +3065,7 @@ btk_printer_option_get_activates_default
 #if IN_HEADER(__BTK_PRINTER_OPTION_SET_H__)
 #if IN_FILE(__BTK_PRINTER_OPTION_SET_C__)
 #ifdef G_OS_UNIX
-btk_printer_option_set_get_type G_GNUC_CONST
+btk_printer_option_set_get_type B_GNUC_CONST
 btk_printer_option_set_new
 btk_printer_option_set_add
 btk_printer_option_set_lookup
@@ -3081,7 +3081,7 @@ btk_printer_option_set_foreach_in_group
 #if IN_HEADER(__BTK_PRINTER_OPTION_WIDGET_H__)
 #if IN_FILE(__BTK_PRINTER_OPTION_WIDGET_C__)
 #ifdef G_OS_UNIX
-btk_printer_option_widget_get_type G_GNUC_CONST
+btk_printer_option_widget_get_type B_GNUC_CONST
 btk_printer_option_widget_new
 btk_printer_option_widget_set_source
 btk_printer_option_widget_has_external_label
@@ -3094,7 +3094,7 @@ btk_printer_option_widget_get_value
 #if IN_HEADER(__BTK_PRINT_JOB_H__)
 #if IN_FILE(__BTK_PRINT_JOB_C__)
 #ifdef G_OS_UNIX
-btk_print_job_get_type G_GNUC_CONST
+btk_print_job_get_type B_GNUC_CONST
 btk_print_job_new
 btk_print_job_get_settings
 btk_print_job_get_printer
@@ -3120,7 +3120,7 @@ btk_print_job_set_status
 #if IN_HEADER(__BTK_PRINT_OPERATION_H__)
 #if IN_FILE(__BTK_PRINT_OPERATION_C__)
 btk_print_error_quark
-btk_print_operation_get_type G_GNUC_CONST
+btk_print_operation_get_type B_GNUC_CONST
 btk_print_operation_new
 btk_print_operation_set_allow_async
 btk_print_operation_set_default_page_setup
@@ -3183,7 +3183,7 @@ btk_print_run_page_setup_dialog_async
 
 #if IN_HEADER(__BTK_PRINT_SETTINGS_H__)
 #if IN_FILE(__BTK_PRINT_SETTINGS_C__)
-btk_print_settings_get_type G_GNUC_CONST
+btk_print_settings_get_type B_GNUC_CONST
 btk_print_settings_new
 btk_print_settings_new_from_file
 btk_print_settings_new_from_key_file
@@ -3264,7 +3264,7 @@ btk_print_settings_set_output_bin
 #if IN_HEADER(__BTK_PRINT_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_PRINT_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-btk_print_unix_dialog_get_type G_GNUC_CONST
+btk_print_unix_dialog_get_type B_GNUC_CONST
 btk_print_unix_dialog_new
 btk_print_unix_dialog_set_page_setup
 btk_print_unix_dialog_get_page_setup
@@ -3305,7 +3305,7 @@ btk_progress_bar_get_orientation
 btk_progress_bar_get_pulse_step
 btk_progress_bar_get_text
 btk_progress_bar_get_ellipsize
-btk_progress_bar_get_type G_GNUC_CONST
+btk_progress_bar_get_type B_GNUC_CONST
 btk_progress_bar_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_progress_bar_new_with_adjustment
@@ -3332,7 +3332,7 @@ btk_progress_get_current_percentage
 btk_progress_get_current_text
 btk_progress_get_percentage_from_value
 btk_progress_get_text_from_value
-btk_progress_get_type G_GNUC_CONST
+btk_progress_get_type B_GNUC_CONST
 btk_progress_get_value
 btk_progress_set_activity_mode
 btk_progress_set_adjustment
@@ -3349,7 +3349,7 @@ btk_progress_set_value
 #if IN_FILE(__BTK_RADIO_ACTION_C__)
 btk_radio_action_get_current_value
 btk_radio_action_get_group
-btk_radio_action_get_type G_GNUC_CONST
+btk_radio_action_get_type B_GNUC_CONST
 btk_radio_action_new
 btk_radio_action_set_current_value
 btk_radio_action_set_group
@@ -3359,7 +3359,7 @@ btk_radio_action_set_group
 #if IN_HEADER(__BTK_RADIO_BUTTON_H__)
 #if IN_FILE(__BTK_RADIO_BUTTON_C__)
 btk_radio_button_get_group
-btk_radio_button_get_type G_GNUC_CONST
+btk_radio_button_get_type B_GNUC_CONST
 btk_radio_button_new
 btk_radio_button_new_from_widget
 btk_radio_button_new_with_label
@@ -3373,7 +3373,7 @@ btk_radio_button_set_group
 #if IN_HEADER(__BTK_RADIO_MENU_ITEM_H__)
 #if IN_FILE(__BTK_RADIO_MENU_ITEM_C__)
 btk_radio_menu_item_get_group
-btk_radio_menu_item_get_type G_GNUC_CONST
+btk_radio_menu_item_get_type B_GNUC_CONST
 btk_radio_menu_item_new
 btk_radio_menu_item_new_from_widget
 btk_radio_menu_item_new_with_label
@@ -3387,7 +3387,7 @@ btk_radio_menu_item_set_group
 #if IN_HEADER(__BTK_RADIO_TOOL_BUTTON_H__)
 #if IN_FILE(__BTK_RADIO_TOOL_BUTTON_C__)
 btk_radio_tool_button_get_group
-btk_radio_tool_button_get_type G_GNUC_CONST
+btk_radio_tool_button_get_type B_GNUC_CONST
 btk_radio_tool_button_new
 btk_radio_tool_button_new_from_stock
 btk_radio_tool_button_new_from_widget
@@ -3409,7 +3409,7 @@ btk_range_get_restrict_to_fill_level
 btk_range_get_show_fill_level
 btk_range_get_slider_range
 btk_range_get_slider_size_fixed
-btk_range_get_type G_GNUC_CONST
+btk_range_get_type B_GNUC_CONST
 #ifndef BTK_DISABLE_DEPRECATED
 btk_range_get_update_policy
 #endif
@@ -3480,7 +3480,7 @@ btk_rc_set_default_files PRIVATE
 btk_rc_set_default_files_utf8
 #endif
 btk_rc_style_copy
-btk_rc_style_get_type G_GNUC_CONST
+btk_rc_style_get_type B_GNUC_CONST
 btk_rc_style_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_rc_style_ref
@@ -3491,7 +3491,7 @@ btk_rc_style_unref
 
 #if IN_HEADER(__BTK_RECENT_ACTION_H__)
 #if IN_FILE(__BTK_RECENT_ACTION_C__)
-btk_recent_action_get_type G_GNUC_CONST
+btk_recent_action_get_type B_GNUC_CONST
 btk_recent_action_new
 btk_recent_action_new_for_manager
 btk_recent_action_set_show_numbers
@@ -3536,22 +3536,22 @@ btk_recent_chooser_remove_filter
 btk_recent_chooser_list_filters
 btk_recent_chooser_set_filter
 btk_recent_chooser_get_filter
-btk_recent_chooser_get_type G_GNUC_CONST
+btk_recent_chooser_get_type B_GNUC_CONST
 btk_recent_chooser_error_quark
 #endif
 #endif
 
 #if IN_HEADER(__BTK_RECENT_CHOOSER_DIALOG_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_DIALOG_C__)
-btk_recent_chooser_dialog_get_type G_GNUC_CONST
-btk_recent_chooser_dialog_new G_GNUC_NULL_TERMINATED
-btk_recent_chooser_dialog_new_for_manager G_GNUC_NULL_TERMINATED
+btk_recent_chooser_dialog_get_type B_GNUC_CONST
+btk_recent_chooser_dialog_new B_GNUC_NULL_TERMINATED
+btk_recent_chooser_dialog_new_for_manager B_GNUC_NULL_TERMINATED
 #endif
 #endif
 
 #if IN_HEADER(__BTK_RECENT_CHOOSER_MENU_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_MENU_C__)
-btk_recent_chooser_menu_get_type G_GNUC_CONST
+btk_recent_chooser_menu_get_type B_GNUC_CONST
 btk_recent_chooser_menu_new
 btk_recent_chooser_menu_new_for_manager
 btk_recent_chooser_menu_get_show_numbers
@@ -3561,7 +3561,7 @@ btk_recent_chooser_menu_set_show_numbers
 
 #if IN_HEADER(__BTK_RECENT_CHOOSER_WIDGET_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_WIDGET_C__)
-btk_recent_chooser_widget_get_type G_GNUC_CONST
+btk_recent_chooser_widget_get_type B_GNUC_CONST
 btk_recent_chooser_widget_new
 btk_recent_chooser_widget_new_for_manager
 #endif
@@ -3569,7 +3569,7 @@ btk_recent_chooser_widget_new_for_manager
 
 #if IN_HEADER(__BTK_RECENT_FILTER_H__)
 #if IN_FILE(__BTK_RECENT_FILTER_C__)
-btk_recent_filter_get_type G_GNUC_CONST
+btk_recent_filter_get_type B_GNUC_CONST
 btk_recent_filter_new
 btk_recent_filter_set_name
 btk_recent_filter_get_name
@@ -3588,7 +3588,7 @@ btk_recent_filter_filter
 #if IN_HEADER(__BTK_RECENT_MANAGER_H__)
 #if IN_FILE(__BTK_RECENT_MANAGER_C__)
 btk_recent_manager_error_quark
-btk_recent_manager_get_type G_GNUC_CONST
+btk_recent_manager_get_type B_GNUC_CONST
 btk_recent_manager_new
 btk_recent_manager_get_items
 btk_recent_manager_get_default
@@ -3605,7 +3605,7 @@ btk_recent_manager_move_item
 btk_recent_manager_set_limit
 btk_recent_manager_get_limit
 btk_recent_manager_purge_items
-btk_recent_info_get_type G_GNUC_CONST
+btk_recent_info_get_type B_GNUC_CONST
 btk_recent_info_ref
 btk_recent_info_unref
 btk_recent_info_get_uri
@@ -3617,14 +3617,14 @@ btk_recent_info_get_modified
 btk_recent_info_get_visited
 btk_recent_info_get_private_hint
 btk_recent_info_get_application_info
-btk_recent_info_get_applications G_GNUC_MALLOC
-btk_recent_info_last_application G_GNUC_MALLOC
+btk_recent_info_get_applications B_GNUC_MALLOC
+btk_recent_info_last_application B_GNUC_MALLOC
 btk_recent_info_has_application
-btk_recent_info_get_groups G_GNUC_MALLOC
+btk_recent_info_get_groups B_GNUC_MALLOC
 btk_recent_info_has_group
 btk_recent_info_get_icon
-btk_recent_info_get_short_name G_GNUC_MALLOC
-btk_recent_info_get_uri_display G_GNUC_MALLOC
+btk_recent_info_get_short_name B_GNUC_MALLOC
+btk_recent_info_get_uri_display B_GNUC_MALLOC
 btk_recent_info_get_age
 btk_recent_info_is_local
 btk_recent_info_exists
@@ -3677,7 +3677,7 @@ btk_ruler_draw_pos
 btk_ruler_draw_ticks
 btk_ruler_get_metric
 btk_ruler_get_range
-btk_ruler_get_type G_GNUC_CONST
+btk_ruler_get_type B_GNUC_CONST
 btk_ruler_set_metric
 btk_ruler_set_range
 #endif
@@ -3690,7 +3690,7 @@ btk_scale_get_digits
 btk_scale_get_draw_value
 btk_scale_get_layout
 btk_scale_get_layout_offsets
-btk_scale_get_type G_GNUC_CONST
+btk_scale_get_type B_GNUC_CONST
 btk_scale_get_value_pos
 btk_scale_set_digits
 btk_scale_set_draw_value
@@ -3702,7 +3702,7 @@ btk_scale_clear_marks
 
 #if IN_HEADER(__BTK_SCALE_BUTTON_H__)
 #if IN_FILE(__BTK_SCALE_BUTTON_C__)
-btk_scale_button_get_type G_GNUC_CONST
+btk_scale_button_get_type B_GNUC_CONST
 btk_scale_button_get_value
 btk_scale_button_new
 btk_scale_button_set_icons
@@ -3721,7 +3721,7 @@ btk_scale_button_get_popup
 
 #if IN_HEADER(__BTK_SCROLLBAR_H__)
 #if IN_FILE(__BTK_SCROLLBAR_C__)
-btk_scrollbar_get_type G_GNUC_CONST
+btk_scrollbar_get_type B_GNUC_CONST
 #endif
 #endif
 
@@ -3733,7 +3733,7 @@ btk_scrolled_window_get_hscrollbar
 btk_scrolled_window_get_placement
 btk_scrolled_window_get_policy
 btk_scrolled_window_get_shadow_type
-btk_scrolled_window_get_type G_GNUC_CONST
+btk_scrolled_window_get_type B_GNUC_CONST
 btk_scrolled_window_get_vadjustment
 btk_scrolled_window_get_vscrollbar
 btk_scrolled_window_new
@@ -3765,7 +3765,7 @@ btk_selection_data_get_length
 btk_selection_data_get_pixbuf
 btk_selection_data_get_targets
 btk_selection_data_get_text
-btk_selection_data_get_type G_GNUC_CONST
+btk_selection_data_get_type B_GNUC_CONST
 btk_selection_data_get_uris
 btk_selection_data_set
 btk_selection_data_set_pixbuf
@@ -3789,7 +3789,7 @@ btk_target_list_add_table
 btk_target_list_add_text_targets
 btk_target_list_add_uri_targets
 btk_target_list_find
-btk_target_list_get_type G_GNUC_CONST
+btk_target_list_get_type B_GNUC_CONST
 btk_target_list_new
 btk_target_list_ref
 btk_target_list_remove
@@ -3801,13 +3801,13 @@ btk_target_table_free
 
 #if IN_HEADER(__BTK_SEPARATOR_H__)
 #if IN_FILE(__BTK_SEPARATOR_C__)
-btk_separator_get_type G_GNUC_CONST
+btk_separator_get_type B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BTK_SEPARATOR_MENU_ITEM_H__)
 #if IN_FILE(__BTK_SEPARATOR_MENU_ITEM_C__)
-btk_separator_menu_item_get_type G_GNUC_CONST
+btk_separator_menu_item_get_type B_GNUC_CONST
 btk_separator_menu_item_new
 #endif
 #endif
@@ -3815,7 +3815,7 @@ btk_separator_menu_item_new
 #if IN_HEADER(__BTK_SEPARATOR_TOOL_ITEM_H__)
 #if IN_FILE(__BTK_SEPARATOR_TOOL_ITEM_C__)
 btk_separator_tool_item_get_draw
-btk_separator_tool_item_get_type G_GNUC_CONST
+btk_separator_tool_item_get_type B_GNUC_CONST
 btk_separator_tool_item_new
 btk_separator_tool_item_set_draw
 #endif
@@ -3825,7 +3825,7 @@ btk_separator_tool_item_set_draw
 #if IN_FILE(__BTK_SETTINGS_C__)
 btk_settings_get_default
 btk_settings_get_for_screen
-btk_settings_get_type G_GNUC_CONST
+btk_settings_get_type B_GNUC_CONST
 btk_settings_install_property
 btk_settings_install_property_parser
 btk_settings_set_double_property
@@ -3863,7 +3863,7 @@ btk_signal_newv
 btk_size_group_add_widget
 btk_size_group_get_ignore_hidden
 btk_size_group_get_mode
-btk_size_group_get_type G_GNUC_CONST
+btk_size_group_get_type B_GNUC_CONST
 btk_size_group_get_widgets
 btk_size_group_new
 btk_size_group_remove_widget
@@ -3883,7 +3883,7 @@ btk_show_uri
 btk_socket_add_id
 btk_socket_get_id
 btk_socket_get_plug_window
-btk_socket_get_type G_GNUC_CONST
+btk_socket_get_type B_GNUC_CONST
 btk_socket_new
 #ifndef BTK_DISABLE_DEPRECATED
 btk_socket_steal
@@ -3900,7 +3900,7 @@ btk_spin_button_get_increments
 btk_spin_button_get_numeric
 btk_spin_button_get_range
 btk_spin_button_get_snap_to_ticks
-btk_spin_button_get_type G_GNUC_CONST
+btk_spin_button_get_type B_GNUC_CONST
 btk_spin_button_get_update_policy
 btk_spin_button_get_value
 btk_spin_button_get_value_as_int
@@ -3923,7 +3923,7 @@ btk_spin_button_update
 
 #if IN_HEADER(__BTK_SPINNER_H__)
 #if IN_FILE(__BTK_SPINNER_C__)
-btk_spinner_get_type G_GNUC_CONST
+btk_spinner_get_type B_GNUC_CONST
 btk_spinner_new
 btk_spinner_start
 btk_spinner_stop
@@ -3935,7 +3935,7 @@ btk_spinner_stop
 btk_statusbar_get_context_id
 btk_statusbar_get_has_resize_grip
 btk_statusbar_get_message_area
-btk_statusbar_get_type G_GNUC_CONST
+btk_statusbar_get_type B_GNUC_CONST
 btk_statusbar_new
 btk_statusbar_pop
 btk_statusbar_push
@@ -3967,7 +3967,7 @@ btk_table_get_default_row_spacing
 btk_table_get_homogeneous
 btk_table_get_row_spacing
 btk_table_get_size
-btk_table_get_type G_GNUC_CONST
+btk_table_get_type B_GNUC_CONST
 btk_table_new
 btk_table_resize
 btk_table_set_col_spacing
@@ -3980,7 +3980,7 @@ btk_table_set_row_spacings
 
 #if IN_HEADER(__BTK_TEAROFF_MENU_ITEM_H__)
 #if IN_FILE(__BTK_TEAROFF_MENU_ITEM_C__)
-btk_tearoff_menu_item_get_type G_GNUC_CONST
+btk_tearoff_menu_item_get_type B_GNUC_CONST
 btk_tearoff_menu_item_new
 #endif
 #endif
@@ -3989,13 +3989,13 @@ btk_tearoff_menu_item_new
 #if IN_FILE(__BTK_TEXT_TAG_C__)
 btk_text_attributes_copy
 btk_text_attributes_copy_values
-btk_text_attributes_get_type G_GNUC_CONST
+btk_text_attributes_get_type B_GNUC_CONST
 btk_text_attributes_new
 btk_text_attributes_ref
 btk_text_attributes_unref
 btk_text_tag_event
 btk_text_tag_get_priority
-btk_text_tag_get_type G_GNUC_CONST
+btk_text_tag_get_type B_GNUC_CONST
 btk_text_tag_new
 btk_text_tag_set_priority
 #endif
@@ -4006,7 +4006,7 @@ btk_text_tag_set_priority
 btk_text_tag_table_add
 btk_text_tag_table_foreach
 btk_text_tag_table_get_size
-btk_text_tag_table_get_type G_GNUC_CONST
+btk_text_tag_table_get_type B_GNUC_CONST
 btk_text_tag_table_lookup
 btk_text_tag_table_new
 btk_text_tag_table_remove
@@ -4020,7 +4020,7 @@ btk_text_forward_delete
 btk_text_freeze
 btk_text_get_length
 btk_text_get_point
-btk_text_get_type G_GNUC_CONST
+btk_text_get_type B_GNUC_CONST
 btk_text_insert
 btk_text_new
 btk_text_set_adjustments
@@ -4073,7 +4073,7 @@ btk_text_buffer_get_slice
 btk_text_buffer_get_start_iter
 btk_text_buffer_get_tag_table
 btk_text_buffer_get_text
-btk_text_buffer_get_type G_GNUC_CONST
+btk_text_buffer_get_type B_GNUC_CONST
 btk_text_buffer_insert
 btk_text_buffer_insert_at_cursor
 btk_text_buffer_insert_child_anchor
@@ -4082,8 +4082,8 @@ btk_text_buffer_insert_interactive_at_cursor
 btk_text_buffer_insert_pixbuf
 btk_text_buffer_insert_range
 btk_text_buffer_insert_range_interactive
-btk_text_buffer_insert_with_tags G_GNUC_NULL_TERMINATED
-btk_text_buffer_insert_with_tags_by_name G_GNUC_NULL_TERMINATED
+btk_text_buffer_insert_with_tags B_GNUC_NULL_TERMINATED
+btk_text_buffer_insert_with_tags_by_name B_GNUC_NULL_TERMINATED
 btk_text_buffer_move_mark
 btk_text_buffer_move_mark_by_name
 btk_text_buffer_new
@@ -4175,7 +4175,7 @@ btk_text_iter_get_slice
 btk_text_iter_get_tags
 btk_text_iter_get_text
 btk_text_iter_get_toggled_tags
-btk_text_iter_get_type G_GNUC_CONST
+btk_text_iter_get_type B_GNUC_CONST
 btk_text_iter_get_visible_line_index
 btk_text_iter_get_visible_line_offset
 btk_text_iter_get_visible_slice
@@ -4221,7 +4221,7 @@ btk_text_layout_get_line_display
 btk_text_layout_get_lines
 btk_text_layout_get_line_yrange
 btk_text_layout_get_size
-btk_text_layout_get_type G_GNUC_CONST
+btk_text_layout_get_type B_GNUC_CONST
 btk_text_layout_invalidate
 btk_text_layout_invalidate_cursors
 btk_text_layout_is_valid
@@ -4253,7 +4253,7 @@ btk_text_layout_wrap_loop_start
 #if IN_HEADER(__BTK_TEXT_CHILD_H__)
 #if IN_FILE(__BTK_TEXT_CHILD_C__)
 btk_text_child_anchor_get_deleted
-btk_text_child_anchor_get_type G_GNUC_CONST
+btk_text_child_anchor_get_type B_GNUC_CONST
 btk_text_child_anchor_get_widgets
 btk_text_child_anchor_new
 #endif
@@ -4287,7 +4287,7 @@ btk_text_mark_get_buffer
 btk_text_mark_get_deleted
 btk_text_mark_get_left_gravity
 btk_text_mark_get_name
-btk_text_mark_get_type G_GNUC_CONST
+btk_text_mark_get_type B_GNUC_CONST
 btk_text_mark_get_visible
 #endif
 #endif
@@ -4328,7 +4328,7 @@ btk_text_view_get_pixels_below_lines
 btk_text_view_get_pixels_inside_wrap
 btk_text_view_get_right_margin
 btk_text_view_get_tabs
-btk_text_view_get_type G_GNUC_CONST
+btk_text_view_get_type B_GNUC_CONST
 btk_text_view_get_vadjustment
 btk_text_view_get_visible_rect
 btk_text_view_get_window
@@ -4369,13 +4369,13 @@ btk_text_view_window_to_buffer_coords
 #if IN_FILE(__BTK_THEMES_C__)
 btk_theme_engine_create_rc_style
 btk_theme_engine_get
-btk_theme_engine_get_type G_GNUC_CONST
+btk_theme_engine_get_type B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BTK_TIPS_QUERY_H__)
 #if IN_FILE(__BTK_TIPS_QUERY_C__)
-btk_tips_query_get_type G_GNUC_CONST
+btk_tips_query_get_type B_GNUC_CONST
 btk_tips_query_new
 btk_tips_query_set_caller
 btk_tips_query_set_labels
@@ -4388,7 +4388,7 @@ btk_tips_query_stop_query
 #if IN_FILE(__BTK_TOGGLE_ACTION_C__)
 btk_toggle_action_get_active
 btk_toggle_action_get_draw_as_radio
-btk_toggle_action_get_type G_GNUC_CONST
+btk_toggle_action_get_type B_GNUC_CONST
 btk_toggle_action_new
 btk_toggle_action_set_active
 btk_toggle_action_set_draw_as_radio
@@ -4401,7 +4401,7 @@ btk_toggle_action_toggled
 btk_toggle_button_get_active
 btk_toggle_button_get_inconsistent
 btk_toggle_button_get_mode
-btk_toggle_button_get_type G_GNUC_CONST
+btk_toggle_button_get_type B_GNUC_CONST
 btk_toggle_button_new
 btk_toggle_button_new_with_label
 btk_toggle_button_new_with_mnemonic
@@ -4415,7 +4415,7 @@ btk_toggle_button_toggled
 #if IN_HEADER(__BTK_TOGGLE_TOOL_BUTTON_H__)
 #if IN_FILE(__BTK_TOGGLE_TOOL_BUTTON_C__)
 btk_toggle_tool_button_get_active
-btk_toggle_tool_button_get_type G_GNUC_CONST
+btk_toggle_tool_button_get_type B_GNUC_CONST
 btk_toggle_tool_button_new
 btk_toggle_tool_button_new_from_stock
 btk_toggle_tool_button_set_active
@@ -4456,7 +4456,7 @@ btk_toolbar_get_style
 #ifndef BTK_DISABLE_DEPRECATED
 btk_toolbar_get_tooltips
 #endif
-btk_toolbar_get_type G_GNUC_CONST
+btk_toolbar_get_type B_GNUC_CONST
 btk_toolbar_insert
 btk_toolbar_new
 btk_toolbar_set_drop_highlight_item
@@ -4474,7 +4474,7 @@ btk_toolbar_unset_style
 
 #if IN_HEADER(__BTK_TOOL_SHELL_H__)
 #if IN_FILE(__BTK_TOOL_SHELL_C__)
-btk_tool_shell_get_type G_GNUC_CONST
+btk_tool_shell_get_type B_GNUC_CONST
 btk_tool_shell_get_ellipsize_mode
 btk_tool_shell_get_icon_size
 btk_tool_shell_get_orientation
@@ -4494,7 +4494,7 @@ btk_tool_button_get_icon_widget
 btk_tool_button_get_label
 btk_tool_button_get_label_widget
 btk_tool_button_get_stock_id
-btk_tool_button_get_type G_GNUC_CONST
+btk_tool_button_get_type B_GNUC_CONST
 btk_tool_button_get_use_underline
 btk_tool_button_new
 btk_tool_button_new_from_stock
@@ -4521,7 +4521,7 @@ btk_tool_item_get_text_alignment
 btk_tool_item_get_text_orientation
 btk_tool_item_get_text_size_group
 btk_tool_item_get_toolbar_style
-btk_tool_item_get_type G_GNUC_CONST
+btk_tool_item_get_type B_GNUC_CONST
 btk_tool_item_get_use_drag_window
 btk_tool_item_get_visible_horizontal
 btk_tool_item_get_visible_vertical
@@ -4546,7 +4546,7 @@ btk_tool_item_toolbar_reconfigured
 
 #if IN_HEADER(__BTK_TOOL_ITEM_GROUP_H__)
 #if IN_FILE(__BTK_TOOL_ITEM_GROUP_C__)
-btk_tool_item_group_get_type G_GNUC_CONST
+btk_tool_item_group_get_type B_GNUC_CONST
 btk_tool_item_group_new
 btk_tool_item_group_set_label
 btk_tool_item_group_set_label_widget
@@ -4569,7 +4569,7 @@ btk_tool_item_group_get_collapsed
 
 #if IN_HEADER(__BTK_TOOL_PALETTE_H__)
 #if IN_FILE(__BTK_TOOL_PALETTE_C__)
-btk_tool_palette_get_type G_GNUC_CONST
+btk_tool_palette_get_type B_GNUC_CONST
 btk_tool_palette_new
 btk_tool_palette_set_group_position
 btk_tool_palette_set_exclusive
@@ -4590,14 +4590,14 @@ btk_tool_palette_set_drag_source
 btk_tool_palette_add_drag_dest
 btk_tool_palette_get_hadjustment
 btk_tool_palette_get_vadjustment
-btk_tool_palette_get_drag_target_item G_GNUC_CONST
-btk_tool_palette_get_drag_target_group G_GNUC_CONST
+btk_tool_palette_get_drag_target_item B_GNUC_CONST
+btk_tool_palette_get_drag_target_group B_GNUC_CONST
 #endif
 #endif
 
 #if IN_HEADER(__BTK_TOOLTIP_H__)
 #if IN_FILE(__BTK_TOOLTIP_C__)
-btk_tooltip_get_type G_GNUC_CONST
+btk_tooltip_get_type B_GNUC_CONST
 btk_tooltip_set_custom
 btk_tooltip_set_icon
 btk_tooltip_set_icon_from_stock
@@ -4618,7 +4618,7 @@ btk_tooltips_disable
 btk_tooltips_enable
 btk_tooltips_force_window
 btk_tooltips_get_info_from_tip_window
-btk_tooltips_get_type G_GNUC_CONST
+btk_tooltips_get_type B_GNUC_CONST
 btk_tooltips_new
 btk_tooltips_set_delay
 btk_tooltips_set_tip
@@ -4629,7 +4629,7 @@ btk_tooltips_set_tip
 #if IN_HEADER(__BTK_TRAY_ICON_H__)
 #if IN_FILE(__BTK_TRAY_ICON_X11_C__)
 #ifndef G_OS_WIN32
-btk_tray_icon_get_type G_GNUC_CONST
+btk_tray_icon_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
@@ -4639,7 +4639,7 @@ btk_tray_icon_get_type G_GNUC_CONST
 btk_tree_append
 btk_tree_child_position
 btk_tree_clear_items
-btk_tree_get_type G_GNUC_CONST
+btk_tree_get_type B_GNUC_CONST
 btk_tree_insert
 btk_tree_prepend
 btk_tree_remove_item
@@ -4658,11 +4658,11 @@ btk_tree_new
 #if IN_HEADER(__BTK_TREE_DND_H__)
 #if IN_FILE(__BTK_TREE_DND_C__)
 btk_tree_drag_dest_drag_data_received
-btk_tree_drag_dest_get_type G_GNUC_CONST
+btk_tree_drag_dest_get_type B_GNUC_CONST
 btk_tree_drag_dest_row_drop_possible
 btk_tree_drag_source_drag_data_delete
 btk_tree_drag_source_drag_data_get
-btk_tree_drag_source_get_type G_GNUC_CONST
+btk_tree_drag_source_get_type B_GNUC_CONST
 btk_tree_drag_source_row_draggable
 btk_tree_get_row_drag_data
 btk_tree_set_row_drag_data
@@ -4674,7 +4674,7 @@ btk_tree_set_row_drag_data
 btk_tree_item_collapse
 btk_tree_item_deselect
 btk_tree_item_expand
-btk_tree_item_get_type G_GNUC_CONST
+btk_tree_item_get_type B_GNUC_CONST
 btk_tree_item_new
 btk_tree_item_new_with_label
 btk_tree_item_remove_subtree
@@ -4687,7 +4687,7 @@ btk_tree_item_set_subtree
 #if IN_FILE(__BTK_TREE_MODEL_C__)
 btk_tree_iter_copy
 btk_tree_iter_free
-btk_tree_iter_get_type G_GNUC_CONST
+btk_tree_iter_get_type B_GNUC_CONST
 btk_tree_model_foreach
 btk_tree_model_get
 btk_tree_model_get_column_type
@@ -4698,7 +4698,7 @@ btk_tree_model_get_iter_from_string
 btk_tree_model_get_n_columns
 btk_tree_model_get_path
 btk_tree_model_get_string_from_iter
-btk_tree_model_get_type G_GNUC_CONST
+btk_tree_model_get_type B_GNUC_CONST
 btk_tree_model_get_valist
 btk_tree_model_get_value
 btk_tree_model_iter_children
@@ -4722,7 +4722,7 @@ btk_tree_path_free
 btk_tree_path_get_depth
 btk_tree_path_get_indices
 btk_tree_path_get_indices_with_depth
-btk_tree_path_get_type G_GNUC_CONST
+btk_tree_path_get_type B_GNUC_CONST
 btk_tree_path_is_ancestor
 btk_tree_path_is_descendant
 btk_tree_path_new
@@ -4739,7 +4739,7 @@ btk_tree_row_reference_deleted
 btk_tree_row_reference_free
 btk_tree_row_reference_get_model
 btk_tree_row_reference_get_path
-btk_tree_row_reference_get_type G_GNUC_CONST
+btk_tree_row_reference_get_type B_GNUC_CONST
 btk_tree_row_reference_inserted
 btk_tree_row_reference_new
 btk_tree_row_reference_new_proxy
@@ -4756,7 +4756,7 @@ btk_tree_model_sort_convert_child_path_to_path
 btk_tree_model_sort_convert_iter_to_child_iter
 btk_tree_model_sort_convert_path_to_child_path
 btk_tree_model_sort_get_model
-btk_tree_model_sort_get_type G_GNUC_CONST
+btk_tree_model_sort_get_type B_GNUC_CONST
 btk_tree_model_sort_iter_is_valid
 btk_tree_model_sort_new_with_model
 btk_tree_model_sort_reset_default_sort_func
@@ -4771,7 +4771,7 @@ btk_tree_model_filter_convert_child_path_to_path
 btk_tree_model_filter_convert_iter_to_child_iter
 btk_tree_model_filter_convert_path_to_child_path
 btk_tree_model_filter_get_model
-btk_tree_model_filter_get_type G_GNUC_CONST
+btk_tree_model_filter_get_type B_GNUC_CONST
 btk_tree_model_filter_new
 btk_tree_model_filter_refilter
 btk_tree_model_filter_set_modify_func
@@ -4788,7 +4788,7 @@ btk_tree_selection_get_select_function
 btk_tree_selection_get_selected
 btk_tree_selection_get_selected_rows
 btk_tree_selection_get_tree_view
-btk_tree_selection_get_type G_GNUC_CONST
+btk_tree_selection_get_type B_GNUC_CONST
 btk_tree_selection_get_user_data
 btk_tree_selection_iter_is_selected
 btk_tree_selection_path_is_selected
@@ -4809,7 +4809,7 @@ btk_tree_selection_unselect_range
 #if IN_HEADER(__BTK_TREE_SORTABLE_H__)
 #if IN_FILE(__BTK_TREE_SORTABLE_C__)
 btk_tree_sortable_get_sort_column_id
-btk_tree_sortable_get_type G_GNUC_CONST
+btk_tree_sortable_get_type B_GNUC_CONST
 btk_tree_sortable_has_default_sort_func
 btk_tree_sortable_set_default_sort_func
 btk_tree_sortable_set_sort_column_id
@@ -4822,7 +4822,7 @@ btk_tree_sortable_sort_column_changed
 #if IN_FILE(__BTK_TREE_STORE_C__)
 btk_tree_store_append
 btk_tree_store_clear
-btk_tree_store_get_type G_GNUC_CONST
+btk_tree_store_get_type B_GNUC_CONST
 btk_tree_store_insert
 btk_tree_store_insert_after
 btk_tree_store_insert_before
@@ -4876,12 +4876,12 @@ btk_tree_view_column_get_sort_order
 btk_tree_view_column_get_spacing
 btk_tree_view_column_get_title
 btk_tree_view_column_get_tree_view
-btk_tree_view_column_get_type G_GNUC_CONST
+btk_tree_view_column_get_type B_GNUC_CONST
 btk_tree_view_column_get_visible
 btk_tree_view_column_get_widget
 btk_tree_view_column_get_width
 btk_tree_view_column_new
-btk_tree_view_column_new_with_attributes G_GNUC_NULL_TERMINATED
+btk_tree_view_column_new_with_attributes B_GNUC_NULL_TERMINATED
 btk_tree_view_column_pack_end
 btk_tree_view_column_queue_resize
 btk_tree_view_column_pack_start
@@ -4956,12 +4956,12 @@ btk_tree_view_get_selection
 btk_tree_view_get_show_expanders
 btk_tree_view_get_tooltip_column
 btk_tree_view_get_tooltip_context
-btk_tree_view_get_type G_GNUC_CONST
+btk_tree_view_get_type B_GNUC_CONST
 btk_tree_view_get_vadjustment
 btk_tree_view_get_visible_range
 btk_tree_view_get_visible_rect
 btk_tree_view_insert_column
-btk_tree_view_insert_column_with_attributes G_GNUC_NULL_TERMINATED
+btk_tree_view_insert_column_with_attributes B_GNUC_NULL_TERMINATED
 btk_tree_view_insert_column_with_data_func
 btk_tree_view_is_rubber_banding_active
 btk_tree_view_map_expanded_rows
@@ -5017,7 +5017,7 @@ btk_tree_view_columns_autosize
 
 #if IN_HEADER(__BTK_TYPE_UTILS_H__)
 #if IN_FILE(__BTK_TYPE_UTILS_C__)
-btk_identifier_get_type G_GNUC_CONST
+btk_identifier_get_type B_GNUC_CONST
 #ifndef BTK_DISABLE_DEPRECATED
 btk_type_enum_find_value
 btk_type_enum_get_values
@@ -5047,7 +5047,7 @@ btk_ui_manager_get_action
 btk_ui_manager_get_action_groups
 btk_ui_manager_get_add_tearoffs
 btk_ui_manager_get_toplevels
-btk_ui_manager_get_type G_GNUC_CONST
+btk_ui_manager_get_type B_GNUC_CONST
 btk_ui_manager_get_ui
 btk_ui_manager_get_widget
 btk_ui_manager_insert_action_group
@@ -5061,7 +5061,7 @@ btk_ui_manager_set_add_tearoffs
 
 #if IN_HEADER(__BTK_VBOX_H__)
 #if IN_FILE(__BTK_VBOX_C__)
-btk_vbox_get_type G_GNUC_CONST
+btk_vbox_get_type B_GNUC_CONST
 btk_vbox_new
 #endif
 #endif
@@ -5074,7 +5074,7 @@ btk_vbutton_box_get_spacing_default
 btk_vbutton_box_set_layout_default
 btk_vbutton_box_set_spacing_default
 #endif
-btk_vbutton_box_get_type G_GNUC_CONST
+btk_vbutton_box_get_type B_GNUC_CONST
 btk_vbutton_box_new
 #endif
 #endif
@@ -5083,7 +5083,7 @@ btk_vbutton_box_new
 #if IN_FILE(__BTK_VIEWPORT_C__)
 btk_viewport_get_hadjustment
 btk_viewport_get_shadow_type
-btk_viewport_get_type G_GNUC_CONST
+btk_viewport_get_type B_GNUC_CONST
 btk_viewport_get_vadjustment
 btk_viewport_get_bin_window
 btk_viewport_get_view_window
@@ -5096,14 +5096,14 @@ btk_viewport_set_vadjustment
 
 #if IN_HEADER(__BTK_VOLUME_BUTTON_H__)
 #if IN_FILE(__BTK_VOLUME_BUTTON_C__)
-btk_volume_button_get_type G_GNUC_CONST
+btk_volume_button_get_type B_GNUC_CONST
 btk_volume_button_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_VPANED_H__)
 #if IN_FILE(__BTK_VPANED_C__)
-btk_vpaned_get_type G_GNUC_CONST
+btk_vpaned_get_type B_GNUC_CONST
 btk_vpaned_new
 #endif
 #endif
@@ -5111,7 +5111,7 @@ btk_vpaned_new
 #if IN_HEADER(__BTK_VRULER_H__)
 #if IN_FILE(__BTK_VRULER_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-btk_vruler_get_type G_GNUC_CONST
+btk_vruler_get_type B_GNUC_CONST
 btk_vruler_new
 #endif
 #endif
@@ -5119,7 +5119,7 @@ btk_vruler_new
 
 #if IN_HEADER(__BTK_VSCALE_H__)
 #if IN_FILE(__BTK_VSCALE_C__)
-btk_vscale_get_type G_GNUC_CONST
+btk_vscale_get_type B_GNUC_CONST
 btk_vscale_new
 btk_vscale_new_with_range
 #endif
@@ -5127,14 +5127,14 @@ btk_vscale_new_with_range
 
 #if IN_HEADER(__BTK_VSCROLLBAR_H__)
 #if IN_FILE(__BTK_VSCROLLBAR_C__)
-btk_vscrollbar_get_type G_GNUC_CONST
+btk_vscrollbar_get_type B_GNUC_CONST
 btk_vscrollbar_new
 #endif
 #endif
 
 #if IN_HEADER(__BTK_VSEPARATOR_H__)
 #if IN_FILE(__BTK_VSEPARATOR_C__)
-btk_vseparator_get_type G_GNUC_CONST
+btk_vseparator_get_type B_GNUC_CONST
 btk_vseparator_new
 #endif
 #endif
@@ -5143,7 +5143,7 @@ btk_vseparator_new
 #if IN_FILE(__BTK_WIDGET_C__)
 btk_requisition_copy
 btk_requisition_free
-btk_requisition_get_type G_GNUC_CONST
+btk_requisition_get_type B_GNUC_CONST
 btk_widget_activate
 btk_widget_is_composited
 btk_widget_add_accelerator
@@ -5205,7 +5205,7 @@ btk_widget_get_tooltip_markup
 btk_widget_get_tooltip_text
 btk_widget_get_tooltip_window
 btk_widget_get_toplevel
-btk_widget_get_type G_GNUC_CONST
+btk_widget_get_type B_GNUC_CONST
 btk_widget_get_visible
 btk_widget_get_visual
 btk_widget_grab_default
@@ -5303,7 +5303,7 @@ btk_widget_show_now
 btk_widget_size_allocate
 btk_widget_size_request
 btk_widget_style_attach
-btk_widget_style_get G_GNUC_NULL_TERMINATED
+btk_widget_style_get B_GNUC_NULL_TERMINATED
 btk_widget_style_get_property
 btk_widget_style_get_valist
 btk_widget_thaw_child_notify
@@ -5366,11 +5366,11 @@ btk_window_get_skip_taskbar_hint
 btk_window_get_urgency_hint
 btk_window_get_title
 btk_window_get_transient_for
-btk_window_get_type G_GNUC_CONST
+btk_window_get_type B_GNUC_CONST
 btk_window_get_type_hint
 btk_window_get_window_type
 btk_window_group_add_window
-btk_window_group_get_type G_GNUC_CONST
+btk_window_group_get_type B_GNUC_CONST
 btk_window_group_new
 btk_window_group_remove_window
 btk_window_group_list_windows
@@ -5460,14 +5460,14 @@ btk_window_unstick
 #if IN_HEADER(__BTK_WIN32_EMBED_WIDGET_H__)
 #if IN_FILE(__BTK_WIN32_EMBED_WIDGET_C__)
 #ifdef G_OS_WIN32
-btk_win32_embed_widget_get_type G_GNUC_CONST
+btk_win32_embed_widget_get_type B_GNUC_CONST
 #endif
 #endif
 #endif
 
 #if IN_HEADER(__BTK_INFO_BAR_H__)
 #if IN_FILE(__BTK_INFO_BAR_C__)
-btk_info_bar_get_type G_GNUC_CONST
+btk_info_bar_get_type B_GNUC_CONST
 btk_info_bar_new
 btk_info_bar_new_with_buttons
 btk_info_bar_get_action_area

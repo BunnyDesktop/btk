@@ -35,7 +35,7 @@
 #include <btk/btktogglebutton.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CHECK_BUTTON                  (btk_check_button_get_type ())
 #define BTK_CHECK_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButton))
@@ -68,7 +68,7 @@ struct _BtkCheckButtonClass
 };
 
 
-GType      btk_check_button_get_type       (void) G_GNUC_CONST;
+GType      btk_check_button_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_check_button_new               (void);
 BtkWidget* btk_check_button_new_with_label    (const gchar *label);
 BtkWidget* btk_check_button_new_with_mnemonic (const gchar *label);
@@ -77,6 +77,6 @@ void _btk_check_button_get_props (BtkCheckButton *check_button,
 				  gint           *indicator_size,
 				  gint           *indicator_spacing);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CHECK_BUTTON_H__ */

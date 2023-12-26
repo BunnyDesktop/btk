@@ -31,7 +31,7 @@
 
 #include <btk/btkdialog.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ABOUT_DIALOG            (btk_about_dialog_get_type ())
 #define BTK_ABOUT_DIALOG(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ABOUT_DIALOG, BtkAboutDialog))
@@ -70,11 +70,11 @@ struct _BtkAboutDialogClass
   void (*_btk_reserved3) (void);
 };
 
-GType                  btk_about_dialog_get_type               (void) G_GNUC_CONST;
+GType                  btk_about_dialog_get_type               (void) B_GNUC_CONST;
 BtkWidget             *btk_about_dialog_new                    (void);
 void                   btk_show_about_dialog                   (BtkWindow       *parent,
 								const gchar     *first_property_name,
-								...) G_GNUC_NULL_TERMINATED;
+								...) B_GNUC_NULL_TERMINATED;
 
 #ifndef BTK_DISABLE_DEPRECATED
 const gchar *          btk_about_dialog_get_name               (BtkAboutDialog  *about);
@@ -150,7 +150,7 @@ BtkAboutDialogActivateLinkFunc btk_about_dialog_set_url_hook   (BtkAboutDialogAc
 								GDestroyNotify                 destroy);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ABOUT_DIALOG_H__ */
 

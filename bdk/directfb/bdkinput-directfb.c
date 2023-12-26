@@ -340,7 +340,7 @@ gboolean
 bdk_device_set_mode (BdkDevice    *device,
                      BdkInputMode  mode)
 {
-  g_message ("unimplemented %s", G_STRFUNC);
+  g_message ("unimplemented %s", B_STRFUNC);
 
   return FALSE;
 }
@@ -415,7 +415,7 @@ bdk_input_set_extension_events (BdkWindow        *window,
                                 gint              mask,
                                 BdkExtensionMode  mode)
 {
-  g_message ("unimplemented %s", G_STRFUNC);
+  g_message ("unimplemented %s", B_STRFUNC);
 }
 
 void

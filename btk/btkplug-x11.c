@@ -299,7 +299,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 
 		if (user_data)
 		  {
-		    g_warning (G_STRLOC "Plug reparented unexpectedly into window in the same process");
+		    g_warning (B_STRLOC "Plug reparented unexpectedly into window in the same process");
 		    plug->socket_window = NULL;
 		    break; /* FIXME: shouldn't this unref the plug? i.e. "goto done;" instead */
 		  }

@@ -38,7 +38,7 @@
 
 #include <bairo.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDrawableClass BdkDrawableClass;
 typedef struct _BdkTrapezoid     BdkTrapezoid;
@@ -236,7 +236,7 @@ struct _BdkTrapezoid
   double y1, x11, x21, y2, x12, x22;
 };
 
-GType           bdk_drawable_get_type     (void) G_GNUC_CONST;
+GType           bdk_drawable_get_type     (void) B_GNUC_CONST;
 
 /* Manipulation of drawables
  */
@@ -431,6 +431,6 @@ BdkImage *bdk_drawable_copy_to_image (BdkDrawable  *drawable,
 BdkRebunnyion *bdk_drawable_get_clip_rebunnyion    (BdkDrawable *drawable);
 BdkRebunnyion *bdk_drawable_get_visible_rebunnyion (BdkDrawable *drawable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_H__ */

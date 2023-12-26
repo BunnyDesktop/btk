@@ -36,7 +36,7 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_NOTEBOOK                  (btk_notebook_get_type ())
 #define BTK_NOTEBOOK(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_NOTEBOOK, BtkNotebook))
@@ -148,7 +148,7 @@ typedef BtkNotebook* (*BtkNotebookWindowCreationFunc) (BtkNotebook *source,
  *           Creation, insertion, deletion                 *
  ***********************************************************/
 
-GType   btk_notebook_get_type       (void) G_GNUC_CONST;
+GType   btk_notebook_get_type       (void) B_GNUC_CONST;
 BtkWidget * btk_notebook_new        (void);
 gint btk_notebook_append_page       (BtkNotebook *notebook,
 				     BtkWidget   *child,
@@ -312,6 +312,6 @@ void       btk_notebook_set_action_widget (BtkNotebook *notebook,
 #define btk_notebook_set_page                   btk_notebook_set_current_page
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_NOTEBOOK_H__ */

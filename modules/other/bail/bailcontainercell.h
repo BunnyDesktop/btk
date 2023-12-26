@@ -23,7 +23,7 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CONTAINER_CELL            (bail_container_cell_get_type ())
 #define BAIL_CONTAINER_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER_CELL, BailContainerCell))
@@ -60,6 +60,6 @@ void
 bail_container_cell_remove_child (BailContainerCell *container,
 				  BailCell *child);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

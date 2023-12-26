@@ -29,7 +29,7 @@
 #include <btk/btktypeutils.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_SORTABLE            (btk_tree_sortable_get_type ())
 #define BTK_TREE_SORTABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_SORTABLE, BtkTreeSortable))
@@ -78,7 +78,7 @@ struct _BtkTreeSortableIface
 };
 
 
-GType    btk_tree_sortable_get_type              (void) G_GNUC_CONST;
+GType    btk_tree_sortable_get_type              (void) B_GNUC_CONST;
 
 void     btk_tree_sortable_sort_column_changed   (BtkTreeSortable        *sortable);
 gboolean btk_tree_sortable_get_sort_column_id    (BtkTreeSortable        *sortable,
@@ -98,6 +98,6 @@ void     btk_tree_sortable_set_default_sort_func (BtkTreeSortable        *sortab
 						  GDestroyNotify          destroy);
 gboolean btk_tree_sortable_has_default_sort_func (BtkTreeSortable        *sortable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_SORTABLE_H__ */

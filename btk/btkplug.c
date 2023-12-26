@@ -504,7 +504,7 @@ btk_plug_construct_for_display (BtkPlug         *plug,
 		_btk_plug_add_to_socket (plug, user_data);
 	      else
 		{
-		  g_warning (G_STRLOC "Can't create BtkPlug as child of non-BtkSocket");
+		  g_warning (B_STRLOC "Can't create BtkPlug as child of non-BtkSocket");
 		  plug->socket_window = NULL;
 		}
 	    }

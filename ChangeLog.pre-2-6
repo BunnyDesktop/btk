@@ -2464,7 +2464,7 @@ Tue Oct  5 17:06:26 2004  Tim Janik  <timj@btk.org>
 2004-09-29  Christopher Blizzard  <blizzard@redhat.com>
 
 	* btk/btkmenutoolbutton.h: Remove trailing semicolon on
-	G_END_DECLS
+	B_END_DECLS
 
 2004-09-29  Paolo Borelli  <pborelli@katamail.com>
 
@@ -3832,7 +3832,7 @@ Wed Aug 11 19:20:34 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/makebtkalias.pl: Include bunnylib.h before using bunnylib symbols. D'oh.
 
 	* bdk/makebdkalias.pl: 
-	* btk/makebtkalias.pl: Protect btkalias.h by G_HAVE_GNUC_VISIBILITY.
+	* btk/makebtkalias.pl: Protect btkalias.h by B_HAVE_GNUC_VISIBILITY.
 	
 	* btk/Makefile.am: Include btkalias.h in the generated
 	sources btkmarhalers.c and btkmarshal.c.

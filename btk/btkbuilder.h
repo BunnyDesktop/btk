@@ -28,7 +28,7 @@
 #include <bdkconfig.h>
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_BUILDER                 (btk_builder_get_type ())
 #define BTK_BUILDER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDER, BtkBuilder))
@@ -91,7 +91,7 @@ typedef void (*BtkBuilderConnectFunc) (BtkBuilder    *builder,
 				       GConnectFlags  flags,
 				       gpointer       user_data);
 
-GType        btk_builder_get_type                (void) G_GNUC_CONST;
+GType        btk_builder_get_type                (void) B_GNUC_CONST;
 BtkBuilder*  btk_builder_new                     (void);
 
 guint        btk_builder_add_from_file           (BtkBuilder    *builder,
@@ -138,6 +138,6 @@ gboolean     btk_builder_value_from_string_type  (BtkBuilder    *builder,
 #define BTK_BUILDER_WARN_INVALID_CHILD_TYPE(object, type) \
   g_warning ("'%s' is not a valid child type of '%s'", type, g_type_name (G_OBJECT_TYPE (object)))
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BUILDER_H__ */

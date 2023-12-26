@@ -28,7 +28,7 @@
 #include <btk/btkbuilder.h>
 #include <btk/btktypeutils.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_BUILDABLE            (btk_buildable_get_type ())
 #define BTK_BUILDABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDABLE, BtkBuildable))
@@ -133,7 +133,7 @@ struct _BtkBuildableIface
 };
 
 
-GType     btk_buildable_get_type               (void) G_GNUC_CONST;
+GType     btk_buildable_get_type               (void) B_GNUC_CONST;
 
 void      btk_buildable_set_name               (BtkBuildable        *buildable,
 						const gchar         *name);
@@ -171,6 +171,6 @@ GObject * btk_buildable_get_internal_child     (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
 						const gchar         *childname);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BUILDABLE_H__ */

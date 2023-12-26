@@ -35,7 +35,7 @@
 #include <btk/btkmenushell.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define	BTK_TYPE_MENU_BAR               (btk_menu_bar_get_type ())
@@ -65,7 +65,7 @@ struct _BtkMenuBarClass
 };
 
 
-GType      btk_menu_bar_get_type        (void) G_GNUC_CONST;
+GType      btk_menu_bar_get_type        (void) B_GNUC_CONST;
 BtkWidget* btk_menu_bar_new             (void);
 
 BtkPackDirection btk_menu_bar_get_pack_direction (BtkMenuBar       *menubar);
@@ -86,7 +86,7 @@ void _btk_menu_bar_cycle_focus (BtkMenuBar       *menubar,
 				BtkDirectionType  dir);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_MENU_BAR_H__ */

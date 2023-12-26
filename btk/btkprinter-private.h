@@ -25,7 +25,7 @@
 #include <btk/btkunixprint.h>
 #include "btkprinteroptionset.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BtkPrinterOptionSet *_btk_printer_get_options               (BtkPrinter          *printer,
 							     BtkPrintSettings    *settings,
@@ -51,5 +51,5 @@ GHashTable *         _btk_printer_get_custom_widgets        (BtkPrinter         
 void btk_print_job_set_status (BtkPrintJob   *job,
 			       BtkPrintStatus status);
 
-G_END_DECLS
+B_END_DECLS
 #endif /* __BTK_PRINT_OPERATION_PRIVATE_H__ */

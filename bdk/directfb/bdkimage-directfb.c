@@ -125,7 +125,7 @@ bdk_image_new_bitmap (BdkVisual *visual,
 
   BDK_NOTE (MISC, g_print ("bdk_image_new_bitmap: %dx%d\n", w, h));
 
-  g_message ("not fully implemented %s", G_STRFUNC);
+  g_message ("not fully implemented %s", B_STRFUNC);
 
   image->bpl = (w + 7) / 8;
   image->mem = g_malloc (image->bpl * h);
@@ -183,7 +183,7 @@ _bdk_image_new_for_depth (BdkScreen    *screen,
       format = DSPF_ARGB;
       break;
     default:
-      g_message ("unimplemented %s for depth %d", G_STRFUNC, depth);
+      g_message ("unimplemented %s for depth %d", B_STRFUNC, depth);
       return NULL;
     }
 

@@ -2066,7 +2066,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 
 2006-06-04  Behdad Esfahbod  <behdad@bunny.org>
 
-	* btk/btkprintoperationpreview.h: Add missing G_END_DECLS (#343838)
+	* btk/btkprintoperationpreview.h: Add missing B_END_DECLS (#343838)
 
 2006-06-03  Richard Hult  <richard@imendio.com>                                 
 
@@ -4660,7 +4660,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 
 	* btk/btktreemodel.h: 
-	* btk/btktextbtree.h: back out G_GNUC_WARN_UNUSED_RESULT on iterator
+	* btk/btktextbtree.h: back out B_GNUC_WARN_UNUSED_RESULT on iterator
 	functions which turned out to cause too much trouble.
 
 2006-03-23  Matthias Clasen  <mclasen@redhat.com>
@@ -5364,7 +5364,7 @@ Thu Feb 23 13:28:21 2006  Tim Janik  <timj@imendio.com>
 Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 
 	* btk/btktreemodel.h: 
-	* btk/btktextbtree.h: added G_GNUC_WARN_UNUSED_RESULT warnings for
+	* btk/btktextbtree.h: added B_GNUC_WARN_UNUSED_RESULT warnings for
 	iterator functions, to avoid invalid iterators go unnoticed,
 	suggested by Markku Vire <markku.vire@movial.fi>.
 

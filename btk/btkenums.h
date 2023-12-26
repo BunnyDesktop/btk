@@ -33,7 +33,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Anchor types */
 typedef enum
@@ -579,6 +579,6 @@ typedef enum
   BTK_DRAG_RESULT_ERROR
 } BtkDragResult;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ENUMS_H__ */

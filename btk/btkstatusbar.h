@@ -34,7 +34,7 @@
 
 #include <btk/btkhbox.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_STATUSBAR            (btk_statusbar_get_type ())
 #define BTK_STATUSBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_STATUSBAR, BtkStatusbar))
@@ -86,7 +86,7 @@ struct _BtkStatusbarClass
 };
 
 
-GType      btk_statusbar_get_type     	(void) G_GNUC_CONST;
+GType      btk_statusbar_get_type     	(void) B_GNUC_CONST;
 BtkWidget* btk_statusbar_new          	(void);
 /* If you don't want to use contexts, 0 is a predefined global
  * context_id you can pass to push/pop/remove
@@ -112,6 +112,6 @@ gboolean btk_statusbar_get_has_resize_grip (BtkStatusbar *statusbar);
 
 BtkWidget* btk_statusbar_get_message_area  (BtkStatusbar *statusbar);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_STATUSBAR_H__ */

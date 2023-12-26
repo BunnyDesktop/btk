@@ -22,7 +22,7 @@
 
 #include <bail/bailmenushell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_MENU                          (bail_menu_get_type ())
 #define BAIL_MENU(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenu))
@@ -46,6 +46,6 @@ struct _BailMenuClass
   BailMenuShellClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_MENU_H__ */

@@ -36,7 +36,7 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_RANGE            (btk_range_get_type ())
@@ -133,7 +133,7 @@ struct _BtkRangeClass
 };
 
 
-GType              btk_range_get_type                      (void) G_GNUC_CONST;
+GType              btk_range_get_type                      (void) B_GNUC_CONST;
 
 #ifndef BTK_DISABLE_DEPRECATED
 void               btk_range_set_update_policy             (BtkRange      *range,
@@ -209,7 +209,7 @@ gint               _btk_range_get_stop_positions           (BtkRange      *range
                                                             gint         **values);          
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_RANGE_H__ */

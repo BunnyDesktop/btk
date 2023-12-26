@@ -128,8 +128,8 @@ _btk_file_chooser_profile_log (const char *func, int indent, const char *msg1, c
     profile_add_indent (indent);
 }
 
-#define profile_start(x, y) _btk_file_chooser_profile_log (G_STRFUNC, PROFILE_INDENT, x, y)
-#define profile_end(x, y) _btk_file_chooser_profile_log (G_STRFUNC, -PROFILE_INDENT, x, y)
+#define profile_start(x, y) _btk_file_chooser_profile_log (B_STRFUNC, PROFILE_INDENT, x, y)
+#define profile_end(x, y) _btk_file_chooser_profile_log (B_STRFUNC, -PROFILE_INDENT, x, y)
 #define profile_msg(x, y) _btk_file_chooser_profile_log (NULL, 0, x, y)
 #else
 #define profile_start(x, y)
