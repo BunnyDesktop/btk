@@ -39,8 +39,8 @@ struct _BailImageCell
 {
   BailRendererCell parent;
 
-  gchar            *image_description;
-  gint             x, y;
+  bchar            *image_description;
+  bint             x, y;
 };
 
 GType bail_image_cell_get_type (void);

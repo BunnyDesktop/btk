@@ -42,11 +42,11 @@ B_BEGIN_DECLS
 
 struct _BtkTextMarkBody {
   BtkTextMark *obj;
-  gchar *name;
+  bchar *name;
   BtkTextBTree *tree;
   BtkTextLine *line;
-  guint visible : 1;
-  guint not_deleteable : 1;
+  buint visible : 1;
+  buint not_deleteable : 1;
 };
 
 void _btk_mark_segment_set_tree (BtkTextLineSegment *mark,

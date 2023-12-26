@@ -76,11 +76,11 @@ enum {
 
 static void btk_text_tag_table_finalize     (BObject              *object);
 static void btk_text_tag_table_set_property (BObject              *object,
-                                             guint                 prop_id,
+                                             buint                 prop_id,
                                              const BValue         *value,
                                              BParamSpec           *pspec);
 static void btk_text_tag_table_get_property (BObject              *object,
-                                             guint                 prop_id,
+                                             buint                 prop_id,
                                              BValue               *value,
                                              BParamSpec           *pspec);
 
@@ -88,9 +88,9 @@ static void btk_text_tag_table_buildable_interface_init (BtkBuildableIface   *if
 static void btk_text_tag_table_buildable_add_child      (BtkBuildable        *buildable,
 							 BtkBuilder          *builder,
 							 BObject             *child,
-							 const gchar         *type);
+							 const bchar         *type);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkTextTagTable, btk_text_tag_table, B_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -166,7 +166,7 @@ btk_text_tag_table_new (void)
 }
 
 static void
-foreach_unref (BtkTextTag *tag, gpointer data)
+foreach_unref (BtkTextTag *tag, bpointer data)
 {
   GSList *tmp;
   
@@ -205,7 +205,7 @@ btk_text_tag_table_finalize (BObject *object)
 }
 static void
 btk_text_tag_table_set_property (BObject      *object,
-                                 guint         prop_id,
+                                 buint         prop_id,
                                  const BValue *value,
                                  BParamSpec   *pspec)
 {
@@ -221,7 +221,7 @@ btk_text_tag_table_set_property (BObject      *object,
 
 static void
 btk_text_tag_table_get_property (BObject      *object,
-                                 guint         prop_id,
+                                 buint         prop_id,
                                  BValue       *value,
                                  BParamSpec   *pspec)
 {
@@ -244,7 +244,7 @@ static void
 btk_text_tag_table_buildable_add_child (BtkBuildable        *buildable,
 					BtkBuilder          *builder,
 					BObject             *child,
-					const gchar         *type)
+					const bchar         *type)
 {
   if (type && strcmp (type, "tag") == 0)
     btk_text_tag_table_add (BTK_TEXT_TAG_TABLE (buildable),
@@ -266,7 +266,7 @@ void
 btk_text_tag_table_add (BtkTextTagTable *table,
                         BtkTextTag      *tag)
 {
-  guint size;
+  buint size;
 
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
   g_return_if_fail (BTK_IS_TEXT_TAG (tag));
@@ -312,7 +312,7 @@ btk_text_tag_table_add (BtkTextTagTable *table,
  **/
 BtkTextTag*
 btk_text_tag_table_lookup (BtkTextTagTable *table,
-                           const gchar     *name)
+                           const bchar     *name)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -374,11 +374,11 @@ btk_text_tag_table_remove (BtkTextTagTable *table,
 struct ForeachData
 {
   BtkTextTagTableForeach func;
-  gpointer data;
+  bpointer data;
 };
 
 static void
-hash_foreach (gpointer key, gpointer value, gpointer data)
+hash_foreach (bpointer key, bpointer value, bpointer data)
 {
   struct ForeachData *fd = data;
 
@@ -388,7 +388,7 @@ hash_foreach (gpointer key, gpointer value, gpointer data)
 }
 
 static void
-list_foreach (gpointer data, gpointer user_data)
+list_foreach (bpointer data, bpointer user_data)
 {
   struct ForeachData *fd = user_data;
 
@@ -410,7 +410,7 @@ list_foreach (gpointer data, gpointer user_data)
 void
 btk_text_tag_table_foreach (BtkTextTagTable       *table,
                             BtkTextTagTableForeach func,
-                            gpointer               data)
+                            bpointer               data)
 {
   struct ForeachData d;
 
@@ -432,7 +432,7 @@ btk_text_tag_table_foreach (BtkTextTagTable       *table,
  * 
  * Return value: number of tags in @table
  **/
-gint
+bint
 btk_text_tag_table_get_size (BtkTextTagTable *table)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), 0);
@@ -442,7 +442,7 @@ btk_text_tag_table_get_size (BtkTextTagTable *table)
 
 void
 _btk_text_tag_table_add_buffer (BtkTextTagTable *table,
-                                gpointer         buffer)
+                                bpointer         buffer)
 {
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 
@@ -450,7 +450,7 @@ _btk_text_tag_table_add_buffer (BtkTextTagTable *table,
 }
 
 static void
-foreach_remove_tag (BtkTextTag *tag, gpointer data)
+foreach_remove_tag (BtkTextTag *tag, bpointer data)
 {
   BtkTextBuffer *buffer;
 
@@ -461,7 +461,7 @@ foreach_remove_tag (BtkTextTag *tag, gpointer data)
 
 void
 _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
-                                   gpointer         buffer)
+                                   bpointer         buffer)
 {
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 

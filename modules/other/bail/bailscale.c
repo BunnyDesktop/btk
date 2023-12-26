@@ -29,7 +29,7 @@ static void	    bail_scale_class_init        (BailScaleClass *klass);
 static void         bail_scale_init              (BailScale      *scale);
 
 static void         bail_scale_real_initialize   (BatkObject      *obj,
-                                                  gpointer      data);
+                                                  bpointer      data);
 static void         bail_scale_notify            (BObject       *obj,
                                                   BParamSpec    *pspec);
 static void         bail_scale_finalize          (BObject        *object);
@@ -37,47 +37,47 @@ static void         bail_scale_finalize          (BObject        *object);
 /* batktext.h */ 
 static void	    batk_text_interface_init        (BatkTextIface      *iface);
 
-static gchar*	    bail_scale_get_text	           (BatkText	      *text,
-                                                    gint	      start_pos,
-						    gint	      end_pos);
+static bchar*	    bail_scale_get_text	           (BatkText	      *text,
+                                                    bint	      start_pos,
+						    bint	      end_pos);
 static gunichar	    bail_scale_get_character_at_offset
                                                    (BatkText	      *text,
-						    gint	      offset);
-static gchar*       bail_scale_get_text_before_offset
+						    bint	      offset);
+static bchar*       bail_scale_get_text_before_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*       bail_scale_get_text_at_offset  (BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*       bail_scale_get_text_at_offset  (BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*      bail_scale_get_text_after_offset
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*      bail_scale_get_text_after_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gint	   bail_scale_get_character_count  (BatkText	      *text);
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bint	   bail_scale_get_character_count  (BatkText	      *text);
 static void        bail_scale_get_character_extents
                                                    (BatkText	      *text,
-						    gint 	      offset,
-		                                    gint 	      *x,
-                    		   	            gint 	      *y,
-                                		    gint 	      *width,
-                                     		    gint 	      *height,
+						    bint 	      offset,
+		                                    bint 	      *x,
+                    		   	            bint 	      *y,
+                                		    bint 	      *width,
+                                     		    bint 	      *height,
 			        		    BatkCoordType      coords);
-static gint        bail_scale_get_offset_at_point  (BatkText           *text,
-                                                    gint              x,
-                                                    gint              y,
+static bint        bail_scale_get_offset_at_point  (BatkText           *text,
+                                                    bint              x,
+                                                    bint              y,
 			                            BatkCoordType      coords);
 static BatkAttributeSet* bail_scale_get_run_attributes 
                                                    (BatkText           *text,
-              					    gint 	      offset,
-                                                    gint 	      *start_offset,
-					            gint	      *end_offset);
+              					    bint 	      offset,
+                                                    bint 	      *start_offset,
+					            bint	      *end_offset);
 static BatkAttributeSet* bail_scale_get_default_attributes
                                                    (BatkText           *text);
 
@@ -103,10 +103,10 @@ bail_scale_init (BailScale      *scale)
 
 static void
 bail_scale_real_initialize (BatkObject *obj,
-                            gpointer  data)
+                            bpointer  data)
 {
   BailScale *bail_scale;
-  const gchar *txt;
+  const bchar *txt;
   BangoLayout *layout;
 
   BATK_OBJECT_CLASS (bail_scale_parent_class)->initialize (obj, data);
@@ -150,7 +150,7 @@ bail_scale_notify (BObject    *obj,
         {
           BtkScale *btk_scale;
           BangoLayout *layout;
-          const gchar *txt;
+          const bchar *txt;
 
           btk_scale = BTK_SCALE (widget);
           layout = btk_scale_get_layout (btk_scale);
@@ -188,10 +188,10 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_scale_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_scale_get_text (BatkText *text,
-                     gint    start_pos,
-                     gint    end_pos)
+                     bint    start_pos,
+                     bint    end_pos)
 {
   BtkWidget *widget;
   BailScale *scale;
@@ -206,17 +206,17 @@ bail_scale_get_text (BatkText *text,
                                        start_pos, end_pos);
 }
 
-static gchar*
+static bchar*
 bail_scale_get_text_before_offset (BatkText         *text,
-     				   gint            offset,
+     				   bint            offset,
 				   BatkTextBoundary boundary_type,
-				   gint            *start_offset,
-				   gint            *end_offset)
+				   bint            *start_offset,
+				   bint            *end_offset)
 {
   BtkWidget *widget;
   BailScale *scale;
   BangoLayout *layout;
-  gchar *txt;
+  bchar *txt;
   
   widget = BTK_ACCESSIBLE (text)->widget;
   
@@ -238,17 +238,17 @@ bail_scale_get_text_before_offset (BatkText         *text,
   return txt;
 }
 
-static gchar*
+static bchar*
 bail_scale_get_text_at_offset (BatkText         *text,
-	   		       gint            offset,
+	   		       bint            offset,
 			       BatkTextBoundary boundary_type,
- 			       gint            *start_offset,
-			       gint            *end_offset)
+ 			       bint            *start_offset,
+			       bint            *end_offset)
 {
   BtkWidget *widget;
   BailScale *scale;
   BangoLayout *layout;
-  gchar *txt;
+  bchar *txt;
  
   widget = BTK_ACCESSIBLE (text)->widget;
   
@@ -270,17 +270,17 @@ bail_scale_get_text_at_offset (BatkText         *text,
   return txt;
 }
 
-static gchar*
+static bchar*
 bail_scale_get_text_after_offset (BatkText         *text,
-				  gint            offset,
+				  bint            offset,
 				  BatkTextBoundary boundary_type,
-				  gint            *start_offset,
-				  gint            *end_offset)
+				  bint            *start_offset,
+				  bint            *end_offset)
 {
   BtkWidget *widget;
   BailScale *scale;
   BangoLayout *layout;
-  gchar *txt;
+  bchar *txt;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   
@@ -302,7 +302,7 @@ bail_scale_get_text_after_offset (BatkText         *text,
   return txt;
 }
 
-static gint
+static bint
 bail_scale_get_character_count (BatkText *text)
 {
   BtkWidget *widget;
@@ -323,19 +323,19 @@ bail_scale_get_character_count (BatkText *text)
 
 static void
 bail_scale_get_character_extents (BatkText      *text,
-				  gint         offset,
-		                  gint         *x,
-                    		  gint 	       *y,
-                                  gint 	       *width,
-                                  gint 	       *height,
+				  bint         offset,
+		                  bint         *x,
+                    		  bint 	       *y,
+                                  bint 	       *width,
+                                  bint 	       *height,
 			          BatkCoordType coords)
 {
   BtkWidget *widget;
   BtkScale *scale;
   BangoRectangle char_rect;
   BangoLayout *layout;
-  gint index, x_layout, y_layout;
-  const gchar *scale_text;
+  bint index, x_layout, y_layout;
+  const bchar *scale_text;
  
   widget = BTK_ACCESSIBLE (text)->widget;
 
@@ -357,17 +357,17 @@ bail_scale_get_character_extents (BatkText      *text,
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
-static gint 
+static bint 
 bail_scale_get_offset_at_point (BatkText      *text,
-                                gint         x,
-                                gint         y,
+                                bint         x,
+                                bint         y,
 	          		BatkCoordType coords)
 { 
   BtkWidget *widget;
   BtkScale *scale;
   BangoLayout *layout;
-  gint index, x_layout, y_layout;
-  const gchar *scale_text;
+  bint index, x_layout, y_layout;
+  const bchar *scale_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -399,16 +399,16 @@ bail_scale_get_offset_at_point (BatkText      *text,
 
 static BatkAttributeSet*
 bail_scale_get_run_attributes (BatkText *text,
-                               gint    offset,
-                               gint    *start_offset,
-	                       gint    *end_offset)
+                               bint    offset,
+                               bint    *start_offset,
+	                       bint    *end_offset)
 {
   BtkWidget *widget;
   BtkScale *scale;
   BatkAttributeSet *at_set = NULL;
   BtkTextDirection dir;
   BangoLayout *layout;
-  const gchar *scale_text;
+  const bchar *scale_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -434,7 +434,7 @@ bail_scale_get_run_attributes (BatkText *text,
 
   at_set = bail_misc_layout_get_run_attributes (at_set,
                                                 layout,
-                                                (gchar *)scale_text,
+                                                (bchar *)scale_text,
                                                 offset,
                                                 start_offset,
                                                 end_offset);
@@ -465,13 +465,13 @@ bail_scale_get_default_attributes (BatkText *text)
 
 static gunichar 
 bail_scale_get_character_at_offset (BatkText *text,
-                                    gint    offset)
+                                    bint    offset)
 {
   BtkWidget *widget;
   BtkScale *scale;
   BangoLayout *layout;
-  const gchar *string;
-  gchar *index;
+  const bchar *string;
+  bchar *index;
   gunichar c;
 
   widget = BTK_ACCESSIBLE (text)->widget;

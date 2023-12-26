@@ -67,10 +67,10 @@ enum {
 
 struct _BtkAlignmentPrivate
 {
-  guint padding_top;
-  guint padding_bottom;
-  guint padding_left;
-  guint padding_right;
+  buint padding_top;
+  buint padding_bottom;
+  buint padding_left;
+  buint padding_right;
 };
 
 static void btk_alignment_size_request  (BtkWidget         *widget,
@@ -78,11 +78,11 @@ static void btk_alignment_size_request  (BtkWidget         *widget,
 static void btk_alignment_size_allocate (BtkWidget         *widget,
 					 BtkAllocation     *allocation);
 static void btk_alignment_set_property (BObject         *object,
-                                        guint            prop_id,
+                                        buint            prop_id,
                                         const BValue    *value,
                                         BParamSpec      *pspec);
 static void btk_alignment_get_property (BObject         *object,
-                                        guint            prop_id,
+                                        buint            prop_id,
                                         BValue          *value,
                                         BParamSpec      *pspec);
 
@@ -155,7 +155,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Top Padding"),
                                                       P_("The padding to insert at the top of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -172,7 +172,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Bottom Padding"),
                                                       P_("The padding to insert at the bottom of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -189,7 +189,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Left Padding"),
                                                       P_("The padding to insert at the left of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -206,7 +206,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Right Padding"),
                                                       P_("The padding to insert at the right of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -253,10 +253,10 @@ btk_alignment_init (BtkAlignment *alignment)
  * Returns: the new #BtkAlignment.
  */
 BtkWidget*
-btk_alignment_new (gfloat xalign,
-		   gfloat yalign,
-		   gfloat xscale,
-		   gfloat yscale)
+btk_alignment_new (bfloat xalign,
+		   bfloat yalign,
+		   bfloat xscale,
+		   bfloat yscale)
 {
   BtkAlignment *alignment;
 
@@ -272,7 +272,7 @@ btk_alignment_new (gfloat xalign,
 
 static void
 btk_alignment_set_property (BObject         *object,
-			    guint            prop_id,
+			    buint            prop_id,
 			    const BValue    *value,
 			    BParamSpec      *pspec)
 {
@@ -351,7 +351,7 @@ btk_alignment_set_property (BObject         *object,
 
 static void
 btk_alignment_get_property (BObject         *object,
-			    guint            prop_id,
+			    buint            prop_id,
 			    BValue          *value,
 			    BParamSpec      *pspec)
 {
@@ -415,10 +415,10 @@ btk_alignment_get_property (BObject         *object,
  */
 void
 btk_alignment_set (BtkAlignment *alignment,
-		   gfloat        xalign,
-		   gfloat        yalign,
-		   gfloat        xscale,
-		   gfloat        yscale)
+		   bfloat        xalign,
+		   bfloat        yalign,
+		   bfloat        xscale,
+		   bfloat        yscale)
 {
   g_return_if_fail (BTK_IS_ALIGNMENT (alignment));
 
@@ -498,9 +498,9 @@ btk_alignment_size_allocate (BtkWidget     *widget,
   BtkBin *bin;
   BtkAllocation child_allocation;
   BtkRequisition child_requisition;
-  gint width, height;
-  gint border_width;
-  gint padding_horizontal, padding_vertical;
+  bint width, height;
+  bint border_width;
+  bint padding_horizontal, padding_vertical;
   BtkAlignmentPrivate *priv;
 
   padding_horizontal = 0;
@@ -565,10 +565,10 @@ btk_alignment_size_allocate (BtkWidget     *widget,
  */
 void
 btk_alignment_set_padding (BtkAlignment    *alignment,
-			   guint            padding_top,
-			   guint            padding_bottom,
-			   guint            padding_left,
-			   guint            padding_right)
+			   buint            padding_top,
+			   buint            padding_bottom,
+			   buint            padding_left,
+			   buint            padding_right)
 {
   BtkAlignmentPrivate *priv;
   
@@ -627,10 +627,10 @@ btk_alignment_set_padding (BtkAlignment    *alignment,
  */
 void
 btk_alignment_get_padding (BtkAlignment    *alignment,
-			   guint           *padding_top,
-			   guint           *padding_bottom,
-			   guint           *padding_left,
-			   guint           *padding_right)
+			   buint           *padding_top,
+			   buint           *padding_bottom,
+			   buint           *padding_left,
+			   buint           *padding_right)
 {
   BtkAlignmentPrivate *priv;
  

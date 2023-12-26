@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkDialog.html#btk-dialog-run" title="btk_dialog_run ()">btk_dialog_run</a> <span class="c_punctuation">()</span>
@@ -102,7 +102,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkDialog.html#btk-dialog-get-has-separator" title="btk_dialog_get_has_separator ()">btk_dialog_get_has_separator</a> <span class="c_punctuation">()</span>
@@ -134,7 +134,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkDialog.html#btk-dialog-get-response-for-widget" title="btk_dialog_get_response_for_widget ()">btk_dialog_get_response_for_widget</a> <span class="c_punctuation">()</span>
@@ -166,7 +166,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkDialog.html#btk-alternative-dialog-button-order" title="btk_alternative_dialog_button_order ()">btk_alternative_dialog_button_order</a> <span class="c_punctuation">()</span>
@@ -200,7 +200,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkDialog.html#BtkDialog--has-separator" title="The “has-separator” property">has-separator</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -330,10 +330,10 @@ btk_dialog_new (<em class="parameter"><code><span class="type">void</span></code
 <div class="refsect2">
 <a name="btk-dialog-new-with-buttons"></a><h3>btk_dialog_new_with_buttons ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_dialog_new_with_buttons (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+btk_dialog_new_with_buttons (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkDialog.html#BtkDialogFlags" title="enum BtkDialogFlags"><span class="type">BtkDialogFlags</span></a> flags</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                             <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                              <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> with title <em class="parameter"><code>title</code></em>
  (or <code class="literal">NULL</code> for the default
@@ -429,7 +429,7 @@ so the first button in the list will be the leftmost button in the dialog.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-dialog-run"></a><h3>btk_dialog_run ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_dialog_run (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>);</pre>
 <p>Blocks in a recursive main loop until the <em class="parameter"><code>dialog</code></em>
  either emits the
@@ -466,7 +466,7 @@ destroying the dialog if you wish to do so.</p>
 9
 10
 11</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="n">gint</span> <span class="n">result</span> <span class="o">=</span> <span class="n">btk_dialog_run</span> <span class="p">(</span><span class="n">BTK_DIALOG</span> <span class="p">(</span><span class="n">dialog</span><span class="p">));</span>
+        <td class="listing_code"><pre class="programlisting"><span class="n">bint</span> <span class="n">result</span> <span class="o">=</span> <span class="n">btk_dialog_run</span> <span class="p">(</span><span class="n">BTK_DIALOG</span> <span class="p">(</span><span class="n">dialog</span><span class="p">));</span>
 <span class="k">switch</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span>
   <span class="p">{</span>
     <span class="k">case</span> <span class="nl">BTK_RESPONSE_ACCEPT</span><span class="p">:</span>
@@ -513,7 +513,7 @@ be triggered during a <a class="link" href="BtkDialog.html#btk-dialog-run" title
 <a name="btk-dialog-response"></a><h3>btk_dialog_response ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_response (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Emits the <a class="link" href="BtkDialog.html#BtkDialog-response" title="The “response” signal"><span class="type">“response”</span></a> signal with the given response ID. 
 Used to indicate that the user has responded to the dialog in some way;
 typically either you or <a class="link" href="BtkDialog.html#btk-dialog-run" title="btk_dialog_run ()"><code class="function">btk_dialog_run()</code></a> will be monitoring the
@@ -546,8 +546,8 @@ typically either you or <a class="link" href="BtkDialog.html#btk-dialog-run" tit
 <a name="btk-dialog-add-button"></a><h3>btk_dialog_add_button ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_dialog_add_button (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *button_text</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">bchar</span> *button_text</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Adds a button with the given text (or a stock button, if <em class="parameter"><code>button_text</code></em>
  is a
 stock ID) and sets things up so that clicking the button will emit the
@@ -593,7 +593,7 @@ returned, but usually you don't need it.</p>
 <a name="btk-dialog-add-buttons"></a><h3>btk_dialog_add_buttons ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_add_buttons (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                        <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                         <em class="parameter"><code>...</code></em>);</pre>
 <p>Adds more buttons, same as calling <a class="link" href="BtkDialog.html#btk-dialog-add-button" title="btk_dialog_add_button ()"><code class="function">btk_dialog_add_button()</code></a>
 repeatedly.  The variable argument list should be <code class="literal">NULL</code>-terminated
@@ -633,7 +633,7 @@ text and response ID.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_add_action_widget (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Adds an activatable widget to the action area of a <a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a>,
 connecting a signal handler that will emit the <a class="link" href="BtkDialog.html#BtkDialog-response" title="The “response” signal"><span class="type">“response”</span></a> 
 signal on the dialog when the widget is activated. The widget is 
@@ -673,7 +673,7 @@ of the <a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type
 <hr>
 <div class="refsect2">
 <a name="btk-dialog-get-has-separator"></a><h3>btk_dialog_get_has_separator ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_dialog_get_has_separator (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_dialog_get_has_separator</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
@@ -705,7 +705,7 @@ btk_dialog_get_has_separator (<em class="parameter"><code><a class="link" href="
 <a name="btk-dialog-set-default-response"></a><h3>btk_dialog_set_default_response ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_set_default_response (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Sets the last widget in the dialog's action area with the given <em class="parameter"><code>response_id</code></em>
 
 as the default widget for the dialog. Pressing "Enter" normally activates
@@ -738,7 +738,7 @@ the default widget.</p>
 <a name="btk-dialog-set-has-separator"></a><h3>btk_dialog_set_has_separator ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_set_has_separator (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_dialog_set_has_separator</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>This function will be removed in BTK+ 3</p>
@@ -772,8 +772,8 @@ btk_dialog_set_has_separator (<em class="parameter"><code><a class="link" href="
 <a name="btk-dialog-set-response-sensitive"></a><h3>btk_dialog_set_response_sensitive ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_set_response_sensitive (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> response_id</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> response_id</code></em>,
+                                   <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <p>Calls <code class="literal">btk_widget_set_sensitive (widget, <em class="parameter"><code>setting</code></em>
 )</code> 
 for each widget in the dialog's action area with the given <em class="parameter"><code>response_id</code></em>
@@ -810,7 +810,7 @@ A convenient way to sensitize/desensitize dialog buttons.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-dialog-get-response-for-widget"></a><h3>btk_dialog_get_response_for_widget ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_dialog_get_response_for_widget (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
 <p>Gets the response id of a widget in the action area
@@ -852,7 +852,7 @@ doesn't have a response id set.</p>
 <a name="btk-dialog-get-widget-for-response"></a><h3>btk_dialog_get_widget_for_response ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_dialog_get_widget_for_response (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Gets the widget button that uses the given response ID in the action area
 of a dialog.</p>
 <div class="refsect3">
@@ -948,7 +948,7 @@ btk_dialog_get_content_area (<em class="parameter"><code><a class="link" href="B
 <hr>
 <div class="refsect2">
 <a name="btk-alternative-dialog-button-order"></a><h3>btk_alternative_dialog_button_order ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_alternative_dialog_button_order (<em class="parameter"><code><a href="../html/BdkScreen.html#BdkScreen-struct"><span class="type">BdkScreen</span></a> *screen</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if dialogs are expected to use an alternative
 button order on the screen <em class="parameter"><code>screen</code></em>
@@ -987,7 +987,7 @@ notified if the button order setting changes.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_set_alternative_button_order
                                (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> first_response_id</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> first_response_id</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <p>Sets an alternative button order. If the 
 <a class="link" href="BtkSettings.html#BtkSettings--btk-alternative-button-order" title="The “btk-alternative-button-order” property"><span class="type">“btk-alternative-button-order”</span></a> setting is set to <code class="literal">TRUE</code>, 
@@ -1086,8 +1086,8 @@ following example shows:</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_dialog_set_alternative_button_order_from_array
                                (<em class="parameter"><code><a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> n_params</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *new_order</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> n_params</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *new_order</code></em>);</pre>
 <p>Sets an alternative button order. If the 
 <a class="link" href="BtkSettings.html#BtkSettings--btk-alternative-button-order" title="The “btk-alternative-button-order” property"><span class="type">“btk-alternative-button-order”</span></a> setting is set to <code class="literal">TRUE</code>, 
 the dialog buttons are reordered according to the order of the 
@@ -1245,7 +1245,7 @@ response ids in <em class="parameter"><code>new_order</code></em>
 <a name="BtkDialog.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkDialog--has-separator"></a><h3>The <code class="literal">“has-separator”</code> property</h3>
-<pre class="programlisting">  “has-separator”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-separator”            <span class="type">bboolean</span></pre>
 <p>When <code class="literal">TRUE</code>, the dialog has a separator bar above its buttons.</p>
 <div class="warning">
 <p><code class="literal">BtkDialog:has-separator</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
@@ -1308,7 +1308,7 @@ was called on that widget directly.</p>
 <a name="BtkDialog-close"></a><h3>The <code class="literal">“close”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>The ::close signal is a </p>
 keybinding signal<p>which gets emitted when the user uses a keybinding to close
 the dialog.</p>
@@ -1336,7 +1336,7 @@ the dialog.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> *dialog,
                <span class="type">int</span>        response_id,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when an action widget is clicked, the dialog receives a
 
 delete event, or the application programmer calls <a class="link" href="BtkDialog.html#btk-dialog-response" title="btk_dialog_response ()"><code class="function">btk_dialog_response()</code></a>.

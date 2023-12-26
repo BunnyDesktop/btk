@@ -33,8 +33,8 @@
  */
 typedef struct
 {
-  gchar **characters; /* array of strings */
-  gsize n_characters; /* number of strings in the array */
+  bchar **characters; /* array of strings */
+  bsize n_characters; /* number of strings in the array */
 }
 KeySequence;
 
@@ -47,13 +47,13 @@ static void im_context_multipress_finalize (BObject *obj);
 
 static void load_config (BtkImContextMultipress *self);
 
-static gboolean vfunc_filter_keypress (BtkIMContext *context,
+static bboolean vfunc_filter_keypress (BtkIMContext *context,
                                        BdkEventKey  *event);
 static void vfunc_reset (BtkIMContext *context);
 static void vfunc_get_preedit_string (BtkIMContext   *context,
-                                      gchar         **str,
+                                      bchar         **str,
                                       BangoAttrList **attrs,
-                                      gint           *cursor_pos);
+                                      bint           *cursor_pos);
 
 /* Notice that we have a *_register_type(GTypeModule*) function instead of a
  * *_get_type() function, because we must use g_type_module_register_type(),
@@ -93,7 +93,7 @@ btk_im_context_multipress_get_type (void)
 }
 
 static void
-key_sequence_free (gpointer value)
+key_sequence_free (bpointer value)
 {
   KeySequence *seq = value;
 
@@ -184,7 +184,7 @@ clear_compose_buffer (BtkImContextMultipress *multipress_context)
 /* Finish composing, provide the character, and clear our compose buffer.
  */
 static void
-accept_character (BtkImContextMultipress *multipress_context, const gchar *characters)
+accept_character (BtkImContextMultipress *multipress_context, const bchar *characters)
 {
   /* Clear the compose buffer, so we are ready to compose the next character.
    * Note that if we emit "preedit-changed" after "commit", there's a segfault/
@@ -197,8 +197,8 @@ accept_character (BtkImContextMultipress *multipress_context, const gchar *chara
   g_signal_emit_by_name (multipress_context, "commit", characters);
 }
 
-static gboolean
-on_timeout (gpointer data)
+static bboolean
+on_timeout (bpointer data)
 {
   BtkImContextMultipress *multipress_context;
 
@@ -217,7 +217,7 @@ on_timeout (gpointer data)
   return FALSE; /* don't call me again */
 }
 
-static gboolean
+static bboolean
 vfunc_filter_keypress (BtkIMContext *context, BdkEventKey *event)
 {
   BtkIMContextClass      *parent;
@@ -244,7 +244,7 @@ vfunc_filter_keypress (BtkIMContext *context, BdkEventKey *event)
 
       /* Decide what character this key press would choose: */
       possible = g_hash_table_lookup (multipress_context->key_sequences,
-                                      GUINT_TO_POINTER (event->keyval));
+                                      BUINT_TO_POINTER (event->keyval));
       if (possible != NULL)
         {
           if (multipress_context->compose_count == 0)
@@ -281,7 +281,7 @@ vfunc_filter_keypress (BtkIMContext *context, BdkEventKey *event)
         }
       else
         {
-          guint32 keyval_uchar;
+          buint32 keyval_uchar;
 
           /* Just accept all other keypresses directly, but commit the
            * current preedit content first. */
@@ -297,8 +297,8 @@ vfunc_filter_keypress (BtkIMContext *context, BdkEventKey *event)
           if (keyval_uchar != 0)
             {
               /* max length of UTF-8 sequence = 6 + 1 for NUL termination */
-              gchar keyval_utf8[7];
-              gint  length;
+              bchar keyval_utf8[7];
+              bint  length;
 
               length = g_unichar_to_utf8 (keyval_uchar, keyval_utf8);
               keyval_utf8[length] = '\0';
@@ -328,17 +328,17 @@ vfunc_reset (BtkIMContext *context)
 
 static void
 vfunc_get_preedit_string (BtkIMContext   *context,
-                          gchar         **str,
+                          bchar         **str,
                           BangoAttrList **attrs,
-                          gint           *cursor_pos)
+                          bint           *cursor_pos)
 {
-  gsize len_bytes = 0;
-  gsize len_utf8_chars = 0;
+  bsize len_bytes = 0;
+  bsize len_utf8_chars = 0;
 
   /* Show the user what character he will get if he accepts: */
   if (str != NULL)
     {
-      const gchar *match;
+      const bchar *match;
 
       match = BTK_IM_CONTEXT_MULTIPRESS (context)->tentative_match;
 
@@ -379,9 +379,9 @@ load_config (BtkImContextMultipress *self)
 {
   GKeyFile *key_file;
   GError   *error = NULL;
-  gchar   **keys;
-  gsize     n_keys = 0;
-  gsize     i;
+  bchar   **keys;
+  bsize     n_keys = 0;
+  bsize     i;
 
   key_file = g_key_file_new ();
 
@@ -409,7 +409,7 @@ load_config (BtkImContextMultipress *self)
   for (i = 0; i < n_keys; ++i)
     {
       KeySequence *seq;
-      guint        keyval;
+      buint        keyval;
 
       keyval = bdk_keyval_from_name (keys[i]);
 
@@ -435,7 +435,7 @@ load_config (BtkImContextMultipress *self)
         }
 
       /* Ownership of the KeySequence is taken over by the hash table */
-      g_hash_table_insert (self->key_sequences, GUINT_TO_POINTER (keyval), seq);
+      g_hash_table_insert (self->key_sequences, BUINT_TO_POINTER (keyval), seq);
     }
 
   g_strfreev (keys);

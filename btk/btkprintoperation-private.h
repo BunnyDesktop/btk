@@ -38,50 +38,50 @@ struct _BtkPrintOperationPrivate
   BtkPrintOperationAction action;
   BtkPrintStatus status;
   GError *error;
-  gchar *status_string;
+  bchar *status_string;
   BtkPageSetup *default_page_setup;
   BtkPrintSettings *print_settings;
-  gchar *job_name;
-  gint nr_of_pages;
-  gint nr_of_pages_to_print;
-  gint page_position;
-  gint current_page;
+  bchar *job_name;
+  bint nr_of_pages;
+  bint nr_of_pages_to_print;
+  bint page_position;
+  bint current_page;
   BtkUnit unit;
-  gchar *export_filename;
-  guint use_full_page      : 1;
-  guint track_print_status : 1;
-  guint show_progress      : 1;
-  guint cancelled          : 1;
-  guint allow_async        : 1;
-  guint is_sync            : 1;
-  guint support_selection  : 1;
-  guint has_selection      : 1;
-  guint embed_page_setup   : 1;
+  bchar *export_filename;
+  buint use_full_page      : 1;
+  buint track_print_status : 1;
+  buint show_progress      : 1;
+  buint cancelled          : 1;
+  buint allow_async        : 1;
+  buint is_sync            : 1;
+  buint support_selection  : 1;
+  buint has_selection      : 1;
+  buint embed_page_setup   : 1;
 
   BtkPageDrawingState      page_drawing_state;
 
-  guint print_pages_idle_id;
-  guint show_progress_timeout_id;
+  buint print_pages_idle_id;
+  buint show_progress_timeout_id;
 
   BtkPrintContext *print_context;
   
   BtkPrintPages print_pages;
   BtkPageRange *page_ranges;
-  gint num_page_ranges;
+  bint num_page_ranges;
   
-  gint manual_num_copies;
-  guint manual_collation   : 1;
-  guint manual_reverse     : 1;
-  guint manual_orientation : 1;
+  bint manual_num_copies;
+  buint manual_collation   : 1;
+  buint manual_reverse     : 1;
+  buint manual_orientation : 1;
   double manual_scale;
   BtkPageSet manual_page_set;
-  guint manual_number_up;
+  buint manual_number_up;
   BtkNumberUpLayout manual_number_up_layout;
 
   BtkWidget *custom_widget;
-  gchar *custom_tab_label;
+  bchar *custom_tab_label;
   
-  gpointer platform_data;
+  bpointer platform_data;
   GDestroyNotify free_platform_data;
 
   GMainLoop *rloop; /* recursive mainloop */
@@ -92,22 +92,22 @@ struct _BtkPrintOperationPrivate
   void (*end_page)   (BtkPrintOperation *operation,
 		      BtkPrintContext   *print_context);
   void (*end_run)    (BtkPrintOperation *operation,
-		      gboolean           wait,
-		      gboolean           cancelled);
+		      bboolean           wait,
+		      bboolean           cancelled);
 };
 
 
 typedef void (* BtkPrintOperationPrintFunc) (BtkPrintOperation      *op,
 					     BtkWindow              *parent,
-					     gboolean                do_print,
+					     bboolean                do_print,
 					     BtkPrintOperationResult result);
 
 BtkPrintOperationResult _btk_print_operation_platform_backend_run_dialog             (BtkPrintOperation           *operation,
-										      gboolean                     show_dialog,
+										      bboolean                     show_dialog,
 										      BtkWindow                   *parent,
-										      gboolean                    *do_print);
+										      bboolean                    *do_print);
 void                    _btk_print_operation_platform_backend_run_dialog_async       (BtkPrintOperation           *op,
-										      gboolean                     show_dialog,
+										      bboolean                     show_dialog,
 										      BtkWindow                   *parent,
 										      BtkPrintOperationPrintFunc   print_cb);
 void                    _btk_print_operation_platform_backend_launch_preview         (BtkPrintOperation           *op,
@@ -116,9 +116,9 @@ void                    _btk_print_operation_platform_backend_launch_preview    
 										      const char                  *filename);
 bairo_surface_t *       _btk_print_operation_platform_backend_create_preview_surface (BtkPrintOperation           *op,
 										      BtkPageSetup                *page_setup,
-										      gdouble                     *dpi_x,
-										      gdouble                     *dpi_y,
-										      gchar                       **target);
+										      bdouble                     *dpi_x,
+										      bdouble                     *dpi_y,
+										      bchar                       **target);
 void                    _btk_print_operation_platform_backend_resize_preview_surface (BtkPrintOperation           *op,
 										      BtkPageSetup                *page_setup,
 										      bairo_surface_t             *surface);
@@ -131,7 +131,7 @@ void                    _btk_print_operation_platform_backend_preview_end_page  
 
 void _btk_print_operation_set_status (BtkPrintOperation *op,
 				      BtkPrintStatus     status,
-				      const gchar       *string);
+				      const bchar       *string);
 
 /* BtkPrintContext private functions: */
 
@@ -141,10 +141,10 @@ void             _btk_print_context_set_page_setup                  (BtkPrintCon
 void             _btk_print_context_translate_into_margin           (BtkPrintContext   *context);
 void             _btk_print_context_rotate_according_to_orientation (BtkPrintContext   *context);
 void             _btk_print_context_set_hard_margins                (BtkPrintContext   *context,
-								     gdouble            top,
-								     gdouble            bottom,
-								     gdouble            left,
-								     gdouble            right);
+								     bdouble            top,
+								     bdouble            bottom,
+								     bdouble            left,
+								     bdouble            right);
 
 B_END_DECLS
 

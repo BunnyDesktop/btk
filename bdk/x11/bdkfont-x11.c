@@ -46,7 +46,7 @@ struct _BdkFontPrivateX
   BdkFontPrivate base;
   /* XFontStruct *xfont; */
   /* generic pointer point to XFontStruct or XFontSet */
-  gpointer xfont;
+  bpointer xfont;
   BdkDisplay *display;
 
   GSList *names;
@@ -114,7 +114,7 @@ bdk_font_get_display (BdkFont* font)
 static void
 bdk_font_hash_insert (BdkFontType  type, 
 		      BdkFont     *font, 
-		      const gchar *font_name)
+		      const bchar *font_name)
 {
   BdkFontPrivateX *private = (BdkFontPrivateX *)font;
   GHashTable *hash = (type == BDK_FONT_FONT) ?
@@ -149,7 +149,7 @@ bdk_font_hash_remove (BdkFontType type,
 static BdkFont *
 bdk_font_hash_lookup (BdkDisplay  *display, 
 		      BdkFontType  type, 
-		      const gchar *font_name)
+		      const bchar *font_name)
 {
   BdkFont *result;
   GHashTable *hash;
@@ -184,7 +184,7 @@ bdk_font_hash_lookup (BdkDisplay  *display,
  */
 BdkFont *
 bdk_font_load_for_display (BdkDisplay  *display, 
-			   const gchar *font_name)
+			   const bchar *font_name)
 {
   BdkFont *font;
   BdkFontPrivateX *private;
@@ -274,14 +274,14 @@ bdk_font_from_description_for_display (BdkDisplay           *display,
  */
 BdkFont *
 bdk_fontset_load_for_display (BdkDisplay  *display,
-			      const gchar *fontset_name)
+			      const bchar *fontset_name)
 {
   BdkFont *font;
   BdkFontPrivateX *private;
   XFontSet fontset;
-  gint  missing_charset_count;
-  gchar **missing_charset_list;
-  gchar *def_string;
+  bint  missing_charset_count;
+  bchar **missing_charset_list;
+  bchar *def_string;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
@@ -299,7 +299,7 @@ bdk_fontset_load_for_display (BdkDisplay  *display,
 
   if (missing_charset_count)
     {
-      gint i;
+      bint i;
       g_printerr ("The font \"%s\" does not support all the required character sets for the current locale \"%s\"\n",
                  fontset_name, setlocale (LC_ALL, NULL));
       for (i=0;i<missing_charset_count;i++)
@@ -317,10 +317,10 @@ bdk_fontset_load_for_display (BdkDisplay  *display,
     }
   else
     {
-      gint num_fonts;
-      gint i;
+      bint num_fonts;
+      bint i;
       XFontStruct **font_structs;
-      gchar **font_names;
+      bchar **font_names;
       
       private->xfont = fontset;
       font->type = BDK_FONT_FONTSET;
@@ -354,7 +354,7 @@ bdk_fontset_load_for_display (BdkDisplay  *display,
  * Return value: a #BdkFont, or %NULL if the fontset could not be loaded.
  **/
 BdkFont*
-bdk_fontset_load (const gchar *fontset_name)
+bdk_fontset_load (const bchar *fontset_name)
 {
   return bdk_fontset_load_for_display (bdk_display_get_default (), fontset_name);
 }
@@ -384,12 +384,12 @@ _bdk_font_destroy (BdkFont *font)
   g_free (font);
 }
 
-gint
+bint
 _bdk_font_strlen (BdkFont     *font,
-		  const gchar *str)
+		  const bchar *str)
 {
   BdkFontPrivateX *font_private;
-  gint length = 0;
+  bint length = 0;
 
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (str != NULL, -1);
@@ -405,7 +405,7 @@ _bdk_font_strlen (BdkFont     *font,
 	}
       else
 	{
-	  guint16 *string_2b = (guint16 *)str;
+	  buint16 *string_2b = (buint16 *)str;
 	    
 	  while (*(string_2b++))
 	    length++;
@@ -429,7 +429,7 @@ _bdk_font_strlen (BdkFont     *font,
  * 
  * Return value: the numeric X Font ID
  **/
-gint
+bint
 bdk_font_id (const BdkFont *font)
 {
   const BdkFontPrivateX *font_private;
@@ -459,7 +459,7 @@ bdk_font_id (const BdkFont *font)
  * 
  * Return value: %TRUE if the fonts are equal.
  **/
-gboolean
+bboolean
 bdk_font_equal (const BdkFont *fonta,
                 const BdkFont *fontb)
 {
@@ -479,7 +479,7 @@ bdk_font_equal (const BdkFont *fonta,
     }
   else if (fonta->type == BDK_FONT_FONTSET && fontb->type == BDK_FONT_FONTSET)
     {
-      gchar *namea, *nameb;
+      bchar *namea, *nameb;
 
       namea = XBaseFontNameListOfFontSet((XFontSet) privatea->xfont);
       nameb = XBaseFontNameListOfFontSet((XFontSet) privateb->xfont);
@@ -501,13 +501,13 @@ bdk_font_equal (const BdkFont *fonta,
  * 
  * Return value: the width of the string in pixels.
  **/
-gint
+bint
 bdk_text_width (BdkFont      *font,
-		const gchar  *text,
-		gint          text_length)
+		const bchar  *text,
+		bint          text_length)
 {
   BdkFontPrivateX *private;
-  gint width;
+  bint width;
   XFontStruct *xfont;
   XFontSet fontset;
 
@@ -549,13 +549,13 @@ bdk_text_width (BdkFont      *font,
  * 
  * Return value: the width of the string in pixels.
  **/
-gint
+bint
 bdk_text_width_wc (BdkFont	  *font,
 		   const BdkWChar *text,
-		   gint		   text_length)
+		   bint		   text_length)
 {
   BdkFontPrivateX *private;
-  gint width;
+  bint width;
   XFontStruct *xfont;
   XFontSet fontset;
 
@@ -570,9 +570,9 @@ bdk_text_width_wc (BdkFont	  *font,
       xfont = (XFontStruct *) private->xfont;
       if ((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0))
         {
-          gchar *text_8bit;
-          gint i;
-          text_8bit = g_new (gchar, text_length);
+          bchar *text_8bit;
+          bint i;
+          text_8bit = g_new (bchar, text_length);
           for (i=0; i<text_length; i++) text_8bit[i] = text[i];
           width = XTextWidth (xfont, text_8bit, text_length);
           g_free (text_8bit);
@@ -591,7 +591,7 @@ bdk_text_width_wc (BdkFont	  *font,
       else
 	{
 	  wchar_t *text_wchar;
-	  gint i;
+	  bint i;
 	  fontset = (XFontSet) private->xfont;
 	  text_wchar = g_new(wchar_t, text_length);
 	  for (i=0; i<text_length; i++) text_wchar[i] = text[i];
@@ -622,13 +622,13 @@ bdk_text_width_wc (BdkFont	  *font,
  **/
 void
 bdk_text_extents (BdkFont     *font,
-                  const gchar *text,
-                  gint         text_length,
-		  gint        *lbearing,
-		  gint        *rbearing,
-		  gint        *width,
-		  gint        *ascent,
-		  gint        *descent)
+                  const bchar *text,
+                  bint         text_length,
+		  bint        *lbearing,
+		  bint        *rbearing,
+		  bint        *width,
+		  bint        *ascent,
+		  bint        *descent)
 {
   BdkFontPrivateX *private;
   XCharStruct overall;
@@ -705,12 +705,12 @@ bdk_text_extents (BdkFont     *font,
 void
 bdk_text_extents_wc (BdkFont        *font,
 		     const BdkWChar *text,
-		     gint            text_length,
-		     gint           *lbearing,
-		     gint           *rbearing,
-		     gint           *width,
-		     gint           *ascent,
-		     gint           *descent)
+		     bint            text_length,
+		     bint           *lbearing,
+		     bint           *rbearing,
+		     bint           *width,
+		     bint           *ascent,
+		     bint           *descent)
 {
   BdkFontPrivateX *private;
   XCharStruct overall;
@@ -730,13 +730,13 @@ bdk_text_extents_wc (BdkFont        *font,
     {
     case BDK_FONT_FONT:
       {
-	gchar *text_8bit;
-	gint i;
+	bchar *text_8bit;
+	bint i;
 
 	xfont = (XFontStruct *) private->xfont;
 	g_return_if_fail ((xfont->min_byte1 == 0) && (xfont->max_byte1 == 0));
 
-	text_8bit = g_new (gchar, text_length);
+	text_8bit = g_new (bchar, text_length);
 	for (i=0; i<text_length; i++) 
 	  text_8bit[i] = text[i];
 
@@ -765,7 +765,7 @@ bdk_text_extents_wc (BdkFont        *font,
       else
 	{
 	  wchar_t *text_wchar;
-	  gint i;
+	  bint i;
 	  
 	  text_wchar = g_new (wchar_t, text_length);
 	  for (i = 0; i < text_length; i++)
@@ -812,7 +812,7 @@ bdk_x11_font_get_xdisplay (BdkFont *font)
  * 
  * Return value: an Xlib <type>XFontStruct*</type> or an <type>XFontSet</type>.
  **/
-gpointer
+bpointer
 bdk_x11_font_get_xfont (BdkFont *font)
 {
   g_return_val_if_fail (font != NULL, NULL);

@@ -70,8 +70,8 @@ btk_vbox_init (BtkVBox *vbox)
  * Returns: a new #BtkVBox.
  */
 BtkWidget *
-btk_vbox_new (gboolean homogeneous,
-	      gint     spacing)
+btk_vbox_new (bboolean homogeneous,
+	      bint     spacing)
 {
   return g_object_new (BTK_TYPE_VBOX,
                        "spacing",     spacing,

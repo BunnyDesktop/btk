@@ -27,20 +27,20 @@
 #include "btkalias.h"
 
 static void btk_cell_renderer_toggle_get_property  (BObject                    *object,
-						    guint                       param_id,
+						    buint                       param_id,
 						    BValue                     *value,
 						    BParamSpec                 *pspec);
 static void btk_cell_renderer_toggle_set_property  (BObject                    *object,
-						    guint                       param_id,
+						    buint                       param_id,
 						    const BValue               *value,
 						    BParamSpec                 *pspec);
 static void btk_cell_renderer_toggle_get_size   (BtkCellRenderer            *cell,
 						 BtkWidget                  *widget,
  						 BdkRectangle               *cell_area,
-						 gint                       *x_offset,
-						 gint                       *y_offset,
-						 gint                       *width,
-						 gint                       *height);
+						 bint                       *x_offset,
+						 bint                       *y_offset,
+						 bint                       *width,
+						 bint                       *height);
 static void btk_cell_renderer_toggle_render     (BtkCellRenderer            *cell,
 						 BdkWindow                  *window,
 						 BtkWidget                  *widget,
@@ -48,10 +48,10 @@ static void btk_cell_renderer_toggle_render     (BtkCellRenderer            *cel
 						 BdkRectangle               *cell_area,
 						 BdkRectangle               *expose_area,
 						 BtkCellRendererState        flags);
-static gboolean btk_cell_renderer_toggle_activate  (BtkCellRenderer            *cell,
+static bboolean btk_cell_renderer_toggle_activate  (BtkCellRenderer            *cell,
 						    BdkEvent                   *event,
 						    BtkWidget                  *widget,
-						    const gchar                *path,
+						    const bchar                *path,
 						    BdkRectangle               *background_area,
 						    BdkRectangle               *cell_area,
 						    BtkCellRendererState        flags);
@@ -73,16 +73,16 @@ enum {
 
 #define TOGGLE_WIDTH 13
 
-static guint toggle_cell_signals[LAST_SIGNAL] = { 0 };
+static buint toggle_cell_signals[LAST_SIGNAL] = { 0 };
 
 #define BTK_CELL_RENDERER_TOGGLE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererTogglePrivate))
 
 typedef struct _BtkCellRendererTogglePrivate BtkCellRendererTogglePrivate;
 struct _BtkCellRendererTogglePrivate
 {
-  gint indicator_size;
+  bint indicator_size;
 
-  guint inconsistent : 1;
+  buint inconsistent : 1;
 };
 
 
@@ -158,7 +158,7 @@ btk_cell_renderer_toggle_class_init (BtkCellRendererToggleClass *class)
 						     P_("Indicator size"),
 						     P_("Size of check or radio indicator"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     TOGGLE_WIDTH,
 						     BTK_PARAM_READWRITE));
 
@@ -186,7 +186,7 @@ btk_cell_renderer_toggle_class_init (BtkCellRendererToggleClass *class)
 
 static void
 btk_cell_renderer_toggle_get_property (BObject     *object,
-				       guint        param_id,
+				       buint        param_id,
 				       BValue      *value,
 				       BParamSpec  *pspec)
 {
@@ -221,7 +221,7 @@ btk_cell_renderer_toggle_get_property (BObject     *object,
 
 static void
 btk_cell_renderer_toggle_set_property (BObject      *object,
-				       guint         param_id,
+				       buint         param_id,
 				       const BValue *value,
 				       BParamSpec   *pspec)
 {
@@ -276,19 +276,19 @@ static void
 btk_cell_renderer_toggle_get_size (BtkCellRenderer *cell,
 				   BtkWidget       *widget,
 				   BdkRectangle    *cell_area,
-				   gint            *x_offset,
-				   gint            *y_offset,
-				   gint            *width,
-				   gint            *height)
+				   bint            *x_offset,
+				   bint            *y_offset,
+				   bint            *width,
+				   bint            *height)
 {
-  gint calc_width;
-  gint calc_height;
+  bint calc_width;
+  bint calc_height;
   BtkCellRendererTogglePrivate *priv;
 
   priv = BTK_CELL_RENDERER_TOGGLE_GET_PRIVATE (cell);
 
-  calc_width = (gint) cell->xpad * 2 + priv->indicator_size;
-  calc_height = (gint) cell->ypad * 2 + priv->indicator_size;
+  calc_width = (bint) cell->xpad * 2 + priv->indicator_size;
+  calc_height = (bint) cell->ypad * 2 + priv->indicator_size;
 
   if (width)
     *width = calc_width;
@@ -328,8 +328,8 @@ btk_cell_renderer_toggle_render (BtkCellRenderer      *cell,
 {
   BtkCellRendererToggle *celltoggle = (BtkCellRendererToggle *) cell;
   BtkCellRendererTogglePrivate *priv;
-  gint width, height;
-  gint x_offset, y_offset;
+  bint width, height;
+  bint x_offset, y_offset;
   BtkShadowType shadow;
   BtkStateType state = 0;
 
@@ -390,11 +390,11 @@ btk_cell_renderer_toggle_render (BtkCellRenderer      *cell,
     }
 }
 
-static gint
+static bint
 btk_cell_renderer_toggle_activate (BtkCellRenderer      *cell,
 				   BdkEvent             *event,
 				   BtkWidget            *widget,
-				   const gchar          *path,
+				   const bchar          *path,
 				   BdkRectangle         *background_area,
 				   BdkRectangle         *cell_area,
 				   BtkCellRendererState  flags)
@@ -426,7 +426,7 @@ btk_cell_renderer_toggle_activate (BtkCellRenderer      *cell,
  **/
 void
 btk_cell_renderer_toggle_set_radio (BtkCellRendererToggle *toggle,
-				    gboolean               radio)
+				    bboolean               radio)
 {
   g_return_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle));
 
@@ -441,7 +441,7 @@ btk_cell_renderer_toggle_set_radio (BtkCellRendererToggle *toggle,
  * 
  * Return value: %TRUE if we're rendering radio toggles rather than checkboxes
  **/
-gboolean
+bboolean
 btk_cell_renderer_toggle_get_radio (BtkCellRendererToggle *toggle)
 {
   g_return_val_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle), FALSE);
@@ -458,7 +458,7 @@ btk_cell_renderer_toggle_get_radio (BtkCellRendererToggle *toggle)
  *
  * Return value: %TRUE if the cell renderer is active.
  **/
-gboolean
+bboolean
 btk_cell_renderer_toggle_get_active (BtkCellRendererToggle *toggle)
 {
   g_return_val_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle), FALSE);
@@ -475,7 +475,7 @@ btk_cell_renderer_toggle_get_active (BtkCellRendererToggle *toggle)
  **/
 void
 btk_cell_renderer_toggle_set_active (BtkCellRendererToggle *toggle,
-				     gboolean               setting)
+				     bboolean               setting)
 {
   g_return_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle));
 
@@ -493,7 +493,7 @@ btk_cell_renderer_toggle_set_active (BtkCellRendererToggle *toggle,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle)
 {
   g_return_val_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle), FALSE);
@@ -512,7 +512,7 @@ btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle)
  **/
 void
 btk_cell_renderer_toggle_set_activatable (BtkCellRendererToggle *toggle,
-                                          gboolean               setting)
+                                          bboolean               setting)
 {
   g_return_if_fail (BTK_IS_CELL_RENDERER_TOGGLE (toggle));
 

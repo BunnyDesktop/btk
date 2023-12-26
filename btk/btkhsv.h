@@ -56,7 +56,7 @@ struct _BtkHSV
   BtkWidget parent_instance;
 
   /* Private data */
-  gpointer GSEAL (priv);
+  bpointer GSEAL (priv);
 };
 
 struct _BtkHSVClass
@@ -85,30 +85,30 @@ void       btk_hsv_set_color    (BtkHSV    *hsv,
 				 double     s,
 				 double     v);
 void       btk_hsv_get_color    (BtkHSV    *hsv,
-				 gdouble   *h,
-				 gdouble   *s,
-				 gdouble   *v);
+				 bdouble   *h,
+				 bdouble   *s,
+				 bdouble   *v);
 void       btk_hsv_set_metrics  (BtkHSV    *hsv,
-				 gint       size,
-				 gint       ring_width);
+				 bint       size,
+				 bint       ring_width);
 void       btk_hsv_get_metrics  (BtkHSV    *hsv,
-				 gint      *size,
-				 gint      *ring_width);
-gboolean   btk_hsv_is_adjusting (BtkHSV    *hsv);
+				 bint      *size,
+				 bint      *ring_width);
+bboolean   btk_hsv_is_adjusting (BtkHSV    *hsv);
 
 /* Convert colors between the RGB and HSV color spaces */
-void       btk_hsv_to_rgb       (gdouble    h,
-				 gdouble    s,
-				 gdouble    v,
-				 gdouble   *r,
-				 gdouble   *g,
-				 gdouble   *b);
-void       btk_rgb_to_hsv       (gdouble    r,
-				 gdouble    g,
-				 gdouble    b,
-				 gdouble   *h,
-				 gdouble   *s,
-				 gdouble   *v);
+void       btk_hsv_to_rgb       (bdouble    h,
+				 bdouble    s,
+				 bdouble    v,
+				 bdouble   *r,
+				 bdouble   *g,
+				 bdouble   *b);
+void       btk_rgb_to_hsv       (bdouble    r,
+				 bdouble    g,
+				 bdouble    b,
+				 bdouble   *h,
+				 bdouble   *s,
+				 bdouble   *v);
 
 B_END_DECLS
 

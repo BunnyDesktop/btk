@@ -33,7 +33,7 @@ static void      bail_toggle_button_real_notify_btk   (BObject               *ob
                                                        BParamSpec            *pspec);
 
 static void      bail_toggle_button_real_initialize   (BatkObject             *obj,
-                                                       gpointer              data);
+                                                       bpointer              data);
 
 static BatkStateSet* bail_toggle_button_ref_state_set  (BatkObject             *accessible);
 
@@ -59,7 +59,7 @@ bail_toggle_button_init (BailToggleButton *button)
 
 static void
 bail_toggle_button_real_initialize (BatkObject *obj,
-                                    gpointer  data)
+                                    bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_toggle_button_parent_class)->initialize (obj, data);
 
@@ -120,8 +120,8 @@ bail_toggle_button_real_notify_btk (BObject           *obj,
 {
   BtkToggleButton *toggle_button = BTK_TOGGLE_BUTTON (obj);
   BatkObject *batk_obj;
-  gboolean sensitive;
-  gboolean inconsistent;
+  bboolean sensitive;
+  bboolean inconsistent;
 
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (toggle_button));
   sensitive = btk_widget_get_sensitive (BTK_WIDGET (toggle_button));

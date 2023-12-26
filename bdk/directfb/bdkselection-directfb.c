@@ -77,12 +77,12 @@ _bdk_selection_window_destroyed (BdkWindow *window)
     }
 }
 
-gint
+bint
 bdk_selection_owner_set_for_display (BdkDisplay *display,
                                      BdkWindow  *owner,
                                      BdkAtom     selection,
-                                     guint32     time,
-                                     gint        send_event)
+                                     buint32     time,
+                                     bint        send_event)
 {
   GSList    *tmp_list;
   OwnerInfo *info;
@@ -136,7 +136,7 @@ void
 bdk_selection_convert (BdkWindow *requestor,
 		       BdkAtom    selection,
 		       BdkAtom    target,
-		       guint32    time)
+		       buint32    time)
 {
   BdkEvent  *event;
   BdkWindow *owner;
@@ -171,16 +171,16 @@ bdk_selection_convert (BdkWindow *requestor,
     }
 }
 
-gint
+bint
 bdk_selection_property_get (BdkWindow  *requestor,
-			    guchar    **data,
+			    buchar    **data,
 			    BdkAtom    *ret_type,
-			    gint       *ret_format)
+			    bint       *ret_format)
 {
-  guchar *t = NULL;
+  buchar *t = NULL;
   BdkAtom prop_type;
-  gint prop_format;
-  gint prop_len;
+  bint prop_format;
+  bint prop_len;
 
   g_return_val_if_fail (requestor != NULL, 0);
   g_return_val_if_fail (BDK_IS_WINDOW (requestor), 0);
@@ -222,11 +222,11 @@ bdk_selection_property_get (BdkWindow  *requestor,
 
 void
 bdk_selection_send_notify_for_display (BdkDisplay *display,
-                                       guint32     requestor,
+                                       buint32     requestor,
                                        BdkAtom     selection,
                                        BdkAtom     target,
                                        BdkAtom     property,
-                                       guint32     time)
+                                       buint32     time)
 {
   BdkEvent  *event;
   BdkWindow *event_window;
@@ -249,39 +249,39 @@ bdk_selection_send_notify_for_display (BdkDisplay *display,
     }
 }
 
-gint
+bint
 bdk_text_property_to_text_list_for_display (BdkDisplay      *display,
                                             BdkAtom          encoding,
-                                            gint             format,
-                                            const guchar    *text,
-                                            gint             length,
-                                            gchar         ***list)
+                                            bint             format,
+                                            const buchar    *text,
+                                            bint             length,
+                                            bchar         ***list)
 {
   g_warning ("bdk_text_property_to_text_list() not implemented\n");
   return 0;
 }
 
 void
-bdk_free_text_list (gchar **list)
+bdk_free_text_list (bchar **list)
 {
   g_return_if_fail (list != NULL);
   g_warning ("bdk_free_text_list() not implemented\n");
 }
 
-gint
+bint
 bdk_string_to_compound_text_for_display (BdkDisplay   *display,
-                                         const gchar  *str,
+                                         const bchar  *str,
                                          BdkAtom      *encoding,
-                                         gint         *format,
-                                         guchar      **ctext,
-                                         gint         *length)
+                                         bint         *format,
+                                         buchar      **ctext,
+                                         bint         *length)
 {
   g_warning ("bdk_string_to_compound_text() not implemented\n");
   return 0;
 }
 
 void
-bdk_free_compound_text (guchar *ctext)
+bdk_free_compound_text (buchar *ctext)
 {
   g_warning ("bdk_free_compound_text() not implemented\n");
 }
@@ -299,8 +299,8 @@ bdk_free_compound_text (guchar *ctext)
  *               conversion failed. (It should not fail for
  *               any properly formed UTF-8 string.)
  **/
-gchar *
-bdk_utf8_to_string_target (const gchar *str)
+bchar *
+bdk_utf8_to_string_target (const bchar *str)
 {
   g_warning ("bdk_utf8_to_string_target() not implemented\n");
   return 0;
@@ -320,35 +320,35 @@ bdk_utf8_to_string_target (const gchar *str)
  * Return value: %TRUE if the conversion succeeded, otherwise
  *               false.
  **/
-gboolean
+bboolean
 bdk_utf8_to_compound_text_for_display (BdkDisplay   *display,
-                                       const gchar  *str,
+                                       const bchar  *str,
                                        BdkAtom      *encoding,
-                                       gint         *format,
-                                       guchar      **ctext,
-                                       gint         *length)
+                                       bint         *format,
+                                       buchar      **ctext,
+                                       bint         *length)
 {
   g_warning ("bdk_utf8_to_compound_text() not implemented\n");
   return 0;
 }
 
-static gint
-make_list (const gchar  *text,
-	   gint          length,
-	   gboolean      latin1,
-	   gchar      ***list)
+static bint
+make_list (const bchar  *text,
+	   bint          length,
+	   bboolean      latin1,
+	   bchar      ***list)
 {
   GSList *strings = NULL;
-  gint n_strings = 0;
-  gint i;
-  const gchar *p = text;
-  const gchar *q;
+  bint n_strings = 0;
+  bint i;
+  const bchar *p = text;
+  const bchar *q;
   GSList *tmp_list;
   GError *error = NULL;
 
   while (p < text + length)
     {
-      gchar *str;
+      bchar *str;
 
       q = p;
       while (*q && q < text + length)
@@ -380,7 +380,7 @@ make_list (const gchar  *text,
     }
 
   if (list)
-    *list = g_new (gchar *, n_strings + 1);
+    *list = g_new (bchar *, n_strings + 1);
 
   (*list)[n_strings] = NULL;
 
@@ -417,33 +417,33 @@ make_list (const gchar  *text,
  * Return value: the number of strings in the resulting
  *               list.
  **/
-gint
+bint
 bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
                                             BdkAtom         encoding,
-                                            gint            format,
-                                            const guchar   *text,
-                                            gint            length,
-                                            gchar        ***list)
+                                            bint            format,
+                                            const buchar   *text,
+                                            bint            length,
+                                            bchar        ***list)
 {
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
 
   if (encoding == BDK_TARGET_STRING)
     {
-      return make_list ((gchar *)text, length, TRUE, list);
+      return make_list ((bchar *)text, length, TRUE, list);
     }
   else if (encoding == bdk_atom_intern ("UTF8_STRING", FALSE))
     {
-      return make_list ((gchar *)text, length, FALSE, list);
+      return make_list ((bchar *)text, length, FALSE, list);
     }
   else
     {
-      gchar **local_list;
-      gint local_count;
-      gint i;
-      const gchar *charset = NULL;
-      gboolean need_conversion = !g_get_charset (&charset);
-      gint count = 0;
+      bchar **local_list;
+      bint local_count;
+      bint i;
+      const bchar *charset = NULL;
+      bboolean need_conversion = !g_get_charset (&charset);
+      bint count = 0;
       GError *error = NULL;
 
       /* Probably COMPOUND text, we fall back to Xlib routines
@@ -454,7 +454,7 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
 						    length,
 						    &local_list);
       if (list)
-	*list = g_new (gchar *, local_count + 1);
+	*list = g_new (bchar *, local_count + 1);
 
       for (i = 0; i < local_count; i++)
 	{
@@ -462,7 +462,7 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
 	   */
 	  if (need_conversion)
 	    {
-	      gchar *utf = g_convert (local_list[i], -1,
+	      bchar *utf = g_convert (local_list[i], -1,
 				      "UTF-8", charset,
 				      NULL, NULL, &error);
 	      if (utf)

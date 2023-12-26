@@ -47,11 +47,11 @@ struct _BtkSizeGroup
   /* <private> */
   GSList *GSEAL (widgets);
 
-  guint8 GSEAL (mode);
+  buint8 GSEAL (mode);
 
-  guint GSEAL (have_width) : 1;
-  guint GSEAL (have_height) : 1;
-  guint GSEAL (ignore_hidden) : 1;
+  buint GSEAL (have_width) : 1;
+  buint GSEAL (have_height) : 1;
+  buint GSEAL (ignore_hidden) : 1;
 
   BtkRequisition GSEAL (requisition);
 };
@@ -91,8 +91,8 @@ void             btk_size_group_set_mode      (BtkSizeGroup     *size_group,
 					       BtkSizeGroupMode  mode);
 BtkSizeGroupMode btk_size_group_get_mode      (BtkSizeGroup     *size_group);
 void             btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
-						   gboolean      ignore_hidden);
-gboolean         btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group);
+						   bboolean      ignore_hidden);
+bboolean         btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group);
 void             btk_size_group_add_widget    (BtkSizeGroup     *size_group,
 					       BtkWidget        *widget);
 void             btk_size_group_remove_widget (BtkSizeGroup     *size_group,

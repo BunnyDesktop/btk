@@ -11,14 +11,14 @@ static BtkWidget *spinner_sensitive = NULL;
 static BtkWidget *spinner_unsensitive = NULL;
 
 static void
-on_play_clicked (BtkButton *button, gpointer user_data)
+on_play_clicked (BtkButton *button, bpointer user_data)
 {
   btk_spinner_start (BTK_SPINNER (spinner_sensitive));
   btk_spinner_start (BTK_SPINNER (spinner_unsensitive));
 }
 
 static void
-on_stop_clicked (BtkButton *button, gpointer user_data)
+on_stop_clicked (BtkButton *button, bpointer user_data)
 {
   btk_spinner_stop (BTK_SPINNER (spinner_sensitive));
   btk_spinner_stop (BTK_SPINNER (spinner_unsensitive));

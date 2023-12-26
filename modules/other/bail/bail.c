@@ -31,33 +31,33 @@
 #define BUNNY_ACCESSIBILITY_ENV "BUNNY_ACCESSIBILITY"
 #define NO_BAIL_ENV "NO_BAIL"
 
-static gboolean bail_focus_watcher      (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
+static bboolean bail_focus_watcher      (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
                                          const BValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_select_watcher     (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
+                                         bpointer               data);
+static bboolean bail_select_watcher     (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
                                          const BValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_deselect_watcher   (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
+                                         bpointer               data);
+static bboolean bail_deselect_watcher   (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
                                          const BValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_switch_page_watcher(GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
+                                         bpointer               data);
+static bboolean bail_switch_page_watcher(GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
                                          const BValue          *param_values,
-                                         gpointer               data);
+                                         bpointer               data);
 static BatkObject* bail_get_accessible_for_widget (BtkWidget    *widget,
-                                                  gboolean     *transient);
+                                                  bboolean     *transient);
 static void     bail_finish_select       (BtkWidget            *widget);
 static void     bail_map_cb              (BtkWidget            *widget);
 static void     bail_map_submenu_cb      (BtkWidget            *widget);
-static gint     bail_focus_idle_handler  (gpointer             data);
+static bint     bail_focus_idle_handler  (bpointer             data);
 static void     bail_focus_notify        (BtkWidget            *widget);
 static void     bail_focus_notify_when_idle (BtkWidget            *widget);
 
 static void     bail_focus_tracker_init (void);
-static void     bail_focus_object_destroyed (gpointer data);
+static void     bail_focus_object_destroyed (bpointer data);
 static void     bail_focus_tracker (BatkObject *object);
 static void     bail_set_focus_widget (BtkWidget *focus_widget,
                                        BtkWidget *widget); 
@@ -66,11 +66,11 @@ static void     bail_set_focus_object (BatkObject *focus_obj,
 
 BtkWidget* focus_widget = NULL;
 static BtkWidget* next_focus_widget = NULL;
-static gboolean was_deselect = FALSE;
+static bboolean was_deselect = FALSE;
 static BtkWidget* subsequent_focus_widget = NULL;
 static BtkWidget* focus_before_menu = NULL;
-static guint focus_notify_handler = 0;    
-static guint focus_tracker_id = 0;
+static buint focus_notify_handler = 0;    
+static buint focus_tracker_id = 0;
 static GQuark quark_focus_object = 0;
 
 BAIL_IMPLEMENT_FACTORY (BAIL_TYPE_OBJECT, BailObject, bail_object, BTK_TYPE_OBJECT)
@@ -120,7 +120,7 @@ BAIL_IMPLEMENT_FACTORY_WITH_FUNC_DUMMY (BAIL_TYPE_TEXT_CELL, BailTextCell, bail_
 
 static BatkObject*
 bail_get_accessible_for_widget (BtkWidget *widget,
-                                gboolean  *transient)
+                                bboolean  *transient)
 {
   BatkObject *obj = NULL;
   GType bunny_canvas;
@@ -143,7 +143,7 @@ bail_get_accessible_for_widget (BtkWidget *widget,
   else if (BTK_IS_NOTEBOOK (widget)) 
     {
       BtkNotebook *notebook;
-      gint page_num = -1;
+      bint page_num = -1;
 
       notebook = BTK_NOTEBOOK (widget);
       /*
@@ -211,11 +211,11 @@ bail_get_accessible_for_widget (BtkWidget *widget,
   return obj;
 }
 
-static gboolean
+static bboolean
 bail_focus_watcher (GSignalInvocationHint *ihint,
-                    guint                  n_param_values,
+                    buint                  n_param_values,
                     const BValue          *param_values,
-                    gpointer               data)
+                    bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
@@ -334,11 +334,11 @@ bail_focus_watcher (GSignalInvocationHint *ihint,
   return TRUE; 
 }
 
-static gboolean
+static bboolean
 bail_select_watcher (GSignalInvocationHint *ihint,
-                     guint                  n_param_values,
+                     buint                  n_param_values,
                      const BValue          *param_values,
-                     gpointer               data)
+                     bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
@@ -375,7 +375,7 @@ bail_finish_select (BtkWidget *widget)
            * If the submenu is not visble, wait until it is before
            * reporting focus on the menu item.
            */
-          gulong handler_id;
+          bulong handler_id;
 
           handler_id = g_signal_handler_find (menu_item->submenu,
                                               G_SIGNAL_MATCH_FUNC,
@@ -383,7 +383,7 @@ bail_finish_select (BtkWidget *widget)
                                                                BTK_TYPE_WINDOW),
                                               0,
                                               NULL,
-                                              (gpointer) bail_map_submenu_cb,
+                                              (bpointer) bail_map_submenu_cb,
                                               NULL); 
           if (!handler_id)
             g_signal_connect (menu_item->submenu, "map",
@@ -445,11 +445,11 @@ bail_map_submenu_cb (BtkWidget *widget)
 }
 
 
-static gboolean
+static bboolean
 bail_deselect_watcher (GSignalInvocationHint *ihint,
-                       guint                  n_param_values,
+                       buint                  n_param_values,
                        const BValue          *param_values,
-                       gpointer               data)
+                       bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
@@ -494,11 +494,11 @@ bail_deselect_watcher (GSignalInvocationHint *ihint,
   return TRUE; 
 }
 
-static gboolean 
+static bboolean 
 bail_switch_page_watcher (GSignalInvocationHint *ihint,
-                          guint                  n_param_values,
+                          buint                  n_param_values,
                           const BValue          *param_values,
-                          gpointer               data)
+                          bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
@@ -520,8 +520,8 @@ bail_switch_page_watcher (GSignalInvocationHint *ihint,
   return TRUE;
 }
 
-static gboolean
-bail_focus_idle_handler (gpointer data)
+static bboolean
+bail_focus_idle_handler (bpointer data)
 {
   focus_notify_handler = 0;
   /*
@@ -548,7 +548,7 @@ static void
 bail_focus_notify (BtkWidget *widget)
 {
   BatkObject *batk_obj;
-  gboolean transient;
+  bboolean transient;
 
   if (widget != focus_widget)
     {
@@ -663,11 +663,11 @@ bail_focus_notify_when_idle (BtkWidget *widget)
   focus_notify_handler = bdk_threads_add_idle (bail_focus_idle_handler, widget);
 }
 
-static gboolean
+static bboolean
 bail_deactivate_watcher (GSignalInvocationHint *ihint,
-                         guint                  n_param_values,
+                         buint                  n_param_values,
                          const BValue          *param_values,
-                         gpointer               data)
+                         bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
@@ -708,7 +708,7 @@ bail_deactivate_watcher (GSignalInvocationHint *ihint,
 static void
 bail_focus_tracker_init (void)
 {
-  static gboolean  emission_hooks_added = FALSE;
+  static bboolean  emission_hooks_added = FALSE;
 
   if (!emission_hooks_added)
     {
@@ -764,7 +764,7 @@ bail_focus_tracker_init (void)
 }
 
 static void
-bail_focus_object_destroyed (gpointer data)
+bail_focus_object_destroyed (bpointer data)
 {
   BObject *obj;
 
@@ -872,7 +872,7 @@ static void
 bail_accessibility_module_init (void)
 {
   const char *env_a_t_support;
-  gboolean a_t_support = FALSE;
+  bboolean a_t_support = FALSE;
 
   if (bail_initialized)
     {
@@ -979,10 +979,10 @@ bunny_accessibility_module_shutdown (void)
 }
 
 int
-btk_module_init (gint *argc, char** argv[])
+btk_module_init (bint *argc, char** argv[])
 {
   const char* env_no_bail;
-  gboolean no_bail = FALSE;
+  bboolean no_bail = FALSE;
 
   env_no_bail = g_getenv (NO_BAIL_ENV);
   if (env_no_bail)

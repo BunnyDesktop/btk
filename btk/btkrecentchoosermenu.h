@@ -65,9 +65,9 @@ GType      btk_recent_chooser_menu_get_type         (void) B_GNUC_CONST;
 BtkWidget *btk_recent_chooser_menu_new              (void);
 BtkWidget *btk_recent_chooser_menu_new_for_manager  (BtkRecentManager     *manager);
 
-gboolean   btk_recent_chooser_menu_get_show_numbers (BtkRecentChooserMenu *menu);
+bboolean   btk_recent_chooser_menu_get_show_numbers (BtkRecentChooserMenu *menu);
 void       btk_recent_chooser_menu_set_show_numbers (BtkRecentChooserMenu *menu,
-						     gboolean              show_numbers);
+						     bboolean              show_numbers);
 
 B_END_DECLS
 

@@ -22,8 +22,8 @@
 #include "btkprintutils.h"
 #include "btkalias.h"
 
-gdouble
-_btk_print_convert_to_mm (gdouble len, 
+bdouble
+_btk_print_convert_to_mm (bdouble len, 
 			  BtkUnit unit)
 {
   switch (unit)
@@ -42,8 +42,8 @@ _btk_print_convert_to_mm (gdouble len,
     }
 }
 
-gdouble
-_btk_print_convert_from_mm (gdouble len, 
+bdouble
+_btk_print_convert_from_mm (bdouble len, 
 			    BtkUnit unit)
 {
   switch (unit)

@@ -9,14 +9,14 @@
 
 static void _print_type (BatkObject *obj);
 static void _do_selection (BatkObject *obj);
-static gint _finish_selection (gpointer data);
-static gint _remove_page (gpointer data);
+static bint _finish_selection (bpointer data);
+static bint _remove_page (bpointer data);
 
 static void _print_type (BatkObject *obj)
 {
-  const gchar *typename = NULL;
-  const gchar *name = NULL;
-  const gchar *description = NULL;
+  const bchar *typename = NULL;
+  const bchar *name = NULL;
+  const bchar *description = NULL;
   BatkRole role;
 
   if (BTK_IS_ACCESSIBLE (obj))
@@ -42,7 +42,7 @@ static void _print_type (BatkObject *obj)
   if (role ==  BATK_ROLE_PAGE_TAB)
   {
     BatkObject *parent, *child;
-    gint x, y, width, height;
+    bint x, y, width, height;
 
     x = y = width = height = 0;
     batk_component_get_extents (BATK_COMPONENT (obj), &x, &y, &width, &height,
@@ -80,11 +80,11 @@ static void _print_type (BatkObject *obj)
 static void
 _do_selection (BatkObject *obj)
 {
-  gint i;
-  gint n_children;
+  bint i;
+  bint n_children;
   BatkRole role;
   BatkObject *selection_obj;
-  static gboolean done_selection = FALSE;
+  static bboolean done_selection = FALSE;
   
   if (done_selection)
     return;
@@ -157,7 +157,7 @@ _do_selection (BatkObject *obj)
   g_timeout_add (5000, _remove_page, selection_obj);
 } 
 
-static gint _remove_page (gpointer data)
+static bint _remove_page (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
   BtkWidget *widget = NULL;
@@ -170,13 +170,13 @@ static gint _remove_page (gpointer data)
   return FALSE;
 }
 
-static gint _finish_selection (gpointer data)
+static bint _finish_selection (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
   BatkObject *selected;
   BatkObject *parent_object;
   BtkWidget *parent_widget;
-  gint      i, index;
+  bint      i, index;
 
   g_print ("\t*** Start Finish selection ***\n");
   
@@ -215,7 +215,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testnotebook Module loaded\n");
 

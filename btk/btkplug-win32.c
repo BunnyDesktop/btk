@@ -91,7 +91,7 @@ _btk_plug_windowing_set_focus (BtkPlug *plug)
 
 void
 _btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
-				     guint           accelerator_key,
+				     buint           accelerator_key,
 				     BdkModifierType accelerator_mods)
 {
   if (plug->socket_window)
@@ -102,7 +102,7 @@ _btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
 
 void
 _btk_plug_windowing_remove_grabbed_key (BtkPlug        *plug,
-					guint           accelerator_key,
+					buint           accelerator_key,
 					BdkModifierType accelerator_mods)
 {
   if (plug->socket_window)
@@ -137,7 +137,7 @@ _btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
 BdkFilterReturn
 _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 				 BdkEvent  *event,
-				 gpointer   data)
+				 bpointer   data)
 {
   BtkPlug *plug = BTK_PLUG (data);
   MSG *msg = (MSG *) bdk_xevent;
@@ -155,7 +155,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
       if (!plug->same_app)
 	{
 	  HWND parent = GetAncestor (msg->hwnd, GA_PARENT);
-	  gboolean was_embedded = plug->socket_window != NULL;
+	  bboolean was_embedded = plug->socket_window != NULL;
 	  BdkScreen *screen = bdk_drawable_get_screen (event->any.window);
 	  BdkDisplay *display = bdk_screen_get_display (screen);
 
@@ -200,7 +200,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 	      plug->socket_window = bdk_window_lookup_for_display (display, (BdkNativeWindow) parent);
 	      if (plug->socket_window)
 		{
-		  gpointer user_data = NULL;
+		  bpointer user_data = NULL;
 
 		  BTK_NOTE (PLUGSOCKET, g_printerr ("already had socket_window\n"));
 		  bdk_window_get_user_data (plug->socket_window, &user_data);

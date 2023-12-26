@@ -15,11 +15,11 @@ static BtkWidget *window = NULL;
 typedef struct _StockItemInfo StockItemInfo;
 struct _StockItemInfo
 {
-  gchar *id;
+  bchar *id;
   BtkStockItem item;
   BdkPixbuf *small_icon;
-  gchar *macro;
-  gchar *accel_str;
+  bchar *macro;
+  bchar *accel_str;
 };
 
 /* Make StockItemInfo a boxed type so we can automatically
@@ -81,11 +81,11 @@ struct _StockItemDisplay
   BtkWidget *icon_image;
 };
 
-static gchar*
-id_to_macro (const gchar *id)
+static bchar*
+id_to_macro (const bchar *id)
 {
   GString *macro = NULL;
-  const gchar *cp;
+  const bchar *cp;
 
   /* btk-foo-bar -> BTK_STOCK_FOO_BAR */
 
@@ -153,8 +153,8 @@ create_model (void)
       if (icon_set)
         {
           BtkIconSize *sizes = NULL;
-          gint n_sizes = 0;
-          gint i;
+          bint n_sizes = 0;
+          bint i;
           BtkIconSize size;
 
           /* See what sizes this stock icon really exists at */
@@ -181,7 +181,7 @@ create_model (void)
           if (size != BTK_ICON_SIZE_MENU)
             {
               /* Make the result the proper size for our thumbnail */
-              gint w, h;
+              bint w, h;
               BdkPixbuf *scaled;
               
               btk_icon_size_lookup (BTK_ICON_SIZE_MENU, &w, &h);
@@ -234,15 +234,15 @@ get_largest_size (const char *id)
 {
   BtkIconSet *set = btk_icon_factory_lookup_default (id);
   BtkIconSize *sizes;
-  gint n_sizes, i;
+  bint n_sizes, i;
   BtkIconSize best_size = BTK_ICON_SIZE_INVALID;
-  gint best_pixels = 0;
+  bint best_pixels = 0;
 
   btk_icon_set_get_sizes (set, &sizes, &n_sizes);
 
   for (i = 0; i < n_sizes; i++)
     {
-      gint width, height;
+      bint width, height;
       
       btk_icon_size_lookup (sizes[i], &width, &height);
 
@@ -272,7 +272,7 @@ selection_changed (BtkTreeSelection *selection)
   if (btk_tree_selection_get_selected (selection, &model, &iter))
     {
       StockItemInfo *info;
-      gchar *str;
+      bchar *str;
       
       btk_tree_model_get (model, &iter,
                           0, &info,
@@ -324,7 +324,7 @@ macro_set_func_text (BtkTreeViewColumn *tree_column,
 		     BtkCellRenderer   *cell,
 		     BtkTreeModel      *model,
 		     BtkTreeIter       *iter,
-		     gpointer           data)
+		     bpointer           data)
 {
   StockItemInfo *info;
   
@@ -344,7 +344,7 @@ id_set_func (BtkTreeViewColumn *tree_column,
              BtkCellRenderer   *cell,
              BtkTreeModel      *model,
              BtkTreeIter       *iter,
-             gpointer           data)
+             bpointer           data)
 {
   StockItemInfo *info;
   
@@ -364,7 +364,7 @@ accel_set_func (BtkTreeViewColumn *tree_column,
                 BtkCellRenderer   *cell,
                 BtkTreeModel      *model,
                 BtkTreeIter       *iter,
-                gpointer           data)
+                bpointer           data)
 {
   StockItemInfo *info;
   
@@ -384,7 +384,7 @@ label_set_func (BtkTreeViewColumn *tree_column,
                 BtkCellRenderer   *cell,
                 BtkTreeModel      *model,
                 BtkTreeIter       *iter,
-                gpointer           data)
+                bpointer           data)
 {
   StockItemInfo *info;
   

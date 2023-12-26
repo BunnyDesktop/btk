@@ -167,9 +167,9 @@ typedef enum {
 struct _BdkColormapPrivateWin32
 {
   HPALETTE hpal;
-  gint current_size;		/* Current size of hpal */
+  bint current_size;		/* Current size of hpal */
   BdkWin32PalEntryState *use;
-  gint private_val;
+  bint private_val;
 
   GHashTable *hash;
   BdkColorInfo *info;
@@ -193,17 +193,17 @@ struct _BdkGCWin32
   BdkGCValuesMask values_mask;
 
   BdkFont *font;
-  gint rop2;
+  bint rop2;
   BdkSubwindowMode subwindow_mode;
-  gint graphics_exposures;
-  gint pen_width;
+  bint graphics_exposures;
+  bint pen_width;
   DWORD pen_style;
   BdkLineStyle line_style;
   BdkCapStyle cap_style;
   BdkJoinStyle join_style;
   DWORD *pen_dashes;		/* use for PS_USERSTYLE or step-by-step rendering */
-  gint pen_num_dashes;
-  gint pen_dash_offset;
+  bint pen_num_dashes;
+  bint pen_dash_offset;
   HBRUSH pen_hbrbg;
 
   /* Following fields are valid while the GC exists as a Windows DC */
@@ -220,33 +220,33 @@ struct _BdkGCWin32Class
 
 GType _bdk_gc_win32_get_type (void);
 
-gulong _bdk_win32_get_next_tick (gulong suggested_tick);
+bulong _bdk_win32_get_next_tick (bulong suggested_tick);
 
 void _bdk_window_init_position     (BdkWindow *window);
 void _bdk_window_move_resize_child (BdkWindow *window,
-				    gint       x,
-				    gint       y,
-				    gint       width,
-				    gint       height);
+				    bint       x,
+				    bint       y,
+				    bint       width,
+				    bint       height);
 
 /* BdkWindowImpl methods */
 void _bdk_win32_window_scroll (BdkWindow *window,
-			       gint       dx,
-			       gint       dy);
+			       bint       dx,
+			       bint       dy);
 void _bdk_win32_window_move_rebunnyion (BdkWindow       *window,
 				    const BdkRebunnyion *rebunnyion,
-				    gint             dx,
-				    gint             dy);
+				    bint             dx,
+				    bint             dy);
 void _bdk_win32_windowing_window_get_offsets (BdkWindow *window,
-					      gint      *x_offset,
-					      gint      *y_offset);
+					      bint      *x_offset,
+					      bint      *y_offset);
 
 
 void _bdk_win32_selection_init (void);
 void _bdk_win32_dnd_exit (void);
 
 void	 bdk_win32_handle_table_insert  (HANDLE   *handle,
-					 gpointer data);
+					 bpointer data);
 void	 bdk_win32_handle_table_remove  (HANDLE handle);
 
 BdkGC    *_bdk_win32_gc_new             (BdkDrawable        *drawable,
@@ -254,39 +254,39 @@ BdkGC    *_bdk_win32_gc_new             (BdkDrawable        *drawable,
 					 BdkGCValuesMask     values_mask);
 
 BdkImage *_bdk_win32_get_image 		(BdkDrawable *drawable,
-					 gint         x,
-					 gint         y,
-					 gint         width,
-					 gint         height);
+					 bint         x,
+					 bint         y,
+					 bint         width,
+					 bint         height);
 
 BdkImage *_bdk_win32_copy_to_image      (BdkDrawable *drawable,
 					 BdkImage    *image,
-					 gint         src_x,
-					 gint         src_y,
-					 gint         dest_x,
-					 gint         dest_y,
-					 gint         width,
-					 gint         height);
+					 bint         src_x,
+					 bint         src_y,
+					 bint         dest_x,
+					 bint         dest_y,
+					 bint         width,
+					 bint         height);
 
-void      _bdk_win32_blit               (gboolean              use_fg_bg,
+void      _bdk_win32_blit               (bboolean              use_fg_bg,
 					 BdkDrawableImplWin32 *drawable,
 					 BdkGC       	       *gc,
 					 BdkDrawable   	       *src,
-					 gint        	    	xsrc,
-					 gint        	    	ysrc,
-					 gint        	    	xdest,
-					 gint        	    	ydest,
-					 gint        	    	width,
-					 gint        	    	height);
+					 bint        	    	xsrc,
+					 bint        	    	ysrc,
+					 bint        	    	xdest,
+					 bint        	    	ydest,
+					 bint        	    	width,
+					 bint        	    	height);
 
 COLORREF  _bdk_win32_colormap_color     (BdkColormap *colormap,
-				         gulong       pixel);
+				         bulong       pixel);
 
 HRGN	  _bdk_win32_bitmap_to_hrgn     (BdkPixmap   *bitmap);
 
 HRGN	  _bdk_win32_bdkrebunnyion_to_hrgn  (const BdkRebunnyion *rebunnyion,
-					 gint             x_origin,
-					 gint             y_origin);
+					 bint             x_origin,
+					 bint             y_origin);
 
 BdkRebunnyion *_bdk_win32_hrgn_to_rebunnyion    (HRGN hrgn);
 
@@ -295,7 +295,7 @@ void	_bdk_win32_adjust_client_rect   (BdkWindow *window,
 
 void    _bdk_selection_property_delete (BdkWindow *);
 
-void    _bdk_dropfiles_store (gchar *data);
+void    _bdk_dropfiles_store (bchar *data);
 
 void    _bdk_wchar_text_handle    (BdkFont       *font,
 				   const wchar_t *wcstr,
@@ -309,55 +309,55 @@ void    _bdk_wchar_text_handle    (BdkFont       *font,
 void       _bdk_push_modal_window   (BdkWindow *window);
 void       _bdk_remove_modal_window (BdkWindow *window);
 BdkWindow *_bdk_modal_current       (void);
-gboolean   _bdk_modal_blocked       (BdkWindow *window);
+bboolean   _bdk_modal_blocked       (BdkWindow *window);
 
 #ifdef G_ENABLE_DEBUG
-gchar *_bdk_win32_color_to_string      (const BdkColor *color);
+bchar *_bdk_win32_color_to_string      (const BdkColor *color);
 void   _bdk_win32_print_paletteentries (const PALETTEENTRY *pep,
 					const int           nentries);
 void   _bdk_win32_print_system_palette (void);
 void   _bdk_win32_print_hpalette       (HPALETTE     hpal);
 void   _bdk_win32_print_dc             (HDC          hdc);
 
-gchar *_bdk_win32_cap_style_to_string  (BdkCapStyle  cap_style);
-gchar *_bdk_win32_fill_style_to_string (BdkFill      fill);
-gchar *_bdk_win32_function_to_string   (BdkFunction  function);
-gchar *_bdk_win32_join_style_to_string (BdkJoinStyle join_style);
-gchar *_bdk_win32_line_style_to_string (BdkLineStyle line_style);
-gchar *_bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol);
-gchar *_bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask);
-gchar *_bdk_win32_window_state_to_string (BdkWindowState state);
-gchar *_bdk_win32_window_style_to_string (LONG style);
-gchar *_bdk_win32_window_exstyle_to_string (LONG style);
-gchar *_bdk_win32_window_pos_bits_to_string (UINT flags);
-gchar *_bdk_win32_drag_action_to_string (BdkDragAction actions);
-gchar *_bdk_win32_drawable_description (BdkDrawable *d);
+bchar *_bdk_win32_cap_style_to_string  (BdkCapStyle  cap_style);
+bchar *_bdk_win32_fill_style_to_string (BdkFill      fill);
+bchar *_bdk_win32_function_to_string   (BdkFunction  function);
+bchar *_bdk_win32_join_style_to_string (BdkJoinStyle join_style);
+bchar *_bdk_win32_line_style_to_string (BdkLineStyle line_style);
+bchar *_bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol);
+bchar *_bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask);
+bchar *_bdk_win32_window_state_to_string (BdkWindowState state);
+bchar *_bdk_win32_window_style_to_string (LONG style);
+bchar *_bdk_win32_window_exstyle_to_string (LONG style);
+bchar *_bdk_win32_window_pos_bits_to_string (UINT flags);
+bchar *_bdk_win32_drag_action_to_string (BdkDragAction actions);
+bchar *_bdk_win32_drawable_description (BdkDrawable *d);
 
-gchar *_bdk_win32_rop2_to_string       (int          rop2);
-gchar *_bdk_win32_lbstyle_to_string    (UINT         brush_style);
-gchar *_bdk_win32_pstype_to_string     (DWORD        pen_style);
-gchar *_bdk_win32_psstyle_to_string    (DWORD        pen_style);
-gchar *_bdk_win32_psendcap_to_string   (DWORD        pen_style);
-gchar *_bdk_win32_psjoin_to_string     (DWORD        pen_style);
-gchar *_bdk_win32_message_to_string    (UINT         msg);
-gchar *_bdk_win32_key_to_string        (LONG         lParam);
-gchar *_bdk_win32_cf_to_string         (UINT         format);
-gchar *_bdk_win32_data_to_string       (const guchar*data,
+bchar *_bdk_win32_rop2_to_string       (int          rop2);
+bchar *_bdk_win32_lbstyle_to_string    (UINT         brush_style);
+bchar *_bdk_win32_pstype_to_string     (DWORD        pen_style);
+bchar *_bdk_win32_psstyle_to_string    (DWORD        pen_style);
+bchar *_bdk_win32_psendcap_to_string   (DWORD        pen_style);
+bchar *_bdk_win32_psjoin_to_string     (DWORD        pen_style);
+bchar *_bdk_win32_message_to_string    (UINT         msg);
+bchar *_bdk_win32_key_to_string        (LONG         lParam);
+bchar *_bdk_win32_cf_to_string         (UINT         format);
+bchar *_bdk_win32_data_to_string       (const buchar*data,
 					int          nbytes);
-gchar *_bdk_win32_rect_to_string       (const RECT  *rect);
+bchar *_bdk_win32_rect_to_string       (const RECT  *rect);
 
-gchar *_bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect);
-gchar *_bdk_win32_bdkrebunnyion_to_string    (const BdkRebunnyion    *box);
+bchar *_bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect);
+bchar *_bdk_win32_bdkrebunnyion_to_string    (const BdkRebunnyion    *box);
 
 void   _bdk_win32_print_event            (const BdkEvent     *event);
 
 #endif
 
-gchar  *_bdk_win32_last_error_string (void);
-void    _bdk_win32_api_failed        (const gchar *where,
-				     const gchar *api);
-void    _bdk_other_api_failed        (const gchar *where,
-				     const gchar *api);
+bchar  *_bdk_win32_last_error_string (void);
+void    _bdk_win32_api_failed        (const bchar *where,
+				     const bchar *api);
+void    _bdk_other_api_failed        (const bchar *where,
+				     const bchar *api);
 
 #define WIN32_API_FAILED(api) _bdk_win32_api_failed (B_STRLOC , api)
 #define WIN32_GDI_FAILED(api) WIN32_API_FAILED (api)
@@ -379,12 +379,12 @@ extern BdkWindow        *_bdk_root;
 extern BdkDisplay       *_bdk_display;
 extern BdkScreen        *_bdk_screen;
 
-extern gint		 _bdk_num_monitors;
+extern bint		 _bdk_num_monitors;
 typedef struct _BdkWin32Monitor BdkWin32Monitor;
 struct _BdkWin32Monitor
 {
-  gchar *name;
-  gint width_mm, height_mm;
+  bchar *name;
+  bint width_mm, height_mm;
   BdkRectangle rect;
 };
 extern BdkWin32Monitor  *_bdk_monitors;
@@ -394,7 +394,7 @@ extern BdkWin32Monitor  *_bdk_monitors;
  * to the left and/or above the primary monitor) to get BDK
  * coordinates, which should be non-negative on the whole screen.
  */
-extern gint		 _bdk_offset_x, _bdk_offset_y;
+extern bint		 _bdk_offset_x, _bdk_offset_y;
 
 extern HDC		 _bdk_display_hdc;
 extern HINSTANCE	 _bdk_dll_hinstance;
@@ -404,10 +404,10 @@ extern HINSTANCE	 _bdk_app_hmodule;
  * from a single thread anyway.
  */
 extern HKL		 _bdk_input_locale;
-extern gboolean		 _bdk_input_locale_is_ime;
+extern bboolean		 _bdk_input_locale_is_ime;
 extern UINT		 _bdk_input_codepage;
 
-extern guint		 _bdk_keymap_serial;
+extern buint		 _bdk_keymap_serial;
 
 /* BdkAtoms: properties, targets and types */
 extern BdkAtom		 _bdk_selection;
@@ -452,27 +452,27 @@ extern BdkWin32DndState  _dnd_source_state;
 
 void _bdk_win32_dnd_do_dragdrop (void);
 void _bdk_win32_ole2_dnd_property_change (BdkAtom       type,
-					  gint          format,
-					  const guchar *data,
-					  gint          nelements);
+					  bint          format,
+					  const buchar *data,
+					  bint          nelements);
 
 void  _bdk_win32_begin_modal_call (void);
 void  _bdk_win32_end_modal_call (void);
 
 
 /* Options */
-extern gboolean		 _bdk_input_ignore_wintab;
-extern gint		 _bdk_max_colors;
+extern bboolean		 _bdk_input_ignore_wintab;
+extern bint		 _bdk_max_colors;
 
 #define BDK_WIN32_COLORMAP_DATA(cmap) ((BdkColormapPrivateWin32 *) BDK_COLORMAP (cmap)->windowing_data)
 
 /* TRUE while a modal sizing, moving, or dnd operation is in progress */
-extern gboolean		_modal_operation_in_progress;
+extern bboolean		_modal_operation_in_progress;
 
 extern HWND		_modal_move_resize_window;
 
 /* TRUE when we are emptying the clipboard ourselves */
-extern gboolean		_ignore_destroy_clipboard;
+extern bboolean		_ignore_destroy_clipboard;
 
 /* Mapping from registered clipboard format id (native) to
  * corresponding BdkAtom
@@ -490,19 +490,19 @@ HGLOBAL _bdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
  */
 HICON _bdk_win32_pixbuf_to_hicon   (BdkPixbuf *pixbuf);
 HICON _bdk_win32_pixbuf_to_hcursor (BdkPixbuf *pixbuf,
-				    gint       x_hotspot,
-				    gint       y_hotspot);
-gboolean _bdk_win32_pixbuf_to_hicon_supports_alpha (void);
+				    bint       x_hotspot,
+				    bint       y_hotspot);
+bboolean _bdk_win32_pixbuf_to_hicon_supports_alpha (void);
 
 void _bdk_win32_append_event (BdkEvent *event);
 void _bdk_win32_emit_configure_event (BdkWindow *window);
 BdkWindow *_bdk_win32_find_window_for_mouse_event (BdkWindow* reported_window,
 						   MSG*       msg);
 
-guint32    _bdk_win32_keymap_get_decimal_mark    (BdkWin32Keymap *keymap);
-gboolean   _bdk_win32_keymap_has_altgr           (BdkWin32Keymap *keymap);
-guint8     _bdk_win32_keymap_get_active_group    (BdkWin32Keymap *keymap);
-guint8     _bdk_win32_keymap_get_rshift_scancode (BdkWin32Keymap *keymap);
+buint32    _bdk_win32_keymap_get_decimal_mark    (BdkWin32Keymap *keymap);
+bboolean   _bdk_win32_keymap_has_altgr           (BdkWin32Keymap *keymap);
+buint8     _bdk_win32_keymap_get_active_group    (BdkWin32Keymap *keymap);
+buint8     _bdk_win32_keymap_get_rshift_scancode (BdkWin32Keymap *keymap);
 void       _bdk_win32_keymap_set_active_layout   (BdkWin32Keymap *keymap,
                                                   HKL             hkl);
 

@@ -37,14 +37,14 @@ B_BEGIN_DECLS
 #define BTK_IS_TREE_MODEL_FILTER_CLASS(vtable)  (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_TREE_MODEL_FILTER))
 #define BTK_TREE_MODEL_FILTER_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_FILTER, BtkTreeModelFilterClass))
 
-typedef gboolean (* BtkTreeModelFilterVisibleFunc) (BtkTreeModel *model,
+typedef bboolean (* BtkTreeModelFilterVisibleFunc) (BtkTreeModel *model,
                                                     BtkTreeIter  *iter,
-                                                    gpointer      data);
+                                                    bpointer      data);
 typedef void (* BtkTreeModelFilterModifyFunc) (BtkTreeModel *model,
                                                BtkTreeIter  *iter,
                                                BValue       *value,
-                                               gint          column,
-                                               gpointer      data);
+                                               bint          column,
+                                               bpointer      data);
 
 typedef struct _BtkTreeModelFilter          BtkTreeModelFilter;
 typedef struct _BtkTreeModelFilterClass     BtkTreeModelFilterClass;
@@ -75,21 +75,21 @@ BtkTreeModel *btk_tree_model_filter_new                        (BtkTreeModel    
                                                                 BtkTreePath                  *root);
 void          btk_tree_model_filter_set_visible_func           (BtkTreeModelFilter           *filter,
                                                                 BtkTreeModelFilterVisibleFunc func,
-                                                                gpointer                      data,
+                                                                bpointer                      data,
                                                                 GDestroyNotify                destroy);
 void          btk_tree_model_filter_set_modify_func            (BtkTreeModelFilter           *filter,
-                                                                gint                          n_columns,
+                                                                bint                          n_columns,
                                                                 GType                        *types,
                                                                 BtkTreeModelFilterModifyFunc  func,
-                                                                gpointer                      data,
+                                                                bpointer                      data,
                                                                 GDestroyNotify                destroy);
 void          btk_tree_model_filter_set_visible_column         (BtkTreeModelFilter           *filter,
-                                                                gint                          column);
+                                                                bint                          column);
 
 BtkTreeModel *btk_tree_model_filter_get_model                  (BtkTreeModelFilter           *filter);
 
 /* conversion */
-gboolean      btk_tree_model_filter_convert_child_iter_to_iter (BtkTreeModelFilter           *filter,
+bboolean      btk_tree_model_filter_convert_child_iter_to_iter (BtkTreeModelFilter           *filter,
                                                                 BtkTreeIter                  *filter_iter,
                                                                 BtkTreeIter                  *child_iter);
 void          btk_tree_model_filter_convert_iter_to_child_iter (BtkTreeModelFilter           *filter,

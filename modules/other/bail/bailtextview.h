@@ -40,16 +40,16 @@ struct _BailTextView
   BailContainer  parent;
 
   BailTextUtil   *textutil;
-  gint           previous_insert_offset;
-  gint           previous_selection_bound;
+  bint           previous_insert_offset;
+  bint           previous_selection_bound;
   /*
    * These fields store information about text changed
    */
-  gchar          *signal_name;
-  gint           position;
-  gint           length;
+  bchar          *signal_name;
+  bint           position;
+  bint           length;
 
-  guint          insert_notify_handler;
+  buint          insert_notify_handler;
 };
 
 GType bail_text_view_get_type (void);

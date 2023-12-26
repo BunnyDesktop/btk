@@ -69,18 +69,18 @@ struct _BtkProgressBar
   BtkProgressBarStyle       GSEAL (bar_style);
   BtkProgressBarOrientation GSEAL (orientation);
 
-  guint GSEAL (blocks);
-  gint  GSEAL (in_block);
+  buint GSEAL (blocks);
+  bint  GSEAL (in_block);
 
-  gint  GSEAL (activity_pos);
-  guint GSEAL (activity_step);
-  guint GSEAL (activity_blocks);
+  bint  GSEAL (activity_pos);
+  buint GSEAL (activity_step);
+  buint GSEAL (activity_blocks);
 
-  gdouble GSEAL (pulse_fraction);
+  bdouble GSEAL (pulse_fraction);
 
-  guint GSEAL (activity_dir) : 1;
-  guint GSEAL (ellipsize) : 3;
-  guint GSEAL (dirty) : 1;
+  buint GSEAL (activity_dir) : 1;
+  buint GSEAL (ellipsize) : 3;
+  buint GSEAL (dirty) : 1;
 };
 
 struct _BtkProgressBarClass
@@ -127,18 +127,18 @@ BtkWidget* btk_progress_bar_new                  (void);
  */
 void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
 void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
-                                                  const gchar    *text);
+                                                  const bchar    *text);
 void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
-                                                  gdouble         fraction);
+                                                  bdouble         fraction);
 
 void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
-                                                  gdouble         fraction);
+                                                  bdouble         fraction);
 void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
 						  BtkProgressBarOrientation orientation);
 
-const gchar*          btk_progress_bar_get_text       (BtkProgressBar *pbar);
-gdouble               btk_progress_bar_get_fraction   (BtkProgressBar *pbar);
-gdouble               btk_progress_bar_get_pulse_step (BtkProgressBar *pbar);
+const bchar*          btk_progress_bar_get_text       (BtkProgressBar *pbar);
+bdouble               btk_progress_bar_get_fraction   (BtkProgressBar *pbar);
+bdouble               btk_progress_bar_get_pulse_step (BtkProgressBar *pbar);
 
 BtkProgressBarOrientation btk_progress_bar_get_orientation (BtkProgressBar *pbar);
 void               btk_progress_bar_set_ellipsize (BtkProgressBar     *pbar,
@@ -153,17 +153,17 @@ BtkWidget* btk_progress_bar_new_with_adjustment  (BtkAdjustment  *adjustment);
 void       btk_progress_bar_set_bar_style        (BtkProgressBar *pbar,
 						  BtkProgressBarStyle style);
 void       btk_progress_bar_set_discrete_blocks  (BtkProgressBar *pbar,
-						  guint           blocks);
+						  buint           blocks);
 /* set_activity_step() is not only deprecated, it doesn't even work.
  * (Of course, it wasn't usable anyway, you had to set it from a size_allocate
  * handler or something)
  */
 void       btk_progress_bar_set_activity_step    (BtkProgressBar *pbar,
-                                                  guint           step);
+                                                  buint           step);
 void       btk_progress_bar_set_activity_blocks  (BtkProgressBar *pbar,
-						  guint           blocks);
+						  buint           blocks);
 void       btk_progress_bar_update               (BtkProgressBar *pbar,
-						  gdouble         percentage);
+						  bdouble         percentage);
 
 #endif /* BTK_DISABLE_DEPRECATED */
 

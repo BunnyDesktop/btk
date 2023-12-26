@@ -38,21 +38,21 @@
 static void btk_file_chooser_dialog_finalize   (BObject                   *object);
 
 static BObject* btk_file_chooser_dialog_constructor  (GType                  type,
-						      guint                  n_construct_properties,
+						      buint                  n_construct_properties,
 						      BObjectConstructParam *construct_params);
 static void     btk_file_chooser_dialog_set_property (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      const BValue          *value,
 						      BParamSpec            *pspec);
 static void     btk_file_chooser_dialog_get_property (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      BValue                *value,
 						      BParamSpec            *pspec);
 
 static void     btk_file_chooser_dialog_map          (BtkWidget             *widget);
 
 static void response_cb (BtkDialog *dialog,
-			 gint       response_id);
+			 bint       response_id);
 
 G_DEFINE_TYPE_WITH_CODE (BtkFileChooserDialog, btk_file_chooser_dialog, BTK_TYPE_DIALOG,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_FILE_CHOOSER,
@@ -113,7 +113,7 @@ btk_file_chooser_dialog_finalize (BObject *object)
   B_OBJECT_CLASS (btk_file_chooser_dialog_parent_class)->finalize (object);  
 }
 
-static gboolean
+static bboolean
 is_stock_accept_response_id (int response_id)
 {
   return (response_id == BTK_RESPONSE_ACCEPT
@@ -179,7 +179,7 @@ file_chooser_widget_default_size_changed (BtkWidget            *widget,
 					  BtkFileChooserDialog *dialog)
 {
   BtkFileChooserDialogPrivate *priv;
-  gint default_width, default_height;
+  bint default_width, default_height;
   BtkRequisition req, widget_req;
 
   priv = BTK_FILE_CHOOSER_DIALOG_GET_PRIVATE (dialog);
@@ -257,7 +257,7 @@ file_chooser_widget_response_requested (BtkWidget            *widget,
   
 static BObject*
 btk_file_chooser_dialog_constructor (GType                  type,
-				     guint                  n_construct_properties,
+				     buint                  n_construct_properties,
 				     BObjectConstructParam *construct_params)
 {
   BtkFileChooserDialogPrivate *priv;
@@ -299,7 +299,7 @@ btk_file_chooser_dialog_constructor (GType                  type,
 
 static void
 btk_file_chooser_dialog_set_property (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      const BValue    *value,
 				      BParamSpec      *pspec)
 
@@ -320,7 +320,7 @@ btk_file_chooser_dialog_set_property (BObject         *object,
 
 static void
 btk_file_chooser_dialog_get_property (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      BValue          *value,
 				      BParamSpec      *pspec)
 {
@@ -331,7 +331,7 @@ btk_file_chooser_dialog_get_property (BObject         *object,
 
 static void
 foreach_ensure_default_response_cb (BtkWidget *widget,
-				    gpointer   data)
+				    bpointer   data)
 {
   BtkFileChooserDialog *dialog = BTK_FILE_CHOOSER_DIALOG (data);
   int response_id;
@@ -366,7 +366,7 @@ btk_file_chooser_dialog_map (BtkWidget *widget)
 /* BtkDialog::response handler */
 static void
 response_cb (BtkDialog *dialog,
-	     gint       response_id)
+	     bint       response_id)
 {
   BtkFileChooserDialogPrivate *priv;
 
@@ -384,16 +384,16 @@ response_cb (BtkDialog *dialog,
 }
 
 static BtkWidget *
-btk_file_chooser_dialog_new_valist (const gchar          *title,
+btk_file_chooser_dialog_new_valist (const bchar          *title,
 				    BtkWindow            *parent,
 				    BtkFileChooserAction  action,
-				    const gchar          *backend,
-				    const gchar          *first_button_text,
+				    const bchar          *backend,
+				    const bchar          *first_button_text,
 				    va_list               varargs)
 {
   BtkWidget *result;
   const char *button_text = first_button_text;
-  gint response_id;
+  bint response_id;
 
   result = g_object_new (BTK_TYPE_FILE_CHOOSER_DIALOG,
 			 "title", title,
@@ -405,9 +405,9 @@ btk_file_chooser_dialog_new_valist (const gchar          *title,
 
   while (button_text)
     {
-      response_id = va_arg (varargs, gint);
+      response_id = va_arg (varargs, bint);
       btk_dialog_add_button (BTK_DIALOG (result), button_text, response_id);
-      button_text = va_arg (varargs, const gchar *);
+      button_text = va_arg (varargs, const bchar *);
     }
 
   return result;
@@ -429,10 +429,10 @@ btk_file_chooser_dialog_new_valist (const gchar          *title,
  * Since: 2.4
  **/
 BtkWidget *
-btk_file_chooser_dialog_new (const gchar         *title,
+btk_file_chooser_dialog_new (const bchar         *title,
 			     BtkWindow           *parent,
 			     BtkFileChooserAction action,
-			     const gchar         *first_button_text,
+			     const bchar         *first_button_text,
 			     ...)
 {
   BtkWidget *result;
@@ -467,11 +467,11 @@ btk_file_chooser_dialog_new (const gchar         *title,
  * Deprecated: 2.14: Use btk_file_chooser_dialog_new() instead.
  **/
 BtkWidget *
-btk_file_chooser_dialog_new_with_backend (const gchar          *title,
+btk_file_chooser_dialog_new_with_backend (const bchar          *title,
 					  BtkWindow            *parent,
 					  BtkFileChooserAction  action,
-					  const gchar          *backend,
-					  const gchar          *first_button_text,
+					  const bchar          *backend,
+					  const bchar          *first_button_text,
 					  ...)
 {
   BtkWidget *result;

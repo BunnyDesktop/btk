@@ -44,8 +44,8 @@ struct _BdkPixmapImplQuartz
 {
   BdkDrawableImplQuartz parent_instance;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   void *data;
   CGDataProviderRef data_provider;

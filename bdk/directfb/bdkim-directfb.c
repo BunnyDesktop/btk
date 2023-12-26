@@ -50,7 +50,7 @@
  *--------------------------------------------------------------
  */
 
-gchar*
+bchar*
 bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
@@ -68,12 +68,12 @@ bdk_set_locale (void)
  *
  * On Win32, we always use UTF-8.
  */
-gchar *
+bchar *
 bdk_wcstombs (const BdkWChar *src)
 {
-  gint len;
+  bint len;
   const BdkWChar *wcp;
-  guchar *mbstr, *bp;
+  buchar *mbstr, *bp;
 
   wcp = src;
   len = 0;
@@ -151,7 +151,7 @@ bdk_wcstombs (const BdkWChar *src)
 
   *bp = 0;
 
-  return (gchar*)mbstr;
+  return (bchar*)mbstr;
 }
 
 
@@ -169,22 +169,22 @@ bdk_wcstombs (const BdkWChar *src)
  */
 
 /* First a helper function for not zero-terminated strings */
-gint
+bint
 bdk_nmbstowcs (BdkWChar    *dest,
-               const gchar *src,
-               gint         src_len,
-               gint         dest_max)
+               const bchar *src,
+               bint         src_len,
+               bint         dest_max)
 {
-  guchar *cp, *end;
-  gint n;
+  buchar *cp, *end;
+  bint n;
 
-  cp = (guchar *) src;
+  cp = (buchar *) src;
   end = cp + src_len;
   n = 0;
   while (cp != end && dest != dest + dest_max)
     {
-      gint i, mask = 0, len;
-      guchar c = *cp;
+      bint i, mask = 0, len;
+      buchar c = *cp;
 
       if (c < 0x80)
         {
@@ -245,10 +245,10 @@ bdk_nmbstowcs (BdkWChar    *dest,
   return n;
 }
 
-gint
+bint
 bdk_mbstowcs (BdkWChar    *dest,
-              const gchar *src,
-              gint         dest_max)
+              const bchar *src,
+              bint         dest_max)
 {
   return bdk_nmbstowcs (dest, src, strlen (src), dest_max);
 }
@@ -256,24 +256,24 @@ bdk_mbstowcs (BdkWChar    *dest,
 
 /* A version that converts to wchar_t wide chars */
 
-gint
+bint
 bdk_nmbstowchar_ts (wchar_t     *dest,
-                    const gchar *src,
-                    gint         src_len,
-                    gint         dest_max)
+                    const bchar *src,
+                    bint         src_len,
+                    bint         dest_max)
 {
   wchar_t *wcp;
-  guchar *cp, *end;
-  gint n;
+  buchar *cp, *end;
+  bint n;
 
   wcp = dest;
-  cp = (guchar *) src;
+  cp = (buchar *) src;
   end = cp + src_len;
   n = 0;
   while (cp != end && wcp != dest + dest_max)
     {
-      gint i, mask = 0, len;
-      guchar c = *cp;
+      bint i, mask = 0, len;
+      buchar c = *cp;
 
       if (c < 0x80)
         {

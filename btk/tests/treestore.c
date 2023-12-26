@@ -30,7 +30,7 @@
 
 #include <btk/btk.h>
 
-static inline gboolean
+static inline bboolean
 iters_equal (BtkTreeIter *a,
 	     BtkTreeIter *b)
 {
@@ -45,12 +45,12 @@ iters_equal (BtkTreeIter *a,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 iter_position (BtkTreeStore *store,
 	       BtkTreeIter  *iter,
 	       int           n)
 {
-  gboolean ret = TRUE;
+  bboolean ret = TRUE;
   BtkTreePath *path;
 
   path = btk_tree_model_get_path (BTK_TREE_MODEL (store), iter);
@@ -102,8 +102,8 @@ tree_store_teardown (TreeStore     *fixture,
 
 static void
 check_model (TreeStore *fixture,
-	     gint      *new_order,
-	     gint       skip)
+	     bint      *new_order,
+	     bint       skip)
 {
   int i;
   BtkTreePath *path;

@@ -98,7 +98,7 @@ do_popup_menu (BtkWidget *my_widget, BdkEventButton *event)
           when you need to pop up a menu:
 	</p>
 <pre class="programlisting">
-static gboolean
+static bboolean
 my_widget_button_press_event_handler (BtkWidget *widget, BdkEventButton *event)
 {
   /* Ignore double-clicks and triple-clicks */
@@ -117,7 +117,7 @@ my_widget_button_press_event_handler (BtkWidget *widget, BdkEventButton *event)
 	  Implement a handler for the <a class="link" href="BtkWidget.html#BtkWidget-popup-menu" title="The “popup-menu” signal"><span class="type">“popup-menu”</span></a> signal:
 	</p>
 <pre class="programlisting">
-static gboolean
+static bboolean
 my_widget_popup_menu_handler (BtkWidget *widget)
 {
   do_popup_menu (widget, NULL);

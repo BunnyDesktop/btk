@@ -57,14 +57,14 @@
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_show_uri (BdkScreen    *screen,
-              const gchar  *uri,
-              guint32       timestamp,
+              const bchar  *uri,
+              buint32       timestamp,
               GError      **error)
 {
   BdkAppLaunchContext *context;
-  gboolean ret;
+  bboolean ret;
 
   g_return_val_if_fail (uri != NULL, FALSE);
 

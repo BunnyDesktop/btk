@@ -61,9 +61,9 @@ struct _BtkHScaleClass
 
 GType      btk_hscale_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_hscale_new            (BtkAdjustment *adjustment);
-BtkWidget* btk_hscale_new_with_range (gdouble        min,
-                                      gdouble        max,
-                                      gdouble        step);
+BtkWidget* btk_hscale_new_with_range (bdouble        min,
+                                      bdouble        max,
+                                      bdouble        step);
 
 
 B_END_DECLS

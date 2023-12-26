@@ -23,7 +23,7 @@
 #include <bairo-quartz.h>
 #include "bdkprivate-quartz.h"
 
-static gpointer parent_class;
+static bpointer parent_class;
 
 static bairo_user_data_key_t bdk_quartz_bairo_key;
 
@@ -150,11 +150,11 @@ bdk_quartz_get_depth (BdkDrawable *drawable)
 static void
 bdk_quartz_draw_rectangle (BdkDrawable *drawable,
 			   BdkGC       *gc,
-			   gboolean     filled,
-			   gint         x,
-			   gint         y,
-			   gint         width,
-			   gint         height)
+			   bboolean     filled,
+			   bint         x,
+			   bint         y,
+			   bint         width,
+			   bint         height)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
 
@@ -190,17 +190,17 @@ bdk_quartz_draw_rectangle (BdkDrawable *drawable,
 static void
 bdk_quartz_draw_arc (BdkDrawable *drawable,
 		     BdkGC       *gc,
-		     gboolean     filled,
-		     gint         x,
-		     gint         y,
-		     gint         width,
-		     gint         height,
-		     gint         angle1,
-		     gint         angle2)
+		     bboolean     filled,
+		     bint         x,
+		     bint         y,
+		     bint         width,
+		     bint         height,
+		     bint         angle1,
+		     bint         angle2)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   float start_angle, end_angle;
-  gboolean clockwise = FALSE;
+  bboolean clockwise = FALSE;
 
   if (!context)
     return;
@@ -267,9 +267,9 @@ bdk_quartz_draw_arc (BdkDrawable *drawable,
 static void
 bdk_quartz_draw_polygon (BdkDrawable *drawable,
 			 BdkGC       *gc,
-			 gboolean     filled,
+			 bboolean     filled,
 			 BdkPoint    *points,
-			 gint         npoints)
+			 bint         npoints)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   int i;
@@ -311,10 +311,10 @@ static void
 bdk_quartz_draw_text (BdkDrawable *drawable,
 		      BdkFont     *font,
 		      BdkGC       *gc,
-		      gint         x,
-		      gint         y,
-		      const gchar *text,
-		      gint         text_length)
+		      bint         x,
+		      bint         y,
+		      const bchar *text,
+		      bint         text_length)
 {
   /* FIXME: Implement */
 }
@@ -323,10 +323,10 @@ static void
 bdk_quartz_draw_text_wc (BdkDrawable    *drawable,
 			 BdkFont	*font,
 			 BdkGC	        *gc,
-			 gint	         x,
-			 gint	         y,
+			 bint	         x,
+			 bint	         y,
 			 const BdkWChar *text,
-			 gint	         text_length)
+			 bint	         text_length)
 {
   /* FIXME: Implement */
 }
@@ -335,12 +335,12 @@ static void
 bdk_quartz_draw_drawable (BdkDrawable *drawable,
 			  BdkGC       *gc,
 			  BdkPixmap   *src,
-			  gint         xsrc,
-			  gint         ysrc,
-			  gint         xdest,
-			  gint         ydest,
-			  gint         width,
-			  gint         height,
+			  bint         xsrc,
+			  bint         ysrc,
+			  bint         xdest,
+			  bint         ydest,
+			  bint         width,
+			  bint         height,
 			  BdkDrawable *original_src)
 {
   int src_depth = bdk_drawable_get_depth (src);
@@ -504,7 +504,7 @@ static void
 bdk_quartz_draw_points (BdkDrawable *drawable,
 			BdkGC       *gc,
 			BdkPoint    *points,
-			gint         npoints)
+			bint         npoints)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   int i;
@@ -531,12 +531,12 @@ bdk_quartz_draw_points (BdkDrawable *drawable,
 
 static inline void
 bdk_quartz_fix_cap_not_last_line (BdkGCQuartz *private,
-				  gint         x1,
-				  gint         y1,
-				  gint         x2,
-				  gint         y2,
-				  gint        *xfix,
-				  gint        *yfix)
+				  bint         x1,
+				  bint         y1,
+				  bint         x2,
+				  bint         y2,
+				  bint        *xfix,
+				  bint        *yfix)
 {
   *xfix = 0;
   *yfix = 0;
@@ -560,7 +560,7 @@ static void
 bdk_quartz_draw_segments (BdkDrawable    *drawable,
 			  BdkGC          *gc,
 			  BdkSegment     *segs,
-			  gint            nsegs)
+			  bint            nsegs)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   BdkGCQuartz *private;
@@ -579,7 +579,7 @@ bdk_quartz_draw_segments (BdkDrawable    *drawable,
     }
   for (i = 0; i < nsegs; i++)
     {
-      gint xfix, yfix;
+      bint xfix, yfix;
 
       bdk_quartz_fix_cap_not_last_line (private,
 					segs[i].x1, segs[i].y1,
@@ -599,12 +599,12 @@ static void
 bdk_quartz_draw_lines (BdkDrawable *drawable,
 		       BdkGC       *gc,
 		       BdkPoint    *points,
-		       gint         npoints)
+		       bint         npoints)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   BdkGCQuartz *private;
-  gint xfix, yfix;
-  gint i;
+  bint xfix, yfix;
+  bint i;
 
   if (!context)
     return;
@@ -640,15 +640,15 @@ static void
 bdk_quartz_draw_pixbuf (BdkDrawable     *drawable,
 			BdkGC           *gc,
 			BdkPixbuf       *pixbuf,
-			gint             src_x,
-			gint             src_y,
-			gint             dest_x,
-			gint             dest_y,
-			gint             width,
-			gint             height,
+			bint             src_x,
+			bint             src_y,
+			bint             dest_x,
+			bint             dest_y,
+			bint             width,
+			bint             height,
 			BdkRgbDither     dither,
-			gint             x_dither,
-			gint             y_dither)
+			bint             x_dither,
+			bint             y_dither)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   CGColorSpaceRef colorspace;
@@ -656,7 +656,7 @@ bdk_quartz_draw_pixbuf (BdkDrawable     *drawable,
   CGImageRef image;
   void *data;
   int rowstride, pixbuf_width, pixbuf_height;
-  gboolean has_alpha;
+  bboolean has_alpha;
 
   if (!context)
     return;
@@ -701,12 +701,12 @@ static void
 bdk_quartz_draw_image (BdkDrawable     *drawable,
 		       BdkGC           *gc,
 		       BdkImage        *image,
-		       gint             xsrc,
-		       gint             ysrc,
-		       gint             xdest,
-		       gint             ydest,
-		       gint             width,
-		       gint             height)
+		       bint             xsrc,
+		       bint             ysrc,
+		       bint             xdest,
+		       bint             ydest,
+		       bint             width,
+		       bint             height)
 {
   CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   CGColorSpaceRef colorspace;
@@ -823,7 +823,7 @@ bdk_drawable_impl_quartz_get_type (void)
 
 CGContextRef
 bdk_quartz_drawable_get_context (BdkDrawable *drawable,
-				 gboolean     antialias)
+				 bboolean     antialias)
 {
   if (!BDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context)
     {
@@ -850,10 +850,10 @@ void
 _bdk_quartz_drawable_flush (BdkDrawable *drawable)
 {
   static struct timeval prev_tv;
-  static gint intervals[4];
-  static gint index;
+  static bint intervals[4];
+  static bint index;
   struct timeval tv;
-  gint ms;
+  bint ms;
 
   gettimeofday (&tv, NULL);
   ms = (tv.tv_sec - prev_tv.tv_sec) * 1000 + (tv.tv_usec - prev_tv.tv_usec) / 1000;

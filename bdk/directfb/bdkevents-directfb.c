@@ -44,7 +44,7 @@
 
 #ifndef __BDK_X_H__
 #define __BDK_X_H__
-gboolean bdk_net_wm_supports (BdkAtom property);
+bboolean bdk_net_wm_supports (BdkAtom property);
 #endif
 
 #include "bdkalias.h"
@@ -63,7 +63,7 @@ D_DEBUG_DOMAIN (BDKDFB_KeyEvents, "BDKDFB/Events/Key", "BDK DirectFB Key Events"
  * Functions for maintaining the event queue *
  *********************************************/
 
-static gboolean bdk_event_translate  (BdkEvent       *event,
+static bboolean bdk_event_translate  (BdkEvent       *event,
                                       DFBWindowEvent *dfbevent,
                                       BdkWindow      *window);
 
@@ -72,7 +72,7 @@ static gboolean bdk_event_translate  (BdkEvent       *event,
  */
 static GList *client_filters;  /* Filters for client messages */
 
-static gint
+static bint
 bdk_event_apply_filters (DFBWindowEvent *dfbevent,
                          BdkEvent *event,
                          GList *filters)
@@ -128,7 +128,7 @@ dfb_events_process_window_event (DFBWindowEvent *dfbevent)
     }
 }
 
-static gboolean
+static bboolean
 bdk_event_send_client_message_by_window (BdkEvent *event,
                                          BdkWindow *window)
 {
@@ -138,7 +138,7 @@ bdk_event_send_client_message_by_window (BdkEvent *event,
   g_return_val_if_fail(BDK_IS_WINDOW(window), FALSE);
 
   evt.clazz = DFEC_USER;
-  evt.type = GPOINTER_TO_UINT (BDK_ATOM_TO_POINTER (event->client.message_type));
+  evt.type = BPOINTER_TO_UINT (BDK_ATOM_TO_POINTER (event->client.message_type));
   evt.data = (void *) event->client.data.l[0];
 
   _bdk_display->buffer->PostEvent (_bdk_display->buffer, DFB_EVENT (&evt));
@@ -165,19 +165,19 @@ dfb_events_dispatch (void)
   BDK_THREADS_LEAVE ();
 }
 
-static gboolean
+static bboolean
 dfb_events_io_func (BUNNYIOChannel   *channel,
                     BUNNYIOCondition  condition,
-                    gpointer      data)
+                    bpointer      data)
 {
-  gsize      i;
-  gsize      read;
+  bsize      i;
+  bsize      read;
   BUNNYIOStatus  result;
   DFBEvent   buf[23];
   DFBEvent  *event;
 
   result = g_io_channel_read_chars (channel,
-                                    (gchar *) buf, sizeof (buf), &read, NULL);
+                                    (bchar *) buf, sizeof (buf), &read, NULL);
 
   if (result == G_IO_STATUS_ERROR)
     {
@@ -213,7 +213,7 @@ dfb_events_io_func (BUNNYIOChannel   *channel,
                 DFBUserEvent    *user_event = (DFBUserEvent *) event;
                 BdkAtom          type;
 
-                type = BDK_POINTER_TO_ATOM (GUINT_TO_POINTER (user_event->type));
+                type = BDK_POINTER_TO_ATOM (BUINT_TO_POINTER (user_event->type));
 
                 if (filter->type == type)
                   {
@@ -244,7 +244,7 @@ _bdk_events_init (void)
   BUNNYIOChannel *channel;
   GSource    *source;
   DFBResult   ret;
-  gint        fd;
+  bint        fd;
 
   ret = DirectFB->CreateEventBuffer (DirectFB, &EventBuffer);
   if (ret)
@@ -278,7 +278,7 @@ _bdk_events_init (void)
   g_source_unref (source);
 }
 
-gboolean
+bboolean
 bdk_events_pending (void)
 {
   BdkDisplay *display = bdk_display_get_default ();
@@ -328,13 +328,13 @@ bdk_flush (void)
 }
 
 /* Sends a ClientMessage to all toplevel client windows */
-gboolean
+bboolean
 bdk_event_send_client_message_for_display (BdkDisplay *display,
                                            BdkEvent   *event,
-                                           guint32     xid)
+                                           buint32     xid)
 {
   BdkWindow *win = NULL;
-  gboolean ret = TRUE;
+  bboolean ret = TRUE;
 
   g_return_val_if_fail (event != NULL, FALSE);
 
@@ -363,14 +363,14 @@ bdk_event_send_client_message_for_display (BdkDisplay *display,
 
 /*****/
 
-guint32
+buint32
 bdk_directfb_get_time (void)
 {
   GTimeVal tv;
 
   g_get_current_time (&tv);
 
-  return (guint32) tv.tv_sec * 1000 + tv.tv_usec / 1000;
+  return (buint32) tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 void
@@ -410,8 +410,8 @@ bdk_directfb_event_windows_remove (BdkWindow *window)
 
 BdkWindow *
 bdk_directfb_child_at (BdkWindow *window,
-                       gint      *winx,
-                       gint      *winy)
+                       bint      *winx,
+                       bint      *winy)
 {
   BdkWindowObject *private;
   GList           *list;
@@ -422,7 +422,7 @@ bdk_directfb_child_at (BdkWindow *window,
   for (list = private->children; list; list = list->next)
     {
       BdkWindowObject *win = list->data;
-      gint wx, wy, ww, wh;
+      bint wx, wy, ww, wh;
 
       bdk_window_get_geometry (BDK_WINDOW (win), &wx, &wy, &ww, &wh, NULL);
 
@@ -440,7 +440,7 @@ bdk_directfb_child_at (BdkWindow *window,
   return window;
 }
 
-static gboolean
+static bboolean
 bdk_event_translate (BdkEvent       *event,
                      DFBWindowEvent *dfbevent,
                      BdkWindow      *window)
@@ -448,7 +448,7 @@ bdk_event_translate (BdkEvent       *event,
   BdkWindowObject *private;
   BdkDisplay      *display;
   /* BdkEvent        *event    = NULL; */
-  gboolean return_val = FALSE;
+  bboolean return_val = FALSE;
 
   g_return_val_if_fail (event != NULL, FALSE);
   g_return_val_if_fail (dfbevent != NULL, FALSE);
@@ -546,7 +546,7 @@ bdk_event_translate (BdkEvent       *event,
 
       D_DEBUG_AT (BDKDFB_MouseEvents, "  -> %s at %ix%i\n",
                   event->type == BDK_BUTTON_PRESS ? "buttonpress" : "buttonrelease",
-                  (gint) event->button.x, (gint) event->button.y);
+                  (bint) event->button.x, (bint) event->button.y);
       break;
 
     case DWET_MOTION:
@@ -567,7 +567,7 @@ bdk_event_translate (BdkEvent       *event,
       bdk_event_set_screen (event, _bdk_screen);
 
       D_DEBUG_AT (BDKDFB_MouseEvents, "  -> move pointer to %ix%i\n",
-                  (gint) event->button.x, (gint) event->button.y);
+                  (bint) event->button.x, (bint) event->button.y);
       break;
 
     case DWET_GOTFOCUS:
@@ -662,8 +662,8 @@ bdk_event_translate (BdkEvent       *event,
 
       D_DEBUG_AT (BDKDFB_WindowEvents, "  -> %s window %p at relative=%ix%i absolute=%ix%i\n",
                   dfbevent->type == DWET_ENTER ? "enter" : "leave",
-                  window, (gint) event->crossing.x, (gint) event->crossing.y,
-                  (gint) event->crossing.x_root, (gint) event->crossing.y_root);
+                  window, (bint) event->crossing.x, (bint) event->crossing.y,
+                  (bint) event->crossing.x_root, (bint) event->crossing.y_root);
       break;
 
     case DWET_CLOSE:
@@ -693,7 +693,7 @@ bdk_event_translate (BdkEvent       *event,
 
       D_DEBUG_AT (BDKDFB_MouseEvents, "  -> mouse scroll %s at %ix%i\n",
                   event->scroll.direction == BDK_SCROLL_UP ? "up" : "down",
-                  (gint) event->scroll.x, (gint) event->scroll.y);
+                  (bint) event->scroll.x, (bint) event->scroll.y);
       break;
 
     default:
@@ -707,9 +707,9 @@ bdk_event_translate (BdkEvent       *event,
   return return_val;
 }
 
-gboolean
+bboolean
 bdk_screen_get_setting (BdkScreen   *screen,
-                        const gchar *name,
+                        const bchar *name,
                         BValue      *value)
 {
   return FALSE;
@@ -719,7 +719,7 @@ void
 bdk_display_add_client_message_filter (BdkDisplay   *display,
                                        BdkAtom       message_type,
                                        BdkFilterFunc func,
-                                       gpointer      data)
+                                       bpointer      data)
 {
   /* XXX: display should be used */
   BdkClientFilter *filter = g_new (BdkClientFilter, 1);
@@ -734,7 +734,7 @@ bdk_display_add_client_message_filter (BdkDisplay   *display,
 void
 bdk_add_client_message_filter (BdkAtom       message_type,
                                BdkFilterFunc func,
-                               gpointer      data)
+                               bpointer      data)
 {
   bdk_display_add_client_message_filter (bdk_display_get_default (),
                                          message_type, func, data);
@@ -761,7 +761,7 @@ bdk_screen_broadcast_client_message (BdkScreen *screen,
     {
       bdk_event_send_client_message_for_display (bdk_drawable_get_display (BDK_DRAWABLE (root_window)),
                                                  sev,
-                                                 (guint32)(BDK_WINDOW_DFB_ID (BDK_WINDOW (top_level->data))));
+                                                 (buint32)(BDK_WINDOW_DFB_ID (BDK_WINDOW (top_level->data))));
     }
 }
 
@@ -779,7 +779,7 @@ bdk_screen_broadcast_client_message (BdkScreen *screen,
  **/
 
 
-gboolean
+bboolean
 bdk_net_wm_supports (BdkAtom property)
 {
   return FALSE;

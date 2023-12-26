@@ -232,9 +232,9 @@ typedef	struct	_BtkStateData	 BtkStateData;
 struct _BtkStateData
 {
   BtkStateType  state;
-  guint		state_restoration : 1;
-  guint         parent_sensitive : 1;
-  guint		use_forall : 1;
+  buint		state_restoration : 1;
+  buint         parent_sensitive : 1;
+  buint		use_forall : 1;
 };
 
 /* --- prototypes --- */
@@ -242,11 +242,11 @@ static void	btk_widget_class_init		(BtkWidgetClass     *klass);
 static void	btk_widget_base_class_finalize	(BtkWidgetClass     *klass);
 static void	btk_widget_init			(BtkWidget          *widget);
 static void	btk_widget_set_property		 (BObject           *object,
-						  guint              prop_id,
+						  buint              prop_id,
 						  const BValue      *value,
 						  BParamSpec        *pspec);
 static void	btk_widget_get_property		 (BObject           *object,
-						  guint              prop_id,
+						  buint              prop_id,
 						  BValue            *value,
 						  BParamSpec        *pspec);
 static void	btk_widget_dispose		 (BObject	    *object);
@@ -268,30 +268,30 @@ static void	btk_widget_real_direction_changed(BtkWidget         *widget,
                                                   BtkTextDirection   previous_direction);
 
 static void	btk_widget_real_grab_focus	 (BtkWidget         *focus_widget);
-static gboolean btk_widget_real_query_tooltip    (BtkWidget         *widget,
-						  gint               x,
-						  gint               y,
-						  gboolean           keyboard_tip,
+static bboolean btk_widget_real_query_tooltip    (BtkWidget         *widget,
+						  bint               x,
+						  bint               y,
+						  bboolean           keyboard_tip,
 						  BtkTooltip        *tooltip);
-static gboolean btk_widget_real_show_help        (BtkWidget         *widget,
+static bboolean btk_widget_real_show_help        (BtkWidget         *widget,
                                                   BtkWidgetHelpType  help_type);
 
 static void	btk_widget_dispatch_child_properties_changed	(BtkWidget        *object,
-								 guint             n_pspecs,
+								 buint             n_pspecs,
 								 BParamSpec      **pspecs);
-static gboolean		btk_widget_real_key_press_event   	(BtkWidget        *widget,
+static bboolean		btk_widget_real_key_press_event   	(BtkWidget        *widget,
 								 BdkEventKey      *event);
-static gboolean		btk_widget_real_key_release_event 	(BtkWidget        *widget,
+static bboolean		btk_widget_real_key_release_event 	(BtkWidget        *widget,
 								 BdkEventKey      *event);
-static gboolean		btk_widget_real_focus_in_event   	 (BtkWidget       *widget,
+static bboolean		btk_widget_real_focus_in_event   	 (BtkWidget       *widget,
 								  BdkEventFocus   *event);
-static gboolean		btk_widget_real_focus_out_event   	(BtkWidget        *widget,
+static bboolean		btk_widget_real_focus_out_event   	(BtkWidget        *widget,
 								 BdkEventFocus    *event);
-static gboolean		btk_widget_real_focus			(BtkWidget        *widget,
+static bboolean		btk_widget_real_focus			(BtkWidget        *widget,
 								 BtkDirectionType  direction);
 static void             btk_widget_real_move_focus              (BtkWidget        *widget,
                                                                  BtkDirectionType  direction);
-static gboolean		btk_widget_real_keynav_failed		(BtkWidget        *widget,
+static bboolean		btk_widget_real_keynav_failed		(BtkWidget        *widget,
 								 BtkDirectionType  direction);
 static BangoContext*	btk_widget_peek_bango_context		(BtkWidget	  *widget);
 static void     	btk_widget_update_bango_context		(BtkWidget	  *widget);
@@ -300,11 +300,11 @@ static void		btk_widget_propagate_state		(BtkWidget	  *widget,
 static void             btk_widget_reset_rc_style               (BtkWidget        *widget);
 static void		btk_widget_set_style_internal		(BtkWidget	  *widget,
 								 BtkStyle	  *style,
-								 gboolean	   initial_emission);
-static gint		btk_widget_event_internal		(BtkWidget	  *widget,
+								 bboolean	   initial_emission);
+static bint		btk_widget_event_internal		(BtkWidget	  *widget,
 								 BdkEvent	  *event);
-static gboolean		btk_widget_real_mnemonic_activate	(BtkWidget	  *widget,
-								 gboolean	   group_cycling);
+static bboolean		btk_widget_real_mnemonic_activate	(BtkWidget	  *widget,
+								 bboolean	   group_cycling);
 static void		btk_widget_aux_info_destroy		(BtkWidgetAuxInfo *aux_info);
 static BatkObject*	btk_widget_real_get_accessible		(BtkWidget	  *widget);
 static void		btk_widget_accessible_interface_init	(BatkImplementorIface *iface);
@@ -313,52 +313,52 @@ static void             btk_widget_invalidate_widget_windows    (BtkWidget      
 								 BdkRebunnyion        *rebunnyion);
 static BdkScreen *      btk_widget_get_screen_unchecked         (BtkWidget        *widget);
 static void		btk_widget_queue_shallow_draw		(BtkWidget        *widget);
-static gboolean         btk_widget_real_can_activate_accel      (BtkWidget *widget,
-                                                                 guint      signal_id);
+static bboolean         btk_widget_real_can_activate_accel      (BtkWidget *widget,
+                                                                 buint      signal_id);
 
 static void             btk_widget_real_set_has_tooltip         (BtkWidget *widget,
-								 gboolean   has_tooltip,
-								 gboolean   force);
+								 bboolean   has_tooltip,
+								 bboolean   force);
 static void             btk_widget_buildable_interface_init     (BtkBuildableIface *iface);
 static void             btk_widget_buildable_set_name           (BtkBuildable     *buildable,
-                                                                 const gchar      *name);
-static const gchar *    btk_widget_buildable_get_name           (BtkBuildable     *buildable);
+                                                                 const bchar      *name);
+static const bchar *    btk_widget_buildable_get_name           (BtkBuildable     *buildable);
 static BObject *        btk_widget_buildable_get_internal_child (BtkBuildable *buildable,
 								 BtkBuilder   *builder,
-								 const gchar  *childname);
+								 const bchar  *childname);
 static void             btk_widget_buildable_set_buildable_property (BtkBuildable     *buildable,
 								     BtkBuilder       *builder,
-								     const gchar      *name,
+								     const bchar      *name,
 								     const BValue     *value);
-static gboolean         btk_widget_buildable_custom_tag_start   (BtkBuildable     *buildable,
+static bboolean         btk_widget_buildable_custom_tag_start   (BtkBuildable     *buildable,
                                                                  BtkBuilder       *builder,
                                                                  BObject          *child,
-                                                                 const gchar      *tagname,
+                                                                 const bchar      *tagname,
                                                                  GMarkupParser    *parser,
-                                                                 gpointer         *data);
+                                                                 bpointer         *data);
 static void             btk_widget_buildable_custom_finished    (BtkBuildable     *buildable,
                                                                  BtkBuilder       *builder,
                                                                  BObject          *child,
-                                                                 const gchar      *tagname,
-                                                                 gpointer          data);
+                                                                 const bchar      *tagname,
+                                                                 bpointer          data);
 static void             btk_widget_buildable_parser_finished    (BtkBuildable     *buildable,
                                                                  BtkBuilder       *builder);
 
 static void             btk_widget_queue_tooltip_query          (BtkWidget *widget);
      
 static void btk_widget_set_usize_internal (BtkWidget *widget,
-					   gint       width,
-					   gint       height);
+					   bint       width,
+					   bint       height);
 static void btk_widget_get_draw_rectangle (BtkWidget    *widget,
 					   BdkRectangle *rect);
 
 
 /* --- variables --- */
-static gpointer         btk_widget_parent_class = NULL;
-static guint            widget_signals[LAST_SIGNAL] = { 0 };
+static bpointer         btk_widget_parent_class = NULL;
+static buint            widget_signals[LAST_SIGNAL] = { 0 };
 static BtkStyle        *btk_default_style = NULL;
 static GSList          *colormap_stack = NULL;
-static guint            composite_child_stack = 0;
+static buint            composite_child_stack = 0;
 static BtkTextDirection btk_default_direction = BTK_TEXT_DIR_LTR;
 static BParamSpecPool  *style_property_spec_pool = NULL;
 
@@ -434,7 +434,7 @@ btk_widget_get_type (void)
 
 static void
 child_property_notify_dispatcher (BObject     *object,
-				  guint        n_pspecs,
+				  buint        n_pspecs,
 				  BParamSpec **pspecs)
 {
   BTK_WIDGET_GET_CLASS (object)->dispatch_child_properties_changed (BTK_WIDGET (object), n_pspecs, pspecs);
@@ -569,7 +569,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
  						     P_("Width request"),
  						     P_("Override for width request of the widget, or -1 if natural request should be used"),
  						     -1,
- 						     G_MAXINT,
+ 						     B_MAXINT,
  						     -1,
  						     BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
@@ -578,7 +578,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
  						     P_("Height request"),
  						     P_("Override for height request of the widget, or -1 if natural request should be used"),
  						     -1,
- 						     G_MAXINT,
+ 						     B_MAXINT,
  						     -1,
  						     BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
@@ -1908,9 +1908,9 @@ btk_widget_class_init (BtkWidgetClass *klass)
    * static void
    * drag_motion (BtkWidget *widget,
    *              BdkDragContext *context,
-   *              gint x,
-   *              gint y,
-   *              guint time)
+   *              bint x,
+   *              bint y,
+   *              buint time)
    * {
    *   BdkAtom target;
    *  
@@ -1937,11 +1937,11 @@ btk_widget_class_init (BtkWidgetClass *klass)
    * static void
    * drag_data_received (BtkWidget        *widget,
    *                     BdkDragContext   *context,
-   *                     gint              x,
-   *                     gint              y,
+   *                     bint              x,
+   *                     bint              y,
    *                     BtkSelectionData *selection_data,
-   *                     guint             info,
-   *                     guint             time)
+   *                     buint             info,
+   *                     buint             time)
    * {
    *   PrivateData *private_data = GET_PRIVATE_DATA (widget);
    *   
@@ -2069,18 +2069,18 @@ btk_widget_class_init (BtkWidgetClass *klass)
    * void  
    * drag_data_received (BtkWidget          *widget,
    *                     BdkDragContext     *drag_context,
-   *                     gint                x,
-   *                     gint                y,
+   *                     bint                x,
+   *                     bint                y,
    *                     BtkSelectionData   *data,
-   *                     guint               info,
-   *                     guint               time)
+   *                     buint               info,
+   *                     buint               time)
    * {
    *   if ((data->length >= 0) && (data->format == 8))
    *     {
    *       if (drag_context->action == BDK_ACTION_ASK) 
    *         {
    *           BtkWidget *dialog;
-   *           gint response;
+   *           bint response;
    *           
    *           dialog = btk_message_dialog_new (NULL,
    *                                            BTK_DIALOG_MODAL | 
@@ -2433,7 +2433,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
 					   g_param_spec_int ("focus-line-width",
 							     P_("Focus linewidth"),
 							     P_("Width, in pixels, of the focus indicator line"),
-							     0, G_MAXINT, 1,
+							     0, B_MAXINT, 1,
 							     BTK_PARAM_READABLE));
 
   btk_widget_class_install_style_property (klass,
@@ -2446,7 +2446,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
 					   g_param_spec_int ("focus-padding",
 							     P_("Focus padding"),
 							     P_("Width, in pixels, between focus indicator and the widget 'box'"),
-							     0, G_MAXINT, 1,
+							     0, B_MAXINT, 1,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (klass,
 					   g_param_spec_boxed ("cursor-color",
@@ -2539,7 +2539,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
                                            g_param_spec_int ("separator-width",
                                                              P_("Separator Width"),
                                                              P_("The width of separators if wide-separators is TRUE"),
-                                                             0, G_MAXINT, 0,
+                                                             0, B_MAXINT, 0,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -2554,7 +2554,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
                                            g_param_spec_int ("separator-height",
                                                              P_("Separator Height"),
                                                              P_("The height of separators if \"wide-separators\" is TRUE"),
-                                                             0, G_MAXINT, 0,
+                                                             0, B_MAXINT, 0,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -2569,7 +2569,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
                                            g_param_spec_int ("scroll-arrow-hlength",
                                                              P_("Horizontal Scroll Arrow Length"),
                                                              P_("The length of horizontal scroll arrows"),
-                                                             1, G_MAXINT, 16,
+                                                             1, B_MAXINT, 16,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -2584,7 +2584,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
                                            g_param_spec_int ("scroll-arrow-vlength",
                                                              P_("Vertical Scroll Arrow Length"),
                                                              P_("The length of vertical scroll arrows"),
-                                                             1, G_MAXINT, 16,
+                                                             1, B_MAXINT, 16,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -2610,7 +2610,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
                                            g_param_spec_uint ("tooltip-radius",
                                                               P_("Tooltips radius"),
                                                               P_("The radius to be used when drawing tooltips"),
-                                                              0, G_MAXINT, 0,
+                                                              0, B_MAXINT, 0,
                                                               BTK_PARAM_READABLE));
 }
 
@@ -2632,7 +2632,7 @@ btk_widget_base_class_finalize (BtkWidgetClass *klass)
 
 static void
 btk_widget_set_property (BObject         *object,
-			 guint            prop_id,
+			 buint            prop_id,
 			 const BValue    *value,
 			 BParamSpec      *pspec)
 {
@@ -2640,9 +2640,9 @@ btk_widget_set_property (BObject         *object,
 
   switch (prop_id)
     {
-      gboolean tmp;
-      gchar *tooltip_markup;
-      const gchar *tooltip_text;
+      bboolean tmp;
+      bchar *tooltip_markup;
+      const bchar *tooltip_text;
       BtkWindow *tooltip_window;
 
     case PROP_NAME:
@@ -2757,7 +2757,7 @@ btk_widget_set_property (BObject         *object,
 
 static void
 btk_widget_get_property (BObject         *object,
-			 guint            prop_id,
+			 buint            prop_id,
 			 BValue          *value,
 			 BParamSpec      *pspec)
 {
@@ -2765,8 +2765,8 @@ btk_widget_get_property (BObject         *object,
   
   switch (prop_id)
     {
-      gpointer *eventp;
-      gpointer *modep;
+      bpointer *eventp;
+      bpointer *modep;
 
     case PROP_NAME:
       if (widget->name)
@@ -2826,22 +2826,22 @@ btk_widget_get_property (BObject         *object,
       break;
     case PROP_EVENTS:
       eventp = g_object_get_qdata (B_OBJECT (widget), quark_event_mask);
-      b_value_set_flags (value, GPOINTER_TO_INT (eventp));
+      b_value_set_flags (value, BPOINTER_TO_INT (eventp));
       break;
     case PROP_EXTENSION_EVENTS:
       modep = g_object_get_qdata (B_OBJECT (widget), quark_extension_event_mode);
-      b_value_set_enum (value, GPOINTER_TO_INT (modep));
+      b_value_set_enum (value, BPOINTER_TO_INT (modep));
       break;
     case PROP_NO_SHOW_ALL:
       b_value_set_boolean (value, btk_widget_get_no_show_all (widget));
       break;
     case PROP_HAS_TOOLTIP:
-      b_value_set_boolean (value, GPOINTER_TO_UINT (g_object_get_qdata (object, quark_has_tooltip)));
+      b_value_set_boolean (value, BPOINTER_TO_UINT (g_object_get_qdata (object, quark_has_tooltip)));
       break;
     case PROP_TOOLTIP_TEXT:
       {
-        gchar *escaped = g_object_get_qdata (object, quark_tooltip_markup);
-        gchar *text = NULL;
+        bchar *escaped = g_object_get_qdata (object, quark_tooltip_markup);
+        bchar *text = NULL;
 
         if (escaped && !bango_parse_markup (escaped, -1, 0, NULL, &text, NULL, NULL))
           g_assert (NULL == text); /* text should still be NULL in case of markup errors */
@@ -2896,11 +2896,11 @@ btk_widget_init (BtkWidget *widget)
 
 static void
 btk_widget_dispatch_child_properties_changed (BtkWidget   *widget,
-					      guint        n_pspecs,
+					      buint        n_pspecs,
 					      BParamSpec **pspecs)
 {
   BtkWidget *container = widget->parent;
-  guint i;
+  buint i;
 
   for (i = 0; widget->parent == container && i < n_pspecs; i++)
     g_signal_emit (widget, widget_signals[CHILD_NOTIFY], g_quark_from_string (pspecs[i]->name), pspecs[i]);
@@ -2943,7 +2943,7 @@ btk_widget_freeze_child_notify (BtkWidget *widget)
  **/
 void
 btk_widget_child_notify (BtkWidget    *widget,
-			 const gchar  *child_property)
+			 const bchar  *child_property)
 {
   BParamSpec *pspec;
 
@@ -3019,7 +3019,7 @@ btk_widget_thaw_child_notify (BtkWidget *widget)
  **/
 BtkWidget*
 btk_widget_new (GType        type,
-		const gchar *first_property_name,
+		const bchar *first_property_name,
 		...)
 {
   BtkWidget *widget;
@@ -3047,7 +3047,7 @@ btk_widget_new (GType        type,
  **/
 void
 btk_widget_set (BtkWidget   *widget,
-		const gchar *first_property_name,
+		const bchar *first_property_name,
 		...)
 {
   va_list var_args;
@@ -3255,7 +3255,7 @@ btk_widget_real_show (BtkWidget *widget)
 }
 
 static void
-btk_widget_show_map_callback (BtkWidget *widget, BdkEvent *event, gint *flag)
+btk_widget_show_map_callback (BtkWidget *widget, BdkEvent *event, bint *flag)
 {
   *flag = TRUE;
   g_signal_handlers_disconnect_by_func (widget,
@@ -3276,7 +3276,7 @@ btk_widget_show_map_callback (BtkWidget *widget, BdkEvent *event, gint *flag)
 void
 btk_widget_show_now (BtkWidget *widget)
 {
-  gint flag = FALSE;
+  bint flag = FALSE;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -3351,7 +3351,7 @@ btk_widget_real_hide (BtkWidget *widget)
  * 
  * Return value: %TRUE
  **/
-gboolean
+bboolean
 btk_widget_hide_on_delete (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -3476,7 +3476,7 @@ btk_widget_set_extension_events_internal (BtkWidget        *widget,
   for (l = window_list; l != NULL; l = l->next)
     {
       BdkWindow *window = l->data;
-      gpointer user_data;
+      bpointer user_data;
 
       bdk_window_get_user_data (window, &user_data);
       if (user_data == widget)
@@ -3554,7 +3554,7 @@ btk_widget_realize (BtkWidget *widget)
       g_signal_emit (widget, widget_signals[REALIZE], 0);
 
       btk_widget_real_set_has_tooltip (widget,
-				       GPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget), quark_has_tooltip)),
+				       BPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget), quark_has_tooltip)),
 				       TRUE);
 
       if (BTK_WIDGET_HAS_SHAPE_MASK (widget))
@@ -3644,10 +3644,10 @@ btk_widget_unrealize (BtkWidget *widget)
  **/
 void	   
 btk_widget_queue_draw_area (BtkWidget *widget,
-			    gint       x,
-			    gint       y,
-			    gint       width,
- 			    gint       height)
+			    bint       x,
+			    bint       y,
+			    bint       width,
+ 			    bint       height)
 {
   BdkRectangle invalid_rect;
   BtkWidget *w;
@@ -3670,7 +3670,7 @@ btk_widget_queue_draw_area (BtkWidget *widget,
 	{
 	  /* Translate widget relative to window-relative */
 
-	  gint wx, wy, wwidth, wheight;
+	  bint wx, wy, wwidth, wheight;
 	  
 	  bdk_window_get_position (widget->window, &wx, &wy);
 	  x -= wx - widget->allocation.x;
@@ -3801,10 +3801,10 @@ btk_widget_queue_draw (BtkWidget *widget)
  **/
 void	   
 btk_widget_queue_clear_area (BtkWidget *widget,
-			     gint       x,
-			     gint       y,
-			     gint       width,
-			     gint       height)
+			     bint       x,
+			     bint       y,
+			     bint       width,
+			     bint       height)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -3963,11 +3963,11 @@ btk_widget_get_child_requisition (BtkWidget	 *widget,
   _btk_size_group_get_child_requisition (widget, requisition);
 }
 
-static gboolean
+static bboolean
 invalidate_predicate (BdkWindow *window,
-		      gpointer   data)
+		      bpointer   data)
 {
-  gpointer user_data;
+  bpointer user_data;
 
   bdk_window_get_user_data (window, &user_data);
 
@@ -4050,18 +4050,18 @@ btk_widget_size_allocate (BtkWidget	*widget,
   BtkWidgetAuxInfo *aux_info;
   BdkRectangle real_allocation;
   BdkRectangle old_allocation;
-  gboolean alloc_needed;
-  gboolean size_changed;
-  gboolean position_changed;
+  bboolean alloc_needed;
+  bboolean size_changed;
+  bboolean position_changed;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
  
 #ifdef G_ENABLE_DEBUG
   if (btk_debug_flags & BTK_DEBUG_GEOMETRY)
     {
-      gint depth;
+      bint depth;
       BtkWidget *parent;
-      const gchar *name;
+      const bchar *name;
 
       depth = 0;
       parent = widget;
@@ -4169,8 +4169,8 @@ btk_widget_common_ancestor (BtkWidget *widget_a,
 {
   BtkWidget *parent_a;
   BtkWidget *parent_b;
-  gint depth_a = 0;
-  gint depth_b = 0;
+  bint depth_a = 0;
+  bint depth_b = 0;
 
   parent_a = widget_a;
   while (parent_a->parent)
@@ -4228,13 +4228,13 @@ btk_widget_common_ancestor (BtkWidget *widget_a,
  *   was no common ancestor. In this case, nothing is stored in
  *   *@dest_x and *@dest_y. Otherwise %TRUE.
  **/
-gboolean
+bboolean
 btk_widget_translate_coordinates (BtkWidget  *src_widget,
 				  BtkWidget  *dest_widget,
-				  gint        src_x,
-				  gint        src_y,
-				  gint       *dest_x,
-				  gint       *dest_y)
+				  bint        src_x,
+				  bint        src_y,
+				  bint       *dest_x,
+				  bint       *dest_y)
 {
   BtkWidget *ancestor;
   BdkWindow *window;
@@ -4250,7 +4250,7 @@ btk_widget_translate_coordinates (BtkWidget  *src_widget,
   /* Translate from allocation relative to window relative */
   if (btk_widget_get_has_window (src_widget) && src_widget->parent)
     {
-      gint wx, wy;
+      bint wx, wy;
       bdk_window_get_position (src_widget->window, &wx, &wy);
 
       src_x -= wx - src_widget->allocation.x;
@@ -4266,7 +4266,7 @@ btk_widget_translate_coordinates (BtkWidget  *src_widget,
   window = src_widget->window;
   while (window != ancestor->window)
     {
-      gdouble dx, dy;
+      bdouble dx, dy;
 
       bdk_window_coords_to_parent (window, src_x, src_y, &dx, &dy);
 
@@ -4296,7 +4296,7 @@ btk_widget_translate_coordinates (BtkWidget  *src_widget,
 
   while (dest_list)
     {
-      gdouble dx, dy;
+      bdouble dx, dy;
 
       bdk_window_coords_from_parent (dest_list->data, src_x, src_y, &dx, &dy);
 
@@ -4309,7 +4309,7 @@ btk_widget_translate_coordinates (BtkWidget  *src_widget,
   /* Translate from window relative to allocation relative */
   if (btk_widget_get_has_window (dest_widget) && dest_widget->parent)
     {
-      gint wx, wy;
+      bint wx, wy;
       bdk_window_get_position (dest_widget->window, &wx, &wy);
 
       src_x += wx - dest_widget->allocation.x;
@@ -4344,9 +4344,9 @@ btk_widget_real_size_allocate (BtkWidget     *widget,
      }
 }
 
-static gboolean
+static bboolean
 btk_widget_real_can_activate_accel (BtkWidget *widget,
-                                    guint      signal_id)
+                                    buint      signal_id)
 {
   /* widgets must be onscreen for accels to take effect */
   return btk_widget_is_sensitive (widget) &&
@@ -4371,11 +4371,11 @@ btk_widget_real_can_activate_accel (BtkWidget *widget,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_widget_can_activate_accel (BtkWidget *widget,
-                               guint      signal_id)
+                               buint      signal_id)
 {
-  gboolean can_activate = FALSE;
+  bboolean can_activate = FALSE;
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
   g_signal_emit (widget, widget_signals[CAN_ACTIVATE_ACCEL], 0, signal_id, &can_activate);
   return can_activate;
@@ -4383,19 +4383,19 @@ btk_widget_can_activate_accel (BtkWidget *widget,
 
 typedef struct {
   GClosure   closure;
-  guint      signal_id;
+  buint      signal_id;
 } AccelClosure;
 
 static void
 closure_accel_activate (GClosure     *closure,
 			BValue       *return_value,
-			guint         n_param_values,
+			buint         n_param_values,
 			const BValue *param_values,
-			gpointer      invocation_hint,
-			gpointer      marshal_data)
+			bpointer      invocation_hint,
+			bpointer      marshal_data)
 {
   AccelClosure *aclosure = (AccelClosure*) closure;
-  gboolean can_activate = btk_widget_can_activate_accel (closure->data, aclosure->signal_id);
+  bboolean can_activate = btk_widget_can_activate_accel (closure->data, aclosure->signal_id);
 
   if (can_activate)
     g_signal_emit (closure->data, aclosure->signal_id, 0);
@@ -4405,7 +4405,7 @@ closure_accel_activate (GClosure     *closure,
 }
 
 static void
-closures_destroy (gpointer data)
+closures_destroy (bpointer data)
 {
   GSList *slist, *closures = data;
 
@@ -4419,7 +4419,7 @@ closures_destroy (gpointer data)
 
 static GClosure*
 widget_new_accel_closure (BtkWidget *widget,
-			  guint      signal_id)
+			  buint      signal_id)
 {
   AccelClosure *aclosure;
   GClosure *closure = NULL;
@@ -4470,9 +4470,9 @@ widget_new_accel_closure (BtkWidget *widget,
  */
 void
 btk_widget_add_accelerator (BtkWidget      *widget,
-			    const gchar    *accel_signal,
+			    const bchar    *accel_signal,
 			    BtkAccelGroup  *accel_group,
-			    guint           accel_key,
+			    buint           accel_key,
 			    BdkModifierType accel_mods,
 			    BtkAccelFlags   accel_flags)
 {
@@ -4524,15 +4524,15 @@ btk_widget_add_accelerator (BtkWidget      *widget,
  * Removes an accelerator from @widget, previously installed with
  * btk_widget_add_accelerator().
  */
-gboolean
+bboolean
 btk_widget_remove_accelerator (BtkWidget      *widget,
 			       BtkAccelGroup  *accel_group,
-			       guint           accel_key,
+			       buint           accel_key,
 			       BdkModifierType accel_mods)
 {
   BtkAccelGroupEntry *ag_entry;
   GList *slist, *clist;
-  guint n;
+  buint n;
   
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
   g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), FALSE);
@@ -4541,12 +4541,12 @@ btk_widget_remove_accelerator (BtkWidget      *widget,
   clist = btk_widget_list_accel_closures (widget);
   for (slist = clist; slist; slist = slist->next)
     {
-      guint i;
+      buint i;
 
       for (i = 0; i < n; i++)
-	if (slist->data == (gpointer) ag_entry[i].closure)
+	if (slist->data == (bpointer) ag_entry[i].closure)
 	  {
-	    gboolean is_removed = btk_accel_group_disconnect (accel_group, slist->data);
+	    bboolean is_removed = btk_accel_group_disconnect (accel_group, slist->data);
 
 	    g_signal_emit (widget, widget_signals[ACCEL_CLOSURES_CHANGED], 0);
 
@@ -4599,7 +4599,7 @@ typedef struct {
 } AccelPath;
 
 static void
-destroy_accel_path (gpointer data)
+destroy_accel_path (bpointer data)
 {
   AccelPath *apath = data;
 
@@ -4642,7 +4642,7 @@ destroy_accel_path (gpointer data)
  **/
 void
 btk_widget_set_accel_path (BtkWidget     *widget,
-			   const gchar   *accel_path,
+			   const bchar   *accel_path,
 			   BtkAccelGroup *accel_group)
 {
   AccelPath *apath;
@@ -4673,9 +4673,9 @@ btk_widget_set_accel_path (BtkWidget     *widget,
   g_signal_emit (widget, widget_signals[ACCEL_CLOSURES_CHANGED], 0);
 }
 
-const gchar*
+const bchar*
 _btk_widget_get_accel_path (BtkWidget *widget,
-			    gboolean  *locked)
+			    bboolean  *locked)
 {
   AccelPath *apath;
 
@@ -4700,11 +4700,11 @@ _btk_widget_get_accel_path (BtkWidget *widget,
  *
  * Returns: %TRUE if the signal has been handled
  */
-gboolean
+bboolean
 btk_widget_mnemonic_activate (BtkWidget *widget,
-                              gboolean   group_cycling)
+                              bboolean   group_cycling)
 {
-  gboolean handled;
+  bboolean handled;
   
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
@@ -4720,9 +4720,9 @@ btk_widget_mnemonic_activate (BtkWidget *widget,
   return handled;
 }
 
-static gboolean
+static bboolean
 btk_widget_real_mnemonic_activate (BtkWidget *widget,
-                                   gboolean   group_cycling)
+                                   bboolean   group_cycling)
 {
   if (!group_cycling && BTK_WIDGET_GET_CLASS (widget)->activate_signal)
     btk_widget_activate (widget);
@@ -4737,21 +4737,21 @@ btk_widget_real_mnemonic_activate (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_widget_real_key_press_event (BtkWidget         *widget,
 				 BdkEventKey       *event)
 {
   return btk_bindings_activate_event (BTK_OBJECT (widget), event);
 }
 
-static gboolean
+static bboolean
 btk_widget_real_key_release_event (BtkWidget         *widget,
 				   BdkEventKey       *event)
 {
   return btk_bindings_activate_event (BTK_OBJECT (widget), event);
 }
 
-static gboolean
+static bboolean
 btk_widget_real_focus_in_event (BtkWidget     *widget,
                                 BdkEventFocus *event)
 {
@@ -4760,7 +4760,7 @@ btk_widget_real_focus_in_event (BtkWidget     *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_widget_real_focus_out_event (BtkWidget     *widget,
                                  BdkEventFocus *event)
 {
@@ -4789,7 +4789,7 @@ btk_widget_real_focus_out_event (BtkWidget     *widget,
  * Return value: return from the event signal emission (%TRUE if 
  *               the event was handled)
  **/
-gboolean
+bboolean
 btk_widget_event (BtkWidget *widget,
 		  BdkEvent  *event)
 {
@@ -4827,7 +4827,7 @@ btk_widget_event (BtkWidget *widget,
  * Return value: return from the event signal emission (%TRUE if 
  *               the event was handled)
  **/
-gint
+bint
 btk_widget_send_expose (BtkWidget *widget,
 			BdkEvent  *event)
 {
@@ -4839,7 +4839,7 @@ btk_widget_send_expose (BtkWidget *widget,
   return btk_widget_event_internal (widget, event);
 }
 
-static gboolean
+static bboolean
 event_window_is_still_viewable (BdkEvent *event)
 {
   /* Some programs, such as bunny-theme-manager, fake widgets
@@ -4886,11 +4886,11 @@ event_window_is_still_viewable (BdkEvent *event)
     }
 }
 
-static gint
+static bint
 btk_widget_event_internal (BtkWidget *widget,
 			   BdkEvent  *event)
 {
-  gboolean return_val = FALSE;
+  bboolean return_val = FALSE;
 
   /* We check only once for is-still-visible; if someone
    * hides the window in on of the signals on the widget,
@@ -4906,7 +4906,7 @@ btk_widget_event_internal (BtkWidget *widget,
   return_val |= !WIDGET_REALIZED_FOR_EVENT (widget, event);
   if (!return_val)
     {
-      gint signal_num;
+      bint signal_num;
 
       switch (event->type)
 	{
@@ -5030,7 +5030,7 @@ btk_widget_event_internal (BtkWidget *widget,
  * 
  * Return value: %TRUE if the widget was activatable
  **/
-gboolean
+bboolean
 btk_widget_activate (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5060,12 +5060,12 @@ btk_widget_activate (BtkWidget *widget)
  * 
  * Return value: %TRUE if the widget supports scrolling
  **/
-gboolean
+bboolean
 btk_widget_set_scroll_adjustments (BtkWidget     *widget,
 				   BtkAdjustment *hadjustment,
 				   BtkAdjustment *vadjustment)
 {
-  guint signal_id;
+  buint signal_id;
   GSignalQuery query;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5108,7 +5108,7 @@ btk_widget_reparent_subwindows (BtkWidget *widget,
       for (tmp_list = children; tmp_list; tmp_list = tmp_list->next)
 	{
 	  BdkWindow *window = tmp_list->data;
-	  gpointer child;
+	  bpointer child;
 
 	  bdk_window_get_user_data (window, &child);
 	  while (child && child != widget)
@@ -5136,7 +5136,7 @@ btk_widget_reparent_subwindows (BtkWidget *widget,
 	 for (tmp_list = children; tmp_list; tmp_list = tmp_list->next)
 	   {
 	     BdkWindow *window = tmp_list->data;
-	     gpointer child;
+	     bpointer child;
 
 	     bdk_window_get_user_data (window, &child);
 
@@ -5151,7 +5151,7 @@ btk_widget_reparent_subwindows (BtkWidget *widget,
 
 static void
 btk_widget_reparent_fixup_child (BtkWidget *widget,
-				 gpointer   client_data)
+				 bpointer   client_data)
 {
   g_assert (client_data != NULL);
   
@@ -5226,14 +5226,14 @@ btk_widget_reparent (BtkWidget *widget,
  * 
  * Return value: %TRUE if there was an intersection
  **/
-gboolean
+bboolean
 btk_widget_intersect (BtkWidget	         *widget,
 		      const BdkRectangle *area,
 		      BdkRectangle       *intersection)
 {
   BdkRectangle *dest;
   BdkRectangle tmp;
-  gint return_val;
+  bint return_val;
   
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
   g_return_val_if_fail (area != NULL, FALSE);
@@ -5301,7 +5301,7 @@ btk_widget_rebunnyion_intersect (BtkWidget       *widget,
  **/
 void
 _btk_widget_grab_notify (BtkWidget *widget,
-			 gboolean   was_grabbed)
+			 bboolean   was_grabbed)
 {
   g_signal_emit (widget, widget_signals[GRAB_NOTIFY], 0, was_grabbed);
 }
@@ -5337,7 +5337,7 @@ btk_widget_grab_focus (BtkWidget *widget)
 
 static void
 reset_focus_recurse (BtkWidget *widget,
-		     gpointer   data)
+		     bpointer   data)
 {
   if (BTK_IS_CONTAINER (widget))
     {
@@ -5415,18 +5415,18 @@ btk_widget_real_grab_focus (BtkWidget *focus_widget)
     }
 }
 
-static gboolean
+static bboolean
 btk_widget_real_query_tooltip (BtkWidget  *widget,
-			       gint        x,
-			       gint        y,
-			       gboolean    keyboard_tip,
+			       bint        x,
+			       bint        y,
+			       bboolean    keyboard_tip,
 			       BtkTooltip *tooltip)
 {
-  gchar *tooltip_markup;
-  gboolean has_tooltip;
+  bchar *tooltip_markup;
+  bboolean has_tooltip;
 
   tooltip_markup = g_object_get_qdata (B_OBJECT (widget), quark_tooltip_markup);
-  has_tooltip = GPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget), quark_has_tooltip));
+  has_tooltip = BPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget), quark_has_tooltip));
 
   if (has_tooltip && tooltip_markup)
     {
@@ -5437,7 +5437,7 @@ btk_widget_real_query_tooltip (BtkWidget  *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_widget_real_show_help (BtkWidget        *widget,
                            BtkWidgetHelpType help_type)
 {
@@ -5451,7 +5451,7 @@ btk_widget_real_show_help (BtkWidget        *widget,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_widget_real_focus (BtkWidget         *widget,
                        BtkDirectionType   direction)
 {
@@ -5481,11 +5481,11 @@ btk_widget_real_move_focus (BtkWidget         *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_widget_real_keynav_failed (BtkWidget        *widget,
                                BtkDirectionType  direction)
 {
-  gboolean cursor_only;
+  bboolean cursor_only;
 
   switch (direction)
     {
@@ -5523,7 +5523,7 @@ btk_widget_real_keynav_failed (BtkWidget        *widget,
  **/
 void
 btk_widget_set_can_focus (BtkWidget *widget,
-                          gboolean   can_focus)
+                          bboolean   can_focus)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5550,7 +5550,7 @@ btk_widget_set_can_focus (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_can_focus (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5570,7 +5570,7 @@ btk_widget_get_can_focus (BtkWidget *widget)
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_has_focus (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5589,7 +5589,7 @@ btk_widget_has_focus (BtkWidget *widget)
  * 
  * Return value: %TRUE if the widget is the focus widget.
  **/
-gboolean
+bboolean
 btk_widget_is_focus (BtkWidget *widget)
 {
   BtkWidget *toplevel;
@@ -5617,7 +5617,7 @@ btk_widget_is_focus (BtkWidget *widget)
  **/
 void
 btk_widget_set_can_default (BtkWidget *widget,
-                            gboolean   can_default)
+                            bboolean   can_default)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5644,7 +5644,7 @@ btk_widget_set_can_default (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_can_default (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5664,7 +5664,7 @@ btk_widget_get_can_default (BtkWidget *widget)
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_widget_has_default (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5674,7 +5674,7 @@ btk_widget_has_default (BtkWidget *widget)
 
 void
 _btk_widget_set_has_default (BtkWidget *widget,
-                             gboolean   has_default)
+                             bboolean   has_default)
 {
   if (has_default)
     BTK_OBJECT_FLAGS (widget) |= BTK_HAS_DEFAULT;
@@ -5725,7 +5725,7 @@ btk_widget_grab_default (BtkWidget *widget)
  **/
 void
 btk_widget_set_receives_default (BtkWidget *widget,
-                                 gboolean   receives_default)
+                                 bboolean   receives_default)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5755,7 +5755,7 @@ btk_widget_set_receives_default (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_receives_default (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5776,7 +5776,7 @@ btk_widget_get_receives_default (BtkWidget *widget)
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_has_grab (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5786,7 +5786,7 @@ btk_widget_has_grab (BtkWidget *widget)
 
 void
 _btk_widget_set_has_grab (BtkWidget *widget,
-                          gboolean   has_grab)
+                          bboolean   has_grab)
 {
   if (has_grab)
     BTK_OBJECT_FLAGS (widget) |= BTK_HAS_GRAB;
@@ -5809,9 +5809,9 @@ _btk_widget_set_has_grab (BtkWidget *widget,
  **/
 void
 btk_widget_set_name (BtkWidget	 *widget,
-		     const gchar *name)
+		     const bchar *name)
 {
-  gchar *new_name;
+  bchar *new_name;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5835,7 +5835,7 @@ btk_widget_set_name (BtkWidget	 *widget,
  * Return value: name of the widget. This string is owned by BTK+ and
  * should not be modified or freed
  **/
-const gchar*
+const bchar*
 btk_widget_get_name (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
@@ -5919,7 +5919,7 @@ btk_widget_get_state (BtkWidget *widget)
  **/
 void
 btk_widget_set_visible (BtkWidget *widget,
-                        gboolean   visible)
+                        bboolean   visible)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5946,7 +5946,7 @@ btk_widget_set_visible (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_visible (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -5974,7 +5974,7 @@ btk_widget_get_visible (BtkWidget *widget)
  **/
 void
 btk_widget_set_has_window (BtkWidget *widget,
-                           gboolean   has_window)
+                           bboolean   has_window)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -5995,7 +5995,7 @@ btk_widget_set_has_window (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_has_window (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6015,7 +6015,7 @@ btk_widget_get_has_window (BtkWidget *widget)
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_is_toplevel (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6025,7 +6025,7 @@ btk_widget_is_toplevel (BtkWidget *widget)
 
 void
 _btk_widget_set_is_toplevel (BtkWidget *widget,
-                             gboolean   is_toplevel)
+                             bboolean   is_toplevel)
 {
   if (is_toplevel)
     BTK_OBJECT_FLAGS (widget) |= BTK_TOPLEVEL;
@@ -6044,7 +6044,7 @@ _btk_widget_set_is_toplevel (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_is_drawable (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6063,7 +6063,7 @@ btk_widget_is_drawable (BtkWidget *widget)
  *
  * Since: 2.20
  **/
-gboolean
+bboolean
 btk_widget_get_realized (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6085,7 +6085,7 @@ btk_widget_get_realized (BtkWidget *widget)
  */
 void
 btk_widget_set_realized (BtkWidget *widget,
-                         gboolean   realized)
+                         bboolean   realized)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -6105,7 +6105,7 @@ btk_widget_set_realized (BtkWidget *widget,
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_widget_get_mapped (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6127,7 +6127,7 @@ btk_widget_get_mapped (BtkWidget *widget)
  */
 void
 btk_widget_set_mapped (BtkWidget *widget,
-                       gboolean   mapped)
+                       bboolean   mapped)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -6163,7 +6163,7 @@ btk_widget_set_mapped (BtkWidget *widget,
  **/
 void
 btk_widget_set_app_paintable (BtkWidget *widget,
-			      gboolean   app_paintable)
+			      bboolean   app_paintable)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -6196,7 +6196,7 @@ btk_widget_set_app_paintable (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_app_paintable (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6230,7 +6230,7 @@ btk_widget_get_app_paintable (BtkWidget *widget)
  **/
 void
 btk_widget_set_double_buffered (BtkWidget *widget,
-				gboolean   double_buffered)
+				bboolean   double_buffered)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -6259,7 +6259,7 @@ btk_widget_set_double_buffered (BtkWidget *widget,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_widget_get_double_buffered (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6291,7 +6291,7 @@ btk_widget_get_double_buffered (BtkWidget *widget)
  **/
 void
 btk_widget_set_redraw_on_allocate (BtkWidget *widget,
-				   gboolean   redraw_on_allocate)
+				   bboolean   redraw_on_allocate)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -6313,7 +6313,7 @@ btk_widget_set_redraw_on_allocate (BtkWidget *widget,
  **/
 void
 btk_widget_set_sensitive (BtkWidget *widget,
-			  gboolean   sensitive)
+			  bboolean   sensitive)
 {
   BtkStateData data;
 
@@ -6363,7 +6363,7 @@ btk_widget_set_sensitive (BtkWidget *widget,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_widget_get_sensitive (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6382,7 +6382,7 @@ btk_widget_get_sensitive (BtkWidget *widget)
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_widget_is_sensitive (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6521,7 +6521,7 @@ btk_widget_style_attach (BtkWidget *widget)
  *
  * Since: 2.20
  **/
-gboolean
+bboolean
 btk_widget_has_rc_style (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -6548,7 +6548,7 @@ btk_widget_set_style (BtkWidget *widget,
 
   if (style)
     {
-      gboolean initial_emission;
+      bboolean initial_emission;
 
       initial_emission = !btk_widget_has_rc_style (widget) && !BTK_WIDGET_USER_STYLE (widget);
       
@@ -6590,7 +6590,7 @@ static void
 btk_widget_reset_rc_style (BtkWidget *widget)
 {
   BtkStyle *new_style = NULL;
-  gboolean initial_emission;
+  bboolean initial_emission;
   
   initial_emission = !btk_widget_has_rc_style (widget) && !BTK_WIDGET_USER_STYLE (widget);
 
@@ -6968,7 +6968,7 @@ btk_widget_real_style_set (BtkWidget *widget,
 static void
 btk_widget_set_style_internal (BtkWidget *widget,
 			       BtkStyle	 *style,
-			       gboolean   initial_emission)
+			       bboolean   initial_emission)
 {
   g_object_ref (widget);
   g_object_freeze_notify (B_OBJECT (widget));
@@ -7040,10 +7040,10 @@ do_screen_change (BtkWidget *widget,
 
 static void
 btk_widget_propagate_hierarchy_changed_recurse (BtkWidget *widget,
-						gpointer   client_data)
+						bpointer   client_data)
 {
   HierarchyChangedInfo *info = client_data;
-  gboolean new_anchored = btk_widget_is_toplevel (widget) ||
+  bboolean new_anchored = btk_widget_is_toplevel (widget) ||
                  (widget->parent && BTK_WIDGET_ANCHORED (widget->parent));
 
   if (BTK_WIDGET_ANCHORED (widget) != new_anchored)
@@ -7106,7 +7106,7 @@ _btk_widget_propagate_hierarchy_changed (BtkWidget    *widget,
 
 static void
 btk_widget_propagate_screen_changed_recurse (BtkWidget *widget,
-					     gpointer   client_data)
+					     bpointer   client_data)
 {
   HierarchyChangedInfo *info = client_data;
 
@@ -7139,7 +7139,7 @@ btk_widget_propagate_screen_changed_recurse (BtkWidget *widget,
  * 
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_widget_is_composited (BtkWidget *widget)
 {
   BdkScreen *screen;
@@ -7153,7 +7153,7 @@ btk_widget_is_composited (BtkWidget *widget)
 
 static void
 propagate_composited_changed (BtkWidget *widget,
-			      gpointer dummy)
+			      bpointer dummy)
 {
   if (BTK_IS_CONTAINER (widget))
     {
@@ -7198,7 +7198,7 @@ _btk_widget_propagate_screen_changed (BtkWidget    *widget,
 }
 
 static void
-reset_rc_styles_recurse (BtkWidget *widget, gpointer data)
+reset_rc_styles_recurse (BtkWidget *widget, bpointer data)
 {
   if (btk_widget_has_rc_style (widget))
     btk_widget_reset_rc_style (widget);
@@ -7378,7 +7378,7 @@ btk_widget_create_bango_context (BtkWidget *widget)
  **/
 BangoLayout *
 btk_widget_create_bango_layout (BtkWidget   *widget,
-				const gchar *text)
+				const bchar *text)
 {
   BangoLayout *layout;
   BangoContext *context;
@@ -7420,9 +7420,9 @@ btk_widget_create_bango_layout (BtkWidget   *widget,
  **/
 BdkPixbuf*
 btk_widget_render_icon (BtkWidget      *widget,
-                        const gchar    *stock_id,
+                        const bchar    *stock_id,
                         BtkIconSize     size,
-                        const gchar    *detail)
+                        const bchar    *detail)
 {
   BtkIconSet *icon_set;
   BdkPixbuf *retval;
@@ -7525,7 +7525,7 @@ btk_widget_get_parent_window (BtkWidget *widget)
  **/
 void
 btk_widget_set_child_visible (BtkWidget *widget,
-			      gboolean   is_visible)
+			      bboolean   is_visible)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (!btk_widget_is_toplevel (widget));
@@ -7571,7 +7571,7 @@ btk_widget_set_child_visible (BtkWidget *widget,
  *
  * Return value: %TRUE if the widget is mapped with the parent.
  **/
-gboolean
+bboolean
 btk_widget_get_child_visible (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -7652,7 +7652,7 @@ btk_widget_get_screen (BtkWidget *widget)
  *
  * Since: 2.2
  **/
-gboolean
+bboolean
 btk_widget_has_screen (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -7742,11 +7742,11 @@ btk_widget_get_root_window (BtkWidget *widget)
  * 
  * Return value: %TRUE if focus ended up inside @widget
  **/
-gboolean
+bboolean
 btk_widget_child_focus (BtkWidget       *widget,
                         BtkDirectionType direction)
 {
-  gboolean return_val;
+  bboolean return_val;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
@@ -7812,11 +7812,11 @@ btk_widget_child_focus (BtkWidget       *widget,
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_widget_keynav_failed (BtkWidget        *widget,
                           BtkDirectionType  direction)
 {
-  gboolean return_val;
+  bboolean return_val;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
@@ -7844,7 +7844,7 @@ void
 btk_widget_error_bell (BtkWidget *widget)
 {
   BtkSettings* settings;
-  gboolean beep;
+  bboolean beep;
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -7885,8 +7885,8 @@ btk_widget_error_bell (BtkWidget *widget)
  **/
 void
 btk_widget_set_uposition (BtkWidget *widget,
-			  gint	     x,
-			  gint	     y)
+			  bint	     x,
+			  bint	     y)
 {
   /* FIXME this function is the only place that aux_info->x and
    * aux_info->y are even used I believe, and this function is
@@ -7932,11 +7932,11 @@ btk_widget_set_uposition (BtkWidget *widget,
 
 static void
 btk_widget_set_usize_internal (BtkWidget *widget,
-			       gint       width,
-			       gint       height)
+			       bint       width,
+			       bint       height)
 {
   BtkWidgetAuxInfo *aux_info;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
   
   g_object_freeze_notify (B_OBJECT (widget));
 
@@ -7989,8 +7989,8 @@ btk_widget_set_usize_internal (BtkWidget *widget,
  **/
 void
 btk_widget_set_usize (BtkWidget *widget,
-		      gint	 width,
-		      gint	 height)
+		      bint	 width,
+		      bint	 height)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   
@@ -8035,8 +8035,8 @@ btk_widget_set_usize (BtkWidget *widget,
  **/
 void
 btk_widget_set_size_request (BtkWidget *widget,
-                             gint       width,
-                             gint       height)
+                             bint       width,
+                             bint       height)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (width >= -1);
@@ -8067,8 +8067,8 @@ btk_widget_set_size_request (BtkWidget *widget,
  **/
 void
 btk_widget_get_size_request (BtkWidget *widget,
-                             gint      *width,
-                             gint      *height)
+                             bint      *width,
+                             bint      *height)
 {
   BtkWidgetAuxInfo *aux_info;
 
@@ -8101,19 +8101,19 @@ btk_widget_get_size_request (BtkWidget *widget,
  **/
 void
 btk_widget_set_events (BtkWidget *widget,
-		       gint	  events)
+		       bint	  events)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (!btk_widget_get_realized (widget));
   
   g_object_set_qdata (B_OBJECT (widget), quark_event_mask,
-                      GINT_TO_POINTER (events));
+                      BINT_TO_POINTER (events));
   g_object_notify (B_OBJECT (widget), "events");
 }
 
 static void
 btk_widget_add_events_internal (BtkWidget *widget,
-				gint       events,
+				bint       events,
 				GList     *window_list)
 {
   GList *l;
@@ -8121,7 +8121,7 @@ btk_widget_add_events_internal (BtkWidget *widget,
   for (l = window_list; l != NULL; l = l->next)
     {
       BdkWindow *window = l->data;
-      gpointer user_data;
+      bpointer user_data;
 
       bdk_window_get_user_data (window, &user_data);
       if (user_data == widget)
@@ -8147,15 +8147,15 @@ btk_widget_add_events_internal (BtkWidget *widget,
  **/
 void
 btk_widget_add_events (BtkWidget *widget,
-		       gint	  events)
+		       bint	  events)
 {
-  gint old_events;
+  bint old_events;
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  old_events = GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_event_mask));
+  old_events = BPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_event_mask));
   g_object_set_qdata (B_OBJECT (widget), quark_event_mask,
-                      GINT_TO_POINTER (old_events | events));
+                      BINT_TO_POINTER (old_events | events));
 
   if (btk_widget_get_realized (widget))
     {
@@ -8192,7 +8192,7 @@ btk_widget_set_extension_events (BtkWidget *widget,
     btk_widget_set_extension_events_internal (widget, mode, NULL);
 
   g_object_set_qdata (B_OBJECT (widget), quark_extension_event_mode,
-                      GINT_TO_POINTER (mode));
+                      BINT_TO_POINTER (mode));
   g_object_notify (B_OBJECT (widget), "extension-events");
 }
 
@@ -8382,12 +8382,12 @@ btk_widget_set_colormap (BtkWidget   *widget,
  * 
  * Return value: event mask for @widget
  **/
-gint
+bint
 btk_widget_get_events (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), 0);
 
-  return GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_event_mask));
+  return BPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_event_mask));
 }
 
 /**
@@ -8404,7 +8404,7 @@ btk_widget_get_extension_events (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), 0);
 
-  return GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_extension_event_mode));
+  return BPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (widget), quark_extension_event_mode));
 }
 
 /**
@@ -8421,8 +8421,8 @@ btk_widget_get_extension_events (BtkWidget *widget)
  **/
 void
 btk_widget_get_pointer (BtkWidget *widget,
-			gint	  *x,
-			gint	  *y)
+			bint	  *x,
+			bint	  *y)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   
@@ -8456,7 +8456,7 @@ btk_widget_get_pointer (BtkWidget *widget,
  * Return value: %TRUE if @ancestor contains @widget as a child, 
  *    grandchild, great grandchild, etc.
  **/
-gboolean
+bboolean
 btk_widget_is_ancestor (BtkWidget *widget,
 			BtkWidget *ancestor)
 {
@@ -8485,7 +8485,7 @@ static GQuark quark_composite_name = 0;
  **/
 void
 btk_widget_set_composite_name (BtkWidget   *widget,
-			       const gchar *name)
+			       const bchar *name)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail ((BTK_OBJECT_FLAGS (widget) & BTK_COMPOSITE_CHILD) != 0);
@@ -8510,7 +8510,7 @@ btk_widget_set_composite_name (BtkWidget   *widget,
  *   a composite child. The string should be freed when it is no 
  *   longer needed.
  **/
-gchar*
+bchar*
 btk_widget_get_composite_name (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
@@ -8710,9 +8710,9 @@ btk_widget_get_direction (BtkWidget *widget)
 }
 
 static void
-btk_widget_set_default_direction_recurse (BtkWidget *widget, gpointer data)
+btk_widget_set_default_direction_recurse (BtkWidget *widget, bpointer data)
 {
-  BtkTextDirection old_dir = GPOINTER_TO_UINT (data);
+  BtkTextDirection old_dir = BPOINTER_TO_UINT (data);
 
   g_object_ref (widget);
   
@@ -8753,7 +8753,7 @@ btk_widget_set_default_direction (BtkTextDirection dir)
       while (tmp_list)
 	{
 	  btk_widget_set_default_direction_recurse (tmp_list->data,
-						    GUINT_TO_POINTER (old_dir));
+						    BUINT_TO_POINTER (old_dir));
 	  g_object_unref (tmp_list->data);
 	  tmp_list = tmp_list->next;
 	}
@@ -9057,7 +9057,7 @@ synth_crossing (BtkWidget      *widget,
  *
  * Returns %TRUE if the pointer window belongs to @widget.
  */
-gboolean
+bboolean
 _btk_widget_is_pointer_widget (BtkWidget *widget)
 {
   if (BTK_WIDGET_HAS_POINTER (widget))
@@ -9068,7 +9068,7 @@ _btk_widget_is_pointer_widget (BtkWidget *widget)
       win = _btk_widget_get_pointer_window (widget);
       if (win)
         {
-          bdk_window_get_user_data (win, (gpointer *)&wid);
+          bdk_window_get_user_data (win, (bpointer *)&wid);
           if (wid == widget)
             return TRUE;
         }
@@ -9261,8 +9261,8 @@ static void
 btk_widget_propagate_state (BtkWidget           *widget,
 			    BtkStateData        *data)
 {
-  guint8 old_state = btk_widget_get_state (widget);
-  guint8 old_saved_state = widget->saved_state;
+  buint8 old_state = btk_widget_get_state (widget);
+  buint8 old_saved_state = widget->saved_state;
 
   /* don't call this function with state==BTK_STATE_INSENSITIVE,
    * parent_sensitive==TRUE on a sensitive widget
@@ -9350,7 +9350,7 @@ btk_widget_propagate_state (BtkWidget           *widget,
  */
 BtkWidgetAuxInfo*
 _btk_widget_get_aux_info (BtkWidget *widget,
-			  gboolean   create)
+			  bboolean   create)
 {
   BtkWidgetAuxInfo *aux_info;
   
@@ -9406,8 +9406,8 @@ btk_widget_shape_info_destroy (BtkWidgetShapeInfo *info)
 void
 btk_widget_shape_combine_mask (BtkWidget *widget,
 			       BdkBitmap *shape_mask,
-			       gint	  offset_x,
-			       gint	  offset_y)
+			       bint	  offset_x,
+			       bint	  offset_y)
 {
   BtkWidgetShapeInfo* shape_info;
   
@@ -9461,8 +9461,8 @@ btk_widget_shape_combine_mask (BtkWidget *widget,
 void
 btk_widget_input_shape_combine_mask (BtkWidget *widget,
 				     BdkBitmap *shape_mask,
-				     gint       offset_x,
-				     gint	offset_y)
+				     bint       offset_x,
+				     bint	offset_y)
 {
   BtkWidgetShapeInfo* shape_info;
   
@@ -9502,7 +9502,7 @@ static void
 btk_reset_shapes_recurse (BtkWidget *widget,
 			  BdkWindow *window)
 {
-  gpointer data;
+  bpointer data;
   GList *list;
 
   bdk_window_get_user_data (window, &data);
@@ -9574,8 +9574,8 @@ expose_window (BdkWindow *window)
 {
   BdkEvent event;
   GList *l, *children;
-  gpointer user_data;
-  gboolean is_double_buffered;
+  bpointer user_data;
+  bboolean is_double_buffered;
 
   bdk_window_get_user_data (window, &user_data);
 
@@ -9685,7 +9685,7 @@ btk_widget_get_snapshot (BtkWidget    *widget,
       for (list = bdk_window_peek_children (parent_window); list; list = list->next)
         {
           BdkWindow *subwin = list->data;
-          gpointer windata;
+          bpointer windata;
           int wx, wy, ww, wh;
           bdk_window_get_user_data (subwin, &windata);
           if (windata != widget)
@@ -9822,7 +9822,7 @@ btk_widget_class_install_style_property_parser (BtkWidgetClass     *klass,
     }
 
   g_param_spec_ref_sink (pspec);
-  g_param_spec_set_qdata (pspec, quark_property_parser, (gpointer) parser);
+  g_param_spec_set_qdata (pspec, quark_property_parser, (bpointer) parser);
   g_param_spec_pool_insert (style_property_spec_pool, pspec, B_OBJECT_CLASS_TYPE (klass));
 }
 
@@ -9861,7 +9861,7 @@ btk_widget_class_install_style_property (BtkWidgetClass *klass,
  */
 BParamSpec*
 btk_widget_class_find_style_property (BtkWidgetClass *klass,
-				      const gchar    *property_name)
+				      const bchar    *property_name)
 {
   g_return_val_if_fail (property_name != NULL, NULL);
 
@@ -9885,10 +9885,10 @@ btk_widget_class_find_style_property (BtkWidgetClass *klass,
  */
 BParamSpec**
 btk_widget_class_list_style_properties (BtkWidgetClass *klass,
-					guint          *n_properties)
+					buint          *n_properties)
 {
   BParamSpec **pspecs;
-  guint n;
+  buint n;
 
   pspecs = g_param_spec_pool_list (style_property_spec_pool,
 				   B_OBJECT_CLASS_TYPE (klass),
@@ -9909,7 +9909,7 @@ btk_widget_class_list_style_properties (BtkWidgetClass *klass,
  */
 void
 btk_widget_style_get_property (BtkWidget   *widget,
-			       const gchar *property_name,
+			       const bchar *property_name,
 			       BValue      *value)
 {
   BParamSpec *pspec;
@@ -9965,10 +9965,10 @@ btk_widget_style_get_property (BtkWidget   *widget,
  */ 
 void
 btk_widget_style_get_valist (BtkWidget   *widget,
-			     const gchar *first_property_name,
+			     const bchar *first_property_name,
 			     va_list      var_args)
 {
-  const gchar *name;
+  const bchar *name;
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -9979,7 +9979,7 @@ btk_widget_style_get_valist (BtkWidget   *widget,
     {
       const BValue *peek_value;
       BParamSpec *pspec;
-      gchar *error;
+      bchar *error;
 
       pspec = g_param_spec_pool_lookup (style_property_spec_pool,
 					name,
@@ -10007,7 +10007,7 @@ btk_widget_style_get_valist (BtkWidget   *widget,
 	  break;
 	}
 
-      name = va_arg (var_args, gchar*);
+      name = va_arg (var_args, bchar*);
     }
 
   g_object_unref (widget);
@@ -10025,7 +10025,7 @@ btk_widget_style_get_valist (BtkWidget   *widget,
  */
 void
 btk_widget_style_get (BtkWidget   *widget,
-		      const gchar *first_property_name,
+		      const bchar *first_property_name,
 		      ...)
 {
   va_list var_args;
@@ -10059,23 +10059,23 @@ btk_widget_style_get (BtkWidget   *widget,
  **/
 void
 btk_widget_path (BtkWidget *widget,
-		 guint     *path_length,
-		 gchar    **path,
-		 gchar    **path_reversed)
+		 buint     *path_length,
+		 bchar    **path,
+		 bchar    **path_reversed)
 {
-  static gchar *rev_path = NULL;
-  static guint tmp_path_len = 0;
-  guint len;
+  static bchar *rev_path = NULL;
+  static buint tmp_path_len = 0;
+  buint len;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
   
   len = 0;
   do
     {
-      const gchar *string;
-      const gchar *s;
-      gchar *d;
-      guint l;
+      const bchar *string;
+      const bchar *s;
+      bchar *d;
+      buint l;
       
       string = btk_widget_get_name (widget);
       l = strlen (string);
@@ -10124,23 +10124,23 @@ btk_widget_path (BtkWidget *widget,
  **/
 void
 btk_widget_class_path (BtkWidget *widget,
-		       guint     *path_length,
-		       gchar    **path,
-		       gchar    **path_reversed)
+		       buint     *path_length,
+		       bchar    **path,
+		       bchar    **path_reversed)
 {
-  static gchar *rev_path = NULL;
-  static guint tmp_path_len = 0;
-  guint len;
+  static bchar *rev_path = NULL;
+  static buint tmp_path_len = 0;
+  buint len;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
   
   len = 0;
   do
     {
-      const gchar *string;
-      const gchar *s;
-      gchar *d;
-      guint l;
+      const bchar *string;
+      const bchar *s;
+      bchar *d;
+      buint l;
       
       string = g_type_name (B_OBJECT_TYPE (widget));
       l = strlen (string);
@@ -10320,13 +10320,13 @@ btk_widget_buildable_interface_init (BtkBuildableIface *iface)
 
 static void
 btk_widget_buildable_set_name (BtkBuildable *buildable,
-			       const gchar  *name)
+			       const bchar  *name)
 {
   g_object_set_qdata_full (B_OBJECT (buildable), quark_builder_set_name,
                            g_strdup (name), g_free);
 }
 
-static const gchar *
+static const bchar *
 btk_widget_buildable_get_name (BtkBuildable *buildable)
 {
   return g_object_get_qdata (B_OBJECT (buildable), quark_builder_set_name);
@@ -10335,7 +10335,7 @@ btk_widget_buildable_get_name (BtkBuildable *buildable)
 static BObject *
 btk_widget_buildable_get_internal_child (BtkBuildable *buildable,
 					 BtkBuilder   *builder,
-					 const gchar  *childname)
+					 const bchar  *childname)
 {
   if (strcmp (childname, "accessible") == 0)
     return B_OBJECT (btk_widget_get_accessible (BTK_WIDGET (buildable)));
@@ -10346,35 +10346,35 @@ btk_widget_buildable_get_internal_child (BtkBuildable *buildable,
 static void
 btk_widget_buildable_set_buildable_property (BtkBuildable *buildable,
 					     BtkBuilder   *builder,
-					     const gchar  *name,
+					     const bchar  *name,
 					     const BValue *value)
 {
   if (strcmp (name, "has-default") == 0 && b_value_get_boolean (value))
       g_object_set_qdata (B_OBJECT (buildable), quark_builder_has_default,
-			  GINT_TO_POINTER (TRUE));
+			  BINT_TO_POINTER (TRUE));
   else if (strcmp (name, "has-focus") == 0 && b_value_get_boolean (value))
       g_object_set_qdata (B_OBJECT (buildable), quark_builder_has_focus,
-			  GINT_TO_POINTER (TRUE));
+			  BINT_TO_POINTER (TRUE));
   else
     g_object_set_property (B_OBJECT (buildable), name, value);
 }
 
 typedef struct
 {
-  gchar *action_name;
+  bchar *action_name;
   GString *description;
-  gchar *context;
-  gboolean translatable;
+  bchar *context;
+  bboolean translatable;
 } BatkActionData;
 
 typedef struct
 {
-  gchar *target;
-  gchar *type;
+  bchar *target;
+  bchar *type;
 } BatkRelationData;
 
 static void
-free_action (BatkActionData *data, gpointer user_data)
+free_action (BatkActionData *data, bpointer user_data)
 {
   g_free (data->action_name);
   g_string_free (data->description, TRUE);
@@ -10383,7 +10383,7 @@ free_action (BatkActionData *data, gpointer user_data)
 }
 
 static void
-free_relation (BatkRelationData *data, gpointer user_data)
+free_relation (BatkRelationData *data, bpointer user_data)
 {
   g_free (data->target);
   g_free (data->type);
@@ -10456,20 +10456,20 @@ typedef struct
 
 static void
 accessibility_start_element (GMarkupParseContext  *context,
-			     const gchar          *element_name,
-			     const gchar         **names,
-			     const gchar         **values,
-			     gpointer              user_data,
+			     const bchar          *element_name,
+			     const bchar         **names,
+			     const bchar         **values,
+			     bpointer              user_data,
 			     GError              **error)
 {
   AccessibilitySubParserData *data = (AccessibilitySubParserData*)user_data;
-  guint i;
-  gint line_number, char_number;
+  buint i;
+  bint line_number, char_number;
 
   if (strcmp (element_name, "relation") == 0)
     {
-      gchar *target = NULL;
-      gchar *type = NULL;
+      bchar *target = NULL;
+      bchar *type = NULL;
       BatkRelationData *relation;
 
       for (i = 0; names[i]; i++)
@@ -10520,10 +10520,10 @@ accessibility_start_element (GMarkupParseContext  *context,
     }
   else if (strcmp (element_name, "action") == 0)
     {
-      const gchar *action_name = NULL;
-      const gchar *description = NULL;
-      const gchar *msg_context = NULL;
-      gboolean translatable = FALSE;
+      const bchar *action_name = NULL;
+      const bchar *description = NULL;
+      const bchar *msg_context = NULL;
+      bboolean translatable = FALSE;
       BatkActionData *action;
 
       for (i = 0; names[i]; i++)
@@ -10589,9 +10589,9 @@ accessibility_start_element (GMarkupParseContext  *context,
 
 static void
 accessibility_text (GMarkupParseContext  *context,
-                    const gchar          *text,
-                    gsize                 text_len,
-                    gpointer              user_data,
+                    const bchar          *text,
+                    bsize                 text_len,
+                    bpointer              user_data,
                     GError              **error)
 {
   AccessibilitySubParserData *data = (AccessibilitySubParserData*)user_data;
@@ -10614,23 +10614,23 @@ static const GMarkupParser accessibility_parser =
 typedef struct
 {
   BObject *object;
-  guint    key;
-  guint    modifiers;
-  gchar   *signal;
+  buint    key;
+  buint    modifiers;
+  bchar   *signal;
 } AccelGroupParserData;
 
 static void
 accel_group_start_element (GMarkupParseContext  *context,
-			   const gchar          *element_name,
-			   const gchar         **names,
-			   const gchar         **values,
-			   gpointer              user_data,
+			   const bchar          *element_name,
+			   const bchar         **names,
+			   const bchar         **values,
+			   bpointer              user_data,
 			   GError              **error)
 {
-  gint i;
-  guint key = 0;
-  guint modifiers = 0;
-  gchar *signal = NULL;
+  bint i;
+  buint key = 0;
+  buint modifiers = 0;
+  bchar *signal = NULL;
   AccelGroupParserData *parser_data = (AccelGroupParserData*)user_data;
 
   for (i = 0; names[i]; i++)
@@ -10664,13 +10664,13 @@ static const GMarkupParser accel_group_parser =
     accel_group_start_element,
   };
 
-static gboolean
+static bboolean
 btk_widget_buildable_custom_tag_start (BtkBuildable     *buildable,
 				       BtkBuilder       *builder,
 				       BObject          *child,
-				       const gchar      *tagname,
+				       const bchar      *tagname,
 				       GMarkupParser    *parser,
-				       gpointer         *data)
+				       bpointer         *data)
 {
   g_assert (buildable);
 
@@ -10699,7 +10699,7 @@ btk_widget_buildable_custom_tag_start (BtkBuildable     *buildable,
 void
 _btk_widget_buildable_finish_accelerator (BtkWidget *widget,
 					  BtkWidget *toplevel,
-					  gpointer   user_data)
+					  bpointer   user_data)
 {
   AccelGroupParserData *accel_data;
   GSList *accel_groups;
@@ -10738,8 +10738,8 @@ static void
 btk_widget_buildable_custom_finished (BtkBuildable *buildable,
 				      BtkBuilder   *builder,
 				      BObject      *child,
-				      const gchar  *tagname,
-				      gpointer      user_data)
+				      const bchar  *tagname,
+				      bpointer      user_data)
 {
   AccelGroupParserData *accel_data;
   AccessibilitySubParserData *a11y_data;
@@ -10762,7 +10762,7 @@ btk_widget_buildable_custom_finished (BtkBuildable *buildable,
 	{
 	  BatkObject *accessible;
 	  BatkAction *action;
-	  gint i, n_actions;
+	  bint i, n_actions;
 	  GSList *l;
 
 	  accessible = btk_widget_get_accessible (BTK_WIDGET (buildable));
@@ -10783,7 +10783,7 @@ btk_widget_buildable_custom_finished (BtkBuildable *buildable,
 
 	          if (i < n_actions)
                     {
-                      gchar *description;
+                      bchar *description;
 
                       if (action_data->translatable && action_data->description->len)
                         description = _btk_builder_parser_translate (btk_builder_get_translation_domain (builder),
@@ -10950,7 +10950,7 @@ btk_widget_remove_mnemonic_label (BtkWidget *widget,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_widget_get_no_show_all (BtkWidget *widget)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -10974,7 +10974,7 @@ btk_widget_get_no_show_all (BtkWidget *widget)
  **/
 void
 btk_widget_set_no_show_all (BtkWidget *widget,
-			    gboolean   no_show_all)
+			    bboolean   no_show_all)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -10994,12 +10994,12 @@ btk_widget_set_no_show_all (BtkWidget *widget,
 
 static void
 btk_widget_real_set_has_tooltip (BtkWidget *widget,
-			         gboolean   has_tooltip,
-			         gboolean   force)
+			         bboolean   has_tooltip,
+			         bboolean   force)
 {
-  gboolean priv_has_tooltip;
+  bboolean priv_has_tooltip;
 
-  priv_has_tooltip = GPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget),
+  priv_has_tooltip = BPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (widget),
 				       quark_has_tooltip));
 
   if (priv_has_tooltip != has_tooltip || force)
@@ -11023,7 +11023,7 @@ btk_widget_real_set_has_tooltip (BtkWidget *widget,
 	}
 
       g_object_set_qdata (B_OBJECT (widget), quark_has_tooltip,
-			  GUINT_TO_POINTER (priv_has_tooltip));
+			  BUINT_TO_POINTER (priv_has_tooltip));
     }
 }
 
@@ -11047,8 +11047,8 @@ void
 btk_widget_set_tooltip_window (BtkWidget *widget,
 			       BtkWindow *custom_window)
 {
-  gboolean has_tooltip;
-  gchar *tooltip_markup;
+  bboolean has_tooltip;
+  bchar *tooltip_markup;
 
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (custom_window == NULL || BTK_IS_WINDOW (custom_window));
@@ -11104,11 +11104,11 @@ btk_widget_trigger_tooltip_query (BtkWidget *widget)
   btk_tooltip_trigger_tooltip_query (btk_widget_get_display (widget));
 }
 
-static guint tooltip_query_id;
+static buint tooltip_query_id;
 static GSList *tooltip_query_displays;
 
-static gboolean
-tooltip_query_idle (gpointer data)
+static bboolean
+tooltip_query_idle (bpointer data)
 {
   b_slist_foreach (tooltip_query_displays, (GFunc)btk_tooltip_trigger_tooltip_query, NULL);
   b_slist_foreach (tooltip_query_displays, (GFunc)g_object_unref, NULL);
@@ -11149,7 +11149,7 @@ btk_widget_queue_tooltip_query (BtkWidget *widget)
  */
 void
 btk_widget_set_tooltip_text (BtkWidget   *widget,
-                             const gchar *text)
+                             const bchar *text)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -11167,10 +11167,10 @@ btk_widget_set_tooltip_text (BtkWidget   *widget,
  *
  * Since: 2.12
  */
-gchar *
+bchar *
 btk_widget_get_tooltip_text (BtkWidget *widget)
 {
-  gchar *text = NULL;
+  bchar *text = NULL;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
@@ -11197,7 +11197,7 @@ btk_widget_get_tooltip_text (BtkWidget *widget)
  */
 void
 btk_widget_set_tooltip_markup (BtkWidget   *widget,
-                               const gchar *markup)
+                               const bchar *markup)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -11215,10 +11215,10 @@ btk_widget_set_tooltip_markup (BtkWidget   *widget,
  *
  * Since: 2.12
  */
-gchar *
+bchar *
 btk_widget_get_tooltip_markup (BtkWidget *widget)
 {
-  gchar *text = NULL;
+  bchar *text = NULL;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
@@ -11239,7 +11239,7 @@ btk_widget_get_tooltip_markup (BtkWidget *widget)
  */
 void
 btk_widget_set_has_tooltip (BtkWidget *widget,
-			    gboolean   has_tooltip)
+			    bboolean   has_tooltip)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -11257,10 +11257,10 @@ btk_widget_set_has_tooltip (BtkWidget *widget,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_widget_get_has_tooltip (BtkWidget *widget)
 {
-  gboolean has_tooltip = FALSE;
+  bboolean has_tooltip = FALSE;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
@@ -11385,7 +11385,7 @@ btk_widget_get_window (BtkWidget *widget)
 
 static void
 _btk_widget_set_has_focus (BtkWidget *widget,
-                           gboolean   has_focus)
+                           bboolean   has_focus)
 {
   if (has_focus)
     BTK_OBJECT_FLAGS (widget) |= BTK_HAS_FOCUS;
@@ -11427,11 +11427,11 @@ _btk_widget_set_has_focus (BtkWidget *widget,
  *
  * Since: 2.22
  */
-gboolean
+bboolean
 btk_widget_send_focus_change (BtkWidget *widget,
                               BdkEvent  *event)
 {
-  gboolean res;
+  bboolean res;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
   g_return_val_if_fail (event != NULL && event->type == BDK_FOCUS_CHANGE, FALSE);

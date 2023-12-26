@@ -34,15 +34,15 @@ struct _BtkCellViewCellInfo
 {
   BtkCellRenderer *cell;
 
-  gint requested_width;
-  gint real_width;
-  guint expand : 1;
-  guint pack : 1;
+  bint requested_width;
+  bint real_width;
+  buint expand : 1;
+  buint pack : 1;
 
   GSList *attributes;
 
   BtkCellLayoutDataFunc func;
-  gpointer func_data;
+  bpointer func_data;
   GDestroyNotify destroy;
 };
 
@@ -51,20 +51,20 @@ struct _BtkCellViewPrivate
   BtkTreeModel *model;
   BtkTreeRowReference *displayed_row;
   GList *cell_list;
-  gint spacing;
+  bint spacing;
 
   BdkColor background;
-  gboolean background_set;
+  bboolean background_set;
 };
 
 
 static void        btk_cell_view_cell_layout_init         (BtkCellLayoutIface *iface);
 static void        btk_cell_view_get_property             (BObject           *object,
-                                                           guint             param_id,
+                                                           buint             param_id,
                                                            BValue           *value,
                                                            BParamSpec       *pspec);
 static void        btk_cell_view_set_property             (BObject          *object,
-                                                           guint             param_id,
+                                                           buint             param_id,
                                                            const BValue     *value,
                                                            BParamSpec       *pspec);
 static void        btk_cell_view_finalize                 (BObject          *object);
@@ -72,11 +72,11 @@ static void        btk_cell_view_size_request             (BtkWidget        *wid
                                                            BtkRequisition   *requisition);
 static void        btk_cell_view_size_allocate            (BtkWidget        *widget,
                                                            BtkAllocation    *allocation);
-static gboolean    btk_cell_view_expose                   (BtkWidget        *widget,
+static bboolean    btk_cell_view_expose                   (BtkWidget        *widget,
                                                            BdkEventExpose   *event);
 static void        btk_cell_view_set_value                (BtkCellView     *cell_view,
                                                            BtkCellRenderer *renderer,
-                                                           gchar           *property,
+                                                           bchar           *property,
                                                            BValue          *value);
 static BtkCellViewCellInfo *btk_cell_view_get_cell_info   (BtkCellView      *cellview,
                                                            BtkCellRenderer  *renderer);
@@ -85,40 +85,40 @@ static void        btk_cell_view_set_cell_data            (BtkCellView      *cel
 
 static void        btk_cell_view_cell_layout_pack_start        (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *renderer,
-                                                                gboolean               expand);
+                                                                bboolean               expand);
 static void        btk_cell_view_cell_layout_pack_end          (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *renderer,
-                                                                gboolean               expand);
+                                                                bboolean               expand);
 static void        btk_cell_view_cell_layout_add_attribute     (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *renderer,
-                                                                const gchar           *attribute,
-                                                                gint                   column);
+                                                                const bchar           *attribute,
+                                                                bint                   column);
 static void       btk_cell_view_cell_layout_clear              (BtkCellLayout         *layout);
 static void       btk_cell_view_cell_layout_clear_attributes   (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *renderer);
 static void       btk_cell_view_cell_layout_set_cell_data_func (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *cell,
                                                                 BtkCellLayoutDataFunc  func,
-                                                                gpointer               func_data,
+                                                                bpointer               func_data,
                                                                 GDestroyNotify         destroy);
 static void       btk_cell_view_cell_layout_reorder            (BtkCellLayout         *layout,
                                                                 BtkCellRenderer       *cell,
-                                                                gint                   position);
+                                                                bint                   position);
 static GList *    btk_cell_view_cell_layout_get_cells          (BtkCellLayout         *layout);
 
 /* buildable */
 static void       btk_cell_view_buildable_init                 (BtkBuildableIface     *iface);
-static gboolean   btk_cell_view_buildable_custom_tag_start     (BtkBuildable  	      *buildable,
+static bboolean   btk_cell_view_buildable_custom_tag_start     (BtkBuildable  	      *buildable,
 								BtkBuilder    	      *builder,
 								BObject       	      *child,
-								const gchar   	      *tagname,
+								const bchar   	      *tagname,
 								GMarkupParser 	      *parser,
-								gpointer      	      *data);
+								bpointer      	      *data);
 static void       btk_cell_view_buildable_custom_tag_end       (BtkBuildable  	      *buildable,
 								BtkBuilder    	      *builder,
 								BObject       	      *child,
-								const gchar   	      *tagname,
-								gpointer      	      *data);
+								const bchar   	      *tagname,
+								bpointer      	      *data);
 
 static BtkBuildableIface *parent_buildable_iface;
 
@@ -217,7 +217,7 @@ btk_cell_view_cell_layout_init (BtkCellLayoutIface *iface)
 
 static void
 btk_cell_view_get_property (BObject    *object,
-                            guint       param_id,
+                            buint       param_id,
                             BValue     *value,
                             BParamSpec *pspec)
 {
@@ -248,7 +248,7 @@ btk_cell_view_get_property (BObject    *object,
 
 static void
 btk_cell_view_set_property (BObject      *object,
-                            guint         param_id,
+                            buint         param_id,
                             const BValue *value,
                             BParamSpec   *pspec)
 {
@@ -314,7 +314,7 @@ btk_cell_view_size_request (BtkWidget      *widget,
                             BtkRequisition *requisition)
 {
   GList *i;
-  gboolean first_cell = TRUE;
+  bboolean first_cell = TRUE;
   BtkCellView *cellview;
 
   cellview = BTK_CELL_VIEW (widget);
@@ -327,7 +327,7 @@ btk_cell_view_size_request (BtkWidget      *widget,
 
   for (i = cellview->priv->cell_list; i; i = i->next)
     {
-      gint width, height;
+      bint width, height;
       BtkCellViewCellInfo *info = (BtkCellViewCellInfo *)i->data;
 
       if (!info->cell->visible)
@@ -352,9 +352,9 @@ btk_cell_view_size_allocate (BtkWidget     *widget,
                              BtkAllocation *allocation)
 {
   GList *i;
-  gint expand_cell_count = 0;
-  gint full_requested_width = 0;
-  gint extra_space;
+  bint expand_cell_count = 0;
+  bint full_requested_width = 0;
+  bint extra_space;
   BtkCellView *cellview;
 
   widget->allocation = *allocation;
@@ -393,7 +393,7 @@ btk_cell_view_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_cell_view_expose (BtkWidget      *widget,
                       BdkEventExpose *event)
 {
@@ -401,7 +401,7 @@ btk_cell_view_expose (BtkWidget      *widget,
   BtkCellView *cellview;
   BdkRectangle area;
   BtkCellRendererState state;
-  gboolean rtl = (btk_widget_get_direction(widget) == BTK_TEXT_DIR_RTL);
+  bboolean rtl = (btk_widget_get_direction(widget) == BTK_TEXT_DIR_RTL);
 
   cellview = BTK_CELL_VIEW (widget);
 
@@ -539,8 +539,8 @@ btk_cell_view_set_cell_data (BtkCellView *cell_view)
 
       for (j = info->attributes; j && j->next; j = j->next->next)
         {
-          gchar *property = j->data;
-          gint column = GPOINTER_TO_INT (j->next->data);
+          bchar *property = j->data;
+          bint column = BPOINTER_TO_INT (j->next->data);
           BValue value = {0, };
 
           btk_tree_model_get_value (cell_view->priv->model, &iter,
@@ -565,7 +565,7 @@ btk_cell_view_set_cell_data (BtkCellView *cell_view)
 static void
 btk_cell_view_cell_layout_pack_start (BtkCellLayout   *layout,
                                       BtkCellRenderer *renderer,
-                                      gboolean         expand)
+                                      bboolean         expand)
 {
   BtkCellViewCellInfo *info;
   BtkCellView *cellview = BTK_CELL_VIEW (layout);
@@ -587,7 +587,7 @@ btk_cell_view_cell_layout_pack_start (BtkCellLayout   *layout,
 static void
 btk_cell_view_cell_layout_pack_end (BtkCellLayout   *layout,
                                     BtkCellRenderer *renderer,
-                                    gboolean         expand)
+                                    bboolean         expand)
 {
   BtkCellViewCellInfo *info;
   BtkCellView *cellview = BTK_CELL_VIEW (layout);
@@ -609,8 +609,8 @@ btk_cell_view_cell_layout_pack_end (BtkCellLayout   *layout,
 static void
 btk_cell_view_cell_layout_add_attribute (BtkCellLayout   *layout,
                                          BtkCellRenderer *renderer,
-                                         const gchar     *attribute,
-                                         gint             column)
+                                         const bchar     *attribute,
+                                         bint             column)
 {
   BtkCellViewCellInfo *info;
   BtkCellView *cellview = BTK_CELL_VIEW (layout);
@@ -619,7 +619,7 @@ btk_cell_view_cell_layout_add_attribute (BtkCellLayout   *layout,
   g_return_if_fail (info != NULL);
 
   info->attributes = b_slist_prepend (info->attributes,
-                                      GINT_TO_POINTER (column));
+                                      BINT_TO_POINTER (column));
   info->attributes = b_slist_prepend (info->attributes,
                                       g_strdup (attribute));
 }
@@ -647,7 +647,7 @@ static void
 btk_cell_view_cell_layout_set_cell_data_func (BtkCellLayout         *layout,
                                               BtkCellRenderer       *cell,
                                               BtkCellLayoutDataFunc  func,
-                                              gpointer               func_data,
+                                              bpointer               func_data,
                                               GDestroyNotify         destroy)
 {
   BtkCellView *cellview = BTK_CELL_VIEW (layout);
@@ -695,7 +695,7 @@ btk_cell_view_cell_layout_clear_attributes (BtkCellLayout   *layout,
 static void
 btk_cell_view_cell_layout_reorder (BtkCellLayout   *layout,
                                    BtkCellRenderer *cell,
-                                   gint             position)
+                                   bint             position)
 {
   BtkCellView *cellview = BTK_CELL_VIEW (layout);
   BtkCellViewCellInfo *info;
@@ -749,7 +749,7 @@ btk_cell_view_new (void)
  * Since: 2.6
  */
 BtkWidget *
-btk_cell_view_new_with_text (const gchar *text)
+btk_cell_view_new_with_text (const bchar *text)
 {
   BtkCellView *cellview;
   BtkCellRenderer *renderer;
@@ -783,7 +783,7 @@ btk_cell_view_new_with_text (const gchar *text)
  * Since: 2.6
  */
 BtkWidget *
-btk_cell_view_new_with_markup (const gchar *markup)
+btk_cell_view_new_with_markup (const bchar *markup)
 {
   BtkCellView *cellview;
   BtkCellRenderer *renderer;
@@ -850,7 +850,7 @@ btk_cell_view_new_with_pixbuf (BdkPixbuf *pixbuf)
 static void
 btk_cell_view_set_value (BtkCellView     *cell_view,
                          BtkCellRenderer *renderer,
-                         gchar           *property,
+                         bchar           *property,
                          BValue          *value)
 {
   g_object_set_property (B_OBJECT (renderer), property, value);
@@ -986,7 +986,7 @@ btk_cell_view_get_displayed_row (BtkCellView *cell_view)
  *
  * Since: 2.6
  */
-gboolean
+bboolean
 btk_cell_view_get_size_of_row (BtkCellView    *cell_view,
                                BtkTreePath    *path,
                                BtkRequisition *requisition)
@@ -1090,13 +1090,13 @@ btk_cell_view_get_cell_renderers (BtkCellView *cell_view)
   return btk_cell_view_cell_layout_get_cells (BTK_CELL_LAYOUT (cell_view));
 }
 
-static gboolean
+static bboolean
 btk_cell_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
 					  BObject       *child,
-					  const gchar   *tagname,
+					  const bchar   *tagname,
 					  GMarkupParser *parser,
-					  gpointer      *data)
+					  bpointer      *data)
 {
   if (parent_buildable_iface->custom_tag_start &&
       parent_buildable_iface->custom_tag_start (buildable, builder, child,
@@ -1111,8 +1111,8 @@ static void
 btk_cell_view_buildable_custom_tag_end (BtkBuildable *buildable,
 					BtkBuilder   *builder,
 					BObject      *child,
-					const gchar  *tagname,
-					gpointer     *data)
+					const bchar  *tagname,
+					bpointer     *data)
 {
   if (strcmp (tagname, "attributes") == 0)
     _btk_cell_layout_buildable_custom_tag_end (buildable, builder, child, tagname,

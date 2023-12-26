@@ -52,7 +52,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-value" title="btk_adjustment_get_value ()">btk_adjustment_get_value</a> <span class="c_punctuation">()</span>
@@ -100,7 +100,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-lower" title="btk_adjustment_get_lower ()">btk_adjustment_get_lower</a> <span class="c_punctuation">()</span>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-page-increment" title="btk_adjustment_get_page_increment ()">btk_adjustment_get_page_increment</a> <span class="c_punctuation">()</span>
@@ -116,7 +116,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-page-size" title="btk_adjustment_get_page_size ()">btk_adjustment_get_page_size</a> <span class="c_punctuation">()</span>
@@ -124,7 +124,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-step-increment" title="btk_adjustment_get_step_increment ()">btk_adjustment_get_step_increment</a> <span class="c_punctuation">()</span>
@@ -132,7 +132,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkAdjustment.html#btk-adjustment-get-upper" title="btk_adjustment_get_upper ()">btk_adjustment_get_upper</a> <span class="c_punctuation">()</span>
@@ -279,17 +279,17 @@
 <div class="refsect2">
 <a name="btk-adjustment-new"></a><h3>btk_adjustment_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkObject.html" title="BtkObject"><span class="returnvalue">BtkObject</span></a> *
-btk_adjustment_new (<em class="parameter"><code><span class="type">gdouble</span> value</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> lower</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> upper</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> step_increment</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> page_increment</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> page_size</code></em>);</pre>
+btk_adjustment_new (<em class="parameter"><code><span class="type">bdouble</span> value</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> lower</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> upper</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> step_increment</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> page_increment</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> page_size</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-value"></a><h3>btk_adjustment_get_value ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_value (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Gets the current value of the adjustment. See
 <a class="link" href="BtkAdjustment.html#btk-adjustment-set-value" title="btk_adjustment_set_value ()"><code class="function">btk_adjustment_set_value()</code></a>.</p>
@@ -318,15 +318,15 @@ btk_adjustment_get_value (<em class="parameter"><code><a class="link" href="BtkA
 <a name="btk-adjustment-set-value"></a><h3>btk_adjustment_set_value ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_value (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bdouble</span> value</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-clamp-page"></a><h3>btk_adjustment_clamp_page ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_clamp_page (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> lower</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> upper</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> lower</code></em>,
+                           <em class="parameter"><code><span class="type">bdouble</span> upper</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -345,12 +345,12 @@ btk_adjustment_value_changed (<em class="parameter"><code><a class="link" href="
 <a name="btk-adjustment-configure"></a><h3>btk_adjustment_configure ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_configure (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> value</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> lower</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> upper</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> step_increment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> page_increment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> page_size</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bdouble</span> value</code></em>,
+                          <em class="parameter"><code><span class="type">bdouble</span> lower</code></em>,
+                          <em class="parameter"><code><span class="type">bdouble</span> upper</code></em>,
+                          <em class="parameter"><code><span class="type">bdouble</span> step_increment</code></em>,
+                          <em class="parameter"><code><span class="type">bdouble</span> page_increment</code></em>,
+                          <em class="parameter"><code><span class="type">bdouble</span> page_size</code></em>);</pre>
 <p>Sets all properties of the adjustment at once.</p>
 <p>Use this function to avoid multiple emissions of the "changed"
 signal. See <a class="link" href="BtkAdjustment.html#btk-adjustment-set-lower" title="btk_adjustment_set_lower ()"><code class="function">btk_adjustment_set_lower()</code></a> for an alternative way
@@ -407,7 +407,7 @@ of compressing multiple emissions of "changed" into one.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-lower"></a><h3>btk_adjustment_get_lower ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_lower (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Retrieves the minimum value of the adjustment.</p>
 <div class="refsect3">
@@ -434,7 +434,7 @@ btk_adjustment_get_lower (<em class="parameter"><code><a class="link" href="BtkA
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-page-increment"></a><h3>btk_adjustment_get_page_increment ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_page_increment (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Retrieves the page increment of the adjustment.</p>
 <div class="refsect3">
@@ -461,7 +461,7 @@ btk_adjustment_get_page_increment (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-page-size"></a><h3>btk_adjustment_get_page_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_page_size (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Retrieves the page size of the adjustment.</p>
 <div class="refsect3">
@@ -488,7 +488,7 @@ btk_adjustment_get_page_size (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-step-increment"></a><h3>btk_adjustment_get_step_increment ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_step_increment (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Retrieves the step increment of the adjustment.</p>
 <div class="refsect3">
@@ -515,7 +515,7 @@ btk_adjustment_get_step_increment (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="btk-adjustment-get-upper"></a><h3>btk_adjustment_get_upper ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_adjustment_get_upper (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
 <p>Retrieves the maximum value of the adjustment.</p>
 <div class="refsect3">
@@ -544,7 +544,7 @@ btk_adjustment_get_upper (<em class="parameter"><code><a class="link" href="BtkA
 <a name="btk-adjustment-set-lower"></a><h3>btk_adjustment_set_lower ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_lower (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> lower</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bdouble</span> lower</code></em>);</pre>
 <p>Sets the minimum value of the adjustment.</p>
 <p>When setting multiple adjustment properties via their individual
 setters, multiple "changed" signals will be emitted. However, since
@@ -585,7 +585,7 @@ of compressing "changed" emissions.</p>
 <a name="btk-adjustment-set-page-increment"></a><h3>btk_adjustment_set_page_increment ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_page_increment (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                                   <em class="parameter"><code><span class="type">gdouble</span> page_increment</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bdouble</span> page_increment</code></em>);</pre>
 <p>Sets the page increment of the adjustment.</p>
 <p>See <a class="link" href="BtkAdjustment.html#btk-adjustment-set-lower" title="btk_adjustment_set_lower ()"><code class="function">btk_adjustment_set_lower()</code></a> about how to compress multiple
 emissions of the "changed" signal when setting multiple adjustment
@@ -619,7 +619,7 @@ properties.</p>
 <a name="btk-adjustment-set-page-size"></a><h3>btk_adjustment_set_page_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_page_size (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                              <em class="parameter"><code><span class="type">gdouble</span> page_size</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bdouble</span> page_size</code></em>);</pre>
 <p>Sets the page size of the adjustment.</p>
 <p>See <a class="link" href="BtkAdjustment.html#btk-adjustment-set-lower" title="btk_adjustment_set_lower ()"><code class="function">btk_adjustment_set_lower()</code></a> about how to compress multiple
 emissions of the "changed" signal when setting multiple adjustment
@@ -653,7 +653,7 @@ properties.</p>
 <a name="btk-adjustment-set-step-increment"></a><h3>btk_adjustment_set_step_increment ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_step_increment (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                                   <em class="parameter"><code><span class="type">gdouble</span> step_increment</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bdouble</span> step_increment</code></em>);</pre>
 <p>Sets the step increment of the adjustment.</p>
 <p>See <a class="link" href="BtkAdjustment.html#btk-adjustment-set-lower" title="btk_adjustment_set_lower ()"><code class="function">btk_adjustment_set_lower()</code></a> about how to compress multiple
 emissions of the "changed" signal when setting multiple adjustment
@@ -687,7 +687,7 @@ properties.</p>
 <a name="btk-adjustment-set-upper"></a><h3>btk_adjustment_set_upper ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_adjustment_set_upper (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                          <em class="parameter"><code><span class="type">gdouble</span> upper</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bdouble</span> upper</code></em>);</pre>
 <p>Sets the maximum value of the adjustment.</p>
 <p>Note that values will be restricted by
 <code class="literal">upper - page-size</code> if the page-size
@@ -806,7 +806,7 @@ property is nonzero.</p>
 <a name="BtkAdjustment-changed"></a><h3>The <code class="literal">“changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: No Recursion</p>
 </div>
 <hr>
@@ -814,7 +814,7 @@ user_function (<a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><
 <a name="BtkAdjustment-value-changed"></a><h3>The <code class="literal">“value-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: No Recursion</p>
 </div>
 </div>

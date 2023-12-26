@@ -23,9 +23,9 @@ static void _check_object (BatkObject *obj);
 static void button_pressed_handler (BtkButton *button);
 static void _print_states (BatkObject *obj);
 static void _print_button_image_info(BatkObject *obj);
-static gint _do_button_action (gpointer data);
-static gint _toggle_inconsistent (gpointer data);
-static gint _finish_button_action (gpointer data);
+static bint _do_button_action (bpointer data);
+static bint _toggle_inconsistent (bpointer data);
+static bint _finish_button_action (bpointer data);
 
 #define NUM_VALID_ROLES 4
 
@@ -33,7 +33,7 @@ static void
 _check_object (BatkObject *obj)
 {
   BatkRole role;
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   role = batk_object_get_role (obj);
   if (role == BATK_ROLE_FRAME)
@@ -85,7 +85,7 @@ _check_object (BatkObject *obj)
   }
 }
 
-static gint _toggle_inconsistent (gpointer data)
+static bint _toggle_inconsistent (bpointer data)
 {
   BtkToggleButton *toggle_button = BTK_TOGGLE_BUTTON (data);
 
@@ -100,7 +100,7 @@ static gint _toggle_inconsistent (gpointer data)
   return FALSE;
 } 
 
-static gint _do_button_action (gpointer data)
+static bint _do_button_action (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
@@ -110,7 +110,7 @@ static gint _do_button_action (gpointer data)
   return FALSE;
 }
 
-static gint _finish_button_action (gpointer data)
+static bint _finish_button_action (bpointer data)
 {
 #if 0
   BatkObject *obj = BATK_OBJECT (data);
@@ -140,7 +140,7 @@ static void
 _print_states (BatkObject *obj)
 {
   BatkStateSet *state_set;
-  gint i;
+  bint i;
 
   state_set = batk_object_ref_state_set (obj);
 
@@ -148,7 +148,7 @@ _print_states (BatkObject *obj)
   for (i = 0; i < 64; i++)
   {
      BatkStateType one_state;
-     const gchar *name;
+     const bchar *name;
 
      if (batk_state_set_contains_state (state_set, i))
      {
@@ -167,8 +167,8 @@ _print_states (BatkObject *obj)
 static void 
 _print_button_image_info(BatkObject *obj) {
 
-  gint height, width;
-  const gchar *desc;
+  bint height, width;
+  const bchar *desc;
 
   height = width = 0;
 
@@ -196,7 +196,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testbutton Module loaded\n");
 

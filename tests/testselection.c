@@ -55,10 +55,10 @@ typedef enum {
 BdkAtom seltypes[LAST_SEL_TYPE];
 
 typedef struct _Target {
-  gchar *target_name;
+  bchar *target_name;
   SelType type;
   BdkAtom target;
-  gint format;
+  bint format;
 } Target;
 
 /* The following is a list of all the selection targets defined
@@ -165,12 +165,12 @@ selection_toggled (BtkWidget *widget)
 void
 selection_get (BtkWidget *widget, 
 	       BtkSelectionData *selection_data,
-	       guint      info,
-	       guint      time,
-	       gpointer   data)
+	       buint      info,
+	       buint      time,
+	       bpointer   data)
 {
-  guchar *buffer;
-  gint len;
+  buchar *buffer;
+  bint len;
   BdkAtom type = BDK_NONE;
 
   if (!selection_string)
@@ -180,7 +180,7 @@ selection_get (BtkWidget *widget,
     }      
   else
     {
-      buffer = (guchar *)selection_string->str;
+      buffer = (buchar *)selection_string->str;
       len = selection_string->len;
     }
 
@@ -196,7 +196,7 @@ selection_get (BtkWidget *widget,
   btk_selection_data_set (selection_data, type, 8, buffer, len);
 }
 
-gint
+bint
 selection_clear (BtkWidget *widget, BdkEventSelection *event)
 {
   have_selection = FALSE;
@@ -205,43 +205,43 @@ selection_clear (BtkWidget *widget, BdkEventSelection *event)
   return TRUE;
 }
 
-gchar *
-stringify_atom (guchar *data, gint *position)
+bchar *
+stringify_atom (buchar *data, bint *position)
 {
-  gchar *str = bdk_atom_name (*(BdkAtom *)(data+*position));
+  bchar *str = bdk_atom_name (*(BdkAtom *)(data+*position));
   *position += sizeof(BdkAtom);
     
   return str;
 }
 
-gchar *
-stringify_text (guchar *data, gint *position)
+bchar *
+stringify_text (buchar *data, bint *position)
 {
-  gchar *str = g_strdup ((gchar *)(data+*position));
+  bchar *str = g_strdup ((bchar *)(data+*position));
   *position += strlen (str) + 1;
     
   return str;
 }
 
-gchar *
-stringify_xid (guchar *data, gint *position)
+bchar *
+stringify_xid (buchar *data, bint *position)
 {
-  gchar buffer[20];
-  gchar *str;
+  bchar buffer[20];
+  bchar *str;
 
-  sprintf(buffer,"0x%x",*(guint32 *)(data+*position));
+  sprintf(buffer,"0x%x",*(buint32 *)(data+*position));
   str = g_strdup (buffer);
 
-  *position += sizeof(guint32);
+  *position += sizeof(buint32);
     
   return str;
 }
 
-gchar *
-stringify_integer (guchar *data, gint *position)
+bchar *
+stringify_integer (buchar *data, bint *position)
 {
-  gchar buffer[20];
-  gchar *str;
+  bchar buffer[20];
+  bchar *str;
 
   sprintf(buffer,"%d",*(int *)(data+*position));
   str = g_strdup (buffer);
@@ -251,11 +251,11 @@ stringify_integer (guchar *data, gint *position)
   return str;
 }
 
-gchar *
-stringify_span (guchar *data, gint *position)
+bchar *
+stringify_span (buchar *data, bint *position)
 {
-  gchar buffer[42];
-  gchar *str;
+  bchar buffer[42];
+  bchar *str;
 
   sprintf(buffer,"%d - %d",((int *)(data+*position))[0],
 	  ((int *)(data+*position))[1]);
@@ -398,7 +398,7 @@ main (int argc, char *argv[])
     { "TEXT",          0, TEXT },
     { "COMPOUND_TEXT", 0, COMPOUND_TEXT }
   };
-  static gint ntargets = sizeof(targetlist) / sizeof(targetlist[0]);
+  static bint ntargets = sizeof(targetlist) / sizeof(targetlist[0]);
   
   btk_init (&argc, &argv);
 

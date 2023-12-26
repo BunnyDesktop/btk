@@ -45,48 +45,48 @@ typedef enum {
   BTK_RECENT_FILTER_AGE          = 1 << 5
 } BtkRecentFilterFlags;
 
-typedef gboolean (*BtkRecentFilterFunc) (const BtkRecentFilterInfo *filter_info,
-					 gpointer                   user_data);
+typedef bboolean (*BtkRecentFilterFunc) (const BtkRecentFilterInfo *filter_info,
+					 bpointer                   user_data);
 
 struct _BtkRecentFilterInfo
 {
   BtkRecentFilterFlags contains;
 
-  const gchar *uri;
-  const gchar *display_name;
-  const gchar *mime_type;
-  const gchar **applications;
-  const gchar **groups;
+  const bchar *uri;
+  const bchar *display_name;
+  const bchar *mime_type;
+  const bchar **applications;
+  const bchar **groups;
 
-  gint age;
+  bint age;
 };
 
 GType                 btk_recent_filter_get_type (void) B_GNUC_CONST;
 
 BtkRecentFilter *     btk_recent_filter_new      (void);
 void                  btk_recent_filter_set_name (BtkRecentFilter *filter,
-						  const gchar     *name);
-const gchar *         btk_recent_filter_get_name (BtkRecentFilter *filter);
+						  const bchar     *name);
+const bchar *         btk_recent_filter_get_name (BtkRecentFilter *filter);
 
 void btk_recent_filter_add_mime_type      (BtkRecentFilter      *filter,
-					   const gchar          *mime_type);
+					   const bchar          *mime_type);
 void btk_recent_filter_add_pattern        (BtkRecentFilter      *filter,
-					   const gchar          *pattern);
+					   const bchar          *pattern);
 void btk_recent_filter_add_pixbuf_formats (BtkRecentFilter      *filter);
 void btk_recent_filter_add_application    (BtkRecentFilter      *filter,
-					   const gchar          *application);
+					   const bchar          *application);
 void btk_recent_filter_add_group          (BtkRecentFilter      *filter,
-					   const gchar          *group);
+					   const bchar          *group);
 void btk_recent_filter_add_age            (BtkRecentFilter      *filter,
-					   gint                  days);
+					   bint                  days);
 void btk_recent_filter_add_custom         (BtkRecentFilter      *filter,
 					   BtkRecentFilterFlags  needed,
 					   BtkRecentFilterFunc   func,
-					   gpointer              data,
+					   bpointer              data,
 					   GDestroyNotify        data_destroy);
 
 BtkRecentFilterFlags btk_recent_filter_get_needed (BtkRecentFilter           *filter);
-gboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
+bboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
 						   const BtkRecentFilterInfo *filter_info);
 
 B_END_DECLS

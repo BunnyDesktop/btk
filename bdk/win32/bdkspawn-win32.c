@@ -26,15 +26,15 @@
 #include <bunnylib.h>
 #include <bdk/bdk.h>
 
-gboolean
+bboolean
 bdk_spawn_on_screen (BdkScreen             *screen,
-		     const gchar           *working_directory,
-		     gchar                **argv,
-		     gchar                **envp,
+		     const bchar           *working_directory,
+		     bchar                **argv,
+		     bchar                **envp,
 		     GSpawnFlags            flags,
 		     GSpawnChildSetupFunc   child_setup,
-		     gpointer               user_data,
-		     gint                  *child_pid,
+		     bpointer               user_data,
+		     bint                  *child_pid,
 		     GError               **error)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
@@ -50,18 +50,18 @@ bdk_spawn_on_screen (BdkScreen             *screen,
 			error);
 }
 
-gboolean
+bboolean
 bdk_spawn_on_screen_with_pipes (BdkScreen            *screen,
-				const gchar          *working_directory,
-				gchar               **argv,
-				gchar               **envp,
+				const bchar          *working_directory,
+				bchar               **argv,
+				bchar               **envp,
 				GSpawnFlags           flags,
 				GSpawnChildSetupFunc  child_setup,
-				gpointer              user_data,
-				gint                 *child_pid,
-				gint                 *standard_input,
-				gint                 *standard_output,
-				gint                 *standard_error,
+				bpointer              user_data,
+				bint                 *child_pid,
+				bint                 *standard_input,
+				bint                 *standard_output,
+				bint                 *standard_error,
 				GError              **error)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
@@ -80,13 +80,13 @@ bdk_spawn_on_screen_with_pipes (BdkScreen            *screen,
 				   error);
 }
 
-gboolean
+bboolean
 bdk_spawn_command_line_on_screen (BdkScreen    *screen,
-				  const gchar  *command_line,
+				  const bchar  *command_line,
 				  GError      **error)
 {
-  gchar    **argv = NULL;
-  gboolean   retval;
+  bchar    **argv = NULL;
+  bboolean   retval;
 
   g_return_val_if_fail (command_line != NULL, FALSE);
 

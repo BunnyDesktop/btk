@@ -33,18 +33,18 @@ B_BEGIN_DECLS
 
 /* Functions for use within BTK+
  */
-gchar * _btk_find_module        (const gchar *name,
-			         const gchar *type);
-gchar **_btk_get_module_path    (const gchar *type);
+bchar * _btk_find_module        (const bchar *name,
+			         const bchar *type);
+bchar **_btk_get_module_path    (const bchar *type);
 
-void    _btk_modules_init             (gint         *argc,
-				       gchar      ***argv,
-				       const gchar  *btk_modules_args);
+void    _btk_modules_init             (bint         *argc,
+				       bchar      ***argv,
+				       const bchar  *btk_modules_args);
 void    _btk_modules_settings_changed (BtkSettings  *settings,
-				       const gchar  *modules);
+				       const bchar  *modules);
 
-typedef void	 (*BtkModuleInitFunc)        (gint	  *argc,
-					      gchar      ***argv);
+typedef void	 (*BtkModuleInitFunc)        (bint	  *argc,
+					      bchar      ***argv);
 typedef void	 (*BtkModuleDisplayInitFunc) (BdkDisplay   *display);
 
 

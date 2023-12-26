@@ -2,9 +2,9 @@
 #include <bunnylib.h>
 #include <btk/btk.h>
 
-static gboolean close_application( BtkWidget *widget,
+static bboolean close_application( BtkWidget *widget,
                                    BdkEvent  *event,
-                                   gpointer   data )
+                                   bpointer   data )
 {
   btk_main_quit ();
   return FALSE;

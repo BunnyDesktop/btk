@@ -1,9 +1,9 @@
 #include <btk/btk.h>
 
-static gboolean
+static bboolean
 da_expose (BtkWidget *widget,
            BdkEventExpose *event,
-           gpointer user_data)
+           bpointer user_data)
 {
   BtkOffscreenWindow *offscreen = (BtkOffscreenWindow *)user_data;
   BdkPixmap *pixmap;
@@ -22,7 +22,7 @@ da_expose (BtkWidget *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 offscreen_damage (BtkWidget      *widget,
                   BdkEventExpose *event,
                   BtkWidget      *da)
@@ -32,7 +32,7 @@ offscreen_damage (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 da_button_press (BtkWidget *area, BdkEventButton *event, BtkWidget *button)
 {
   btk_widget_set_size_request (button, 150, 60);

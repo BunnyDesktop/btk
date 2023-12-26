@@ -45,10 +45,10 @@ enum {
 typedef struct _BtkTreeSortable      BtkTreeSortable; /* Dummy typedef */
 typedef struct _BtkTreeSortableIface BtkTreeSortableIface;
 
-typedef gint (* BtkTreeIterCompareFunc) (BtkTreeModel *model,
+typedef bint (* BtkTreeIterCompareFunc) (BtkTreeModel *model,
 					 BtkTreeIter  *a,
 					 BtkTreeIter  *b,
-					 gpointer      user_data);
+					 bpointer      user_data);
 
 
 struct _BtkTreeSortableIface
@@ -59,44 +59,44 @@ struct _BtkTreeSortableIface
   void     (* sort_column_changed)   (BtkTreeSortable        *sortable);
 
   /* virtual table */
-  gboolean (* get_sort_column_id)    (BtkTreeSortable        *sortable,
-				      gint                   *sort_column_id,
+  bboolean (* get_sort_column_id)    (BtkTreeSortable        *sortable,
+				      bint                   *sort_column_id,
 				      BtkSortType            *order);
   void     (* set_sort_column_id)    (BtkTreeSortable        *sortable,
-				      gint                    sort_column_id,
+				      bint                    sort_column_id,
 				      BtkSortType             order);
   void     (* set_sort_func)         (BtkTreeSortable        *sortable,
-				      gint                    sort_column_id,
+				      bint                    sort_column_id,
 				      BtkTreeIterCompareFunc  func,
-				      gpointer                data,
+				      bpointer                data,
 				      GDestroyNotify          destroy);
   void     (* set_default_sort_func) (BtkTreeSortable        *sortable,
 				      BtkTreeIterCompareFunc  func,
-				      gpointer                data,
+				      bpointer                data,
 				      GDestroyNotify          destroy);
-  gboolean (* has_default_sort_func) (BtkTreeSortable        *sortable);
+  bboolean (* has_default_sort_func) (BtkTreeSortable        *sortable);
 };
 
 
 GType    btk_tree_sortable_get_type              (void) B_GNUC_CONST;
 
 void     btk_tree_sortable_sort_column_changed   (BtkTreeSortable        *sortable);
-gboolean btk_tree_sortable_get_sort_column_id    (BtkTreeSortable        *sortable,
-						  gint                   *sort_column_id,
+bboolean btk_tree_sortable_get_sort_column_id    (BtkTreeSortable        *sortable,
+						  bint                   *sort_column_id,
 						  BtkSortType            *order);
 void     btk_tree_sortable_set_sort_column_id    (BtkTreeSortable        *sortable,
-						  gint                    sort_column_id,
+						  bint                    sort_column_id,
 						  BtkSortType             order);
 void     btk_tree_sortable_set_sort_func         (BtkTreeSortable        *sortable,
-						  gint                    sort_column_id,
+						  bint                    sort_column_id,
 						  BtkTreeIterCompareFunc  sort_func,
-						  gpointer                user_data,
+						  bpointer                user_data,
 						  GDestroyNotify          destroy);
 void     btk_tree_sortable_set_default_sort_func (BtkTreeSortable        *sortable,
 						  BtkTreeIterCompareFunc  sort_func,
-						  gpointer                user_data,
+						  bpointer                user_data,
 						  GDestroyNotify          destroy);
-gboolean btk_tree_sortable_has_default_sort_func (BtkTreeSortable        *sortable);
+bboolean btk_tree_sortable_has_default_sort_func (BtkTreeSortable        *sortable);
 
 B_END_DECLS
 

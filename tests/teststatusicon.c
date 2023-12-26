@@ -35,7 +35,7 @@ typedef enum
 } TestStatus;
 
 static TestStatus status = TEST_STATUS_INFO;
-static gint timeout = 0;
+static bint timeout = 0;
 static GSList *icons = NULL;
 
 static void
@@ -72,8 +72,8 @@ static void
 update_icons (void)
 {
   GSList *l;
-  gchar *icon_name;
-  gchar *tooltip;
+  bchar *icon_name;
+  bchar *tooltip;
 
   if (status == TEST_STATUS_INFO)
     {
@@ -95,8 +95,8 @@ update_icons (void)
     }
 }
 
-static gboolean
-timeout_handler (gpointer data)
+static bboolean
+timeout_handler (bpointer data)
 {
   if (status == TEST_STATUS_INFO)
     status = TEST_STATUS_QUESTION;
@@ -268,8 +268,8 @@ do_exit (BtkMenuItem *item)
 
 static void 
 popup_menu (BtkStatusIcon *icon,
-	    guint          button,
-	    guint32        activate_time)
+	    buint          button,
+	    buint32        activate_time)
 {
   BtkWidget *menu, *menuitem;
 
@@ -318,7 +318,7 @@ int
 main (int argc, char **argv)
 {
   BdkDisplay *display;
-  guint n_screens, i;
+  buint n_screens, i;
 
   btk_init (&argc, &argv);
 

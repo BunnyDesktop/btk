@@ -66,18 +66,18 @@ B_BEGIN_DECLS
 /* Initialization, exit and events
  */
 #define	  BDK_PRIORITY_EVENTS		(G_PRIORITY_DEFAULT)
-void 	  bdk_parse_args	   	(gint	   	*argc,
-					 gchar        ***argv);
-void 	  bdk_init		   	(gint	   	*argc,
-					 gchar        ***argv);
-gboolean  bdk_init_check   	        (gint	   	*argc,
-					 gchar        ***argv);
+void 	  bdk_parse_args	   	(bint	   	*argc,
+					 bchar        ***argv);
+void 	  bdk_init		   	(bint	   	*argc,
+					 bchar        ***argv);
+bboolean  bdk_init_check   	        (bint	   	*argc,
+					 bchar        ***argv);
 void bdk_add_option_entries_libbtk_only (GOptionGroup *group);
 void bdk_pre_parse_libbtk_only          (void);
 
 #ifndef BDK_DISABLE_DEPRECATED
-void  	  bdk_exit		   	(gint	    	 error_code);
-gchar*	  bdk_set_locale	   	(void);
+void  	  bdk_exit		   	(bint	    	 error_code);
+bchar*	  bdk_set_locale	   	(void);
 #endif /* BDK_DISABLE_DEPRECATED */
 
 const char *         bdk_get_program_class (void);
@@ -86,56 +86,56 @@ void                 bdk_set_program_class (const char *program_class);
 /* Push and pop error handlers for X errors
  */
 void      bdk_error_trap_push           (void);
-gint      bdk_error_trap_pop            (void);
+bint      bdk_error_trap_pop            (void);
 
 #ifndef BDK_DISABLE_DEPRECATED
-void	  bdk_set_use_xshm		(gboolean	 use_xshm);
-gboolean  bdk_get_use_xshm		(void);
+void	  bdk_set_use_xshm		(bboolean	 use_xshm);
+bboolean  bdk_get_use_xshm		(void);
 #endif /* BDK_DISABLE_DEPRECATED */
 
-gchar*	                  bdk_get_display		(void);
-const gchar*	          bdk_get_display_arg_name	(void);
+bchar*	                  bdk_get_display		(void);
+const bchar*	          bdk_get_display_arg_name	(void);
 
 #ifndef BDK_DISABLE_DEPRECATED
-gint bdk_input_add_full	  (gint		     source,
+bint bdk_input_add_full	  (bint		     source,
 			   BdkInputCondition condition,
 			   BdkInputFunction  function,
-			   gpointer	     data,
+			   bpointer	     data,
 			   GDestroyNotify    destroy);
-gint bdk_input_add	  (gint		     source,
+bint bdk_input_add	  (bint		     source,
 			   BdkInputCondition condition,
 			   BdkInputFunction  function,
-			   gpointer	     data);
-void bdk_input_remove	  (gint		     tag);
+			   bpointer	     data);
+void bdk_input_remove	  (bint		     tag);
 #endif /* BDK_DISABLE_DEPRECATED */
 
 BdkGrabStatus bdk_pointer_grab       (BdkWindow    *window,
-				      gboolean      owner_events,
+				      bboolean      owner_events,
 				      BdkEventMask  event_mask,
 				      BdkWindow    *confine_to,
 				      BdkCursor    *cursor,
-				      guint32       time_);
+				      buint32       time_);
 BdkGrabStatus bdk_keyboard_grab      (BdkWindow    *window,
-				      gboolean      owner_events,
-				      guint32       time_);
+				      bboolean      owner_events,
+				      buint32       time_);
 
-gboolean bdk_pointer_grab_info_libbtk_only (BdkDisplay *display,
+bboolean bdk_pointer_grab_info_libbtk_only (BdkDisplay *display,
 					    BdkWindow **grab_window,
-					    gboolean   *owner_events);
-gboolean bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
+					    bboolean   *owner_events);
+bboolean bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
 					     BdkWindow **grab_window,
-					     gboolean   *owner_events);
+					     bboolean   *owner_events);
 
 #ifndef BDK_MULTIHEAD_SAFE
-void          bdk_pointer_ungrab     (guint32       time_);
-void          bdk_keyboard_ungrab    (guint32       time_);
-gboolean      bdk_pointer_is_grabbed (void);
+void          bdk_pointer_ungrab     (buint32       time_);
+void          bdk_keyboard_ungrab    (buint32       time_);
+bboolean      bdk_pointer_is_grabbed (void);
 
-gint bdk_screen_width  (void) B_GNUC_CONST;
-gint bdk_screen_height (void) B_GNUC_CONST;
+bint bdk_screen_width  (void) B_GNUC_CONST;
+bint bdk_screen_height (void) B_GNUC_CONST;
 
-gint bdk_screen_width_mm  (void) B_GNUC_CONST;
-gint bdk_screen_height_mm (void) B_GNUC_CONST;
+bint bdk_screen_width_mm  (void) B_GNUC_CONST;
+bint bdk_screen_height_mm (void) B_GNUC_CONST;
 
 void bdk_beep (void);
 #endif /* BDK_MULTIHEAD_SAFE */
@@ -143,12 +143,12 @@ void bdk_beep (void);
 void bdk_flush (void);
 
 #ifndef BDK_MULTIHEAD_SAFE
-void bdk_set_double_click_time             (guint       msec);
+void bdk_set_double_click_time             (buint       msec);
 #endif
 
 /* Rectangle utilities
  */
-gboolean bdk_rectangle_intersect (const BdkRectangle *src1,
+bboolean bdk_rectangle_intersect (const BdkRectangle *src1,
 				  const BdkRectangle *src2,
 				  BdkRectangle       *dest);
 void     bdk_rectangle_union     (const BdkRectangle *src1,
@@ -162,25 +162,25 @@ GType bdk_rectangle_get_type (void) B_GNUC_CONST;
 /* Conversion functions between wide char and multibyte strings. 
  */
 #ifndef BDK_DISABLE_DEPRECATED
-gchar     *bdk_wcstombs          (const BdkWChar   *src);
-gint       bdk_mbstowcs          (BdkWChar         *dest,
-				  const gchar      *src,
-				  gint              dest_max);
+bchar     *bdk_wcstombs          (const BdkWChar   *src);
+bint       bdk_mbstowcs          (BdkWChar         *dest,
+				  const bchar      *src,
+				  bint              dest_max);
 #endif
 
 /* Miscellaneous */
 #ifndef BDK_MULTIHEAD_SAFE
-gboolean bdk_event_send_client_message      (BdkEvent       *event,
+bboolean bdk_event_send_client_message      (BdkEvent       *event,
 					     BdkNativeWindow winid);
 void     bdk_event_send_clientmessage_toall (BdkEvent  *event);
 #endif
-gboolean bdk_event_send_client_message_for_display (BdkDisplay *display,
+bboolean bdk_event_send_client_message_for_display (BdkDisplay *display,
 						    BdkEvent       *event,
 						    BdkNativeWindow winid);
 
 void bdk_notify_startup_complete (void);
 
-void bdk_notify_startup_complete_with_id (const gchar* startup_id);
+void bdk_notify_startup_complete_with_id (const bchar* startup_id);
 
 /* Threading
  */
@@ -198,28 +198,28 @@ void     bdk_threads_init                     (void);
 void     bdk_threads_set_lock_functions       (GCallback enter_fn,
 					       GCallback leave_fn);
 
-guint    bdk_threads_add_idle_full            (gint           priority,
+buint    bdk_threads_add_idle_full            (bint           priority,
 		                               GSourceFunc    function,
-		                               gpointer       data,
+		                               bpointer       data,
 		                               GDestroyNotify notify);
-guint    bdk_threads_add_idle                 (GSourceFunc    function,
-		                               gpointer       data);
-guint    bdk_threads_add_timeout_full         (gint           priority,
-                                               guint          interval,
+buint    bdk_threads_add_idle                 (GSourceFunc    function,
+		                               bpointer       data);
+buint    bdk_threads_add_timeout_full         (bint           priority,
+                                               buint          interval,
                                                GSourceFunc    function,
-                                               gpointer       data,
+                                               bpointer       data,
                                                GDestroyNotify notify);
-guint    bdk_threads_add_timeout              (guint          interval,
+buint    bdk_threads_add_timeout              (buint          interval,
                                                GSourceFunc    function,
-                                               gpointer       data);
-guint    bdk_threads_add_timeout_seconds_full (gint           priority,
-                                               guint          interval,
+                                               bpointer       data);
+buint    bdk_threads_add_timeout_seconds_full (bint           priority,
+                                               buint          interval,
                                                GSourceFunc    function,
-                                               gpointer       data,
+                                               bpointer       data,
                                                GDestroyNotify notify);
-guint    bdk_threads_add_timeout_seconds      (guint          interval,
+buint    bdk_threads_add_timeout_seconds      (buint          interval,
                                                GSourceFunc    function,
-                                               gpointer       data);
+                                               bpointer       data);
 
 #ifdef	G_THREADS_ENABLED
 #  define BDK_THREADS_ENTER()	B_STMT_START {	\

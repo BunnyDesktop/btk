@@ -26,14 +26,14 @@ struct _Info
 {
   BtkWindow  *window;
   BtkToolbar *toolbar;
-  gint	      counter;
+  bint	      counter;
 };
 
 static void
-add_random (BtkToolbar *toolbar, gint n)
+add_random (BtkToolbar *toolbar, bint n)
 {
-  gint position;
-  gchar *label = g_strdup_printf ("Button %d", n);
+  bint position;
+  bchar *label = g_strdup_printf ("Button %d", n);
 
   BtkWidget *widget = btk_button_new_with_label (label);
 
@@ -52,7 +52,7 @@ static void
 remove_random (BtkToolbar *toolbar)
 {
   BtkToolbarChild *child;
-  gint position;
+  bint position;
 
   if (!toolbar->children)
     return;
@@ -64,8 +64,8 @@ remove_random (BtkToolbar *toolbar)
   btk_container_remove (BTK_CONTAINER (toolbar), child->widget);
 }
 
-static gboolean
-stress_test_old_api (gpointer data)
+static bboolean
+stress_test_old_api (bpointer data)
 {
   typedef enum {
     ADD_RANDOM,
@@ -124,8 +124,8 @@ stress_test_old_api (gpointer data)
 }
 
 
-gint
-main (gint argc, gchar **argv)
+bint
+main (bint argc, bchar **argv)
 {
   Info info;
   

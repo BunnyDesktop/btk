@@ -38,10 +38,10 @@ BtkTextLineSegment *_btk_text_iter_get_indexable_segment      (const BtkTextIter
 BtkTextLineSegment *_btk_text_iter_get_any_segment            (const BtkTextIter *iter);
 BtkTextLine *       _btk_text_iter_get_text_line              (const BtkTextIter *iter);
 BtkTextBTree *      _btk_text_iter_get_btree                  (const BtkTextIter *iter);
-gboolean            _btk_text_iter_forward_indexable_segment  (BtkTextIter       *iter);
-gboolean            _btk_text_iter_backward_indexable_segment (BtkTextIter       *iter);
-gint                _btk_text_iter_get_segment_byte           (const BtkTextIter *iter);
-gint                _btk_text_iter_get_segment_char           (const BtkTextIter *iter);
+bboolean            _btk_text_iter_forward_indexable_segment  (BtkTextIter       *iter);
+bboolean            _btk_text_iter_backward_indexable_segment (BtkTextIter       *iter);
+bint                _btk_text_iter_get_segment_byte           (const BtkTextIter *iter);
+bint                _btk_text_iter_get_segment_char           (const BtkTextIter *iter);
 
 
 /* debug */

@@ -64,8 +64,8 @@ struct _BtkFixedClass
 struct _BtkFixedChild
 {
   BtkWidget *widget;
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 
@@ -73,16 +73,16 @@ GType      btk_fixed_get_type          (void) B_GNUC_CONST;
 BtkWidget* btk_fixed_new               (void);
 void       btk_fixed_put               (BtkFixed       *fixed,
                                         BtkWidget      *widget,
-                                        gint            x,
-                                        gint            y);
+                                        bint            x,
+                                        bint            y);
 void       btk_fixed_move              (BtkFixed       *fixed,
                                         BtkWidget      *widget,
-                                        gint            x,
-                                        gint            y);
+                                        bint            x,
+                                        bint            y);
 #ifndef BTK_DISABLE_DEPRECATED
 void       btk_fixed_set_has_window    (BtkFixed       *fixed,
-					gboolean        has_window);
-gboolean   btk_fixed_get_has_window    (BtkFixed       *fixed);
+					bboolean        has_window);
+bboolean   btk_fixed_get_has_window    (BtkFixed       *fixed);
 #endif
 
 B_END_DECLS

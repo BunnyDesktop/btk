@@ -148,7 +148,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMessageDialog.html#BtkMessageDialog--secondary-use-markup" title="The “secondary-use-markup” property">secondary-use-markup</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -159,7 +159,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMessageDialog.html#BtkMessageDialog--use-markup" title="The “use-markup” property">use-markup</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -181,7 +181,7 @@
 <td class="property_flags">Read</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMessageDialog.html#BtkMessageDialog--s-use-separator" title="The “use-separator” style property">use-separator</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -325,7 +325,7 @@ btk_message_dialog_new (<em class="parameter"><code><a class="link" href="BtkWin
                         <em class="parameter"><code><a class="link" href="BtkDialog.html#BtkDialogFlags" title="enum BtkDialogFlags"><span class="type">BtkDialogFlags</span></a> flags</code></em>,
                         <em class="parameter"><code><a class="link" href="BtkMessageDialog.html#BtkMessageType" title="enum BtkMessageType"><span class="type">BtkMessageType</span></a> type</code></em>,
                         <em class="parameter"><code><a class="link" href="BtkMessageDialog.html#BtkButtonsType" title="enum BtkButtonsType"><span class="type">BtkButtonsType</span></a> buttons</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *message_format</code></em>,
+                        <em class="parameter"><code>const <span class="type">bchar</span> *message_format</code></em>,
                         <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new message dialog, which is a simple dialog with an icon
 indicating the dialog type (error, warning, etc.) and some text the
@@ -389,7 +389,7 @@ btk_message_dialog_new_with_markup (<em class="parameter"><code><a class="link" 
                                     <em class="parameter"><code><a class="link" href="BtkDialog.html#BtkDialogFlags" title="enum BtkDialogFlags"><span class="type">BtkDialogFlags</span></a> flags</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkMessageDialog.html#BtkMessageType" title="enum BtkMessageType"><span class="type">BtkMessageType</span></a> type</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkMessageDialog.html#BtkButtonsType" title="enum BtkButtonsType"><span class="type">BtkButtonsType</span></a> buttons</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *message_format</code></em>,
+                                    <em class="parameter"><code>const <span class="type">bchar</span> *message_format</code></em>,
                                     <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new message dialog, which is a simple dialog with an icon
 indicating the dialog type (error, warning, etc.) and some text which
@@ -485,7 +485,7 @@ argument.</p>
 <a name="btk-message-dialog-set-markup"></a><h3>btk_message_dialog_set_markup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_message_dialog_set_markup (<em class="parameter"><code><a class="link" href="BtkMessageDialog.html" title="BtkMessageDialog"><span class="type">BtkMessageDialog</span></a> *message_dialog</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>);</pre>
 <p>Sets the text of the message dialog to be <em class="parameter"><code>str</code></em>
 , which is marked
 up with the <BTKDOCLINK HREF="BangoMarkupFormat">Bango text markup
@@ -615,7 +615,7 @@ function in the parent <a class="link" href="BtkDialog.html" title="BtkDialog"><
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_message_dialog_format_secondary_text
                                (<em class="parameter"><code><a class="link" href="BtkMessageDialog.html" title="BtkMessageDialog"><span class="type">BtkMessageDialog</span></a> *message_dialog</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *message_format</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *message_format</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <p>Sets the secondary text of the message dialog to be <em class="parameter"><code>message_format</code></em>
  
@@ -658,7 +658,7 @@ bold, unless you have provided explicit markup.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_message_dialog_format_secondary_markup
                                (<em class="parameter"><code><a class="link" href="BtkMessageDialog.html" title="BtkMessageDialog"><span class="type">BtkMessageDialog</span></a> *message_dialog</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *message_format</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *message_format</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <p>Sets the secondary text of the message dialog to be <em class="parameter"><code>message_format</code></em>
  (with 
@@ -679,7 +679,7 @@ to escape it.</p>
 3
 4
 5</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="n">gchar</span> <span class="o">*</span><span class="n">msg</span><span class="p">;</span>
+        <td class="listing_code"><pre class="programlisting"><span class="n">bchar</span> <span class="o">*</span><span class="n">msg</span><span class="p">;</span>
  
 <span class="n">msg</span> <span class="o">=</span> <span class="n">g_markup_printf_escaped</span> <span class="p">(</span><span class="n">message_format</span><span class="p">,</span> <span class="p">...);</span>
 <span class="n">btk_message_dialog_format_secondary_markup</span> <span class="p">(</span><span class="n">message_dialog</span><span class="p">,</span> <span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">);</span>
@@ -903,7 +903,7 @@ explicitly set by the ::image property.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMessageDialog--secondary-use-markup"></a><h3>The <code class="literal">“secondary-use-markup”</code> property</h3>
-<pre class="programlisting">  “secondary-use-markup”     <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “secondary-use-markup”     <span class="type">bboolean</span></pre>
 <p><code class="literal">TRUE</code> if the secondary text of the dialog includes Bango markup.
 
 See <a href="https://developer.bunny.org/bango/bango-Markup.html#bango-parse-markup"><code class="function">bango_parse_markup()</code></a>.</p>
@@ -927,7 +927,7 @@ a secondary text, this will appear as the title.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMessageDialog--use-markup"></a><h3>The <code class="literal">“use-markup”</code> property</h3>
-<pre class="programlisting">  “use-markup”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-markup”               <span class="type">bboolean</span></pre>
 <p><code class="literal">TRUE</code> if the primary text of the dialog includes Bango markup.
 
 See <a href="https://developer.bunny.org/bango/bango-Markup.html#bango-parse-markup"><code class="function">bango_parse_markup()</code></a>.</p>
@@ -951,7 +951,7 @@ See <a href="https://developer.bunny.org/bango/bango-Markup.html#bango-parse-mar
 <hr>
 <div class="refsect2">
 <a name="BtkMessageDialog--s-use-separator"></a><h3>The <code class="literal">“use-separator”</code> style property</h3>
-<pre class="programlisting">  “use-separator”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-separator”            <span class="type">bboolean</span></pre>
 <p>Whether to draw a separator line between the message label and the buttons
 in the dialog.</p>
 <div class="warning">

@@ -95,63 +95,63 @@ struct _BtkScaleButtonPrivate
   BtkIconSize size;
   BtkOrientation orientation;
 
-  guint click_id;
-  gint click_timeout;
-  guint timeout : 1;
-  gdouble direction;
-  guint32 pop_time;
+  buint click_id;
+  bint click_timeout;
+  buint timeout : 1;
+  bdouble direction;
+  buint32 pop_time;
 
-  gchar **icon_list;
+  bchar **icon_list;
 
   BtkAdjustment *adjustment; /* needed because it must be settable in init() */
 };
 
 static BObject* btk_scale_button_constructor    (GType                  type,
-                                                 guint                  n_construct_properties,
+                                                 buint                  n_construct_properties,
                                                  BObjectConstructParam *construct_params);
 static void	btk_scale_button_dispose	(BObject             *object);
 static void     btk_scale_button_finalize       (BObject             *object);
 static void	btk_scale_button_set_property	(BObject             *object,
-						 guint                prop_id,
+						 buint                prop_id,
 						 const BValue        *value,
 						 BParamSpec          *pspec);
 static void	btk_scale_button_get_property	(BObject             *object,
-						 guint                prop_id,
+						 buint                prop_id,
 						 BValue              *value,
 						 BParamSpec          *pspec);
 static void btk_scale_button_set_orientation_private (BtkScaleButton *button,
                                                       BtkOrientation  orientation);
-static gboolean	btk_scale_button_scroll		(BtkWidget           *widget,
+static bboolean	btk_scale_button_scroll		(BtkWidget           *widget,
 						 BdkEventScroll      *event);
 static void btk_scale_button_screen_changed	(BtkWidget           *widget,
 						 BdkScreen           *previous_screen);
-static gboolean	btk_scale_button_press		(BtkWidget           *widget,
+static bboolean	btk_scale_button_press		(BtkWidget           *widget,
 						 BdkEventButton      *event);
-static gboolean btk_scale_button_key_release	(BtkWidget           *widget,
+static bboolean btk_scale_button_key_release	(BtkWidget           *widget,
     						 BdkEventKey         *event);
 static void     btk_scale_button_popup          (BtkWidget           *widget);
 static void     btk_scale_button_popdown        (BtkWidget           *widget);
-static gboolean cb_dock_button_press		(BtkWidget           *widget,
+static bboolean cb_dock_button_press		(BtkWidget           *widget,
 						 BdkEventButton      *event,
-						 gpointer             user_data);
-static gboolean cb_dock_key_release		(BtkWidget           *widget,
+						 bpointer             user_data);
+static bboolean cb_dock_key_release		(BtkWidget           *widget,
 						 BdkEventKey         *event,
-						 gpointer             user_data);
-static gboolean cb_button_press			(BtkWidget           *widget,
+						 bpointer             user_data);
+static bboolean cb_button_press			(BtkWidget           *widget,
 						 BdkEventButton      *event,
-						 gpointer             user_data);
-static gboolean cb_button_release		(BtkWidget           *widget,
+						 bpointer             user_data);
+static bboolean cb_button_release		(BtkWidget           *widget,
 						 BdkEventButton      *event,
-						 gpointer             user_data);
+						 bpointer             user_data);
 static void cb_dock_grab_notify			(BtkWidget           *widget,
-						 gboolean             was_grabbed,
-						 gpointer             user_data);
-static gboolean cb_dock_grab_broken_event	(BtkWidget           *widget,
-						 gboolean             was_grabbed,
-						 gpointer             user_data);
+						 bboolean             was_grabbed,
+						 bpointer             user_data);
+static bboolean cb_dock_grab_broken_event	(BtkWidget           *widget,
+						 bboolean             was_grabbed,
+						 bpointer             user_data);
 static void cb_scale_grab_notify		(BtkWidget           *widget,
-						 gboolean             was_grabbed,
-						 gpointer             user_data);
+						 bboolean             was_grabbed,
+						 bpointer             user_data);
 static void btk_scale_button_update_icon	(BtkScaleButton      *button);
 static void btk_scale_button_scale_value_changed(BtkRange            *range);
 
@@ -162,7 +162,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkScaleButton, btk_scale_button, BTK_TYPE_BUTTON,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                 NULL))
 
-static guint signals[LAST_SIGNAL] = { 0, };
+static buint signals[LAST_SIGNAL] = { 0, };
 
 static void
 btk_scale_button_class_init (BtkScaleButtonClass *klass)
@@ -205,8 +205,8 @@ btk_scale_button_class_init (BtkScaleButtonClass *klass)
 				   g_param_spec_double ("value",
 							P_("Value"),
 							P_("The value of the scale"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0,
 							BTK_PARAM_READWRITE));
 
@@ -405,7 +405,7 @@ btk_scale_button_init (BtkScaleButton *button)
 
 static BObject *
 btk_scale_button_constructor (GType                  type,
-                              guint                  n_construct_properties,
+                              buint                  n_construct_properties,
                               BObjectConstructParam *construct_params)
 {
   BObject *object;
@@ -427,7 +427,7 @@ btk_scale_button_constructor (GType                  type,
 
 static void
 btk_scale_button_set_property (BObject       *object,
-			       guint          prop_id,
+			       buint          prop_id,
 			       const BValue  *value,
 			       BParamSpec    *pspec)
 {
@@ -457,7 +457,7 @@ btk_scale_button_set_property (BObject       *object,
       break;
     case PROP_ICONS:
       btk_scale_button_set_icons (button,
-                                  (const gchar **)b_value_get_boxed (value));
+                                  (const bchar **)b_value_get_boxed (value));
       break;
     default:
       B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -467,7 +467,7 @@ btk_scale_button_set_property (BObject       *object,
 
 static void
 btk_scale_button_get_property (BObject     *object,
-			       guint        prop_id,
+			       buint        prop_id,
 			       BValue      *value,
 			       BParamSpec  *pspec)
 {
@@ -559,10 +559,10 @@ btk_scale_button_dispose (BObject *object)
  */
 BtkWidget *
 btk_scale_button_new (BtkIconSize   size,
-		      gdouble       min,
-		      gdouble       max,
-		      gdouble       step,
-		      const gchar **icons)
+		      bdouble       min,
+		      bdouble       max,
+		      bdouble       step,
+		      const bchar **icons)
 {
   BtkScaleButton *button;
   BtkObject *adj;
@@ -588,7 +588,7 @@ btk_scale_button_new (BtkIconSize   size,
  *
  * Since: 2.12
  */
-gdouble
+bdouble
 btk_scale_button_get_value (BtkScaleButton * button)
 {
   BtkScaleButtonPrivate *priv;
@@ -614,7 +614,7 @@ btk_scale_button_get_value (BtkScaleButton * button)
  */
 void
 btk_scale_button_set_value (BtkScaleButton *button,
-			    gdouble         value)
+			    bdouble         value)
 {
   BtkScaleButtonPrivate *priv;
 
@@ -637,17 +637,17 @@ btk_scale_button_set_value (BtkScaleButton *button,
  */
 void
 btk_scale_button_set_icons (BtkScaleButton  *button,
-			    const gchar    **icons)
+			    const bchar    **icons)
 {
   BtkScaleButtonPrivate *priv;
-  gchar **tmp;
+  bchar **tmp;
 
   g_return_if_fail (BTK_IS_SCALE_BUTTON (button));
 
   priv = button->priv;
 
   tmp = priv->icon_list;
-  priv->icon_list = g_strdupv ((gchar **) icons);
+  priv->icon_list = g_strdupv ((bchar **) icons);
   g_strfreev (tmp);
   btk_scale_button_update_icon (button);
 
@@ -855,14 +855,14 @@ btk_scale_button_set_orientation_private (BtkScaleButton *button,
  * button callbacks.
  */
 
-static gboolean
+static bboolean
 btk_scale_button_scroll (BtkWidget      *widget,
 			 BdkEventScroll *event)
 {
   BtkScaleButton *button;
   BtkScaleButtonPrivate *priv;
   BtkAdjustment *adj;
-  gdouble d;
+  bdouble d;
 
   button = BTK_SCALE_BUTTON (widget);
   priv = button->priv;
@@ -916,19 +916,19 @@ btk_scale_button_screen_changed (BtkWidget *widget,
   priv->click_timeout = b_value_get_int (&value);
 }
 
-static gboolean
+static bboolean
 btk_scale_popup (BtkWidget *widget,
 		 BdkEvent  *event,
-		 guint32    time)
+		 buint32    time)
 {
   BtkScaleButton *button;
   BtkScaleButtonPrivate *priv;
   BtkAdjustment *adj;
-  gint x, y, m, dx, dy, sx, sy, startoff;
-  gdouble v;
+  bint x, y, m, dx, dy, sx, sy, startoff;
+  bdouble v;
   BdkDisplay *display;
   BdkScreen *screen;
-  gboolean is_moved;
+  bboolean is_moved;
 
   is_moved = FALSE;
   button = BTK_SCALE_BUTTON (widget);
@@ -1096,7 +1096,7 @@ btk_scale_popup (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_scale_button_press (BtkWidget      *widget,
 			BdkEventButton *event)
 {
@@ -1113,7 +1113,7 @@ btk_scale_button_popup (BtkWidget *widget)
   bdk_event_free (ev);
 }
 
-static gboolean
+static bboolean
 btk_scale_button_key_release (BtkWidget   *widget,
 			      BdkEventKey *event)
 {
@@ -1124,7 +1124,7 @@ btk_scale_button_key_release (BtkWidget   *widget,
  * either the dock, or the scale itself */
 static void
 btk_scale_button_grab_notify (BtkScaleButton *button,
-			      gboolean        was_grabbed)
+			      bboolean        was_grabbed)
 {
   BdkDisplay *display;
   BtkScaleButtonPrivate *priv;
@@ -1154,14 +1154,14 @@ btk_scale_button_grab_notify (BtkScaleButton *button,
  * +/- button callbacks.
  */
 
-static gboolean
-cb_button_timeout (gpointer user_data)
+static bboolean
+cb_button_timeout (bpointer user_data)
 {
   BtkScaleButton *button;
   BtkScaleButtonPrivate *priv;
   BtkAdjustment *adj;
-  gdouble val;
-  gboolean res = TRUE;
+  bdouble val;
+  bboolean res = TRUE;
 
   button = BTK_SCALE_BUTTON (user_data);
   priv = button->priv;
@@ -1194,10 +1194,10 @@ cb_button_timeout (gpointer user_data)
   return res;
 }
 
-static gboolean
+static bboolean
 cb_button_press (BtkWidget      *widget,
 		 BdkEventButton *event,
-		 gpointer        user_data)
+		 bpointer        user_data)
 {
   BtkScaleButton *button;
   BtkScaleButtonPrivate *priv;
@@ -1223,10 +1223,10 @@ cb_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 cb_button_release (BtkWidget      *widget,
 		   BdkEventButton *event,
-		   gpointer        user_data)
+		   bpointer        user_data)
 {
   BtkScaleButton *button;
   BtkScaleButtonPrivate *priv;
@@ -1245,18 +1245,18 @@ cb_button_release (BtkWidget      *widget,
 
 static void
 cb_dock_grab_notify (BtkWidget *widget,
-		     gboolean   was_grabbed,
-		     gpointer   user_data)
+		     bboolean   was_grabbed,
+		     bpointer   user_data)
 {
   BtkScaleButton *button = (BtkScaleButton *) user_data;
 
   btk_scale_button_grab_notify (button, was_grabbed);
 }
 
-static gboolean
+static bboolean
 cb_dock_grab_broken_event (BtkWidget *widget,
-			   gboolean   was_grabbed,
-			   gpointer   user_data)
+			   bboolean   was_grabbed,
+			   bpointer   user_data)
 {
   BtkScaleButton *button = (BtkScaleButton *) user_data;
 
@@ -1297,10 +1297,10 @@ btk_scale_button_release_grab (BtkScaleButton *button,
   bdk_event_free ((BdkEvent *) e);
 }
 
-static gboolean
+static bboolean
 cb_dock_button_press (BtkWidget      *widget,
 		      BdkEventButton *event,
-		      gpointer        user_data)
+		      bpointer        user_data)
 {
   BtkScaleButton *button = BTK_SCALE_BUTTON (user_data);
 
@@ -1334,10 +1334,10 @@ btk_scale_button_popdown (BtkWidget *widget)
   priv->timeout = FALSE;
 }
 
-static gboolean
+static bboolean
 cb_dock_key_release (BtkWidget   *widget,
 		     BdkEventKey *event,
-		     gpointer     user_data)
+		     bpointer     user_data)
 {
   if (event->keyval == BDK_Escape)
     {
@@ -1356,8 +1356,8 @@ cb_dock_key_release (BtkWidget   *widget,
 
 static void
 cb_scale_grab_notify (BtkWidget *widget,
-		      gboolean   was_grabbed,
-		      gpointer   user_data)
+		      bboolean   was_grabbed,
+		      bpointer   user_data)
 {
   BtkScaleButton *button = (BtkScaleButton *) user_data;
 
@@ -1383,9 +1383,9 @@ typedef struct _BtkScaleButtonScaleClass
   BtkScaleClass parent_class;
 } BtkScaleButtonScaleClass;
 
-static gboolean	btk_scale_button_scale_press   (BtkWidget      *widget,
+static bboolean	btk_scale_button_scale_press   (BtkWidget      *widget,
                                                 BdkEventButton *event);
-static gboolean btk_scale_button_scale_release (BtkWidget      *widget,
+static bboolean btk_scale_button_scale_release (BtkWidget      *widget,
                                                 BdkEventButton *event);
 
 G_DEFINE_TYPE (BtkScaleButtonScale, _btk_scale_button_scale, BTK_TYPE_SCALE)
@@ -1437,7 +1437,7 @@ btk_scale_button_scale_new (BtkScaleButton *button)
   return BTK_WIDGET (scale);
 }
 
-static gboolean
+static bboolean
 btk_scale_button_scale_press (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -1451,12 +1451,12 @@ btk_scale_button_scale_press (BtkWidget      *widget,
   return BTK_WIDGET_CLASS (_btk_scale_button_scale_parent_class)->button_press_event (widget, event);
 }
 
-static gboolean
+static bboolean
 btk_scale_button_scale_release (BtkWidget      *widget,
 				BdkEventButton *event)
 {
   BtkScaleButton *button = BTK_SCALE_BUTTON_SCALE (widget)->button;
-  gboolean res;
+  bboolean res;
 
   if (button->priv->timeout)
     {
@@ -1492,9 +1492,9 @@ btk_scale_button_update_icon (BtkScaleButton *button)
   BtkScaleButtonPrivate *priv;
   BtkRange *range;
   BtkAdjustment *adj;
-  gdouble value;
-  const gchar *name;
-  guint num_icons;
+  bdouble value;
+  const bchar *name;
+  buint num_icons;
 
   priv = button->priv;
 
@@ -1524,7 +1524,7 @@ btk_scale_button_update_icon (BtkScaleButton *button)
   /* The 2-icons special case */
   if (num_icons == 2)
     {
-      gdouble limit;
+      bdouble limit;
       limit = (adj->upper - adj->lower) / 2 + adj->lower;
       if (value < limit)
 	name = priv->icon_list[0];
@@ -1548,11 +1548,11 @@ btk_scale_button_update_icon (BtkScaleButton *button)
     }
   else
     {
-      gdouble step;
-      guint i;
+      bdouble step;
+      buint i;
 
       step = (adj->upper - adj->lower) / (num_icons - 2);
-      i = (guint) ((value - adj->lower) / step) + 2;
+      i = (buint) ((value - adj->lower) / step) + 2;
       g_assert (i < num_icons);
       name = priv->icon_list[i];
     }
@@ -1566,7 +1566,7 @@ static void
 btk_scale_button_scale_value_changed (BtkRange *range)
 {
   BtkScaleButton *button = BTK_SCALE_BUTTON_SCALE (range)->button;
-  gdouble value;
+  bdouble value;
 
   value = btk_range_get_value (range);
 

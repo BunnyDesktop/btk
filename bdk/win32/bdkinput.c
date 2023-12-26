@@ -48,8 +48,8 @@ static BdkDeviceAxis bdk_input_core_axes[] = {
 
 GList            *_bdk_input_devices;
 GList            *_bdk_input_windows;
-gboolean          _bdk_input_in_proximity = 0;
-gboolean          _bdk_input_inside_input_window = 0;
+bboolean          _bdk_input_in_proximity = 0;
+bboolean          _bdk_input_inside_input_window = 0;
 
 void
 _bdk_init_input_core (BdkDisplay *display)
@@ -109,7 +109,7 @@ bdk_display_list_devices (BdkDisplay *dpy)
   return _bdk_input_devices;
 }
 
-const gchar *
+const bchar *
 bdk_device_get_name (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), NULL);
@@ -133,7 +133,7 @@ bdk_device_get_mode (BdkDevice *device)
   return device->mode;
 }
 
-gboolean
+bboolean
 bdk_device_get_has_cursor (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), FALSE);
@@ -152,8 +152,8 @@ bdk_device_set_source (BdkDevice      *device,
 
 void
 bdk_device_get_key (BdkDevice       *device,
-                    guint            index,
-                    guint           *keyval,
+                    buint            index,
+                    buint           *keyval,
                     BdkModifierType *modifiers)
 {
   g_return_if_fail (BDK_IS_DEVICE (device));
@@ -172,8 +172,8 @@ bdk_device_get_key (BdkDevice       *device,
 
 void
 bdk_device_set_key (BdkDevice      *device,
-		    guint           index,
-		    guint           keyval,
+		    buint           index,
+		    buint           keyval,
 		    BdkModifierType modifiers)
 {
   g_return_if_fail (device != NULL);
@@ -185,7 +185,7 @@ bdk_device_set_key (BdkDevice      *device,
 
 BdkAxisUse
 bdk_device_get_axis_use (BdkDevice *device,
-                         guint      index)
+                         buint      index)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), BDK_AXIS_IGNORE);
   g_return_val_if_fail (index < device->num_axes, BDK_AXIS_IGNORE);
@@ -193,7 +193,7 @@ bdk_device_get_axis_use (BdkDevice *device,
   return device->axes[index].use;
 }
 
-gint
+bint
 bdk_device_get_n_keys (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -201,7 +201,7 @@ bdk_device_get_n_keys (BdkDevice *device)
   return device->num_keys;
 }
 
-gint
+bint
 bdk_device_get_n_axes (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -211,7 +211,7 @@ bdk_device_get_n_axes (BdkDevice *device)
 
 void
 bdk_device_set_axis_use (BdkDevice   *device,
-			 guint        index,
+			 buint        index,
 			 BdkAxisUse   use)
 {
   g_return_if_fail (device != NULL);
@@ -238,13 +238,13 @@ bdk_device_set_axis_use (BdkDevice   *device,
     }
 }
 
-gboolean
+bboolean
 bdk_device_get_history  (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   g_return_val_if_fail (window != NULL, FALSE);
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
@@ -267,10 +267,10 @@ bdk_device_get_history  (BdkDevice         *device,
 
 BdkTimeCoord ** 
 _bdk_device_allocate_history (BdkDevice *device,
-			      gint       n_events)
+			      bint       n_events)
 {
   BdkTimeCoord **result = g_new (BdkTimeCoord *, n_events);
-  gint i;
+  bint i;
 
   for (i=0; i<n_events; i++)
     result[i] = g_malloc (sizeof (BdkTimeCoord) -
@@ -281,9 +281,9 @@ _bdk_device_allocate_history (BdkDevice *device,
 
 void 
 bdk_device_free_history (BdkTimeCoord **events,
-			 gint           n_events)
+			 bint           n_events)
 {
-  gint i;
+  bint i;
   
   for (i=0; i<n_events; i++)
     g_free (events[i]);
@@ -343,7 +343,7 @@ bdk_input_get_root_relative_geometry (HWND w,
 }
 
 void
-bdk_input_set_extension_events (BdkWindow *window, gint mask,
+bdk_input_set_extension_events (BdkWindow *window, bint mask,
 				BdkExtensionMode mode)
 {
   BdkWindowObject *window_private;
@@ -408,7 +408,7 @@ void
 _bdk_input_check_proximity (void)
 {
   GList *l;
-  gboolean new_proximity = FALSE;
+  bboolean new_proximity = FALSE;
 
   if (!_bdk_input_inside_input_window)
     {
@@ -436,13 +436,13 @@ _bdk_input_check_proximity (void)
 
 void
 _bdk_input_crossing_event (BdkWindow *window,
-			   gboolean enter)
+			   bboolean enter)
 {
   if (enter)
     {
       BdkWindowObject *priv = (BdkWindowObject *)window;
       BdkInputWindow *input_window;
-      gint root_x, root_y;
+      bint root_x, root_y;
 
       _bdk_input_inside_input_window = TRUE;
 
@@ -463,13 +463,13 @@ _bdk_input_crossing_event (BdkWindow *window,
   _bdk_input_check_proximity ();
 }
 
-gboolean
+bboolean
 bdk_device_get_axis (BdkDevice  *device,
-		     gdouble    *axes,
+		     bdouble    *axes,
 		     BdkAxisUse  use,
-		     gdouble    *value)
+		     bdouble    *value)
 {
-  gint i;
+  bint i;
   
   g_return_val_if_fail (device != NULL, FALSE);
 
@@ -487,7 +487,7 @@ bdk_device_get_axis (BdkDevice  *device,
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_device_set_mode (BdkDevice   *device,
 		     BdkInputMode mode)
 {

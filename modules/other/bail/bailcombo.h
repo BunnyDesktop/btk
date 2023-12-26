@@ -38,12 +38,12 @@ struct _BailCombo
 {
   BailContainer parent;
 
-  gpointer      old_selection;
-  gchar         *press_description;
+  bpointer      old_selection;
+  bchar         *press_description;
 
-  guint         action_idle_handler;
-  guint         select_idle_handler;
-  guint         deselect_idle_handler;
+  buint         action_idle_handler;
+  buint         select_idle_handler;
+  buint         deselect_idle_handler;
 };
 
 GType bail_combo_get_type (void);

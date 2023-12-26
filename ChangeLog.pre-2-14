@@ -317,7 +317,7 @@ Wed Sep 10 06:18:25 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-09-04  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btkhandlebox.c: events return gboolean not gint.
+	* btk/btkhandlebox.c: events return bboolean not bint.
 	Change misnamed btk_handle_box_button_changed() to
 	btk_handle_box_button_press(). Reindent static prototypes.
 
@@ -373,7 +373,7 @@ Wed Sep 10 06:18:25 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-09-03  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btkarrow.c: expose-event returns gboolean not gint,
+	* btk/btkarrow.c: expose-event returns bboolean not bint,
 	reindented static prototypes and did some minor cleanups.
 
 2008-09-03  Michael Natterer  <mitch@imendio.com>
@@ -398,7 +398,7 @@ Wed Sep 10 06:18:25 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-09-02  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btkdialog.c (btk_dialog_delete_event_handler): return
-	gboolean instead of gint. Reindent static prototypes.
+	bboolean instead of bint. Reindent static prototypes.
 
 2008-09-02  Michael Natterer  <mitch@imendio.com>
 
@@ -453,7 +453,7 @@ Wed Sep 10 06:18:25 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-08-29  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btkscrolledwindow.c: events return gboolean not gint,
+	* btk/btkscrolledwindow.c: events return bboolean not bint,
 	reindent prototypes.
 
 2008-08-29  Michael Natterer  <mitch@imendio.com>
@@ -486,7 +486,7 @@ Wed Sep 10 06:18:25 2008  Søren Sandmann  <sandmann@redhat.com>
 	Bug 549734 – btk_selection_data_get_data prototype is wrong
 
 	* btk/btkselection.[ch] (btk_selection_data_get_data): make the
-	'length' argument of btk_selection_data_get_data a 'gint', that's
+	'length' argument of btk_selection_data_get_data a 'bint', that's
 	what it should be.
 
 2008-08-27  Cody Russell  <bratsche@bunny.org>
@@ -656,9 +656,9 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	Bug 541600 – BtkCalendar segfault for certain values of detail-with-chars
 
 	* btk/btkcalendar.c (btk_calendar_class_init()): Limit the "year"
-	  property to G_MAXINT >> 9, instead of G_MAXINT >> 8: year_to_days()
+	  property to B_MAXINT >> 9, instead of B_MAXINT >> 8: year_to_days()
 	  multiplies the year property with 365 and returns the result as
-	  glong. Therefore ceil(log(365, 2)) = 9 bits must be available,
+	  blong. Therefore ceil(log(365, 2)) = 9 bits must be available,
 	  not just 8 bits.
 
 2008-08-18  Björn Lindqvist  <bjourne@gmail.com>
@@ -1373,13 +1373,13 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-08-05  Tor Lillqvist  <tml@novell.com>
 
-	* btk/btktext.c: Cast pointer to gintptr instead of gulong to
+	* btk/btktext.c: Cast pointer to bintptr instead of bulong to
 	avoid warning on Win64.
 
 2008-08-05  Tor Lillqvist  <tml@novell.com>
 
 	* btk/btkgc.c: Cast tile, stipple and clip_mask pointers to
-	gintptr instead of long when calculating hash, so we get all of
+	bintptr instead of long when calculating hash, so we get all of
 	the pointer bits on Win64 where long is 32 bits.
 
 2008-08-05  Tor Lillqvist  <tml@novell.com>
@@ -1392,7 +1392,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	Bug 544684 - Win64 issue, window handles are assumed to be 32-bit
 
-	* btk/btksocket-win32.c: Don't cast HWND to guint, pass it as such
+	* btk/btksocket-win32.c: Don't cast HWND to buint, pass it as such
 	as the BdkNativeWindow parameter to
 	btk_window_remove_embedded_xid(). Debugging printout format fixes.
 
@@ -1438,10 +1438,10 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	* bdk/bdkdnd.c
 	* bdk/win32/bdkdnd-win32.c
 	* bdk/x11/bdkdnd-x11.c: Change return value and type of window id
-	from guint32 to BdkNativeWindow for
+	from buint32 to BdkNativeWindow for
 	bdk_drag_get_protocol_for_display() and
 	bdk_drag_get_protocol(). This is not an API break on existing
-	platforms, as BdkNativeWindow has been guint32 for them
+	platforms, as BdkNativeWindow has been buint32 for them
 	already.
 
 	* bdk/bdkselection.h
@@ -1452,12 +1452,12 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	bdk_selection_send_notify().
 
 	* bdk/win32/bdkcursor-win32.c
-	* bdk/win32/xcursors.h: Change some gchar* to guchar* and vice
+	* bdk/win32/xcursors.h: Change some bchar* to buchar* and vice
 	versa to avoid gcc 4.4 signedness warnings.
 
 	* bdk/win32/bdkevents-win32.c
 	* bdk/win32/bdkproperty-win32.c
-	* bdk/win32/bdkselection-win32.c: Add some guchar and char pointer
+	* bdk/win32/bdkselection-win32.c: Add some buchar and char pointer
 	casts to get rid of gcc 4.4 signedness warnings. Print BdkAtom
 	values in debugging output using the %p format.
 	
@@ -1474,17 +1474,17 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btkwindow.h
 	* btk/btkwindow.c: Change the type of the xid parameter of the
 	internal btk_window_remove_embedded_xid() and
-	btk_window_add_embedded_xid() functions from guint to
+	btk_window_add_embedded_xid() functions from buint to
 	BdkNativeWindow.
 
 	* btk/btkwindow.c (send_client_message_to_embedded_windows):
-	Instead of GPOINTER_TO_UINT(), just cast the gpointer to
-	BdkNativeWindow. GPOINTER_TO_UINT() drops the upper 32 bits on
+	Instead of BPOINTER_TO_UINT(), just cast the bpointer to
+	BdkNativeWindow. BPOINTER_TO_UINT() drops the upper 32 bits on
 	Win64.
 
 2008-08-05  Tor Lillqvist  <tml@novell.com>
 
-	* bdk/bdkrgb.c: Cast pointers to guintptr, not unsigned long,
+	* bdk/bdkrgb.c: Cast pointers to buintptr, not unsigned long,
 	before doing bit tests on them.
 
 2008-08-05  Tor Lillqvist  <tml@novell.com>
@@ -3044,12 +3044,12 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	Bug 539466 – BtkMenuShell API/ABI break in trunk.
 
-	* btk/btkmenushell.h: Fix API/ABI break, two guint fields had
+	* btk/btkmenushell.h: Fix API/ABI break, two buint fields had
 	different name and packing width.
 
 2008-06-21  Johan Dahlin  <jdahlin@async.com.br>
 
-	* btk/btkiconcachevalidator.c (check_pixel_data): Cast to guint8* to avoid
+	* btk/btkiconcachevalidator.c (check_pixel_data): Cast to buint8* to avoid
 	a compiler warning.
 
 2008-06-21  Michael Natterer  <mitch@imendio.com>
@@ -3064,7 +3064,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	types - from 'struct _bairo *' to 'struct _bairo_surface *' by
 	passing the surface to bairo_surface_show_page(), not the context
 	* btk/btkprintoperation-win32.c(866) : get rid of warning C4018: 
-	'<' : signed/unsigned mismatch by using guint for the loop
+	'<' : signed/unsigned mismatch by using buint for the loop
 
 	* btk/btkmenu.c(btk_menu_get_property) : property 'menu::active' is 
 	an uint, btk_menu_get_active() returns the widget pointer. Convert
@@ -3290,7 +3290,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 2008-06-07 15:37:18 +0200 Carlos Garnacho
 
-	Switch to "guint GSEAL (foo) : width;" when packing fields in guints.
+	Switch to "buint GSEAL (foo) : width;" when packing fields in buints.
 
 	* btk/btkbox.h:
 	* btk/btkbutton.h:
@@ -3326,7 +3326,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btktoolbar.h:
 	* btk/btktreestore.h:
 	* btk/btktreeviewcolumn.h:
-	* btk/btkwindow.h: Do not specify width inside GSEAL() when packing fields in guints.
+	* btk/btkwindow.h: Do not specify width inside GSEAL() when packing fields in buints.
 
 2008-06-06 19:02:17 +0200 Christian Dywan
 
@@ -4015,7 +4015,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-06-19  Johan Dahlin  <jdahlin@async.com.br>
 
 	* btk/btkmenuitem.c: remove an unused variable and cast
-	accel_path to gchar, just like in btkmenu.c
+	accel_path to bchar, just like in btkmenu.c
 
 2008-06-19  Matthias Clasen  <mclasen@redhat.com>
 
@@ -4039,12 +4039,12 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btktreeview.c (btk_tree_view_set_grid_lines),
 	(btk_tree_view_set_enable_tree_lines):
-	bdk_gc_set_dashes expects a list of gint8, not guint8.
+	bdk_gc_set_dashes expects a list of bint8, not buint8.
 
 2008-06-19  Johan Dahlin  <jdahlin@async.com.br>
 
 	* btk/btkmenu.c (btk_menu_set_accel_path):
-	Remove an unused variable and cast to gchar to avoid a compiler
+	Remove an unused variable and cast to bchar to avoid a compiler
 	warning.
 
 2008-06-19  Christian Persch  <chpe@bunny.org>
@@ -4122,7 +4122,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btklabel.c (btk_label_set_text_with_mnemonic): Remove
 	an unused variable.
 
-	* btk/btkactiongroup.c: Use BdkModifierType instedd of guint,
+	* btk/btkactiongroup.c: Use BdkModifierType instedd of buint,
 	to avoid a gcc warning.
 
 2008-06-18  Olle Bergkvist <olle.bergkvist@yahoo.se>
@@ -4165,7 +4165,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-06-18  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btkcalendar.c: set the maximum of the "year" property to
-	G_MAXINT >> 8 instead of G_MAXINT to fix overflows in internal
+	B_MAXINT >> 8 instead of B_MAXINT to fix overflows in internal
 	calculations which in turn caused writing beyond the boundaries of
 	the calendar->day_month[] and day[] arrays which in turn caused a
 	SEGV. This limits the lifetime of BTK+ to the year 8,388,608 ;)
@@ -4742,7 +4742,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-06-11  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btkfilechooserbutton.c: fix local prototype of
-	_btk_file_chooser_label_for_file() (takes a GFile, not const gchar*).
+	_btk_file_chooser_label_for_file() (takes a GFile, not const bchar*).
 
 2008-06-10  Matthias Clasen <mclasen@redhat.com>
 
@@ -6233,7 +6233,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* modules/printbackends/cups/btkprintercups.[ch]
 	(btk_printer_cups_get_ppd_name): change return value and local
-	variable to const gchar* to fix warning about discarding const
+	variable to const bchar* to fix warning about discarding const
 	qualifier.
 
 2008-04-18  Emmanuele Bassi  <ebassi@bunny.org>
@@ -7863,11 +7863,11 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-30  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btkbuilderparser.c (parse_custom): use the right type for
-	"subparser_data" and remove the (gpointer*) cast. Fixes bogus
+	"subparser_data" and remove the (bpointer*) cast. Fixes bogus
 	aliasing warning.
 
-	* btk/updateiconcache.c (add_string): cast const gchar* to
-	gpointer when inserting in a GHashTable.
+	* btk/updateiconcache.c (add_string): cast const bchar* to
+	bpointer when inserting in a GHashTable.
 
 	* tests/testcalendar.c (calendar_detail_cb): remove const from
 	return value since it's a newly allocated string.
@@ -8029,7 +8029,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 
 	* btk/btkwidget.c: Store the event mask and extension event mode
 	directly in the bobject data pointer, instead of in an allocated
-	gint. Bug #506604.
+	bint. Bug #506604.
 
 2008-01-16  Michael Natterer  <mitch@imendio.com>
 
@@ -8080,7 +8080,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-14  Michael Natterer  <mitch@imendio.com>
 
 	* bdk/bdkscreen.c (bdk_screen_get_property): cast the return value
-	of bdk_screen_get_font_options() to gpointer to get rid of const
+	of bdk_screen_get_font_options() to bpointer to get rid of const
 	warning.
 
 2008-01-14  Michael Natterer  <mitch@imendio.com>
@@ -8100,7 +8100,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-14  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btkfilesystemmodel.c (drag_source_drag_data_get): cast
-	"uris" to guchar* when passing it to btk_selection_data_set().
+	"uris" to buchar* when passing it to btk_selection_data_set().
 
 2008-01-14  Michael Natterer  <mitch@imendio.com>
 
@@ -8355,7 +8355,7 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 2008-01-05  Christian Persch  <chpe@bunny.org>
 
         * tests/defaultvaluetest.c: Fix mem leak, and don't pass
-        GType as integer through gpointer. Bug #507395.
+        GType as integer through bpointer. Bug #507395.
 
 2008-01-04  Mathias Hasselmann  <mathias@openismus.com>
 
@@ -8794,10 +8794,10 @@ Wed Aug 20 18:16:29 2008  Søren Sandmann  <sandmann@redhat.com>
 	Avoid some compiler warnings and remove obsolete code. (#339540)
 
 	* btk/btkcalendar.c: Change week and year variable in
-	calendar_paint_week_numbers from gint to guint. Remove obsolete "#if
+	calendar_paint_week_numbers from bint to buint. Remove obsolete "#if
 	0" block from calendar_paint_day: The feature in question is handled
 	few lines above. Cast data returned by btk_selection_data_get_text()
-	to (gchar*) in btk_calendar_drag_data_received.
+	to (bchar*) in btk_calendar_drag_data_received.
 
 2007-12-19 17:05:31  Tim Janik  <timj@imendio.com>
 
@@ -9380,7 +9380,7 @@ Thu Dec 13 13:14:50 2007  Søren Sandmann  <sandmann@redhat.com>
 2007-11-26  Matthias Clasen  <mclasen@redhat.com>
 
 	* btk/btkfilechooserbutton.c:
-	* btk/btktoolbar.c: Don't use guint8 for bitfields, since
+	* btk/btktoolbar.c: Don't use buint8 for bitfields, since
 	some compilers choke on that.  (#467722)
 
 2007-11-26  Matthias Clasen  <mclasen@redhat.com>

@@ -1,6 +1,6 @@
 #include "thai-charprop.h"
 
-const gshort thai_char_type[256] = {
+const bshort thai_char_type[256] = {
   /*       0,   1,   2,   3,   4,   5,   6,   7,
            8,   9,   A,   B,   C,   D,   E,   F  */
 
@@ -45,7 +45,7 @@ const gshort thai_char_type[256] = {
          _ND, _ND, _ND, _ND, _ND, _ND, _ND, _ND,
 };
 
-const gshort thai_TAC_char_class[256] = {
+const bshort thai_TAC_char_class[256] = {
   /*	   0,   1,   2,   3,   4,   5,   6,   7,
            8,   9,   A,   B,   C,   D,   E,   F  */
 
@@ -90,7 +90,7 @@ const gshort thai_TAC_char_class[256] = {
           NON, NON, NON, NON, NON, NON, NON,CTRL,
 };
 
-const gchar thai_TAC_compose_input[20][20] = {
+const bchar thai_TAC_compose_input[20][20] = {
       /* row: Cn-1,  column: Cn */
       /*CTRL NON CONS LV FV1 FV2 FV3  AM BV1 BV2
        * BD TONE AD1 AD2 AD3 AD4 AV1 AV2 AV3 BCON*/

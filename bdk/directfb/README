@@ -61,7 +61,7 @@ This version of BTK+ also introduces two new functions that are special
 to the DirectFB version. You need to include bdk/bdkdirectfb.h to be
 able to use them.
 
-  bdk_directfb_window_set_opacity (BdkWindow *window, guchar opacity));
+  bdk_directfb_window_set_opacity (BdkWindow *window, buchar opacity));
 
       This function sets the overall opacity for toplevel BDK windows.
 

@@ -26,8 +26,8 @@ static BtkToolbar *toolbar = NULL;
 static void
 activate_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = B_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("Action %s (type=%s) activated", name, typename);
 }
@@ -35,8 +35,8 @@ activate_action (BtkAction *action)
 static void
 toggle_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = B_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("Action %s (type=%s) activated (active=%d)", name, typename,
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (action)));
@@ -46,8 +46,8 @@ toggle_action (BtkAction *action)
 static void
 radio_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = B_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("Action %s (type=%s) activated (active=%d) (value %d)", name, typename,
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (action)),
@@ -57,9 +57,9 @@ radio_action (BtkAction *action)
 static void
 recent_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = B_OBJECT_TYPE_NAME (action);
-  gchar *uri = btk_recent_chooser_get_current_uri (BTK_RECENT_CHOOSER (action));
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
+  bchar *uri = btk_recent_chooser_get_current_uri (BTK_RECENT_CHOOSER (action));
 
   g_message ("Action %s (type=%s) activated (uri=%s)",
              name, typename,
@@ -70,7 +70,7 @@ recent_action (BtkAction *action)
 static void
 toggle_cnp_actions (BtkAction *action)
 {
-  gboolean sensitive;
+  bboolean sensitive;
 
   sensitive = btk_toggle_action_get_active (BTK_TOGGLE_ACTION (action));
   action = btk_action_group_get_action (action_group, "cut");
@@ -146,7 +146,7 @@ static BtkActionEntry entries[] = {
   { "toolbar-large-icons", NULL, "Large Icons", NULL,
     NULL, G_CALLBACK (toolbar_size_large) }
 };
-static guint n_entries = G_N_ELEMENTS (entries);
+static buint n_entries = G_N_ELEMENTS (entries);
 
 static BtkToggleActionEntry toggle_entries[] = {
   { "bold", BTK_STOCK_BOLD, "_Bold", "<control>B",
@@ -156,7 +156,7 @@ static BtkToggleActionEntry toggle_entries[] = {
     "Change the sensitivity of the cut, copy and paste actions",
     G_CALLBACK (toggle_cnp_actions), TRUE },
 };
-static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
+static buint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
 
 enum {
   JUSTIFY_LEFT,
@@ -175,7 +175,7 @@ static BtkRadioActionEntry justify_entries[] = {
   { "justify-fill", BTK_STOCK_JUSTIFY_FILL, "_Fill", "<control>J",
     "Fill justify the text", JUSTIFY_FILL }
 };
-static guint n_justify_entries = G_N_ELEMENTS (justify_entries);
+static buint n_justify_entries = G_N_ELEMENTS (justify_entries);
 
 static BtkRadioActionEntry toolbar_entries[] = {
   { "toolbar-icons", NULL, "Icons", NULL, NULL, BTK_TOOLBAR_ICONS },
@@ -183,11 +183,11 @@ static BtkRadioActionEntry toolbar_entries[] = {
   { "toolbar-both", NULL, "Both", NULL, NULL, BTK_TOOLBAR_BOTH },
   { "toolbar-both-horiz", NULL, "Both Horizontal", NULL, NULL, BTK_TOOLBAR_BOTH_HORIZ }
 };
-static guint n_toolbar_entries = G_N_ELEMENTS (toolbar_entries);
+static buint n_toolbar_entries = G_N_ELEMENTS (toolbar_entries);
 
 /* XML description of the menus for the test app.  The parser understands
  * a subset of the Bonobo UI XML format, and uses GMarkup for parsing */
-static const gchar *ui_info =
+static const bchar *ui_info =
 "  <menubar>\n"
 "    <menu name=\"Menu _1\" action=\"Menu1Action\">\n"
 "      <menuitem name=\"cut\" action=\"cut\" />\n"
@@ -265,7 +265,7 @@ add_widget (BtkUIManager *merge,
     }
 }
 
-static guint ui_id = 0;
+static buint ui_id = 0;
 static BtkActionGroup *dag = NULL;
 
 static void
@@ -273,7 +273,7 @@ ensure_update (BtkUIManager *manager)
 {
   GTimer *timer;
   double seconds;
-  gulong microsecs;
+  bulong microsecs;
   
   timer = g_timer_new ();
   g_timer_start (timer);

@@ -33,25 +33,25 @@
 struct _BtkCellRendererSpinPrivate
 {
   BtkAdjustment *adjustment;
-  gdouble climb_rate;
-  guint   digits;
+  bdouble climb_rate;
+  buint   digits;
 };
 
 static void btk_cell_renderer_spin_finalize   (BObject                  *object);
 
 static void btk_cell_renderer_spin_get_property (BObject      *object,
-						 guint         prop_id,
+						 buint         prop_id,
 						 BValue       *value,
 						 BParamSpec   *spec);
 static void btk_cell_renderer_spin_set_property (BObject      *object,
-						 guint         prop_id,
+						 buint         prop_id,
 						 const BValue *value,
 						 BParamSpec   *spec);
 
 static BtkCellEditable * btk_cell_renderer_spin_start_editing (BtkCellRenderer     *cell,
 							       BdkEvent            *event,
 							       BtkWidget           *widget,
-							       const gchar         *path,
+							       const bchar         *path,
 							       BdkRectangle        *background_area,
 							       BdkRectangle        *cell_area,
 							       BtkCellRendererState flags);
@@ -108,7 +108,7 @@ btk_cell_renderer_spin_class_init (BtkCellRendererSpinClass *klass)
 				   g_param_spec_double ("climb-rate",
 							P_("Climb rate"),
 							P_("The acceleration rate when you hold down a button"),
-							0.0, G_MAXDOUBLE, 0.0,
+							0.0, B_MAXDOUBLE, 0.0,
 							BTK_PARAM_READWRITE));  
   /**
    * BtkCellRendererSpin:digits:
@@ -155,7 +155,7 @@ btk_cell_renderer_spin_finalize (BObject *object)
 
 static void
 btk_cell_renderer_spin_get_property (BObject      *object,
-				     guint         prop_id,
+				     buint         prop_id,
 				     BValue       *value,
 				     BParamSpec   *pspec)
 {
@@ -184,7 +184,7 @@ btk_cell_renderer_spin_get_property (BObject      *object,
 
 static void
 btk_cell_renderer_spin_set_property (BObject      *object,
-				     guint         prop_id,
+				     buint         prop_id,
 				     const BValue *value,
 				     BParamSpec   *pspec)
 {
@@ -221,14 +221,14 @@ btk_cell_renderer_spin_set_property (BObject      *object,
     }
 }
 
-static gboolean
+static bboolean
 btk_cell_renderer_spin_focus_out_event (BtkWidget *widget,
 					BdkEvent  *event,
-					gpointer   data)
+					bpointer   data)
 {
-  const gchar *path;
-  const gchar *new_text;
-  gboolean canceled;
+  const bchar *path;
+  const bchar *new_text;
+  bboolean canceled;
 
   g_object_get (widget,
                 "editing-canceled", &canceled,
@@ -251,10 +251,10 @@ btk_cell_renderer_spin_focus_out_event (BtkWidget *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_cell_renderer_spin_key_press_event (BtkWidget   *widget,
 					BdkEventKey *event,
-					gpointer     data)
+					bpointer     data)
 {
   if (event->state == 0)
     {
@@ -273,10 +273,10 @@ btk_cell_renderer_spin_key_press_event (BtkWidget   *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_cell_renderer_spin_button_press_event (BtkWidget      *widget,
                                            BdkEventButton *event,
-                                           gpointer        user_data)
+                                           bpointer        user_data)
 {
   /* Block 2BUTTON and 3BUTTON here, so that they won't be eaten
    * by tree view.
@@ -292,7 +292,7 @@ static BtkCellEditable *
 btk_cell_renderer_spin_start_editing (BtkCellRenderer     *cell,
 				      BdkEvent            *event,
 				      BtkWidget           *widget,
-				      const gchar         *path,
+				      const bchar         *path,
 				      BdkRectangle        *background_area,
 				      BdkRectangle        *cell_area,
 				      BtkCellRendererState flags)

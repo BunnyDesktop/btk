@@ -155,7 +155,7 @@ btk_fill_layout_renderer_draw_shape (BangoRenderer   *renderer,
   bairo_t *cr = text_renderer->cr;
   BangoLayout *layout;
   BangoBairoShapeRendererFunc shape_renderer;
-  gpointer                    shape_renderer_data;
+  bpointer                    shape_renderer_data;
 
   layout = bango_renderer_get_layout (renderer);
 
@@ -210,7 +210,7 @@ _btk_bango_fill_layout (bairo_t     *cr,
                         BangoLayout *layout)
 {
   static BtkFillLayoutRenderer *renderer = NULL;
-  gboolean has_current_point;
+  bboolean has_current_point;
   double current_x, current_y;
 
   has_current_point = bairo_has_current_point (cr);

@@ -98,13 +98,13 @@ btk_vscale_new (BtkAdjustment *adjustment)
  * Return value: a new #BtkVScale
  **/
 BtkWidget *
-btk_vscale_new_with_range (gdouble min,
-                           gdouble max,
-                           gdouble step)
+btk_vscale_new_with_range (bdouble min,
+                           bdouble max,
+                           bdouble step)
 {
   BtkObject *adj;
   BtkScale *scale;
-  gint digits;
+  bint digits;
 
   g_return_val_if_fail (min < max, NULL);
   g_return_val_if_fail (step != 0.0, NULL);
@@ -117,7 +117,7 @@ btk_vscale_new_with_range (gdouble min,
     }
   else
     {
-      digits = abs ((gint) floor (log10 (fabs (step))));
+      digits = abs ((bint) floor (log10 (fabs (step))));
       if (digits > 5)
         digits = 5;
     }

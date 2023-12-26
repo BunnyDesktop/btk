@@ -47,7 +47,7 @@
 #include "btkxembed.h"
 #include "btkalias.h"
 
-static gboolean xembed_get_info     (BdkWindow     *bdk_window,
+static bboolean xembed_get_info     (BdkWindow     *bdk_window,
 				     unsigned long *version,
 				     unsigned long *flags);
 
@@ -125,7 +125,7 @@ _btk_socket_windowing_size_request (BtkSocket *socket)
 void
 _btk_socket_windowing_send_key_event (BtkSocket *socket,
 				      BdkEvent  *bdk_event,
-				      gboolean   mask_key_presses)
+				      bboolean   mask_key_presses)
 {
   XKeyEvent xkey;
   BdkScreen *screen = bdk_window_get_screen (socket->plug_window);
@@ -156,7 +156,7 @@ _btk_socket_windowing_send_key_event (BtkSocket *socket,
 
 void
 _btk_socket_windowing_focus_change (BtkSocket *socket,
-				    gboolean   focus_in)
+				    bboolean   focus_in)
 {
   if (focus_in)
     _btk_xembed_send_focus_message (socket->plug_window,
@@ -168,7 +168,7 @@ _btk_socket_windowing_focus_change (BtkSocket *socket,
 
 void
 _btk_socket_windowing_update_active (BtkSocket *socket,
-				     gboolean   active)
+				     bboolean   active)
 {
   _btk_xembed_send_message (socket->plug_window,
 			    active ? XEMBED_WINDOW_ACTIVATE : XEMBED_WINDOW_DEACTIVATE,
@@ -177,7 +177,7 @@ _btk_socket_windowing_update_active (BtkSocket *socket,
 
 void
 _btk_socket_windowing_update_modality (BtkSocket *socket,
-				       gboolean   modality)
+				       bboolean   modality)
 {
   _btk_xembed_send_message (socket->plug_window,
 			    modality ? XEMBED_MODALITY_ON : XEMBED_MODALITY_OFF,
@@ -188,7 +188,7 @@ void
 _btk_socket_windowing_focus (BtkSocket       *socket,
 			     BtkDirectionType direction)
 {
-  gint detail = -1;
+  bint detail = -1;
 
   switch (direction)
     {
@@ -211,7 +211,7 @@ void
 _btk_socket_windowing_send_configure_event (BtkSocket *socket)
 {
   XConfigureEvent xconfigure;
-  gint x, y;
+  bint x, y;
 
   g_return_if_fail (socket->plug_window != NULL);
 
@@ -289,7 +289,7 @@ _btk_socket_windowing_embed_notify (BtkSocket *socket)
 			    socket->xembed_version);
 }
 
-static gboolean
+static bboolean
 xembed_get_info (BdkWindow     *window,
 		 unsigned long *version,
 		 unsigned long *flags)
@@ -341,7 +341,7 @@ xembed_get_info (BdkWindow     *window,
   return TRUE;
 }
 
-gboolean
+bboolean
 _btk_socket_windowing_embed_get_focus_wrapped (void)
 {
   return _btk_xembed_get_focus_wrapped ();
@@ -356,10 +356,10 @@ _btk_socket_windowing_embed_set_focus_wrapped (void)
 static void
 handle_xembed_message (BtkSocket        *socket,
 		       XEmbedMessageType message,
-		       glong             detail,
-		       glong             data1,
-		       glong             data2,
-		       guint32           time)
+		       blong             detail,
+		       blong             data1,
+		       blong             data2,
+		       buint32           time)
 {
   BTK_NOTE (PLUGSOCKET,
 	    g_message ("BtkSocket: %s received", _btk_xembed_message_name (message)));
@@ -408,7 +408,7 @@ handle_xembed_message (BtkSocket        *socket,
 BdkFilterReturn
 _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 				   BdkEvent  *event,
-				   gpointer   data)
+				   bpointer   data)
 {
   BtkSocket *socket;
   BtkWidget *widget;
@@ -506,7 +506,7 @@ _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 	 */
 	if (socket->plug_window && (xdwe->window == BDK_WINDOW_XWINDOW (socket->plug_window)))
 	  {
-	    gboolean result;
+	    bboolean result;
 	    
 	    BTK_NOTE (PLUGSOCKET, g_message ("BtkSocket - destroy notify"));
 	    
@@ -582,8 +582,8 @@ _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 	      
 	      if (xembed_get_info (socket->plug_window, NULL, &flags))
 		{
-		  gboolean was_mapped = socket->is_mapped;
-		  gboolean is_mapped = (flags & XEMBED_MAPPED) != 0;
+		  bboolean was_mapped = socket->is_mapped;
+		  bboolean is_mapped = (flags & XEMBED_MAPPED) != 0;
 
 		  if (was_mapped != is_mapped)
 		    {
@@ -624,7 +624,7 @@ _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
           {
             if (socket->plug_window && xre->window == BDK_WINDOW_XWINDOW (socket->plug_window) && xre->parent != BDK_WINDOW_XWINDOW (widget->window))
               {
-                gboolean result;
+                bboolean result;
 
                 _btk_socket_end_embedding (socket);
 

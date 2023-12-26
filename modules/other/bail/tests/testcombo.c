@@ -6,14 +6,14 @@
 static void _test_selection (BatkObject *obj);
 static void _check_combo_box (BatkObject *obj);
 static void _check_children (BatkObject *obj);
-static gint _open_combo_list (gpointer data);
-static gint _close_combo_list (gpointer data);
+static bint _open_combo_list (bpointer data);
+static bint _close_combo_list (bpointer data);
 
 #define NUM_VALID_ROLES 1
 
 static void _check_children (BatkObject *obj)
 {
-  gint n_children, i, j;
+  bint n_children, i, j;
   BatkObject *child;
   BatkObject *grand_child;
   BatkObject *parent;
@@ -49,7 +49,7 @@ static void _check_children (BatkObject *obj)
   n_children = batk_object_get_n_accessible_children (child);
   for (i = 0; i < n_children; i++)
   {
-    const gchar *name;
+    const bchar *name;
 
     grand_child = batk_object_ref_accessible_child (child, i);
     name = batk_object_get_name (grand_child);
@@ -61,8 +61,8 @@ static void _check_children (BatkObject *obj)
   
 static void _test_selection (BatkObject *obj)
 {
-  gint count;
-  gint n_children;
+  bint count;
+  bint n_children;
   BatkObject *list;
 
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -88,8 +88,8 @@ static void _test_selection (BatkObject *obj)
 
 static void _check_combo_box (BatkObject *obj)
 {
-  static gboolean done = FALSE;
-  static gboolean done_selection = FALSE;
+  static bboolean done = FALSE;
+  static bboolean done_selection = FALSE;
   BatkRole role;
 
   role = batk_object_get_role (obj);
@@ -141,7 +141,7 @@ static void _check_combo_box (BatkObject *obj)
   g_print ("*** End ComboBox ***\n");
 }
 
-static gint _open_combo_list (gpointer data)
+static bint _open_combo_list (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
@@ -152,12 +152,12 @@ static gint _open_combo_list (gpointer data)
   return FALSE;
 }
 
-static gint _close_combo_list (gpointer data)
+static bint _close_combo_list (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
-  gint count;
-  gint n_children;
+  bint count;
+  bint n_children;
   BatkObject *list;
 
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -181,7 +181,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testcombo Module loaded\n");
 

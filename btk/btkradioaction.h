@@ -73,17 +73,17 @@ struct _BtkRadioActionClass
 };
 
 GType           btk_radio_action_get_type          (void) B_GNUC_CONST;
-BtkRadioAction *btk_radio_action_new               (const gchar           *name,
-                                                    const gchar           *label,
-                                                    const gchar           *tooltip,
-                                                    const gchar           *stock_id,
-                                                    gint                   value);
+BtkRadioAction *btk_radio_action_new               (const bchar           *name,
+                                                    const bchar           *label,
+                                                    const bchar           *tooltip,
+                                                    const bchar           *stock_id,
+                                                    bint                   value);
 GSList         *btk_radio_action_get_group         (BtkRadioAction        *action);
 void            btk_radio_action_set_group         (BtkRadioAction        *action,
                                                     GSList                *group);
-gint            btk_radio_action_get_current_value (BtkRadioAction        *action);
+bint            btk_radio_action_get_current_value (BtkRadioAction        *action);
 void            btk_radio_action_set_current_value (BtkRadioAction        *action,
-                                                    gint                   current_value);
+                                                    bint                   current_value);
 
 B_END_DECLS
 

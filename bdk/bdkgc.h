@@ -168,12 +168,12 @@ struct _BdkGCValues
   BdkPixmap	   *stipple;
   BdkPixmap	   *clip_mask;
   BdkSubwindowMode  subwindow_mode;
-  gint		    ts_x_origin;
-  gint		    ts_y_origin;
-  gint		    clip_x_origin;
-  gint		    clip_y_origin;
-  gint		    graphics_exposures;
-  gint		    line_width;
+  bint		    ts_x_origin;
+  bint		    ts_y_origin;
+  bint		    clip_x_origin;
+  bint		    clip_y_origin;
+  bint		    graphics_exposures;
+  bint		    line_width;
   BdkLineStyle	    line_style;
   BdkCapStyle	    cap_style;
   BdkJoinStyle	    join_style;
@@ -190,10 +190,10 @@ struct _BdkGC
 {
   BObject parent_instance;
 
-  gint GSEAL (clip_x_origin);
-  gint GSEAL (clip_y_origin);
-  gint GSEAL (ts_x_origin);
-  gint GSEAL (ts_y_origin);
+  bint GSEAL (clip_x_origin);
+  bint GSEAL (clip_y_origin);
+  bint GSEAL (ts_x_origin);
+  bint GSEAL (ts_y_origin);
 
   BdkColormap *GSEAL (colormap);
 };
@@ -208,9 +208,9 @@ struct _BdkGCClass
 			  BdkGCValues    *values,
 			  BdkGCValuesMask mask);
   void (*set_dashes)     (BdkGC          *gc,
-			  gint	          dash_offset,
-			  gint8           dash_list[],
-			  gint            n);
+			  bint	          dash_offset,
+			  bint8           dash_list[],
+			  bint            n);
   
   /* Padding for future expansion */
   void         (*_bdk_reserved1)  (void);
@@ -250,11 +250,11 @@ void   bdk_gc_set_tile		  (BdkGC	    *gc,
 void   bdk_gc_set_stipple	  (BdkGC	    *gc,
 				   BdkPixmap	    *stipple);
 void   bdk_gc_set_ts_origin	  (BdkGC	    *gc,
-				   gint		     x,
-				   gint		     y);
+				   bint		     x,
+				   bint		     y);
 void   bdk_gc_set_clip_origin	  (BdkGC	    *gc,
-				   gint		     x,
-				   gint		     y);
+				   bint		     x,
+				   bint		     y);
 void   bdk_gc_set_clip_mask	  (BdkGC	    *gc,
 				   BdkBitmap	    *mask);
 void   bdk_gc_set_clip_rectangle  (BdkGC	    *gc,
@@ -264,19 +264,19 @@ void   bdk_gc_set_clip_rebunnyion	  (BdkGC	    *gc,
 void   bdk_gc_set_subwindow	  (BdkGC	    *gc,
 				   BdkSubwindowMode  mode);
 void   bdk_gc_set_exposures	  (BdkGC	    *gc,
-				   gboolean	     exposures);
+				   bboolean	     exposures);
 void   bdk_gc_set_line_attributes (BdkGC	    *gc,
-				   gint		     line_width,
+				   bint		     line_width,
 				   BdkLineStyle	     line_style,
 				   BdkCapStyle	     cap_style,
 				   BdkJoinStyle	     join_style);
 void   bdk_gc_set_dashes          (BdkGC            *gc,
-				   gint	             dash_offset,
-				   gint8             dash_list[],
-				   gint              n);
+				   bint	             dash_offset,
+				   bint8             dash_list[],
+				   bint              n);
 void   bdk_gc_offset              (BdkGC            *gc,
-				   gint              x_offset,
-				   gint              y_offset);
+				   bint              x_offset,
+				   bint              y_offset);
 void   bdk_gc_copy		  (BdkGC	    *dst_gc,
 				   BdkGC	    *src_gc);
 

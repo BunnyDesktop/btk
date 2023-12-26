@@ -37,7 +37,7 @@
 
 B_BEGIN_DECLS
 
-BdkGC* btk_gc_get     (gint             depth,
+BdkGC* btk_gc_get     (bint             depth,
 		       BdkColormap     *colormap,
 		       BdkGCValues     *values,
 		       BdkGCValuesMask  values_mask);

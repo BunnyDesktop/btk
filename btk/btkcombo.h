@@ -61,17 +61,17 @@ struct _BtkCombo {
 	BtkWidget *list;
 
         /*< private >*/
-	guint entry_change_id;
-	guint list_change_id;	/* unused */
+	buint entry_change_id;
+	buint list_change_id;	/* unused */
 
-	guint value_in_list:1;
-	guint ok_if_empty:1;
-	guint case_sensitive:1;
-	guint use_arrows:1;
-	guint use_arrows_always:1;
+	buint value_in_list:1;
+	buint ok_if_empty:1;
+	buint case_sensitive:1;
+	buint use_arrows:1;
+	buint use_arrows_always:1;
 
-        guint16 current_button;
-	guint activate_id;
+        buint16 current_button;
+	buint activate_id;
 };
 
 struct _BtkComboClass {
@@ -89,22 +89,22 @@ GType      btk_combo_get_type              (void) B_GNUC_CONST;
 BtkWidget* btk_combo_new                   (void);
 /* the text in the entry must be or not be in the list */
 void       btk_combo_set_value_in_list     (BtkCombo*    combo, 
-                                            gboolean     val,
-                                            gboolean     ok_if_empty);
+                                            bboolean     val,
+                                            bboolean     ok_if_empty);
 /* set/unset arrows working for changing the value (can be annoying) */
 void       btk_combo_set_use_arrows        (BtkCombo*    combo, 
-                                            gboolean     val);
+                                            bboolean     val);
 /* up/down arrows change value if current value not in list */
 void       btk_combo_set_use_arrows_always (BtkCombo*    combo, 
-                                            gboolean     val);
+                                            bboolean     val);
 /* perform case-sensitive compares */
 void       btk_combo_set_case_sensitive    (BtkCombo*    combo, 
-                                            gboolean     val);
+                                            bboolean     val);
 /* call this function on an item if it isn't a label or you
    want it to have a different value to be displayed in the entry */
 void       btk_combo_set_item_string       (BtkCombo*    combo,
                                             BtkItem*     item,
-                                            const gchar* item_value);
+                                            const bchar* item_value);
 /* simple interface */
 void       btk_combo_set_popdown_strings   (BtkCombo*    combo, 
                                             GList        *strings);

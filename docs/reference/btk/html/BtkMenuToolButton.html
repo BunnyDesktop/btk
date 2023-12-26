@@ -179,7 +179,7 @@ BtkMenuToolButton implements
 <a name="btk-menu-tool-button-new"></a><h3>btk_menu_tool_button_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
 btk_menu_tool_button_new (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *icon_widget</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                          <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> using <em class="parameter"><code>icon_widget</code></em>
  as icon and
 <em class="parameter"><code>label</code></em>
@@ -216,7 +216,7 @@ btk_menu_tool_button_new (<em class="parameter"><code><a class="link" href="BtkW
 <div class="refsect2">
 <a name="btk-menu-tool-button-new-from-stock"></a><h3>btk_menu_tool_button_new_from_stock ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
-btk_menu_tool_button_new_from_stock (<em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+btk_menu_tool_button_new_from_stock (<em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a>.
 The new <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> will contain an icon and label from
 the stock item indicated by <em class="parameter"><code>stock_id</code></em>
@@ -311,8 +311,8 @@ with <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><sp
 btk_menu_tool_button_set_arrow_tooltip
                                (<em class="parameter"><code><a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> *button</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTooltips.html" title="BtkTooltips"><span class="type">BtkTooltips</span></a> *tooltips</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *tip_text</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *tip_private</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *tip_text</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *tip_private</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_menu_tool_button_set_arrow_tooltip</code> has been deprecated since version 2.12 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkMenuToolButton.html#btk-menu-tool-button-set-arrow-tooltip-text" title="btk_menu_tool_button_set_arrow_tooltip_text ()"><code class="function">btk_menu_tool_button_set_arrow_tooltip_text()</code></a>
@@ -361,7 +361,7 @@ a tooltip on the whole <a class="link" href="BtkMenuToolButton.html" title="BtkM
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_tool_button_set_arrow_tooltip_text
                                (<em class="parameter"><code><a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> *button</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Sets the tooltip text to be used as tooltip for the arrow button which
 pops up the menu.  See <a class="link" href="BtkToolItem.html#btk-tool-item-set-tooltip" title="btk_tool_item_set_tooltip ()"><code class="function">btk_tool_item_set_tooltip()</code></a> for setting a tooltip
 on the whole <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a>.</p>
@@ -395,7 +395,7 @@ on the whole <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolBut
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_tool_button_set_arrow_tooltip_markup
                                (<em class="parameter"><code><a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> *button</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *markup</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *markup</code></em>);</pre>
 <p>Sets the tooltip markup text to be used as tooltip for the arrow button
 which pops up the menu.  See <a class="link" href="BtkToolItem.html#btk-tool-item-set-tooltip" title="btk_tool_item_set_tooltip ()"><code class="function">btk_tool_item_set_tooltip()</code></a> for setting a
 tooltip on the whole <a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a>.</p>
@@ -447,7 +447,7 @@ tooltip on the whole <a class="link" href="BtkMenuToolButton.html" title="BtkMen
 <a name="BtkMenuToolButton-show-menu"></a><h3>The <code class="literal">“show-menu”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuToolButton.html" title="BtkMenuToolButton"><span class="type">BtkMenuToolButton</span></a> *button,
-               <span class="type">gpointer</span>           user_data)</pre>
+               <span class="type">bpointer</span>           user_data)</pre>
 <p>The ::show-menu signal is emitted before the menu is shown.</p>
 <p>It can be used to populate the menu on demand, using
 

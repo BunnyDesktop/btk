@@ -69,7 +69,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToggleAction.html#btk-toggle-action-get-active" title="btk_toggle_action_get_active ()">btk_toggle_action_get_active</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToggleAction.html#btk-toggle-action-get-draw-as-radio" title="btk_toggle_action_get_draw_as_radio ()">btk_toggle_action_get_draw_as_radio</a> <span class="c_punctuation">()</span>
@@ -104,12 +104,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToggleAction.html#BtkToggleAction--active" title="The “active” property">active</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToggleAction.html#BtkToggleAction--draw-as-radio" title="The “draw-as-radio” property">draw-as-radio</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -171,10 +171,10 @@ BtkToggleAction implements
 <div class="refsect2">
 <a name="btk-toggle-action-new"></a><h3>btk_toggle_action_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="returnvalue">BtkToggleAction</span></a> *
-btk_toggle_action_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *tooltip</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+btk_toggle_action_new (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *tooltip</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> object. To add the action to
 a <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> and set the accelerator for the action,
 call <a class="link" href="BtkActionGroup.html#btk-action-group-add-action-with-accel" title="btk_action_group_add_action_with_accel ()"><code class="function">btk_action_group_add_action_with_accel()</code></a>.</p>
@@ -245,7 +245,7 @@ btk_toggle_action_toggled (<em class="parameter"><code><a class="link" href="Btk
 <a name="btk-toggle-action-set-active"></a><h3>btk_toggle_action_set_active ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_toggle_action_set_active (<em class="parameter"><code><a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> *action</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> is_active</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> is_active</code></em>);</pre>
 <p>Sets the checked state on the toggle action.</p>
 <div class="refsect3">
 <a name="btk-toggle-action-set-active.parameters"></a><h4>Parameters</h4>
@@ -274,7 +274,7 @@ btk_toggle_action_set_active (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-toggle-action-get-active"></a><h3>btk_toggle_action_get_active ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_toggle_action_get_active (<em class="parameter"><code><a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> *action</code></em>);</pre>
 <p>Returns the checked state of the toggle action.</p>
 <div class="refsect3">
@@ -303,7 +303,7 @@ btk_toggle_action_get_active (<em class="parameter"><code><a class="link" href="
 <a name="btk-toggle-action-set-draw-as-radio"></a><h3>btk_toggle_action_set_draw_as_radio ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_toggle_action_set_draw_as_radio (<em class="parameter"><code><a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> *action</code></em>,
-                                     <em class="parameter"><code><span class="type">gboolean</span> draw_as_radio</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bboolean</span> draw_as_radio</code></em>);</pre>
 <p>Sets whether the action should have proxies like a radio action.</p>
 <div class="refsect3">
 <a name="btk-toggle-action-set-draw-as-radio.parameters"></a><h4>Parameters</h4>
@@ -333,7 +333,7 @@ action</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-toggle-action-get-draw-as-radio"></a><h3>btk_toggle_action_get_draw_as_radio ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_toggle_action_get_draw_as_radio (<em class="parameter"><code><a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> *action</code></em>);</pre>
 <p>Returns whether the action should have proxies like a radio action.</p>
 <div class="refsect3">
@@ -369,7 +369,7 @@ btk_toggle_action_get_draw_as_radio (<em class="parameter"><code><a class="link"
 <a name="BtkToggleAction.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkToggleAction--active"></a><h3>The <code class="literal">“active”</code> property</h3>
-<pre class="programlisting">  “active”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “active”                   <span class="type">bboolean</span></pre>
 <p>If the toggle action should be active in or not.</p>
 <p>Owner: BtkToggleAction</p>
 <p>Flags: Read / Write</p>
@@ -379,7 +379,7 @@ btk_toggle_action_get_draw_as_radio (<em class="parameter"><code><a class="link"
 <hr>
 <div class="refsect2">
 <a name="BtkToggleAction--draw-as-radio"></a><h3>The <code class="literal">“draw-as-radio”</code> property</h3>
-<pre class="programlisting">  “draw-as-radio”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “draw-as-radio”            <span class="type">bboolean</span></pre>
 <p>Whether the proxies for this action look like radio action proxies.</p>
 <p>This is an appearance property and thus only applies if
 
@@ -395,7 +395,7 @@ btk_toggle_action_get_draw_as_radio (<em class="parameter"><code><a class="link"
 <a name="BtkToggleAction-toggled"></a><h3>The <code class="literal">“toggled”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkToggleAction.html" title="BtkToggleAction"><span class="type">BtkToggleAction</span></a> *toggleaction,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

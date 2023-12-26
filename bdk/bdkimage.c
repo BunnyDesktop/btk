@@ -85,10 +85,10 @@ bdk_image_unref (BdkImage *image)
  **/
 BdkImage*
 bdk_image_get (BdkWindow *drawable,
-	       gint       x,
-	       gint       y,
-	       gint       width,
-	       gint       height)
+	       bint       x,
+	       bint       y,
+	       bint       width,
+	       bint       height)
 {
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (x >= 0, NULL);
@@ -222,7 +222,7 @@ bdk_image_get_byte_order (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-gint
+bint
 bdk_image_get_width (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -242,7 +242,7 @@ bdk_image_get_width (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-gint
+bint
 bdk_image_get_height (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -262,7 +262,7 @@ bdk_image_get_height (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-guint16
+buint16
 bdk_image_get_depth (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -282,7 +282,7 @@ bdk_image_get_depth (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-guint16
+buint16
 bdk_image_get_bytes_per_pixel (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -302,7 +302,7 @@ bdk_image_get_bytes_per_pixel (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-guint16
+buint16
 bdk_image_get_bytes_per_line (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -322,7 +322,7 @@ bdk_image_get_bytes_per_line (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  **/
-guint16
+buint16
 bdk_image_get_bits_per_pixel (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -342,7 +342,7 @@ bdk_image_get_bits_per_pixel (BdkImage *image)
  *
  * Deprecated: 2.22: #BdkImage should not be used anymore.
  */
-gpointer
+bpointer
 bdk_image_get_pixels (BdkImage *image)
 {
   g_return_val_if_fail (BDK_IS_IMAGE (image), NULL);
@@ -371,11 +371,11 @@ static const int possible_n_images[] = { 1, 2, 3, 6 };
 typedef struct _BdkScratchImageInfo BdkScratchImageInfo;
 
 struct _BdkScratchImageInfo {
-  gint depth;
+  bint depth;
   
-  gint n_images;
+  bint n_images;
   BdkImage *static_image[N_REBUNNYIONS];
-  gint static_image_idx;
+  bint static_image_idx;
 
   /* In order to optimize filling fractions, we simultaneously fill in up
    * to three rebunnyions of size BDK_SCRATCH_IMAGE_WIDTH * BDK_SCRATCH_IMAGE_HEIGHT: one
@@ -385,31 +385,31 @@ struct _BdkScratchImageInfo {
    * for images smaller than BDK_SCRATCH_IMAGE_HEIGHT / 2 x BDK_SCRATCH_IMAGE_WIDTH x 2
    * that we tile in horizontal rows.
    */
-  gint horiz_idx;
-  gint horiz_y;
-  gint vert_idx;
-  gint vert_x;
+  bint horiz_idx;
+  bint horiz_y;
+  bint vert_idx;
+  bint vert_x;
   
   /* tile_y1 and tile_y2 define the horizontal band into
    * which we are tiling images. tile_x is the x extent to
    * which that is filled
    */
-  gint tile_idx;
-  gint tile_x;
-  gint tile_y1;
-  gint tile_y2;
+  bint tile_idx;
+  bint tile_x;
+  bint tile_y1;
+  bint tile_y2;
 
   BdkScreen *screen;
 };
 
 static GSList *scratch_image_infos = NULL;
 
-static gboolean
+static bboolean
 allocate_scratch_images (BdkScratchImageInfo *info,
-			 gint                 n_images,
-			 gboolean             shared)
+			 bint                 n_images,
+			 bboolean             shared)
 {
-  gint i;
+  bint i;
   
   for (i = 0; i < n_images; i++)
     {
@@ -422,7 +422,7 @@ allocate_scratch_images (BdkScratchImageInfo *info,
       
       if (!info->static_image[i])
 	{
-	  gint j;
+	  bint j;
 	  
 	  for (j = 0; j < i; j++)
 	    g_object_unref (info->static_image[j]);
@@ -436,10 +436,10 @@ allocate_scratch_images (BdkScratchImageInfo *info,
 
 static void
 scratch_image_info_display_closed (BdkDisplay          *display,
-                                   gboolean             is_error,
+                                   bboolean             is_error,
                                    BdkScratchImageInfo *image_info)
 {
-  gint i;
+  bint i;
 
   g_signal_handlers_disconnect_by_func (display,
                                         scratch_image_info_display_closed,
@@ -455,11 +455,11 @@ scratch_image_info_display_closed (BdkDisplay          *display,
 
 static BdkScratchImageInfo *
 scratch_image_info_for_depth (BdkScreen *screen,
-			      gint       depth)
+			      bint       depth)
 {
   GSList *tmp_list;
   BdkScratchImageInfo *image_info;
-  gint i;
+  bint i;
 
   tmp_list = scratch_image_infos;
   while (tmp_list)
@@ -515,10 +515,10 @@ scratch_image_info_for_depth (BdkScreen *screen,
 #undef NO_FLUSH
 
 #ifdef VERBOSE
-static gint sincelast;
+static bint sincelast;
 #endif
 
-static gint
+static bint
 alloc_scratch_image (BdkScratchImageInfo *image_info)
 {
   if (image_info->static_image_idx == N_REBUNNYIONS)
@@ -563,15 +563,15 @@ alloc_scratch_image (BdkScratchImageInfo *image_info)
  **/
 BdkImage *
 _bdk_image_get_scratch (BdkScreen   *screen,
-			gint	     width,			
-			gint	     height,
-			gint	     depth,
-			gint	    *x,
-			gint	    *y)
+			bint	     width,			
+			bint	     height,
+			bint	     depth,
+			bint	    *x,
+			bint	    *y)
 {
   BdkScratchImageInfo *image_info;
   BdkImage *image;
-  gint idx;
+  bint idx;
   
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
@@ -648,8 +648,8 @@ _bdk_image_get_scratch (BdkScreen   *screen,
 BdkImage*
 bdk_image_new (BdkImageType  type,
 	       BdkVisual    *visual,
-	       gint          width,
-	       gint          height)
+	       bint          width,
+	       bint          height)
 {
   return _bdk_image_new_for_depth (bdk_visual_get_screen (visual), type,
 				   visual, width, height, -1);

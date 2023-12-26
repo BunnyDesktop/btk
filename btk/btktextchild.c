@@ -85,7 +85,7 @@ pixbuf_segment_cleanup_func (BtkTextLineSegment *seg,
 static int
 pixbuf_segment_delete_func (BtkTextLineSegment *seg,
                             BtkTextLine        *line,
-                            gboolean            tree_gone)
+                            bboolean            tree_gone)
 {
   if (seg->body.pixbuf.pixbuf)
     g_object_unref (seg->body.pixbuf.pixbuf);
@@ -160,7 +160,7 @@ child_segment_cleanup_func (BtkTextLineSegment *seg,
 static int
 child_segment_delete_func (BtkTextLineSegment *seg,
                            BtkTextLine       *line,
-                           gboolean           tree_gone)
+                           bboolean           tree_gone)
 {
   GSList *tmp_list;
   GSList *copy;
@@ -426,7 +426,7 @@ btk_text_child_anchor_get_widgets (BtkTextChildAnchor *anchor)
  * 
  * Return value: %TRUE if the child anchor has been deleted from its buffer
  **/
-gboolean
+bboolean
 btk_text_child_anchor_get_deleted (BtkTextChildAnchor *anchor)
 {
   BtkTextLineSegment *seg = anchor->segment;

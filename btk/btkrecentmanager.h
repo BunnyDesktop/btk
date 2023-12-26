@@ -68,17 +68,17 @@ typedef struct _BtkRecentManagerPrivate BtkRecentManagerPrivate;
  **/
 struct _BtkRecentData
 {
-  gchar *display_name;
-  gchar *description;
+  bchar *display_name;
+  bchar *description;
 
-  gchar *mime_type;
+  bchar *mime_type;
 
-  gchar *app_name;
-  gchar *app_exec;
+  bchar *app_name;
+  bchar *app_exec;
 
-  gchar **groups;
+  bchar **groups;
 
-  gboolean is_private;
+  bboolean is_private;
 };
 
 struct _BtkRecentManager
@@ -146,28 +146,28 @@ void              btk_recent_manager_set_screen     (BtkRecentManager     *manag
 						     BdkScreen            *screen);
 #endif
 
-gboolean          btk_recent_manager_add_item       (BtkRecentManager     *manager,
-						     const gchar          *uri);
-gboolean          btk_recent_manager_add_full       (BtkRecentManager     *manager,
-						     const gchar          *uri,
+bboolean          btk_recent_manager_add_item       (BtkRecentManager     *manager,
+						     const bchar          *uri);
+bboolean          btk_recent_manager_add_full       (BtkRecentManager     *manager,
+						     const bchar          *uri,
 						     const BtkRecentData  *recent_data);
-gboolean          btk_recent_manager_remove_item    (BtkRecentManager     *manager,
-						     const gchar          *uri,
+bboolean          btk_recent_manager_remove_item    (BtkRecentManager     *manager,
+						     const bchar          *uri,
 						     GError              **error);
 BtkRecentInfo *   btk_recent_manager_lookup_item    (BtkRecentManager     *manager,
-						     const gchar          *uri,
+						     const bchar          *uri,
 						     GError              **error);
-gboolean          btk_recent_manager_has_item       (BtkRecentManager     *manager,
-						     const gchar          *uri);
-gboolean          btk_recent_manager_move_item      (BtkRecentManager     *manager,
-						     const gchar          *uri,
-						     const gchar          *new_uri,
+bboolean          btk_recent_manager_has_item       (BtkRecentManager     *manager,
+						     const bchar          *uri);
+bboolean          btk_recent_manager_move_item      (BtkRecentManager     *manager,
+						     const bchar          *uri,
+						     const bchar          *new_uri,
 						     GError              **error);
 void              btk_recent_manager_set_limit      (BtkRecentManager     *manager,
-						     gint                  limit);
-gint              btk_recent_manager_get_limit      (BtkRecentManager     *manager);
+						     bint                  limit);
+bint              btk_recent_manager_get_limit      (BtkRecentManager     *manager);
 GList *           btk_recent_manager_get_items      (BtkRecentManager     *manager);
-gint              btk_recent_manager_purge_items    (BtkRecentManager     *manager,
+bint              btk_recent_manager_purge_items    (BtkRecentManager     *manager,
 						     GError              **error);
 
 
@@ -176,36 +176,36 @@ GType	              btk_recent_info_get_type             (void) B_GNUC_CONST;
 BtkRecentInfo *       btk_recent_info_ref                  (BtkRecentInfo  *info);
 void                  btk_recent_info_unref                (BtkRecentInfo  *info);
 
-const gchar *         btk_recent_info_get_uri              (BtkRecentInfo  *info);
-const gchar *         btk_recent_info_get_display_name     (BtkRecentInfo  *info);
-const gchar *         btk_recent_info_get_description      (BtkRecentInfo  *info);
-const gchar *         btk_recent_info_get_mime_type        (BtkRecentInfo  *info);
+const bchar *         btk_recent_info_get_uri              (BtkRecentInfo  *info);
+const bchar *         btk_recent_info_get_display_name     (BtkRecentInfo  *info);
+const bchar *         btk_recent_info_get_description      (BtkRecentInfo  *info);
+const bchar *         btk_recent_info_get_mime_type        (BtkRecentInfo  *info);
 time_t                btk_recent_info_get_added            (BtkRecentInfo  *info);
 time_t                btk_recent_info_get_modified         (BtkRecentInfo  *info);
 time_t                btk_recent_info_get_visited          (BtkRecentInfo  *info);
-gboolean              btk_recent_info_get_private_hint     (BtkRecentInfo  *info);
-gboolean              btk_recent_info_get_application_info (BtkRecentInfo  *info,
-							    const gchar    *app_name,
-							    const gchar   **app_exec,
-							    guint          *count,
+bboolean              btk_recent_info_get_private_hint     (BtkRecentInfo  *info);
+bboolean              btk_recent_info_get_application_info (BtkRecentInfo  *info,
+							    const bchar    *app_name,
+							    const bchar   **app_exec,
+							    buint          *count,
 							    time_t         *time_);
-gchar **              btk_recent_info_get_applications     (BtkRecentInfo  *info,
-							    gsize          *length) B_GNUC_MALLOC;
-gchar *               btk_recent_info_last_application     (BtkRecentInfo  *info) B_GNUC_MALLOC;
-gboolean              btk_recent_info_has_application      (BtkRecentInfo  *info,
-							    const gchar    *app_name);
-gchar **              btk_recent_info_get_groups           (BtkRecentInfo  *info,
-							    gsize          *length) B_GNUC_MALLOC;
-gboolean              btk_recent_info_has_group            (BtkRecentInfo  *info,
-							    const gchar    *group_name);
+bchar **              btk_recent_info_get_applications     (BtkRecentInfo  *info,
+							    bsize          *length) B_GNUC_MALLOC;
+bchar *               btk_recent_info_last_application     (BtkRecentInfo  *info) B_GNUC_MALLOC;
+bboolean              btk_recent_info_has_application      (BtkRecentInfo  *info,
+							    const bchar    *app_name);
+bchar **              btk_recent_info_get_groups           (BtkRecentInfo  *info,
+							    bsize          *length) B_GNUC_MALLOC;
+bboolean              btk_recent_info_has_group            (BtkRecentInfo  *info,
+							    const bchar    *group_name);
 BdkPixbuf *           btk_recent_info_get_icon             (BtkRecentInfo  *info,
-							    gint            size);
-gchar *               btk_recent_info_get_short_name       (BtkRecentInfo  *info) B_GNUC_MALLOC;
-gchar *               btk_recent_info_get_uri_display      (BtkRecentInfo  *info) B_GNUC_MALLOC;
-gint                  btk_recent_info_get_age              (BtkRecentInfo  *info);
-gboolean              btk_recent_info_is_local             (BtkRecentInfo  *info);
-gboolean              btk_recent_info_exists               (BtkRecentInfo  *info);
-gboolean              btk_recent_info_match                (BtkRecentInfo  *info_a,
+							    bint            size);
+bchar *               btk_recent_info_get_short_name       (BtkRecentInfo  *info) B_GNUC_MALLOC;
+bchar *               btk_recent_info_get_uri_display      (BtkRecentInfo  *info) B_GNUC_MALLOC;
+bint                  btk_recent_info_get_age              (BtkRecentInfo  *info);
+bboolean              btk_recent_info_is_local             (BtkRecentInfo  *info);
+bboolean              btk_recent_info_exists               (BtkRecentInfo  *info);
+bboolean              btk_recent_info_match                (BtkRecentInfo  *info_a,
 							    BtkRecentInfo  *info_b);
 
 /* private */

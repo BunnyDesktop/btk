@@ -26,8 +26,8 @@
 static void                  bail_frame_class_init       (BailFrameClass  *klass);
 static void                  bail_frame_init             (BailFrame       *frame);
 static void                  bail_frame_initialize       (BatkObject       *accessible,
-                                                          gpointer         data);
-static const gchar*          bail_frame_get_name         (BatkObject       *obj);
+                                                          bpointer         data);
+static const bchar*          bail_frame_get_name         (BatkObject       *obj);
 
 G_DEFINE_TYPE (BailFrame, bail_frame, BAIL_TYPE_CONTAINER)
 
@@ -47,17 +47,17 @@ bail_frame_init (BailFrame       *frame)
 
 static void
 bail_frame_initialize (BatkObject *accessible,
-                       gpointer  data)
+                       bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_frame_parent_class)->initialize (accessible, data);
 
   accessible->role = BATK_ROLE_PANEL;
 }
 
-static const gchar*
+static const bchar*
 bail_frame_get_name (BatkObject *obj)
 {
-  const gchar *name;
+  const bchar *name;
   g_return_val_if_fail (BAIL_IS_FRAME (obj), NULL);
 
   name = BATK_OBJECT_CLASS (bail_frame_parent_class)->get_name (obj);

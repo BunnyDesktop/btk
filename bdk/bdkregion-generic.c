@@ -80,13 +80,13 @@ typedef void (* overlapFunc)    (BdkRebunnyion    *pReg,
                                  BdkRebunnyionBox *r1End,
                                  BdkRebunnyionBox *r2,
                                  BdkRebunnyionBox *r2End,
-                                 gint          y1,
-                                 gint          y2);
+                                 bint          y1,
+                                 bint          y2);
 typedef void (* nonOverlapFunc) (BdkRebunnyion    *pReg,
                                  BdkRebunnyionBox *r,
                                  BdkRebunnyionBox *rEnd,
-                                 gint          y1,
-                                 gint          y2);
+                                 bint          y1,
+                                 bint          y2);
 
 static void miRebunnyionCopy (BdkRebunnyion       *dstrgn,
 			  const BdkRebunnyion *rgn);
@@ -235,9 +235,9 @@ bdk_rebunnyion_get_clipbox (const BdkRebunnyion *rebunnyion,
 void
 bdk_rebunnyion_get_rectangles (const BdkRebunnyion  *rebunnyion,
                            BdkRectangle    **rectangles,
-                           gint             *n_rectangles)
+                           bint             *n_rectangles)
 {
-  gint i;
+  bint i;
   
   g_return_if_fail (rebunnyion != NULL);
   g_return_if_fail (rectangles != NULL);
@@ -377,8 +377,8 @@ bdk_rebunnyion_destroy (BdkRebunnyion *rebunnyion)
  */
 void
 bdk_rebunnyion_offset (BdkRebunnyion *rebunnyion,
-		   gint       x,
-		   gint       y)
+		   bint       x,
+		   bint       y)
 {
   int nbox;
   BdkRebunnyionBox *pbox;
@@ -434,11 +434,11 @@ static void
 Compress(BdkRebunnyion *r,
 	 BdkRebunnyion *s,
 	 BdkRebunnyion *t,
-	 guint      dx,
+	 buint      dx,
 	 int        xdir,
 	 int        grow)
 {
-  guint shift = 1;
+  buint shift = 1;
 
   miRebunnyionCopy (s, r);
   while (dx)
@@ -529,8 +529,8 @@ miIntersectO (BdkRebunnyion    *pReg,
 	      BdkRebunnyionBox *r1End,
 	      BdkRebunnyionBox *r2,
 	      BdkRebunnyionBox *r2End,
-	      gint          y1,
-	      gint          y2)
+	      bint          y1,
+	      bint          y2)
 {
   int  	x1;
   int  	x2;
@@ -665,8 +665,8 @@ miRebunnyionCopy (BdkRebunnyion       *dstrgn,
 /* static int*/
 static int
 miCoalesce (BdkRebunnyion *pReg,         /* Rebunnyion to coalesce */
-	    gint       prevStart,    /* Index of start of previous band */
-	    gint       curStart)     /* Index of start of current band */
+	    bint       prevStart,    /* Index of start of previous band */
+	    bint       curStart)     /* Index of start of current band */
 {
   BdkRebunnyionBox *pPrevBox;   	/* Current box in previous band */
   BdkRebunnyionBox *pCurBox;    	/* Current box in current band */
@@ -1100,8 +1100,8 @@ static void
 miUnionNonO (BdkRebunnyion    *pReg,
 	     BdkRebunnyionBox *r,
 	     BdkRebunnyionBox *rEnd,
-	     gint          y1,
-	     gint          y2)
+	     bint          y1,
+	     bint          y2)
 {
   BdkRebunnyionBox *pNextRect;
 
@@ -1149,8 +1149,8 @@ miUnionO (BdkRebunnyion *pReg,
 	  BdkRebunnyionBox *r1End,
 	  BdkRebunnyionBox *r2,
 	  BdkRebunnyionBox *r2End,
-	  gint          y1,
-	  gint          y2)
+	  bint          y1,
+	  bint          y2)
 {
   BdkRebunnyionBox *	pNextRect;
     
@@ -1296,8 +1296,8 @@ static void
 miSubtractNonO1 (BdkRebunnyion    *pReg,
 		 BdkRebunnyionBox *r,
 		 BdkRebunnyionBox *rEnd,
-		 gint          y1,
-		 gint          y2)
+		 bint          y1,
+		 bint          y2)
 {
   BdkRebunnyionBox *	pNextRect;
 	
@@ -1343,8 +1343,8 @@ miSubtractO (BdkRebunnyion    *pReg,
 	     BdkRebunnyionBox *r1End,
 	     BdkRebunnyionBox *r2,
 	     BdkRebunnyionBox *r2End,
-	     gint          y1,
-	     gint          y2)
+	     bint          y1,
+	     bint          y2)
 {
   BdkRebunnyionBox *	pNextRect;
   int  	x1;
@@ -1537,7 +1537,7 @@ bdk_rebunnyion_xor (BdkRebunnyion       *source1,
  *
  * Returns: %TRUE if @rebunnyion is empty.
  */
-gboolean
+bboolean
 bdk_rebunnyion_empty (const BdkRebunnyion *rebunnyion)
 {
   g_return_val_if_fail (rebunnyion != NULL, FALSE);
@@ -1557,7 +1557,7 @@ bdk_rebunnyion_empty (const BdkRebunnyion *rebunnyion)
  *
  * Returns: %TRUE if @rebunnyion1 and @rebunnyion2 are equal.
  */
-gboolean
+bboolean
 bdk_rebunnyion_equal (const BdkRebunnyion *rebunnyion1,
 		  const BdkRebunnyion *rebunnyion2)
 {
@@ -1597,7 +1597,7 @@ bdk_rebunnyion_equal (const BdkRebunnyion *rebunnyion1,
  * Deprecated: 2.22: Use bdk_rebunnyion_new_rect() and bdk_rebunnyion_equal() to 
  *             achieve the same effect.
  */
-gboolean
+bboolean
 bdk_rebunnyion_rect_equal (const BdkRebunnyion    *rebunnyion,
 		       const BdkRectangle *rectangle)
 {
@@ -1622,7 +1622,7 @@ bdk_rebunnyion_rect_equal (const BdkRebunnyion    *rebunnyion,
  *
  * Returns: %TRUE if the point is in @rebunnyion.
  */
-gboolean
+bboolean
 bdk_rebunnyion_point_in (const BdkRebunnyion *rebunnyion,
 		     int              x,
 		     int              y)
@@ -1662,8 +1662,8 @@ bdk_rebunnyion_rect_in (const BdkRebunnyion    *rebunnyion,
   BdkRebunnyionBox *pboxEnd;
   BdkRebunnyionBox  rect;
   BdkRebunnyionBox *prect = &rect;
-  gboolean      partIn, partOut;
-  gint rx, ry;
+  bboolean      partIn, partOut;
+  bint rx, ry;
 
   g_return_val_if_fail (rebunnyion != NULL, BDK_OVERLAP_RECTANGLE_OUT);
   g_return_val_if_fail (rectangle != NULL, BDK_OVERLAP_RECTANGLE_OUT);
@@ -1750,10 +1750,10 @@ bdk_rebunnyion_unsorted_spans_intersect_foreach (BdkRebunnyion     *rebunnyion,
 					     const BdkSpan *spans,
 					     int            n_spans,
 					     BdkSpanFunc    function,
-					     gpointer       data)
+					     bpointer       data)
 {
-  gint i, left, right, y;
-  gint clipped_left, clipped_right;
+  bint i, left, right, y;
+  bint clipped_left, clipped_right;
   BdkRebunnyionBox *pbox;
   BdkRebunnyionBox *pboxEnd;
 
@@ -1816,12 +1816,12 @@ void
 bdk_rebunnyion_spans_intersect_foreach (BdkRebunnyion     *rebunnyion,
 				    const BdkSpan *spans,
 				    int            n_spans,
-				    gboolean       sorted,
+				    bboolean       sorted,
 				    BdkSpanFunc    function,
-				    gpointer       data)
+				    bpointer       data)
 {
-  gint left, right, y;
-  gint clipped_left, clipped_right;
+  bint left, right, y;
+  bint clipped_left, clipped_right;
   BdkRebunnyionBox *pbox;
   BdkRebunnyionBox *pboxEnd;
   const BdkSpan *span, *tmpspan;

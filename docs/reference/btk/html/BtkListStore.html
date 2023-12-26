@@ -99,7 +99,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkListStore.html#btk-list-store-remove" title="btk_list_store_remove ()">btk_list_store_remove</a> <span class="c_punctuation">()</span>
@@ -171,7 +171,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkListStore.html#btk-list-store-iter-is-valid" title="btk_list_store_iter_is_valid ()">btk_list_store_iter_is_valid</a> <span class="c_punctuation">()</span>
@@ -250,7 +250,7 @@ BtkListStore implements
 <div class="refsect2">
 <a name="btk-list-store-new"></a><h3>btk_list_store_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="returnvalue">BtkListStore</span></a> *
-btk_list_store_new (<em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+btk_list_store_new (<em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                     <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new list store as with <em class="parameter"><code>n_columns</code></em>
  columns each of the types passed
@@ -290,7 +290,7 @@ int, string and <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-
 <div class="refsect2">
 <a name="btk-list-store-newv"></a><h3>btk_list_store_newv ()</h3>
 <pre class="programlisting"><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="returnvalue">BtkListStore</span></a> *
-btk_list_store_newv (<em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+btk_list_store_newv (<em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                      <em class="parameter"><code><span class="type">GType</span> *types</code></em>);</pre>
 <p>Non-vararg creation function.  Used primarily by language bindings.</p>
 <div class="refsect3">
@@ -326,7 +326,7 @@ btk_list_store_newv (<em class="parameter"><code><span class="type">gint</span> 
 <a name="btk-list-store-set-column-types"></a><h3>btk_list_store_set_column_types ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_set_column_types (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                                  <em class="parameter"><code><span class="type">GType</span> *types</code></em>);</pre>
 <p>This function is meant primarily for <span class="type">BObjects</span> that inherit from <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a>,
 and should only be used when constructing a new <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a>.  It will not
@@ -447,7 +447,7 @@ bindings.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_set_value (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> column</code></em>,
                           <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Sets the data in the cell specified by <em class="parameter"><code>iter</code></em>
  and <em class="parameter"><code>column</code></em>
@@ -494,9 +494,9 @@ column.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_set_valuesv (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> *columns</code></em>,
                             <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkListStore.html#btk-list-store-set-valist" title="btk_list_store_set_valist ()"><code class="function">btk_list_store_set_valist()</code></a> which
 takes the columns and values as two arrays, instead of
 varargs. This function is mainly intended for 
@@ -546,7 +546,7 @@ arrays</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-list-store-remove"></a><h3>btk_list_store_remove ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_list_store_remove (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <p>Removes the given row from the list store.  After being removed, 
@@ -588,7 +588,7 @@ is valid, <code class="literal">FALSE</code> if not.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_insert (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Creates a new row at <em class="parameter"><code>position</code></em>
 .  <em class="parameter"><code>iter</code></em>
  will be changed to point to this new
@@ -715,7 +715,7 @@ in values, you need to call <a class="link" href="BtkListStore.html#btk-list-sto
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_insert_with_values (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                                    <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> position</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> position</code></em>,
                                    <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new row at <em class="parameter"><code>position</code></em>
 .  <em class="parameter"><code>iter</code></em>
@@ -787,10 +787,10 @@ inserting rows in a sorted list store.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_insert_with_valuesv (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> position</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> position</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> *columns</code></em>,
                                     <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkListStore.html#btk-list-store-insert-with-values" title="btk_list_store_insert_with_values ()"><code class="function">btk_list_store_insert_with_values()</code></a> which
 takes the columns and values as two arrays, instead of
 varargs. This function is mainly intended for 
@@ -934,7 +934,7 @@ btk_list_store_clear (<em class="parameter"><code><a class="link" href="BtkListS
 <hr>
 <div class="refsect2">
 <a name="btk-list-store-iter-is-valid"></a><h3>btk_list_store_iter_is_valid ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_list_store_iter_is_valid (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *list_store</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <div class="warning">This function is slow. Only use it for debugging and/or testing
@@ -973,7 +973,7 @@ purposes.</div>
 <a name="btk-list-store-reorder"></a><h3>btk_list_store_reorder ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_list_store_reorder (<em class="parameter"><code><a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> *store</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *new_order</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> *new_order</code></em>);</pre>
 <p>Reorders <em class="parameter"><code>store</code></em>
  to follow the order indicated by <em class="parameter"><code>new_order</code></em>
 . Note that

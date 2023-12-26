@@ -99,12 +99,12 @@ const int _bdk_nenvent_masks = sizeof (_bdk_event_mask_table) / sizeof (int);
 
 /* Forward declarations */
 static void     bdk_window_set_static_win_gravity (BdkWindow  *window,
-						   gboolean    on);
-static gboolean bdk_window_icon_name_set          (BdkWindow  *window);
+						   bboolean    on);
+static bboolean bdk_window_icon_name_set          (BdkWindow  *window);
 static void     bdk_window_add_colormap_windows   (BdkWindow  *window);
 static void     set_wm_name                       (BdkDisplay  *display,
 						   Window       xwindow,
-						   const gchar *name);
+						   const bchar *name);
 static void     move_to_current_desktop           (BdkWindow *window);
 
 static BdkColormap* bdk_window_impl_x11_get_colormap (BdkDrawable *drawable);
@@ -126,8 +126,8 @@ static void        bdk_window_impl_iface_init     (BdkWindowImplIface *iface);
  * time is concerned.  Accounts for wraparound.
  */
 #define XSERVER_TIME_IS_LATER(time1, time2)                        \
-  ( (( time1 > time2 ) && ( time1 - time2 < ((guint32)-1)/2 )) ||  \
-    (( time1 < time2 ) && ( time2 - time1 > ((guint32)-1)/2 ))     \
+  ( (( time1 > time2 ) && ( time1 - time2 < ((buint32)-1)/2 )) ||  \
+    (( time1 < time2 ) && ( time2 - time1 > ((buint32)-1)/2 ))     \
   )
 
 G_DEFINE_TYPE_WITH_CODE (BdkWindowImplX11,
@@ -272,7 +272,7 @@ tmp_reset_bg (BdkWindow *window)
  */
 void
 _bdk_x11_window_tmp_unset_bg (BdkWindow *window,
-			      gboolean   recurse)
+			      bboolean   recurse)
 {
   BdkWindowObject *private;
 
@@ -315,7 +315,7 @@ _bdk_x11_window_tmp_unset_parent_bg (BdkWindow *window)
 
 void
 _bdk_x11_window_tmp_reset_bg (BdkWindow *window,
-			      gboolean   recurse)
+			      bboolean   recurse)
 {
   BdkWindowObject *private;
 
@@ -483,7 +483,7 @@ set_wm_protocols (BdkWindow *window)
   XSetWMProtocols (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window), protocols, n);
 }
 
-static const gchar *
+static const bchar *
 get_default_title (void)
 {
   const char *title;
@@ -559,7 +559,7 @@ ensure_sync_counter (BdkWindow *window)
 	  XChangeProperty (xdisplay, BDK_WINDOW_XID (window),
 			   atom, XA_CARDINAL,
 			   32, PropModeReplace,
-			   (guchar *)&toplevel->update_counter, 1);
+			   (buchar *)&toplevel->update_counter, 1);
 	  
 	  XSyncIntToValue (&toplevel->current_counter_value, 0);
 	}
@@ -615,7 +615,7 @@ setup_toplevel_window (BdkWindow *window,
 		   bdk_x11_get_xatom_by_name_for_display (screen_x11->display, "_NET_WM_PID"),
 		   XA_CARDINAL, 32,
 		   PropModeReplace,
-		   (guchar *)&pid, 1);
+		   (buchar *)&pid, 1);
 
   leader_window = BDK_DISPLAY_X11 (screen_x11->display)->leader_window;
   if (!leader_window)
@@ -623,13 +623,13 @@ setup_toplevel_window (BdkWindow *window,
   XChangeProperty (xdisplay, xid, 
 		   bdk_x11_get_xatom_by_name_for_display (screen_x11->display, "WM_CLIENT_LEADER"),
 		   XA_WINDOW, 32, PropModeReplace,
-		   (guchar *) &leader_window, 1);
+		   (buchar *) &leader_window, 1);
 
   if (toplevel->focus_window != None)
     XChangeProperty (xdisplay, xid, 
                      bdk_x11_get_xatom_by_name_for_display (screen_x11->display, "_NET_WM_USER_TIME_WINDOW"),
                      XA_WINDOW, 32, PropModeReplace,
-                     (guchar *) &toplevel->focus_window, 1);
+                     (buchar *) &toplevel->focus_window, 1);
 
   if (!obj->focus_on_map)
     bdk_x11_window_set_user_time (window, 0);
@@ -646,7 +646,7 @@ _bdk_window_impl_new (BdkWindow     *window,
 		      BdkVisual     *visual,
 		      BdkEventMask   event_mask,
 		      BdkWindowAttr *attributes,
-		      gint           attributes_mask)
+		      bint           attributes_mask)
 {
   BdkWindowObject *private;
   BdkWindowImplX11 *impl;
@@ -912,8 +912,8 @@ bdk_x11_window_foreign_new_for_display (BdkDisplay *display,
   XWindowAttributes attrs;
   Window root, parent;
   Window *children = NULL;
-  guint nchildren;
-  gboolean result;
+  buint nchildren;
+  bboolean result;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
@@ -1085,8 +1085,8 @@ bdk_toplevel_x11_free_contents (BdkDisplay *display,
 
 static void
 _bdk_x11_window_destroy (BdkWindow *window,
-			 gboolean   recursing,
-			 gboolean   foreign_destroy)
+			 bboolean   recursing,
+			 bboolean   foreign_destroy)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkToplevelX11 *toplevel;
@@ -1176,7 +1176,7 @@ bdk_window_destroy_notify (BdkWindow *window)
 
 static void
 update_wm_hints (BdkWindow *window,
-		 gboolean   force)
+		 bboolean   force)
 {
   BdkToplevelX11 *toplevel = _bdk_x11_window_get_toplevel (window);
   BdkWindowObject *private = (BdkWindowObject *)window;
@@ -1242,7 +1242,7 @@ set_initial_hints (BdkWindow *window)
   BdkWindowObject *private;
   BdkToplevelX11 *toplevel;
   Atom atoms[9];
-  gint i;
+  bint i;
 
   private = (BdkWindowObject*) window;
   toplevel = _bdk_x11_window_get_toplevel (window);
@@ -1335,7 +1335,7 @@ set_initial_hints (BdkWindow *window)
                        xwindow,
 		       bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE"),
                        XA_ATOM, 32, PropModeReplace,
-                       (guchar*) atoms, i);
+                       (buchar*) atoms, i);
     }
   else 
     {
@@ -1351,7 +1351,7 @@ set_initial_hints (BdkWindow *window)
                        xwindow,
 		       bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_DESKTOP"),
                        XA_CARDINAL, 32, PropModeReplace,
-                       (guchar*) atoms, 1);
+                       (buchar*) atoms, 1);
       toplevel->on_all_desktops = TRUE;
     }
   else
@@ -1365,7 +1365,7 @@ set_initial_hints (BdkWindow *window)
 }
 
 static void
-bdk_window_x11_show (BdkWindow *window, gboolean already_mapped)
+bdk_window_x11_show (BdkWindow *window, bboolean already_mapped)
 {
   BdkWindowObject *private = (BdkWindowObject*) window;
   BdkDisplay *display;
@@ -1374,7 +1374,7 @@ bdk_window_x11_show (BdkWindow *window, gboolean already_mapped)
   BdkWindowImplX11 *impl = BDK_WINDOW_IMPL_X11 (private->impl);
   Display *xdisplay = BDK_WINDOW_XDISPLAY (window);
   Window xwindow = BDK_WINDOW_XID (window);
-  gboolean unset_bg;
+  bboolean unset_bg;
 
   if (!already_mapped)
     set_initial_hints (window);
@@ -1517,8 +1517,8 @@ bdk_window_x11_withdraw (BdkWindow *window)
 
 static inline void
 window_x11_move (BdkWindow *window,
-                 gint       x,
-                 gint       y)
+                 bint       x,
+                 bint       y)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;
   BdkWindowImplX11 *impl = BDK_WINDOW_IMPL_X11 (private->impl);
@@ -1545,8 +1545,8 @@ window_x11_move (BdkWindow *window,
 
 static inline void
 window_x11_resize (BdkWindow *window,
-                   gint       width,
-                   gint       height)
+                   bint       width,
+                   bint       height)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;
 
@@ -1588,10 +1588,10 @@ window_x11_resize (BdkWindow *window,
 
 static inline void
 window_x11_move_resize (BdkWindow *window,
-                        gint       x,
-                        gint       y,
-                        gint       width,
-                        gint       height)
+                        bint       x,
+                        bint       y,
+                        bint       width,
+                        bint       height)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;;
   
@@ -1634,11 +1634,11 @@ window_x11_move_resize (BdkWindow *window,
 
 static void
 bdk_window_x11_move_resize (BdkWindow *window,
-                            gboolean   with_move,
-                            gint       x,
-                            gint       y,
-                            gint       width,
-                            gint       height)
+                            bboolean   with_move,
+                            bint       x,
+                            bint       y,
+                            bint       width,
+                            bint       height)
 {
   if (with_move && (width < 0 && height < 0))
     window_x11_move (window, x, y);
@@ -1651,11 +1651,11 @@ bdk_window_x11_move_resize (BdkWindow *window,
     }
 }
 
-static gboolean
+static bboolean
 bdk_window_x11_reparent (BdkWindow *window,
                          BdkWindow *new_parent,
-                         gint       x,
-                         gint       y)
+                         bint       x,
+                         bint       y)
 {
   BdkWindowObject *window_private;
   BdkWindowObject *parent_private;
@@ -1729,7 +1729,7 @@ bdk_window_x11_reparent (BdkWindow *window,
 static void
 bdk_window_x11_clear_rebunnyion (BdkWindow *window,
 			     BdkRebunnyion *rebunnyion,
-			     gboolean   send_expose)
+			     bboolean   send_expose)
 {
   BdkRectangle *rectangles;
   int n_rectangles, i;
@@ -1778,7 +1778,7 @@ bdk_window_x11_restack_under (BdkWindow *window,
 static void
 bdk_window_x11_restack_toplevel (BdkWindow *window,
 				 BdkWindow *sibling,
-				 gboolean   above)
+				 bboolean   above)
 {
   XWindowChanges changes;
 
@@ -1831,11 +1831,11 @@ move_to_current_desktop (BdkWindow *window)
 					   bdk_atom_intern_static_string ("_NET_WM_DESKTOP")))
     {
       Atom type;
-      gint format;
-      gulong nitems;
-      gulong bytes_after;
-      guchar *data;
-      gulong *current_desktop;
+      bint format;
+      bulong nitems;
+      bulong bytes_after;
+      buchar *data;
+      bulong *current_desktop;
       BdkDisplay *display;
       
       display = bdk_drawable_get_display (window);
@@ -1846,14 +1846,14 @@ move_to_current_desktop (BdkWindow *window)
       XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), 
                           BDK_WINDOW_XROOTWIN (window),
 			  bdk_x11_get_xatom_by_name_for_display (display, "_NET_CURRENT_DESKTOP"),
-                          0, G_MAXLONG,
+                          0, B_MAXLONG,
                           False, XA_CARDINAL, &type, &format, &nitems,
                           &bytes_after, &data);
 
       if (type == XA_CARDINAL)
         {
 	  XClientMessageEvent xclient;
-	  current_desktop = (gulong *)data;
+	  current_desktop = (bulong *)data;
 	  
 	  memset (&xclient, 0, sizeof (xclient));
           xclient.type = ClientMessage;
@@ -1891,7 +1891,7 @@ move_to_current_desktop (BdkWindow *window)
  **/
 void
 bdk_window_focus (BdkWindow *window,
-                  guint32    timestamp)
+                  buint32    timestamp)
 {
   BdkDisplay *display;
 
@@ -1958,13 +1958,13 @@ bdk_window_focus (BdkWindow *window,
  **/
 void
 bdk_window_set_hints (BdkWindow *window,
-		      gint       x,
-		      gint       y,
-		      gint       min_width,
-		      gint       min_height,
-		      gint       max_width,
-		      gint       max_height,
-		      gint       flags)
+		      bint       x,
+		      bint       y,
+		      bint       min_width,
+		      bint       min_height,
+		      bint       max_width,
+		      bint       max_height,
+		      bint       flags)
 {
   XSizeHints size_hints;
   
@@ -2080,7 +2080,7 @@ bdk_window_set_type_hint (BdkWindow        *window,
   XChangeProperty (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window),
 		   bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_WINDOW_TYPE"),
 		   XA_ATOM, 32, PropModeReplace,
-		   (guchar *)&atom, 1);
+		   (buchar *)&atom, 1);
 }
 
 /**
@@ -2099,10 +2099,10 @@ bdk_window_get_type_hint (BdkWindow *window)
   BdkDisplay *display;
   BdkWindowTypeHint type;
   Atom type_return;
-  gint format_return;
-  gulong nitems_return;
-  gulong bytes_after_return;
-  guchar *data = NULL;
+  bint format_return;
+  bulong nitems_return;
+  bulong bytes_after_return;
+  buchar *data = NULL;
 
   g_return_val_if_fail (BDK_IS_WINDOW (window), BDK_WINDOW_TYPE_HINT_NORMAL);
 
@@ -2116,7 +2116,7 @@ bdk_window_get_type_hint (BdkWindow *window)
 
   if (XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window),
                           bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_WINDOW_TYPE"),
-                          0, G_MAXLONG, False, XA_ATOM, &type_return,
+                          0, B_MAXLONG, False, XA_ATOM, &type_return,
                           &format_return, &nitems_return, &bytes_after_return,
                           &data) == Success)
     {
@@ -2161,7 +2161,7 @@ bdk_window_get_type_hint (BdkWindow *window)
 }
 
 static void
-bdk_wmspec_change_state (gboolean   add,
+bdk_wmspec_change_state (bboolean   add,
 			 BdkWindow *window,
 			 BdkAtom    state1,
 			 BdkAtom    state2)
@@ -2204,7 +2204,7 @@ bdk_wmspec_change_state (gboolean   add,
  **/
 void
 bdk_window_set_modal_hint (BdkWindow *window,
-			   gboolean   modal)
+			   bboolean   modal)
 {
   BdkWindowObject *private;
 
@@ -2238,7 +2238,7 @@ bdk_window_set_modal_hint (BdkWindow *window,
  **/
 void
 bdk_window_set_skip_taskbar_hint (BdkWindow *window,
-                                  gboolean   skips_taskbar)
+                                  bboolean   skips_taskbar)
 {
   BdkToplevelX11 *toplevel;
   
@@ -2275,7 +2275,7 @@ bdk_window_set_skip_taskbar_hint (BdkWindow *window,
  **/
 void
 bdk_window_set_skip_pager_hint (BdkWindow *window,
-                                gboolean   skips_pager)
+                                bboolean   skips_pager)
 {
   BdkToplevelX11 *toplevel;
     
@@ -2306,7 +2306,7 @@ bdk_window_set_skip_pager_hint (BdkWindow *window,
  **/
 void
 bdk_window_set_urgency_hint (BdkWindow *window,
-			     gboolean   urgent)
+			     bboolean   urgent)
 {
   BdkToplevelX11 *toplevel;
     
@@ -2458,7 +2458,7 @@ bdk_window_get_geometry_hints (BdkWindow      *window,
                                BdkWindowHints *geom_mask)
 {
   XSizeHints *size_hints;  
-  glong junk_supplied_mask = 0;
+  blong junk_supplied_mask = 0;
 
   g_return_if_fail (BDK_IS_WINDOW (window));
   g_return_if_fail (geometry != NULL);
@@ -2505,8 +2505,8 @@ bdk_window_get_geometry_hints (BdkWindow      *window,
     {
       *geom_mask |= BDK_HINT_ASPECT;
 
-      geometry->min_aspect = (gdouble) size_hints->min_aspect.x / (gdouble) size_hints->min_aspect.y;
-      geometry->max_aspect = (gdouble) size_hints->max_aspect.x / (gdouble) size_hints->max_aspect.y;
+      geometry->min_aspect = (bdouble) size_hints->min_aspect.x / (bdouble) size_hints->min_aspect.y;
+      geometry->max_aspect = (bdouble) size_hints->max_aspect.x / (bdouble) size_hints->max_aspect.y;
     }
 
   if (size_hints->flags & PWinGravity)
@@ -2518,8 +2518,8 @@ bdk_window_get_geometry_hints (BdkWindow      *window,
   XFree (size_hints);
 }
 
-static gboolean
-utf8_is_latin1 (const gchar *str)
+static bboolean
+utf8_is_latin1 (const bchar *str)
 {
   const char *p = str;
 
@@ -2543,13 +2543,13 @@ static void
 set_text_property (BdkDisplay  *display,
 		   Window       xwindow,
 		   Atom         property,
-		   const gchar *utf8_str)
+		   const bchar *utf8_str)
 {
-  gchar *prop_text = NULL;
+  bchar *prop_text = NULL;
   Atom prop_type;
-  gint prop_length;
-  gint prop_format;
-  gboolean is_compound_text;
+  bint prop_length;
+  bint prop_format;
+  bboolean is_compound_text;
   
   if (utf8_is_latin1 (utf8_str))
     {
@@ -2565,7 +2565,7 @@ set_text_property (BdkDisplay  *display,
       
       bdk_utf8_to_compound_text_for_display (display,
 					     utf8_str, &bdk_type, &prop_format,
-					     (guchar **)&prop_text, &prop_length);
+					     (buchar **)&prop_text, &prop_length);
       prop_type = bdk_x11_atom_to_xatom_for_display (display, bdk_type);
       is_compound_text = TRUE;
     }
@@ -2576,11 +2576,11 @@ set_text_property (BdkDisplay  *display,
 		       xwindow,
 		       property,
 		       prop_type, prop_format,
-		       PropModeReplace, (guchar *)prop_text,
+		       PropModeReplace, (buchar *)prop_text,
 		       prop_length);
 
       if (is_compound_text)
-	bdk_free_compound_text ((guchar *)prop_text);
+	bdk_free_compound_text ((buchar *)prop_text);
       else
 	g_free (prop_text);
     }
@@ -2591,12 +2591,12 @@ set_text_property (BdkDisplay  *display,
 static void
 set_wm_name (BdkDisplay  *display,
 	     Window       xwindow,
-	     const gchar *name)
+	     const bchar *name)
 {
   XChangeProperty (BDK_DISPLAY_XDISPLAY (display), xwindow,
 		   bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_NAME"),
 		   bdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
-		   PropModeReplace, (guchar *)name, strlen (name));
+		   PropModeReplace, (buchar *)name, strlen (name));
   
   set_text_property (display, xwindow,
 		     bdk_x11_get_xatom_by_name_for_display (display, "WM_NAME"),
@@ -2616,7 +2616,7 @@ set_wm_name (BdkDisplay  *display,
  **/
 void
 bdk_window_set_title (BdkWindow   *window,
-		      const gchar *title)
+		      const bchar *title)
 {
   BdkDisplay *display;
   Display *xdisplay;
@@ -2639,7 +2639,7 @@ bdk_window_set_title (BdkWindow   *window,
       XChangeProperty (xdisplay, xwindow,
 		       bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_ICON_NAME"),
 		       bdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
-		       PropModeReplace, (guchar *)title, strlen (title));
+		       PropModeReplace, (buchar *)title, strlen (title));
       
       set_text_property (display, xwindow,
 			 bdk_x11_get_xatom_by_name_for_display (display, "WM_ICON_NAME"),
@@ -2668,7 +2668,7 @@ bdk_window_set_title (BdkWindow   *window,
  **/
 void          
 bdk_window_set_role (BdkWindow   *window,
-		     const gchar *role)
+		     const bchar *role)
 {
   BdkDisplay *display;
 
@@ -2681,7 +2681,7 @@ bdk_window_set_role (BdkWindow   *window,
   if (role)
     XChangeProperty (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window),
                      bdk_x11_get_xatom_by_name_for_display (display, "WM_WINDOW_ROLE"),
-                     XA_STRING, 8, PropModeReplace, (guchar *)role, strlen (role));
+                     XA_STRING, 8, PropModeReplace, (buchar *)role, strlen (role));
   else
     XDeleteProperty (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window),
                      bdk_x11_get_xatom_by_name_for_display (display, "WM_WINDOW_ROLE"));
@@ -2700,7 +2700,7 @@ bdk_window_set_role (BdkWindow   *window,
  **/
 void
 bdk_window_set_startup_id (BdkWindow   *window,
-			   const gchar *startup_id)
+			   const bchar *startup_id)
 {
   BdkDisplay *display;
 
@@ -2826,19 +2826,19 @@ _bdk_x11_window_get_cursor (BdkWindow *window)
 
 static void
 bdk_window_x11_get_geometry (BdkWindow *window,
-                             gint      *x,
-                             gint      *y,
-                             gint      *width,
-                             gint      *height,
-                             gint      *depth)
+                             bint      *x,
+                             bint      *y,
+                             bint      *width,
+                             bint      *height,
+                             bint      *depth)
 {
   Window root;
-  gint tx;
-  gint ty;
-  guint twidth;
-  guint theight;
-  guint tborder_width;
-  guint tdepth;
+  bint tx;
+  bint ty;
+  buint twidth;
+  buint theight;
+  buint tborder_width;
+  buint tdepth;
   
   if (!BDK_WINDOW_DESTROYED (window))
     {
@@ -2859,17 +2859,17 @@ bdk_window_x11_get_geometry (BdkWindow *window,
     }
 }
 
-static gint
+static bint
 bdk_window_x11_get_root_coords (BdkWindow *window,
-				gint       x,
-				gint       y,
-				gint      *root_x,
-				gint      *root_y)
+				bint       x,
+				bint       y,
+				bint      *root_x,
+				bint      *root_y)
 {
-  gint return_val;
+  bint return_val;
   Window child;
-  gint tx;
-  gint ty;
+  bint tx;
+  bint ty;
   
   return_val = XTranslateCoordinates (BDK_WINDOW_XDISPLAY (window),
 				      BDK_WINDOW_XID (window),
@@ -2885,18 +2885,18 @@ bdk_window_x11_get_root_coords (BdkWindow *window,
   return return_val;
 }
 
-static gboolean
+static bboolean
 bdk_window_x11_get_deskrelative_origin (BdkWindow *window,
-					gint      *x,
-					gint      *y)
+					bint      *x,
+					bint      *y)
 {
-  gboolean return_val = FALSE;
-  gint num_children, format_return;
+  bboolean return_val = FALSE;
+  bint num_children, format_return;
   Window win, *child, parent, root;
   Atom type_return;
   Atom atom;
-  gulong number_return, bytes_after_return;
-  guchar *data_return;
+  bulong number_return, bytes_after_return;
+  buchar *data_return;
   
   atom = bdk_x11_get_xatom_by_name_for_display (BDK_WINDOW_DISPLAY (window),
 						"ENLIGHTENMENT_DESKTOP");
@@ -2949,8 +2949,8 @@ bdk_window_x11_get_deskrelative_origin (BdkWindow *window,
  **/
 void
 bdk_window_get_root_origin (BdkWindow *window,
-			    gint      *x,
-			    gint      *y)
+			    bint      *x,
+			    bint      *y)
 {
   BdkRectangle rect;
 
@@ -2986,18 +2986,18 @@ bdk_window_get_frame_extents (BdkWindow    *window,
   Window root;
   Window child;
   Window *children;
-  guchar *data;
+  buchar *data;
   Window *vroots;
   Atom type_return;
-  guint nchildren;
-  guint nvroots;
-  gulong nitems_return;
-  gulong bytes_after_return;
-  gint format_return;
-  gint i;
-  guint ww, wh, wb, wd;
-  gint wx, wy;
-  gboolean got_frame_extents = FALSE;
+  buint nchildren;
+  buint nvroots;
+  bulong nitems_return;
+  bulong bytes_after_return;
+  bint format_return;
+  bint i;
+  buint ww, wh, wb, wd;
+  bint wx, wy;
+  bboolean got_frame_extents = FALSE;
   
   g_return_if_fail (rect != NULL);
   
@@ -3032,7 +3032,7 @@ bdk_window_get_frame_extents (BdkWindow    *window,
   if (XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), xwindow,
 			  bdk_x11_get_xatom_by_name_for_display (display,
 								 "_NET_FRAME_EXTENTS"),
-			  0, G_MAXLONG, False, XA_CARDINAL, &type_return,
+			  0, B_MAXLONG, False, XA_CARDINAL, &type_return,
 			  &format_return, &nitems_return, &bytes_after_return,
 			  &data)
       == Success)
@@ -3040,7 +3040,7 @@ bdk_window_get_frame_extents (BdkWindow    *window,
       if ((type_return == XA_CARDINAL) && (format_return == 32) &&
 	  (nitems_return == 4) && (data))
         {
-	  gulong *ldata = (gulong *) data;
+	  bulong *ldata = (bulong *) data;
 	  got_frame_extents = TRUE;
 
 	  /* try to get the real client window geometry */
@@ -3079,7 +3079,7 @@ bdk_window_get_frame_extents (BdkWindow    *window,
   if (XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), root,
 			  bdk_x11_get_xatom_by_name_for_display (display, 
 								 "_NET_VIRTUAL_ROOTS"),
-			  0, G_MAXLONG, False, XA_WINDOW, &type_return,
+			  0, B_MAXLONG, False, XA_WINDOW, &type_return,
 			  &format_return, &nitems_return, &bytes_after_return,
 			  &data)
       == Success)
@@ -3136,8 +3136,8 @@ bdk_window_get_frame_extents (BdkWindow    *window,
 void
 _bdk_windowing_get_pointer (BdkDisplay       *display,
 			    BdkScreen       **screen,
-			    gint             *x,
-			    gint             *y,
+			    bint             *x,
+			    bint             *y,
 			    BdkModifierType  *mask)
 {
   BdkScreen *default_screen;
@@ -3187,14 +3187,14 @@ _bdk_windowing_get_pointer (BdkDisplay       *display,
   *mask = xmask;
 }
 
-static gboolean
+static bboolean
 bdk_window_x11_get_pointer (BdkWindow       *window,
-			    gint            *x,
-			    gint            *y,
+			    bint            *x,
+			    bint            *y,
 			    BdkModifierType *mask)
 {
   BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
-  gboolean return_val;
+  bboolean return_val;
   Window root;
   Window child;
   int rootx, rooty;
@@ -3261,8 +3261,8 @@ bdk_window_x11_get_pointer (BdkWindow       *window,
 void
 bdk_display_warp_pointer (BdkDisplay *display,
 			  BdkScreen  *screen,
-			  gint        x,
-			  gint        y)
+			  bint        x,
+			  bint        y)
 {
   Display *xdisplay;
   Window dest;
@@ -3275,10 +3275,10 @@ bdk_display_warp_pointer (BdkDisplay *display,
 
 BdkWindow*
 _bdk_windowing_window_at_pointer (BdkDisplay *display,
-                                  gint       *win_x,
-				  gint       *win_y,
+                                  bint       *win_x,
+				  bint       *win_y,
 				  BdkModifierType *mask,
-				  gboolean   get_toplevel)
+				  bboolean   get_toplevel)
 {
   BdkWindow *window;
   BdkScreen *screen;
@@ -3327,7 +3327,7 @@ _bdk_windowing_window_at_pointer (BdkDisplay *display,
     } 
   else 
     {
-      gint i, screens, width, height;
+      bint i, screens, width, height;
       GList *toplevels, *list;
       Window pointer_window;
       
@@ -3497,9 +3497,9 @@ bdk_window_add_colormap_windows (BdkWindow *window)
 static inline void
 do_shape_combine_rebunnyion (BdkWindow       *window,
 			 const BdkRebunnyion *shape_rebunnyion,
-			 gint             offset_x,
-			 gint             offset_y,
-			 gint             shape)
+			 bint             offset_x,
+			 bint             offset_y,
+			 bint             shape)
 {
   if (BDK_WINDOW_DESTROYED (window))
     return;
@@ -3535,7 +3535,7 @@ do_shape_combine_rebunnyion (BdkWindow       *window,
       ? bdk_display_supports_shapes (BDK_WINDOW_DISPLAY (window))
       : bdk_display_supports_input_shapes (BDK_WINDOW_DISPLAY (window)))
     {
-      gint n_rects = 0;
+      bint n_rects = 0;
       XRectangle *xrects = NULL;
 
       _bdk_rebunnyion_get_xrectangles (shape_rebunnyion,
@@ -3568,8 +3568,8 @@ do_shape_combine_rebunnyion (BdkWindow       *window,
 static void
 bdk_window_x11_shape_combine_rebunnyion (BdkWindow       *window,
                                      const BdkRebunnyion *shape_rebunnyion,
-                                     gint             offset_x,
-                                     gint             offset_y)
+                                     bint             offset_x,
+                                     bint             offset_y)
 {
   do_shape_combine_rebunnyion (window, shape_rebunnyion, offset_x, offset_y, ShapeBounding);
 }
@@ -3577,8 +3577,8 @@ bdk_window_x11_shape_combine_rebunnyion (BdkWindow       *window,
 static void 
 bdk_window_x11_input_shape_combine_rebunnyion (BdkWindow       *window,
 					   const BdkRebunnyion *shape_rebunnyion,
-					   gint             offset_x,
-					   gint             offset_y)
+					   bint             offset_x,
+					   bint             offset_y)
 {
 #ifdef ShapeInput
   do_shape_combine_rebunnyion (window, shape_rebunnyion, offset_x, offset_y, ShapeInput);
@@ -3603,7 +3603,7 @@ bdk_window_x11_input_shape_combine_rebunnyion (BdkWindow       *window,
  **/
 void
 bdk_window_set_override_redirect (BdkWindow *window,
-				  gboolean override_redirect)
+				  bboolean override_redirect)
 {
   XSetWindowAttributes attr;
   
@@ -3638,7 +3638,7 @@ bdk_window_set_override_redirect (BdkWindow *window,
  **/
 void
 bdk_window_set_accept_focus (BdkWindow *window,
-			     gboolean accept_focus)
+			     bboolean accept_focus)
 {
   BdkWindowObject *private;
 
@@ -3674,7 +3674,7 @@ bdk_window_set_accept_focus (BdkWindow *window,
  **/
 void
 bdk_window_set_focus_on_map (BdkWindow *window,
-			     gboolean focus_on_map)
+			     bboolean focus_on_map)
 {
   BdkWindowObject *private;
 
@@ -3715,12 +3715,12 @@ bdk_window_set_focus_on_map (BdkWindow *window,
  **/
 void
 bdk_x11_window_set_user_time (BdkWindow *window,
-                              guint32    timestamp)
+                              buint32    timestamp)
 {
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
   BdkToplevelX11 *toplevel;
-  glong timestamp_long = (glong)timestamp;
+  blong timestamp_long = (blong)timestamp;
   Window xid;
 
   if (BDK_WINDOW_DESTROYED (window) ||
@@ -3747,7 +3747,7 @@ bdk_x11_window_set_user_time (BdkWindow *window,
   XChangeProperty (BDK_DISPLAY_XDISPLAY (display), xid,
                    bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_USER_TIME"),
                    XA_CARDINAL, 32, PropModeReplace,
-                   (guchar *)&timestamp_long, 1);
+                   (buchar *)&timestamp_long, 1);
 
   if (timestamp_long != BDK_CURRENT_TIME &&
       (display_x11->user_time == BDK_CURRENT_TIME ||
@@ -3783,17 +3783,17 @@ void
 bdk_window_set_icon_list (BdkWindow *window,
 			  GList     *pixbufs)
 {
-  gulong *data;
-  guchar *pixels;
-  gulong *p;
-  gint size;
+  bulong *data;
+  buchar *pixels;
+  bulong *p;
+  bint size;
   GList *l;
   BdkPixbuf *pixbuf;
-  gint width, height, stride;
-  gint x, y;
-  gint n_channels;
+  bint width, height, stride;
+  bint x, y;
+  bint n_channels;
   BdkDisplay *display;
-  gint n;
+  bint n;
   
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL_OR_FOREIGN (window))
@@ -3825,7 +3825,7 @@ bdk_window_set_icon_list (BdkWindow *window,
       l = g_list_next (l);
     }
 
-  data = g_malloc (size * sizeof (gulong));
+  data = g_malloc (size * sizeof (bulong));
 
   l = pixbufs;
   p = data;
@@ -3847,7 +3847,7 @@ bdk_window_set_icon_list (BdkWindow *window,
 	{
 	  for (x = 0; x < width; x++)
 	    {
-	      guchar r, g, b, a;
+	      buchar r, g, b, a;
 	      
 	      r = pixels[y*stride + x*n_channels + 0];
 	      g = pixels[y*stride + x*n_channels + 1];
@@ -3872,7 +3872,7 @@ bdk_window_set_icon_list (BdkWindow *window,
 		       bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_ICON"),
                        XA_CARDINAL, 32,
                        PropModeReplace,
-                       (guchar*) data, size);
+                       (buchar*) data, size);
     }
   else
     {
@@ -3940,10 +3940,10 @@ bdk_window_set_icon (BdkWindow *window,
   update_wm_hints (window, FALSE);
 }
 
-static gboolean
+static bboolean
 bdk_window_icon_name_set (BdkWindow *window)
 {
-  return GPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (window),
+  return BPOINTER_TO_UINT (g_object_get_qdata (B_OBJECT (window),
 					       g_quark_from_static_string ("bdk-icon-name-set")));
 }
 
@@ -3965,7 +3965,7 @@ bdk_window_icon_name_set (BdkWindow *window)
  **/
 void
 bdk_window_set_icon_name (BdkWindow   *window, 
-			  const gchar *name)
+			  const bchar *name)
 {
   BdkDisplay *display;
 
@@ -3976,7 +3976,7 @@ bdk_window_set_icon_name (BdkWindow   *window,
   display = bdk_drawable_get_display (window);
 
   g_object_set_qdata (B_OBJECT (window), g_quark_from_static_string ("bdk-icon-name-set"),
-                      GUINT_TO_POINTER (name != NULL));
+                      BUINT_TO_POINTER (name != NULL));
 
   if (name != NULL)
     {
@@ -3984,7 +3984,7 @@ bdk_window_set_icon_name (BdkWindow   *window,
                        BDK_WINDOW_XID (window),
                        bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_ICON_NAME"),
                        bdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
-                       PropModeReplace, (guchar *)name, strlen (name));
+                       PropModeReplace, (buchar *)name, strlen (name));
 
       set_text_property (display, BDK_WINDOW_XID (window),
                          bdk_x11_get_xatom_by_name_for_display (display, "WM_ICON_NAME"),
@@ -4331,7 +4331,7 @@ bdk_window_unfullscreen (BdkWindow *window)
  **/
 void
 bdk_window_set_keep_above (BdkWindow *window,
-                           gboolean   setting)
+                           bboolean   setting)
 {
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -4373,7 +4373,7 @@ bdk_window_set_keep_above (BdkWindow *window,
  * Since: 2.4
  **/
 void
-bdk_window_set_keep_below (BdkWindow *window, gboolean setting)
+bdk_window_set_keep_below (BdkWindow *window, bboolean setting)
 {
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -4473,11 +4473,11 @@ bdk_window_get_mwm_hints (BdkWindow *window)
 {
   BdkDisplay *display;
   Atom hints_atom = None;
-  guchar *data;
+  buchar *data;
   Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
+  bint format;
+  bulong nitems;
+  bulong bytes_after;
   
   if (BDK_WINDOW_DESTROYED (window))
     return NULL;
@@ -4503,12 +4503,12 @@ bdk_window_set_mwm_hints (BdkWindow *window,
 {
   BdkDisplay *display;
   Atom hints_atom = None;
-  guchar *data;
+  buchar *data;
   MotifWmHints *hints;
   Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
+  bint format;
+  bulong nitems;
+  bulong bytes_after;
   
   if (BDK_WINDOW_DESTROYED (window))
     return;
@@ -4542,7 +4542,7 @@ bdk_window_set_mwm_hints (BdkWindow *window,
   
   XChangeProperty (BDK_WINDOW_XDISPLAY (window), BDK_WINDOW_XID (window),
 		   hints_atom, hints_atom, 32, PropModeReplace,
-		   (guchar *)hints, sizeof (MotifWmHints)/sizeof (long));
+		   (buchar *)hints, sizeof (MotifWmHints)/sizeof (long));
   
   if (hints != new_hints)
     XFree (hints);
@@ -4595,12 +4595,12 @@ bdk_window_set_decorations (BdkWindow      *window,
  * Returns the decorations set on the BdkWindow with #bdk_window_set_decorations
  * Returns: TRUE if the window has decorations set, FALSE otherwise.
  **/
-gboolean
+bboolean
 bdk_window_get_decorations(BdkWindow       *window,
 			   BdkWMDecoration *decorations)
 {
   MotifWmHints *hints;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL_OR_FOREIGN (window))
@@ -4666,12 +4666,12 @@ bdk_window_set_functions (BdkWindow    *window,
 BdkRebunnyion *
 _xwindow_get_shape (Display *xdisplay,
 		    Window window,
-		    gint shape_type)
+		    bint shape_type)
 {
   BdkRebunnyion *shape;
   BdkRectangle *rl;
   XRectangle *xrl;
-  gint rn, ord, i;
+  bint rn, ord, i;
 
   shape = NULL;
   rn = 0;
@@ -4771,11 +4771,11 @@ _bdk_windowing_window_get_input_shape (BdkWindow *window)
 
 static void
 bdk_window_set_static_bit_gravity (BdkWindow *window,
-                                   gboolean   on)
+                                   bboolean   on)
 {
   XSetWindowAttributes xattributes;
   BdkWindowObject *private;
-  guint xattributes_mask = 0;
+  buint xattributes_mask = 0;
   
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -4793,7 +4793,7 @@ bdk_window_set_static_bit_gravity (BdkWindow *window,
 
 static void
 bdk_window_set_static_win_gravity (BdkWindow *window,
-                                   gboolean   on)
+                                   bboolean   on)
 {
   XSetWindowAttributes xattributes;
   
@@ -4806,9 +4806,9 @@ bdk_window_set_static_win_gravity (BdkWindow *window,
 			   CWWinGravity,  &xattributes);
 }
 
-static gboolean
+static bboolean
 bdk_window_x11_set_static_gravities (BdkWindow *window,
-                                     gboolean   use_static)
+                                     bboolean   use_static)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   GList *tmp_list;
@@ -4836,10 +4836,10 @@ bdk_window_x11_set_static_gravities (BdkWindow *window,
 
 static void
 wmspec_moveresize (BdkWindow *window,
-                   gint       direction,
-                   gint       root_x,
-                   gint       root_y,
-                   guint32    timestamp)     
+                   bint       direction,
+                   bint       root_x,
+                   bint       root_y,
+                   buint32    timestamp)     
 {
   BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
   
@@ -4873,15 +4873,15 @@ struct _MoveResizeData
   
   BdkWindow *moveresize_window;
   BdkWindow *moveresize_emulation_window;
-  gboolean is_resize;
+  bboolean is_resize;
   BdkWindowEdge resize_edge;
-  gint moveresize_button;
-  gint moveresize_x;
-  gint moveresize_y;
-  gint moveresize_orig_x;
-  gint moveresize_orig_y;
-  gint moveresize_orig_width;
-  gint moveresize_orig_height;
+  bint moveresize_button;
+  bint moveresize_x;
+  bint moveresize_y;
+  bint moveresize_orig_x;
+  bint moveresize_orig_y;
+  bint moveresize_orig_width;
+  bint moveresize_orig_height;
   BdkWindowHints moveresize_geom_mask;
   BdkGeometry moveresize_geometry;
   Time moveresize_process_time;
@@ -4902,12 +4902,12 @@ struct _MoveResizeData
 static void
 wmspec_resize_drag (BdkWindow     *window,
                     BdkWindowEdge  edge,
-                    gint           button,
-                    gint           root_x,
-                    gint           root_y,
-                    guint32        timestamp)
+                    bint           button,
+                    bint           root_x,
+                    bint           root_y,
+                    buint32        timestamp)
 {
-  gint direction;
+  bint direction;
   
   /* Let the compiler turn a switch into a table, instead
    * of doing the table manually, this way is easier to verify.
@@ -4957,7 +4957,7 @@ wmspec_resize_drag (BdkWindow     *window,
 
 static MoveResizeData *
 get_move_resize_data (BdkDisplay *display,
-		      gboolean    create)
+		      bboolean    create)
 {
   MoveResizeData *mv_resize;
   static GQuark move_resize_quark = 0;
@@ -4980,17 +4980,17 @@ get_move_resize_data (BdkDisplay *display,
 
 static void
 update_pos (MoveResizeData *mv_resize,
-	    gint            new_root_x,
-	    gint            new_root_y)
+	    bint            new_root_x,
+	    bint            new_root_y)
 {
-  gint dx, dy;
+  bint dx, dy;
 
   dx = new_root_x - mv_resize->moveresize_x;
   dy = new_root_y - mv_resize->moveresize_y;
 
   if (mv_resize->is_resize)
     {
-      gint x, y, w, h;
+      bint x, y, w, h;
 
       x = mv_resize->moveresize_orig_x;
       y = mv_resize->moveresize_orig_y;
@@ -5052,7 +5052,7 @@ update_pos (MoveResizeData *mv_resize,
     }
   else
     {
-      gint x, y;
+      bint x, y;
 
       x = mv_resize->moveresize_orig_x + dx;
       y = mv_resize->moveresize_orig_y + dy;
@@ -5081,7 +5081,7 @@ lookahead_motion_predicate (Display *xdisplay,
 			    XEvent  *event,
 			    XPointer arg)
 {
-  gboolean *seen_release = (gboolean *)arg;
+  bboolean *seen_release = (bboolean *)arg;
   BdkDisplay *display = bdk_x11_lookup_xdisplay (xdisplay);
   MoveResizeData *mv_resize = get_move_resize_data (display, FALSE);
 
@@ -5103,12 +5103,12 @@ lookahead_motion_predicate (Display *xdisplay,
   return False;
 }
 
-static gboolean
+static bboolean
 moveresize_lookahead (MoveResizeData *mv_resize,
 		      XEvent         *event)
 {
   XEvent tmp_event;
-  gboolean seen_release = FALSE;
+  bboolean seen_release = FALSE;
 
   if (mv_resize->moveresize_process_time)
     {
@@ -5127,10 +5127,10 @@ moveresize_lookahead (MoveResizeData *mv_resize,
   return mv_resize->moveresize_process_time == 0;
 }
 	
-gboolean
+bboolean
 _bdk_moveresize_handle_event (XEvent *event)
 {
-  guint button_mask = 0;
+  buint button_mask = 0;
   BdkWindowObject *window_private;
   BdkDisplay *display = bdk_x11_lookup_xdisplay (event->xany.display);
   MoveResizeData *mv_resize = get_move_resize_data (display, FALSE);
@@ -5184,7 +5184,7 @@ _bdk_moveresize_handle_event (XEvent *event)
   return TRUE;
 }
 
-gboolean 
+bboolean 
 _bdk_moveresize_configure_done (BdkDisplay *display,
 				BdkWindow  *window)
 {
@@ -5207,10 +5207,10 @@ _bdk_moveresize_configure_done (BdkDisplay *display,
 
 static void
 create_moveresize_window (MoveResizeData *mv_resize,
-			  guint32         timestamp)
+			  buint32         timestamp)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   BdkGrabStatus status;
 
   g_assert (mv_resize->moveresize_emulation_window == NULL);
@@ -5263,7 +5263,7 @@ static void
 calculate_unmoving_origin (MoveResizeData *mv_resize)
 {
   BdkRectangle rect;
-  gint width, height;
+  bint width, height;
 
   if (mv_resize->moveresize_geom_mask & BDK_HINT_WIN_GRAVITY &&
       mv_resize->moveresize_geometry.win_gravity == BDK_GRAVITY_STATIC)
@@ -5327,10 +5327,10 @@ calculate_unmoving_origin (MoveResizeData *mv_resize)
 static void
 emulate_resize_drag (BdkWindow     *window,
                      BdkWindowEdge  edge,
-                     gint           button,
-                     gint           root_x,
-                     gint           root_y,
-                     guint32        timestamp)
+                     bint           button,
+                     bint           root_x,
+                     bint           root_y,
+                     buint32        timestamp)
 {
   MoveResizeData *mv_resize = get_move_resize_data (BDK_WINDOW_DISPLAY (window), TRUE);
 
@@ -5357,10 +5357,10 @@ emulate_resize_drag (BdkWindow     *window,
 
 static void
 emulate_move_drag (BdkWindow     *window,
-                   gint           button,
-                   gint           root_x,
-                   gint           root_y,
-                   guint32        timestamp)
+                   bint           button,
+                   bint           root_x,
+                   bint           root_y,
+                   buint32        timestamp)
 {
   MoveResizeData *mv_resize = get_move_resize_data (BDK_WINDOW_DISPLAY (window), TRUE);
   
@@ -5395,10 +5395,10 @@ emulate_move_drag (BdkWindow     *window,
 void
 bdk_window_begin_resize_drag (BdkWindow     *window,
                               BdkWindowEdge  edge,
-                              gint           button,
-                              gint           root_x,
-                              gint           root_y,
-                              guint32        timestamp)
+                              bint           button,
+                              bint           root_x,
+                              bint           root_y,
+                              buint32        timestamp)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL_OR_FOREIGN (window))
@@ -5429,10 +5429,10 @@ bdk_window_begin_resize_drag (BdkWindow     *window,
  **/
 void
 bdk_window_begin_move_drag (BdkWindow *window,
-                            gint       button,
-                            gint       root_x,
-                            gint       root_y,
-                            guint32    timestamp)
+                            bint       button,
+                            bint       root_x,
+                            bint       root_y,
+                            buint32    timestamp)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -5572,10 +5572,10 @@ _bdk_windowing_window_beep (BdkWindow *window)
  */
 void
 bdk_window_set_opacity (BdkWindow *window,
-			gdouble    opacity)
+			bdouble    opacity)
 {
   BdkDisplay *display;
-  gulong cardinal;
+  bulong cardinal;
   
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -5602,12 +5602,12 @@ bdk_window_set_opacity (BdkWindow *window,
 		     bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_WINDOW_OPACITY"),
 		     XA_CARDINAL, 32,
 		     PropModeReplace,
-		     (guchar *) &cardinal, 1);
+		     (buchar *) &cardinal, 1);
 }
 
 void
 _bdk_windowing_window_set_composited (BdkWindow *window,
-                                      gboolean   composited)
+                                      bboolean   composited)
 {
 #if defined(HAVE_XCOMPOSITE) && defined(HAVE_XDAMAGE) && defined (HAVE_XFIXES)
   BdkWindowObject *private = (BdkWindowObject *) window;

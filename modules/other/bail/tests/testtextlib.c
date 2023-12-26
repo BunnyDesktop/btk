@@ -15,12 +15,12 @@ static char result_string[2][6] = {"FALSE", "TRUE"};
  *
  * Returns: the window number, or -1 if failure.
  **/
-gint setup_gui(BatkObject *obj, TLruntest test)
+bint setup_gui(BatkObject *obj, TLruntest test)
 {
-  gchar *paramnames[MAX_PARAMS];
-  gchar *defaults[MAX_PARAMS];
+  bchar *paramnames[MAX_PARAMS];
+  bchar *defaults[MAX_PARAMS];
   static OutputWindow *tow = NULL;
-  gint  window;
+  bint  window;
   
   if (tow)
     window = create_windows(obj, test, &tow);
@@ -229,21 +229,21 @@ _notify_caret_handler (BObject *obj, int position)
  * Test GUI is clicked.
  **/
 void
-runtest(BatkObject *obj, gint win_val)
+runtest(BatkObject *obj, bint win_val)
 {
-  gint        i, size;
+  bint        i, size;
   gunichar    uni_char;
-  gchar       output[MAX_LINE_SIZE];
-  gchar       **testsOn;
+  bchar       output[MAX_LINE_SIZE];
+  bchar       **testsOn;
  
   testsOn = tests_set(win_val, &size);
 
   for(i = 0; i < size; i++)
   {
-    gint      param_int1, param_int2, start, end, j, x, y, height, width;
-    gchar     *param_string1, *param_string2, *param_string3, *text;
-    gboolean  result;
-    gint index;
+    bint      param_int1, param_int2, start, end, j, x, y, height, width;
+    bchar     *param_string1, *param_string2, *param_string3, *text;
+    bboolean  result;
+    bint index;
 
     if (strcmp(testsOn[i], "batk_text_get_text_at_offset") == 0)
     {
@@ -484,7 +484,7 @@ runtest(BatkObject *obj, gint win_val)
 
     if (strcmp(testsOn[i], "batk_text_get_run_attributes") == 0)
     {
-      gint test_int;
+      bint test_int;
       param_string1 = get_arg_of_func(win_val, "batk_text_get_run_attributes", "offset");
       test_int = string_to_int(param_string1);
       attrib = batk_text_get_run_attributes(BATK_TEXT(obj), test_int, &start, &end);
@@ -534,7 +534,7 @@ runtest(BatkObject *obj, gint win_val)
  
     if (strcmp(testsOn[i], "batk_text_get_character_extents") == 0)
     {
-      gint test_int;
+      bint test_int;
       param_string1 = get_arg_of_func(win_val, "batk_text_get_character_extents",
         "offset");
       param_string2 = get_arg_of_func(win_val, "batk_text_get_character_extents",
@@ -564,7 +564,7 @@ runtest(BatkObject *obj, gint win_val)
 
     if (strcmp(testsOn[i], "batk_text_get_offset_at_point") == 0)
     {
-      gint test_int;
+      bint test_int;
       param_string1 = get_arg_of_func(win_val, "batk_text_get_offset_at_point", "x");
       param_string2 = get_arg_of_func(win_val, "batk_text_get_offset_at_point", "y");
       param_string3 = get_arg_of_func(win_val, "batk_text_get_offset_at_point", "coord mode");
@@ -683,13 +683,13 @@ runtest(BatkObject *obj, gint win_val)
  * batk_text_get_text_before_offseet
  * batk_text_get_text_after_offset
  **/
-void _run_offset_test(BatkObject * obj, char * type, gint offset,
+void _run_offset_test(BatkObject * obj, char * type, bint offset,
   BatkTextBoundary boundary)
 {
-  gchar output[MAX_LINE_SIZE];
-  gchar default_val[5] = "NULL";
-  gchar *text;
-  gint  startOffset, endOffset;
+  bchar output[MAX_LINE_SIZE];
+  bchar default_val[5] = "NULL";
+  bchar *text;
+  bint  startOffset, endOffset;
 
   if (strcmp(type, "at") == 0)
     text = batk_text_get_text_at_offset (BATK_TEXT (obj),

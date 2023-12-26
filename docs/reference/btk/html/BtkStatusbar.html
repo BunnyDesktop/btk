@@ -54,7 +54,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkStatusbar.html#btk-statusbar-get-context-id" title="btk_statusbar_get_context_id ()">btk_statusbar_get_context_id</a> <span class="c_punctuation">()</span>
@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkStatusbar.html#btk-statusbar-push" title="btk_statusbar_push ()">btk_statusbar_push</a> <span class="c_punctuation">()</span>
@@ -102,7 +102,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkStatusbar.html#btk-statusbar-get-has-resize-grip" title="btk_statusbar_get_has_resize_grip ()">btk_statusbar_get_has_resize_grip</a> <span class="c_punctuation">()</span>
@@ -128,7 +128,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkStatusbar.html#BtkStatusbar--has-resize-grip" title="The “has-resize-grip” property">has-resize-grip</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -225,9 +225,9 @@ btk_statusbar_new (<em class="parameter"><code><span class="type">void</span></c
 <hr>
 <div class="refsect2">
 <a name="btk-statusbar-get-context-id"></a><h3>btk_statusbar_get_context_id ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_statusbar_get_context_id (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *context_description</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">bchar</span> *context_description</code></em>);</pre>
 <p>Returns a new context identifier, given a description 
 of the actual context. Note that the description is 
 <span class="emphasis"><em>not</em></span> shown in the UI.</p>
@@ -262,10 +262,10 @@ the new message is being used in</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-statusbar-push"></a><h3>btk_statusbar_push ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_statusbar_push (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> context_id</code></em>,
-                    <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                    <em class="parameter"><code><span class="type">buint</span> context_id</code></em>,
+                    <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Pushes a new message onto a statusbar's stack.</p>
 <div class="refsect3">
 <a name="btk-statusbar-push.parameters"></a><h4>Parameters</h4>
@@ -306,7 +306,7 @@ btk_statusbar_push (<em class="parameter"><code><a class="link" href="BtkStatusb
 <a name="btk-statusbar-pop"></a><h3>btk_statusbar_pop ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_statusbar_pop (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                   <em class="parameter"><code><span class="type">guint</span> context_id</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">buint</span> context_id</code></em>);</pre>
 <p>Removes the first message in the <span class="type">BtkStatusBar</span>'s stack
 with the given context id. </p>
 <p>Note that this may not change the displayed message, if 
@@ -340,8 +340,8 @@ context id.</p>
 <a name="btk-statusbar-remove"></a><h3>btk_statusbar_remove ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_statusbar_remove (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                      <em class="parameter"><code><span class="type">guint</span> context_id</code></em>,
-                      <em class="parameter"><code><span class="type">guint</span> message_id</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">buint</span> context_id</code></em>,
+                      <em class="parameter"><code><span class="type">buint</span> message_id</code></em>);</pre>
 <p>Forces the removal of a message from a statusbar's stack. 
 The exact <em class="parameter"><code>context_id</code></em>
  and <em class="parameter"><code>message_id</code></em>
@@ -379,7 +379,7 @@ The exact <em class="parameter"><code>context_id</code></em>
 <a name="btk-statusbar-remove-all"></a><h3>btk_statusbar_remove_all ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_statusbar_remove_all (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> context_id</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">buint</span> context_id</code></em>);</pre>
 <p>Forces the removal of all messages from a statusbar's
 stack with the exact <em class="parameter"><code>context_id</code></em>
 .</p>
@@ -412,7 +412,7 @@ stack with the exact <em class="parameter"><code>context_id</code></em>
 <a name="btk-statusbar-set-has-resize-grip"></a><h3>btk_statusbar_set_has_resize_grip ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_statusbar_set_has_resize_grip (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <p>Sets whether the statusbar has a resize grip. 
 <code class="literal">TRUE</code> by default.</p>
 <div class="refsect3">
@@ -441,7 +441,7 @@ btk_statusbar_set_has_resize_grip (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="btk-statusbar-get-has-resize-grip"></a><h3>btk_statusbar_get_has_resize_grip ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_statusbar_get_has_resize_grip (<em class="parameter"><code><a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar</code></em>);</pre>
 <p>Returns whether the statusbar has a resize grip.</p>
 <div class="refsect3">
@@ -504,7 +504,7 @@ btk_statusbar_get_message_area (<em class="parameter"><code><a class="link" href
 <a name="BtkStatusbar.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkStatusbar--has-resize-grip"></a><h3>The <code class="literal">“has-resize-grip”</code> property</h3>
-<pre class="programlisting">  “has-resize-grip”          <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-resize-grip”          <span class="type">bboolean</span></pre>
 <p>Whether the statusbar has a grip for resizing the toplevel window.</p>
 <p>Owner: BtkStatusbar</p>
 <p>Flags: Read / Write</p>
@@ -529,9 +529,9 @@ btk_statusbar_get_message_area (<em class="parameter"><code><a class="link" href
 <a name="BtkStatusbar-text-popped"></a><h3>The <code class="literal">“text-popped”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar,
-               <span class="type">guint</span>         context_id,
+               <span class="type">buint</span>         context_id,
                <span class="type">char</span>         *text,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Is emitted whenever a new message is popped off a statusbar's stack.</p>
 <div class="refsect3">
 <a name="BtkStatusbar-text-popped.parameters"></a><h4>Parameters</h4>
@@ -572,9 +572,9 @@ user_function (<a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><sp
 <a name="BtkStatusbar-text-pushed"></a><h3>The <code class="literal">“text-pushed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkStatusbar.html" title="BtkStatusbar"><span class="type">BtkStatusbar</span></a> *statusbar,
-               <span class="type">guint</span>         context_id,
+               <span class="type">buint</span>         context_id,
                <span class="type">char</span>         *text,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Is emitted whenever a new message gets pushed onto a statusbar's stack.</p>
 <div class="refsect3">
 <a name="BtkStatusbar-text-pushed.parameters"></a><h4>Parameters</h4>

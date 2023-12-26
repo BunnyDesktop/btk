@@ -55,9 +55,9 @@ GType	     btk_printer_option_widget_get_type           (void) B_GNUC_CONST;
 BtkWidget   *btk_printer_option_widget_new                (BtkPrinterOption       *source);
 void         btk_printer_option_widget_set_source         (BtkPrinterOptionWidget *setting,
 		 					   BtkPrinterOption       *source);
-gboolean     btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *setting);
+bboolean     btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *setting);
 BtkWidget   *btk_printer_option_widget_get_external_label (BtkPrinterOptionWidget *setting);
-const gchar *btk_printer_option_widget_get_value          (BtkPrinterOptionWidget *setting);
+const bchar *btk_printer_option_widget_get_value          (BtkPrinterOptionWidget *setting);
 
 B_END_DECLS
 

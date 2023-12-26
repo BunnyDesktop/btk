@@ -20,10 +20,10 @@ static BtkWidget *window = NULL;
 static bairo_surface_t *surface = NULL;
 
 /* Create a new surface of the appropriate size to store our scribbles */
-static gboolean
+static bboolean
 scribble_configure_event (BtkWidget         *widget,
                           BdkEventConfigure *event,
-                          gpointer           data)
+                          bpointer           data)
 {
   bairo_t *cr;
   BtkAllocation allocation;
@@ -51,10 +51,10 @@ scribble_configure_event (BtkWidget         *widget,
 }
 
 /* Redraw the screen from the surface */
-static gboolean
+static bboolean
 scribble_expose_event (BtkWidget      *widget,
                        BdkEventExpose *event,
-                       gpointer        data)
+                       bpointer        data)
 {
   bairo_t *cr;
 
@@ -72,8 +72,8 @@ scribble_expose_event (BtkWidget      *widget,
 /* Draw a rectangle on the screen */
 static void
 draw_brush (BtkWidget *widget,
-            gdouble    x,
-            gdouble    y)
+            bdouble    x,
+            bdouble    y)
 {
   BdkRectangle update_rect;
   bairo_t *cr;
@@ -97,10 +97,10 @@ draw_brush (BtkWidget *widget,
                               FALSE);
 }
 
-static gboolean
+static bboolean
 scribble_button_press_event (BtkWidget      *widget,
                              BdkEventButton *event,
-                             gpointer        data)
+                             bpointer        data)
 {
   if (surface == NULL)
     return FALSE; /* paranoia check, in case we haven't gotten a configure event */
@@ -112,10 +112,10 @@ scribble_button_press_event (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 scribble_motion_notify_event (BtkWidget      *widget,
                               BdkEventMotion *event,
-                              gpointer        data)
+                              bpointer        data)
 {
   int x, y;
   BdkModifierType state;
@@ -144,12 +144,12 @@ scribble_motion_notify_event (BtkWidget      *widget,
 }
 
 
-static gboolean
+static bboolean
 checkerboard_expose (BtkWidget      *da,
                      BdkEventExpose *event,
-                     gpointer        data)
+                     bpointer        data)
 {
-  gint i, j, xcount, ycount;
+  bint i, j, xcount, ycount;
   bairo_t *cr;
   BtkAllocation allocation;
   

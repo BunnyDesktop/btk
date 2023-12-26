@@ -53,7 +53,7 @@ struct _BtkPixmap
   BdkBitmap *mask;
 
   BdkPixmap *pixmap_insensitive;
-  guint build_insensitive : 1;
+  buint build_insensitive : 1;
 };
 
 struct _BtkPixmapClass
@@ -73,7 +73,7 @@ void	   btk_pixmap_get	 (BtkPixmap  *pixmap,
 				  BdkBitmap **mask);
 
 void       btk_pixmap_set_build_insensitive (BtkPixmap *pixmap,
-		                             gboolean   build);
+		                             bboolean   build);
 
 
 B_END_DECLS

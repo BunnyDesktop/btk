@@ -63,34 +63,34 @@
  * in win32 headers.
  */
 
-static const guint month_length[2][13] =
+static const buint month_length[2][13] =
 {
   { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
   { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 };
 
-static const guint days_in_months[2][14] =
+static const buint days_in_months[2][14] =
 {
   { 0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
   { 0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
 };
 
-static glong  calc_days(guint year, guint mm, guint dd);
-static guint  day_of_week(guint year, guint mm, guint dd);
-static glong  dates_difference(guint year1, guint mm1, guint dd1,
-			       guint year2, guint mm2, guint dd2);
-static guint  weeks_in_year(guint year);
+static blong  calc_days(buint year, buint mm, buint dd);
+static buint  day_of_week(buint year, buint mm, buint dd);
+static blong  dates_difference(buint year1, buint mm1, buint dd1,
+			       buint year2, buint mm2, buint dd2);
+static buint  weeks_in_year(buint year);
 
-static gboolean 
-leap (guint year)
+static bboolean 
+leap (buint year)
 {
   return((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0));
 }
 
-static guint 
-day_of_week (guint year, guint mm, guint dd)
+static buint 
+day_of_week (buint year, buint mm, buint dd)
 {
-  glong  days;
+  blong  days;
   
   days = calc_days(year, mm, dd);
   if (days > 0L)
@@ -99,16 +99,16 @@ day_of_week (guint year, guint mm, guint dd)
       days %= 7L;
       days++;
     }
-  return( (guint) days );
+  return( (buint) days );
 }
 
-static guint weeks_in_year(guint year)
+static buint weeks_in_year(buint year)
 {
   return(52 + ((day_of_week(year,1,1)==4) || (day_of_week(year,12,31)==4)));
 }
 
-static gboolean 
-check_date(guint year, guint mm, guint dd)
+static bboolean 
+check_date(buint year, buint mm, buint dd)
 {
   if (year < 1) return FALSE;
   if ((mm < 1) || (mm > 12)) return FALSE;
@@ -116,27 +116,27 @@ check_date(guint year, guint mm, guint dd)
   return TRUE;
 }
 
-static guint 
-week_number(guint year, guint mm, guint dd)
+static buint 
+week_number(buint year, buint mm, buint dd)
 {
-  guint first;
+  buint first;
   
   first = day_of_week(year,1,1) - 1;
-  return( (guint) ( (dates_difference(year,1,1, year,mm,dd) + first) / 7L ) +
+  return( (buint) ( (dates_difference(year,1,1, year,mm,dd) + first) / 7L ) +
 	  (first < 4) );
 }
 
-static glong 
-year_to_days(guint year)
+static blong 
+year_to_days(buint year)
 {
   return( year * 365L + (year / 4) - (year / 100) + (year / 400) );
 }
 
 
-static glong 
-calc_days(guint year, guint mm, guint dd)
+static blong 
+calc_days(buint year, buint mm, buint dd)
 {
-  gboolean lp;
+  bboolean lp;
   
   if (year < 1) return(0L);
   if ((mm < 1) || (mm > 12)) return(0L);
@@ -144,8 +144,8 @@ calc_days(guint year, guint mm, guint dd)
   return( year_to_days(--year) + days_in_months[lp][mm] + dd );
 }
 
-static gboolean 
-week_of_year(guint *week, guint *year, guint mm, guint dd)
+static bboolean 
+week_of_year(buint *week, buint *year, buint mm, buint dd)
 {
   if (check_date(*year,mm,dd))
     {
@@ -162,9 +162,9 @@ week_of_year(guint *week, guint *year, guint mm, guint dd)
   return FALSE;
 }
 
-static glong 
-dates_difference(guint year1, guint mm1, guint dd1,
-		 guint year2, guint mm2, guint dd2)
+static blong 
+dates_difference(buint year1, buint mm1, buint dd1,
+		 buint year2, buint mm2, buint dd2)
 {
   return( calc_days(year2, mm2, dd2) - calc_days(year1, mm1, dd1) );
 }
@@ -230,7 +230,7 @@ enum
   PROP_DETAIL_HEIGHT_ROWS
 };
 
-static guint btk_calendar_signals[LAST_SIGNAL] = { 0 };
+static buint btk_calendar_signals[LAST_SIGNAL] = { 0 };
 
 struct _BtkCalendarPrivate
 {
@@ -240,51 +240,51 @@ struct _BtkCalendarPrivate
   BdkWindow *week_win;
   BdkWindow *arrow_win[4];
 
-  guint header_h;
-  guint day_name_h;
-  guint main_h;
+  buint header_h;
+  buint day_name_h;
+  buint main_h;
 
-  guint	     arrow_state[4];
-  guint	     arrow_width;
-  guint	     max_month_width;
-  guint	     max_year_width;
+  buint	     arrow_state[4];
+  buint	     arrow_width;
+  buint	     max_month_width;
+  buint	     max_year_width;
   
-  guint day_width;
-  guint week_width;
+  buint day_width;
+  buint week_width;
 
-  guint min_day_width;
-  guint max_day_char_width;
-  guint max_day_char_ascent;
-  guint max_day_char_descent;
-  guint max_label_char_ascent;
-  guint max_label_char_descent;
-  guint max_week_char_width;
+  buint min_day_width;
+  buint max_day_char_width;
+  buint max_day_char_ascent;
+  buint max_day_char_descent;
+  buint max_label_char_ascent;
+  buint max_label_char_descent;
+  buint max_week_char_width;
   
   /* flags */
-  guint year_before : 1;
+  buint year_before : 1;
 
-  guint need_timer  : 1;
+  buint need_timer  : 1;
 
-  guint in_drag : 1;
-  guint drag_highlight : 1;
+  buint in_drag : 1;
+  buint drag_highlight : 1;
 
-  guint32 timer;
-  gint click_child;
+  buint32 timer;
+  bint click_child;
 
-  gint week_start;
+  bint week_start;
 
-  gint drag_start_x;
-  gint drag_start_y;
+  bint drag_start_x;
+  bint drag_start_y;
 
   /* Optional callback, used to display extra information for each day. */
   BtkCalendarDetailFunc detail_func;
-  gpointer              detail_func_user_data;
+  bpointer              detail_func_user_data;
   GDestroyNotify        detail_func_destroy;
 
   /* Size requistion for details provided by the hook. */
-  gint detail_height_rows;
-  gint detail_width_chars;
-  gint detail_overflow[6];
+  bint detail_height_rows;
+  bint detail_width_chars;
+  bint detail_overflow[6];
 };
 
 #define BTK_CALENDAR_GET_PRIVATE(widget)  (BTK_CALENDAR (widget)->priv)
@@ -292,11 +292,11 @@ struct _BtkCalendarPrivate
 static void btk_calendar_finalize     (BObject      *calendar);
 static void btk_calendar_destroy      (BtkObject    *calendar);
 static void btk_calendar_set_property (BObject      *object,
-				       guint         prop_id,
+				       buint         prop_id,
 				       const BValue *value,
 				       BParamSpec   *pspec);
 static void btk_calendar_get_property (BObject      *object,
-				       guint         prop_id,
+				       buint         prop_id,
 				       BValue       *value,
 				       BParamSpec   *pspec);
 
@@ -306,77 +306,77 @@ static void     btk_calendar_size_request   (BtkWidget        *widget,
 					     BtkRequisition   *requisition);
 static void     btk_calendar_size_allocate  (BtkWidget        *widget,
 					     BtkAllocation    *allocation);
-static gboolean btk_calendar_expose         (BtkWidget        *widget,
+static bboolean btk_calendar_expose         (BtkWidget        *widget,
 					     BdkEventExpose   *event);
-static gboolean btk_calendar_button_press   (BtkWidget        *widget,
+static bboolean btk_calendar_button_press   (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_calendar_button_release (BtkWidget        *widget,
+static bboolean btk_calendar_button_release (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_calendar_motion_notify  (BtkWidget        *widget,
+static bboolean btk_calendar_motion_notify  (BtkWidget        *widget,
 					     BdkEventMotion   *event);
-static gboolean btk_calendar_enter_notify   (BtkWidget        *widget,
+static bboolean btk_calendar_enter_notify   (BtkWidget        *widget,
 					     BdkEventCrossing *event);
-static gboolean btk_calendar_leave_notify   (BtkWidget        *widget,
+static bboolean btk_calendar_leave_notify   (BtkWidget        *widget,
 					     BdkEventCrossing *event);
-static gboolean btk_calendar_scroll         (BtkWidget        *widget,
+static bboolean btk_calendar_scroll         (BtkWidget        *widget,
 					     BdkEventScroll   *event);
-static gboolean btk_calendar_key_press      (BtkWidget        *widget,
+static bboolean btk_calendar_key_press      (BtkWidget        *widget,
 					     BdkEventKey      *event);
-static gboolean btk_calendar_focus_out      (BtkWidget        *widget,
+static bboolean btk_calendar_focus_out      (BtkWidget        *widget,
 					     BdkEventFocus    *event);
 static void     btk_calendar_grab_notify    (BtkWidget        *widget,
-					     gboolean          was_grabbed);
+					     bboolean          was_grabbed);
 static void     btk_calendar_state_changed  (BtkWidget        *widget,
 					     BtkStateType      previous_state);
 static void     btk_calendar_style_set      (BtkWidget        *widget,
 					     BtkStyle         *previous_style);
-static gboolean btk_calendar_query_tooltip  (BtkWidget        *widget,
-					     gint              x,
-					     gint              y,
-					     gboolean          keyboard_mode,
+static bboolean btk_calendar_query_tooltip  (BtkWidget        *widget,
+					     bint              x,
+					     bint              y,
+					     bboolean          keyboard_mode,
 					     BtkTooltip       *tooltip);
 
 static void     btk_calendar_drag_data_get      (BtkWidget        *widget,
 						 BdkDragContext   *context,
 						 BtkSelectionData *selection_data,
-						 guint             info,
-						 guint             time);
+						 buint             info,
+						 buint             time);
 static void     btk_calendar_drag_data_received (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
+						 bint              x,
+						 bint              y,
 						 BtkSelectionData *selection_data,
-						 guint             info,
-						 guint             time);
-static gboolean btk_calendar_drag_motion        (BtkWidget        *widget,
+						 buint             info,
+						 buint             time);
+static bboolean btk_calendar_drag_motion        (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
-						 guint             time);
+						 bint              x,
+						 bint              y,
+						 buint             time);
 static void     btk_calendar_drag_leave         (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 guint             time);
-static gboolean btk_calendar_drag_drop          (BtkWidget        *widget,
+						 buint             time);
+static bboolean btk_calendar_drag_drop          (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
-						 guint             time);
+						 bint              x,
+						 bint              y,
+						 buint             time);
 
 static void calendar_start_spinning (BtkCalendar *calendar,
-				     gint         click_child);
+				     bint         click_child);
 static void calendar_stop_spinning  (BtkCalendar *calendar);
 
 static void calendar_invalidate_day     (BtkCalendar *widget,
-					 gint       row,
-					 gint       col);
+					 bint       row,
+					 bint       col);
 static void calendar_invalidate_day_num (BtkCalendar *widget,
-					 gint       day);
+					 bint       day);
 static void calendar_invalidate_arrow   (BtkCalendar *widget,
-					 guint      arrow);
+					 buint      arrow);
 
 static void calendar_compute_days      (BtkCalendar *calendar);
-static gint calendar_get_xsep          (BtkCalendar *calendar);
-static gint calendar_get_ysep          (BtkCalendar *calendar);
+static bint calendar_get_xsep          (BtkCalendar *calendar);
+static bint calendar_get_ysep          (BtkCalendar *calendar);
 
 static char    *default_abbreviated_dayname[7];
 static char    *default_monthname[12];
@@ -435,7 +435,7 @@ btk_calendar_class_init (BtkCalendarClass *class)
                                    g_param_spec_int ("year",
 						     P_("Year"),
 						     P_("The selected year"),
-						     0, G_MAXINT >> 9, 0,
+						     0, B_MAXINT >> 9, 0,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -585,7 +585,7 @@ btk_calendar_class_init (BtkCalendarClass *class)
                                            g_param_spec_int ("inner-border",
                                                              P_("Inner border"),
                                                              P_("Inner border space"),
-                                                             0, G_MAXINT, 4,
+                                                             0, B_MAXINT, 4,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -597,7 +597,7 @@ btk_calendar_class_init (BtkCalendarClass *class)
                                            g_param_spec_int ("vertical-separation",
                                                              P_("Vertical separation"),
                                                              P_("Space between day headers and main area"),
-                                                             0, G_MAXINT, 4,
+                                                             0, B_MAXINT, 4,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -609,7 +609,7 @@ btk_calendar_class_init (BtkCalendarClass *class)
                                            g_param_spec_int ("horizontal-separation",
                                                              P_("Horizontal separation"),
                                                              P_("Space between week headers and main area"),
-                                                             0, G_MAXINT, 4,
+                                                             0, B_MAXINT, 4,
                                                              BTK_PARAM_READABLE));
 
   /**
@@ -685,7 +685,7 @@ btk_calendar_init (BtkCalendar *calendar)
   BtkWidget *widget = BTK_WIDGET (calendar);
   time_t secs;
   struct tm *tm;
-  gint i;
+  bint i;
 #ifdef G_OS_WIN32
   wchar_t wbuffer[100];
 #else
@@ -694,14 +694,14 @@ btk_calendar_init (BtkCalendar *calendar)
   time_t tmp_time;
 #endif
   BtkCalendarPrivate *priv;
-  gchar *year_before;
+  bchar *year_before;
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
   union { unsigned int word; char *string; } langinfo;
-  gint week_1stday = 0;
-  gint first_weekday = 1;
-  guint week_origin;
+  bint week_1stday = 0;
+  bint first_weekday = 1;
+  buint week_origin;
 #else
-  gchar *week_start;
+  bchar *week_start;
 #endif
 
   priv = calendar->priv = B_TYPE_INSTANCE_GET_PRIVATE (calendar,
@@ -888,7 +888,7 @@ calendar_queue_refresh (BtkCalendar *calendar)
 static void
 calendar_set_month_next (BtkCalendar *calendar)
 {
-  gint month_len;
+  bint month_len;
 
   if (calendar->display_flags & BTK_CALENDAR_NO_MONTH_CHANGE)
     return;
@@ -926,7 +926,7 @@ calendar_set_month_next (BtkCalendar *calendar)
 static void
 calendar_set_year_prev (BtkCalendar *calendar)
 {
-  gint month_len;
+  bint month_len;
 
   calendar->year--;
   calendar_compute_days (calendar);
@@ -953,7 +953,7 @@ calendar_set_year_prev (BtkCalendar *calendar)
 static void
 calendar_set_year_next (BtkCalendar *calendar)
 {
-  gint month_len;
+  bint month_len;
 
   calendar->year++;
   calendar_compute_days (calendar);
@@ -981,14 +981,14 @@ static void
 calendar_compute_days (BtkCalendar *calendar)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (BTK_WIDGET (calendar));
-  gint month;
-  gint year;
-  gint ndays_in_month;
-  gint ndays_in_prev_month;
-  gint first_day;
-  gint row;
-  gint col;
-  gint day;
+  bint month;
+  bint year;
+  bint ndays_in_month;
+  bint ndays_in_prev_month;
+  bint first_day;
+  bint row;
+  bint col;
+  bint day;
 
   year = calendar->year;
   month = calendar->month + 1;
@@ -1047,12 +1047,12 @@ calendar_compute_days (BtkCalendar *calendar)
 
 static void
 calendar_select_and_focus_day (BtkCalendar *calendar,
-			       guint        day)
+			       buint        day)
 {
-  gint old_focus_row = calendar->focus_row;
-  gint old_focus_col = calendar->focus_col;
-  gint row;
-  gint col;
+  bint old_focus_row = calendar->focus_row;
+  bint old_focus_col = calendar->focus_col;
+  bint row;
+  bint col;
   
   for (row = 0; row < 6; row ++)
     for (col = 0; col < 7; col++)
@@ -1076,7 +1076,7 @@ calendar_select_and_focus_day (BtkCalendar *calendar,
  *     Layout computation utilities     *
  ****************************************/
 
-static gint
+static bint
 calendar_row_height (BtkCalendar *calendar)
 {
   return (BTK_CALENDAR_GET_PRIVATE (calendar)->main_h - CALENDAR_MARGIN
@@ -1087,13 +1087,13 @@ calendar_row_height (BtkCalendar *calendar)
 
 /* calendar_left_x_for_column: returns the x coordinate
  * for the left of the column */
-static gint
+static bint
 calendar_left_x_for_column (BtkCalendar *calendar,
-			    gint	 column)
+			    bint	 column)
 {
-  gint width;
-  gint x_left;
-  gint calendar_xsep = calendar_get_xsep (calendar);
+  bint width;
+  bint x_left;
+  bint calendar_xsep = calendar_get_xsep (calendar);
 
   if (btk_widget_get_direction (BTK_WIDGET (calendar)) == BTK_TEXT_DIR_RTL)
     column = 6 - column;
@@ -1109,12 +1109,12 @@ calendar_left_x_for_column (BtkCalendar *calendar,
 
 /* column_from_x: returns the column 0-6 that the
  * x pixel of the xwindow is in */
-static gint
+static bint
 calendar_column_from_x (BtkCalendar *calendar,
-			gint	     event_x)
+			bint	     event_x)
 {
-  gint c, column;
-  gint x_left, x_right;
+  bint c, column;
+  bint x_left, x_right;
   
   column = -1;
   
@@ -1135,9 +1135,9 @@ calendar_column_from_x (BtkCalendar *calendar,
 
 /* calendar_top_y_for_row: returns the y coordinate
  * for the top of the row */
-static gint
+static bint
 calendar_top_y_for_row (BtkCalendar *calendar,
-			gint	     row)
+			bint	     row)
 {
   
   return (BTK_CALENDAR_GET_PRIVATE (calendar)->main_h 
@@ -1147,13 +1147,13 @@ calendar_top_y_for_row (BtkCalendar *calendar,
 
 /* row_from_y: returns the row 0-5 that the
  * y pixel of the xwindow is in */
-static gint
+static bint
 calendar_row_from_y (BtkCalendar *calendar,
-		     gint	  event_y)
+		     bint	  event_y)
 {
-  gint r, row;
-  gint height;
-  gint y_top, y_bottom;
+  bint r, row;
+  bint height;
+  bint y_top, y_bottom;
   
   height = calendar_row_height (calendar);
   row = -1;
@@ -1175,12 +1175,12 @@ calendar_row_from_y (BtkCalendar *calendar,
 
 static void
 calendar_arrow_rectangle (BtkCalendar  *calendar,
-			  guint	        arrow,
+			  buint	        arrow,
 			  BdkRectangle *rect)
 {
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
-  gboolean year_left;
+  bboolean year_left;
 
   if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_LTR) 
     year_left = priv->year_before;
@@ -1230,8 +1230,8 @@ calendar_arrow_rectangle (BtkCalendar  *calendar,
 
 static void
 calendar_day_rectangle (BtkCalendar  *calendar,
-			gint          row,
-			gint          col,
+			bint          row,
+			bint          col,
 			BdkRectangle *rect)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
@@ -1245,7 +1245,7 @@ calendar_day_rectangle (BtkCalendar  *calendar,
 static void
 calendar_set_month_prev (BtkCalendar *calendar)
 {
-  gint month_len;
+  bint month_len;
   
   if (calendar->display_flags & BTK_CALENDAR_NO_MONTH_CHANGE)
     return;
@@ -1317,7 +1317,7 @@ btk_calendar_destroy (BtkObject *object)
 static void
 calendar_set_display_option (BtkCalendar              *calendar,
 			     BtkCalendarDisplayOptions flag,
-			     gboolean                  setting)
+			     bboolean                  setting)
 {
   BtkCalendarDisplayOptions flags;
   if (setting) 
@@ -1327,7 +1327,7 @@ calendar_set_display_option (BtkCalendar              *calendar,
   btk_calendar_set_display_options (calendar, flags);
 }
 
-static gboolean
+static bboolean
 calendar_get_display_option (BtkCalendar              *calendar,
 			     BtkCalendarDisplayOptions flag)
 {
@@ -1336,7 +1336,7 @@ calendar_get_display_option (BtkCalendar              *calendar,
 
 static void 
 btk_calendar_set_property (BObject      *object,
-			   guint         prop_id,
+			   buint         prop_id,
 			   const BValue *value,
 			   BParamSpec   *pspec)
 {
@@ -1401,7 +1401,7 @@ btk_calendar_set_property (BObject      *object,
 
 static void 
 btk_calendar_get_property (BObject      *object,
-			   guint         prop_id,
+			   buint         prop_id,
 			   BValue       *value,
 			   BParamSpec   *pspec)
 {
@@ -1462,8 +1462,8 @@ calendar_realize_arrows (BtkCalendar *calendar)
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint i;
+  bint attributes_mask;
+  bint i;
   
   /* Arrow windows ------------------------------------- */
   if (! (calendar->display_flags & BTK_CALENDAR_NO_MONTH_CHANGE)
@@ -1512,7 +1512,7 @@ calendar_realize_header (BtkCalendar *calendar)
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   
   /* Header window ------------------------------------- */
   if (calendar->display_flags & BTK_CALENDAR_SHOW_HEADING)
@@ -1543,10 +1543,10 @@ calendar_realize_header (BtkCalendar *calendar)
   calendar_realize_arrows (calendar);
 }
 
-static gint
+static bint
 calendar_get_inner_border (BtkCalendar *calendar)
 {
-  gint inner_border;
+  bint inner_border;
 
   btk_widget_style_get (BTK_WIDGET (calendar),
                         "inner-border", &inner_border,
@@ -1555,10 +1555,10 @@ calendar_get_inner_border (BtkCalendar *calendar)
   return inner_border;
 }
 
-static gint
+static bint
 calendar_get_xsep (BtkCalendar *calendar)
 {
-  gint xsep;
+  bint xsep;
 
   btk_widget_style_get (BTK_WIDGET (calendar),
                         "horizontal-separation", &xsep,
@@ -1567,10 +1567,10 @@ calendar_get_xsep (BtkCalendar *calendar)
   return xsep;
 }
 
-static gint
+static bint
 calendar_get_ysep (BtkCalendar *calendar)
 {
-  gint ysep;
+  bint ysep;
 
   btk_widget_style_get (BTK_WIDGET (calendar),
                         "vertical-separation", &ysep,
@@ -1585,8 +1585,8 @@ calendar_realize_day_names (BtkCalendar *calendar)
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint inner_border = calendar_get_inner_border (calendar);
+  bint attributes_mask;
+  bint inner_border = calendar_get_inner_border (calendar);
 
   /* Day names	window --------------------------------- */
   if ( calendar->display_flags & BTK_CALENDAR_SHOW_DAY_NAMES)
@@ -1624,8 +1624,8 @@ calendar_realize_week_numbers (BtkCalendar *calendar)
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint inner_border = calendar_get_inner_border (calendar);
+  bint attributes_mask;
+  bint inner_border = calendar_get_inner_border (calendar);
 
   /* Week number window -------------------------------- */
   if (calendar->display_flags & BTK_CALENDAR_SHOW_WEEK_NUMBERS)
@@ -1664,8 +1664,8 @@ btk_calendar_realize (BtkWidget *widget)
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint inner_border = calendar_get_inner_border (calendar);
+  bint attributes_mask;
+  bint inner_border = calendar_get_inner_border (calendar);
 
   btk_widget_set_realized (widget, TRUE);
   
@@ -1725,7 +1725,7 @@ static void
 btk_calendar_unrealize (BtkWidget *widget)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint i;
+  bint i;
   
   if (priv->header_win)
     {
@@ -1766,13 +1766,13 @@ btk_calendar_unrealize (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_calendar_parent_class)->unrealize (widget);
 }
 
-static gchar*
+static bchar*
 btk_calendar_get_detail (BtkCalendar *calendar,
-                         gint         row,
-                         gint         column)
+                         bint         row,
+                         bint         column)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
-  gint year, month;
+  bint year, month;
 
   if (priv->detail_func == NULL)
     return NULL;
@@ -1797,21 +1797,21 @@ btk_calendar_get_detail (BtkCalendar *calendar,
                             priv->detail_func_user_data);
 }
 
-static gboolean
+static bboolean
 btk_calendar_query_tooltip (BtkWidget  *widget,
-                            gint        x,
-                            gint        y,
-                            gboolean    keyboard_mode,
+                            bint        x,
+                            bint        y,
+                            bboolean    keyboard_mode,
                             BtkTooltip *tooltip)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
   BtkCalendar *calendar = BTK_CALENDAR (widget);
-  gchar *detail = NULL;
+  bchar *detail = NULL;
   BdkRectangle day_rect;
 
   if (priv->main_win)
     {
-      gint x0, y0, row, col;
+      bint x0, y0, row, col;
 
       bdk_window_get_position (priv->main_win, &x0, &y0);
       col = calendar_column_from_x (calendar, x - x0);
@@ -1859,17 +1859,17 @@ btk_calendar_size_request (BtkWidget	  *widget,
   BangoLayout *layout;
   BangoRectangle logical_rect;
 
-  gint height;
-  gint i, r, c;
-  gint calendar_margin = CALENDAR_MARGIN;
-  gint header_width, main_width;
-  gint max_header_height = 0;
-  gint focus_width;
-  gint focus_padding;
-  gint max_detail_height;
-  gint inner_border = calendar_get_inner_border (calendar);
-  gint calendar_ysep = calendar_get_ysep (calendar);
-  gint calendar_xsep = calendar_get_xsep (calendar);
+  bint height;
+  bint i, r, c;
+  bint calendar_margin = CALENDAR_MARGIN;
+  bint header_width, main_width;
+  bint max_header_height = 0;
+  bint focus_width;
+  bint focus_padding;
+  bint max_detail_height;
+  bint inner_border = calendar_get_inner_border (calendar);
+  bint calendar_ysep = calendar_get_ysep (calendar);
+  bint calendar_xsep = calendar_get_xsep (calendar);
 
   btk_widget_style_get (BTK_WIDGET (widget),
 			"focus-line-width", &focus_width,
@@ -1932,7 +1932,7 @@ btk_calendar_size_request (BtkWidget	  *widget,
 
   for (i = 0; i < 9; i++)
     {
-      gchar buffer[32];
+      bchar buffer[32];
       g_snprintf (buffer, sizeof (buffer), C_("calendar:day:digits", "%d"), i * 11);
       bango_layout_set_text (layout, buffer, -1);	  
       bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
@@ -1964,7 +1964,7 @@ btk_calendar_size_request (BtkWidget	  *widget,
   if (calendar->display_flags & BTK_CALENDAR_SHOW_WEEK_NUMBERS)
     for (i = 0; i < 9; i++)
       {
-	gchar buffer[32];
+	bchar buffer[32];
 	g_snprintf (buffer, sizeof (buffer), C_("calendar:week:digits", "%d"), i * 11);
 	bango_layout_set_text (layout, buffer, -1);	  
 	bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
@@ -1978,12 +1978,12 @@ btk_calendar_size_request (BtkWidget	  *widget,
 
   if (priv->detail_func && (calendar->display_flags & BTK_CALENDAR_SHOW_DETAILS))
     {
-      gchar *markup, *tail;
+      bchar *markup, *tail;
 
       if (priv->detail_width_chars || priv->detail_height_rows)
         {
-          gint rows = MAX (1, priv->detail_height_rows) - 1;
-          gsize len = priv->detail_width_chars + rows + 16;
+          bint rows = MAX (1, priv->detail_height_rows) - 1;
+          bsize len = priv->detail_width_chars + rows + 16;
 
           markup = tail = g_alloca (len);
 
@@ -2014,7 +2014,7 @@ btk_calendar_size_request (BtkWidget	  *widget,
         for (r = 0; r < 6; r++)
           for (c = 0; c < 7; c++)
             {
-              gchar *detail = btk_calendar_get_detail (calendar, r, c);
+              bchar *detail = btk_calendar_get_detail (calendar, r, c);
 
               if (detail)
                 {
@@ -2097,11 +2097,11 @@ btk_calendar_size_allocate (BtkWidget	  *widget,
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint xthickness = widget->style->xthickness;
-  gint ythickness = widget->style->xthickness;
-  guint i;
-  gint inner_border = calendar_get_inner_border (calendar);
-  gint calendar_xsep = calendar_get_xsep (calendar);
+  bint xthickness = widget->style->xthickness;
+  bint ythickness = widget->style->xthickness;
+  buint i;
+  bint inner_border = calendar_get_inner_border (calendar);
+  bint calendar_xsep = calendar_get_xsep (calendar);
 
   widget->allocation = *allocation;
     
@@ -2206,15 +2206,15 @@ calendar_paint_header (BtkCalendar *calendar)
   bairo_t *cr;
   char buffer[255];
   int x, y;
-  gint header_width;
-  gint max_month_width;
-  gint max_year_width;
+  bint header_width;
+  bint max_month_width;
+  bint max_year_width;
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gboolean year_left;
+  bboolean year_left;
   time_t tmp_time;
   struct tm *tm;
-  gchar *str;
+  bchar *str;
 
   if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_LTR) 
     year_left = priv->year_before;
@@ -2314,10 +2314,10 @@ calendar_paint_day_names (BtkCalendar *calendar)
   int day_wid_sep;
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gint focus_padding;
-  gint focus_width;
-  gint calendar_ysep = calendar_get_ysep (calendar);
-  gint calendar_xsep = calendar_get_xsep (calendar);
+  bint focus_padding;
+  bint focus_width;
+  bint calendar_ysep = calendar_get_ysep (calendar);
+  bint calendar_xsep = calendar_get_xsep (calendar);
 
   cr = bdk_bairo_create (priv->day_name_win);
   
@@ -2392,15 +2392,15 @@ calendar_paint_week_numbers (BtkCalendar *calendar)
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   bairo_t *cr;
 
-  guint week = 0, year;
-  gint row, x_loc, y_loc;
-  gint day_height;
+  buint week = 0, year;
+  bint row, x_loc, y_loc;
+  bint day_height;
   char buffer[32];
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gint focus_padding;
-  gint focus_width;
-  gint calendar_xsep = calendar_get_xsep (calendar);
+  bint focus_padding;
+  bint focus_width;
+  bint calendar_xsep = calendar_get_xsep (calendar);
 
   cr = bdk_bairo_create (priv->week_win);
   
@@ -2438,7 +2438,7 @@ calendar_paint_week_numbers (BtkCalendar *calendar)
   day_height = calendar_row_height (calendar);
   for (row = 0; row < 6; row++)
     {
-      gboolean result;
+      bboolean result;
       
       year = calendar->year;
       if (calendar->day[row][6] < 15 && row > 3 && calendar->month == 11)
@@ -2479,9 +2479,9 @@ calendar_paint_week_numbers (BtkCalendar *calendar)
 
 static void
 calendar_invalidate_day_num (BtkCalendar *calendar,
-			     gint         day)
+			     bint         day)
 {
-  gint r, c, row, col;
+  bint r, c, row, col;
   
   row = -1;
   col = -1;
@@ -2502,8 +2502,8 @@ calendar_invalidate_day_num (BtkCalendar *calendar,
 
 static void
 calendar_invalidate_day (BtkCalendar *calendar,
-			 gint         row,
-			 gint         col)
+			 bint         row,
+			 bint         col)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
 
@@ -2516,9 +2516,9 @@ calendar_invalidate_day (BtkCalendar *calendar,
     }
 }
 
-static gboolean
+static bboolean
 is_color_attribute (BangoAttribute *attribute,
-                    gpointer        data)
+                    bpointer        data)
 {
   return (attribute->klass->type == BANGO_ATTR_FOREGROUND ||
           attribute->klass->type == BANGO_ATTR_BACKGROUND);
@@ -2526,23 +2526,23 @@ is_color_attribute (BangoAttribute *attribute,
 
 static void
 calendar_paint_day (BtkCalendar *calendar,
-		    gint	     row,
-		    gint	     col)
+		    bint	     row,
+		    bint	     col)
 {
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   bairo_t *cr;
   BdkColor *text_color;
-  gchar *detail;
-  gchar buffer[32];
-  gint day;
-  gint x_loc, y_loc;
+  bchar *detail;
+  bchar buffer[32];
+  bint day;
+  bint x_loc, y_loc;
   BdkRectangle day_rect;
 
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gboolean overflow = FALSE;
-  gboolean show_details;
+  bboolean overflow = FALSE;
+  bboolean show_details;
 
   g_return_if_fail (row < 6);
   g_return_if_fail (col < 7);
@@ -2645,7 +2645,7 @@ calendar_paint_day (BtkCalendar *calendar,
 
   if (detail && show_details)
     {
-      gchar *markup = g_strconcat ("<small>", detail, "</small>", NULL);
+      bchar *markup = g_strconcat ("<small>", detail, "</small>", NULL);
       bango_layout_set_markup (layout, markup, -1);
       g_free (markup);
 
@@ -2667,7 +2667,7 @@ calendar_paint_day (BtkCalendar *calendar,
 
       if (priv->detail_height_rows)
         {
-          gint dy = day_rect.height - (y_loc - day_rect.y);
+          bint dy = day_rect.height - (y_loc - day_rect.y);
           bango_layout_set_height (layout, BANGO_SCALE * dy);
           bango_layout_set_ellipsize (layout, BANGO_ELLIPSIZE_END);
         }
@@ -2707,7 +2707,7 @@ calendar_paint_day (BtkCalendar *calendar,
 static void
 calendar_paint_main (BtkCalendar *calendar)
 {
-  gint row, col;
+  bint row, col;
   
   for (col = 0; col < 7; col++)
     for (row = 0; row < 6; row++)
@@ -2716,7 +2716,7 @@ calendar_paint_main (BtkCalendar *calendar)
 
 static void
 calendar_invalidate_arrow (BtkCalendar *calendar,
-			   guint        arrow)
+			   buint        arrow)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
   BdkWindow *window;
@@ -2728,7 +2728,7 @@ calendar_invalidate_arrow (BtkCalendar *calendar,
 
 static void
 calendar_paint_arrow (BtkCalendar *calendar,
-		      guint	       arrow)
+		      buint	       arrow)
 {
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
@@ -2738,8 +2738,8 @@ calendar_paint_arrow (BtkCalendar *calendar,
   if (window)
     {
       bairo_t *cr = bdk_bairo_create (window);
-      gint width, height;
-      gint state;
+      bint width, height;
+      bint state;
 	
       state = priv->arrow_state[arrow];
 
@@ -2762,7 +2762,7 @@ calendar_paint_arrow (BtkCalendar *calendar,
     }
 }
 
-static gboolean
+static bboolean
 btk_calendar_expose (BtkWidget	    *widget,
 		     BdkEventExpose *event)
 {
@@ -2805,7 +2805,7 @@ btk_calendar_expose (BtkWidget	    *widget,
 
 static void
 calendar_arrow_action (BtkCalendar *calendar,
-		       guint        arrow)
+		       buint        arrow)
 {
   switch (arrow)
     {
@@ -2826,12 +2826,12 @@ calendar_arrow_action (BtkCalendar *calendar,
     }
 }
 
-static gboolean
-calendar_timer (gpointer data)
+static bboolean
+calendar_timer (bpointer data)
 {
   BtkCalendar *calendar = data;
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   
   if (priv->timer)
     {
@@ -2840,7 +2840,7 @@ calendar_timer (gpointer data)
       if (priv->need_timer)
 	{
           BtkSettings *settings;
-          guint        timeout;
+          buint        timeout;
 
           settings = btk_widget_get_settings (BTK_WIDGET (calendar));
           g_object_get (settings, "btk-timeout-repeat", &timeout, NULL);
@@ -2849,7 +2849,7 @@ calendar_timer (gpointer data)
 	  priv->timer = bdk_threads_add_timeout_full (G_PRIORITY_DEFAULT_IDLE,
 					    timeout * SCROLL_DELAY_FACTOR,
 					    (GSourceFunc) calendar_timer,
-					    (gpointer) calendar, NULL);
+					    (bpointer) calendar, NULL);
 	}
       else 
 	retval = TRUE;
@@ -2860,7 +2860,7 @@ calendar_timer (gpointer data)
 
 static void
 calendar_start_spinning (BtkCalendar *calendar,
-			 gint         click_child)
+			 bint         click_child)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
 
@@ -2869,7 +2869,7 @@ calendar_start_spinning (BtkCalendar *calendar,
   if (!priv->timer)
     {
       BtkSettings *settings;
-      guint        timeout;
+      buint        timeout;
 
       settings = btk_widget_get_settings (BTK_WIDGET (calendar));
       g_object_get (settings, "btk-timeout-initial", &timeout, NULL);
@@ -2878,7 +2878,7 @@ calendar_start_spinning (BtkCalendar *calendar,
       priv->timer = bdk_threads_add_timeout_full (G_PRIORITY_DEFAULT_IDLE,
 					timeout,
 					(GSourceFunc) calendar_timer,
-					(gpointer) calendar, NULL);
+					(bpointer) calendar, NULL);
     }
 }
 
@@ -2901,13 +2901,13 @@ calendar_main_button_press (BtkCalendar	   *calendar,
 {
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
-  gint x, y;
-  gint row, col;
-  gint day_month;
-  gint day;
+  bint x, y;
+  bint row, col;
+  bint day_month;
+  bint day;
   
-  x = (gint) (event->x);
-  y = (gint) (event->y);
+  x = (bint) (event->x);
+  y = (bint) (event->y);
   
   row = calendar_row_from_y (calendar, y);
   col = calendar_column_from_x (calendar, x);
@@ -2949,13 +2949,13 @@ calendar_main_button_press (BtkCalendar	   *calendar,
     }
 }
 
-static gboolean
+static bboolean
 btk_calendar_button_press (BtkWidget	  *widget,
 			   BdkEventButton *event)
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint arrow = -1;
+  bint arrow = -1;
   
   if (event->window == priv->main_win)
     calendar_main_button_press (calendar, event);
@@ -2984,7 +2984,7 @@ btk_calendar_button_press (BtkWidget	  *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_button_release (BtkWidget	  *widget,
 			     BdkEventButton *event)
 {
@@ -3002,18 +3002,18 @@ btk_calendar_button_release (BtkWidget	  *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_motion_notify (BtkWidget	   *widget,
 			    BdkEventMotion *event)
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint event_x, event_y;
-  gint row, col;
-  gint old_row, old_col;
+  bint event_x, event_y;
+  bint row, col;
+  bint old_row, old_col;
   
-  event_x = (gint) (event->x);
-  event_y = (gint) (event->y);
+  event_x = (bint) (event->x);
+  event_y = (bint) (event->y);
   
   if (event->window == priv->main_win)
     {
@@ -3064,7 +3064,7 @@ btk_calendar_motion_notify (BtkWidget	   *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_enter_notify (BtkWidget	    *widget,
 			   BdkEventCrossing *event)
 {
@@ -3098,14 +3098,14 @@ btk_calendar_enter_notify (BtkWidget	    *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_leave_notify (BtkWidget	    *widget,
 			   BdkEventCrossing *event)
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint row;
-  gint col;
+  bint row;
+  bint col;
   
   if (event->window == priv->main_win)
     {
@@ -3144,7 +3144,7 @@ btk_calendar_leave_notify (BtkWidget	    *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_scroll (BtkWidget      *widget,
 		     BdkEventScroll *event)
 {
@@ -3175,7 +3175,7 @@ btk_calendar_scroll (BtkWidget      *widget,
 
 static void 
 move_focus (BtkCalendar *calendar, 
-	    gint         direction)
+	    bint         direction)
 {
   BtkTextDirection text_dir = btk_widget_get_direction (BTK_WIDGET (calendar));
  
@@ -3212,15 +3212,15 @@ move_focus (BtkCalendar *calendar,
     }
 }
 
-static gboolean
+static bboolean
 btk_calendar_key_press (BtkWidget   *widget,
 			BdkEventKey *event)
 {
   BtkCalendar *calendar;
-  gint return_val;
-  gint old_focus_row;
-  gint old_focus_col;
-  gint row, col, day;
+  bint return_val;
+  bint old_focus_row;
+  bint old_focus_col;
+  bint row, col, day;
   
   calendar = BTK_CALENDAR (widget);
   return_val = FALSE;
@@ -3321,7 +3321,7 @@ static void
 calendar_set_background (BtkWidget *widget)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
-  gint i;
+  bint i;
   
   if (btk_widget_get_realized (widget))
     {
@@ -3382,13 +3382,13 @@ btk_calendar_state_changed (BtkWidget	   *widget,
 
 static void
 btk_calendar_grab_notify (BtkWidget *widget,
-			  gboolean   was_grabbed)
+			  bboolean   was_grabbed)
 {
   if (!was_grabbed)
     calendar_stop_spinning (BTK_CALENDAR (widget));
 }
 
-static gboolean
+static bboolean
 btk_calendar_focus_out (BtkWidget     *widget,
 			BdkEventFocus *event)
 {
@@ -3412,13 +3412,13 @@ static void
 btk_calendar_drag_data_get (BtkWidget        *widget,
 			    BdkDragContext   *context,
 			    BtkSelectionData *selection_data,
-			    guint             info,
-			    guint             time)
+			    buint             info,
+			    buint             time)
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
   GDate *date;
-  gchar str[128];
-  gsize len;
+  bchar str[128];
+  bsize len;
 
   date = g_date_new_dmy (calendar->selected_day, calendar->month + 1, calendar->year);
   len = g_date_strftime (str, 127, "%x", date);
@@ -3437,20 +3437,20 @@ set_status_pending (BdkDragContext *context,
 {
   g_object_set_data (B_OBJECT (context),
                      I_("btk-calendar-status-pending"),
-                     GINT_TO_POINTER (suggested_action));
+                     BINT_TO_POINTER (suggested_action));
 }
 
 static BdkDragAction
 get_status_pending (BdkDragContext *context)
 {
-  return GPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
+  return BPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
                                              "btk-calendar-status-pending"));
 }
 
 static void
 btk_calendar_drag_leave (BtkWidget      *widget,
 			 BdkDragContext *context,
-			 guint           time)
+			 buint           time)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
 
@@ -3459,12 +3459,12 @@ btk_calendar_drag_leave (BtkWidget      *widget,
   
 }
 
-static gboolean
+static bboolean
 btk_calendar_drag_motion (BtkWidget      *widget,
 			  BdkDragContext *context,
-			  gint            x,
-			  gint            y,
-			  guint           time)
+			  bint            x,
+			  bint            y,
+			  buint           time)
 {
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (widget);
   BdkAtom target;
@@ -3487,12 +3487,12 @@ btk_calendar_drag_motion (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_calendar_drag_drop (BtkWidget      *widget,
 			BdkDragContext *context,
-			gint            x,
-			gint            y,
-			guint           time)
+			bint            x,
+			bint            y,
+			buint           time)
 {
   BdkAtom target;
 
@@ -3511,15 +3511,15 @@ btk_calendar_drag_drop (BtkWidget      *widget,
 static void
 btk_calendar_drag_data_received (BtkWidget        *widget,
 				 BdkDragContext   *context,
-				 gint              x,
-				 gint              y,
+				 bint              x,
+				 bint              y,
 				 BtkSelectionData *selection_data,
-				 guint             info,
-				 guint             time)
+				 buint             info,
+				 buint             time)
 {
   BtkCalendar *calendar = BTK_CALENDAR (widget);
-  guint day, month, year;
-  gchar *str;
+  buint day, month, year;
+  bchar *str;
   GDate *date;
   BdkDragAction suggested_action;
 
@@ -3534,7 +3534,7 @@ btk_calendar_drag_data_received (BtkWidget        *widget,
        * supposed to call drag_status, not actually paste in the
        * data.
        */
-      str = (gchar*) btk_selection_data_get_text (selection_data);
+      str = (bchar*) btk_selection_data_get_text (selection_data);
 
       if (str) 
 	{
@@ -3554,7 +3554,7 @@ btk_calendar_drag_data_received (BtkWidget        *widget,
     }
 
   date = g_date_new ();
-  str = (gchar*) btk_selection_data_get_text (selection_data);
+  str = (bchar*) btk_selection_data_get_text (selection_data);
   if (str) 
     {
       g_date_set_parse (date, str);
@@ -3653,8 +3653,8 @@ btk_calendar_set_display_options (BtkCalendar	       *calendar,
 {
   BtkWidget *widget = BTK_WIDGET (calendar);
   BtkCalendarPrivate *priv = BTK_CALENDAR_GET_PRIVATE (calendar);
-  gint resize = 0;
-  gint i;
+  bint resize = 0;
+  bint i;
   BtkCalendarDisplayOptions old_flags;
   
   g_return_if_fail (BTK_IS_CALENDAR (calendar));
@@ -3789,10 +3789,10 @@ btk_calendar_set_display_options (BtkCalendar	       *calendar,
  *
  * Returns: %TRUE, always
  **/
-gboolean
+bboolean
 btk_calendar_select_month (BtkCalendar *calendar,
-			   guint	month,
-			   guint	year)
+			   buint	month,
+			   buint	year)
 {
   g_return_val_if_fail (BTK_IS_CALENDAR (calendar), FALSE);
   g_return_val_if_fail (month <= 11, FALSE);
@@ -3825,7 +3825,7 @@ btk_calendar_select_month (BtkCalendar *calendar,
  **/
 void
 btk_calendar_select_day (BtkCalendar *calendar,
-			 guint	      day)
+			 buint	      day)
 {
   g_return_if_fail (BTK_IS_CALENDAR (calendar));
   g_return_if_fail (day <= 31);
@@ -3833,7 +3833,7 @@ btk_calendar_select_day (BtkCalendar *calendar,
   /* Deselect the old day */
   if (calendar->selected_day > 0)
     {
-      gint selected_day;
+      bint selected_day;
       
       selected_day = calendar->selected_day;
       calendar->selected_day = 0;
@@ -3866,7 +3866,7 @@ btk_calendar_select_day (BtkCalendar *calendar,
 void
 btk_calendar_clear_marks (BtkCalendar *calendar)
 {
-  guint day;
+  buint day;
   
   g_return_if_fail (BTK_IS_CALENDAR (calendar));
   
@@ -3892,9 +3892,9 @@ btk_calendar_clear_marks (BtkCalendar *calendar)
  *
  * Returns: %TRUE, always
  */
-gboolean
+bboolean
 btk_calendar_mark_day (BtkCalendar *calendar,
-		       guint	    day)
+		       buint	    day)
 {
   g_return_val_if_fail (BTK_IS_CALENDAR (calendar), FALSE);
 
@@ -3921,9 +3921,9 @@ btk_calendar_mark_day (BtkCalendar *calendar,
  *
  * Returns: %TRUE, always
  */
-gboolean
+bboolean
 btk_calendar_unmark_day (BtkCalendar *calendar,
-			 guint	      day)
+			 buint	      day)
 {
   g_return_val_if_fail (BTK_IS_CALENDAR (calendar), FALSE);
 
@@ -3951,9 +3951,9 @@ btk_calendar_unmark_day (BtkCalendar *calendar,
  **/
 void
 btk_calendar_get_date (BtkCalendar *calendar,
-		       guint	   *year,
-		       guint	   *month,
-		       guint	   *day)
+		       buint	   *year,
+		       buint	   *month,
+		       buint	   *day)
 {
   g_return_if_fail (BTK_IS_CALENDAR (calendar));
   
@@ -3990,7 +3990,7 @@ btk_calendar_get_date (BtkCalendar *calendar,
 void
 btk_calendar_set_detail_func (BtkCalendar           *calendar,
                               BtkCalendarDetailFunc  func,
-                              gpointer               data,
+                              bpointer               data,
                               GDestroyNotify         destroy)
 {
   BtkCalendarPrivate *priv;
@@ -4023,7 +4023,7 @@ btk_calendar_set_detail_func (BtkCalendar           *calendar,
  */
 void
 btk_calendar_set_detail_width_chars (BtkCalendar *calendar,
-                                     gint         chars)
+                                     bint         chars)
 {
   BtkCalendarPrivate *priv;
 
@@ -4051,7 +4051,7 @@ btk_calendar_set_detail_width_chars (BtkCalendar *calendar,
  */
 void
 btk_calendar_set_detail_height_rows (BtkCalendar *calendar,
-                                     gint         rows)
+                                     bint         rows)
 {
   BtkCalendarPrivate *priv;
 
@@ -4078,7 +4078,7 @@ btk_calendar_set_detail_height_rows (BtkCalendar *calendar,
  *
  * Return value: The width of detail cells, in characters.
  */
-gint
+bint
 btk_calendar_get_detail_width_chars (BtkCalendar *calendar)
 {
   g_return_val_if_fail (BTK_IS_CALENDAR (calendar), 0);
@@ -4096,7 +4096,7 @@ btk_calendar_get_detail_width_chars (BtkCalendar *calendar)
  *
  * Return value: The height of detail cells, in rows.
  */
-gint
+bint
 btk_calendar_get_detail_height_rows (BtkCalendar *calendar)
 {
   g_return_val_if_fail (BTK_IS_CALENDAR (calendar), 0);

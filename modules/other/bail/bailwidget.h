@@ -53,7 +53,7 @@ struct _BailWidgetClass
   /*
    * Signal handler for focus_in_event and focus_out_event signal on BTK widget
    */
-  gboolean (*focus_btk)                (BtkWidget           *widget,
+  bboolean (*focus_btk)                (BtkWidget           *widget,
                                         BdkEventFocus       *event);
 
 };

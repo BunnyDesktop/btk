@@ -6,7 +6,7 @@ static BtkWidget *main_window;
 static char *filename = NULL;
 static BtkPageSetup *page_setup = NULL;
 static BtkPrintSettings *settings = NULL;
-static gboolean file_changed = FALSE;
+static bboolean file_changed = FALSE;
 static BtkTextBuffer *buffer;
 static BtkWidget *statusbar;
 static GList *active_prints = NULL;
@@ -32,8 +32,8 @@ update_title (void)
 static void
 update_statusbar (void)
 {
-  gchar *msg;
-  gint row, col;
+  bchar *msg;
+  bint row, col;
   BtkTextIter iter;
   const char *print_str;
 
@@ -81,7 +81,7 @@ get_text (void)
 }
 
 static void
-set_text (const char *text, gsize len)
+set_text (const char *text, bsize len)
 {
   btk_text_buffer_set_text (buffer, text, len);
   file_changed = FALSE;
@@ -102,7 +102,7 @@ load_file (const char *open_filename)
   BtkWidget *error_dialog;
   char *contents;
   GError *error;
-  gsize len;
+  bsize len;
   
   error_dialog = NULL;
   error = NULL;
@@ -148,7 +148,7 @@ static void
 do_open (BtkAction *action)
 {
   BtkWidget *dialog;
-  gint response;
+  bint response;
   char *open_filename;
   
   dialog = btk_file_chooser_dialog_new ("Select file",
@@ -210,7 +210,7 @@ static void
 do_save_as (BtkAction *action)
 {
   BtkWidget *dialog;
-  gint response;
+  bint response;
   char *save_filename;
   
   dialog = btk_file_chooser_dialog_new ("Select file",
@@ -292,7 +292,7 @@ begin_print (BtkPrintOperation *operation,
 
       if (page_height + line_height > height)
 	{
-	  page_breaks = g_list_prepend (page_breaks, GINT_TO_POINTER (line));
+	  page_breaks = g_list_prepend (page_breaks, BINT_TO_POINTER (line));
 	  page_height = 0;
 	}
 
@@ -322,14 +322,14 @@ draw_page (BtkPrintOperation *operation,
   else
     {
       pagebreak = g_list_nth (print_data->page_breaks, page_nr - 1);
-      start = GPOINTER_TO_INT (pagebreak->data);
+      start = BPOINTER_TO_INT (pagebreak->data);
     }
 
   pagebreak = g_list_nth (print_data->page_breaks, page_nr);
   if (pagebreak == NULL)
     end = bango_layout_get_line_count (print_data->layout);
   else
-    end = GPOINTER_TO_INT (pagebreak->data);
+    end = BPOINTER_TO_INT (pagebreak->data);
     
   cr = btk_print_context_get_bairo_context (context);
 
@@ -382,7 +382,7 @@ do_page_setup (BtkAction *action)
 
 static void
 status_changed_cb (BtkPrintOperation *op,
-		   gpointer user_data)
+		   bpointer user_data)
 {
   if (btk_print_operation_is_finished (op))
     {
@@ -435,16 +435,16 @@ typedef struct
   BtkPrintOperationPreview *preview;
   BtkWidget         *spin;
   BtkWidget         *area;
-  gint               page;
+  bint               page;
   BtkPrintContext   *context;
   PrintData *data;
-  gdouble dpi_x, dpi_y;
+  bdouble dpi_x, dpi_y;
 } PreviewOp;
 
-static gboolean
+static bboolean
 preview_expose (BtkWidget      *widget,
 		BdkEventExpose *event,
-		gpointer        data)
+		bpointer        data)
 {
   PreviewOp *pop = data;
   bairo_t *cr;
@@ -463,10 +463,10 @@ preview_expose (BtkWidget      *widget,
 static void
 preview_ready (BtkPrintOperationPreview *preview,
 	       BtkPrintContext          *context,
-	       gpointer                  data)
+	       bpointer                  data)
 {
   PreviewOp *pop = data;
-  gint n_pages;
+  bint n_pages;
 
   g_object_get (pop->op, "n-pages", &n_pages, NULL);
 
@@ -484,13 +484,13 @@ static void
 preview_got_page_size (BtkPrintOperationPreview *preview, 
 		       BtkPrintContext          *context,
 		       BtkPageSetup             *page_setup,
-		       gpointer                  data)
+		       bpointer                  data)
 {
   PreviewOp *pop = data;
   BtkPaperSize *paper_size;
   double w, h;
   bairo_t *cr;
-  gdouble dpi_x, dpi_y;
+  bdouble dpi_x, dpi_y;
 
   paper_size = btk_page_setup_get_paper_size (page_setup);
 
@@ -516,7 +516,7 @@ preview_got_page_size (BtkPrintOperationPreview *preview,
 
 static void
 update_page (BtkSpinButton *widget,
-	     gpointer       data)
+	     bpointer       data)
 {
   PreviewOp *pop = data;
 
@@ -534,16 +534,16 @@ preview_destroy (BtkWindow *window,
   g_free (pop);
 }
 
-static gboolean 
+static bboolean 
 preview_cb (BtkPrintOperation        *op,
 	    BtkPrintOperationPreview *preview,
 	    BtkPrintContext          *context,
 	    BtkWindow                *parent,
-	    gpointer                  data)
+	    bpointer                  data)
 {
   BtkPrintSettings *settings;
   BtkWidget *window, *close, *page, *hbox, *vbox, *da;
-  gdouble width, height;
+  bdouble width, height;
   bairo_t *cr;
   PreviewOp *pop;
   PrintData *print_data = data;
@@ -716,7 +716,7 @@ do_preview (BtkAction *action)
 static void
 do_about (BtkAction *action)
 {
-  const gchar *authors[] = {
+  const bchar *authors[] = {
     "Alexander Larsson",
     NULL
   };
@@ -775,9 +775,9 @@ static BtkActionEntry entries[] = {
     "Print the document",                      /* tooltip */
     G_CALLBACK (do_print) }
 };
-static guint n_entries = G_N_ELEMENTS (entries);
+static buint n_entries = G_N_ELEMENTS (entries);
 
-static const gchar *ui_info = 
+static const bchar *ui_info = 
 "<ui>"
 "  <menubar name='MenuBar'>"
 "    <menu action='FileMenu'>"
@@ -808,7 +808,7 @@ static void
 mark_set_callback (BtkTextBuffer     *buffer,
                    const BtkTextIter *new_location,
                    BtkTextMark       *mark,
-                   gpointer           data)
+                   bpointer           data)
 {
   update_statusbar ();
 }
@@ -821,7 +821,7 @@ update_resize_grip (BtkWidget           *widget,
   if (event->changed_mask & (BDK_WINDOW_STATE_MAXIMIZED | 
 			     BDK_WINDOW_STATE_FULLSCREEN))
     {
-      gboolean maximized;
+      bboolean maximized;
 
       maximized = event->new_window_state & (BDK_WINDOW_STATE_MAXIMIZED | 
 					     BDK_WINDOW_STATE_FULLSCREEN);

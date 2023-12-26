@@ -28,8 +28,8 @@
 	g_filename_display_basename.
 
 	* btk/btkentrycompletion.[hc]: Make the prefix parameter 
-	to the insert-prefix signal a const gchar* instead of a 
-	gchar*.  (#161415, Murray Cumming)
+	to the insert-prefix signal a const bchar* instead of a 
+	bchar*.  (#161415, Murray Cumming)
 	Also remove an unused static function.
 
 2004-12-15  Alexander Larsson  <alexl@redhat.com>
@@ -1176,7 +1176,7 @@ Mon Nov 15 19:02:07 2004  Manish Singh  <yosh@gimp.org>
 
 	* btk/btkimagemenuitem.c (btk_image_menu_item_screen_changed) 
 	* btk/btkbutton.c (btk_button_screen_changed): Use 
-	GPOINTER_TO_UINT()/GUINT_TO_POINTER() for guints.  (#158420,
+	BPOINTER_TO_UINT()/BUINT_TO_POINTER() for buints.  (#158420,
 	Morten Welinder)
 
 Mon Nov 15 17:17:17 2004  Manish Singh  <yosh@gimp.org>
@@ -1467,7 +1467,7 @@ Thu Nov 11 11:34:32 2004  Jonathan Blandford  <jrb@redhat.com>
 	website button if the url is unset.  (#157630, John Finlay)
 
 	* btk/btkaboutdialog.[hc]: Change the return types of the 
-	gchar ** getters to be more const correct.  (#157566, Mariano 
+	bchar ** getters to be more const correct.  (#157566, Mariano 
 	Suárez-Alvarez)
 
 	* btk/btkfilechooserbutton.c (btk_file_chooser_button_init): Add
@@ -3269,7 +3269,7 @@ Wed Aug 25 17:14:58 2004  Manish Singh  <yosh@gimp.org>
 	* btk/btkcellrenderercombo.c (btk_cell_renderer_combo_start_editing):
 	cast to BTK_COMBO_BOX for btk_combo_box_set_active_iter() call.
 
-	* btk/btkselection.c (selection_get_text_plain): make len a gsize,
+	* btk/btkselection.c (selection_get_text_plain): make len a bsize,
 	since that's what g_convert_with_fallback() expects.
 
 Wed Aug 25 16:14:34 2004  Jonathan Blandford  <jrb@redhat.com>
@@ -4371,7 +4371,7 @@ Fri Jul 30 00:56:31 2004  Matthias Clasen  <maclas@gmx.de>
 2004-07-28  Federico Mena Quintero  <federico@ximian.com>
 
 	* btk/btkfilechooserdefault.c (struct _BtkFileChooserDefault):
-	Store signal IDs in gulongs, not guints!
+	Store signal IDs in bulongs, not buints!
 	(btk_file_chooser_default_hierarchy_changed): We now monitor the
 	focus widget on our toplevel to know which widget was last focused
 	at the time our "should_respond" method gets called.
@@ -5408,7 +5408,7 @@ Mon Jul  5 23:47:38 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* btk/btkiconview.c: (btk_icon_view_set_markup_column):
 	* btk/btkiconview.h:
-	Use gint, not int in btk_icon_view_set_markup_column,
+	Use bint, not int in btk_icon_view_set_markup_column,
 	(Paolo Maggi)
 	
 2004-07-05  Anders Carlsson  <andersca@bunny.org>
@@ -6062,7 +6062,7 @@ Tue May 25 21:54:00 2004  Matthias Clasen  <maclas@gmx.de>
 	* configure.in: Check for XFIXES extension.
 
 	* bdk/x11/bdkdisplay-x11.h (struct _BdkDisplayX11): Add 
-	a gboolean have_xfixes member.
+	a bboolean have_xfixes member.
 
 	* bdk/x11/bdkdisplay-x11.c (bdk_display_open): Register
 	XFIXES events and set have_xfixes.
@@ -6879,7 +6879,7 @@ Sun Apr 11 15:08:45 2004  Jonathan Blandford  <jrb@bunny.org>
 
 	* bdk/win32/bdkspawn-win32.c : workaround for bug #137496,
 	the real fix would involve just another small API breakage,
-	i.e. bdk_spawn_* using GPid not just gint.
+	i.e. bdk_spawn_* using GPid not just bint.
 
 	* btk/makefile.msc.in : build btk-win32.res, not btk.res
 

@@ -294,8 +294,8 @@ converted to UTF-8 before being handed over to BTK+. The following example
 writes the content of a IS0-8859-1 encoded text file to 
 <literal>stdout</literal>:
 <informalexample><programlisting>
-gchar *text, *utf8_text;
-gsize length;
+bchar *text, *utf8_text;
+bsize length;
 GError *error = NULL;
 
 if (g_file_get_contents (filename, &amp;text, &amp;length, NULL)) 
@@ -888,14 +888,14 @@ my_cell_double_to_text (BtkTreeViewColumn *tree_column,
 	                BtkCellRenderer   *cell, 
                         BtkTreeModel      *tree_model,
 	                BtkTreeIter       *iter, 
-                        gpointer           data)
+                        bpointer           data)
 {
   BtkCellRendererText *cell_text = (BtkCellRendererText *)cell;
-  gdouble d;
-  gchar *text;
+  bdouble d;
+  bchar *text;
 
   /* Get the double value from the model. */
-  btk_tree_model_get (tree_model, iter, (gint)data, &amp;d, -1);
+  btk_tree_model_get (tree_model, iter, (bint)data, &amp;d, -1);
   /* Now we can format the value ourselves. */
   text = g_strdup_printf ("&percnt;.2f", d);
   g_object_set (cell, "text", text, NULL);
@@ -936,7 +936,7 @@ set_up_new_columns (BtkTreeView *myview)
    */
   btk_tree_view_column_set_cell_data_func (column, renderer,
 	                                   my_cell_double_to_text, 
-                                           (gpointer)DOUBLE_COLUMN, NULL);
+                                           (bpointer)DOUBLE_COLUMN, NULL);
 }
 </programlisting></informalexample>
 </para></answer>

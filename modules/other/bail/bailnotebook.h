@@ -45,12 +45,12 @@ struct _BailNotebook
    * need to be created
    */
   GList*       page_cache;
-  gint         selected_page;
-  gint         focus_tab_page;
-  gint         page_count;
-  guint        idle_focus_id;
+  bint         selected_page;
+  bint         focus_tab_page;
+  bint         page_count;
+  buint        idle_focus_id;
 
-  gint         remove_index;
+  bint         remove_index;
 };
 
 GType bail_notebook_get_type (void);

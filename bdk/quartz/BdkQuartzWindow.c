@@ -631,7 +631,7 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
   if (screen)
     {
       GList* windows, *list;
-      gint gx, gy;
+      bint gx, gy;
 
       event.dnd.context->dest_window = NULL;
 
@@ -641,8 +641,8 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
       for (list = windows; list; list = list->next) 
         {
           BdkWindow* win = (BdkWindow*) list->data;
-          gint wx, wy;
-          gint ww, wh;
+          bint wx, wy;
+          bint ww, wh;
 
           bdk_window_get_root_origin (win, &wx, &wy);
           ww = bdk_window_get_width (win);

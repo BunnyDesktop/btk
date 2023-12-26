@@ -27,13 +27,13 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static gboolean       delegate_set_current_folder     (BtkFileChooser    *chooser,
+static bboolean       delegate_set_current_folder     (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
 static GFile *        delegate_get_current_folder     (BtkFileChooser    *chooser);
 static void           delegate_set_current_name       (BtkFileChooser    *chooser,
-						       const gchar       *name);
-static gboolean       delegate_select_file            (BtkFileChooser    *chooser,
+						       const bchar       *name);
+static bboolean       delegate_select_file            (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
 static void           delegate_unselect_file          (BtkFileChooser    *chooser,
@@ -48,27 +48,27 @@ static void           delegate_add_filter             (BtkFileChooser    *choose
 static void           delegate_remove_filter          (BtkFileChooser    *chooser,
 						       BtkFileFilter     *filter);
 static GSList *       delegate_list_filters           (BtkFileChooser    *chooser);
-static gboolean       delegate_add_shortcut_folder    (BtkFileChooser    *chooser,
+static bboolean       delegate_add_shortcut_folder    (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
-static gboolean       delegate_remove_shortcut_folder (BtkFileChooser    *chooser,
+static bboolean       delegate_remove_shortcut_folder (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
 static GSList *       delegate_list_shortcut_folders  (BtkFileChooser    *chooser);
 static void           delegate_notify                 (BObject           *object,
 						       BParamSpec        *pspec,
-						       gpointer           data);
+						       bpointer           data);
 static void           delegate_current_folder_changed (BtkFileChooser    *chooser,
-						       gpointer           data);
+						       bpointer           data);
 static void           delegate_selection_changed      (BtkFileChooser    *chooser,
-						       gpointer           data);
+						       bpointer           data);
 static void           delegate_update_preview         (BtkFileChooser    *chooser,
-						       gpointer           data);
+						       bpointer           data);
 static void           delegate_file_activated         (BtkFileChooser    *chooser,
-						       gpointer           data);
+						       bpointer           data);
 
 static BtkFileChooserConfirmation delegate_confirm_overwrite (BtkFileChooser    *chooser,
-							      gpointer           data);
+							      bpointer           data);
 
 /**
  * _btk_file_chooser_install_properties:
@@ -205,7 +205,7 @@ get_delegate (BtkFileChooser *receiver)
 			     BTK_FILE_CHOOSER_DELEGATE_QUARK);
 }
 
-static gboolean
+static bboolean
 delegate_select_file (BtkFileChooser    *chooser,
 		      GFile             *file,
 		      GError           **error)
@@ -270,7 +270,7 @@ delegate_list_filters (BtkFileChooser *chooser)
   return btk_file_chooser_list_filters (get_delegate (chooser));
 }
 
-static gboolean
+static bboolean
 delegate_add_shortcut_folder (BtkFileChooser  *chooser,
 			      GFile           *file,
 			      GError         **error)
@@ -278,7 +278,7 @@ delegate_add_shortcut_folder (BtkFileChooser  *chooser,
   return _btk_file_chooser_add_shortcut_folder (get_delegate (chooser), file, error);
 }
 
-static gboolean
+static bboolean
 delegate_remove_shortcut_folder (BtkFileChooser  *chooser,
 				 GFile           *file,
 				 GError         **error)
@@ -292,7 +292,7 @@ delegate_list_shortcut_folders (BtkFileChooser *chooser)
   return _btk_file_chooser_list_shortcut_folder_files (get_delegate (chooser));
 }
 
-static gboolean
+static bboolean
 delegate_set_current_folder (BtkFileChooser  *chooser,
 			     GFile           *file,
 			     GError         **error)
@@ -308,7 +308,7 @@ delegate_get_current_folder (BtkFileChooser *chooser)
 
 static void
 delegate_set_current_name (BtkFileChooser *chooser,
-			   const gchar    *name)
+			   const bchar    *name)
 {
   btk_file_chooser_set_current_name (get_delegate (chooser), name);
 }
@@ -316,9 +316,9 @@ delegate_set_current_name (BtkFileChooser *chooser,
 static void
 delegate_notify (BObject    *object,
 		 BParamSpec *pspec,
-		 gpointer    data)
+		 bpointer    data)
 {
-  gpointer iface;
+  bpointer iface;
 
   iface = g_type_interface_peek (g_type_class_peek (B_OBJECT_TYPE (object)),
 				 btk_file_chooser_get_type ());
@@ -328,35 +328,35 @@ delegate_notify (BObject    *object,
 
 static void
 delegate_selection_changed (BtkFileChooser *chooser,
-			    gpointer        data)
+			    bpointer        data)
 {
   g_signal_emit_by_name (data, "selection-changed");
 }
 
 static void
 delegate_current_folder_changed (BtkFileChooser *chooser,
-				 gpointer        data)
+				 bpointer        data)
 {
   g_signal_emit_by_name (data, "current-folder-changed");
 }
 
 static void
 delegate_update_preview (BtkFileChooser    *chooser,
-			 gpointer           data)
+			 bpointer           data)
 {
   g_signal_emit_by_name (data, "update-preview");
 }
 
 static void
 delegate_file_activated (BtkFileChooser    *chooser,
-			 gpointer           data)
+			 bpointer           data)
 {
   g_signal_emit_by_name (data, "file-activated");
 }
 
 static BtkFileChooserConfirmation
 delegate_confirm_overwrite (BtkFileChooser    *chooser,
-			    gpointer           data)
+			    bpointer           data)
 {
   BtkFileChooserConfirmation conf;
 
@@ -405,7 +405,7 @@ _btk_file_chooser_extract_recent_folders (GList *infos)
 	{
 	  if (!g_hash_table_lookup (folders, parent))
 	    {
-	      g_hash_table_insert (folders, parent, (gpointer) 1);
+	      g_hash_table_insert (folders, parent, (bpointer) 1);
 	      result = g_list_prepend (result, g_object_ref (parent));
 	    }
 

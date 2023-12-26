@@ -35,22 +35,22 @@ static void bail_scale_button_notify_btk (BObject    *obj,
 
 /* BatkObject */
 static void bail_scale_button_initialize (BatkObject *obj,
-                                          gpointer   data);
+                                          bpointer   data);
 
 /* BatkAction */
 static void                  batk_action_interface_init        (BatkActionIface *iface);
-static gboolean              bail_scale_button_do_action      (BatkAction      *action,
-                                                               gint           i);
-static gint                  bail_scale_button_get_n_actions  (BatkAction      *action);
-static const gchar*          bail_scale_button_get_description(BatkAction      *action,
-                                                               gint           i);
-static const gchar*          bail_scale_button_action_get_name(BatkAction      *action,
-                                                               gint           i);
-static const gchar*          bail_scale_button_get_keybinding (BatkAction      *action,
-                                                               gint           i);
-static gboolean              bail_scale_button_set_description(BatkAction      *action,
-                                                               gint           i,
-                                                               const gchar    *desc);
+static bboolean              bail_scale_button_do_action      (BatkAction      *action,
+                                                               bint           i);
+static bint                  bail_scale_button_get_n_actions  (BatkAction      *action);
+static const bchar*          bail_scale_button_get_description(BatkAction      *action,
+                                                               bint           i);
+static const bchar*          bail_scale_button_action_get_name(BatkAction      *action,
+                                                               bint           i);
+static const bchar*          bail_scale_button_get_keybinding (BatkAction      *action,
+                                                               bint           i);
+static bboolean              bail_scale_button_set_description(BatkAction      *action,
+                                                               bint           i,
+                                                               const bchar    *desc);
 
 /* BatkValue */
 static void	batk_value_interface_init	        (BatkValueIface  *iface);
@@ -62,7 +62,7 @@ static void	bail_scale_button_get_minimum_value     (BatkValue       *obj,
                                                          BValue         *value);
 static void	bail_scale_button_get_minimum_increment (BatkValue       *obj,
                                                          BValue         *value);
-static gboolean	bail_scale_button_set_current_value     (BatkValue       *obj,
+static bboolean	bail_scale_button_set_current_value     (BatkValue       *obj,
                                                          const BValue   *value);
 
 G_DEFINE_TYPE_WITH_CODE (BailScaleButton, bail_scale_button, BAIL_TYPE_BUTTON,
@@ -87,7 +87,7 @@ bail_scale_button_init (BailScaleButton *button)
 
 static void
 bail_scale_button_initialize (BatkObject *obj,
-                              gpointer   data)
+                              bpointer   data)
 {
   BATK_OBJECT_CLASS (bail_scale_button_parent_class)->initialize (obj, data);
 
@@ -105,9 +105,9 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_scale_button_set_description;
 }
 
-static gboolean
+static bboolean
 bail_scale_button_do_action(BatkAction *action,
-                            gint       i)
+                            bint       i)
 {
   BtkWidget *widget;
 
@@ -130,22 +130,22 @@ bail_scale_button_do_action(BatkAction *action,
   }
 }
 
-static gint
+static bint
 bail_scale_button_get_n_actions (BatkAction *action)
 {
   return 2;
 }
 
-static const gchar*
+static const bchar*
 bail_scale_button_get_description (BatkAction *action,
-                                   gint       i)
+                                   bint       i)
 {
   return NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_scale_button_action_get_name (BatkAction *action,
-                                   gint       i)
+                                   bint       i)
 {
   switch (i) {
     case 0:
@@ -157,17 +157,17 @@ bail_scale_button_action_get_name (BatkAction *action,
   }
 }
 
-static const gchar*
+static const bchar*
 bail_scale_button_get_keybinding (BatkAction *action,
-                                  gint       i)
+                                  bint       i)
 {
   return NULL;
 }
 
-static gboolean
+static bboolean
 bail_scale_button_set_description (BatkAction   *action,
-                                   gint         i,
-                                   const gchar *desc)
+                                   bint         i,
+                                   const bchar *desc)
 {
   return FALSE;
 }
@@ -254,7 +254,7 @@ bail_scale_button_get_minimum_increment (BatkValue *obj,
                         adj->step_increment);
 }
 
-static gboolean
+static bboolean
 bail_scale_button_set_current_value (BatkValue     *obj,
                                      const BValue *value)
 {

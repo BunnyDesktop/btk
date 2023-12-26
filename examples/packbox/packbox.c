@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include "btk/btk.h"
 
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -14,11 +14,11 @@ static gboolean delete_event( BtkWidget *widget,
 /* Make a new hbox filled with button-labels. Arguments for the
  * variables we're interested are passed in to this function.
  * We do not show the box, but do show everything inside. */
-static BtkWidget *make_box( gboolean homogeneous,
-                            gint     spacing,
-                            gboolean expand,
-                            gboolean fill,
-                            guint    padding )
+static BtkWidget *make_box( bboolean homogeneous,
+                            bint     spacing,
+                            bboolean expand,
+                            bboolean fill,
+                            buint    padding )
 {
     BtkWidget *box;
     BtkWidget *button;

@@ -42,10 +42,10 @@ typedef struct _BtkEntryCompletion            BtkEntryCompletion;
 typedef struct _BtkEntryCompletionClass       BtkEntryCompletionClass;
 typedef struct _BtkEntryCompletionPrivate     BtkEntryCompletionPrivate;
 
-typedef gboolean (* BtkEntryCompletionMatchFunc) (BtkEntryCompletion *completion,
-                                                  const gchar        *key,
+typedef bboolean (* BtkEntryCompletionMatchFunc) (BtkEntryCompletion *completion,
+                                                  const bchar        *key,
                                                   BtkTreeIter        *iter,
-                                                  gpointer            user_data);
+                                                  bpointer            user_data);
 
 
 struct _BtkEntryCompletion
@@ -60,14 +60,14 @@ struct _BtkEntryCompletionClass
 {
   BObjectClass parent_class;
 
-  gboolean (* match_selected)   (BtkEntryCompletion *completion,
+  bboolean (* match_selected)   (BtkEntryCompletion *completion,
                                  BtkTreeModel       *model,
                                  BtkTreeIter        *iter);
   void     (* action_activated) (BtkEntryCompletion *completion,
-                                 gint                index_);
-  gboolean (* insert_prefix)    (BtkEntryCompletion *completion,
-				 const gchar        *prefix);
-  gboolean (* cursor_on_match)  (BtkEntryCompletion *completion,
+                                 bint                index_);
+  bboolean (* insert_prefix)    (BtkEntryCompletion *completion,
+				 const bchar        *prefix);
+  bboolean (* cursor_on_match)  (BtkEntryCompletion *completion,
 				 BtkTreeModel       *model,
 				 BtkTreeIter        *iter);
 
@@ -88,44 +88,44 @@ BtkTreeModel       *btk_entry_completion_get_model              (BtkEntryComplet
 
 void                btk_entry_completion_set_match_func         (BtkEntryCompletion          *completion,
                                                                  BtkEntryCompletionMatchFunc  func,
-                                                                 gpointer                     func_data,
+                                                                 bpointer                     func_data,
                                                                  GDestroyNotify               func_notify);
 void                btk_entry_completion_set_minimum_key_length (BtkEntryCompletion          *completion,
-                                                                 gint                         length);
-gint                btk_entry_completion_get_minimum_key_length (BtkEntryCompletion          *completion);
+                                                                 bint                         length);
+bint                btk_entry_completion_get_minimum_key_length (BtkEntryCompletion          *completion);
 void                btk_entry_completion_complete               (BtkEntryCompletion          *completion);
 void                btk_entry_completion_insert_prefix          (BtkEntryCompletion          *completion);
 
 void                btk_entry_completion_insert_action_text     (BtkEntryCompletion          *completion,
-                                                                 gint                         index_,
-                                                                 const gchar                 *text);
+                                                                 bint                         index_,
+                                                                 const bchar                 *text);
 void                btk_entry_completion_insert_action_markup   (BtkEntryCompletion          *completion,
-                                                                 gint                         index_,
-                                                                 const gchar                 *markup);
+                                                                 bint                         index_,
+                                                                 const bchar                 *markup);
 void                btk_entry_completion_delete_action          (BtkEntryCompletion          *completion,
-                                                                 gint                         index_);
+                                                                 bint                         index_);
 
 void                btk_entry_completion_set_inline_completion  (BtkEntryCompletion          *completion,
-                                                                 gboolean                     inline_completion);
-gboolean            btk_entry_completion_get_inline_completion  (BtkEntryCompletion          *completion);
+                                                                 bboolean                     inline_completion);
+bboolean            btk_entry_completion_get_inline_completion  (BtkEntryCompletion          *completion);
 void                btk_entry_completion_set_inline_selection  (BtkEntryCompletion          *completion,
-                                                                 gboolean                     inline_selection);
-gboolean            btk_entry_completion_get_inline_selection  (BtkEntryCompletion          *completion);
+                                                                 bboolean                     inline_selection);
+bboolean            btk_entry_completion_get_inline_selection  (BtkEntryCompletion          *completion);
 void                btk_entry_completion_set_popup_completion   (BtkEntryCompletion          *completion,
-                                                                 gboolean                     popup_completion);
-gboolean            btk_entry_completion_get_popup_completion   (BtkEntryCompletion          *completion);
+                                                                 bboolean                     popup_completion);
+bboolean            btk_entry_completion_get_popup_completion   (BtkEntryCompletion          *completion);
 void                btk_entry_completion_set_popup_set_width    (BtkEntryCompletion          *completion,
-                                                                 gboolean                     popup_set_width);
-gboolean            btk_entry_completion_get_popup_set_width    (BtkEntryCompletion          *completion);
+                                                                 bboolean                     popup_set_width);
+bboolean            btk_entry_completion_get_popup_set_width    (BtkEntryCompletion          *completion);
 void                btk_entry_completion_set_popup_single_match (BtkEntryCompletion          *completion,
-                                                                 gboolean                     popup_single_match);
-gboolean            btk_entry_completion_get_popup_single_match (BtkEntryCompletion          *completion);
+                                                                 bboolean                     popup_single_match);
+bboolean            btk_entry_completion_get_popup_single_match (BtkEntryCompletion          *completion);
 
-const gchar         *btk_entry_completion_get_completion_prefix (BtkEntryCompletion *completion);
+const bchar         *btk_entry_completion_get_completion_prefix (BtkEntryCompletion *completion);
 /* convenience */
 void                btk_entry_completion_set_text_column        (BtkEntryCompletion          *completion,
-                                                                 gint                         column);
-gint                btk_entry_completion_get_text_column        (BtkEntryCompletion          *completion);
+                                                                 bint                         column);
+bint                btk_entry_completion_get_text_column        (BtkEntryCompletion          *completion);
 
 B_END_DECLS
 

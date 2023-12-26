@@ -47,7 +47,7 @@ enum
   LAST_SIGNAL
 }; 
 
-static guint signals[LAST_SIGNAL];
+static buint signals[LAST_SIGNAL];
 
 G_DEFINE_ABSTRACT_TYPE (BtkSearchEngine, _btk_search_engine, B_TYPE_OBJECT);
 
@@ -167,7 +167,7 @@ _btk_search_engine_stop (BtkSearchEngine *engine)
   BTK_SEARCH_ENGINE_GET_CLASS (engine)->stop (engine);
 }
 
-gboolean
+bboolean
 _btk_search_engine_is_indexed (BtkSearchEngine *engine)
 {
   g_return_val_if_fail (BTK_IS_SEARCH_ENGINE (engine), FALSE);
@@ -206,7 +206,7 @@ _btk_search_engine_finished (BtkSearchEngine *engine)
 
 void
 _btk_search_engine_error (BtkSearchEngine *engine, 
-			  const gchar     *error_message)
+			  const bchar     *error_message)
 {
   g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
   

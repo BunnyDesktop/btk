@@ -110,10 +110,10 @@ change_toolbar_style (BtkWidget *option_menu, BtkWidget *toolbar)
 
 static void
 set_visible_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
-		 BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
+		 BtkTreeModel *model, BtkTreeIter *iter, bpointer data)
 {
   BtkToolItem *tool_item;
-  gboolean visible;
+  bboolean visible;
 
   btk_tree_model_get (model, iter, 0, &tool_item, -1);
 
@@ -123,13 +123,13 @@ set_visible_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
 }
 
 static void
-visibile_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+visibile_toggled(BtkCellRendererToggle *cell, const bchar *path_str,
 		 BtkTreeModel *model)
 {
   BtkTreePath *path;
   BtkTreeIter iter;
   BtkToolItem *tool_item;
-  gboolean visible;
+  bboolean visible;
 
   path = btk_tree_path_new_from_string (path_str);
   btk_tree_model_get_iter (model, &iter, path);
@@ -145,7 +145,7 @@ visibile_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
 
 static void
 set_expand_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
-		BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
+		BtkTreeModel *model, BtkTreeIter *iter, bpointer data)
 {
   BtkToolItem *tool_item;
 
@@ -156,7 +156,7 @@ set_expand_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
 }
 
 static void
-expand_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+expand_toggled(BtkCellRendererToggle *cell, const bchar *path_str,
 	       BtkTreeModel *model)
 {
   BtkTreePath *path;
@@ -176,7 +176,7 @@ expand_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
 
 static void
 set_homogeneous_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
-		     BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
+		     BtkTreeModel *model, BtkTreeIter *iter, bpointer data)
 {
   BtkToolItem *tool_item;
 
@@ -187,7 +187,7 @@ set_homogeneous_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
 }
 
 static void
-homogeneous_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+homogeneous_toggled(BtkCellRendererToggle *cell, const bchar *path_str,
 		    BtkTreeModel *model)
 {
   BtkTreePath *path;
@@ -208,7 +208,7 @@ homogeneous_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
 
 static void
 set_important_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
-		   BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
+		   BtkTreeModel *model, BtkTreeIter *iter, bpointer data)
 {
   BtkToolItem *tool_item;
 
@@ -219,7 +219,7 @@ set_important_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
 }
 
 static void
-important_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+important_toggled(BtkCellRendererToggle *cell, const bchar *path_str,
 		  BtkTreeModel *model)
 {
   BtkTreePath *path;
@@ -293,7 +293,7 @@ create_items_list (BtkWidget **tree_view_p)
 }
 
 static void
-add_item_to_list (BtkListStore *store, BtkToolItem *item, const gchar *text)
+add_item_to_list (BtkListStore *store, BtkToolItem *item, const bchar *text)
 {
   BtkTreeIter iter;
 
@@ -346,11 +346,11 @@ icon_size_history_changed (BtkOptionMenu *menu, BtkToolbar *toolbar)
   btk_toolbar_set_icon_size (toolbar, icon_size);
 }
 
-static gboolean
+static bboolean
 toolbar_drag_drop (BtkWidget *widget, BdkDragContext *context,
-		   gint x, gint y, guint time, BtkWidget *label)
+		   bint x, bint y, buint time, BtkWidget *label)
 {
-  gchar buf[32];
+  bchar buf[32];
 
   g_snprintf(buf, sizeof(buf), "%d",
 	     btk_toolbar_get_drop_index (BTK_TOOLBAR (widget), x, y));
@@ -387,7 +387,7 @@ typedef struct
 } MenuPositionData;
 
 static void
-position_function (BtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user_data)
+position_function (BtkMenu *menu, bint *x, bint *y, bboolean *push_in, bpointer user_data)
 {
   /* Do not do this in your own code */
 
@@ -403,8 +403,8 @@ position_function (BtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer 
     *push_in = FALSE;
 }
 
-static gboolean
-popup_context_menu (BtkToolbar *toolbar, gint x, gint y, gint button_number)
+static bboolean
+popup_context_menu (BtkToolbar *toolbar, bint x, bint y, bint button_number)
 {
   MenuPositionData position_data;
   
@@ -414,7 +414,7 @@ popup_context_menu (BtkToolbar *toolbar, gint x, gint y, gint button_number)
   for (i = 0; i < 5; i++)
     {
       BtkWidget *item;
-      gchar *label = g_strdup_printf ("Item _%d", i);
+      bchar *label = g_strdup_printf ("Item _%d", i);
       item = btk_menu_item_new_with_mnemonic (label);
       btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
     }
@@ -436,15 +436,15 @@ popup_context_menu (BtkToolbar *toolbar, gint x, gint y, gint button_number)
 
 static BtkToolItem *drag_item = NULL;
 
-static gboolean
+static bboolean
 toolbar_drag_motion (BtkToolbar     *toolbar,
 		     BdkDragContext *context,
-		     gint            x,
-		     gint            y,
-		     guint           time,
-		     gpointer        null)
+		     bint            x,
+		     bint            y,
+		     buint           time,
+		     bpointer        null)
 {
-  gint index;
+  bint index;
   
   if (!drag_item)
     {
@@ -464,8 +464,8 @@ toolbar_drag_motion (BtkToolbar     *toolbar,
 static void
 toolbar_drag_leave (BtkToolbar     *toolbar,
 		    BdkDragContext *context,
-		    guint           time,
-		    gpointer	    null)
+		    buint           time,
+		    bpointer	    null)
 {
   if (drag_item)
     {
@@ -476,10 +476,10 @@ toolbar_drag_leave (BtkToolbar     *toolbar,
   btk_toolbar_set_drop_highlight_item (toolbar, NULL, 0);
 }
 
-static gboolean
+static bboolean
 timeout_cb (BtkWidget *widget)
 {
-  static gboolean sensitive = TRUE;
+  static bboolean sensitive = TRUE;
   
   sensitive = !sensitive;
   
@@ -488,22 +488,22 @@ timeout_cb (BtkWidget *widget)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 timeout_cb1 (BtkWidget *widget)
 {
-	static gboolean sensitive = TRUE;
+	static bboolean sensitive = TRUE;
 	sensitive = !sensitive;
 	btk_widget_set_sensitive (widget, sensitive);
 	return TRUE;
 }
 
-gint
-main (gint argc, gchar **argv)
+bint
+main (bint argc, bchar **argv)
 {
   BtkWidget *window, *toolbar, *table, *treeview, *scrolled_window;
   BtkWidget *hbox, *hbox1, *hbox2, *checkbox, *option_menu, *menu;
-  gint i;
-  static const gchar *toolbar_styles[] = { "icons", "text", "both (vertical)",
+  bint i;
+  static const bchar *toolbar_styles[] = { "icons", "text", "both (vertical)",
 					   "both (horizontal)" };
   BtkToolItem *item;
   BtkListStore *store;

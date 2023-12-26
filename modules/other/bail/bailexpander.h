@@ -39,9 +39,9 @@ struct _BailExpander
 {
   BailContainer parent;
 
-  gchar         *activate_description;
-  gchar         *activate_keybinding;
-  guint         action_idle_handler;
+  bchar         *activate_description;
+  bchar         *activate_keybinding;
+  buint         action_idle_handler;
 
   BailTextUtil   *textutil;
 };

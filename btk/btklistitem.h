@@ -63,21 +63,21 @@ struct _BtkListItemClass
   void (*end_selection)     (BtkListItem   *list_item);
   void (*extend_selection)  (BtkListItem   *list_item,
 			     BtkScrollType  scroll_type,
-			     gfloat         position,
-			     gboolean       auto_start_selection);
+			     bfloat         position,
+			     bboolean       auto_start_selection);
   void (*scroll_horizontal) (BtkListItem   *list_item,
 			     BtkScrollType  scroll_type,
-			     gfloat         position);
+			     bfloat         position);
   void (*scroll_vertical)   (BtkListItem   *list_item,
 			     BtkScrollType  scroll_type,
-			     gfloat         position);
+			     bfloat         position);
   void (*toggle_add_mode)   (BtkListItem   *list_item);
 };
 
 
 GType      btk_list_item_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_list_item_new            (void);
-BtkWidget* btk_list_item_new_with_label (const gchar      *label);
+BtkWidget* btk_list_item_new_with_label (const bchar      *label);
 void       btk_list_item_select         (BtkListItem      *list_item);
 void       btk_list_item_deselect       (BtkListItem      *list_item);
 

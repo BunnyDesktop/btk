@@ -65,11 +65,11 @@ enum {
 
 struct _BtkSpinnerPrivate
 {
-  guint current;
-  guint num_steps;
-  guint cycle_duration;
-  gboolean active;
-  guint timeout;
+  buint current;
+  buint num_steps;
+  buint cycle_duration;
+  bboolean active;
+  buint timeout;
 };
 
 static void btk_spinner_class_init     (BtkSpinnerClass *klass);
@@ -77,22 +77,22 @@ static void btk_spinner_init           (BtkSpinner      *spinner);
 static void btk_spinner_dispose        (BObject         *bobject);
 static void btk_spinner_realize        (BtkWidget       *widget);
 static void btk_spinner_unrealize      (BtkWidget       *widget);
-static gboolean btk_spinner_expose     (BtkWidget       *widget,
+static bboolean btk_spinner_expose     (BtkWidget       *widget,
                                         BdkEventExpose  *event);
 static void btk_spinner_screen_changed (BtkWidget       *widget,
                                         BdkScreen       *old_screen);
 static void btk_spinner_style_set      (BtkWidget       *widget,
                                         BtkStyle        *prev_style);
 static void btk_spinner_get_property   (BObject         *object,
-                                        guint            param_id,
+                                        buint            param_id,
                                         BValue          *value,
                                         BParamSpec      *pspec);
 static void btk_spinner_set_property   (BObject         *object,
-                                        guint            param_id,
+                                        buint            param_id,
                                         const BValue    *value,
                                         BParamSpec      *pspec);
 static void btk_spinner_set_active     (BtkSpinner      *spinner,
-                                        gboolean         active);
+                                        bboolean         active);
 static BatkObject *btk_spinner_get_accessible      (BtkWidget *widget);
 static GType      btk_spinner_accessible_get_type (void);
 
@@ -143,7 +143,7 @@ btk_spinner_class_init (BtkSpinnerClass *klass)
                                                              P_("Number of steps"),
                                                              P_("The number of steps for the spinner to complete a full loop. The animation will complete a full cycle in one second by default (see #BtkSpinner:cycle-duration)."),
                                                              1,
-                                                             G_MAXUINT,
+                                                             B_MAXUINT,
                                                              12,
                                                              G_PARAM_READABLE));
 
@@ -159,14 +159,14 @@ btk_spinner_class_init (BtkSpinnerClass *klass)
                                                              P_("Animation duration"),
                                                              P_("The length of time in milliseconds for the spinner to complete a full loop"),
                                                              500,
-                                                             G_MAXUINT,
+                                                             B_MAXUINT,
                                                              1000,
                                                              G_PARAM_READABLE));
 }
 
 static void
 btk_spinner_get_property (BObject    *object,
-                          guint       param_id,
+                          buint       param_id,
                           BValue     *value,
                           BParamSpec *pspec)
 {
@@ -186,7 +186,7 @@ btk_spinner_get_property (BObject    *object,
 
 static void
 btk_spinner_set_property (BObject      *object,
-                          guint         param_id,
+                          buint         param_id,
                           const BValue *value,
                           BParamSpec   *pspec)
 {
@@ -214,7 +214,7 @@ btk_spinner_init (BtkSpinner *spinner)
   btk_widget_set_has_window (BTK_WIDGET (spinner), FALSE);
 }
 
-static gboolean
+static bboolean
 btk_spinner_expose (BtkWidget      *widget,
                     BdkEventExpose *event)
 {
@@ -247,8 +247,8 @@ btk_spinner_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-btk_spinner_timeout (gpointer data)
+static bboolean
+btk_spinner_timeout (bpointer data)
 {
   BtkSpinnerPrivate *priv;
 
@@ -271,7 +271,7 @@ btk_spinner_add_timeout (BtkSpinner *spinner)
 
   priv = spinner->priv;
 
-  priv->timeout = bdk_threads_add_timeout ((guint) priv->cycle_duration / priv->num_steps, btk_spinner_timeout, spinner);
+  priv->timeout = bdk_threads_add_timeout ((buint) priv->cycle_duration / priv->num_steps, btk_spinner_timeout, spinner);
 }
 
 static void
@@ -366,7 +366,7 @@ btk_spinner_dispose (BObject *bobject)
 }
 
 static void
-btk_spinner_set_active (BtkSpinner *spinner, gboolean active)
+btk_spinner_set_active (BtkSpinner *spinner, bboolean active)
 {
   BtkSpinnerPrivate *priv;
 
@@ -453,7 +453,7 @@ static BatkObjectClass *a11y_parent_class = NULL;
 
 static void
 btk_spinner_accessible_initialize (BatkObject *accessible,
-                                   gpointer   widget)
+                                   bpointer   widget)
 {
   batk_object_set_name (accessible, C_("throbbing progress animation widget", "Spinner"));
   batk_object_set_description (accessible, _("Provides visual indication of progress"));
@@ -471,8 +471,8 @@ btk_spinner_accessible_class_init (BatkObjectClass *klass)
 
 static void
 btk_spinner_accessible_image_get_size (BatkImage *image,
-                                       gint     *width,
-                                       gint     *height)
+                                       bint     *width,
+                                       bint     *height)
 {
   BtkWidget *widget;
 
@@ -550,7 +550,7 @@ btk_spinner_accessible_get_type (void)
 static BatkObject *
 btk_spinner_get_accessible (BtkWidget *widget)
 {
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   if (first_time)
     {

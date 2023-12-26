@@ -52,10 +52,10 @@ struct _BtkAspectFrame
 {
   BtkFrame frame;
 
-  gfloat   GSEAL (xalign);
-  gfloat   GSEAL (yalign);
-  gfloat   GSEAL (ratio);
-  gboolean GSEAL (obey_child);
+  bfloat   GSEAL (xalign);
+  bfloat   GSEAL (yalign);
+  bfloat   GSEAL (ratio);
+  bboolean GSEAL (obey_child);
 
   BtkAllocation GSEAL (center_allocation);
 };
@@ -67,16 +67,16 @@ struct _BtkAspectFrameClass
 
 
 GType      btk_aspect_frame_get_type   (void) B_GNUC_CONST;
-BtkWidget* btk_aspect_frame_new        (const gchar     *label,
-					gfloat           xalign,
-					gfloat           yalign,
-					gfloat           ratio,
-					gboolean         obey_child);
+BtkWidget* btk_aspect_frame_new        (const bchar     *label,
+					bfloat           xalign,
+					bfloat           yalign,
+					bfloat           ratio,
+					bboolean         obey_child);
 void       btk_aspect_frame_set        (BtkAspectFrame  *aspect_frame,
-					gfloat           xalign,
-					gfloat           yalign,
-					gfloat           ratio,
-					gboolean         obey_child);
+					bfloat           xalign,
+					bfloat           yalign,
+					bfloat           ratio,
+					bboolean         obey_child);
 
 
 B_END_DECLS

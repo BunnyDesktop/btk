@@ -34,14 +34,14 @@
 static void btk_file_chooser_widget_finalize     (BObject                   *object);
 
 static BObject* btk_file_chooser_widget_constructor  (GType                  type,
-						      guint                  n_construct_properties,
+						      buint                  n_construct_properties,
 						      BObjectConstructParam *construct_params);
 static void     btk_file_chooser_widget_set_property (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      const BValue          *value,
 						      BParamSpec            *pspec);
 static void     btk_file_chooser_widget_get_property (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      BValue                *value,
 						      BParamSpec            *pspec);
 
@@ -87,7 +87,7 @@ btk_file_chooser_widget_finalize (BObject *object)
 
 static BObject*
 btk_file_chooser_widget_constructor (GType                  type,
-				     guint                  n_construct_properties,
+				     buint                  n_construct_properties,
 				     BObjectConstructParam *construct_params)
 {
   BtkFileChooserWidgetPrivate *priv;
@@ -118,7 +118,7 @@ btk_file_chooser_widget_constructor (GType                  type,
 
 static void
 btk_file_chooser_widget_set_property (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      const BValue    *value,
 				      BParamSpec      *pspec)
 {
@@ -138,7 +138,7 @@ btk_file_chooser_widget_set_property (BObject         *object,
 
 static void
 btk_file_chooser_widget_get_property (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      BValue          *value,
 				      BParamSpec      *pspec)
 {
@@ -185,7 +185,7 @@ btk_file_chooser_widget_new (BtkFileChooserAction action)
  **/
 BtkWidget *
 btk_file_chooser_widget_new_with_backend (BtkFileChooserAction  action,
-					  const gchar          *backend)
+					  const bchar          *backend)
 {
   return g_object_new (BTK_TYPE_FILE_CHOOSER_WIDGET,
 		       "action", action,

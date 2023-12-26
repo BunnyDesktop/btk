@@ -59,14 +59,14 @@ struct _BtkRecentChooserDialogClass
 
 GType      btk_recent_chooser_dialog_get_type        (void) B_GNUC_CONST;
 
-BtkWidget *btk_recent_chooser_dialog_new             (const gchar      *title,
+BtkWidget *btk_recent_chooser_dialog_new             (const bchar      *title,
 					              BtkWindow        *parent,
-					              const gchar      *first_button_text,
+					              const bchar      *first_button_text,
 					              ...) B_GNUC_NULL_TERMINATED;
-BtkWidget *btk_recent_chooser_dialog_new_for_manager (const gchar      *title,
+BtkWidget *btk_recent_chooser_dialog_new_for_manager (const bchar      *title,
 						      BtkWindow        *parent,
 						      BtkRecentManager *manager,
-						      const gchar      *first_button_text,
+						      const bchar      *first_button_text,
 						      ...) B_GNUC_NULL_TERMINATED;
 
 B_END_DECLS

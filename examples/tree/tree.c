@@ -5,9 +5,9 @@
 
 /* for all the BtkItem:: and BtkTreeItem:: signals */
 static void cb_itemsignal( BtkWidget *item,
-                           gchar     *signame )
+                           bchar     *signame )
 {
-  gchar *name;
+  bchar *name;
   BtkLabel *label;
 
   /* It's a Bin, so it has one child, which we know to be a
@@ -47,7 +47,7 @@ static void cb_selection_changed( BtkWidget *tree )
 
   i = BTK_TREE_SELECTION_OLD (tree);
   while (i) {
-    gchar *name;
+    bchar *name;
     BtkLabel *label;
     BtkWidget *item;
 
@@ -65,9 +65,9 @@ int main( int   argc,
           char *argv[] )
 {
   BtkWidget *window, *scrolled_win, *tree;
-  static gchar *itemnames[] = {"Foo", "Bar", "Baz", "Quux",
+  static bchar *itemnames[] = {"Foo", "Bar", "Baz", "Quux",
 			       "Maurice"};
-  gint i;
+  bint i;
 
   btk_init (&argc, &argv);
 
@@ -107,7 +107,7 @@ int main( int   argc,
 
   for (i = 0; i < 5; i++){
     BtkWidget *subtree, *item;
-    gint j;
+    bint j;
 
     /* Create a tree item */
     item = btk_tree_item_new_with_label (itemnames[i]);

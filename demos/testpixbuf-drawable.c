@@ -5,14 +5,14 @@
 #include <btk/btk.h>
 
 int
-close_app (BtkWidget *widget, gpointer data)
+close_app (BtkWidget *widget, bpointer data)
 {
    btk_main_quit ();
    return TRUE;
 }
 
 int
-expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
+expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, bpointer data)
 {
    BdkPixbuf *pixbuf;
          
@@ -47,7 +47,7 @@ expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
 }
 
 int
-configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
+configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, bpointer data)
 {
    BdkPixbuf *pixbuf;
                            

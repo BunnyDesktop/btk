@@ -38,8 +38,8 @@ typedef struct _BailBooleanCellClass             BailBooleanCellClass;
 struct _BailBooleanCell
 {
   BailRendererCell parent;
-  gboolean cell_value;
-  gboolean cell_sensitive;
+  bboolean cell_value;
+  bboolean cell_sensitive;
 };
 
  GType bail_boolean_cell_get_type (void);

@@ -34,13 +34,13 @@ struct cell_params {
   int ypad;				/* 3 */
   double xalign;			/* 4 */
   double yalign;			/* 5 */
-  gboolean sensitive;			/* 6 */
+  bboolean sensitive;			/* 6 */
   int width;				/* 7 */
   int height;				/* 8 */
   int width_chars;			/* 9 */
   int wrap_width;			/* 10 */
   BangoWrapMode wrap_mode;		/* 11 */
-  gboolean single_paragraph_mode;	/* 12 */
+  bboolean single_paragraph_mode;	/* 12 */
   BangoEllipsizeMode ellipsize;		/* 13 */
   BangoAlignment alignment;			/* 14 */
   /* COL_BACKGROUND	 */		/* 15 */
@@ -166,7 +166,7 @@ create_list_store (void)
 }
 
 static BtkWidget *
-create_tree (gboolean rtl)
+create_tree (bboolean rtl)
 {
   BtkWidget *sw;
   BtkWidget *treeview;

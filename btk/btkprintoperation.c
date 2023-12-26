@@ -76,14 +76,14 @@ enum
   PROP_N_PAGES_TO_PRINT
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 static int job_nr = 0;
 typedef struct _PrintPagesData PrintPagesData;
 
 static void          preview_iface_init      (BtkPrintOperationPreviewIface *iface);
 static BtkPageSetup *create_page_setup       (BtkPrintOperation             *op);
 static void          common_render_page      (BtkPrintOperation             *op,
-					      gint                           page_nr);
+					      bint                           page_nr);
 static void          increment_page_sequence (PrintPagesData *data);
 static void          prepare_data            (PrintPagesData *data);
 static void          clamp_page_ranges       (PrintPagesData *data);
@@ -192,7 +192,7 @@ btk_print_operation_init (BtkPrintOperation *operation)
 
 static void
 preview_iface_render_page (BtkPrintOperationPreview *preview,
-			   gint                      page_nr)
+			   bint                      page_nr)
 {
 
   BtkPrintOperation *op;
@@ -221,9 +221,9 @@ preview_iface_end_preview (BtkPrintOperationPreview *preview)
   g_signal_emit (op, signals[DONE], 0, BTK_PRINT_OPERATION_RESULT_APPLY);
 }
 
-static gboolean
+static bboolean
 preview_iface_is_selected (BtkPrintOperationPreview *preview,
-			   gint                      page_nr)
+			   bint                      page_nr)
 {
   BtkPrintOperation *op;
   BtkPrintOperationPrivate *priv;
@@ -285,8 +285,8 @@ preview_end_page (BtkPrintOperation *op,
 
 static void
 preview_end_run (BtkPrintOperation *op,
-		 gboolean           wait,
-		 gboolean           cancelled)
+		 bboolean           wait,
+		 bboolean           cancelled)
 {
   g_free (op->priv->page_ranges);
   op->priv->page_ranges = NULL;
@@ -295,7 +295,7 @@ preview_end_run (BtkPrintOperation *op,
 
 static void
 btk_print_operation_set_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  const BValue *value,
 				  BParamSpec   *pspec)
 {
@@ -356,7 +356,7 @@ btk_print_operation_set_property (BObject      *object,
 
 static void
 btk_print_operation_get_property (BObject    *object,
-				  guint       prop_id,
+				  buint       prop_id,
 				  BValue     *value,
 				  BParamSpec *pspec)
 {
@@ -428,26 +428,26 @@ btk_print_operation_get_property (BObject    *object,
 struct _PrintPagesData
 {
   BtkPrintOperation *op;
-  gint uncollated_copies;
-  gint collated_copies;
-  gint uncollated, collated, total;
+  bint uncollated_copies;
+  bint collated_copies;
+  bint uncollated, collated, total;
 
-  gint range, num_ranges;
+  bint range, num_ranges;
   BtkPageRange *ranges;
   BtkPageRange one_range;
 
-  gint page;
-  gint sheet;
-  gint first_position, last_position;
-  gint first_sheet;
-  gint num_of_sheets;
-  gint *pages;
+  bint page;
+  bint sheet;
+  bint first_position, last_position;
+  bint first_sheet;
+  bint num_of_sheets;
+  bint *pages;
 
   BtkWidget *progress;
  
-  gboolean initialized;
-  gboolean is_preview;
-  gboolean done;
+  bboolean initialized;
+  bboolean is_preview;
+  bboolean done;
 };
 
 typedef struct
@@ -456,13 +456,13 @@ typedef struct
   BtkPrintContext *print_context;
   BtkWindow *parent;
   bairo_surface_t *surface;
-  gchar *filename;
-  gboolean wait;
+  bchar *filename;
+  bboolean wait;
   PrintPagesData *pages_data;
 } PreviewOp;
 
 static void
-preview_print_idle_done (gpointer data)
+preview_print_idle_done (bpointer data)
 {
   BtkPrintOperation *op;
   PreviewOp *pop = (PreviewOp *) data;
@@ -488,13 +488,13 @@ preview_print_idle_done (gpointer data)
   g_free (pop);
 }
 
-static gboolean
-preview_print_idle (gpointer data)
+static bboolean
+preview_print_idle (bpointer data)
 {
   PreviewOp *pop;
   BtkPrintOperation *op;
   BtkPrintOperationPrivate *priv; 
-  gboolean done = FALSE;
+  bboolean done = FALSE;
 
   pop = (PreviewOp *) data;
   op = BTK_PRINT_OPERATION (pop->preview);
@@ -554,13 +554,13 @@ preview_ready (BtkPrintOperationPreview *preview,
 }
 
 
-static gboolean
+static bboolean
 btk_print_operation_preview_handler (BtkPrintOperation        *op,
                                      BtkPrintOperationPreview *preview, 
 				     BtkPrintContext          *context,
 				     BtkWindow                *parent)
 {
-  gdouble dpi_x, dpi_y;
+  bdouble dpi_x, dpi_y;
   PreviewOp *pop;
   BtkPageSetup *page_setup;
   bairo_t *cr;
@@ -604,7 +604,7 @@ btk_print_operation_create_custom_widget (BtkPrintOperation *operation)
   return NULL;
 }
 
-static gboolean
+static bboolean
 btk_print_operation_paginate (BtkPrintOperation *operation,
                               BtkPrintContext   *context)
 {
@@ -625,13 +625,13 @@ btk_print_operation_done (BtkPrintOperation       *operation,
     } 
 }
 
-static gboolean
+static bboolean
 custom_widget_accumulator (GSignalInvocationHint *ihint,
 			   BValue                *return_accu,
 			   const BValue          *handler_return,
-			   gpointer               dummy)
+			   bpointer               dummy)
 {
-  gboolean continue_emission;
+  bboolean continue_emission;
   BtkWidget *widget;
   
   widget = b_value_get_object (handler_return);
@@ -642,11 +642,11 @@ custom_widget_accumulator (GSignalInvocationHint *ihint,
   return continue_emission;
 }
 
-static gboolean
+static bboolean
 paginate_accumulator (GSignalInvocationHint *ihint,
                       BValue                *return_accu,
                       const BValue          *handler_return,
-                      gpointer               dummy)
+                      bpointer               dummy)
 {
   *return_accu = *handler_return;
 
@@ -792,13 +792,13 @@ btk_print_operation_class_init (BtkPrintOperationClass *class)
    * static void
    * draw_page (BtkPrintOperation *operation,
    *            BtkPrintContext   *context,
-   *            gint               page_nr,
-   *            gpointer           user_data)
+   *            bint               page_nr,
+   *            bpointer           user_data)
    * {
    *   bairo_t *cr;
    *   BangoLayout *layout;
-   *   gdouble width, text_height;
-   *   gint layout_height;
+   *   bdouble width, text_height;
+   *   bint layout_height;
    *   BangoFontDescription *desc;
    *   
    *   cr = btk_print_context_get_bairo_context (context);
@@ -820,7 +820,7 @@ btk_print_operation_class_init (BtkPrintOperationClass *class)
    *   bango_layout_set_alignment (layout, BANGO_ALIGN_CENTER);
    *      		      
    *   bango_layout_get_size (layout, NULL, &layout_height);
-   *   text_height = (gdouble)layout_height / BANGO_SCALE;
+   *   text_height = (bdouble)layout_height / BANGO_SCALE;
    *   
    *   bairo_move_to (cr, width / 2,  (HEADER_HEIGHT - text_height) / 2);
    *   bango_bairo_show_layout (cr, layout);
@@ -1082,7 +1082,7 @@ btk_print_operation_class_init (BtkPrintOperationClass *class)
 						     P_("Number of Pages"),
 						     P_("The number of pages in the document."),
 						     -1,
-						     G_MAXINT,
+						     B_MAXINT,
 						     -1,
 						     BTK_PARAM_READWRITE));
 
@@ -1104,7 +1104,7 @@ btk_print_operation_class_init (BtkPrintOperationClass *class)
 						     P_("Current Page"),
 						     P_("The current page in the document"),
 						     -1,
-						     G_MAXINT,
+						     B_MAXINT,
 						     -1,
 						     BTK_PARAM_READWRITE));
   
@@ -1356,7 +1356,7 @@ btk_print_operation_class_init (BtkPrintOperationClass *class)
 						     P_("Number of Pages To Print"),
 						     P_("The number of pages that will be printed."),
 						     -1,
-						     G_MAXINT,
+						     B_MAXINT,
 						     -1,
 						     BTK_PARAM_READABLE));
 }
@@ -1513,7 +1513,7 @@ btk_print_operation_get_print_settings (BtkPrintOperation *op)
  **/
 void
 btk_print_operation_set_job_name (BtkPrintOperation *op,
-				  const gchar       *job_name)
+				  const bchar       *job_name)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1549,7 +1549,7 @@ btk_print_operation_set_job_name (BtkPrintOperation *op,
  **/
 void
 btk_print_operation_set_n_pages (BtkPrintOperation *op,
-				 gint               n_pages)
+				 bint               n_pages)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1584,7 +1584,7 @@ btk_print_operation_set_n_pages (BtkPrintOperation *op,
  **/
 void
 btk_print_operation_set_current_page (BtkPrintOperation *op,
-				      gint               current_page)
+				      bint               current_page)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1619,7 +1619,7 @@ btk_print_operation_set_current_page (BtkPrintOperation *op,
  */
 void
 btk_print_operation_set_use_full_page (BtkPrintOperation *op,
-				       gboolean           full_page)
+				       bboolean           full_page)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1683,7 +1683,7 @@ btk_print_operation_set_unit (BtkPrintOperation *op,
  */
 void
 btk_print_operation_set_track_print_status (BtkPrintOperation  *op,
-					    gboolean            track_status)
+					    bboolean            track_status)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1702,10 +1702,10 @@ btk_print_operation_set_track_print_status (BtkPrintOperation  *op,
 void
 _btk_print_operation_set_status (BtkPrintOperation *op,
 				 BtkPrintStatus     status,
-				 const gchar       *string)
+				 const bchar       *string)
 {
   BtkPrintOperationPrivate *priv = op->priv;
-  static const gchar *status_strs[] = {
+  static const bchar *status_strs[] = {
     NC_("print operation status", "Initial state"),
     NC_("print operation status", "Preparing to print"),
     NC_("print operation status", "Generating data"),
@@ -1774,7 +1774,7 @@ btk_print_operation_get_status (BtkPrintOperation *op)
  *
  * Since: 2.10
  **/
-const gchar *
+const bchar *
 btk_print_operation_get_status_string (BtkPrintOperation *op)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), "");
@@ -1798,7 +1798,7 @@ btk_print_operation_get_status_string (BtkPrintOperation *op)
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_print_operation_is_finished (BtkPrintOperation *op)
 {
   BtkPrintOperationPrivate *priv;
@@ -1823,7 +1823,7 @@ btk_print_operation_is_finished (BtkPrintOperation *op)
  */
 void
 btk_print_operation_set_show_progress (BtkPrintOperation  *op,
-				       gboolean            show_progress)
+				       bboolean            show_progress)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1854,7 +1854,7 @@ btk_print_operation_set_show_progress (BtkPrintOperation  *op,
  */
 void
 btk_print_operation_set_allow_async (BtkPrintOperation  *op,
-				     gboolean            allow_async)
+				     bboolean            allow_async)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1884,7 +1884,7 @@ btk_print_operation_set_allow_async (BtkPrintOperation  *op,
  */
 void
 btk_print_operation_set_custom_tab_label (BtkPrintOperation  *op,
-					  const gchar        *label)
+					  const bchar        *label)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1917,7 +1917,7 @@ btk_print_operation_set_custom_tab_label (BtkPrintOperation  *op,
  */
 void
 btk_print_operation_set_export_filename (BtkPrintOperation *op,
-					 const gchar       *filename)
+					 const bchar       *filename)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -1984,7 +1984,7 @@ pdf_start_page (BtkPrintOperation *op,
 {
   BtkPaperSize *paper_size;
   bairo_surface_t *surface = op->priv->platform_data;
-  gdouble w, h;
+  bdouble w, h;
 
   paper_size = btk_page_setup_get_paper_size (page_setup);
 
@@ -2010,8 +2010,8 @@ pdf_end_page (BtkPrintOperation *op,
 
 static void
 pdf_end_run (BtkPrintOperation *op,
-	     gboolean           wait,
-	     gboolean           cancelled)
+	     bboolean           wait,
+	     bboolean           cancelled)
 {
   BtkPrintOperationPrivate *priv = op->priv;
   bairo_surface_t *surface = priv->platform_data;
@@ -2026,13 +2026,13 @@ pdf_end_run (BtkPrintOperation *op,
 static BtkPrintOperationResult
 run_pdf (BtkPrintOperation  *op,
 	 BtkWindow          *parent,
-	 gboolean           *do_print)
+	 bboolean           *do_print)
 {
   BtkPrintOperationPrivate *priv = op->priv;
   BtkPageSetup *page_setup;
   bairo_surface_t *surface;
   bairo_t *cr;
-  gdouble width, height;
+  bdouble width, height;
   
   priv->print_context = _btk_print_context_new (op);
   
@@ -2096,8 +2096,8 @@ static void
 clamp_page_ranges (PrintPagesData *data)
 {
   BtkPrintOperationPrivate *priv; 
-  gint                      num_of_correct_ranges;
-  gint                      i;
+  bint                      num_of_correct_ranges;
+  bint                      i;
 
   priv = data->op->priv;
 
@@ -2136,7 +2136,7 @@ static void
 increment_page_sequence (PrintPagesData *data)
 {
   BtkPrintOperationPrivate *priv = data->op->priv;
-  gint inc;
+  bint inc;
 
   if (data->total == -1)
     {
@@ -2227,7 +2227,7 @@ increment_page_sequence (PrintPagesData *data)
 }
 
 static void
-print_pages_idle_done (gpointer user_data)
+print_pages_idle_done (bpointer user_data)
 {
   PrintPagesData *data;
   BtkPrintOperationPrivate *priv;
@@ -2264,7 +2264,7 @@ static void
 update_progress (PrintPagesData *data)
 {
   BtkPrintOperationPrivate *priv; 
-  gchar *text = NULL;
+  bchar *text = NULL;
   
   priv = data->op->priv;
  
@@ -2322,7 +2322,7 @@ btk_print_operation_set_defer_drawing (BtkPrintOperation *op)
  **/
 void
 btk_print_operation_set_embed_page_setup (BtkPrintOperation  *op,
-                                          gboolean            embed)
+                                          bboolean            embed)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -2348,7 +2348,7 @@ btk_print_operation_set_embed_page_setup (BtkPrintOperation  *op,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_operation_get_embed_page_setup (BtkPrintOperation *op)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), FALSE);
@@ -2394,7 +2394,7 @@ btk_print_operation_draw_page_finish (BtkPrintOperation *op)
 
 static void
 common_render_page (BtkPrintOperation *op,
-		    gint               page_nr)
+		    bint               page_nr)
 {
   BtkPrintOperationPrivate *priv = op->priv;
   BtkPageSetup *page_setup;
@@ -2427,14 +2427,14 @@ common_render_page (BtkPrintOperation *op,
     {
       BtkPageOrientation  orientation;
       BtkPageSetup       *page_setup;
-      gdouble             paper_width, paper_height;
-      gdouble             page_width, page_height;
-      gdouble             context_width, context_height;
-      gdouble             bottom_margin, top_margin, left_margin, right_margin;
-      gdouble             x_step, y_step;
-      gdouble             x_scale, y_scale, scale;
-      gdouble             horizontal_offset = 0.0, vertical_offset = 0.0;
-      gint                columns, rows, x, y, tmp_length;
+      bdouble             paper_width, paper_height;
+      bdouble             page_width, page_height;
+      bdouble             context_width, context_height;
+      bdouble             bottom_margin, top_margin, left_margin, right_margin;
+      bdouble             x_step, y_step;
+      bdouble             x_scale, y_scale, scale;
+      bdouble             horizontal_offset = 0.0, vertical_offset = 0.0;
+      bint                columns, rows, x, y, tmp_length;
 
       page_setup = btk_print_context_get_page_setup (print_context);
       orientation = btk_page_setup_get_orientation (page_setup);
@@ -2621,8 +2621,8 @@ prepare_data (PrintPagesData *data)
 {
   BtkPrintOperationPrivate *priv;
   BtkPageSetup             *page_setup;
-  gboolean                  paginated = FALSE;
-  gint                      i, j, counter;
+  bboolean                  paginated = FALSE;
+  bint                      i, j, counter;
 
   priv = data->op->priv;
 
@@ -2699,7 +2699,7 @@ prepare_data (PrintPagesData *data)
   for (i = 0; i < data->num_ranges; i++)
     priv->nr_of_pages_to_print += data->ranges[i].end - data->ranges[i].start + 1;
 
-  data->pages = g_new (gint, priv->nr_of_pages_to_print);
+  data->pages = g_new (bint, priv->nr_of_pages_to_print);
   counter = 0;
   for (i = 0; i < data->num_ranges; i++)
     for (j = data->ranges[i].start; j <= data->ranges[i].end; j++)
@@ -2785,12 +2785,12 @@ prepare_data (PrintPagesData *data)
                                    NULL);
 }
 
-static gboolean
-print_pages_idle (gpointer user_data)
+static bboolean
+print_pages_idle (bpointer user_data)
 {
   PrintPagesData *data; 
   BtkPrintOperationPrivate *priv;
-  gboolean done = FALSE;
+  bboolean done = FALSE;
 
   data = (PrintPagesData*)user_data;
   priv = data->op->priv;
@@ -2842,8 +2842,8 @@ print_pages_idle (gpointer user_data)
   
 static void
 handle_progress_response (BtkWidget *dialog, 
-			  gint       response,
-			  gpointer   data)
+			  bint       response,
+			  bpointer   data)
 {
   BtkPrintOperation *op = (BtkPrintOperation *)data;
 
@@ -2851,7 +2851,7 @@ handle_progress_response (BtkWidget *dialog,
   btk_print_operation_cancel (op);
 }
 
-static gboolean
+static bboolean
 show_progress_timeout (PrintPagesData *data)
 {
   btk_window_present (BTK_WINDOW (data->progress));
@@ -2864,7 +2864,7 @@ show_progress_timeout (PrintPagesData *data)
 static void
 print_pages (BtkPrintOperation       *op,
 	     BtkWindow               *parent,
-	     gboolean                 do_print,
+	     bboolean                 do_print,
 	     BtkPrintOperationResult  result)
 {
   BtkPrintOperationPrivate *priv = op->priv;
@@ -2904,7 +2904,7 @@ print_pages (BtkPrintOperation       *op,
 
   if (data->is_preview)
     {
-      gboolean handled;
+      bboolean handled;
       
       g_signal_emit_by_name (op, "preview",
 			     BTK_PRINT_OPERATION_PREVIEW (op),
@@ -3089,8 +3089,8 @@ btk_print_operation_run (BtkPrintOperation        *op,
   BtkPrintOperationPrivate *priv;
   BtkPrintOperationResult result;
   BtkPageSetup *page_setup;
-  gboolean do_print;
-  gboolean run_print_pages;
+  bboolean do_print;
+  bboolean run_print_pages;
   
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), 
                         BTK_PRINT_OPERATION_RESULT_ERROR);
@@ -3186,7 +3186,7 @@ btk_print_operation_cancel (BtkPrintOperation *op)
  */
 void
 btk_print_operation_set_support_selection (BtkPrintOperation  *op,
-                                           gboolean            support_selection)
+                                           bboolean            support_selection)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -3212,7 +3212,7 @@ btk_print_operation_set_support_selection (BtkPrintOperation  *op,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_operation_get_support_selection (BtkPrintOperation *op)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), FALSE);
@@ -3235,7 +3235,7 @@ btk_print_operation_get_support_selection (BtkPrintOperation *op)
  */
 void
 btk_print_operation_set_has_selection (BtkPrintOperation  *op,
-                                       gboolean            has_selection)
+                                       bboolean            has_selection)
 {
   BtkPrintOperationPrivate *priv;
 
@@ -3261,7 +3261,7 @@ btk_print_operation_set_has_selection (BtkPrintOperation  *op,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_operation_get_has_selection (BtkPrintOperation *op)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), FALSE);
@@ -3287,7 +3287,7 @@ btk_print_operation_get_has_selection (BtkPrintOperation *op)
  *
  * Since: 2.18
  **/
-gint
+bint
 btk_print_operation_get_n_pages_to_print (BtkPrintOperation *op)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION (op), -1);

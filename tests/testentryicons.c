@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "prop-editor.h"
 
-static gboolean
+static bboolean
 delete_event_cb (BtkWidget *editor,
-                 gint       response,
-                 gpointer   user_data)
+                 bint       response,
+                 bpointer   user_data)
 {
   btk_widget_hide (editor);
 
@@ -34,7 +34,7 @@ properties_cb (BtkWidget *button,
 }
 
 static void
-clear_pressed (BtkEntry *entry, gint icon, BdkEvent *event, gpointer data)
+clear_pressed (BtkEntry *entry, bint icon, BdkEvent *event, bpointer data)
 {
    if (icon == BTK_ENTRY_ICON_SECONDARY)
      btk_entry_set_text (entry, "");
@@ -43,9 +43,9 @@ clear_pressed (BtkEntry *entry, gint icon, BdkEvent *event, gpointer data)
 static void
 drag_begin_cb (BtkWidget      *widget,
                BdkDragContext *context,
-               gpointer        user_data)
+               bpointer        user_data)
 {
-  gint pos;
+  bint pos;
 
   pos = btk_entry_get_current_icon_drag_source (BTK_ENTRY (widget));
   if (pos != -1)
@@ -58,22 +58,22 @@ static void
 drag_data_get_cb (BtkWidget        *widget,
                   BdkDragContext   *context,
                   BtkSelectionData *data,
-                  guint             info,
-                  guint             time,
-                  gpointer          user_data)
+                  buint             info,
+                  buint             time,
+                  bpointer          user_data)
 {
-  gint pos;
+  bint pos;
 
   pos = btk_entry_get_current_icon_drag_source (BTK_ENTRY (widget));
 
   if (pos == BTK_ENTRY_ICON_PRIMARY)
     {
 #if 0
-      gint start, end;
+      bint start, end;
       
       if (btk_editable_get_selection_bounds (BTK_EDITABLE (widget), &start, &end))
         {
-          gchar *str;
+          bchar *str;
           
           str = btk_editable_get_chars (BTK_EDITABLE (widget), start, end);
           btk_selection_data_set_text (data, str, -1);

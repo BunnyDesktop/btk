@@ -38,14 +38,14 @@ struct _BdkIOClosure
   BdkInputFunction function;
   BdkInputCondition condition;
   GDestroyNotify notify;
-  gpointer data;
+  bpointer data;
 };
 
 /* Private variable declarations
  */
 
 BdkEventFunc   _bdk_event_func = NULL;    /* Callback for events */
-gpointer       _bdk_event_data = NULL;
+bpointer       _bdk_event_data = NULL;
 GDestroyNotify _bdk_event_notify = NULL;
 
 /*********************************************
@@ -243,7 +243,7 @@ _bdk_event_unqueue (BdkDisplay *display)
  **/
 void 
 bdk_event_handler_set (BdkEventFunc   func,
-		       gpointer       data,
+		       bpointer       data,
 		       GDestroyNotify notify)
 {
   if (_bdk_event_notify)
@@ -358,7 +358,7 @@ bdk_event_new (BdkEventType type)
   new_private->flags = 0;
   new_private->screen = NULL;
 
-  g_hash_table_insert (event_hash, new_private, GUINT_TO_POINTER (1));
+  g_hash_table_insert (event_hash, new_private, BUINT_TO_POINTER (1));
 
   new_event = (BdkEvent *) new_private;
 
@@ -407,7 +407,7 @@ bdk_event_new (BdkEventType type)
   return new_event;
 }
 
-static gboolean
+static bboolean
 bdk_event_is_allocated (const BdkEvent *event)
 {
   if (event_hash)
@@ -484,13 +484,13 @@ bdk_event_copy (const BdkEvent *event)
     case BDK_BUTTON_RELEASE:
       if (event->button.axes) 
 	new_event->button.axes = g_memdup (event->button.axes, 
-					     sizeof (gdouble) * event->button.device->num_axes);
+					     sizeof (bdouble) * event->button.device->num_axes);
       break;
 
     case BDK_MOTION_NOTIFY:
       if (event->motion.axes) 
 	new_event->motion.axes = g_memdup (event->motion.axes, 
-					   sizeof (gdouble) * event->motion.device->num_axes);
+					   sizeof (bdouble) * event->motion.device->num_axes);
       
       break;
       
@@ -581,7 +581,7 @@ bdk_event_free (BdkEvent *event)
  * 
  * Return value: time stamp field from @event
  **/
-guint32
+buint32
 bdk_event_get_time (const BdkEvent *event)
 {
   if (event)
@@ -654,7 +654,7 @@ bdk_event_get_time (const BdkEvent *event)
  * 
  * Return value: %TRUE if there was a state field in the event 
  **/
-gboolean
+bboolean
 bdk_event_get_state (const BdkEvent        *event,
                      BdkModifierType       *state)
 {
@@ -732,13 +732,13 @@ bdk_event_get_state (const BdkEvent        *event,
  * 
  * Return value: %TRUE if the event delivered event window coordinates
  **/
-gboolean
+bboolean
 bdk_event_get_coords (const BdkEvent *event,
-		      gdouble        *x_win,
-		      gdouble        *y_win)
+		      bdouble        *x_win,
+		      bdouble        *y_win)
 {
-  gdouble x = 0, y = 0;
-  gboolean fetched = TRUE;
+  bdouble x = 0, y = 0;
+  bboolean fetched = TRUE;
   
   g_return_val_if_fail (event != NULL, FALSE);
 
@@ -791,13 +791,13 @@ bdk_event_get_coords (const BdkEvent *event,
  * 
  * Return value: %TRUE if the event delivered root window coordinates
  **/
-gboolean
+bboolean
 bdk_event_get_root_coords (const BdkEvent *event,
-			   gdouble        *x_root,
-			   gdouble        *y_root)
+			   bdouble        *x_root,
+			   bdouble        *y_root)
 {
-  gdouble x = 0, y = 0;
-  gboolean fetched = TRUE;
+  bdouble x = 0, y = 0;
+  bboolean fetched = TRUE;
   
   g_return_val_if_fail (event != NULL, FALSE);
 
@@ -856,19 +856,19 @@ bdk_event_get_root_coords (const BdkEvent *event,
  * 
  * Return value: %TRUE if the specified axis was found, otherwise %FALSE
  **/
-gboolean
+bboolean
 bdk_event_get_axis (const BdkEvent *event,
 		    BdkAxisUse      axis_use,
-		    gdouble        *value)
+		    bdouble        *value)
 {
-  gdouble *axes;
+  bdouble *axes;
   BdkDevice *device;
   
   g_return_val_if_fail (event != NULL, FALSE);
   
   if (axis_use == BDK_AXIS_X || axis_use == BDK_AXIS_Y)
     {
-      gdouble x, y;
+      bdouble x, y;
       
       switch (event->type)
 	{
@@ -1025,7 +1025,7 @@ bdk_event_get_screen (const BdkEvent *event)
  * to use this option.
  **/
 void
-bdk_set_show_events (gboolean show_events)
+bdk_set_show_events (bboolean show_events)
 {
   if (show_events)
     _bdk_debug_flags |= BDK_DEBUG_EVENTS;
@@ -1040,14 +1040,14 @@ bdk_set_show_events (gboolean show_events)
  * 
  * Return value: %TRUE if event debugging output is enabled.
  **/
-gboolean
+bboolean
 bdk_get_show_events (void)
 {
   return (_bdk_debug_flags & BDK_DEBUG_EVENTS) != 0;
 }
 
 static void
-bdk_io_destroy (gpointer data)
+bdk_io_destroy (bpointer data)
 {
   BdkIOClosure *closure = data;
 
@@ -1063,10 +1063,10 @@ bdk_io_destroy (gpointer data)
 #define WRITE_CONDITION (G_IO_OUT | G_IO_ERR)
 #define EXCEPTION_CONDITION (G_IO_PRI)
 
-static gboolean  
+static bboolean  
 bdk_io_invoke (BUNNYIOChannel   *source,
 	       BUNNYIOCondition  condition,
-	       gpointer      data)
+	       bpointer      data)
 {
   BdkIOClosure *closure = data;
   BdkInputCondition bdk_cond = 0;
@@ -1101,14 +1101,14 @@ bdk_io_invoke (BUNNYIOChannel   *source,
  *
  * Deprecated: 2.14: Use g_io_add_watch_full() on a #BUNNYIOChannel
  */
-gint
-bdk_input_add_full (gint	      source,
+bint
+bdk_input_add_full (bint	      source,
 		    BdkInputCondition condition,
 		    BdkInputFunction  function,
-		    gpointer	      data,
+		    bpointer	      data,
 		    GDestroyNotify    destroy)
 {
-  guint result;
+  buint result;
   BdkIOClosure *closure = g_new (BdkIOClosure, 1);
   BUNNYIOChannel *channel;
   BUNNYIOCondition cond = 0;
@@ -1149,17 +1149,17 @@ bdk_input_add_full (gint	      source,
  *
  * Deprecated: 2.14: Use g_io_add_watch() on a #BUNNYIOChannel
  */
-gint
-bdk_input_add (gint		 source,
+bint
+bdk_input_add (bint		 source,
 	       BdkInputCondition condition,
 	       BdkInputFunction	 function,
-	       gpointer		 data)
+	       bpointer		 data)
 {
   return bdk_input_add_full (source, condition, function, data, NULL);
 }
 
 void
-bdk_input_remove (gint tag)
+bdk_input_remove (bint tag)
 {
   g_source_remove (tag);
 }
@@ -1167,7 +1167,7 @@ bdk_input_remove (gint tag)
 static void
 bdk_synthesize_click (BdkDisplay *display,
 		      BdkEvent   *event,
-		      gint	  nclicks)
+		      bint	  nclicks)
 {
   BdkEvent temp_event;
   BdkEvent *event_copy;
@@ -1305,7 +1305,7 @@ bdk_synthesize_window_state (BdkWindow     *window,
  **/
 void
 bdk_display_set_double_click_time (BdkDisplay *display,
-				   guint       msec)
+				   buint       msec)
 {
   display->double_click_time = msec;
 }
@@ -1321,7 +1321,7 @@ bdk_display_set_double_click_time (BdkDisplay *display,
  * global user-configured setting.
  **/
 void
-bdk_set_double_click_time (guint msec)
+bdk_set_double_click_time (buint msec)
 {
   bdk_display_set_double_click_time (bdk_display_get_default (), msec);
 }
@@ -1341,7 +1341,7 @@ bdk_set_double_click_time (guint msec)
  **/
 void
 bdk_display_set_double_click_distance (BdkDisplay *display,
-				       guint       distance)
+				       buint       distance)
 {
   display->double_click_distance = distance;
 }
@@ -1369,8 +1369,8 @@ bdk_event_get_type (void)
  * Returns: %TRUE if the setting existed and a value was stored
  *   in @value, %FALSE otherwise.
  **/
-gboolean
-bdk_setting_get (const gchar *name,
+bboolean
+bdk_setting_get (const bchar *name,
 		 BValue      *value)
 {
   return bdk_screen_get_setting (bdk_screen_get_default (), name, value);

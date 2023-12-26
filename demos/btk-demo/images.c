@@ -20,12 +20,12 @@
 
 static BtkWidget *window = NULL;
 static BdkPixbufLoader *pixbuf_loader = NULL;
-static guint load_timeout = 0;
+static buint load_timeout = 0;
 static FILE* image_stream = NULL;
 
 static void
 progressive_prepared_callback (BdkPixbufLoader *loader,
-			       gpointer		data)
+			       bpointer		data)
 {
   BdkPixbuf *pixbuf;
   BtkWidget *image;
@@ -44,11 +44,11 @@ progressive_prepared_callback (BdkPixbufLoader *loader,
 
 static void
 progressive_updated_callback (BdkPixbufLoader *loader,
-                              gint		   x,
-                              gint		   y,
-                              gint		   width,
-                              gint		   height,
-                              gpointer	   data)
+                              bint		   x,
+                              bint		   y,
+                              bint		   width,
+                              bint		   height,
+                              bpointer	   data)
 {
   BtkWidget *image;
 
@@ -65,8 +65,8 @@ progressive_updated_callback (BdkPixbufLoader *loader,
   btk_widget_queue_draw (image);
 }
 
-static gint
-progressive_timeout (gpointer data)
+static bint
+progressive_timeout (bpointer data)
 {
   BtkWidget *image;
 
@@ -80,7 +80,7 @@ progressive_timeout (gpointer data)
   if (image_stream)
     {
       size_t bytes_read;
-      guchar buf[256];
+      buchar buf[256];
       GError *error = NULL;
 
       bytes_read = fread (buf, 1, 256, image_stream);
@@ -180,8 +180,8 @@ progressive_timeout (gpointer data)
     }
   else
     {
-      gchar *filename;
-      gchar *error_message = NULL;
+      bchar *filename;
+      bchar *error_message = NULL;
       GError *error = NULL;
 
       /* demo_find_file() looks in the current directory first,
@@ -262,7 +262,7 @@ start_progressive_loading (BtkWidget *image)
 
 static void
 cleanup_callback (BtkObject *object,
-		  gpointer   data)
+		  bpointer   data)
 {
   if (load_timeout)
     {
@@ -284,7 +284,7 @@ cleanup_callback (BtkObject *object,
 
 static void
 toggle_sensitivity_callback (BtkWidget *togglebutton,
-                             gpointer   user_data)
+                             bpointer   user_data)
 {
   BtkContainer *container = user_data;
   GList *list;

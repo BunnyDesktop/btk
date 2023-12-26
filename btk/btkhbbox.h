@@ -65,10 +65,10 @@ BtkWidget* btk_hbutton_box_new      (void);
 /* buttons can be added by btk_container_add() */
 
 #ifndef BTK_DISABLE_DEPRECATED
-gint btk_hbutton_box_get_spacing_default (void);
+bint btk_hbutton_box_get_spacing_default (void);
 BtkButtonBoxStyle btk_hbutton_box_get_layout_default (void);
 
-void btk_hbutton_box_set_spacing_default (gint spacing);
+void btk_hbutton_box_set_spacing_default (bint spacing);
 void btk_hbutton_box_set_layout_default (BtkButtonBoxStyle layout);
 #endif
 

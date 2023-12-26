@@ -42,7 +42,7 @@ static BdkWindow *
 create_hidden_msg_window (void)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   attributes.x = -100;
   attributes.y = -100;
@@ -60,7 +60,7 @@ create_hidden_msg_window (void)
 }
 
 static BdkFilterReturn
-global_filter_func (void *xevent, BdkEvent *event, gpointer data)
+global_filter_func (void *xevent, BdkEvent *event, bpointer data)
 {
   MSG *msg = (MSG *) xevent;
 
@@ -106,7 +106,7 @@ theme_init (GTypeModule * module)
 
       if (this_module)
 	g_module_symbol (this_module, "btk_rc_reset_styles",
-			 (gpointer *) (&msw_rc_reset_styles));
+			 (bpointer *) (&msw_rc_reset_styles));
     }
 
   msw_style_init ();
@@ -139,7 +139,7 @@ theme_create_rc_style (void)
  * is loaded and checks to see if we are compatible with the
  * version of BTK+ that loads us.
  */
-G_MODULE_EXPORT const gchar *
+G_MODULE_EXPORT const bchar *
 g_module_check_init (GModule *module)
 {
   return btk_check_version (2, 0, 0);

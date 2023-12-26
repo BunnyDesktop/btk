@@ -62,7 +62,7 @@ type_name##_factory_class_init (BatkObjectFactoryClass *klass) \
 GType \
 type_name##_factory_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
+  static volatile bsize g_define_type_id__volatile = 0; \
   if (g_once_init_enter (&g_define_type_id__volatile)) \
     { \
       GType g_define_type_id = \

@@ -50,10 +50,10 @@ void bdk_synthesize_window_state (BdkWindow     *window,
  * some space for additions afterwards, to be safe...
  */
 #define BDK_BANGO_UNITS_OVERFLOWS(x,y) (B_UNLIKELY ( \
-	(y) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
-	(x) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
-	(y) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
-	(x) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2))
+	(y) >= BANGO_PIXELS (B_MAXINT-BANGO_SCALE)/2 || \
+	(x) >= BANGO_PIXELS (B_MAXINT-BANGO_SCALE)/2 || \
+	(y) <=-BANGO_PIXELS (B_MAXINT-BANGO_SCALE)/2 || \
+	(x) <=-BANGO_PIXELS (B_MAXINT-BANGO_SCALE)/2))
 
 B_END_DECLS
 

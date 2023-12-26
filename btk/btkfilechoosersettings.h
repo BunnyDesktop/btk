@@ -47,7 +47,7 @@ struct _BtkFileChooserSettings
   LocationMode location_mode;
 
   BtkSortType sort_order;
-  gint sort_column;
+  bint sort_column;
   StartupMode startup_mode;
 
   int geometry_x;
@@ -55,9 +55,9 @@ struct _BtkFileChooserSettings
   int geometry_width;
   int geometry_height;
 
-  guint settings_read    : 1;
-  guint show_hidden      : 1;
-  guint show_size_column : 1;
+  buint settings_read    : 1;
+  buint show_hidden      : 1;
+  buint show_size_column : 1;
 };
 
 struct _BtkFileChooserSettingsClass
@@ -73,17 +73,17 @@ LocationMode _btk_file_chooser_settings_get_location_mode (BtkFileChooserSetting
 void         _btk_file_chooser_settings_set_location_mode (BtkFileChooserSettings *settings,
 							   LocationMode            location_mode);
 
-gboolean _btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings);
+bboolean _btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings);
 void     _btk_file_chooser_settings_set_show_hidden (BtkFileChooserSettings *settings,
-						     gboolean                show_hidden);
+						     bboolean                show_hidden);
 
-gboolean _btk_file_chooser_settings_get_show_size_column (BtkFileChooserSettings *settings);
+bboolean _btk_file_chooser_settings_get_show_size_column (BtkFileChooserSettings *settings);
 void     _btk_file_chooser_settings_set_show_size_column (BtkFileChooserSettings *settings,
-                                                          gboolean                show_column);
+                                                          bboolean                show_column);
 
-gint _btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings);
+bint _btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings);
 void _btk_file_chooser_settings_set_sort_column (BtkFileChooserSettings *settings,
-						 gint sort_column);
+						 bint sort_column);
 
 BtkSortType _btk_file_chooser_settings_get_sort_order (BtkFileChooserSettings *settings);
 void        _btk_file_chooser_settings_set_sort_order (BtkFileChooserSettings *settings,
@@ -104,7 +104,7 @@ void _btk_file_chooser_settings_set_startup_mode (BtkFileChooserSettings *settin
 						  StartupMode             startup_mode);
 StartupMode _btk_file_chooser_settings_get_startup_mode (BtkFileChooserSettings *settings);
 
-gboolean _btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
+bboolean _btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
 					  GError                **error);
 
 /* FIXME: persist these options:

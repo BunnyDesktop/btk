@@ -52,19 +52,19 @@ enum {
 };
 
 
-static gint btk_toggle_button_expose        (BtkWidget            *widget,
+static bint btk_toggle_button_expose        (BtkWidget            *widget,
 					     BdkEventExpose       *event);
-static gboolean btk_toggle_button_mnemonic_activate  (BtkWidget            *widget,
-                                                      gboolean              group_cycling);
+static bboolean btk_toggle_button_mnemonic_activate  (BtkWidget            *widget,
+                                                      bboolean              group_cycling);
 static void btk_toggle_button_pressed       (BtkButton            *button);
 static void btk_toggle_button_released      (BtkButton            *button);
 static void btk_toggle_button_clicked       (BtkButton            *button);
 static void btk_toggle_button_set_property  (BObject              *object,
-					     guint                 prop_id,
+					     buint                 prop_id,
 					     const BValue         *value,
 					     BParamSpec           *pspec);
 static void btk_toggle_button_get_property  (BObject              *object,
-					     guint                 prop_id,
+					     buint                 prop_id,
 					     BValue               *value,
 					     BParamSpec           *pspec);
 static void btk_toggle_button_update_state  (BtkButton            *button);
@@ -73,12 +73,12 @@ static void btk_toggle_button_update_state  (BtkButton            *button);
 static void btk_toggle_button_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_toggle_button_update         	     (BtkActivatable       *activatable,
 					 	      BtkAction            *action,
-						      const gchar          *property_name);
+						      const bchar          *property_name);
 static void btk_toggle_button_sync_action_properties (BtkActivatable       *activatable,
 						      BtkAction            *action);
 
 static BtkActivatableIface *parent_activatable_iface;
-static guint                toggle_button_signals[LAST_SIGNAL] = { 0 };
+static buint                toggle_button_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkToggleButton, btk_toggle_button, BTK_TYPE_BUTTON,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
@@ -162,7 +162,7 @@ btk_toggle_button_activatable_interface_init (BtkActivatableIface *iface)
 static void
 btk_toggle_button_update (BtkActivatable *activatable,
 			  BtkAction      *action,
-			  const gchar    *property_name)
+			  const bchar    *property_name)
 {
   BtkToggleButton *button;
 
@@ -205,7 +205,7 @@ btk_toggle_button_new (void)
 }
 
 BtkWidget*
-btk_toggle_button_new_with_label (const gchar *label)
+btk_toggle_button_new_with_label (const bchar *label)
 {
   return g_object_new (BTK_TYPE_TOGGLE_BUTTON, "label", label, NULL);
 }
@@ -221,7 +221,7 @@ btk_toggle_button_new_with_label (const gchar *label)
  * in @label indicate the mnemonic for the button.
  **/
 BtkWidget*
-btk_toggle_button_new_with_mnemonic (const gchar *label)
+btk_toggle_button_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_TOGGLE_BUTTON, 
 		       "label", label, 
@@ -231,7 +231,7 @@ btk_toggle_button_new_with_mnemonic (const gchar *label)
 
 static void
 btk_toggle_button_set_property (BObject      *object,
-				guint         prop_id,
+				buint         prop_id,
 				const BValue *value,
 				BParamSpec   *pspec)
 {
@@ -258,7 +258,7 @@ btk_toggle_button_set_property (BObject      *object,
 
 static void
 btk_toggle_button_get_property (BObject      *object,
-				guint         prop_id,
+				buint         prop_id,
 				BValue       *value,
 				BParamSpec   *pspec)
 {
@@ -299,7 +299,7 @@ btk_toggle_button_get_property (BObject      *object,
  */
 void
 btk_toggle_button_set_mode (BtkToggleButton *toggle_button,
-			    gboolean         draw_indicator)
+			    bboolean         draw_indicator)
 {
   g_return_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button));
 
@@ -327,7 +327,7 @@ btk_toggle_button_set_mode (BtkToggleButton *toggle_button,
  * Return value: %TRUE if the togglebutton is drawn as a separate indicator
  *   and label.
  **/
-gboolean
+bboolean
 btk_toggle_button_get_mode (BtkToggleButton *toggle_button)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button), FALSE);
@@ -337,7 +337,7 @@ btk_toggle_button_get_mode (BtkToggleButton *toggle_button)
 
 void
 btk_toggle_button_set_active (BtkToggleButton *toggle_button,
-			      gboolean         is_active)
+			      bboolean         is_active)
 {
   g_return_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button));
 
@@ -348,7 +348,7 @@ btk_toggle_button_set_active (BtkToggleButton *toggle_button,
 }
 
 
-gboolean
+bboolean
 btk_toggle_button_get_active (BtkToggleButton *toggle_button)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button), FALSE);
@@ -382,7 +382,7 @@ btk_toggle_button_toggled (BtkToggleButton *toggle_button)
  **/
 void
 btk_toggle_button_set_inconsistent (BtkToggleButton *toggle_button,
-                                    gboolean         setting)
+                                    bboolean         setting)
 {
   g_return_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button));
   
@@ -407,7 +407,7 @@ btk_toggle_button_set_inconsistent (BtkToggleButton *toggle_button,
  * 
  * Return value: %TRUE if the button is displayed as inconsistent, %FALSE otherwise
  **/
-gboolean
+bboolean
 btk_toggle_button_get_inconsistent (BtkToggleButton *toggle_button)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_BUTTON (toggle_button), FALSE);
@@ -415,7 +415,7 @@ btk_toggle_button_get_inconsistent (BtkToggleButton *toggle_button)
   return toggle_button->inconsistent;
 }
 
-static gint
+static bint
 btk_toggle_button_expose (BtkWidget      *widget,
 			  BdkEventExpose *event)
 {
@@ -447,9 +447,9 @@ btk_toggle_button_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_toggle_button_mnemonic_activate (BtkWidget *widget,
-                                     gboolean   group_cycling)
+                                     bboolean   group_cycling)
 {
   /*
    * We override the standard implementation in 
@@ -509,7 +509,7 @@ static void
 btk_toggle_button_update_state (BtkButton *button)
 {
   BtkToggleButton *toggle_button = BTK_TOGGLE_BUTTON (button);
-  gboolean depressed, touchscreen;
+  bboolean depressed, touchscreen;
   BtkStateType new_state;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (button)),

@@ -46,7 +46,7 @@ struct _BailCList
   /* dynamically allocated array of column structures */
   BailCListColumn *columns;
   /* private */
-  gint n_cols;
+  bint n_cols;
   GArray *row_data;
   GList *cell_data;
   BatkObject *previous_selected_cell;

@@ -9,20 +9,20 @@
 #define ICC_PROFILE             "/usr/share/color/icc/bluish.icc"
 #define ICC_PROFILE_SIZE        3966
 
-static gboolean
-save_image_png (const gchar *filename, BdkPixbuf *pixbuf, GError **error)
+static bboolean
+save_image_png (const bchar *filename, BdkPixbuf *pixbuf, GError **error)
 {
-	gchar *contents = NULL;
-	gchar *contents_encode = NULL;
-	gsize length;
-	gboolean ret;
-	gint len;
+	bchar *contents = NULL;
+	bchar *contents_encode = NULL;
+	bsize length;
+	bboolean ret;
+	bint len;
 
 	/* get icc file */
 	ret = g_file_get_contents (ICC_PROFILE, &contents, &length, error);
 	if (!ret)
 		goto out;
-	contents_encode = g_base64_encode ((const guchar *) contents, length);
+	contents_encode = g_base64_encode ((const buchar *) contents, length);
 	ret = bdk_pixbuf_save (pixbuf, filename, "png", error,
 			       "tEXt::Software", "Hello my name is dave",
 			       "icc-profile", contents_encode,
@@ -35,20 +35,20 @@ out:
 	return ret;
 }
 
-static gboolean
-save_image_tiff (const gchar *filename, BdkPixbuf *pixbuf, GError **error)
+static bboolean
+save_image_tiff (const bchar *filename, BdkPixbuf *pixbuf, GError **error)
 {
-	gchar *contents = NULL;
-	gchar *contents_encode = NULL;
-	gsize length;
-	gboolean ret;
-	gint len;
+	bchar *contents = NULL;
+	bchar *contents_encode = NULL;
+	bsize length;
+	bboolean ret;
+	bint len;
 
 	/* get icc file */
 	ret = g_file_get_contents (ICC_PROFILE, &contents, &length, error);
 	if (!ret)
 		goto out;
-	contents_encode = g_base64_encode ((const guchar *) contents, length);
+	contents_encode = g_base64_encode ((const buchar *) contents, length);
 	ret = bdk_pixbuf_save (pixbuf, filename, "tiff", error,
 			       "icc-profile", contents_encode,
 			       NULL);
@@ -60,14 +60,14 @@ out:
 	return ret;
 }
 
-static gboolean
-save_image_verify (const gchar *filename, GError **error)
+static bboolean
+save_image_verify (const bchar *filename, GError **error)
 {
-	gboolean ret = FALSE;
+	bboolean ret = FALSE;
 	BdkPixbuf *pixbuf = NULL;
-	const gchar *option;
-	gchar *icc_profile = NULL;
-	gsize len = 0;
+	const bchar *option;
+	bchar *icc_profile = NULL;
+	bsize len = 0;
 
 	/* load */
 	pixbuf = bdk_pixbuf_new_from_file (filename, error);
@@ -82,7 +82,7 @@ save_image_verify (const gchar *filename, GError **error)
 	}
 
 	/* decode base64 */
-	icc_profile = (gchar *) g_base64_decode (option, &len);
+	icc_profile = (bchar *) g_base64_decode (option, &len);
 	if (len != ICC_PROFILE_SIZE) {
 		*error = g_error_new (1, 0,
 		                      "profile length invalid, got %" G_GSIZE_FORMAT,
@@ -105,8 +105,8 @@ main (int argc, char **argv)
 {
 	BdkWindow *root;
 	BdkPixbuf *pixbuf;
-	gboolean ret;
-	gint retval = 1;
+	bboolean ret;
+	bint retval = 1;
 	GError *error = NULL;
 
 	btk_init (&argc, &argv);

@@ -54,9 +54,9 @@ struct _BtkFrame
   BtkBin bin;
 
   BtkWidget *GSEAL (label_widget);
-  gint16 GSEAL (shadow_type);
-  gfloat GSEAL (label_xalign);
-  gfloat GSEAL (label_yalign);
+  bint16 GSEAL (shadow_type);
+  bfloat GSEAL (label_xalign);
+  bfloat GSEAL (label_yalign);
 
   BtkAllocation GSEAL (child_allocation);
 };
@@ -70,21 +70,21 @@ struct _BtkFrameClass
 
 
 GType      btk_frame_get_type         (void) B_GNUC_CONST;
-BtkWidget* btk_frame_new              (const gchar   *label);
+BtkWidget* btk_frame_new              (const bchar   *label);
 
 void                  btk_frame_set_label (BtkFrame    *frame,
-					   const gchar *label);
-const gchar *btk_frame_get_label      (BtkFrame    *frame);
+					   const bchar *label);
+const bchar *btk_frame_get_label      (BtkFrame    *frame);
 
 void       btk_frame_set_label_widget (BtkFrame      *frame,
 				       BtkWidget     *label_widget);
 BtkWidget *btk_frame_get_label_widget (BtkFrame      *frame);
 void       btk_frame_set_label_align  (BtkFrame      *frame,
-				       gfloat         xalign,
-				       gfloat         yalign);
+				       bfloat         xalign,
+				       bfloat         yalign);
 void       btk_frame_get_label_align  (BtkFrame      *frame,
-				       gfloat        *xalign,
-				       gfloat        *yalign);
+				       bfloat        *xalign,
+				       bfloat        *yalign);
 void       btk_frame_set_shadow_type  (BtkFrame      *frame,
 				       BtkShadowType  type);
 BtkShadowType btk_frame_get_shadow_type (BtkFrame    *frame);

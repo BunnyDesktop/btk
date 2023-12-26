@@ -82,14 +82,14 @@ typedef struct _BtkButtonPrivate BtkButtonPrivate;
 
 struct _BtkButtonPrivate
 {
-  gfloat          xalign;
-  gfloat          yalign;
+  bfloat          xalign;
+  bfloat          yalign;
   BtkWidget      *image;
-  guint           align_set             : 1;
-  guint           image_is_stock        : 1;
-  guint           has_grab              : 1;
-  guint           use_action_appearance : 1;
-  guint32         grab_time;
+  buint           align_set             : 1;
+  buint           image_is_stock        : 1;
+  buint           has_grab              : 1;
+  buint           use_action_appearance : 1;
+  buint32         grab_time;
   BtkPositionType image_position;
   BtkAction      *action;
 };
@@ -97,11 +97,11 @@ struct _BtkButtonPrivate
 static void btk_button_destroy        (BtkObject          *object);
 static void btk_button_dispose        (BObject            *object);
 static void btk_button_set_property   (BObject            *object,
-                                       guint               prop_id,
+                                       buint               prop_id,
                                        const BValue       *value,
                                        BParamSpec         *pspec);
 static void btk_button_get_property   (BObject            *object,
-                                       guint               prop_id,
+                                       buint               prop_id,
                                        BValue             *value,
                                        BParamSpec         *pspec);
 static void btk_button_screen_changed (BtkWidget          *widget,
@@ -115,17 +115,17 @@ static void btk_button_size_request (BtkWidget * widget,
 				     BtkRequisition * requisition);
 static void btk_button_size_allocate (BtkWidget * widget,
 				      BtkAllocation * allocation);
-static gint btk_button_expose (BtkWidget * widget, BdkEventExpose * event);
-static gint btk_button_button_press (BtkWidget * widget,
+static bint btk_button_expose (BtkWidget * widget, BdkEventExpose * event);
+static bint btk_button_button_press (BtkWidget * widget,
 				     BdkEventButton * event);
-static gint btk_button_button_release (BtkWidget * widget,
+static bint btk_button_button_release (BtkWidget * widget,
 				       BdkEventButton * event);
-static gint btk_button_grab_broken (BtkWidget * widget,
+static bint btk_button_grab_broken (BtkWidget * widget,
 				    BdkEventGrabBroken * event);
-static gint btk_button_key_release (BtkWidget * widget, BdkEventKey * event);
-static gint btk_button_enter_notify (BtkWidget * widget,
+static bint btk_button_key_release (BtkWidget * widget, BdkEventKey * event);
+static bint btk_button_enter_notify (BtkWidget * widget,
 				     BdkEventCrossing * event);
-static gint btk_button_leave_notify (BtkWidget * widget,
+static bint btk_button_leave_notify (BtkWidget * widget,
 				     BdkEventCrossing * event);
 static void btk_real_button_pressed (BtkButton * button);
 static void btk_real_button_released (BtkButton * button);
@@ -136,30 +136,30 @@ static void btk_button_add            (BtkContainer       *container,
 			               BtkWidget          *widget);
 static GType btk_button_child_type    (BtkContainer       *container);
 static void btk_button_finish_activate (BtkButton         *button,
-					gboolean           do_it);
+					bboolean           do_it);
 
 static BObject*	btk_button_constructor (GType                  type,
-					guint                  n_construct_properties,
+					buint                  n_construct_properties,
 					BObjectConstructParam *construct_params);
 static void btk_button_construct_child (BtkButton             *button);
 static void btk_button_state_changed   (BtkWidget             *widget,
 					BtkStateType           previous_state);
 static void btk_button_grab_notify     (BtkWidget             *widget,
-					gboolean               was_grabbed);
+					bboolean               was_grabbed);
 
 
 static void btk_button_activatable_interface_init         (BtkActivatableIface  *iface);
 static void btk_button_update                    (BtkActivatable       *activatable,
 				                  BtkAction            *action,
-			                          const gchar          *property_name);
+			                          const bchar          *property_name);
 static void btk_button_sync_action_properties    (BtkActivatable       *activatable,
                                                   BtkAction            *action);
 static void btk_button_set_related_action        (BtkButton            *button,
 					          BtkAction            *action);
 static void btk_button_set_use_action_appearance (BtkButton            *button,
-						  gboolean              use_appearance);
+						  bboolean              use_appearance);
 
-static guint button_signals[LAST_SIGNAL] = { 0 };
+static buint button_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkButton, btk_button, BTK_TYPE_BIN,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
@@ -461,16 +461,16 @@ btk_button_class_init (BtkButtonClass *klass)
 					   g_param_spec_int ("child-displacement-x",
 							     P_("Child X Displacement"),
 							     P_("How far in the x direction to move the child when the button is depressed"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("child-displacement-y",
 							     P_("Child Y Displacement"),
 							     P_("How far in the y direction to move the child when the button is depressed"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
 
@@ -515,7 +515,7 @@ btk_button_class_init (BtkButtonClass *klass)
 							     P_("Image spacing"),
 							     P_("Spacing in pixels between the image and label"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     2,
 							     BTK_PARAM_READABLE));
 
@@ -567,7 +567,7 @@ btk_button_destroy (BtkObject *object)
 
 static BObject*
 btk_button_constructor (GType                  type,
-			guint                  n_construct_properties,
+			buint                  n_construct_properties,
 			BObjectConstructParam *construct_params)
 {
   BObject *object;
@@ -644,7 +644,7 @@ btk_button_dispose (BObject *object)
 
 static void
 btk_button_set_property (BObject         *object,
-                         guint            prop_id,
+                         buint            prop_id,
                          const BValue    *value,
                          BParamSpec      *pspec)
 {
@@ -694,7 +694,7 @@ btk_button_set_property (BObject         *object,
 
 static void
 btk_button_get_property (BObject         *object,
-                         guint            prop_id,
+                         buint            prop_id,
                          BValue          *value,
                          BParamSpec      *pspec)
 {
@@ -814,7 +814,7 @@ activatable_update_gicon (BtkButton *button,
 static void 
 btk_button_update (BtkActivatable *activatable,
 		   BtkAction      *action,
-	           const gchar    *property_name)
+	           const bchar    *property_name)
 {
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (activatable);
 
@@ -891,7 +891,7 @@ btk_button_set_related_action (BtkButton *button,
 
 static void
 btk_button_set_use_action_appearance (BtkButton *button,
-				      gboolean   use_appearance)
+				      bboolean   use_appearance)
 {
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (button);
 
@@ -909,10 +909,10 @@ btk_button_new (void)
   return g_object_new (BTK_TYPE_BUTTON, NULL);
 }
 
-static gboolean
+static bboolean
 show_image (BtkButton *button)
 {
-  gboolean show;
+  bboolean show;
   
   if (button->label_text)
     {
@@ -936,8 +936,8 @@ btk_button_construct_child (BtkButton *button)
   BtkWidget *box;
   BtkWidget *align;
   BtkWidget *image = NULL;
-  gchar *label_text = NULL;
-  gint image_spacing;
+  bchar *label_text = NULL;
+  bint image_spacing;
 
   if (!button->constructed)
     return;
@@ -1043,7 +1043,7 @@ btk_button_construct_child (BtkButton *button)
 
 
 BtkWidget*
-btk_button_new_with_label (const gchar *label)
+btk_button_new_with_label (const bchar *label)
 {
   return g_object_new (BTK_TYPE_BUTTON, "label", label, NULL);
 }
@@ -1062,7 +1062,7 @@ btk_button_new_with_label (const gchar *label)
  * Returns: a new #BtkButton
  **/
 BtkWidget*
-btk_button_new_from_stock (const gchar *stock_id)
+btk_button_new_from_stock (const bchar *stock_id)
 {
   return g_object_new (BTK_TYPE_BUTTON,
                        "label", stock_id,
@@ -1085,7 +1085,7 @@ btk_button_new_from_stock (const gchar *stock_id)
  * Pressing Alt and that key activates the button.
  **/
 BtkWidget*
-btk_button_new_with_mnemonic (const gchar *label)
+btk_button_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_BUTTON, "label", label, "use-underline", TRUE,  NULL);
 }
@@ -1158,8 +1158,8 @@ btk_button_realize (BtkWidget *widget)
 {
   BtkButton *button;
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
 
   button = BTK_BUTTON (widget);
   btk_widget_set_realized (widget, TRUE);
@@ -1235,7 +1235,7 @@ btk_button_update_image_spacing (BtkButton *button)
 {
   BtkButtonPrivate *priv = BTK_BUTTON_GET_PRIVATE (button);
   BtkWidget *child; 
-  gint spacing;
+  bint spacing;
 
   /* Keep in sync with btk_button_construct_child,
    * we only want to update the spacing if the box 
@@ -1271,7 +1271,7 @@ btk_button_get_props (BtkButton *button,
 		      BtkBorder *default_border,
 		      BtkBorder *default_outside_border,
                       BtkBorder *inner_border,
-		      gboolean  *interior_focus)
+		      bboolean  *interior_focus)
 {
   BtkWidget *widget =  BTK_WIDGET (button);
   BtkBorder *tmp_border;
@@ -1326,8 +1326,8 @@ btk_button_size_request (BtkWidget      *widget,
   BtkButton *button = BTK_BUTTON (widget);
   BtkBorder default_border;
   BtkBorder inner_border;
-  gint focus_width;
-  gint focus_pad;
+  bint focus_width;
+  bint focus_pad;
 
   btk_button_get_props (button, &default_border, NULL, &inner_border, NULL);
   btk_widget_style_get (BTK_WIDGET (widget),
@@ -1369,13 +1369,13 @@ btk_button_size_allocate (BtkWidget     *widget,
   BtkButton *button = BTK_BUTTON (widget);
   BtkAllocation child_allocation;
 
-  gint border_width = BTK_CONTAINER (widget)->border_width;
-  gint xthickness = BTK_WIDGET (widget)->style->xthickness;
-  gint ythickness = BTK_WIDGET (widget)->style->ythickness;
+  bint border_width = BTK_CONTAINER (widget)->border_width;
+  bint xthickness = BTK_WIDGET (widget)->style->xthickness;
+  bint ythickness = BTK_WIDGET (widget)->style->ythickness;
   BtkBorder default_border;
   BtkBorder inner_border;
-  gint focus_width;
-  gint focus_pad;
+  bint focus_width;
+  bint focus_pad;
 
   btk_button_get_props (button, &default_border, NULL, &inner_border, NULL);
   btk_widget_style_get (BTK_WIDGET (widget),
@@ -1427,8 +1427,8 @@ btk_button_size_allocate (BtkWidget     *widget,
 
       if (button->depressed)
 	{
-	  gint child_displacement_x;
-	  gint child_displacement_y;
+	  bint child_displacement_x;
+	  bint child_displacement_y;
 	  
 	  btk_widget_style_get (widget,
 				"child-displacement-x", &child_displacement_x, 
@@ -1447,18 +1447,18 @@ _btk_button_paint (BtkButton          *button,
 		   const BdkRectangle *area,
 		   BtkStateType        state_type,
 		   BtkShadowType       shadow_type,
-		   const gchar        *main_detail,
-		   const gchar        *default_detail)
+		   const bchar        *main_detail,
+		   const bchar        *default_detail)
 {
   BtkWidget *widget;
-  gint width, height;
-  gint x, y;
-  gint border_width;
+  bint width, height;
+  bint x, y;
+  bint border_width;
   BtkBorder default_border;
   BtkBorder default_outside_border;
-  gboolean interior_focus;
-  gint focus_width;
-  gint focus_pad;
+  bboolean interior_focus;
+  bint focus_width;
+  bint focus_pad;
 
   widget = BTK_WIDGET (button);
 
@@ -1515,9 +1515,9 @@ _btk_button_paint (BtkButton          *button,
        
       if (btk_widget_has_focus (widget))
 	{
-	  gint child_displacement_x;
-	  gint child_displacement_y;
-	  gboolean displace_focus;
+	  bint child_displacement_x;
+	  bint child_displacement_y;
+	  bboolean displace_focus;
 	  
 	  btk_widget_style_get (widget,
 				"child-displacement-y", &child_displacement_y,
@@ -1553,7 +1553,7 @@ _btk_button_paint (BtkButton          *button,
     }
 }
 
-static gboolean
+static bboolean
 btk_button_expose (BtkWidget      *widget,
 		   BdkEventExpose *event)
 {
@@ -1572,7 +1572,7 @@ btk_button_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_button_button_press (BtkWidget      *widget,
 			 BdkEventButton *event)
 {
@@ -1592,7 +1592,7 @@ btk_button_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_button_button_release (BtkWidget      *widget,
 			   BdkEventButton *event)
 {
@@ -1607,12 +1607,12 @@ btk_button_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_button_grab_broken (BtkWidget          *widget,
 			BdkEventGrabBroken *event)
 {
   BtkButton *button = BTK_BUTTON (widget);
-  gboolean save_in;
+  bboolean save_in;
   
   /* Simulate a button release without the pointer in the button */
   if (button->button_down)
@@ -1630,7 +1630,7 @@ btk_button_grab_broken (BtkWidget          *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_button_key_release (BtkWidget   *widget,
 			BdkEventKey *event)
 {
@@ -1647,7 +1647,7 @@ btk_button_key_release (BtkWidget   *widget,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_button_enter_notify (BtkWidget        *widget,
 			 BdkEventCrossing *event)
 {
@@ -1667,7 +1667,7 @@ btk_button_enter_notify (BtkWidget        *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_button_leave_notify (BtkWidget        *widget,
 			 BdkEventCrossing *event)
 {
@@ -1724,8 +1724,8 @@ btk_real_button_clicked (BtkButton *button)
     btk_action_activate (priv->action);
 }
 
-static gboolean
-button_activate_timeout (gpointer data)
+static bboolean
+button_activate_timeout (bpointer data)
 {
   btk_button_finish_activate (data, TRUE);
 
@@ -1737,7 +1737,7 @@ btk_real_button_activate (BtkButton *button)
 {
   BtkWidget *widget = BTK_WIDGET (button);
   BtkButtonPrivate *priv;
-  guint32 time;
+  buint32 time;
 
   priv = BTK_BUTTON_GET_PRIVATE (button);
 
@@ -1764,7 +1764,7 @@ btk_real_button_activate (BtkButton *button)
 
 static void
 btk_button_finish_activate (BtkButton *button,
-			    gboolean   do_it)
+			    bboolean   do_it)
 {
   BtkWidget *widget = BTK_WIDGET (button);
   BtkButtonPrivate *priv;
@@ -1803,9 +1803,9 @@ btk_button_finish_activate (BtkButton *button,
  **/
 void
 btk_button_set_label (BtkButton   *button,
-		      const gchar *label)
+		      const bchar *label)
 {
-  gchar *new_label;
+  bchar *new_label;
   
   g_return_if_fail (BTK_IS_BUTTON (button));
 
@@ -1831,7 +1831,7 @@ btk_button_set_label (BtkButton   *button,
  * Return value: The text of the label widget. This string is owned
  * by the widget and must not be modified or freed.
  **/
-const gchar *
+const bchar *
 btk_button_get_label (BtkButton *button)
 {
   g_return_val_if_fail (BTK_IS_BUTTON (button), NULL);
@@ -1849,7 +1849,7 @@ btk_button_get_label (BtkButton *button)
  */
 void
 btk_button_set_use_underline (BtkButton *button,
-			      gboolean   use_underline)
+			      bboolean   use_underline)
 {
   g_return_if_fail (BTK_IS_BUTTON (button));
 
@@ -1875,7 +1875,7 @@ btk_button_set_use_underline (BtkButton *button,
  * Return value: %TRUE if an embedded underline in the button label
  *               indicates the mnemonic accelerator keys.
  **/
-gboolean
+bboolean
 btk_button_get_use_underline (BtkButton *button)
 {
   g_return_val_if_fail (BTK_IS_BUTTON (button), FALSE);
@@ -1893,7 +1893,7 @@ btk_button_get_use_underline (BtkButton *button)
  */
 void
 btk_button_set_use_stock (BtkButton *button,
-			  gboolean   use_stock)
+			  bboolean   use_stock)
 {
   g_return_if_fail (BTK_IS_BUTTON (button));
 
@@ -1919,7 +1919,7 @@ btk_button_set_use_stock (BtkButton *button,
  *               select a stock item instead of being
  *               used directly as the label text.
  */
-gboolean
+bboolean
 btk_button_get_use_stock (BtkButton *button)
 {
   g_return_val_if_fail (BTK_IS_BUTTON (button), FALSE);
@@ -1941,7 +1941,7 @@ btk_button_get_use_stock (BtkButton *button)
  **/
 void
 btk_button_set_focus_on_click (BtkButton *button,
-			       gboolean   focus_on_click)
+			       bboolean   focus_on_click)
 {
   g_return_if_fail (BTK_IS_BUTTON (button));
   
@@ -1967,7 +1967,7 @@ btk_button_set_focus_on_click (BtkButton *button,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_button_get_focus_on_click (BtkButton *button)
 {
   g_return_val_if_fail (BTK_IS_BUTTON (button), FALSE);
@@ -1990,8 +1990,8 @@ btk_button_get_focus_on_click (BtkButton *button)
  */
 void
 btk_button_set_alignment (BtkButton *button,
-			  gfloat     xalign,
-			  gfloat     yalign)
+			  bfloat     xalign,
+			  bfloat     yalign)
 {
   BtkButtonPrivate *priv;
 
@@ -2023,8 +2023,8 @@ btk_button_set_alignment (BtkButton *button,
  */
 void
 btk_button_get_alignment (BtkButton *button,
-			  gfloat    *xalign,
-			  gfloat    *yalign)
+			  bfloat    *xalign,
+			  bfloat    *yalign)
 {
   BtkButtonPrivate *priv;
 
@@ -2050,7 +2050,7 @@ btk_button_get_alignment (BtkButton *button,
  **/
 void
 _btk_button_set_depressed (BtkButton *button,
-			   gboolean   depressed)
+			   bboolean   depressed)
 {
   BtkWidget *widget = BTK_WIDGET (button);
 
@@ -2066,7 +2066,7 @@ _btk_button_set_depressed (BtkButton *button,
 static void
 btk_button_update_state (BtkButton *button)
 {
-  gboolean depressed, touchscreen;
+  bboolean depressed, touchscreen;
   BtkStateType new_state;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (button)),
@@ -2103,7 +2103,7 @@ show_image_change_notify (BtkButton *button)
 
 static void
 traverse_container (BtkWidget *widget,
-		    gpointer   data)
+		    bpointer   data)
 {
   if (BTK_IS_BUTTON (widget))
     show_image_change_notify (BTK_BUTTON (widget));
@@ -2132,7 +2132,7 @@ btk_button_screen_changed (BtkWidget *widget,
 {
   BtkButton *button;
   BtkSettings *settings;
-  guint show_image_connection;
+  buint show_image_connection;
 
   if (!btk_widget_has_screen (widget))
     return;
@@ -2150,7 +2150,7 @@ btk_button_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
 
   show_image_connection = 
-    GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
+    BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
 					 "btk-button-connection"));
   
   if (show_image_connection)
@@ -2161,7 +2161,7 @@ btk_button_screen_changed (BtkWidget *widget,
 		      G_CALLBACK (btk_button_setting_changed), NULL);
   g_object_set_data (B_OBJECT (settings), 
 		     I_("btk-button-connection"),
-		     GUINT_TO_POINTER (show_image_connection));
+		     BUINT_TO_POINTER (show_image_connection));
 
   show_image_change_notify (button);
 }
@@ -2181,10 +2181,10 @@ btk_button_state_changed (BtkWidget    *widget,
 
 static void
 btk_button_grab_notify (BtkWidget *widget,
-			gboolean   was_grabbed)
+			bboolean   was_grabbed)
 {
   BtkButton *button = BTK_BUTTON (widget);
-  gboolean save_in;
+  bboolean save_in;
 
   if (!was_grabbed)
     {

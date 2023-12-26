@@ -133,7 +133,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkButton.html#btk-button-get-label" title="btk_button_get_label ()">btk_button_get_label</a> <span class="c_punctuation">()</span>
@@ -149,7 +149,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkButton.html#btk-button-get-use-stock" title="btk_button_get_use_stock ()">btk_button_get_use_stock</a> <span class="c_punctuation">()</span>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkButton.html#btk-button-get-use-underline" title="btk_button_get_use_underline ()">btk_button_get_use_underline</a> <span class="c_punctuation">()</span>
@@ -189,7 +189,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkButton.html#btk-button-get-focus-on-click" title="btk_button_get_focus_on_click ()">btk_button_get_focus_on_click</a> <span class="c_punctuation">()</span>
@@ -264,7 +264,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkButton.html#BtkButton--focus-on-click" title="The “focus-on-click” property">focus-on-click</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -291,12 +291,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkButton.html#BtkButton--use-stock" title="The “use-stock” property">use-stock</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkButton.html#BtkButton--use-underline" title="The “use-underline” property">use-underline</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -345,7 +345,7 @@
 <td class="property_flags">Read</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkButton.html#BtkButton--s-displace-focus" title="The “displace-focus” style property">displace-focus</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -460,13 +460,13 @@ btk_button_new (<em class="parameter"><code><span class="type">void</span></code
 <div class="refsect2">
 <a name="btk-button-new-with-label"></a><h3>btk_button_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_button_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_button_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-button-new-with-mnemonic"></a><h3>btk_button_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_button_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_button_new_with_mnemonic (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> containing a label.
 If characters in <em class="parameter"><code>label</code></em>
  are preceded by an underscore, they are underlined.
@@ -502,7 +502,7 @@ mnemonic character</p></td>
 <div class="refsect2">
 <a name="btk-button-new-from-stock"></a><h3>btk_button_new_from_stock ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_button_new_from_stock (<em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+btk_button_new_from_stock (<em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> containing the image and text from a stock item.
 Some stock ids have preprocessor macros like <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-OK:CAPS" title="BTK_STOCK_OK"><span class="type">BTK_STOCK_OK</span></a> and
 <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-APPLY:CAPS" title="BTK_STOCK_APPLY"><span class="type">BTK_STOCK_APPLY</span></a>.</p>
@@ -579,7 +579,7 @@ btk_button_get_relief (<em class="parameter"><code><a class="link" href="BtkButt
 <hr>
 <div class="refsect2">
 <a name="btk-button-get-label"></a><h3>btk_button_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_button_get_label (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>);</pre>
 <p>Fetches the text from the label of the button, as set by
 <a class="link" href="BtkButton.html#btk-button-set-label" title="btk_button_set_label ()"><code class="function">btk_button_set_label()</code></a>. If the label text has not 
@@ -612,7 +612,7 @@ by the widget and must not be modified or freed.</p>
 <a name="btk-button-set-label"></a><h3>btk_button_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_set_label (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                      <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets the text of the label of the button to <em class="parameter"><code>str</code></em>
 . This text is
 also used to select the stock item if <a class="link" href="BtkButton.html#btk-button-set-use-stock" title="btk_button_set_use_stock ()"><code class="function">btk_button_set_use_stock()</code></a>
@@ -644,7 +644,7 @@ is used.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-button-get-use-stock"></a><h3>btk_button_get_use_stock ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_button_get_use_stock (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>);</pre>
 <p>Returns whether the button label is a stock item.</p>
 <div class="refsect3">
@@ -674,7 +674,7 @@ used directly as the label text.</p>
 <a name="btk-button-set-use-stock"></a><h3>btk_button_set_use_stock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_set_use_stock (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                          <em class="parameter"><code><span class="type">gboolean</span> use_stock</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bboolean</span> use_stock</code></em>);</pre>
 <p>If <code class="literal">TRUE</code>, the label set on the button is used as a
 stock id to select the stock item for the button.</p>
 <div class="refsect3">
@@ -703,7 +703,7 @@ stock id to select the stock item for the button.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-button-get-use-underline"></a><h3>btk_button_get_use_underline ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_button_get_use_underline (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>);</pre>
 <p>Returns whether an embedded underline in the button label indicates a
 mnemonic. See <a class="link" href="BtkButton.html#btk-button-set-use-underline" title="btk_button_set_use_underline ()"><code class="function">btk_button_set_use_underline()</code></a>.</p>
@@ -733,7 +733,7 @@ indicates the mnemonic accelerator keys.</p>
 <a name="btk-button-set-use-underline"></a><h3>btk_button_set_use_underline ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_set_use_underline (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> use_underline</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> use_underline</code></em>);</pre>
 <p>If true, an underline in the text of the button label indicates
 the next character should be used for the mnemonic accelerator key.</p>
 <div class="refsect3">
@@ -764,7 +764,7 @@ the next character should be used for the mnemonic accelerator key.</p>
 <a name="btk-button-set-focus-on-click"></a><h3>btk_button_set_focus_on_click ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_set_focus_on_click (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                               <em class="parameter"><code><span class="type">gboolean</span> focus_on_click</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bboolean</span> focus_on_click</code></em>);</pre>
 <p>Sets whether the button will grab focus when it is clicked with the mouse.
 Making mouse clicks not grab focus is useful in places like toolbars where
 you don't want the keyboard focus removed from the main area of the
@@ -796,7 +796,7 @@ application.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-button-get-focus-on-click"></a><h3>btk_button_get_focus_on_click ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_button_get_focus_on_click (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>);</pre>
 <p>Returns whether the button grabs focus when it is clicked with the mouse.
 See <a class="link" href="BtkButton.html#btk-button-set-focus-on-click" title="btk_button_set_focus_on_click ()"><code class="function">btk_button_set_focus_on_click()</code></a>.</p>
@@ -827,8 +827,8 @@ the mouse.</p>
 <a name="btk-button-set-alignment"></a><h3>btk_button_set_alignment ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_set_alignment (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                          <em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                          <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                          <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>);</pre>
 <p>Sets the alignment of the child. This property has no effect unless 
 the child is a <a class="link" href="BtkMisc.html" title="BtkMisc"><span class="type">BtkMisc</span></a> or a <span class="type">BtkAligment</span>.</p>
 <div class="refsect3">
@@ -867,8 +867,8 @@ the child is a <a class="link" href="BtkMisc.html" title="BtkMisc"><span class="
 <a name="btk-button-get-alignment"></a><h3>btk_button_get_alignment ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_button_get_alignment (<em class="parameter"><code><a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button</code></em>,
-                          <em class="parameter"><code><span class="type">gfloat</span> *xalign</code></em>,
-                          <em class="parameter"><code><span class="type">gfloat</span> *yalign</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bfloat</span> *xalign</code></em>,
+                          <em class="parameter"><code><span class="type">bfloat</span> *yalign</code></em>);</pre>
 <p>Gets the alignment of the child in the button.</p>
 <div class="refsect3">
 <a name="btk-button-get-alignment.parameters"></a><h4>Parameters</h4>
@@ -1068,7 +1068,7 @@ This function should be rarely needed.</p>
 <a name="BtkButton.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkButton--focus-on-click"></a><h3>The <code class="literal">“focus-on-click”</code> property</h3>
-<pre class="programlisting">  “focus-on-click”           <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “focus-on-click”           <span class="type">bboolean</span></pre>
 <p>Whether the button grabs focus when it is clicked with the mouse.</p>
 <p>Owner: BtkButton</p>
 <p>Flags: Read / Write</p>
@@ -1113,7 +1113,7 @@ This function should be rarely needed.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkButton--use-stock"></a><h3>The <code class="literal">“use-stock”</code> property</h3>
-<pre class="programlisting">  “use-stock”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-stock”                <span class="type">bboolean</span></pre>
 <p>If set, the label is used to pick a stock item instead of being displayed.</p>
 <p>Owner: BtkButton</p>
 <p>Flags: Read / Write / Construct</p>
@@ -1122,7 +1122,7 @@ This function should be rarely needed.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkButton--use-underline"></a><h3>The <code class="literal">“use-underline”</code> property</h3>
-<pre class="programlisting">  “use-underline”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-underline”            <span class="type">bboolean</span></pre>
 <p>If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key.</p>
 <p>Owner: BtkButton</p>
 <p>Flags: Read / Write / Construct</p>
@@ -1202,7 +1202,7 @@ For more information about default widgets, see <a class="link" href="BtkWidget.
 <hr>
 <div class="refsect2">
 <a name="BtkButton--s-displace-focus"></a><h3>The <code class="literal">“displace-focus”</code> style property</h3>
-<pre class="programlisting">  “displace-focus”           <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “displace-focus”           <span class="type">bboolean</span></pre>
 <p>Whether the child_displacement_x/child_displacement_y properties
 
 should also affect the focus rectangle.</p>
@@ -1237,7 +1237,7 @@ should also affect the focus rectangle.</p>
 <a name="BtkButton-activate"></a><h3>The <code class="literal">“activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *widget,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>The ::activate signal on BtkButton is an action signal and
 emitting it causes the button to animate press then release.
 
@@ -1272,7 +1272,7 @@ Applications should never connect to this signal, but use the
 <a name="BtkButton-clicked"></a><h3>The <code class="literal">“clicked”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when the button has been activated (pressed and released).</p>
 <div class="refsect3">
 <a name="BtkButton-clicked.parameters"></a><h4>Parameters</h4>
@@ -1303,7 +1303,7 @@ user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span cla
 <a name="BtkButton-enter"></a><h3>The <code class="literal">“enter”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when the pointer enters the button.</p>
 <div class="warning">
 <p><code class="literal">BtkButton::enter</code> has been deprecated since version 2.8 and should not be used in newly-written code.</p>
@@ -1338,7 +1338,7 @@ user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span cla
 <a name="BtkButton-leave"></a><h3>The <code class="literal">“leave”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when the pointer leaves the button.</p>
 <div class="warning">
 <p><code class="literal">BtkButton::leave</code> has been deprecated since version 2.8 and should not be used in newly-written code.</p>
@@ -1373,7 +1373,7 @@ user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span cla
 <a name="BtkButton-pressed"></a><h3>The <code class="literal">“pressed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when the button is pressed.</p>
 <div class="warning">
 <p><code class="literal">BtkButton::pressed</code> has been deprecated since version 2.8 and should not be used in newly-written code.</p>
@@ -1408,7 +1408,7 @@ user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span cla
 <a name="BtkButton-released"></a><h3>The <code class="literal">“released”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkButton.html" title="BtkButton"><span class="type">BtkButton</span></a> *button,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Emitted when the button is released.</p>
 <div class="warning">
 <p><code class="literal">BtkButton::released</code> has been deprecated since version 2.8 and should not be used in newly-written code.</p>

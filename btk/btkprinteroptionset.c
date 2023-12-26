@@ -35,7 +35,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 /* ugly side-effect of aliasing */
 #undef btk_printer_option_set
@@ -129,7 +129,7 @@ BtkPrinterOption *
 btk_printer_option_set_lookup (BtkPrinterOptionSet *set,
 			       const char          *name)
 {
-  gpointer ptr;
+  bpointer ptr;
 
   ptr = g_hash_table_lookup (set->hash, name);
 
@@ -171,7 +171,7 @@ void
 btk_printer_option_set_foreach_in_group (BtkPrinterOptionSet     *set,
 					 const char              *group,
 					 BtkPrinterOptionSetFunc  func,
-					 gpointer                 user_data)
+					 bpointer                 user_data)
 {
   BtkPrinterOption *option;
   int i;
@@ -188,7 +188,7 @@ btk_printer_option_set_foreach_in_group (BtkPrinterOptionSet     *set,
 void
 btk_printer_option_set_foreach (BtkPrinterOptionSet *set,
 				BtkPrinterOptionSetFunc func,
-				gpointer user_data)
+				bpointer user_data)
 {
   btk_printer_option_set_foreach_in_group (set, NULL, func, user_data);
 }

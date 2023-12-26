@@ -49,11 +49,11 @@ struct _BdkPixmapImplWin32
 {
   BdkDrawableImplWin32 parent_instance;
 
-  gint width;
-  gint height;
-  guchar *bits;
-  guint is_foreign : 1;
-  guint is_allocated : 1;
+  bint width;
+  bint height;
+  buchar *bits;
+  buint is_foreign : 1;
+  buint is_allocated : 1;
 };
  
 struct _BdkPixmapImplWin32Class 

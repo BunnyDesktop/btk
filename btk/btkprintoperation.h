@@ -90,15 +90,15 @@ struct _BtkPrintOperationClass
 				  BtkPrintOperationResult result);
   void     (*begin_print)        (BtkPrintOperation *operation,
 				  BtkPrintContext   *context);
-  gboolean (*paginate)           (BtkPrintOperation *operation,
+  bboolean (*paginate)           (BtkPrintOperation *operation,
 				  BtkPrintContext   *context);
   void     (*request_page_setup) (BtkPrintOperation *operation,
 				  BtkPrintContext   *context,
-				  gint               page_nr,
+				  bint               page_nr,
 				  BtkPageSetup      *setup);
   void     (*draw_page)          (BtkPrintOperation *operation,
 				  BtkPrintContext   *context,
-				  gint               page_nr);
+				  bint               page_nr);
   void     (*end_print)          (BtkPrintOperation *operation,
 				  BtkPrintContext   *context);
   void     (*status_changed)     (BtkPrintOperation *operation);
@@ -107,7 +107,7 @@ struct _BtkPrintOperationClass
   void       (*custom_widget_apply)  (BtkPrintOperation *operation,
 				      BtkWidget         *widget);
 
-  gboolean (*preview)	     (BtkPrintOperation        *operation,
+  bboolean (*preview)	     (BtkPrintOperation        *operation,
 			      BtkPrintOperationPreview *preview,
 			      BtkPrintContext          *context,
 			      BtkWindow                *parent);
@@ -147,25 +147,25 @@ void                    btk_print_operation_set_print_settings     (BtkPrintOper
 								    BtkPrintSettings   *print_settings);
 BtkPrintSettings *      btk_print_operation_get_print_settings     (BtkPrintOperation  *op);
 void                    btk_print_operation_set_job_name           (BtkPrintOperation  *op,
-								    const gchar        *job_name);
+								    const bchar        *job_name);
 void                    btk_print_operation_set_n_pages            (BtkPrintOperation  *op,
-								    gint                n_pages);
+								    bint                n_pages);
 void                    btk_print_operation_set_current_page       (BtkPrintOperation  *op,
-								    gint                current_page);
+								    bint                current_page);
 void                    btk_print_operation_set_use_full_page      (BtkPrintOperation  *op,
-								    gboolean            full_page);
+								    bboolean            full_page);
 void                    btk_print_operation_set_unit               (BtkPrintOperation  *op,
 								    BtkUnit             unit);
 void                    btk_print_operation_set_export_filename    (BtkPrintOperation  *op,
-								    const gchar        *filename);
+								    const bchar        *filename);
 void                    btk_print_operation_set_track_print_status (BtkPrintOperation  *op,
-								    gboolean            track_status);
+								    bboolean            track_status);
 void                    btk_print_operation_set_show_progress      (BtkPrintOperation  *op,
-								    gboolean            show_progress);
+								    bboolean            show_progress);
 void                    btk_print_operation_set_allow_async        (BtkPrintOperation  *op,
-								    gboolean            allow_async);
+								    bboolean            allow_async);
 void                    btk_print_operation_set_custom_tab_label   (BtkPrintOperation  *op,
-								    const gchar        *label);
+								    const bchar        *label);
 BtkPrintOperationResult btk_print_operation_run                    (BtkPrintOperation  *op,
 								    BtkPrintOperationAction action,
 								    BtkWindow          *parent,
@@ -173,34 +173,34 @@ BtkPrintOperationResult btk_print_operation_run                    (BtkPrintOper
 void                    btk_print_operation_get_error              (BtkPrintOperation  *op,
 								    GError            **error);
 BtkPrintStatus          btk_print_operation_get_status             (BtkPrintOperation  *op);
-const gchar *           btk_print_operation_get_status_string      (BtkPrintOperation  *op);
-gboolean                btk_print_operation_is_finished            (BtkPrintOperation  *op);
+const bchar *           btk_print_operation_get_status_string      (BtkPrintOperation  *op);
+bboolean                btk_print_operation_is_finished            (BtkPrintOperation  *op);
 void                    btk_print_operation_cancel                 (BtkPrintOperation  *op);
 void                    btk_print_operation_draw_page_finish       (BtkPrintOperation  *op);
 void                    btk_print_operation_set_defer_drawing      (BtkPrintOperation  *op);
 void                    btk_print_operation_set_support_selection  (BtkPrintOperation  *op,
-                                                                    gboolean            support_selection);
-gboolean                btk_print_operation_get_support_selection  (BtkPrintOperation  *op);
+                                                                    bboolean            support_selection);
+bboolean                btk_print_operation_get_support_selection  (BtkPrintOperation  *op);
 void                    btk_print_operation_set_has_selection      (BtkPrintOperation  *op,
-                                                                    gboolean            has_selection);
-gboolean                btk_print_operation_get_has_selection      (BtkPrintOperation  *op);
+                                                                    bboolean            has_selection);
+bboolean                btk_print_operation_get_has_selection      (BtkPrintOperation  *op);
 void                    btk_print_operation_set_embed_page_setup   (BtkPrintOperation  *op,
- 								    gboolean            embed);
-gboolean                btk_print_operation_get_embed_page_setup   (BtkPrintOperation  *op);
-gint                    btk_print_operation_get_n_pages_to_print   (BtkPrintOperation  *op);
+ 								    bboolean            embed);
+bboolean                btk_print_operation_get_embed_page_setup   (BtkPrintOperation  *op);
+bint                    btk_print_operation_get_n_pages_to_print   (BtkPrintOperation  *op);
 
 BtkPageSetup           *btk_print_run_page_setup_dialog            (BtkWindow          *parent,
 								    BtkPageSetup       *page_setup,
 								    BtkPrintSettings   *settings);
 
 typedef void  (* BtkPageSetupDoneFunc) (BtkPageSetup *page_setup,
-					gpointer      data);
+					bpointer      data);
 
 void                    btk_print_run_page_setup_dialog_async      (BtkWindow            *parent,
 								    BtkPageSetup         *page_setup,
 								    BtkPrintSettings     *settings,
                                                                     BtkPageSetupDoneFunc  done_cb,
-                                                                    gpointer              data);
+                                                                    bpointer              data);
 
 B_END_DECLS
 

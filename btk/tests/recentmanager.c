@@ -22,8 +22,8 @@
 #include <bunnylib/gstdio.h>
 #include <btk/btk.h>
 
-const gchar *uri = "file:///tmp/testrecentchooser.txt";
-const gchar *uri2 = "file:///tmp/testrecentchooser2.txt";
+const bchar *uri = "file:///tmp/testrecentchooser.txt";
+const bchar *uri2 = "file:///tmp/testrecentchooser2.txt";
 
 static void
 recent_manager_get_default (void)
@@ -43,7 +43,7 @@ recent_manager_add (void)
 {
   BtkRecentManager *manager;
   BtkRecentData *recent_data;
-  gboolean res;
+  bboolean res;
 
   manager = btk_recent_manager_get_default ();
 
@@ -98,12 +98,12 @@ recent_manager_add (void)
 
 typedef struct {
   GMainLoop *main_loop;
-  gint counter;
+  bint counter;
 } AddManyClosure;
 
 static void
 check_bulk (BtkRecentManager *manager,
-            gpointer          data)
+            bpointer          data)
 {
   AddManyClosure *closure = data;
 
@@ -124,7 +124,7 @@ recent_manager_add_many (void)
                                             NULL);
   AddManyClosure *closure = g_new (AddManyClosure, 1);
   BtkRecentData *data = g_slice_new0 (BtkRecentData);
-  gint i;
+  bint i;
 
   closure->main_loop = g_main_loop_new (NULL, FALSE);
   closure->counter = 0;
@@ -133,7 +133,7 @@ recent_manager_add_many (void)
 
   for (i = 0; i < 100; i++)
     {
-      gchar *new_uri;
+      bchar *new_uri;
 
       data->mime_type = "text/plain";
       data->app_name = "testrecentchooser";
@@ -163,7 +163,7 @@ static void
 recent_manager_has_item (void)
 {
   BtkRecentManager *manager;
-  gboolean res;
+  bboolean res;
 
   manager = btk_recent_manager_get_default ();
 
@@ -178,7 +178,7 @@ static void
 recent_manager_move_item (void)
 {
   BtkRecentManager *manager;
-  gboolean res;
+  bboolean res;
   GError *error;
 
   manager = btk_recent_manager_get_default ();
@@ -239,7 +239,7 @@ static void
 recent_manager_remove_item (void)
 {
   BtkRecentManager *manager;
-  gboolean res;
+  bboolean res;
   GError *error;
 
   manager = btk_recent_manager_get_default ();
@@ -269,7 +269,7 @@ recent_manager_purge (void)
 {
   BtkRecentManager *manager;
   BtkRecentData *recent_data;
-  gint n;
+  bint n;
   GError *error;
 
   manager = btk_recent_manager_get_default ();

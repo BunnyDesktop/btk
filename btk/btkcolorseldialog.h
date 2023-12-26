@@ -73,7 +73,7 @@ struct _BtkColorSelectionDialogClass
 
 /* ColorSelectionDialog */
 GType      btk_color_selection_dialog_get_type            (void) B_GNUC_CONST;
-BtkWidget* btk_color_selection_dialog_new                 (const gchar *title);
+BtkWidget* btk_color_selection_dialog_new                 (const bchar *title);
 BtkWidget* btk_color_selection_dialog_get_color_selection (BtkColorSelectionDialog *colorsel);
 
 

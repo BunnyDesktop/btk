@@ -77,11 +77,11 @@ typedef enum
 #if defined G_OS_WIN32 \
   || (defined BDK_WINDOWING_QUARTZ && defined QUARTZ_RELOCATION)
 
-const gchar *_btk_get_datadir ();
-const gchar *_btk_get_libdir ();
-const gchar *_btk_get_sysconfdir ();
-const gchar *_btk_get_localedir ();
-const gchar *_btk_get_data_prefix ();
+const bchar *_btk_get_datadir ();
+const bchar *_btk_get_libdir ();
+const bchar *_btk_get_sysconfdir ();
+const bchar *_btk_get_localedir ();
+const bchar *_btk_get_data_prefix ();
 
 #undef BTK_DATADIR
 #define BTK_DATADIR _btk_get_datadir ()
@@ -96,9 +96,9 @@ const gchar *_btk_get_data_prefix ();
 
 #endif /* G_OS_WIN32 */
 
-gboolean _btk_fnmatch (const char *pattern,
+bboolean _btk_fnmatch (const char *pattern,
 		       const char *string,
-		       gboolean    no_leading_period);
+		       bboolean    no_leading_period);
 
 #define BTK_PARAM_READABLE G_PARAM_READABLE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB
 #define BTK_PARAM_WRITABLE G_PARAM_WRITABLE|G_PARAM_STATIC_NAME|G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB
@@ -139,16 +139,16 @@ gboolean _btk_fnmatch (const char *pattern,
 #define BTK_TOGGLE_GROUP_MOD_MASK BDK_MOD1_MASK
 #endif
 
-gboolean _btk_button_event_triggers_context_menu (BdkEventButton *event);
+bboolean _btk_button_event_triggers_context_menu (BdkEventButton *event);
 
-gboolean _btk_translate_keyboard_accel_state     (BdkKeymap       *keymap,
-                                                  guint            hardware_keycode,
+bboolean _btk_translate_keyboard_accel_state     (BdkKeymap       *keymap,
+                                                  buint            hardware_keycode,
                                                   BdkModifierType  state,
                                                   BdkModifierType  accel_mask,
-                                                  gint             group,
-                                                  guint           *keyval,
-                                                  gint            *effective_group,
-                                                  gint            *level,
+                                                  bint             group,
+                                                  buint           *keyval,
+                                                  bint            *effective_group,
+                                                  bint            *level,
                                                   BdkModifierType *consumed_modifiers);
 
 

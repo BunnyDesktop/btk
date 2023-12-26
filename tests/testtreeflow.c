@@ -48,7 +48,7 @@ static char *words[] =
 static void
 initialize_model (void)
 {
-  gint i;
+  bint i;
   BtkTreeIter iter;
 
   model = (BtkTreeModel *) btk_list_store_new (NUM_COLUMNS, B_TYPE_STRING);
@@ -65,7 +65,7 @@ initialize_model (void)
 static void
 futz_row (void)
 {
-  gint i;
+  bint i;
   BtkTreePath *path;
   BtkTreeIter iter;
   BtkTreeIter iter2;
@@ -107,10 +107,10 @@ futz_row (void)
     }
 }
 
-static gboolean
+static bboolean
 futz (void)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < 15; i++)
     futz_row ();

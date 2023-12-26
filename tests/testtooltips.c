@@ -23,13 +23,13 @@
 
 #include <btk/btk.h>
 
-static gboolean
+static bboolean
 query_tooltip_cb (BtkWidget  *widget,
-		  gint        x,
-		  gint        y,
-		  gboolean    keyboard_tip,
+		  bint        x,
+		  bint        y,
+		  bboolean    keyboard_tip,
 		  BtkTooltip *tooltip,
-		  gpointer    data)
+		  bpointer    data)
 {
   btk_tooltip_set_markup (tooltip, btk_button_get_label (BTK_BUTTON (widget)));
   btk_tooltip_set_icon_from_stock (tooltip, BTK_STOCK_DELETE,
@@ -38,13 +38,13 @@ query_tooltip_cb (BtkWidget  *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 query_tooltip_custom_cb (BtkWidget  *widget,
-			 gint        x,
-			 gint        y,
-			 gboolean    keyboard_tip,
+			 bint        x,
+			 bint        y,
+			 bboolean    keyboard_tip,
 			 BtkTooltip *tooltip,
-			 gpointer    data)
+			 bpointer    data)
 {
   BdkColor color = { 0, 0, 65535 };
   BtkWindow *window = btk_widget_get_tooltip_window (widget);
@@ -54,13 +54,13 @@ query_tooltip_custom_cb (BtkWidget  *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 query_tooltip_text_view_cb (BtkWidget  *widget,
-			    gint        x,
-			    gint        y,
-			    gboolean    keyboard_tip,
+			    bint        x,
+			    bint        y,
+			    bboolean    keyboard_tip,
 			    BtkTooltip *tooltip,
-			    gpointer    data)
+			    bpointer    data)
 {
   BtkTextTag *tag = data;
   BtkTextIter iter;
@@ -68,14 +68,14 @@ query_tooltip_text_view_cb (BtkWidget  *widget,
 
   if (keyboard_tip)
     {
-      gint offset;
+      bint offset;
 
       g_object_get (text_view->buffer, "cursor-position", &offset, NULL);
       btk_text_buffer_get_iter_at_offset (text_view->buffer, &iter, offset);
     }
   else
     {
-      gint bx, by, trailing;
+      bint bx, by, trailing;
 
       btk_text_view_window_to_buffer_coords (text_view, BTK_TEXT_WINDOW_TEXT,
 					     x, y, &bx, &by);
@@ -90,20 +90,20 @@ query_tooltip_text_view_cb (BtkWidget  *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 query_tooltip_tree_view_cb (BtkWidget  *widget,
-			    gint        x,
-			    gint        y,
-			    gboolean    keyboard_tip,
+			    bint        x,
+			    bint        y,
+			    bboolean    keyboard_tip,
 			    BtkTooltip *tooltip,
-			    gpointer    data)
+			    bpointer    data)
 {
   BtkTreeIter iter;
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
   BtkTreePath *path = NULL;
-  gchar *tmp;
-  gchar *pathstring;
+  bchar *tmp;
+  bchar *pathstring;
 
   char buffer[512];
 
@@ -161,11 +161,11 @@ selection_changed_cb (BtkTreeSelection *selection,
 
 static struct Rectangle
 {
-  gint x;
-  gint y;
-  gfloat r;
-  gfloat g;
-  gfloat b;
+  bint x;
+  bint y;
+  bfloat r;
+  bfloat g;
+  bfloat b;
   const char *tooltip;
 }
 rectangles[] =
@@ -175,15 +175,15 @@ rectangles[] =
   { 100, 50, 0.8, 0.8, 0.0, "Yellow thing" }
 };
 
-static gboolean
+static bboolean
 query_tooltip_drawing_area_cb (BtkWidget  *widget,
-			       gint        x,
-			       gint        y,
-			       gboolean    keyboard_tip,
+			       bint        x,
+			       bint        y,
+			       bboolean    keyboard_tip,
 			       BtkTooltip *tooltip,
-			       gpointer    data)
+			       bpointer    data)
 {
-  gint i;
+  bint i;
 
   if (keyboard_tip)
     return FALSE;
@@ -203,12 +203,12 @@ query_tooltip_drawing_area_cb (BtkWidget  *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 drawing_area_expose (BtkWidget      *drawing_area,
 		     BdkEventExpose *event,
-		     gpointer        data)
+		     bpointer        data)
 {
-  gint i;
+  bint i;
   bairo_t *cr;
 
   bdk_window_get_pointer (drawing_area->window, NULL, NULL, NULL);
@@ -239,13 +239,13 @@ drawing_area_expose (BtkWidget      *drawing_area,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 query_tooltip_label_cb (BtkWidget  *widget,
-			gint        x,
-			gint        y,
-			gboolean    keyboard_tip,
+			bint        x,
+			bint        y,
+			bboolean    keyboard_tip,
 			BtkTooltip *tooltip,
-			gpointer    data)
+			bpointer    data)
 {
   BtkWidget *custom = data;
 
@@ -274,7 +274,7 @@ main (int argc, char *argv[])
   BtkTextIter iter;
   BtkTextTag *tag;
 
-  gchar *text, *markup;
+  bchar *text, *markup;
 
   btk_init (&argc, &argv);
 

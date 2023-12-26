@@ -31,7 +31,7 @@ static void tictactoe_class_init          (TictactoeClass *klass);
 static void tictactoe_init                (Tictactoe      *ttt);
 static void tictactoe_toggle              (BtkWidget *widget, Tictactoe *ttt);
 
-static guint tictactoe_signals[LAST_SIGNAL] = { 0 };
+static buint tictactoe_signals[LAST_SIGNAL] = { 0 };
 
 GType
 tictactoe_get_type (void)
@@ -78,7 +78,7 @@ tictactoe_class_init (TictactoeClass *klass)
 static void
 tictactoe_init (Tictactoe *ttt)
 {
-  gint i,j;
+  bint i,j;
   
   btk_table_resize (BTK_TABLE (ttt), 3, 3);
   btk_table_set_homogeneous (BTK_TABLE (ttt), TRUE);
@@ -89,7 +89,7 @@ tictactoe_init (Tictactoe *ttt)
 	btk_table_attach_defaults (BTK_TABLE (ttt), ttt->buttons[i][j], 
 				   i, i+1, j, j+1);
 	g_signal_connect (B_OBJECT (ttt->buttons[i][j]), "toggled",
-			  G_CALLBACK (tictactoe_toggle), (gpointer) ttt);
+			  G_CALLBACK (tictactoe_toggle), (bpointer) ttt);
 	btk_widget_set_size_request (ttt->buttons[i][j], 20, 20);
 	btk_widget_show (ttt->buttons[i][j]);
       }

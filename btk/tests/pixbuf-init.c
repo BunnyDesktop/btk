@@ -2,7 +2,7 @@
 #include <bunnylib.h>
 #include <bunnylib/gstdio.h>
 
-static gboolean
+static bboolean
 file_exists (const char *filename)
 {
   GStatBuf statbuf;

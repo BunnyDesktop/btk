@@ -43,19 +43,19 @@ struct _BailEntry
   /*
    * These fields store information about text changed
    */
-  gchar          *signal_name_insert;
-  gchar          *signal_name_delete;
-  gint           position_insert;
-  gint           position_delete;
-  gint           length_insert;
-  gint           length_delete;
-  gint           cursor_position;
-  gint           selection_bound;
+  bchar          *signal_name_insert;
+  bchar          *signal_name_delete;
+  bint           position_insert;
+  bint           position_delete;
+  bint           length_insert;
+  bint           length_delete;
+  bint           cursor_position;
+  bint           selection_bound;
 
-  gchar          *activate_description;
-  gchar          *activate_keybinding;
-  guint          action_idle_handler;
-  guint          insert_idle_handler;
+  bchar          *activate_description;
+  bchar          *activate_keybinding;
+  buint          action_idle_handler;
+  buint          insert_idle_handler;
 };
 
 GType bail_entry_get_type (void);

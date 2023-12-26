@@ -64,15 +64,15 @@ The <function>bdk_time*</function> functions have been removed. This
 <para>
 The signature for <function>BtkPrintFunc</function> (used for 
   <function>btk_item_factory_dump_items()</function>)
-  has been changed to take a <type>const gchar *</type> instead of 
-  <type>gchar *</type>, to match what we do for GLib, and other similar cases.
+  has been changed to take a <type>const bchar *</type> instead of 
+  <type>bchar *</type>, to match what we do for GLib, and other similar cases.
 </para>
 </listitem>
 
 <listitem>
 <para>
 The detail arguments in the <structname>BtkStyleClass</structname> structure 
-are now <type>const gchar *</type>.
+are now <type>const bchar *</type>.
 </para>
 </listitem>
 
@@ -533,12 +533,12 @@ The split between <structname>BtkProgress</structname> and
 <programlisting>
   void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
   void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
-                                                    const gchar    *text);
+                                                    const bchar    *text);
   void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
 
   void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
   void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
 						    BtkProgressBarOrientation orientation);
 </programlisting>

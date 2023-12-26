@@ -236,10 +236,10 @@ static struct
 static void
 _bairo_draw_line (bairo_t  *cr,
                   BdkColor *color,
-                  gint      x1,
-                  gint      y1,
-                  gint      x2,
-                  gint      y2)
+                  bint      x1,
+                  bint      y1,
+                  bint      x2,
+                  bint      y2)
 {
   bairo_save (cr);
 
@@ -257,11 +257,11 @@ _bairo_draw_line (bairo_t  *cr,
 static void
 _bairo_draw_rectangle (bairo_t *cr,
                        BdkColor *color,
-                       gboolean filled,
-                       gint x,
-                       gint y,
-                       gint width,
-                       gint height)
+                       bboolean filled,
+                       bint x,
+                       bint y,
+                       bint width,
+                       bint height)
 {
   bdk_bairo_set_source_color (cr, color);
 
@@ -277,7 +277,7 @@ _bairo_draw_rectangle (bairo_t *cr,
     }
 }
 
-static gboolean
+static bboolean
 get_system_font (XpThemeClass klazz, XpThemeFont type, LOGFONTW *out_lf)
 {
   if (xp_theme_get_system_font (klazz, type, out_lf))
@@ -384,11 +384,11 @@ sys_font_to_bango_font (XpThemeClass klazz, XpThemeFont type, char *buf,
 #define WIN2K3_VERSION  0x502
 #define VISTA_VERSION   0x600
 
-static gint32
+static bint32
 get_windows_version ()
 {
-  static gint32 version = 0;
-  static gboolean have_version = FALSE;
+  static bint32 version = 0;
+  static bboolean have_version = FALSE;
 
   if (!have_version)
     {
@@ -878,10 +878,10 @@ setup_system_styles (BtkStyle *style)
     }
 }
 
-static gboolean
-sanitize_size (BdkWindow *window, gint *width, gint *height)
+static bboolean
+sanitize_size (BdkWindow *window, bint *width, bint *height)
 {
-  gboolean set_bg = FALSE;
+  bboolean set_bg = FALSE;
 
   if ((*width == -1) && (*height == -1))
     {
@@ -901,7 +901,7 @@ sanitize_size (BdkWindow *window, gint *width, gint *height)
 }
 
 static XpThemeElement
-map_btk_progress_bar_to_xp (BtkProgressBar *progress_bar, gboolean trough)
+map_btk_progress_bar_to_xp (BtkProgressBar *progress_bar, bboolean trough)
 {
   XpThemeElement ret;
 
@@ -924,7 +924,7 @@ map_btk_progress_bar_to_xp (BtkProgressBar *progress_bar, gboolean trough)
   return ret;
 }
 
-static gboolean
+static bboolean
 is_combo_box_child (BtkWidget *w)
 {
   BtkWidget *tmp;
@@ -943,7 +943,7 @@ is_combo_box_child (BtkWidget *w)
 
 static void
 draw_part (BdkDrawable *drawable,
-           BdkColor *gc, BdkRectangle *area, gint x, gint y, Part part)
+           BdkColor *gc, BdkRectangle *area, bint x, bint y, Part part)
 {
   bairo_t *cr = bdk_bairo_create (drawable);
 
@@ -973,7 +973,7 @@ draw_check (BtkStyle *style,
 	    BtkShadowType shadow,
 	    BdkRectangle *area,
 	    BtkWidget *widget,
-	    const gchar *detail, gint x, gint y, gint width, gint height)
+	    const bchar *detail, bint x, bint y, bint width, bint height)
 {
   x -= (1 + PART_SIZE - width) / 2;
   y -= (1 + PART_SIZE - height) / 2;
@@ -1039,15 +1039,15 @@ draw_expander (BtkStyle        *style,
                BtkStateType     state,
                BdkRectangle    *area,
                BtkWidget       *widget,
-               const gchar     *detail,
-               gint             x,
-               gint             y,
+               const bchar     *detail,
+               bint             x,
+               bint             y,
                BtkExpanderStyle expander_style)
 {
   bairo_t *cr = bdk_bairo_create (window);
 
-  gint expander_size;
-  gint expander_semi_size;
+  bint expander_size;
+  bint expander_semi_size;
   XpThemeElement xp_expander;
   BtkOrientation orientation;
 
@@ -1151,7 +1151,7 @@ draw_option (BtkStyle *style,
 	     BtkShadowType shadow,
 	     BdkRectangle *area,
 	     BtkWidget *widget,
-	     const gchar *detail, gint x, gint y, gint width, gint height)
+	     const bchar *detail, bint x, bint y, bint width, bint height)
 {
   x -= (1 + PART_SIZE - width) / 2;
   y -= (1 + PART_SIZE - height) / 2;
@@ -1193,11 +1193,11 @@ draw_varrow (BdkWindow *window,
              BdkColor *gc,
 	     BtkShadowType shadow_type,
 	     BdkRectangle *area,
-	     BtkArrowType arrow_type, gint x, gint y, gint width, gint height)
+	     BtkArrowType arrow_type, bint x, bint y, bint width, bint height)
 {
-  gint steps, extra;
-  gint y_start, y_increment;
-  gint i;
+  bint steps, extra;
+  bint y_start, y_increment;
+  bint i;
   bairo_t *cr;
   
   cr = bdk_bairo_create (window);
@@ -1243,11 +1243,11 @@ draw_harrow (BdkWindow *window,
              BdkColor *gc,
 	     BtkShadowType shadow_type,
 	     BdkRectangle *area,
-	     BtkArrowType arrow_type, gint x, gint y, gint width, gint height)
+	     BtkArrowType arrow_type, bint x, bint y, bint width, bint height)
 {
-  gint steps, extra;
-  gint x_start, x_increment;
-  gint i;
+  bint steps, extra;
+  bint x_start, x_increment;
+  bint i;
   bairo_t *cr;
   
   cr = bdk_bairo_create (window);
@@ -1298,11 +1298,11 @@ draw_harrow (BdkWindow *window,
 static void
 reverse_engineer_stepper_box (BtkWidget *range,
 			      BtkArrowType arrow_type,
-			      gint *x, gint *y, gint *width, gint *height)
+			      bint *x, bint *y, bint *width, bint *height)
 {
-  gint slider_width = 14, stepper_size = 14;
-  gint box_width;
-  gint box_height;
+  bint slider_width = 14, stepper_size = 14;
+  bint box_width;
+  bint box_height;
 
   if (range)
     {
@@ -1362,11 +1362,11 @@ draw_arrow (BtkStyle *style,
 	    BtkShadowType shadow,
 	    BdkRectangle *area,
 	    BtkWidget *widget,
-	    const gchar *detail,
+	    const bchar *detail,
 	    BtkArrowType arrow_type,
-	    gboolean fill, gint x, gint y, gint width, gint height)
+	    bboolean fill, bint x, bint y, bint width, bint height)
 {
-  const gchar *name;
+  const bchar *name;
   HDC dc;
   RECT rect;
   XpDCInfo dc_info;
@@ -1404,14 +1404,14 @@ draw_arrow (BtkStyle *style,
     }
   else if (DETAIL("vscrollbar") || DETAIL("hscrollbar"))
     {
-      gboolean is_disabled = FALSE;
+      bboolean is_disabled = FALSE;
       UINT btn_type = 0;
       BtkScrollbar *scrollbar = BTK_SCROLLBAR (widget);
 
-      gint box_x = x;
-      gint box_y = y;
-      gint box_width = width;
-      gint box_height = height;
+      bint box_x = x;
+      bint box_y = y;
+      bint box_width = width;
+      bint box_height = height;
 
       reverse_engineer_stepper_box (widget, arrow_type,
 				    &box_x, &box_y, &box_width, &box_height);
@@ -1548,7 +1548,7 @@ option_menu_get_props (BtkWidget *widget,
     }
 }
 
-static gboolean
+static bboolean
 is_toolbar_child (BtkWidget *wid)
 {
   while (wid)
@@ -1562,7 +1562,7 @@ is_toolbar_child (BtkWidget *wid)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 is_menu_tool_button_child (BtkWidget *wid)
 {
   while (wid)
@@ -1600,7 +1600,7 @@ get_dark_pen ()
 }
 
 static void
-draw_3d_border (HDC hdc, RECT *rc, gboolean sunken)
+draw_3d_border (HDC hdc, RECT *rc, bboolean sunken)
 {
   HPEN pen1, pen2;
   HGDIOBJ old_pen;
@@ -1629,9 +1629,9 @@ draw_3d_border (HDC hdc, RECT *rc, gboolean sunken)
   SelectObject (hdc, old_pen);
 }
 
-static gboolean
+static bboolean
 draw_menu_item (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
-		gint x, gint y, gint width, gint height,
+		bint x, bint y, bint width, bint height,
 		BtkStateType state_type, BdkRectangle *area)
 {
   BtkWidget *parent;
@@ -1692,15 +1692,15 @@ get_dither_brush (void)
   return g_dither_brush;
 }
 
-static gboolean
+static bboolean
 draw_tool_button (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
-		  gint x, gint y, gint width, gint height,
+		  bint x, bint y, bint width, bint height,
 		  BtkStateType state_type, BdkRectangle *area)
 {
   HDC dc;
   RECT rect;
   XpDCInfo dc_info;
-  gboolean is_toggled = FALSE;
+  bboolean is_toggled = FALSE;
 
   if (xp_theme_is_active ())
     {
@@ -1751,8 +1751,8 @@ draw_tool_button (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
 
 static void
 draw_push_button (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
-		  gint x, gint y, gint width, gint height,
-		  BtkStateType state_type, gboolean is_default)
+		  bint x, bint y, bint width, bint height,
+		  BtkStateType state_type, bboolean is_default)
 {
   HDC dc;
   RECT rect;
@@ -1808,7 +1808,7 @@ draw_box (BtkStyle *style,
 	  BtkShadowType shadow_type,
 	  BdkRectangle *area,
 	  BtkWidget *widget,
-	  const gchar *detail, gint x, gint y, gint width, gint height)
+	  const bchar *detail, bint x, bint y, bint width, bint height)
 {
   if (is_combo_box_child (widget) && DETAIL("button"))
     {
@@ -1876,7 +1876,7 @@ draw_box (BtkStyle *style,
 	}
       else
 	{
-	  gboolean is_default = btk_widget_has_default (widget);
+	  bboolean is_default = btk_widget_has_default (widget);
 	  if (xp_theme_draw
 	      (window,
 	       is_default ? XP_THEME_ELEMENT_DEFAULT_BUTTON :
@@ -1928,7 +1928,7 @@ draw_box (BtkStyle *style,
 	{
 	  BtkScrollbar *scrollbar = BTK_SCROLLBAR (widget);
 	  BtkOrientation orientation;
-	  gboolean is_vertical;
+	  bboolean is_vertical;
 
           orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));
 
@@ -2022,7 +2022,7 @@ draw_box (BtkStyle *style,
       else if (widget && BTK_IS_SCROLLBAR (widget))
 	{
           BtkOrientation orientation;
-	  gboolean is_vertical;
+	  bboolean is_vertical;
 
           orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));
 
@@ -2143,7 +2143,7 @@ draw_box (BtkStyle *style,
 
   else
     {
-      const gchar *name = btk_widget_get_name (widget);
+      const bchar *name = btk_widget_get_name (widget);
 
       if (name && !strcmp (name, "btk-tooltips"))
 	{
@@ -2186,7 +2186,7 @@ draw_box (BtkStyle *style,
     {
       BtkRequisition indicator_size;
       BtkBorder indicator_spacing;
-      gint vline_x;
+      bint vline_x;
 
       option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
@@ -2219,12 +2219,12 @@ draw_tab (BtkStyle *style,
 	  BtkShadowType shadow,
 	  BdkRectangle *area,
 	  BtkWidget *widget,
-	  const gchar *detail, gint x, gint y, gint width, gint height)
+	  const bchar *detail, bint x, bint y, bint width, bint height)
 {
   BtkRequisition indicator_size;
   BtkBorder indicator_spacing;
 
-  gint arrow_height;
+  bint arrow_height;
 
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
@@ -2254,12 +2254,12 @@ draw_tab (BtkStyle *style,
 /* Draw classic Windows tab - thanks Mozilla!
   (no system API for this, but DrawEdge can draw all the parts of a tab) */
 static void
-DrawTab (HDC hdc, const RECT R, gint32 aPosition, gboolean aSelected,
-	 gboolean aDrawLeft, gboolean aDrawRight)
+DrawTab (HDC hdc, const RECT R, bint32 aPosition, bboolean aSelected,
+	 bboolean aDrawLeft, bboolean aDrawRight)
 {
-  gint32 leftFlag, topFlag, rightFlag, lightFlag, shadeFlag;
+  bint32 leftFlag, topFlag, rightFlag, lightFlag, shadeFlag;
   RECT topRect, sideRect, bottomRect, lightRect, shadeRect;
-  gint32 selectedOffset, lOffset, rOffset;
+  bint32 selectedOffset, lOffset, rOffset;
 
   selectedOffset = aSelected ? 1 : 0;
   lOffset = aDrawLeft ? 2 : 0;
@@ -2365,11 +2365,11 @@ DrawTab (HDC hdc, const RECT R, gint32 aPosition, gboolean aSelected,
 
 static void
 get_notebook_tab_position (BtkNotebook *notebook,
-                           gboolean *start,
-                           gboolean *end)
+                           bboolean *start,
+                           bboolean *end)
 {
-  gboolean found_start = FALSE, found_end = FALSE;
-  gint i, n_pages;
+  bboolean found_start = FALSE, found_end = FALSE;
+  bint i, n_pages;
 
   /* default value */
   *start = TRUE;
@@ -2380,9 +2380,9 @@ get_notebook_tab_position (BtkNotebook *notebook,
     {
       BtkWidget *tab_child;
       BtkWidget *tab_label;
-      gboolean expand;
+      bboolean expand;
       BtkPackType pack_type;
-      gboolean is_selected;
+      bboolean is_selected;
 
       tab_child = btk_notebook_get_nth_page (notebook, i);
       is_selected = btk_notebook_get_current_page (notebook) == i;
@@ -2469,23 +2469,23 @@ get_notebook_tab_position (BtkNotebook *notebook,
     }
 }
 
-static gboolean
+static bboolean
 draw_themed_tab_button (BtkStyle *style,
 			BdkWindow *window,
 			BtkStateType state_type,
 			BtkNotebook *notebook,
-			gint x,
-			gint y,
-			gint width,
-			gint height,
-			gint gap_side)
+			bint x,
+			bint y,
+			bint width,
+			bint height,
+			bint gap_side)
 {
   BdkPixmap *pixmap = NULL;
   BdkRectangle draw_rect, clip_rect;
   bairo_t *cr;
-  gboolean start, stop;
+  bboolean start, stop;
   XpThemeElement element;
-  gint d_w, d_h;
+  bint d_w, d_h;
 
   get_notebook_tab_position (notebook, &start, &stop);
 
@@ -2652,15 +2652,15 @@ draw_themed_tab_button (BtkStyle *style,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 draw_tab_button (BtkStyle *style,
 		 BdkWindow *window,
 		 BtkStateType state_type,
 		 BtkShadowType shadow_type,
 		 BdkRectangle *area,
 		 BtkWidget *widget,
-		 const gchar *detail,
-		 gint x, gint y, gint width, gint height, gint gap_side)
+		 const bchar *detail,
+		 bint x, bint y, bint width, bint height, bint gap_side)
 {
   if (gap_side == BTK_POS_TOP || gap_side == BTK_POS_BOTTOM)
     {
@@ -2668,7 +2668,7 @@ draw_tab_button (BtkStyle *style,
       RECT rect;
       XpDCInfo dc_info;
       HDC dc;
-      gint32 aPosition;
+      bint32 aPosition;
 	  bairo_t *cr;
 
       dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
@@ -2712,9 +2712,9 @@ draw_extension (BtkStyle *style,
 		BtkShadowType shadow_type,
 		BdkRectangle *area,
 		BtkWidget *widget,
-		const gchar *detail,
-		gint x, gint y,
-		gint width, gint height, BtkPositionType gap_side)
+		const bchar *detail,
+		bint x, bint y,
+		bint width, bint height, BtkPositionType gap_side)
 {
   if (widget && BTK_IS_NOTEBOOK (widget) && DETAIL("tab"))
     {
@@ -2751,14 +2751,14 @@ draw_box_gap (BtkStyle *style,
 	      BtkShadowType shadow_type,
 	      BdkRectangle *area,
 	      BtkWidget *widget,
-	      const gchar *detail,
-	      gint x,
-	      gint y,
-	      gint width,
-	      gint height,
+	      const bchar *detail,
+	      bint x,
+	      bint y,
+	      bint width,
+	      bint height,
 	      BtkPositionType gap_side,
-	      gint gap_x,
-	      gint gap_width)
+	      bint gap_x,
+	      bint gap_width)
 {
   if (BTK_IS_NOTEBOOK (widget) && DETAIL("notebook"))
     {
@@ -2795,7 +2795,7 @@ draw_box_gap (BtkStyle *style,
 			      gap_side, gap_x, gap_width);
 }
 
-static gboolean
+static bboolean
 is_popup_window_child (BtkWidget *widget)
 {
   BtkWidget *top;
@@ -2820,7 +2820,7 @@ static void
 draw_flat_box (BtkStyle *style, BdkWindow *window,
 	       BtkStateType state_type, BtkShadowType shadow_type,
 	       BdkRectangle *area, BtkWidget *widget,
-	       const gchar *detail, gint x, gint y, gint width, gint height)
+	       const bchar *detail, bint x, bint y, bint width, bint height)
 {
   if (detail)
     {
@@ -2849,9 +2849,9 @@ draw_flat_box (BtkStyle *style, BdkWindow *window,
 			       area, widget, detail, x, y, width, height);
 }
 
-static gboolean
+static bboolean
 draw_menu_border (BdkWindow *win, BtkStyle *style,
-		  gint x, gint y, gint width, gint height)
+		  bint x, bint y, bint width, bint height)
 {
   RECT rect;
   XpDCInfo dc_info;
@@ -2883,10 +2883,10 @@ draw_shadow (BtkStyle *style,
 	     BtkShadowType shadow_type,
 	     BdkRectangle *area,
 	     BtkWidget *widget,
-	     const gchar *detail, gint x, gint y, gint width, gint height)
+	     const bchar *detail, bint x, bint y, bint width, bint height)
 {
-  gboolean is_handlebox;
-  gboolean is_toolbar;
+  bboolean is_handlebox;
+  bboolean is_toolbar;
 
   if (DETAIL("frame"))
     {
@@ -3098,7 +3098,7 @@ draw_hline (BtkStyle *style,
 	    BtkStateType state_type,
 	    BdkRectangle *area,
 	    BtkWidget *widget,
-	    const gchar *detail, gint x1, gint x2, gint y)
+	    const bchar *detail, bint x1, bint x2, bint y)
 {
   bairo_t *cr;
   
@@ -3106,9 +3106,9 @@ draw_hline (BtkStyle *style,
 
   if (xp_theme_is_active () && DETAIL("menuitem"))
     {
-      gint cx, cy;
-      gint new_y, new_height;
-      gint y_offset;
+      bint cx, cy;
+      bint new_y, new_height;
+      bint y_offset;
 
       xp_theme_get_element_dimensions (XP_THEME_ELEMENT_MENU_SEPARATOR,
 				       state_type,
@@ -3167,7 +3167,7 @@ draw_vline (BtkStyle *style,
 	    BtkStateType state_type,
 	    BdkRectangle *area,
 	    BtkWidget *widget,
-	    const gchar *detail, gint y1, gint y2, gint x)
+	    const bchar *detail, bint y1, bint y2, bint x)
 {
   bairo_t *cr;
   
@@ -3202,9 +3202,9 @@ draw_slider (BtkStyle *style,
 	     BtkShadowType shadow_type,
 	     BdkRectangle *area,
 	     BtkWidget *widget,
-	     const gchar *detail,
-	     gint x,
-	     gint y, gint width, gint height, BtkOrientation orientation)
+	     const bchar *detail,
+	     bint x,
+	     bint y, bint width, bint height, BtkOrientation orientation)
 {
   if (BTK_IS_SCALE (widget) &&
       xp_theme_draw (window, ((orientation == BTK_ORIENTATION_VERTICAL) ?
@@ -3226,8 +3226,8 @@ draw_resize_grip (BtkStyle *style,
 		  BtkStateType state_type,
 		  BdkRectangle *area,
 		  BtkWidget *widget,
-		  const gchar *detail,
-		  BdkWindowEdge edge, gint x, gint y, gint width, gint height)
+		  const bchar *detail,
+		  BdkWindowEdge edge, bint x, bint y, bint width, bint height)
 {
   bairo_t *cr;
   
@@ -3274,11 +3274,11 @@ draw_handle (BtkStyle      *style,
              BtkShadowType  shadow_type,
              BdkRectangle  *area,
              BtkWidget     *widget,
-             const gchar   *detail,
-             gint           x,
-             gint           y,
-             gint           width,
-             gint           height,
+             const bchar   *detail,
+             bint           x,
+             bint           y,
+             bint           width,
+             bint           height,
              BtkOrientation orientation)
 {
   if (is_toolbar_child (widget))
@@ -3338,7 +3338,7 @@ draw_focus (BtkStyle *style,
 	    BtkStateType state_type,
 	    BdkRectangle *area,
 	    BtkWidget *widget,
-	    const gchar *detail, gint x, gint y, gint width, gint height)
+	    const bchar *detail, bint x, bint y, bint width, bint height)
 {
   HDC dc;
   RECT rect;
@@ -3373,15 +3373,15 @@ static void
 draw_layout (BtkStyle *style,
 	     BdkWindow *window,
 	     BtkStateType state_type,
-	     gboolean use_text,
+	     bboolean use_text,
 	     BdkRectangle *area,
 	     BtkWidget *widget,
-	     const gchar *detail,
-	     gint old_x, gint old_y, BangoLayout *layout)
+	     const bchar *detail,
+	     bint old_x, bint old_y, BangoLayout *layout)
 {
   BtkNotebook *notebook = NULL;
-  gint x = old_x;
-  gint y = old_y;
+  bint x = old_x;
+  bint y = old_y;
 
   /* In the XP theme, labels don't appear correctly centered inside
    * notebook tabs, so we give them a gentle nudge two pixels to the

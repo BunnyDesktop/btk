@@ -56,11 +56,11 @@ static void       btk_object_class_init          (BtkObjectClass *klass);
 static void       btk_object_init                (BtkObject      *object,
 						  BtkObjectClass *klass);
 static void	  btk_object_set_property	 (BObject	 *object,
-						  guint           property_id,
+						  buint           property_id,
 						  const BValue   *value,
 						  BParamSpec     *pspec);
 static void	  btk_object_get_property	 (BObject	 *object,
-						  guint           property_id,
+						  buint           property_id,
 						  BValue         *value,
 						  BParamSpec     *pspec);
 static void       btk_object_dispose            (BObject        *object);
@@ -68,8 +68,8 @@ static void       btk_object_real_destroy        (BtkObject      *object);
 static void       btk_object_finalize            (BObject        *object);
 static void       btk_object_notify_weaks        (BtkObject      *object);
 
-static gpointer    parent_class = NULL;
-static guint       object_signals[LAST_SIGNAL] = { 0 };
+static bpointer    parent_class = NULL;
+static buint       object_signals[LAST_SIGNAL] = { 0 };
 static GQuark      quark_weakrefs = 0;
 
 
@@ -119,10 +119,10 @@ btk_object_base_class_finalize (BtkObjectClass *class)
 {
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_set_from_value (BtkArg       *arg,
 			const BValue *value,
-			gboolean      copy_string)
+			bboolean      copy_string)
 {
   switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
@@ -151,7 +151,7 @@ btk_arg_set_from_value (BtkArg       *arg,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_to_value (BtkArg *arg,
 		  BValue *value)
 {
@@ -180,7 +180,7 @@ btk_arg_to_value (BtkArg *arg,
 
 static void
 btk_arg_proxy_set_property (BObject      *object,
-			    guint         property_id,
+			    buint         property_id,
 			    const BValue *value,
 			    BParamSpec   *pspec)
 {
@@ -198,7 +198,7 @@ btk_arg_proxy_set_property (BObject      *object,
 
 static void
 btk_arg_proxy_get_property (BObject     *object,
-			    guint        property_id,
+			    buint        property_id,
 			    BValue      *value,
 			    BParamSpec  *pspec)
 {
@@ -215,14 +215,14 @@ btk_arg_proxy_get_property (BObject     *object,
 }
 
 void
-btk_object_add_arg_type (const gchar *arg_name,
+btk_object_add_arg_type (const bchar *arg_name,
 			 GType        arg_type,
-			 guint        arg_flags,
-			 guint        arg_id)
+			 buint        arg_flags,
+			 buint        arg_id)
 {
   BObjectClass *oclass;
   BParamSpec *pspec;
-  gchar *type_name, *pname;
+  bchar *type_name, *pname;
   GType type;
   
   g_return_if_fail (arg_name != NULL);
@@ -283,16 +283,16 @@ btk_object_add_arg_type (const gchar *arg_name,
       pspec = g_param_spec_boolean (pname, NULL, NULL, FALSE, arg_flags);
       break;
     case B_TYPE_INT:
-      pspec = g_param_spec_int (pname, NULL, NULL, G_MININT, G_MAXINT, 0, arg_flags);
+      pspec = g_param_spec_int (pname, NULL, NULL, B_MININT, B_MAXINT, 0, arg_flags);
       break;
     case B_TYPE_UINT:
-      pspec = g_param_spec_uint (pname, NULL, NULL, 0, G_MAXUINT, 0, arg_flags);
+      pspec = g_param_spec_uint (pname, NULL, NULL, 0, B_MAXUINT, 0, arg_flags);
       break;
     case B_TYPE_FLOAT:
-      pspec = g_param_spec_float (pname, NULL, NULL, -G_MAXFLOAT, G_MAXFLOAT, 0, arg_flags);
+      pspec = g_param_spec_float (pname, NULL, NULL, -B_MAXFLOAT, B_MAXFLOAT, 0, arg_flags);
       break;
     case B_TYPE_DOUBLE:
-      pspec = g_param_spec_double (pname, NULL, NULL, -G_MAXDOUBLE, G_MAXDOUBLE, 0, arg_flags);
+      pspec = g_param_spec_double (pname, NULL, NULL, -B_MAXDOUBLE, B_MAXDOUBLE, 0, arg_flags);
       break;
     case B_TYPE_STRING:
       pspec = g_param_spec_string (pname, NULL, NULL, NULL, arg_flags);
@@ -317,27 +317,27 @@ btk_object_add_arg_type (const gchar *arg_name,
   g_object_class_install_property (oclass, arg_id, pspec);
 }
 
-static guint (*bobject_floating_flag_handler) (BtkObject*,gint) = NULL;
+static buint (*bobject_floating_flag_handler) (BtkObject*,bint) = NULL;
 
-static guint
+static buint
 btk_object_floating_flag_handler (BtkObject *object,
-                                  gint       job)
+                                  bint       job)
 {
   /* FIXME: remove this whole thing once BTK+ breaks ABI */
   if (!BTK_IS_OBJECT (object))
     return bobject_floating_flag_handler (object, job);
   switch (job)
     {
-      guint32 oldvalue;
+      buint32 oldvalue;
     case +1:    /* force floating if possible */
       do
         oldvalue = g_atomic_int_get (&object->flags);
-      while (!g_atomic_int_compare_and_exchange ((gint *)&object->flags, oldvalue, oldvalue | BTK_FLOATING));
+      while (!g_atomic_int_compare_and_exchange ((bint *)&object->flags, oldvalue, oldvalue | BTK_FLOATING));
       return oldvalue & BTK_FLOATING;
     case -1:    /* sink if possible */
       do
         oldvalue = g_atomic_int_get (&object->flags);
-      while (!g_atomic_int_compare_and_exchange ((gint *)&object->flags, oldvalue, oldvalue & ~(guint32) BTK_FLOATING));
+      while (!g_atomic_int_compare_and_exchange ((bint *)&object->flags, oldvalue, oldvalue & ~(buint32) BTK_FLOATING));
       return oldvalue & BTK_FLOATING;
     default:    /* check floating */
       return 0 != (g_atomic_int_get (&object->flags) & BTK_FLOATING);
@@ -348,7 +348,7 @@ static void
 btk_object_class_init (BtkObjectClass *class)
 {
   BObjectClass *bobject_class = B_OBJECT_CLASS (class);
-  gboolean is_bunnylib_2_10_1;
+  bboolean is_bunnylib_2_10_1;
 
   parent_class = g_type_class_ref (B_TYPE_OBJECT);
 
@@ -384,7 +384,7 @@ static void
 btk_object_init (BtkObject      *object,
 		 BtkObjectClass *klass)
 {
-  gboolean was_floating;
+  bboolean was_floating;
   /* sink the GInitiallyUnowned floating flag */
   was_floating = bobject_floating_flag_handler (object, -1);
   /* set BTK_FLOATING via btk_object_floating_flag_handler */
@@ -457,7 +457,7 @@ btk_object_finalize (BObject *bobject)
 
 static void
 btk_object_set_property (BObject      *object,
-			 guint         property_id,
+			 buint         property_id,
 			 const BValue *value,
 			 BParamSpec   *pspec)
 {
@@ -474,7 +474,7 @@ btk_object_set_property (BObject      *object,
 
 static void
 btk_object_get_property (BObject     *object,
-			 guint        property_id,
+			 buint        property_id,
 			 BValue      *value,
 			 BParamSpec  *pspec)
 {
@@ -522,13 +522,13 @@ struct _BtkWeakRef
 {
   BtkWeakRef	 *next;
   GDestroyNotify  notify;
-  gpointer        data;
+  bpointer        data;
 };
 
 void
 btk_object_weakref (BtkObject      *object,
 		    GDestroyNotify  notify,
-		    gpointer        data)
+		    bpointer        data)
 {
   BtkWeakRef *weak;
 
@@ -548,7 +548,7 @@ btk_object_weakref (BtkObject      *object,
 void
 btk_object_weakunref (BtkObject      *object,
 		      GDestroyNotify  notify,
-		      gpointer        data)
+		      bpointer        data)
 {
   BtkWeakRef *weaks, *w, **wp;
 
@@ -594,7 +594,7 @@ btk_object_notify_weaks (BtkObject *object)
 
 BtkObject*
 btk_object_new (GType        object_type,
-		const gchar *first_property_name,
+		const bchar *first_property_name,
 		...)
 {
   BtkObject *object;
@@ -611,7 +611,7 @@ btk_object_new (GType        object_type,
 
 void
 btk_object_get (BtkObject   *object,
-		const gchar *first_property_name,
+		const bchar *first_property_name,
 		...)
 {
   va_list var_args;
@@ -625,7 +625,7 @@ btk_object_get (BtkObject   *object,
 
 void
 btk_object_set (BtkObject   *object,
-		const gchar *first_property_name,
+		const bchar *first_property_name,
 		...)
 {
   va_list var_args;
@@ -645,7 +645,7 @@ btk_object_set (BtkObject   *object,
 void
 btk_object_set_data_by_id (BtkObject        *object,
 			   GQuark	     data_id,
-			   gpointer          data)
+			   bpointer          data)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   
@@ -654,8 +654,8 @@ btk_object_set_data_by_id (BtkObject        *object,
 
 void
 btk_object_set_data (BtkObject        *object,
-		     const gchar      *key,
-		     gpointer          data)
+		     const bchar      *key,
+		     bpointer          data)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   g_return_if_fail (key != NULL);
@@ -666,7 +666,7 @@ btk_object_set_data (BtkObject        *object,
 void
 btk_object_set_data_by_id_full (BtkObject      *object,
 				GQuark		data_id,
-				gpointer        data,
+				bpointer        data,
 				GDestroyNotify  destroy)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
@@ -676,8 +676,8 @@ btk_object_set_data_by_id_full (BtkObject      *object,
 
 void
 btk_object_set_data_full (BtkObject      *object,
-			  const gchar    *key,
-			  gpointer        data,
+			  const bchar    *key,
+			  bpointer        data,
 			  GDestroyNotify  destroy)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
@@ -686,7 +686,7 @@ btk_object_set_data_full (BtkObject      *object,
   g_datalist_set_data_full (&B_OBJECT (object)->qdata, key, data, destroy);
 }
 
-gpointer
+bpointer
 btk_object_get_data_by_id (BtkObject   *object,
 			   GQuark       data_id)
 {
@@ -695,9 +695,9 @@ btk_object_get_data_by_id (BtkObject   *object,
   return g_datalist_id_get_data (&B_OBJECT (object)->qdata, data_id);
 }
 
-gpointer
+bpointer
 btk_object_get_data (BtkObject   *object,
-		     const gchar *key)
+		     const bchar *key)
 {
   g_return_val_if_fail (BTK_IS_OBJECT (object), NULL);
   g_return_val_if_fail (key != NULL, NULL);
@@ -716,7 +716,7 @@ btk_object_remove_data_by_id (BtkObject   *object,
 
 void
 btk_object_remove_data (BtkObject   *object,
-			const gchar *key)
+			const bchar *key)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   g_return_if_fail (key != NULL);
@@ -735,7 +735,7 @@ btk_object_remove_no_notify_by_id (BtkObject      *object,
 
 void
 btk_object_remove_no_notify (BtkObject       *object,
-			     const gchar     *key)
+			     const bchar     *key)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   g_return_if_fail (key != NULL);
@@ -745,14 +745,14 @@ btk_object_remove_no_notify (BtkObject       *object,
 
 void
 btk_object_set_user_data (BtkObject *object,
-			  gpointer   data)
+			  bpointer   data)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
 
   g_object_set_data (B_OBJECT (object), "user_data", data);
 }
 
-gpointer
+bpointer
 btk_object_get_user_data (BtkObject *object)
 {
   g_return_val_if_fail (BTK_IS_OBJECT (object), NULL);

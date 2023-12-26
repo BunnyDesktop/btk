@@ -41,7 +41,7 @@ struct _BailItem
 
   BailTextUtil  *textutil;
 
-  gchar *text;
+  bchar *text;
 };
 
 GType bail_item_get_type (void);

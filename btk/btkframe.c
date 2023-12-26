@@ -47,16 +47,16 @@ enum {
 };
 
 static void btk_frame_set_property (BObject      *object,
-				    guint         param_id,
+				    buint         param_id,
 				    const BValue *value,
 				    BParamSpec   *pspec);
 static void btk_frame_get_property (BObject     *object,
-				    guint        param_id,
+				    buint        param_id,
 				    BValue      *value,
 				    BParamSpec  *pspec);
 static void btk_frame_paint         (BtkWidget      *widget,
 				     BdkRectangle   *area);
-static gint btk_frame_expose        (BtkWidget      *widget,
+static bint btk_frame_expose        (BtkWidget      *widget,
 				     BdkEventExpose *event);
 static void btk_frame_size_request  (BtkWidget      *widget,
 				     BtkRequisition *requisition);
@@ -65,9 +65,9 @@ static void btk_frame_size_allocate (BtkWidget      *widget,
 static void btk_frame_remove        (BtkContainer   *container,
 				     BtkWidget      *child);
 static void btk_frame_forall        (BtkContainer   *container,
-				     gboolean	     include_internals,
+				     bboolean	     include_internals,
 			             BtkCallback     callback,
-			             gpointer        callback_data);
+			             bpointer        callback_data);
 
 static void btk_frame_compute_child_allocation      (BtkFrame      *frame,
 						     BtkAllocation *child_allocation);
@@ -79,7 +79,7 @@ static void btk_frame_buildable_init                (BtkBuildableIface *iface);
 static void btk_frame_buildable_add_child           (BtkBuildable *buildable,
 						     BtkBuilder   *builder,
 						     BObject      *child,
-						     const gchar  *type);
+						     const bchar  *type);
 
 G_DEFINE_TYPE_WITH_CODE (BtkFrame, btk_frame, BTK_TYPE_BIN,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -169,7 +169,7 @@ static void
 btk_frame_buildable_add_child (BtkBuildable *buildable,
 			       BtkBuilder   *builder,
 			       BObject      *child,
-			       const gchar  *type)
+			       const bchar  *type)
 {
   if (type && strcmp (type, "label") == 0)
     btk_frame_set_label_widget (BTK_FRAME (buildable), BTK_WIDGET (child));
@@ -190,7 +190,7 @@ btk_frame_init (BtkFrame *frame)
 
 static void 
 btk_frame_set_property (BObject         *object,
-			guint            prop_id,
+			buint            prop_id,
 			const BValue    *value,
 			BParamSpec      *pspec)
 {
@@ -226,7 +226,7 @@ btk_frame_set_property (BObject         *object,
 
 static void 
 btk_frame_get_property (BObject         *object,
-			guint            prop_id,
+			buint            prop_id,
 			BValue          *value,
 			BParamSpec      *pspec)
 {
@@ -270,7 +270,7 @@ btk_frame_get_property (BObject         *object,
  * Return value: a new #BtkFrame widget
  **/
 BtkWidget*
-btk_frame_new (const gchar *label)
+btk_frame_new (const bchar *label)
 {
   return g_object_new (BTK_TYPE_FRAME, "label", label, NULL);
 }
@@ -289,9 +289,9 @@ btk_frame_remove (BtkContainer *container,
 
 static void
 btk_frame_forall (BtkContainer *container,
-		  gboolean      include_internals,
+		  bboolean      include_internals,
 		  BtkCallback   callback,
-		  gpointer      callback_data)
+		  bpointer      callback_data)
 {
   BtkBin *bin = BTK_BIN (container);
   BtkFrame *frame = BTK_FRAME (container);
@@ -313,7 +313,7 @@ btk_frame_forall (BtkContainer *container,
  **/
 void
 btk_frame_set_label (BtkFrame *frame,
-		     const gchar *label)
+		     const bchar *label)
 {
   g_return_if_fail (BTK_IS_FRAME (frame));
 
@@ -344,7 +344,7 @@ btk_frame_set_label (BtkFrame *frame,
  *               a #BtkLabel. This string is owned by BTK+ and
  *               must not be modified or freed.
  **/
-const gchar *
+const bchar *
 btk_frame_get_label (BtkFrame *frame)
 {
   g_return_val_if_fail (BTK_IS_FRAME (frame), NULL);
@@ -368,7 +368,7 @@ void
 btk_frame_set_label_widget (BtkFrame  *frame,
 			    BtkWidget *label_widget)
 {
-  gboolean need_resize = FALSE;
+  bboolean need_resize = FALSE;
   
   g_return_if_fail (BTK_IS_FRAME (frame));
   g_return_if_fail (label_widget == NULL || BTK_IS_WIDGET (label_widget));
@@ -434,8 +434,8 @@ btk_frame_get_label_widget (BtkFrame *frame)
  **/
 void
 btk_frame_set_label_align (BtkFrame *frame,
-			   gfloat    xalign,
-			   gfloat    yalign)
+			   bfloat    xalign,
+			   bfloat    yalign)
 {
   g_return_if_fail (BTK_IS_FRAME (frame));
 
@@ -472,8 +472,8 @@ btk_frame_set_label_align (BtkFrame *frame,
  **/
 void
 btk_frame_get_label_align (BtkFrame *frame,
-		           gfloat   *xalign,
-			   gfloat   *yalign)
+		           bfloat   *xalign,
+			   bfloat   *yalign)
 {
   g_return_if_fail (BTK_IS_FRAME (frame));
 
@@ -535,7 +535,7 @@ btk_frame_paint (BtkWidget    *widget,
 		 BdkRectangle *area)
 {
   BtkFrame *frame;
-  gint x, y, width, height;
+  bint x, y, width, height;
 
   if (btk_widget_is_drawable (widget))
     {
@@ -549,9 +549,9 @@ btk_frame_paint (BtkWidget    *widget,
       if (frame->label_widget)
 	{
 	  BtkRequisition child_requisition;
-	  gfloat xalign;
-	  gint height_extra;
-	  gint x2;
+	  bfloat xalign;
+	  bint height_extra;
+	  bint x2;
 
 	  btk_widget_get_child_requisition (frame->label_widget, &child_requisition);
 
@@ -589,7 +589,7 @@ btk_frame_paint (BtkWidget    *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_frame_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
@@ -670,7 +670,7 @@ btk_frame_size_allocate (BtkWidget     *widget,
     {
       BtkRequisition child_requisition;
       BtkAllocation child_allocation;
-      gfloat xalign;
+      bfloat xalign;
 
       btk_widget_get_child_requisition (frame->label_widget, &child_requisition);
 
@@ -707,7 +707,7 @@ btk_frame_real_compute_child_allocation (BtkFrame      *frame,
   BtkWidget *widget = BTK_WIDGET (frame);
   BtkAllocation *allocation = &widget->allocation;
   BtkRequisition child_requisition;
-  gint top_margin;
+  bint top_margin;
 
   if (frame->label_widget)
     {
@@ -719,12 +719,12 @@ btk_frame_real_compute_child_allocation (BtkFrame      *frame,
   
   child_allocation->x = (BTK_CONTAINER (frame)->border_width +
 			 widget->style->xthickness);
-  child_allocation->width = MAX(1, (gint)allocation->width - child_allocation->x * 2);
+  child_allocation->width = MAX(1, (bint)allocation->width - child_allocation->x * 2);
   
   child_allocation->y = (BTK_CONTAINER (frame)->border_width + top_margin);
-  child_allocation->height = MAX (1, ((gint)allocation->height - child_allocation->y -
-				      (gint)BTK_CONTAINER (frame)->border_width -
-				      (gint)widget->style->ythickness));
+  child_allocation->height = MAX (1, ((bint)allocation->height - child_allocation->y -
+				      (bint)BTK_CONTAINER (frame)->border_width -
+				      (bint)widget->style->ythickness));
   
   child_allocation->x += allocation->x;
   child_allocation->y += allocation->y;

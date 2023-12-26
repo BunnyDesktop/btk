@@ -10,7 +10,7 @@
 
 /* Scroll to the end of the buffer.
  */
-static gboolean
+static bboolean
 scroll_to_end (BtkTextView *textview)
 {
   BtkTextBuffer *buffer;
@@ -54,7 +54,7 @@ scroll_to_end (BtkTextView *textview)
 
 /* Scroll to the bottom of the buffer.
  */
-static gboolean
+static bboolean
 scroll_to_bottom (BtkTextView *textview)
 {
   BtkTextBuffer *buffer;
@@ -103,9 +103,9 @@ scroll_to_bottom (BtkTextView *textview)
   return TRUE;
 }
 
-static guint
+static buint
 setup_scroll (BtkTextView *textview,
-              gboolean     to_end)
+              bboolean     to_end)
 {
   BtkTextBuffer *buffer;
   BtkTextIter iter;
@@ -142,18 +142,18 @@ setup_scroll (BtkTextView *textview,
 
 static void
 remove_timeout (BtkWidget *window,
-                gpointer   timeout)
+                bpointer   timeout)
 {
-  g_source_remove (GPOINTER_TO_UINT (timeout));
+  g_source_remove (BPOINTER_TO_UINT (timeout));
 }
 
 static void
 create_text_view (BtkWidget *hbox,
-                  gboolean   to_end)
+                  bboolean   to_end)
 {
   BtkWidget *swindow;
   BtkWidget *textview;
-  guint timeout;
+  buint timeout;
 
   swindow = btk_scrolled_window_new (NULL, NULL);
   btk_box_pack_start (BTK_BOX (hbox), swindow, TRUE, TRUE, 0);
@@ -167,7 +167,7 @@ create_text_view (BtkWidget *hbox,
    */
   g_signal_connect (textview, "destroy",
                     G_CALLBACK (remove_timeout),
-                    GUINT_TO_POINTER (timeout));
+                    BUINT_TO_POINTER (timeout));
 }
 
 BtkWidget *

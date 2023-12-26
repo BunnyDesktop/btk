@@ -100,20 +100,20 @@ enum {
 };
 
 static void         btk_accel_label_set_property (BObject            *object,
-						  guint               prop_id,
+						  buint               prop_id,
 						  const BValue       *value,
 						  BParamSpec         *pspec);
 static void         btk_accel_label_get_property (BObject            *object,
-						  guint               prop_id,
+						  buint               prop_id,
 						  BValue             *value,
 						  BParamSpec         *pspec);
 static void         btk_accel_label_destroy      (BtkObject          *object);
 static void         btk_accel_label_finalize     (BObject            *object);
 static void         btk_accel_label_size_request (BtkWidget          *widget,
 						  BtkRequisition     *requisition);
-static gboolean     btk_accel_label_expose_event (BtkWidget          *widget,
+static bboolean     btk_accel_label_expose_event (BtkWidget          *widget,
 						  BdkEventExpose     *event);
-static const gchar *btk_accel_label_get_string   (BtkAccelLabel      *accel_label);
+static const bchar *btk_accel_label_get_string   (BtkAccelLabel      *accel_label);
 
 
 G_DEFINE_TYPE (BtkAccelLabel, btk_accel_label, BTK_TYPE_LABEL)
@@ -190,7 +190,7 @@ btk_accel_label_class_init (BtkAccelLabelClass *class)
 
 static void
 btk_accel_label_set_property (BObject      *object,
-			      guint         prop_id,
+			      buint         prop_id,
 			      const BValue *value,
 			      BParamSpec   *pspec)
 {
@@ -214,7 +214,7 @@ btk_accel_label_set_property (BObject      *object,
 
 static void
 btk_accel_label_get_property (BObject    *object,
-			      guint       prop_id,
+			      buint       prop_id,
 			      BValue     *value,
 			      BParamSpec *pspec)
 {
@@ -255,7 +255,7 @@ btk_accel_label_init (BtkAccelLabel *accel_label)
  * Returns: a new #BtkAccelLabel.
  */
 BtkWidget*
-btk_accel_label_new (const gchar *string)
+btk_accel_label_new (const bchar *string)
 {
   BtkAccelLabel *accel_label;
   
@@ -316,7 +316,7 @@ btk_accel_label_get_accel_widget (BtkAccelLabel *accel_label)
  *
  * Returns: the width needed to display the accelerator key(s).
  */
-guint
+buint
 btk_accel_label_get_accel_width (BtkAccelLabel *accel_label)
 {
   g_return_val_if_fail (BTK_IS_ACCEL_LABEL (accel_label), 0);
@@ -331,7 +331,7 @@ btk_accel_label_size_request (BtkWidget	     *widget,
 {
   BtkAccelLabel *accel_label = BTK_ACCEL_LABEL (widget);
   BangoLayout *layout;
-  gint width;
+  bint width;
 
   BTK_WIDGET_CLASS (btk_accel_label_parent_class)->size_request (widget, requisition);
 
@@ -342,11 +342,11 @@ btk_accel_label_size_request (BtkWidget	     *widget,
   g_object_unref (layout);
 }
 
-static gint
+static bint
 get_first_baseline (BangoLayout *layout)
 {
   BangoLayoutIter *iter;
-  gint result;
+  bint result;
 
   iter = bango_layout_get_iter (layout);
   result = bango_layout_iter_get_baseline (iter);
@@ -355,7 +355,7 @@ get_first_baseline (BangoLayout *layout)
   return BANGO_PIXELS (result);
 }
 
-static gboolean 
+static bboolean 
 btk_accel_label_expose_event (BtkWidget      *widget,
 			      BdkEventExpose *event)
 {
@@ -367,7 +367,7 @@ btk_accel_label_expose_event (BtkWidget      *widget,
 
   if (btk_widget_is_drawable (widget))
     {
-      guint ac_width;
+      buint ac_width;
       
       ac_width = btk_accel_label_get_accel_width (accel_label);
       
@@ -377,8 +377,8 @@ btk_accel_label_expose_event (BtkWidget      *widget,
 	  BangoLayout *accel_layout;
 	  BtkLabel *label = BTK_LABEL (widget);
 
-	  gint x;
-	  gint y;
+	  bint x;
+	  bint y;
 	  
 	  label_layout = btk_label_get_layout (BTK_LABEL (accel_label));
 
@@ -505,7 +505,7 @@ btk_accel_label_reset (BtkAccelLabel *accel_label)
 
 static void
 check_accel_changed (BtkAccelGroup  *accel_group,
-		     guint           keyval,
+		     buint           keyval,
 		     BdkModifierType modifier,
 		     GClosure       *accel_closure,
 		     BtkAccelLabel  *accel_label)
@@ -554,15 +554,15 @@ btk_accel_label_set_accel_closure (BtkAccelLabel *accel_label,
     }
 }
 
-static gboolean
+static bboolean
 find_accel (BtkAccelKey *key,
 	    GClosure    *closure,
-	    gpointer     data)
+	    bpointer     data)
 {
-  return data == (gpointer) closure;
+  return data == (bpointer) closure;
 }
 
-static const gchar *
+static const bchar *
 btk_accel_label_get_string (BtkAccelLabel *accel_label)
 {
   if (!accel_label->accel_string)
@@ -588,8 +588,8 @@ substitute_underscores (char *str)
  * append it to gstring and return TRUE; otherwise return FALSE.
  * See http://docs.info.apple.com/article.html?path=Mac/10.5/en/cdb_symbs.html 
  * for the list of special keys. */
-static gboolean
-append_keyval_symbol (guint    accelerator_key,
+static bboolean
+append_keyval_symbol (buint    accelerator_key,
                       GString *gstring)
 {
 #ifdef BDK_WINDOWING_QUARTZ
@@ -668,13 +668,13 @@ append_keyval_symbol (guint    accelerator_key,
 #endif
 }
 
-gchar *
+bchar *
 _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
-					      guint               accelerator_key,
+					      buint               accelerator_key,
 					      BdkModifierType     accelerator_mods)
 {
   GString *gstring;
-  gboolean seen_mod = FALSE;
+  bboolean seen_mod = FALSE;
   gunichar ch;
   
   gstring = g_string_new ("");
@@ -796,7 +796,7 @@ _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
     }
   else if (!append_keyval_symbol (accelerator_key, gstring))
     {
-      gchar *tmp;
+      bchar *tmp;
 
       tmp = bdk_keyval_name (bdk_keyval_to_lower (accelerator_key));
       if (tmp != NULL)
@@ -805,7 +805,7 @@ _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
 	    g_string_append_c (gstring, g_ascii_toupper (tmp[0]));
 	  else
 	    {
-	      const gchar *str;
+	      const bchar *str;
               str = g_dpgettext2 (GETTEXT_PACKAGE, "keyboard label", tmp);
 	      if (str == tmp)
 		{
@@ -831,10 +831,10 @@ _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
  *
  * Returns: always returns %FALSE.
  */
-gboolean
+bboolean
 btk_accel_label_refetch (BtkAccelLabel *accel_label)
 {
-  gboolean enable_accels;
+  bboolean enable_accels;
 
   g_return_val_if_fail (BTK_IS_ACCEL_LABEL (accel_label), FALSE);
 
@@ -855,7 +855,7 @@ btk_accel_label_refetch (BtkAccelLabel *accel_label)
       if (key && key->accel_flags & BTK_ACCEL_VISIBLE)
 	{
 	  BtkAccelLabelClass *klass;
-	  gchar *tmp;
+	  bchar *tmp;
 
 	  klass = BTK_ACCEL_LABEL_GET_CLASS (accel_label);
 	  tmp = _btk_accel_label_class_get_accelerator_label (klass,

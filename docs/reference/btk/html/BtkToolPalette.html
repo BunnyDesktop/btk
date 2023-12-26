@@ -54,7 +54,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolPalette.html#btk-tool-palette-get-exclusive" title="btk_tool_palette_get_exclusive ()">btk_tool_palette_get_exclusive</a> <span class="c_punctuation">()</span>
@@ -70,7 +70,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolPalette.html#btk-tool-palette-get-expand" title="btk_tool_palette_get_expand ()">btk_tool_palette_get_expand</a> <span class="c_punctuation">()</span>
@@ -86,7 +86,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolPalette.html#btk-tool-palette-get-group-position" title="btk_tool_palette_get_group_position ()">btk_tool_palette_get_group_position</a> <span class="c_punctuation">()</span>
@@ -236,7 +236,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolPalette.html#BtkToolPalette--icon-size-set" title="The “icon-size-set” property">icon-size-set</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -258,12 +258,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolPalette.html#BtkToolPalette--c-exclusive" title="The “exclusive” child property">exclusive</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolPalette.html#BtkToolPalette--c-expand" title="The “expand” child property">expand</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -410,12 +410,12 @@ signal handler of the drag target.</p>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
 <span class="nf">passive_canvas_drag_data_received</span> <span class="p">(</span><span class="n">BtkWidget</span>        <span class="o">*</span><span class="n">widget</span><span class="p">,</span>
                                    <span class="n">BdkDragContext</span>   <span class="o">*</span><span class="n">context</span><span class="p">,</span>
-                                   <span class="n">gint</span>              <span class="n">x</span><span class="p">,</span>
-                                   <span class="n">gint</span>              <span class="n">y</span><span class="p">,</span>
+                                   <span class="n">bint</span>              <span class="n">x</span><span class="p">,</span>
+                                   <span class="n">bint</span>              <span class="n">y</span><span class="p">,</span>
                                    <span class="n">BtkSelectionData</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span>
-                                   <span class="n">guint</span>             <span class="n">info</span><span class="p">,</span>
-                                   <span class="n">guint</span>             <span class="n">time</span><span class="p">,</span>
-                                   <span class="n">gpointer</span>          <span class="n">data</span><span class="p">)</span>
+                                   <span class="n">buint</span>             <span class="n">info</span><span class="p">,</span>
+                                   <span class="n">buint</span>             <span class="n">time</span><span class="p">,</span>
+                                   <span class="n">bpointer</span>          <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">BtkWidget</span> <span class="o">*</span><span class="n">palette</span><span class="p">;</span>
   <span class="n">BtkWidget</span> <span class="o">*</span><span class="n">item</span><span class="p">;</span>
@@ -464,7 +464,7 @@ btk_tool_palette_new (<em class="parameter"><code><span class="type">void</span>
 <hr>
 <div class="refsect2">
 <a name="btk-tool-palette-get-exclusive"></a><h3>btk_tool_palette_get_exclusive ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tool_palette_get_exclusive (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets whether <em class="parameter"><code>group</code></em>
@@ -505,7 +505,7 @@ is exclusive</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_palette_set_exclusive (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> exclusive</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> exclusive</code></em>);</pre>
 <p>Sets whether the group should be exclusive or not.
 If an exclusive group is expanded all other groups are collapsed.</p>
 <div class="refsect3">
@@ -540,7 +540,7 @@ If an exclusive group is expanded all other groups are collapsed.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-tool-palette-get-expand"></a><h3>btk_tool_palette_get_expand ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tool_palette_get_expand (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets whether group should be given extra space.
@@ -579,7 +579,7 @@ See <a class="link" href="BtkToolPalette.html#btk-tool-palette-set-expand" title
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_palette_set_expand (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> expand</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> expand</code></em>);</pre>
 <p>Sets whether the group should be given extra space.</p>
 <div class="refsect3">
 <a name="btk-tool-palette-set-expand.parameters"></a><h4>Parameters</h4>
@@ -613,7 +613,7 @@ btk_tool_palette_set_expand (<em class="parameter"><code><a class="link" href="B
 <hr>
 <div class="refsect2">
 <a name="btk-tool-palette-get-group-position"></a><h3>btk_tool_palette_get_group_position ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_tool_palette_get_group_position (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets the position of <em class="parameter"><code>group</code></em>
@@ -656,7 +656,7 @@ is not a child of <em class="parameter"><code>palette</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_palette_set_group_position (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Sets the position of the group as an index of the tool palette.
 If position is 0 the group will become the first child, if position is
 -1 it will become the last child.</p>
@@ -982,8 +982,8 @@ btk_tool_palette_get_drag_target_item (<em class="parameter"><code><span class="
 <a name="btk-tool-palette-get-drop-group"></a><h3>btk_tool_palette_get_drop_group ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="returnvalue">BtkToolItemGroup</span></a> *
 btk_tool_palette_get_drop_group (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Gets the group at position (x, y).</p>
 <div class="refsect3">
 <a name="btk-tool-palette-get-drop-group.parameters"></a><h4>Parameters</h4>
@@ -1025,8 +1025,8 @@ if there is no such group. </p>
 <a name="btk-tool-palette-get-drop-item"></a><h3>btk_tool_palette_get_drop_item ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
 btk_tool_palette_get_drop_item (<em class="parameter"><code><a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *palette</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Gets the item at position (x, y).
 See <a class="link" href="BtkToolPalette.html#btk-tool-palette-get-drop-group" title="btk_tool_palette_get_drop_group ()"><code class="function">btk_tool_palette_get_drop_group()</code></a>.</p>
 <div class="refsect3">
@@ -1215,7 +1215,7 @@ size of icons.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkToolPalette--icon-size-set"></a><h3>The <code class="literal">“icon-size-set”</code> property</h3>
-<pre class="programlisting">  “icon-size-set”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “icon-size-set”            <span class="type">bboolean</span></pre>
 <p>Is <code class="literal">TRUE</code> if the <a class="link" href="BtkToolPalette.html#BtkToolPalette--icon-size" title="The “icon-size” property"><span class="type">“icon-size”</span></a> property has been set.</p>
 <p>Owner: BtkToolPalette</p>
 <p>Flags: Read / Write</p>
@@ -1237,7 +1237,7 @@ size of icons.</p>
 <a name="BtkToolPalette.child-property-details"></a><h2>Child Property Details</h2>
 <div class="refsect2">
 <a name="BtkToolPalette--c-exclusive"></a><h3>The <code class="literal">“exclusive”</code> child property</h3>
-<pre class="programlisting">  “exclusive”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “exclusive”                <span class="type">bboolean</span></pre>
 <p>Whether the item group should be the only one that is expanded
 at a given time.</p>
 <p>Owner: BtkToolPalette</p>
@@ -1248,7 +1248,7 @@ at a given time.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkToolPalette--c-expand"></a><h3>The <code class="literal">“expand”</code> child property</h3>
-<pre class="programlisting">  “expand”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “expand”                   <span class="type">bboolean</span></pre>
 <p>Whether the item group should receive extra space when the palette grows.
 at a given time.</p>
 <p>Owner: BtkToolPalette</p>
@@ -1265,7 +1265,7 @@ at a given time.</p>
 user_function (<a class="link" href="BtkToolPalette.html" title="BtkToolPalette"><span class="type">BtkToolPalette</span></a> *widget,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a>  *hadjustment,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a>  *vadjustment,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Set the scroll adjustments for the viewport.
 Usually scrolled containers like BtkScrolledWindow will emit this
 signal to connect two instances of BtkScrollbar to the scroll

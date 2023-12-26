@@ -24,14 +24,14 @@
 
 #include <btk/btk.h>
 
-extern guint32 create_child_plug (guint32  xid,
-				  gboolean local);
+extern buint32 create_child_plug (buint32  xid,
+				  bboolean local);
 
 int
 main (int argc, char *argv[])
 {
-  guint32 xid;
-  guint32 plug_xid;
+  buint32 xid;
+  buint32 plug_xid;
 
   btk_init (&argc, &argv);
 

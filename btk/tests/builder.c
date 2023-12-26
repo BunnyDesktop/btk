@@ -30,18 +30,18 @@
 /* Copied from btkiconfactory.c; keep in sync! */
 struct _BtkIconSet
 {
-  guint ref_count;
+  buint ref_count;
   GSList *sources;
   GSList *cache;
-  guint cache_size;
-  guint cache_serial;
+  buint cache_size;
+  buint cache_serial;
 };
 
 
 static BtkBuilder *
-builder_new_from_string (const gchar *buffer,
-                         gsize length,
-                         const gchar *domain)
+builder_new_from_string (const bchar *buffer,
+                         bsize length,
+                         const bchar *domain)
 {
   BtkBuilder *builder;
   GError *error = NULL;
@@ -204,7 +204,7 @@ test_connect_signals (void)
 {
   BtkBuilder *builder;
   BObject *window;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkButton\" id=\"button\"/>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
@@ -216,26 +216,26 @@ test_connect_signals (void)
     "            object=\"button\" after=\"yes\"/>"
     "  </object>"
     "</interface>";
-  const gchar buffer_order[] =
+  const bchar buffer_order[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <signal name=\"notify::title\" handler=\"signal_first\"/>"
     "    <signal name=\"notify::title\" handler=\"signal_second\"/>"
     "  </object>"
     "</interface>";
-  const gchar buffer_extra[] =
+  const bchar buffer_extra[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window2\">"
     "    <signal name=\"notify::title\" handler=\"signal_extra\"/>"
     "  </object>"
     "</interface>";
-  const gchar buffer_extra2[] =
+  const bchar buffer_extra2[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window3\">"
     "    <signal name=\"notify::title\" handler=\"signal_extra2\"/>"
     "  </object>"
     "</interface>";
-  const gchar buffer_after_child[] =
+  const bchar buffer_after_child[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -306,12 +306,12 @@ test_uimanager_simple (void)
   BObject *window, *uimgr, *menubar;
   BObject *menu, *label;
   GList *children;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkUIManager\" id=\"uimgr1\"/>"
     "</interface>";
     
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkUIManager\" id=\"uimgr1\">"
     "    <child>"
@@ -368,9 +368,9 @@ static void
 test_domain (void)
 {
   BtkBuilder *builder;
-  const gchar buffer1[] = "<interface/>";
-  const gchar buffer2[] = "<interface domain=\"domain\"/>";
-  const gchar *domain;
+  const bchar buffer1[] = "<interface/>";
+  const bchar buffer2[] = "<interface domain=\"domain\"/>";
+  const bchar *domain;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
   domain = btk_builder_get_translation_domain (builder);
@@ -394,7 +394,7 @@ static void
 test_translation (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -424,7 +424,7 @@ static void
 test_sizegroup (void)
 {
   BtkBuilder * builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface domain=\"test\">"
     "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
     "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
@@ -446,7 +446,7 @@ test_sizegroup (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface domain=\"test\">"
     "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
     "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
@@ -454,7 +454,7 @@ test_sizegroup (void)
     "    </widgets>"
     "   </object>"
     "</interface>";
-  const gchar buffer3[] =
+  const bchar buffer3[] =
     "<interface domain=\"test\">"
     "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
     "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
@@ -523,12 +523,12 @@ test_sizegroup (void)
 static void
 test_list_store (void)
 {
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"guint\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"buint\"/>"
     "    </columns>"
     "  </object>"
     "</interface>";
@@ -536,9 +536,9 @@ test_list_store (void)
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"gint\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"bint\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -558,9 +558,9 @@ test_list_store (void)
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"gint\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"bint\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -582,7 +582,7 @@ test_list_store (void)
   BtkBuilder *builder;
   BObject *store;
   BtkTreeIter iter;
-  gchar *surname, *lastname;
+  bchar *surname, *lastname;
   int age;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
@@ -682,12 +682,12 @@ test_list_store (void)
 static void
 test_tree_store (void)
 {
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface domain=\"test\">"
     "  <object class=\"BtkTreeStore\" id=\"treestore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
-    "      <column type=\"guint\"/>"
+    "      <column type=\"bchararray\"/>"
+    "      <column type=\"buint\"/>"
     "    </columns>"
     "  </object>"
     "</interface>";
@@ -706,7 +706,7 @@ test_tree_store (void)
 static void
 test_types (void)
 {
-  const gchar buffer[] = 
+  const bchar buffer[] = 
     "<interface>"
     "  <object class=\"BtkAction\" id=\"action\"/>"
     "  <object class=\"BtkActionGroup\" id=\"actiongroup\"/>"
@@ -755,11 +755,11 @@ test_types (void)
     "  <object class=\"BtkWindow\" id=\"window\"/>"
     "  <object class=\"BtkUIManager\" id=\"uimanager\"/>"
     "</interface>";
-  const gchar buffer2[] = 
+  const bchar buffer2[] = 
     "<interface>"
     "  <object type-func=\"btk_window_get_type\" id=\"window\"/>"
     "</interface>";
-  const gchar buffer3[] = 
+  const bchar buffer3[] = 
     "<interface>"
     "  <object type-func=\"xxx_invalid_get_type_function\" id=\"window\"/>"
     "</interface>";
@@ -792,7 +792,7 @@ static void
 test_spin_button (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "<object class=\"BtkAdjustment\" id=\"adjustment1\">"
     "<property name=\"lower\">0</property>"
@@ -809,7 +809,7 @@ test_spin_button (void)
     "</interface>";
   BObject *obj;
   BtkAdjustment *adjustment;
-  gdouble value;
+  bdouble value;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   obj = btk_builder_get_object (builder, "spinbutton1");
@@ -836,7 +836,7 @@ static void
 test_notebook (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkNotebook\" id=\"notebook1\">"
     "    <child>"
@@ -890,13 +890,13 @@ static void
 test_construct_only_property (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <property name=\"type\">BTK_WINDOW_POPUP</property>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkTextTagTable\" id=\"tagtable1\"/>"
     "  <object class=\"BtkTextBuffer\" id=\"textbuffer1\">"
@@ -927,7 +927,7 @@ static void
 test_object_properties (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -945,7 +945,7 @@ test_object_properties (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window2\"/>"
     "</interface>";
@@ -971,7 +971,7 @@ test_children (void)
 {
   BtkBuilder * builder;
   GList *children;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -981,7 +981,7 @@ test_children (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkDialog\" id=\"dialog1\">"
     "    <child internal-child=\"vbox\">"
@@ -1045,7 +1045,7 @@ static void
 test_child_properties (void)
 {
   BtkBuilder * builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkVBox\" id=\"vbox1\">"
     "    <child>"
@@ -1095,12 +1095,12 @@ static void
 test_treeview_column (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "<object class=\"BtkListStore\" id=\"liststore1\">"
     "  <columns>"
-    "    <column type=\"gchararray\"/>"
-    "    <column type=\"guint\"/>"
+    "    <column type=\"bchararray\"/>"
+    "    <column type=\"buint\"/>"
     "  </columns>"
     "  <data>"
     "    <row>"
@@ -1144,7 +1144,7 @@ test_treeview_column (void)
   BtkTreeViewColumn *column;
   GList *renderers;
   BObject *renderer;
-  gchar *text;
+  bchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
   treeview = btk_builder_get_object (builder, "treeview1");
@@ -1187,11 +1187,11 @@ static void
 test_icon_view (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
+    "      <column type=\"bchararray\"/>"
     "      <column type=\"BdkPixbuf\"/>"
     "    </columns>"
     "    <data>"
@@ -1218,7 +1218,7 @@ test_icon_view (void)
     "  </object>"
     "</interface>";
   BObject *window, *iconview, *renderer;
-  gchar *text;
+  bchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   iconview = btk_builder_get_object (builder, "iconview1");
@@ -1242,12 +1242,12 @@ static void
 test_combo_box (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"guint\"/>"
-    "      <column type=\"gchararray\"/>"
+    "      <column type=\"buint\"/>"
+    "      <column type=\"bchararray\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -1282,7 +1282,7 @@ test_combo_box (void)
     "  </object>"
     "</interface>";
   BObject *window, *combobox, *renderer;
-  gchar *text;
+  bchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
   combobox = btk_builder_get_object (builder, "combobox1");
@@ -1314,12 +1314,12 @@ static void
 test_combo_box_entry (void)
 {
   BtkBuilder *builder;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"guint\"/>"
-    "      <column type=\"gchararray\"/>"
+    "      <column type=\"buint\"/>"
+    "      <column type=\"bchararray\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -1355,7 +1355,7 @@ test_combo_box_entry (void)
     "  </object>"
     "</interface>";
   BObject *window, *combobox, *renderer;
-  gchar *text;
+  bchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
   combobox = btk_builder_get_object (builder, "comboboxentry1");
@@ -1386,11 +1386,11 @@ static void
 test_cell_view (void)
 {
   BtkBuilder *builder;
-  const gchar *buffer =
+  const bchar *buffer =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
-    "      <column type=\"gchararray\"/>"
+    "      <column type=\"bchararray\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -1419,7 +1419,7 @@ test_cell_view (void)
   BtkTreePath *path;
   GList *renderers;
   BObject *renderer;
-  gchar *text;
+  bchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
   cellview = btk_builder_get_object (builder, "cellview1");
@@ -1457,7 +1457,7 @@ static void
 test_dialog (void)
 {
   BtkBuilder * builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkDialog\" id=\"dialog1\">"
     "    <child internal-child=\"vbox\">"
@@ -1500,7 +1500,7 @@ static void
 test_message_dialog (void)
 {
   BtkBuilder * builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkMessageDialog\" id=\"dialog1\">"
     "    <child internal-child=\"message_area\">"
@@ -1530,7 +1530,7 @@ static void
 test_accelerators (void)
 {
   BtkBuilder *builder;
-  const gchar *buffer =
+  const bchar *buffer =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -1540,7 +1540,7 @@ test_accelerators (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  const gchar *buffer2 =
+  const bchar *buffer2 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -1585,7 +1585,7 @@ test_accelerators (void)
 static void
 test_widget (void)
 {
-  const gchar *buffer =
+  const bchar *buffer =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -1596,7 +1596,7 @@ test_widget (void)
     "    </child>"
     "  </object>"
    "</interface>";
-  const gchar *buffer2 =
+  const bchar *buffer2 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -1607,7 +1607,7 @@ test_widget (void)
     "    </child>"
     "  </object>"
    "</interface>";
-  const gchar *buffer3 =
+  const bchar *buffer3 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
@@ -1686,20 +1686,20 @@ test_widget (void)
 static void
 test_window (void)
 {
-  const gchar *buffer1 =
+  const bchar *buffer1 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "     <property name=\"title\"></property>"
     "  </object>"
    "</interface>";
-  const gchar *buffer2 =
+  const bchar *buffer2 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "  </object>"
    "</interface>";
   BtkBuilder *builder;
   BObject *window1;
-  gchar *title;
+  bchar *title;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
   window1 = btk_builder_get_object (builder, "window1");
@@ -1866,10 +1866,10 @@ test_value_from_string (void)
   g_object_unref (builder);
 }
 
-static gboolean model_freed = FALSE;
+static bboolean model_freed = FALSE;
 
 static void
-model_weakref (gpointer data,
+model_weakref (bpointer data,
                BObject *model)
 {
   model_freed = TRUE;
@@ -1879,7 +1879,7 @@ static void
 test_reference_counting (void)
 {
   BtkBuilder *builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkListStore\" id=\"liststore1\"/>"
     "  <object class=\"BtkListStore\" id=\"liststore2\"/>"
@@ -1891,7 +1891,7 @@ test_reference_counting (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkVBox\" id=\"vbox1\">"
     "    <child>"
@@ -1926,7 +1926,7 @@ static void
 test_icon_factory (void)
 {
   BtkBuilder *builder;
-  const gchar buffer1[] =
+  const bchar buffer1[] =
     "<interface>"
     "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
@@ -1934,7 +1934,7 @@ test_icon_factory (void)
     "    </sources>"
     "  </object>"
     "</interface>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
@@ -1946,13 +1946,13 @@ test_icon_factory (void)
     "  </object>"
     "</interface>";
 #if 0
-  const gchar buffer3[] =
+  const bchar buffer3[] =
     "<interface>"
     "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <invalid/>"
     "  </object>"
     "</interface>";
-  const gchar buffer4[] =
+  const bchar buffer4[] =
     "<interface>"
     "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
@@ -1960,7 +1960,7 @@ test_icon_factory (void)
     "    </sources>"
     "  </object>"
     "</interface>";
-  const gchar buffer5[] =
+  const bchar buffer5[] =
     "<interface>"
     "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
@@ -2037,17 +2037,17 @@ test_icon_factory (void)
 }
 
 typedef struct {
-  gboolean weight;
-  gboolean foreground;
-  gboolean underline;
-  gboolean size;
-  gboolean font_desc;
-  gboolean language;
+  bboolean weight;
+  bboolean foreground;
+  bboolean underline;
+  bboolean size;
+  bboolean font_desc;
+  bboolean language;
 } FoundAttrs;
 
-static gboolean 
+static bboolean 
 filter_bango_attrs (BangoAttribute *attr, 
-		    gpointer        data)
+		    bpointer        data)
 {
   FoundAttrs *found = (FoundAttrs *)data;
 
@@ -2075,7 +2075,7 @@ test_bango_attributes (void)
 {
   BtkBuilder *builder;
   FoundAttrs found = { 0, };
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
@@ -2088,7 +2088,7 @@ test_bango_attributes (void)
     "    </attributes>"
     "  </object>"
     "</interface>";
-  const gchar err_buffer1[] =
+  const bchar err_buffer1[] =
     "<interface>"
     "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
@@ -2096,7 +2096,7 @@ test_bango_attributes (void)
     "    </attributes>"
     "  </object>"
     "</interface>";
-  const gchar err_buffer2[] =
+  const bchar err_buffer2[] =
     "<interface>"
     "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
@@ -2157,8 +2157,8 @@ test_requires (void)
 {
   BtkBuilder *builder;
   GError     *error = NULL;
-  gchar      *buffer;
-  const gchar buffer_fmt[] =
+  bchar      *buffer;
+  const bchar buffer_fmt[] =
     "<interface>"
     "  <requires lib=\"btk+\" version=\"%d.%d\"/>"
     "</interface>";
@@ -2179,17 +2179,17 @@ test_add_objects (void)
 {
   BtkBuilder *builder;
   GError *error;
-  gint ret;
+  bint ret;
   BObject *obj;
   BtkUIManager *manager;
   BtkWidget *menubar;
   BObject *menu, *label;
   GList *children;
-  gchar *objects[2] = {"mainbox", NULL};
-  gchar *objects2[3] = {"mainbox", "window2", NULL};
-  gchar *objects3[3] = {"uimgr1", "menubar1"};
-  gchar *objects4[2] = {"uimgr1", NULL};
-  const gchar buffer[] =
+  bchar *objects[2] = {"mainbox", NULL};
+  bchar *objects2[3] = {"mainbox", "window2", NULL};
+  bchar *objects3[3] = {"uimgr1", "menubar1"};
+  bchar *objects4[2] = {"uimgr1", NULL};
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window\">"
     "    <child>"
@@ -2221,7 +2221,7 @@ test_add_objects (void)
     "    </child>"
     "  </object>"
     "<interface/>";
-  const gchar buffer2[] =
+  const bchar buffer2[] =
     "<interface>"
     "  <object class=\"BtkUIManager\" id=\"uimgr1\">"
     "    <child>"
@@ -2353,7 +2353,7 @@ get_parent_menubar (BtkWidget *menuitem)
 static void
 test_menus (void)
 {
-  const gchar *buffer =
+  const bchar *buffer =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <accel-groups>"
@@ -2394,7 +2394,7 @@ test_menus (void)
     "<object class=\"BtkAccelGroup\" id=\"accelgroup1\"/>"
     "</interface>";
 
-  const gchar *buffer1 =
+  const bchar *buffer1 =
     "<interface>"
     "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <accel-groups>"
@@ -2483,7 +2483,7 @@ test_menus (void)
 
 
 static void 
-test_file (const gchar *filename)
+test_file (const bchar *filename)
 {
   BtkBuilder *builder;
   GError *error = NULL;
@@ -2532,7 +2532,7 @@ test_message_area (void)
   BtkBuilder *builder;
   GError *error;
   BObject *obj, *obj1;
-  const gchar buffer[] =
+  const bchar buffer[] =
     "<interface>"
     "  <object class=\"BtkInfoBar\" id=\"infobar1\">"
     "    <child internal-child=\"content_area\">"

@@ -26,23 +26,23 @@
 static void      bail_image_class_init         (BailImageClass *klass);
 static void      bail_image_init               (BailImage      *image);
 static void      bail_image_initialize         (BatkObject       *accessible,
-                                                gpointer        data);
-static const gchar* bail_image_get_name  (BatkObject     *accessible);
+                                                bpointer        data);
+static const bchar* bail_image_get_name  (BatkObject     *accessible);
 
 
 static void      batk_image_interface_init      (BatkImageIface  *iface);
 
-static const gchar *
+static const bchar *
                  bail_image_get_image_description (BatkImage     *image);
 static void	 bail_image_get_image_position    (BatkImage     *image,
-                                                   gint         *x,
-                                                   gint         *y,
+                                                   bint         *x,
+                                                   bint         *y,
                                                    BatkCoordType coord_type);
 static void      bail_image_get_image_size     (BatkImage        *image,
-                                                gint            *width,
-                                                gint            *height);
-static gboolean  bail_image_set_image_description (BatkImage     *image,
-                                                const gchar     *description);
+                                                bint            *width,
+                                                bint            *height);
+static bboolean  bail_image_set_image_description (BatkImage     *image,
+                                                const bchar     *description);
 static void      bail_image_finalize           (BObject         *object);
 
 G_DEFINE_TYPE_WITH_CODE (BailImage, bail_image, BAIL_TYPE_WIDGET,
@@ -67,7 +67,7 @@ bail_image_init (BailImage *image)
 
 static void
 bail_image_initialize (BatkObject *accessible,
-                       gpointer data)
+                       bpointer data)
 {
   BATK_OBJECT_CLASS (bail_image_parent_class)->initialize (accessible, data);
 
@@ -75,13 +75,13 @@ bail_image_initialize (BatkObject *accessible,
 }
 
 /* Copied from btktoolbar.c, keep in sync */
-static gchar *
-elide_underscores (const gchar *original)
+static bchar *
+elide_underscores (const bchar *original)
 {
-  gchar *q, *result;
-  const gchar *p, *end;
-  gsize len;
-  gboolean last_underscore;
+  bchar *q, *result;
+  const bchar *p, *end;
+  bsize len;
+  bboolean last_underscore;
   
   if (!original)
     return NULL;
@@ -118,14 +118,14 @@ elide_underscores (const gchar *original)
   return result;
 }
 
-static const gchar*
+static const bchar*
 bail_image_get_name (BatkObject *accessible)
 {
   BtkWidget* widget;
   BtkImage *image;
   BailImage *image_accessible;
   BtkStockItem stock_item;
-  const gchar *name;
+  const bchar *name;
 
   name = BATK_OBJECT_CLASS (bail_image_parent_class)->get_name (accessible);
   if (name)
@@ -165,7 +165,7 @@ batk_image_interface_init (BatkImageIface *iface)
   iface->set_image_description = bail_image_set_image_description;
 }
 
-static const gchar *
+static const bchar *
 bail_image_get_image_description (BatkImage     *image)
 {
   BailImage* aimage = BAIL_IMAGE (image);
@@ -175,8 +175,8 @@ bail_image_get_image_description (BatkImage     *image)
 
 static void
 bail_image_get_image_position (BatkImage     *image,
-                               gint         *x,
-                               gint         *y,
+                               bint         *x,
+                               bint         *y,
                                BatkCoordType coord_type)
 {
   batk_component_get_position (BATK_COMPONENT (image), x, y, coord_type);
@@ -184,8 +184,8 @@ bail_image_get_image_position (BatkImage     *image,
 
 static void
 bail_image_get_image_size (BatkImage *image, 
-                           gint     *width,
-                           gint     *height)
+                           bint     *width,
+                           bint     *height)
 {
   BtkWidget* widget;
   BtkImage *btk_image;
@@ -259,9 +259,9 @@ bail_image_get_image_size (BatkImage *image,
   }
 }
 
-static gboolean
+static bboolean
 bail_image_set_image_description (BatkImage     *image,
-                                  const gchar  *description)
+                                  const bchar  *description)
 {
   BailImage* aimage = BAIL_IMAGE (image);
 

@@ -56,7 +56,7 @@ enum {
 typedef struct _BtkTreePixmaps BtkTreePixmaps;
 
 struct _BtkTreePixmaps {
-  gint refcount;
+  bint refcount;
   BdkColormap *colormap;
   
   BdkPixmap *pixmap_plus;
@@ -76,14 +76,14 @@ static void btk_tree_item_size_allocate (BtkWidget        *widget,
 					 BtkAllocation    *allocation);
 static void btk_tree_item_paint         (BtkWidget        *widget,
 					 BdkRectangle     *area);
-static gint btk_tree_item_button_press  (BtkWidget        *widget,
+static bint btk_tree_item_button_press  (BtkWidget        *widget,
 					 BdkEventButton   *event);
-static gint btk_tree_item_expose        (BtkWidget        *widget,
+static bint btk_tree_item_expose        (BtkWidget        *widget,
 					 BdkEventExpose   *event);
 static void btk_tree_item_forall        (BtkContainer    *container,
-					 gboolean         include_internals,
+					 bboolean         include_internals,
 					 BtkCallback      callback,
-					 gpointer         callback_data);
+					 bpointer         callback_data);
 
 static void btk_real_tree_item_select   (BtkItem          *item);
 static void btk_real_tree_item_deselect (BtkItem          *item);
@@ -91,7 +91,7 @@ static void btk_real_tree_item_toggle   (BtkItem          *item);
 static void btk_real_tree_item_expand   (BtkTreeItem      *item);
 static void btk_real_tree_item_collapse (BtkTreeItem      *item);
 static void btk_tree_item_destroy        (BtkObject *object);
-static gint btk_tree_item_subtree_button_click (BtkWidget *widget);
+static bint btk_tree_item_subtree_button_click (BtkWidget *widget);
 static void btk_tree_item_subtree_button_changed_state (BtkWidget *widget);
 
 static void btk_tree_item_map(BtkWidget*);
@@ -101,7 +101,7 @@ static void btk_tree_item_add_pixmaps    (BtkTreeItem       *tree_item);
 static void btk_tree_item_remove_pixmaps (BtkTreeItem       *tree_item);
 
 static BtkItemClass *parent_class = NULL;
-static guint tree_item_signals[LAST_SIGNAL] = { 0 };
+static buint tree_item_signals[LAST_SIGNAL] = { 0 };
 
 BtkType
 btk_tree_item_get_type (void)
@@ -180,7 +180,7 @@ btk_tree_item_class_init (BtkTreeItemClass *class)
 }
 
 /* callback for event box mouse event */
-static gint
+static bint
 btk_tree_item_subtree_button_click (BtkWidget *widget)
 {
   BtkTreeItem* item;
@@ -233,13 +233,13 @@ btk_tree_item_init (BtkTreeItem *tree_item)
   btk_widget_set_events (eventbox, BDK_BUTTON_PRESS_MASK);
   btk_signal_connect(BTK_OBJECT(eventbox), "state-changed",
 		     G_CALLBACK (btk_tree_item_subtree_button_changed_state),
-		     (gpointer)NULL);
+		     (bpointer)NULL);
   btk_signal_connect(BTK_OBJECT(eventbox), "realize",
 		     G_CALLBACK (btk_tree_item_subtree_button_changed_state),
-		     (gpointer)NULL);
+		     (bpointer)NULL);
   btk_signal_connect(BTK_OBJECT(eventbox), "button-press-event",
 		     G_CALLBACK (btk_tree_item_subtree_button_click),
-		     (gpointer)NULL);
+		     (bpointer)NULL);
   btk_object_set_user_data(BTK_OBJECT(eventbox), tree_item);
   tree_item->pixmaps_box = eventbox;
 
@@ -274,7 +274,7 @@ btk_tree_item_new (void)
 }
 
 BtkWidget*
-btk_tree_item_new_with_label (const gchar *label)
+btk_tree_item_new_with_label (const bchar *label)
 {
   BtkWidget *tree_item;
   BtkWidget *label_widget;
@@ -394,14 +394,14 @@ btk_tree_item_add_pixmaps (BtkTreeItem *tree_item)
 	bdk_pixmap_create_from_xpm_d (BTK_WIDGET (tree_item)->window,
 				      &pixmap_node->mask_plus,
 				      NULL,
-				      (gchar **)tree_plus);
+				      (bchar **)tree_plus);
       
       /* create pixmaps for minus icon */
       pixmap_node->pixmap_minus = 
 	bdk_pixmap_create_from_xpm_d (BTK_WIDGET (tree_item)->window,
 				      &pixmap_node->mask_minus,
 				      NULL,
-				      (gchar **)tree_minus);
+				      (bchar **)tree_minus);
 
       tree_item->pixmaps = pixmaps = g_list_prepend (pixmaps, pixmap_node);
     }
@@ -488,7 +488,7 @@ btk_tree_item_size_allocate (BtkWidget     *widget,
   BtkBin *bin = BTK_BIN (widget);
   BtkTreeItem *item = BTK_TREE_ITEM (widget);
   BtkAllocation child_allocation;
-  gint border_width;
+  bint border_width;
   int temp;
 
   widget->allocation = *allocation;
@@ -514,11 +514,11 @@ btk_tree_item_size_allocate (BtkWidget     *widget,
       btk_widget_size_allocate (item->pixmaps_box, &child_allocation);
 
       child_allocation.y = BTK_CONTAINER (widget)->border_width;
-      child_allocation.height = MAX (1, (gint)allocation->height - child_allocation.y * 2);
+      child_allocation.height = MAX (1, (bint)allocation->height - child_allocation.y * 2);
       child_allocation.x += item->pixmaps_box->requisition.width+DEFAULT_DELTA;
 
       child_allocation.width = 
-	MAX (1, (gint)allocation->width - ((gint)child_allocation.x + border_width));
+	MAX (1, (bint)allocation->width - ((bint)child_allocation.x + border_width));
 
       btk_widget_size_allocate (bin->child, &child_allocation);
     }
@@ -529,7 +529,7 @@ btk_tree_item_draw_lines (BtkWidget *widget)
 {
   BtkTreeItem* item;
   BtkTree* tree;
-  guint lx1, ly1, lx2, ly2;
+  buint lx1, ly1, lx2, ly2;
   BdkGC* gc;
 
   g_return_if_fail (BTK_IS_TREE_ITEM (widget));
@@ -556,7 +556,7 @@ btk_tree_item_draw_lines (BtkWidget *widget)
     bdk_draw_line (widget->window, gc, lx1, ly1, lx2, ly2);
 
   /* draw vertical line for subtree connecting */
-  if(g_list_last(tree->children)->data != (gpointer)widget)
+  if(g_list_last(tree->children)->data != (bpointer)widget)
     ly2 = (ly2 / 2) + (ly2 % 2);
   
   lx2 += DEFAULT_DELTA;
@@ -661,7 +661,7 @@ btk_tree_item_paint (BtkWidget    *widget,
     }
 }
 
-static gint
+static bint
 btk_tree_item_button_press (BtkWidget      *widget,
 			    BdkEventButton *event)
 {
@@ -675,7 +675,7 @@ btk_tree_item_button_press (BtkWidget      *widget,
 
 static void
 btk_tree_item_expose_child (BtkWidget *child,
-                            gpointer   client_data)
+                            bpointer   client_data)
 {
   struct {
     BtkWidget *container;
@@ -701,7 +701,7 @@ btk_tree_item_expose_child (BtkWidget *child,
     }
 }
 
-static gint
+static bint
 btk_tree_item_expose (BtkWidget      *widget,
 		      BdkEventExpose *event)
 {
@@ -982,9 +982,9 @@ btk_tree_item_unmap (BtkWidget *widget)
 
 static void
 btk_tree_item_forall (BtkContainer *container,
-		      gboolean      include_internals,
+		      bboolean      include_internals,
 		      BtkCallback   callback,
-		      gpointer      callback_data)
+		      bpointer      callback_data)
 {
   BtkBin *bin = BTK_BIN (container);
   BtkTreeItem *tree_item = BTK_TREE_ITEM (container);

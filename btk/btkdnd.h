@@ -60,11 +60,11 @@ typedef enum {
 void btk_drag_get_data (BtkWidget      *widget,
 			BdkDragContext *context,
 			BdkAtom         target,
-			guint32         time_);
+			buint32         time_);
 void btk_drag_finish   (BdkDragContext *context,
-			gboolean        success,
-			gboolean        del,
-			guint32         time_);
+			bboolean        success,
+			bboolean        del,
+			buint32         time_);
 
 BtkWidget *btk_drag_get_source_widget (BdkDragContext *context);
 
@@ -74,13 +74,13 @@ void btk_drag_unhighlight (BtkWidget  *widget);
 void btk_drag_dest_set   (BtkWidget            *widget,
 			  BtkDestDefaults       flags,
   		          const BtkTargetEntry *targets,
-			  gint                  n_targets,
+			  bint                  n_targets,
 			  BdkDragAction         actions);
 
 void btk_drag_dest_set_proxy (BtkWidget      *widget,
 			      BdkWindow      *proxy_window,
 			      BdkDragProtocol protocol,
-			      gboolean        use_coordinates);
+			      bboolean        use_coordinates);
 
 void btk_drag_dest_unset (BtkWidget          *widget);
 
@@ -95,15 +95,15 @@ void           btk_drag_dest_add_image_targets (BtkWidget    *widget);
 void           btk_drag_dest_add_uri_targets   (BtkWidget    *widget);
 
 void           btk_drag_dest_set_track_motion  (BtkWidget *widget,
-						gboolean   track_motion);
-gboolean       btk_drag_dest_get_track_motion  (BtkWidget *widget);
+						bboolean   track_motion);
+bboolean       btk_drag_dest_get_track_motion  (BtkWidget *widget);
 
 /* Source side */
 
 void btk_drag_source_set  (BtkWidget            *widget,
 			   BdkModifierType       start_button_mask,
 			   const BtkTargetEntry *targets,
-			   gint                  n_targets,
+			   bint                  n_targets,
 			   BdkDragAction         actions);
 
 void btk_drag_source_unset (BtkWidget        *widget);
@@ -122,9 +122,9 @@ void btk_drag_source_set_icon        (BtkWidget   *widget,
 void btk_drag_source_set_icon_pixbuf (BtkWidget   *widget,
 				      BdkPixbuf   *pixbuf);
 void btk_drag_source_set_icon_stock  (BtkWidget   *widget,
-				      const gchar *stock_id);
+				      const bchar *stock_id);
 void btk_drag_source_set_icon_name   (BtkWidget   *widget,
-				      const gchar *icon_name);
+				      const bchar *icon_name);
 
 /* There probably should be functions for setting the targets
  * as a BtkTargetList
@@ -133,41 +133,41 @@ void btk_drag_source_set_icon_name   (BtkWidget   *widget,
 BdkDragContext *btk_drag_begin (BtkWidget         *widget,
 				BtkTargetList     *targets,
 				BdkDragAction      actions,
-				gint               button,
+				bint               button,
 				BdkEvent          *event);
 
 /* Set the image being dragged around
  */
 void btk_drag_set_icon_widget (BdkDragContext *context,
 			       BtkWidget      *widget,
-			       gint            hot_x,
-			       gint            hot_y);
+			       bint            hot_x,
+			       bint            hot_y);
 void btk_drag_set_icon_pixmap (BdkDragContext *context,
 			       BdkColormap    *colormap,
 			       BdkPixmap      *pixmap,
 			       BdkBitmap      *mask,
-			       gint            hot_x,
-			       gint            hot_y);
+			       bint            hot_x,
+			       bint            hot_y);
 void btk_drag_set_icon_pixbuf (BdkDragContext *context,
 			       BdkPixbuf      *pixbuf,
-			       gint            hot_x,
-			       gint            hot_y);
+			       bint            hot_x,
+			       bint            hot_y);
 void btk_drag_set_icon_stock  (BdkDragContext *context,
-			       const gchar    *stock_id,
-			       gint            hot_x,
-			       gint            hot_y);
+			       const bchar    *stock_id,
+			       bint            hot_x,
+			       bint            hot_y);
 void btk_drag_set_icon_name   (BdkDragContext *context,
-			       const gchar    *icon_name,
-			       gint            hot_x,
-			       gint            hot_y);
+			       const bchar    *icon_name,
+			       bint            hot_x,
+			       bint            hot_y);
 
 void btk_drag_set_icon_default (BdkDragContext    *context);
 
-gboolean btk_drag_check_threshold (BtkWidget *widget,
-				   gint       start_x,
-				   gint       start_y,
-				   gint       current_x,
-				   gint       current_y);
+bboolean btk_drag_check_threshold (BtkWidget *widget,
+				   bint       start_x,
+				   bint       start_y,
+				   bint       current_x,
+				   bint       current_y);
 
 /* Internal functions */
 void _btk_drag_source_handle_event (BtkWidget *widget,
@@ -179,8 +179,8 @@ void _btk_drag_dest_handle_event (BtkWidget *toplevel,
 void btk_drag_set_default_icon (BdkColormap   *colormap,
 				BdkPixmap     *pixmap,
 				BdkBitmap     *mask,
-			        gint           hot_x,
-			        gint           hot_y);
+			        bint           hot_x,
+			        bint           hot_y);
 #endif /* !BTK_DISABLE_DEPRECATED */
 
 B_END_DECLS

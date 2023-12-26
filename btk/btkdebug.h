@@ -72,7 +72,7 @@ typedef enum {
 #  define BTKVAR extern
 #endif
 
-BTKVAR guint btk_debug_flags;
+BTKVAR buint btk_debug_flags;
 
 B_END_DECLS
 

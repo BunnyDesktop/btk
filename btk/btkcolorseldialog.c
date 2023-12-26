@@ -51,7 +51,7 @@ enum {
 static void btk_color_selection_dialog_buildable_interface_init     (BtkBuildableIface *iface);
 static BObject * btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 									  BtkBuilder   *builder,
-									  const gchar  *childname);
+									  const bchar  *childname);
 
 G_DEFINE_TYPE_WITH_CODE (BtkColorSelectionDialog, btk_color_selection_dialog,
            BTK_TYPE_DIALOG,
@@ -62,7 +62,7 @@ static BtkBuildableIface *parent_buildable_iface;
 
 static void
 btk_color_selection_dialog_get_property (BObject         *object,
-					 guint            prop_id,
+					 buint            prop_id,
 					 BValue          *value,
 					 BParamSpec      *pspec)
 {
@@ -173,7 +173,7 @@ btk_color_selection_dialog_init (BtkColorSelectionDialog *colorseldiag)
 }
 
 BtkWidget*
-btk_color_selection_dialog_new (const gchar *title)
+btk_color_selection_dialog_new (const bchar *title)
 {
   BtkColorSelectionDialog *colorseldiag;
   
@@ -215,7 +215,7 @@ btk_color_selection_dialog_buildable_interface_init (BtkBuildableIface *iface)
 static BObject *
 btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 							 BtkBuilder   *builder,
-							 const gchar  *childname)
+							 const bchar  *childname)
 {
     if (strcmp(childname, "ok_button") == 0)
 	return B_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->ok_button);

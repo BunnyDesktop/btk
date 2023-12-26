@@ -81,10 +81,10 @@ typedef struct _BtkTreeViewChild BtkTreeViewChild;
 struct _BtkTreeViewChild
 {
   BtkWidget *widget;
-  gint x;
-  gint y;
-  gint width;
-  gint height;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
 };
 
 
@@ -97,8 +97,8 @@ struct _TreeViewDragInfo
 
   BtkTargetList *_unused_dest_target_list;
 
-  guint source_set : 1;
-  guint dest_set : 1;
+  buint source_set : 1;
+  buint dest_set : 1;
 };
 
 
@@ -150,11 +150,11 @@ enum {
 /* object signals */
 static void     btk_tree_view_finalize             (BObject          *object);
 static void     btk_tree_view_set_property         (BObject         *object,
-						    guint            prop_id,
+						    buint            prop_id,
 						    const BValue    *value,
 						    BParamSpec      *pspec);
 static void     btk_tree_view_get_property         (BObject         *object,
-						    guint            prop_id,
+						    buint            prop_id,
 						    BValue          *value,
 						    BParamSpec      *pspec);
 
@@ -169,40 +169,40 @@ static void     btk_tree_view_size_request         (BtkWidget        *widget,
 						    BtkRequisition   *requisition);
 static void     btk_tree_view_size_allocate        (BtkWidget        *widget,
 						    BtkAllocation    *allocation);
-static gboolean btk_tree_view_expose               (BtkWidget        *widget,
+static bboolean btk_tree_view_expose               (BtkWidget        *widget,
 						    BdkEventExpose   *event);
-static gboolean btk_tree_view_key_press            (BtkWidget        *widget,
+static bboolean btk_tree_view_key_press            (BtkWidget        *widget,
 						    BdkEventKey      *event);
-static gboolean btk_tree_view_key_release          (BtkWidget        *widget,
+static bboolean btk_tree_view_key_release          (BtkWidget        *widget,
 						    BdkEventKey      *event);
-static gboolean btk_tree_view_motion               (BtkWidget        *widget,
+static bboolean btk_tree_view_motion               (BtkWidget        *widget,
 						    BdkEventMotion   *event);
-static gboolean btk_tree_view_enter_notify         (BtkWidget        *widget,
+static bboolean btk_tree_view_enter_notify         (BtkWidget        *widget,
 						    BdkEventCrossing *event);
-static gboolean btk_tree_view_leave_notify         (BtkWidget        *widget,
+static bboolean btk_tree_view_leave_notify         (BtkWidget        *widget,
 						    BdkEventCrossing *event);
-static gboolean btk_tree_view_button_press         (BtkWidget        *widget,
+static bboolean btk_tree_view_button_press         (BtkWidget        *widget,
 						    BdkEventButton   *event);
-static gboolean btk_tree_view_button_release       (BtkWidget        *widget,
+static bboolean btk_tree_view_button_release       (BtkWidget        *widget,
 						    BdkEventButton   *event);
-static gboolean btk_tree_view_grab_broken          (BtkWidget          *widget,
+static bboolean btk_tree_view_grab_broken          (BtkWidget          *widget,
 						    BdkEventGrabBroken *event);
 #if 0
-static gboolean btk_tree_view_configure            (BtkWidget         *widget,
+static bboolean btk_tree_view_configure            (BtkWidget         *widget,
 						    BdkEventConfigure *event);
 #endif
 
 static void     btk_tree_view_set_focus_child      (BtkContainer     *container,
 						    BtkWidget        *child);
-static gint     btk_tree_view_focus_out            (BtkWidget        *widget,
+static bint     btk_tree_view_focus_out            (BtkWidget        *widget,
 						    BdkEventFocus    *event);
-static gint     btk_tree_view_focus                (BtkWidget        *widget,
+static bint     btk_tree_view_focus                (BtkWidget        *widget,
 						    BtkDirectionType  direction);
 static void     btk_tree_view_grab_focus           (BtkWidget        *widget);
 static void     btk_tree_view_style_set            (BtkWidget        *widget,
 						    BtkStyle         *previous_style);
 static void     btk_tree_view_grab_notify          (BtkWidget        *widget,
-						    gboolean          was_grabbed);
+						    bboolean          was_grabbed);
 static void     btk_tree_view_state_changed        (BtkWidget        *widget,
 						    BtkStateType      previous_state);
 
@@ -210,9 +210,9 @@ static void     btk_tree_view_state_changed        (BtkWidget        *widget,
 static void     btk_tree_view_remove               (BtkContainer     *container,
 						    BtkWidget        *widget);
 static void     btk_tree_view_forall               (BtkContainer     *container,
-						    gboolean          include_internals,
+						    bboolean          include_internals,
 						    BtkCallback       callback,
-						    gpointer          callback_data);
+						    bpointer          callback_data);
 
 /* Source side drag signals */
 static void btk_tree_view_drag_begin       (BtkWidget        *widget,
@@ -222,102 +222,102 @@ static void btk_tree_view_drag_end         (BtkWidget        *widget,
 static void btk_tree_view_drag_data_get    (BtkWidget        *widget,
                                             BdkDragContext   *context,
                                             BtkSelectionData *selection_data,
-                                            guint             info,
-                                            guint             time);
+                                            buint             info,
+                                            buint             time);
 static void btk_tree_view_drag_data_delete (BtkWidget        *widget,
                                             BdkDragContext   *context);
 
 /* Target side drag signals */
 static void     btk_tree_view_drag_leave         (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  guint             time);
-static gboolean btk_tree_view_drag_motion        (BtkWidget        *widget,
+                                                  buint             time);
+static bboolean btk_tree_view_drag_motion        (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
-static gboolean btk_tree_view_drag_drop          (BtkWidget        *widget,
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
+static bboolean btk_tree_view_drag_drop          (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
 static void     btk_tree_view_drag_data_received (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
+                                                  bint              x,
+                                                  bint              y,
                                                   BtkSelectionData *selection_data,
-                                                  guint             info,
-                                                  guint             time);
+                                                  buint             info,
+                                                  buint             time);
 
 /* tree_model signals */
 static void btk_tree_view_set_adjustments                 (BtkTreeView     *tree_view,
 							   BtkAdjustment   *hadj,
 							   BtkAdjustment   *vadj);
-static gboolean btk_tree_view_real_move_cursor            (BtkTreeView     *tree_view,
+static bboolean btk_tree_view_real_move_cursor            (BtkTreeView     *tree_view,
 							   BtkMovementStep  step,
-							   gint             count);
-static gboolean btk_tree_view_real_select_all             (BtkTreeView     *tree_view);
-static gboolean btk_tree_view_real_unselect_all           (BtkTreeView     *tree_view);
-static gboolean btk_tree_view_real_select_cursor_row      (BtkTreeView     *tree_view,
-							   gboolean         start_editing);
-static gboolean btk_tree_view_real_toggle_cursor_row      (BtkTreeView     *tree_view);
-static gboolean btk_tree_view_real_expand_collapse_cursor_row (BtkTreeView     *tree_view,
-							       gboolean         logical,
-							       gboolean         expand,
-							       gboolean         open_all);
-static gboolean btk_tree_view_real_select_cursor_parent   (BtkTreeView     *tree_view);
+							   bint             count);
+static bboolean btk_tree_view_real_select_all             (BtkTreeView     *tree_view);
+static bboolean btk_tree_view_real_unselect_all           (BtkTreeView     *tree_view);
+static bboolean btk_tree_view_real_select_cursor_row      (BtkTreeView     *tree_view,
+							   bboolean         start_editing);
+static bboolean btk_tree_view_real_toggle_cursor_row      (BtkTreeView     *tree_view);
+static bboolean btk_tree_view_real_expand_collapse_cursor_row (BtkTreeView     *tree_view,
+							       bboolean         logical,
+							       bboolean         expand,
+							       bboolean         open_all);
+static bboolean btk_tree_view_real_select_cursor_parent   (BtkTreeView     *tree_view);
 static void btk_tree_view_row_changed                     (BtkTreeModel    *model,
 							   BtkTreePath     *path,
 							   BtkTreeIter     *iter,
-							   gpointer         data);
+							   bpointer         data);
 static void btk_tree_view_row_inserted                    (BtkTreeModel    *model,
 							   BtkTreePath     *path,
 							   BtkTreeIter     *iter,
-							   gpointer         data);
+							   bpointer         data);
 static void btk_tree_view_row_has_child_toggled           (BtkTreeModel    *model,
 							   BtkTreePath     *path,
 							   BtkTreeIter     *iter,
-							   gpointer         data);
+							   bpointer         data);
 static void btk_tree_view_row_deleted                     (BtkTreeModel    *model,
 							   BtkTreePath     *path,
-							   gpointer         data);
+							   bpointer         data);
 static void btk_tree_view_rows_reordered                  (BtkTreeModel    *model,
 							   BtkTreePath     *parent,
 							   BtkTreeIter     *iter,
-							   gint            *new_order,
-							   gpointer         data);
+							   bint            *new_order,
+							   bpointer         data);
 
 /* Incremental reflow */
-static gboolean validate_row             (BtkTreeView *tree_view,
+static bboolean validate_row             (BtkTreeView *tree_view,
 					  BtkRBTree   *tree,
 					  BtkRBNode   *node,
 					  BtkTreeIter *iter,
 					  BtkTreePath *path);
 static void     validate_visible_area    (BtkTreeView *tree_view);
-static gboolean validate_rows_handler    (BtkTreeView *tree_view);
-static gboolean do_validate_rows         (BtkTreeView *tree_view,
-					  gboolean     size_request);
-static gboolean validate_rows            (BtkTreeView *tree_view);
-static gboolean presize_handler_callback (gpointer     data);
+static bboolean validate_rows_handler    (BtkTreeView *tree_view);
+static bboolean do_validate_rows         (BtkTreeView *tree_view,
+					  bboolean     size_request);
+static bboolean validate_rows            (BtkTreeView *tree_view);
+static bboolean presize_handler_callback (bpointer     data);
 static void     install_presize_handler  (BtkTreeView *tree_view);
 static void     install_scroll_sync_handler (BtkTreeView *tree_view);
 static void     btk_tree_view_set_top_row   (BtkTreeView *tree_view,
 					     BtkTreePath *path,
-					     gint         offset);
+					     bint         offset);
 static void	btk_tree_view_dy_to_top_row (BtkTreeView *tree_view);
 static void     btk_tree_view_top_row_to_dy (BtkTreeView *tree_view);
 static void     invalidate_empty_focus      (BtkTreeView *tree_view);
 
 /* Internal functions */
-static gboolean btk_tree_view_is_expander_column             (BtkTreeView        *tree_view,
+static bboolean btk_tree_view_is_expander_column             (BtkTreeView        *tree_view,
 							      BtkTreeViewColumn  *column);
 static void     btk_tree_view_add_move_binding               (BtkBindingSet      *binding_set,
-							      guint               keyval,
-							      guint               modmask,
-							      gboolean            add_shifted_binding,
+							      buint               keyval,
+							      buint               modmask,
+							      bboolean            add_shifted_binding,
 							      BtkMovementStep     step,
-							      gint                count);
-static gint     btk_tree_view_unref_and_check_selection_tree (BtkTreeView        *tree_view,
+							      bint                count);
+static bint     btk_tree_view_unref_and_check_selection_tree (BtkTreeView        *tree_view,
 							      BtkRBTree          *tree);
 static void     btk_tree_view_queue_draw_path                (BtkTreeView        *tree_view,
 							      BtkTreePath        *path,
@@ -329,66 +329,66 @@ static void     btk_tree_view_queue_draw_arrow               (BtkTreeView       
 static void     btk_tree_view_draw_arrow                     (BtkTreeView        *tree_view,
 							      BtkRBTree          *tree,
 							      BtkRBNode          *node,
-							      gint                x,
-							      gint                y);
+							      bint                x,
+							      bint                y);
 static void     btk_tree_view_get_arrow_xrange               (BtkTreeView        *tree_view,
 							      BtkRBTree          *tree,
-							      gint               *x1,
-							      gint               *x2);
-static gint     btk_tree_view_new_column_width               (BtkTreeView        *tree_view,
-							      gint                i,
-							      gint               *x);
+							      bint               *x1,
+							      bint               *x2);
+static bint     btk_tree_view_new_column_width               (BtkTreeView        *tree_view,
+							      bint                i,
+							      bint               *x);
 static void     btk_tree_view_adjustment_changed             (BtkAdjustment      *adjustment,
 							      BtkTreeView        *tree_view);
 static void     btk_tree_view_build_tree                     (BtkTreeView        *tree_view,
 							      BtkRBTree          *tree,
 							      BtkTreeIter        *iter,
-							      gint                depth,
-							      gboolean            recurse);
+							      bint                depth,
+							      bboolean            recurse);
 static void     btk_tree_view_clamp_node_visible             (BtkTreeView        *tree_view,
 							      BtkRBTree          *tree,
 							      BtkRBNode          *node);
 static void     btk_tree_view_clamp_column_visible           (BtkTreeView        *tree_view,
 							      BtkTreeViewColumn  *column,
-							      gboolean            focus_to_cell);
-static gboolean btk_tree_view_maybe_begin_dragging_row       (BtkTreeView        *tree_view,
+							      bboolean            focus_to_cell);
+static bboolean btk_tree_view_maybe_begin_dragging_row       (BtkTreeView        *tree_view,
 							      BdkEventMotion     *event);
 static void     btk_tree_view_focus_to_cursor                (BtkTreeView        *tree_view);
 static void     btk_tree_view_move_cursor_up_down            (BtkTreeView        *tree_view,
-							      gint                count);
+							      bint                count);
 static void     btk_tree_view_move_cursor_page_up_down       (BtkTreeView        *tree_view,
-							      gint                count);
+							      bint                count);
 static void     btk_tree_view_move_cursor_left_right         (BtkTreeView        *tree_view,
-							      gint                count);
+							      bint                count);
 static void     btk_tree_view_move_cursor_start_end          (BtkTreeView        *tree_view,
-							      gint                count);
-static gboolean btk_tree_view_real_collapse_row              (BtkTreeView        *tree_view,
+							      bint                count);
+static bboolean btk_tree_view_real_collapse_row              (BtkTreeView        *tree_view,
 							      BtkTreePath        *path,
 							      BtkRBTree          *tree,
 							      BtkRBNode          *node,
-							      gboolean            animate);
-static gboolean btk_tree_view_real_expand_row                (BtkTreeView        *tree_view,
+							      bboolean            animate);
+static bboolean btk_tree_view_real_expand_row                (BtkTreeView        *tree_view,
 							      BtkTreePath        *path,
 							      BtkRBTree          *tree,
 							      BtkRBNode          *node,
-							      gboolean            open_all,
-							      gboolean            animate);
+							      bboolean            open_all,
+							      bboolean            animate);
 static void     btk_tree_view_real_set_cursor                (BtkTreeView        *tree_view,
 							      BtkTreePath        *path,
-							      gboolean            clear_and_select,
-							      gboolean            clamp_node);
-static gboolean btk_tree_view_has_special_cell               (BtkTreeView        *tree_view);
+							      bboolean            clear_and_select,
+							      bboolean            clamp_node);
+static bboolean btk_tree_view_has_special_cell               (BtkTreeView        *tree_view);
 static void     column_sizing_notify                         (BObject            *object,
                                                               BParamSpec         *pspec,
-                                                              gpointer            data);
-static gboolean expand_collapse_timeout                      (gpointer            data);
+                                                              bpointer            data);
+static bboolean expand_collapse_timeout                      (bpointer            data);
 static void     add_expand_collapse_timeout                  (BtkTreeView        *tree_view,
                                                               BtkRBTree          *tree,
                                                               BtkRBNode          *node,
-                                                              gboolean            expand);
+                                                              bboolean            expand);
 static void     remove_expand_collapse_timeout               (BtkTreeView        *tree_view);
 static void     cancel_arrow_animation                       (BtkTreeView        *tree_view);
-static gboolean do_expand_collapse                           (BtkTreeView        *tree_view);
+static bboolean do_expand_collapse                           (BtkTreeView        *tree_view);
 static void     btk_tree_view_stop_rubber_band               (BtkTreeView        *tree_view);
 static void     update_prelight                              (BtkTreeView        *tree_view,
                                                               int                 x,
@@ -400,52 +400,52 @@ static void     btk_tree_view_search_dialog_hide     (BtkWidget        *search_d
 							 BtkTreeView      *tree_view);
 static void     btk_tree_view_search_position_func      (BtkTreeView      *tree_view,
 							 BtkWidget        *search_dialog,
-							 gpointer          user_data);
+							 bpointer          user_data);
 static void     btk_tree_view_search_disable_popdown    (BtkEntry         *entry,
 							 BtkMenu          *menu,
-							 gpointer          data);
+							 bpointer          data);
 static void     btk_tree_view_search_preedit_changed    (BtkIMContext     *im_context,
 							 BtkTreeView      *tree_view);
 static void     btk_tree_view_search_activate           (BtkEntry         *entry,
 							 BtkTreeView      *tree_view);
-static gboolean btk_tree_view_real_search_enable_popdown(gpointer          data);
+static bboolean btk_tree_view_real_search_enable_popdown(bpointer          data);
 static void     btk_tree_view_search_enable_popdown     (BtkWidget        *widget,
-							 gpointer          data);
-static gboolean btk_tree_view_search_delete_event       (BtkWidget        *widget,
+							 bpointer          data);
+static bboolean btk_tree_view_search_delete_event       (BtkWidget        *widget,
 							 BdkEventAny      *event,
 							 BtkTreeView      *tree_view);
-static gboolean btk_tree_view_search_button_press_event (BtkWidget        *widget,
+static bboolean btk_tree_view_search_button_press_event (BtkWidget        *widget,
 							 BdkEventButton   *event,
 							 BtkTreeView      *tree_view);
-static gboolean btk_tree_view_search_scroll_event       (BtkWidget        *entry,
+static bboolean btk_tree_view_search_scroll_event       (BtkWidget        *entry,
 							 BdkEventScroll   *event,
 							 BtkTreeView      *tree_view);
-static gboolean btk_tree_view_search_key_press_event    (BtkWidget        *entry,
+static bboolean btk_tree_view_search_key_press_event    (BtkWidget        *entry,
 							 BdkEventKey      *event,
 							 BtkTreeView      *tree_view);
-static gboolean btk_tree_view_search_move               (BtkWidget        *window,
+static bboolean btk_tree_view_search_move               (BtkWidget        *window,
 							 BtkTreeView      *tree_view,
-							 gboolean          up);
-static gboolean btk_tree_view_search_equal_func         (BtkTreeModel     *model,
-							 gint              column,
-							 const gchar      *key,
+							 bboolean          up);
+static bboolean btk_tree_view_search_equal_func         (BtkTreeModel     *model,
+							 bint              column,
+							 const bchar      *key,
 							 BtkTreeIter      *iter,
-							 gpointer          search_data);
-static gboolean btk_tree_view_search_iter               (BtkTreeModel     *model,
+							 bpointer          search_data);
+static bboolean btk_tree_view_search_iter               (BtkTreeModel     *model,
 							 BtkTreeSelection *selection,
 							 BtkTreeIter      *iter,
-							 const gchar      *text,
-							 gint             *count,
-							 gint              n);
+							 const bchar      *text,
+							 bint             *count,
+							 bint              n);
 static void     btk_tree_view_search_init               (BtkWidget        *entry,
 							 BtkTreeView      *tree_view);
 static void     btk_tree_view_put                       (BtkTreeView      *tree_view,
 							 BtkWidget        *child_widget,
-							 gint              x,
-							 gint              y,
-							 gint              width,
-							 gint              height);
-static gboolean btk_tree_view_start_editing             (BtkTreeView      *tree_view,
+							 bint              x,
+							 bint              y,
+							 bint              width,
+							 bint              height);
+static bboolean btk_tree_view_start_editing             (BtkTreeView      *tree_view,
 							 BtkTreePath      *cursor_path);
 static void btk_tree_view_real_start_editing (BtkTreeView       *tree_view,
 					      BtkTreeViewColumn *column,
@@ -453,32 +453,32 @@ static void btk_tree_view_real_start_editing (BtkTreeView       *tree_view,
 					      BtkCellEditable   *cell_editable,
 					      BdkRectangle      *cell_area,
 					      BdkEvent          *event,
-					      guint              flags);
+					      buint              flags);
 static void btk_tree_view_stop_editing                  (BtkTreeView *tree_view,
-							 gboolean     cancel_editing);
-static gboolean btk_tree_view_real_start_interactive_search (BtkTreeView *tree_view,
-							     gboolean     keybinding);
-static gboolean btk_tree_view_start_interactive_search      (BtkTreeView *tree_view);
+							 bboolean     cancel_editing);
+static bboolean btk_tree_view_real_start_interactive_search (BtkTreeView *tree_view,
+							     bboolean     keybinding);
+static bboolean btk_tree_view_start_interactive_search      (BtkTreeView *tree_view);
 static BtkTreeViewColumn *btk_tree_view_get_drop_column (BtkTreeView       *tree_view,
 							 BtkTreeViewColumn *column,
-							 gint               drop_position);
+							 bint               drop_position);
 
 /* BtkBuildable */
 static void     btk_tree_view_buildable_add_child          (BtkBuildable      *tree_view,
 							    BtkBuilder        *builder,
 							    BObject           *child,
-							    const gchar       *type);
+							    const bchar       *type);
 static BObject *btk_tree_view_buildable_get_internal_child (BtkBuildable      *buildable,
 							    BtkBuilder        *builder,
-							    const gchar       *childname);
+							    const bchar       *childname);
 static void     btk_tree_view_buildable_init               (BtkBuildableIface *iface);
 
 
-static gboolean scroll_row_timeout                   (gpointer     data);
+static bboolean scroll_row_timeout                   (bpointer     data);
 static void     add_scroll_timeout                   (BtkTreeView *tree_view);
 static void     remove_scroll_timeout                (BtkTreeView *tree_view);
 
-static guint tree_view_signals [LAST_SIGNAL] = { 0 };
+static buint tree_view_signals [LAST_SIGNAL] = { 0 };
 
 
 
@@ -639,7 +639,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 						       P_("Search Column"),
 						       P_("Model column to search through during interactive search"),
 						       -1,
-						       G_MAXINT,
+						       B_MAXINT,
 						       -1,
 						       BTK_PARAM_READWRITE));
 
@@ -731,7 +731,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 						       P_("Level Indentation"),
 						       P_("Extra indentation for each level"),
 						       0,
-						       G_MAXINT,
+						       B_MAXINT,
 						       0,
 						       BTK_PARAM_READWRITE));
 
@@ -766,7 +766,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 						       P_("Tooltip Column"),
 						       P_("The column in the model containing the tooltip texts for the rows"),
 						       -1,
-						       G_MAXINT,
+						       B_MAXINT,
 						       -1,
 						       BTK_PARAM_READWRITE));
 
@@ -780,7 +780,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 							     P_("Expander Size"),
 							     P_("Size of the expander arrow"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     _TREE_VIEW_EXPANDER_SIZE,
 							     BTK_PARAM_READABLE));
 
@@ -789,7 +789,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 							     P_("Vertical Separator Width"),
 							     P_("Vertical space between cells.  Must be an even number"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     _TREE_VIEW_VERTICAL_SEPARATOR,
 							     BTK_PARAM_READABLE));
 
@@ -798,7 +798,7 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 							     P_("Horizontal Separator Width"),
 							     P_("Horizontal space between cells.  Must be an even number"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     _TREE_VIEW_HORIZONTAL_SEPARATOR,
 							     BTK_PARAM_READABLE));
 
@@ -848,14 +848,14 @@ btk_tree_view_class_init (BtkTreeViewClass *class)
 					   g_param_spec_int ("grid-line-width",
 							     P_("Grid line width"),
 							     P_("Width, in pixels, of the tree view grid lines"),
-							     0, G_MAXINT, 1,
+							     0, B_MAXINT, 1,
 							     BTK_PARAM_READABLE));
 
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("tree-line-width",
 							     P_("Tree line width"),
 							     P_("Width, in pixels, of the tree view lines"),
-							     0, G_MAXINT, 1,
+							     0, B_MAXINT, 1,
 							     BTK_PARAM_READABLE));
 
   btk_widget_class_install_style_property (widget_class,
@@ -1393,7 +1393,7 @@ btk_tree_view_init (BtkTreeView *tree_view)
 
 static void
 btk_tree_view_set_property (BObject         *object,
-			    guint            prop_id,
+			    buint            prop_id,
 			    const BValue    *value,
 			    BParamSpec      *pspec)
 {
@@ -1468,7 +1468,7 @@ btk_tree_view_set_property (BObject         *object,
 
 static void
 btk_tree_view_get_property (BObject    *object,
-			    guint       prop_id,
+			    buint       prop_id,
 			    BValue     *value,
 			    BParamSpec *pspec)
 {
@@ -1562,7 +1562,7 @@ static void
 btk_tree_view_buildable_add_child (BtkBuildable *tree_view,
 				   BtkBuilder  *builder,
 				   BObject     *child,
-				   const gchar *type)
+				   const bchar *type)
 {
   btk_tree_view_append_column (BTK_TREE_VIEW (tree_view), BTK_TREE_VIEW_COLUMN (child));
 }
@@ -1570,7 +1570,7 @@ btk_tree_view_buildable_add_child (BtkBuildable *tree_view,
 static BObject *
 btk_tree_view_buildable_get_internal_child (BtkBuildable      *buildable,
 					    BtkBuilder        *builder,
-					    const gchar       *childname)
+					    const bchar       *childname)
 {
     if (strcmp (childname, "selection") == 0)
       return B_OBJECT (BTK_TREE_VIEW (buildable)->priv->selection);
@@ -1791,7 +1791,7 @@ btk_tree_view_realize (BtkWidget *widget)
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
   GList *tmp_list;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -1987,7 +1987,7 @@ btk_tree_view_update_size (BtkTreeView *tree_view)
 {
   GList *list;
   BtkTreeViewColumn *column;
-  gint i;
+  bint i;
 
   if (tree_view->priv->model == NULL)
     {
@@ -2003,7 +2003,7 @@ btk_tree_view_update_size (BtkTreeView *tree_view)
   /* keep this in sync with size_allocate below */
   for (list = tree_view->priv->columns, i = 0; list; list = list->next, i++)
     {
-      gint real_requested_width = 0;
+      bint real_requested_width = 0;
       column = list->data;
       if (!column->visible)
 	continue;
@@ -2075,7 +2075,7 @@ btk_tree_view_calculate_width_before_expander (BtkTreeView *tree_view)
 {
   int width = 0;
   GList *list;
-  gboolean rtl;
+  bboolean rtl;
 
   rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
   for (list = (rtl ? g_list_last (tree_view->priv->columns) : g_list_first (tree_view->priv->columns));
@@ -2094,10 +2094,10 @@ static void
 invalidate_column (BtkTreeView       *tree_view,
                    BtkTreeViewColumn *column)
 {
-  gint column_offset = 0;
+  bint column_offset = 0;
   GList *list;
   BtkWidget *widget = BTK_WIDGET (tree_view);
-  gboolean rtl;
+  bboolean rtl;
 
   if (!btk_widget_get_realized (widget))
     return;
@@ -2129,7 +2129,7 @@ static void
 invalidate_last_column (BtkTreeView *tree_view)
 {
   GList *last_column;
-  gboolean rtl;
+  bboolean rtl;
 
   rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
 
@@ -2145,11 +2145,11 @@ invalidate_last_column (BtkTreeView *tree_view)
     }
 }
 
-static gint
+static bint
 btk_tree_view_get_real_requested_width_from_column (BtkTreeView       *tree_view,
                                                     BtkTreeViewColumn *column)
 {
-  gint real_requested_width;
+  bint real_requested_width;
 
   if (column->use_resized_width)
     {
@@ -2181,19 +2181,19 @@ btk_tree_view_get_real_requested_width_from_column (BtkTreeView       *tree_view
 /* BtkWidget::size_allocate helper */
 static void
 btk_tree_view_size_allocate_columns (BtkWidget *widget,
-				     gboolean  *width_changed)
+				     bboolean  *width_changed)
 {
   BtkTreeView *tree_view;
   GList *list, *first_column, *last_column;
   BtkTreeViewColumn *column;
   BtkAllocation allocation;
-  gint width = 0;
-  gint extra, extra_per_column, extra_for_last;
-  gint full_requested_width = 0;
-  gint number_of_expand_columns = 0;
-  gboolean column_changed = FALSE;
-  gboolean rtl;
-  gboolean update_expand;
+  bint width = 0;
+  bint extra, extra_per_column, extra_for_last;
+  bint full_requested_width = 0;
+  bint number_of_expand_columns = 0;
+  bboolean column_changed = FALSE;
+  bboolean rtl;
+  bboolean update_expand;
   
   tree_view = BTK_TREE_VIEW (widget);
 
@@ -2268,8 +2268,8 @@ btk_tree_view_size_allocate_columns (BtkWidget *widget,
        list != (rtl ? first_column->prev : last_column->next);
        list = (rtl ? list->prev : list->next)) 
     {
-      gint real_requested_width = 0;
-      gint old_width;
+      bint real_requested_width = 0;
+      bint old_width;
 
       column = list->data;
       old_width = column->width;
@@ -2359,8 +2359,8 @@ btk_tree_view_size_allocate (BtkWidget     *widget,
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
   GList *tmp_list;
-  gboolean width_changed = FALSE;
-  gint old_width = widget->allocation.width;
+  bboolean width_changed = FALSE;
+  bint old_width = widget->allocation.width;
 
   if (allocation->width != widget->allocation.width)
     width_changed = TRUE;
@@ -2448,12 +2448,12 @@ btk_tree_view_size_allocate (BtkWidget     *widget,
 			      allocation->x, allocation->y,
 			      allocation->width, allocation->height);
       bdk_window_move_resize (tree_view->priv->header_window,
-			      - (gint) tree_view->priv->hadjustment->value,
+			      - (bint) tree_view->priv->hadjustment->value,
 			      0,
 			      MAX (tree_view->priv->width, allocation->width),
 			      tree_view->priv->header_height);
       bdk_window_move_resize (tree_view->priv->bin_window,
-			      - (gint) tree_view->priv->hadjustment->value,
+			      - (bint) tree_view->priv->hadjustment->value,
 			      TREE_VIEW_HEADER_HEIGHT (tree_view),
 			      MAX (tree_view->priv->width, allocation->width),
 			      allocation->height - TREE_VIEW_HEADER_HEIGHT (tree_view));
@@ -2464,7 +2464,7 @@ btk_tree_view_size_allocate (BtkWidget     *widget,
 
   if (btk_widget_get_realized (widget))
     {
-      gboolean has_expand_column = FALSE;
+      bboolean has_expand_column = FALSE;
       for (tmp_list = tree_view->priv->columns; tmp_list; tmp_list = tmp_list->next)
 	{
 	  if (btk_tree_view_column_get_expand (BTK_TREE_VIEW_COLUMN (tmp_list->data)))
@@ -2482,7 +2482,7 @@ btk_tree_view_size_allocate (BtkWidget     *widget,
            * width that makes the expander move vertically.  Always updating
            * prelight status causes trouble with hover selections.
            */
-          gint width_before_expander;
+          bint width_before_expander;
 
           width_before_expander = btk_tree_view_calculate_width_before_expander (tree_view);
 
@@ -2518,12 +2518,12 @@ grab_focus_and_unset_draw_keyfocus (BtkTreeView *tree_view)
   BTK_TREE_VIEW_UNSET_FLAG (tree_view, BTK_TREE_VIEW_DRAW_KEYFOCUS);
 }
 
-static inline gboolean
+static inline bboolean
 row_is_separator (BtkTreeView *tree_view,
 		  BtkTreeIter *iter,
 		  BtkTreePath *path)
 {
-  gboolean is_separator = FALSE;
+  bboolean is_separator = FALSE;
 
   if (tree_view->priv->row_separator_func)
     {
@@ -2545,20 +2545,20 @@ row_is_separator (BtkTreeView *tree_view,
   return is_separator;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_button_press (BtkWidget      *widget,
 			    BdkEventButton *event)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
   GList *list;
   BtkTreeViewColumn *column = NULL;
-  gint i;
+  bint i;
   BdkRectangle background_area;
   BdkRectangle cell_area;
-  gint vertical_separator;
-  gint horizontal_separator;
-  gboolean path_is_selectable;
-  gboolean rtl;
+  bint vertical_separator;
+  bint horizontal_separator;
+  bboolean path_is_selectable;
+  bboolean rtl;
 
   rtl = (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL);
   btk_tree_view_stop_editing (tree_view, FALSE);
@@ -2577,18 +2577,18 @@ btk_tree_view_button_press (BtkWidget      *widget,
       BtkRBNode *node;
       BtkRBTree *tree;
       BtkTreePath *path;
-      gchar *path_string;
-      gint depth;
-      gint new_y;
-      gint y_offset;
-      gint dval;
-      gint pre_val, aft_val;
+      bchar *path_string;
+      bint depth;
+      bint new_y;
+      bint y_offset;
+      bint dval;
+      bint pre_val, aft_val;
       BtkTreeViewColumn *column = NULL;
       BtkCellRenderer *focus_cell = NULL;
-      gint column_handled_click = FALSE;
-      gboolean row_double_click = FALSE;
-      gboolean rtl;
-      gboolean node_selected;
+      bint column_handled_click = FALSE;
+      bboolean row_double_click = FALSE;
+      bboolean rtl;
+      bboolean node_selected;
 
       /* Empty tree? */
       if (tree_view->priv->tree == NULL)
@@ -2659,8 +2659,8 @@ btk_tree_view_button_press (BtkWidget      *widget,
 	    continue;
 
 	  background_area.width = candidate->width;
-	  if ((background_area.x > (gint) event->x) ||
-	      (background_area.x + background_area.width <= (gint) event->x))
+	  if ((background_area.x > (bint) event->x) ||
+	      (background_area.x + background_area.width <= (bint) event->x))
 	    {
 	      background_area.x += background_area.width;
 	      continue;
@@ -2723,7 +2723,7 @@ btk_tree_view_button_press (BtkWidget      *widget,
 	      BtkCellEditable *cell_editable = NULL;
 
 	      /* FIXME: get the right flags */
-	      guint flags = 0;
+	      buint flags = 0;
 
 	      path_string = btk_tree_path_to_string (path);
 
@@ -2736,7 +2736,7 @@ btk_tree_view_button_press (BtkWidget      *widget,
 		{
 		  if (cell_editable != NULL)
 		    {
-		      gint left, right;
+		      bint left, right;
 		      BdkRectangle area;
 
 		      area = cell_area;
@@ -2901,7 +2901,7 @@ btk_tree_view_button_press (BtkWidget      *widget,
 	  column->resizable &&
 	  column->window)
 	{
-	  gpointer drag_data;
+	  bpointer drag_data;
 
 	  if (event->type == BDK_2BUTTON_PRESS &&
 	      btk_tree_view_column_get_sizing (column) != BTK_TREE_VIEW_COLUMN_AUTOSIZE)
@@ -2943,13 +2943,13 @@ btk_tree_view_button_press (BtkWidget      *widget,
 }
 
 /* BtkWidget::button_release_event helper */
-static gboolean
+static bboolean
 btk_tree_view_button_release_drag_column (BtkWidget      *widget,
 					  BdkEventButton *event)
 {
   BtkTreeView *tree_view;
   GList *l;
-  gboolean rtl;
+  bboolean rtl;
 
   tree_view = BTK_TREE_VIEW (widget);
 
@@ -3008,12 +3008,12 @@ btk_tree_view_button_release_drag_column (BtkWidget      *widget,
 }
 
 /* BtkWidget::button_release_event helper */
-static gboolean
+static bboolean
 btk_tree_view_button_release_column_resize (BtkWidget      *widget,
 					    BdkEventButton *event)
 {
   BtkTreeView *tree_view;
-  gpointer drag_data;
+  bpointer drag_data;
 
   tree_view = BTK_TREE_VIEW (widget);
 
@@ -3034,7 +3034,7 @@ btk_tree_view_button_release_column_resize (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_button_release (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -3087,7 +3087,7 @@ btk_tree_view_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_grab_broken (BtkWidget          *widget,
 			   BdkEventGrabBroken *event)
 {
@@ -3103,7 +3103,7 @@ btk_tree_view_grab_broken (BtkWidget          *widget,
 }
 
 #if 0
-static gboolean
+static bboolean
 btk_tree_view_configure (BtkWidget *widget,
 			 BdkEventConfigure *event)
 {
@@ -3119,16 +3119,16 @@ btk_tree_view_configure (BtkWidget *widget,
 /* BtkWidget::motion_event function set.
  */
 
-static gboolean
+static bboolean
 coords_are_over_arrow (BtkTreeView *tree_view,
                        BtkRBTree   *tree,
                        BtkRBNode   *node,
                        /* these are in bin window coords */
-                       gint         x,
-                       gint         y)
+                       bint         x,
+                       bint         y)
 {
   BdkRectangle arrow;
-  gint x2;
+  bint x2;
 
   if (!btk_widget_get_realized (BTK_WIDGET (tree_view)))
     return FALSE;
@@ -3150,8 +3150,8 @@ coords_are_over_arrow (BtkTreeView *tree_view,
 	  y < (arrow.y + arrow.height));
 }
 
-static gboolean
-auto_expand_timeout (gpointer data)
+static bboolean
+auto_expand_timeout (bpointer data)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (data);
   BtkTreePath *path;
@@ -3190,8 +3190,8 @@ do_prelight (BtkTreeView *tree_view,
              BtkRBTree   *tree,
              BtkRBNode   *node,
 	     /* these are in bin_window coords */
-             gint         x,
-             gint         y)
+             bint         x,
+             bint         y)
 {
   if (tree_view->priv->prelight_tree == tree &&
       tree_view->priv->prelight_node == node)
@@ -3201,8 +3201,8 @@ do_prelight (BtkTreeView *tree_view,
 
       if (tree && node && TREE_VIEW_DRAW_EXPANDERS (tree_view))
 	{
-	  gboolean over_arrow;
-	  gboolean flag_set;
+	  bboolean over_arrow;
+	  bboolean flag_set;
 
 	  over_arrow = coords_are_over_arrow (tree_view, tree, node, x, y);
 	  flag_set = BTK_TREE_VIEW_FLAG_SET (tree_view,
@@ -3286,8 +3286,8 @@ prelight_or_select (BtkTreeView *tree_view,
 		    BtkRBTree   *tree,
 		    BtkRBNode   *node,
 		    /* these are in bin_window coords */
-		    gint         x,
-		    gint         y)
+		    bint         x,
+		    bint         y)
 {
   BtkSelectionMode mode = btk_tree_selection_get_mode (tree_view->priv->selection);
   
@@ -3332,8 +3332,8 @@ ensure_unprelighted (BtkTreeView *tree_view)
 
 static void
 update_prelight (BtkTreeView *tree_view,
-                 gint         x,
-                 gint         y)
+                 bint         x,
+                 bint         y)
 {
   int new_y;
   BtkRBTree *tree;
@@ -3391,13 +3391,13 @@ btk_tree_view_motion_draw_column_motion_arrow (BtkTreeView *tree_view)
   BtkTreeViewColumnReorder *reorder = tree_view->priv->cur_reorder;
   BtkWidget *widget = BTK_WIDGET (tree_view);
   BdkBitmap *mask = NULL;
-  gint x;
-  gint y;
-  gint width;
-  gint height;
-  gint arrow_type = DRAG_COLUMN_WINDOW_STATE_UNSET;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
+  bint arrow_type = DRAG_COLUMN_WINDOW_STATE_UNSET;
   BdkWindowAttr attributes;
-  guint attributes_mask;
+  buint attributes_mask;
   bairo_t *cr;
 
   if (!reorder ||
@@ -3611,12 +3611,12 @@ btk_tree_view_motion_draw_column_motion_arrow (BtkTreeView *tree_view)
   bdk_window_raise (tree_view->priv->drag_highlight_window);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_motion_resize_column (BtkWidget      *widget,
 				    BdkEventMotion *event)
 {
-  gint x;
-  gint new_width;
+  bint x;
+  bint new_width;
   BtkTreeViewColumn *column;
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
 
@@ -3651,7 +3651,7 @@ btk_tree_view_update_current_reorder (BtkTreeView *tree_view)
 {
   BtkTreeViewColumnReorder *reorder = NULL;
   GList *list;
-  gint mouse_x;
+  bint mouse_x;
 
   bdk_window_get_pointer (tree_view->priv->header_window, &mouse_x, NULL, NULL);
   for (list = tree_view->priv->column_drag_info; list; list = list->next)
@@ -3673,9 +3673,9 @@ static void
 btk_tree_view_vertical_autoscroll (BtkTreeView *tree_view)
 {
   BdkRectangle visible_rect;
-  gint y;
-  gint offset;
-  gfloat value;
+  bint y;
+  bint offset;
+  bfloat value;
 
   bdk_window_get_pointer (tree_view->priv->bin_window, NULL, &y, NULL);
   y += tree_view->priv->dy;
@@ -3696,13 +3696,13 @@ btk_tree_view_vertical_autoscroll (BtkTreeView *tree_view)
   btk_adjustment_set_value (tree_view->priv->vadjustment, value);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_horizontal_autoscroll (BtkTreeView *tree_view)
 {
   BdkRectangle visible_rect;
-  gint x;
-  gint offset;
-  gfloat value;
+  bint x;
+  bint offset;
+  bfloat value;
 
   bdk_window_get_pointer (tree_view->priv->bin_window, &x, NULL, NULL);
 
@@ -3726,13 +3726,13 @@ btk_tree_view_horizontal_autoscroll (BtkTreeView *tree_view)
 
 }
 
-static gboolean
+static bboolean
 btk_tree_view_motion_drag_column (BtkWidget      *widget,
 				  BdkEventMotion *event)
 {
   BtkTreeView *tree_view = (BtkTreeView *) widget;
   BtkTreeViewColumn *column = tree_view->priv->drag_column;
-  gint x, y;
+  bint x, y;
 
   /* Sanity Check */
   if ((column == NULL) ||
@@ -3741,7 +3741,7 @@ btk_tree_view_motion_drag_column (BtkWidget      *widget,
 
   /* Handle moving the header */
   bdk_window_get_position (tree_view->priv->drag_window, &x, &y);
-  x = CLAMP (x + (gint)event->x - column->drag_x, 0,
+  x = CLAMP (x + (bint)event->x - column->drag_x, 0,
 	     MAX (tree_view->priv->width, BTK_WIDGET (tree_view)->allocation.width) - column->button->allocation.width);
   bdk_window_move (tree_view->priv->drag_window, x, y);
   
@@ -3807,9 +3807,9 @@ btk_tree_view_update_rubber_band_selection_range (BtkTreeView *tree_view,
 						 BtkRBNode   *start_node,
 						 BtkRBTree   *end_tree,
 						 BtkRBNode   *end_node,
-						 gboolean     select,
-						 gboolean     skip_start,
-						 gboolean     skip_end)
+						 bboolean     select,
+						 bboolean     skip_start,
+						 bboolean     skip_end)
 {
   if (start_node == end_node)
     return;
@@ -3826,7 +3826,7 @@ btk_tree_view_update_rubber_band_selection_range (BtkTreeView *tree_view,
       if (!BTK_RBNODE_FLAG_SET (start_node, BTK_RBNODE_IS_SELECTED))
         {
 	  BtkTreePath *path;
-	  gboolean selectable;
+	  bboolean selectable;
 
 	  path = _btk_tree_view_find_path (tree_view, start_tree, start_node);
 	  selectable = _btk_tree_selection_row_is_selectable (tree_view->priv->selection, start_node, path);
@@ -4006,7 +4006,7 @@ btk_tree_view_update_rubber_band_selection (BtkTreeView *tree_view)
 static void
 btk_tree_view_update_rubber_band (BtkTreeView *tree_view)
 {
-  gint x, y;
+  bint x, y;
   BdkRectangle old_area;
   BdkRectangle new_area;
   BdkRectangle common;
@@ -4099,14 +4099,14 @@ btk_tree_view_paint_rubber_band (BtkTreeView  *tree_view,
   bairo_destroy (cr);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_motion_bin_window (BtkWidget      *widget,
 				 BdkEventMotion *event)
 {
   BtkTreeView *tree_view;
   BtkRBTree *tree;
   BtkRBNode *node;
-  gint new_y;
+  bint new_y;
 
   tree_view = (BtkTreeView *) widget;
 
@@ -4151,7 +4151,7 @@ btk_tree_view_motion_bin_window (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_motion (BtkWidget      *widget,
 		      BdkEventMotion *event)
 {
@@ -4199,7 +4199,7 @@ static void
 draw_empty_focus (BtkTreeView *tree_view, BdkRectangle *clip_area)
 {
   BtkWidget *widget = BTK_WIDGET (tree_view);
-  gint w, h;
+  bint w, h;
 
   if (!btk_widget_has_focus (widget))
     return;
@@ -4277,11 +4277,11 @@ btk_tree_view_draw_line (BtkTreeView         *tree_view,
 static void
 btk_tree_view_draw_grid_lines (BtkTreeView    *tree_view,
 			       BdkEventExpose *event,
-			       gint            n_visible_columns)
+			       bint            n_visible_columns)
 {
   GList *list = tree_view->priv->columns;
-  gint i = 0;
-  gint current_x = 0;
+  bint i = 0;
+  bint current_x = 0;
 
   if (tree_view->priv->grid_lines != BTK_TREE_VIEW_GRID_LINES_VERTICAL
       && tree_view->priv->grid_lines != BTK_TREE_VIEW_GRID_LINES_BOTH)
@@ -4316,7 +4316,7 @@ btk_tree_view_draw_grid_lines (BtkTreeView    *tree_view,
  * KEEP IN SYNC WITH btk_tree_view_create_row_drag_icon()!
  * FIXME: It's not...
  */
-static gboolean
+static bboolean
 btk_tree_view_bin_expose (BtkWidget      *widget,
 			  BdkEventExpose *event)
 {
@@ -4330,32 +4330,32 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
   BtkRBNode *drag_highlight = NULL;
   BtkRBTree *drag_highlight_tree = NULL;
   BtkTreeIter iter;
-  gint new_y;
-  gint y_offset, cell_offset;
-  gint max_height;
-  gint depth;
+  bint new_y;
+  bint y_offset, cell_offset;
+  bint max_height;
+  bint depth;
   BdkRectangle background_area;
   BdkRectangle cell_area;
-  guint flags;
-  gint highlight_x;
-  gint expander_cell_width;
-  gint bin_window_width;
-  gint bin_window_height;
+  buint flags;
+  bint highlight_x;
+  bint expander_cell_width;
+  bint bin_window_width;
+  bint bin_window_height;
   BtkTreePath *cursor_path;
   BtkTreePath *drag_dest_path;
   GList *first_column, *last_column;
-  gint vertical_separator;
-  gint horizontal_separator;
-  gint focus_line_width;
-  gboolean allow_rules;
-  gboolean has_special_cell;
-  gboolean rtl;
-  gint n_visible_columns;
-  gint pointer_x, pointer_y;
-  gint grid_line_width;
-  gboolean got_pointer = FALSE;
-  gboolean row_ending_details;
-  gboolean draw_vgrid_lines, draw_hgrid_lines;
+  bint vertical_separator;
+  bint horizontal_separator;
+  bint focus_line_width;
+  bboolean allow_rules;
+  bboolean has_special_cell;
+  bboolean rtl;
+  bint n_visible_columns;
+  bint pointer_x, pointer_y;
+  bint grid_line_width;
+  bboolean got_pointer = FALSE;
+  bboolean row_ending_details;
+  bboolean draw_vgrid_lines, draw_hgrid_lines;
 
   rtl = (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL);
 
@@ -4468,10 +4468,10 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 
   do
     {
-      gboolean parity;
-      gboolean is_separator = FALSE;
-      gboolean is_first = FALSE;
-      gboolean is_last = FALSE;
+      bboolean parity;
+      bboolean is_separator = FALSE;
+      bboolean is_first = FALSE;
+      bboolean is_last = FALSE;
       
       is_separator = row_is_separator (tree_view, &iter, NULL);
 
@@ -4517,7 +4517,7 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 	   list = (rtl ? list->prev : list->next))
 	{
 	  BtkTreeViewColumn *column = list->data;
-	  const gchar *detail = NULL;
+	  const bchar *detail = NULL;
 	  BtkStateType state;
 
 	  if (!column->visible)
@@ -4776,11 +4776,11 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 	  if (btk_tree_view_is_expander_column (tree_view, column) &&
 	      tree_view->priv->tree_lines_enabled)
 	    {
-	      gint x = background_area.x;
-	      gint mult = rtl ? -1 : 1;
-	      gint y0 = background_area.y;
-	      gint y1 = background_area.y + background_area.height/2;
-	      gint y2 = background_area.y + background_area.height;
+	      bint x = background_area.x;
+	      bint mult = rtl ? -1 : 1;
+	      bint y0 = background_area.y;
+	      bint y1 = background_area.y + background_area.height/2;
+	      bint y2 = background_area.y + background_area.height;
 
 	      if (rtl)
 		x += background_area.width - 1;
@@ -4807,7 +4807,7 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 
 	      if (depth > 1)
 	        {
-		  gint i;
+		  bint i;
 		  BtkRBNode *tmp_node;
 		  BtkRBTree *tmp_tree;
 
@@ -4866,10 +4866,10 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
         {
           /* Draw indicator for the drop
            */
-          gint highlight_y = -1;
+          bint highlight_y = -1;
 	  BtkRBTree *tree = NULL;
 	  BtkRBNode *node = NULL;
-	  gint width;
+	  bint width;
 
           switch (tree_view->priv->drag_dest_pos)
             {
@@ -4934,8 +4934,8 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 	  BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_DRAW_KEYFOCUS) &&
 	  btk_widget_has_focus (widget))
         {
-	  gint tmp_y, tmp_height;
-	  gint width;
+	  bint tmp_y, tmp_height;
+	  bint width;
 	  BtkStateType focus_rect_state;
 
 	  focus_rect_state =
@@ -4983,7 +4983,7 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
       if (node->children)
 	{
 	  BtkTreeIter parent = iter;
-	  gboolean has_child;
+	  bboolean has_child;
 
 	  tree = node->children;
 	  node = tree->root;
@@ -5002,14 +5002,14 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 	}
       else
 	{
-	  gboolean done = FALSE;
+	  bboolean done = FALSE;
 
 	  do
 	    {
 	      node = _btk_rbtree_next (tree, node);
 	      if (node != NULL)
 		{
-		  gboolean has_next = btk_tree_model_iter_next (tree_view->priv->model, &iter);
+		  bboolean has_next = btk_tree_model_iter_next (tree_view->priv->model, &iter);
 		  done = TRUE;
 
 		  /* Sanity Check! */
@@ -5018,7 +5018,7 @@ btk_tree_view_bin_expose (BtkWidget      *widget,
 	      else
 		{
 		  BtkTreeIter parent_iter = iter;
-		  gboolean has_parent;
+		  bboolean has_parent;
 
 		  node = tree->parent_node;
 		  tree = tree->parent_tree;
@@ -5045,7 +5045,7 @@ done:
  if (tree_view->priv->rubber_band_status == RUBBER_BAND_ACTIVE)
    {
      BdkRectangle *rectangles;
-     gint n_rectangles;
+     bint n_rectangles;
 
      bdk_rebunnyion_get_rectangles (event->rebunnyion,
 				&rectangles,
@@ -5066,7 +5066,7 @@ done:
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_expose (BtkWidget      *widget,
 		      BdkEventExpose *event)
 {
@@ -5074,7 +5074,7 @@ btk_tree_view_expose (BtkWidget      *widget,
 
   if (event->window == tree_view->priv->bin_window)
     {
-      gboolean retval;
+      bboolean retval;
       GList *tmp_list;
 
       retval = btk_tree_view_bin_expose (widget, event);
@@ -5133,7 +5133,7 @@ enum
 static BtkTreeViewColumn *
 btk_tree_view_get_drop_column (BtkTreeView       *tree_view,
 			       BtkTreeViewColumn *column,
-			       gint               drop_position)
+			       bint               drop_position)
 {
   BtkTreeViewColumn *left_column = NULL;
   BtkTreeViewColumn *cur_column = NULL;
@@ -5331,7 +5331,7 @@ btk_tree_view_get_drop_column (BtkTreeView       *tree_view,
   return (BtkTreeViewColumn *)0x1;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_key_press (BtkWidget   *widget,
 			 BdkEventKey *event)
 {
@@ -5358,7 +5358,7 @@ btk_tree_view_key_press (BtkWidget   *widget,
   if (BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_HEADERS_VISIBLE))
     {
       GList *focus_column;
-      gboolean rtl;
+      bboolean rtl;
 
       rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
 
@@ -5388,7 +5388,7 @@ btk_tree_view_key_press (BtkWidget   *widget,
           if (event->keyval == (rtl ? BDK_Right : BDK_Left)
               || event->keyval == (rtl ? BDK_KP_Right : BDK_KP_Left))
             {
-              gint old_width = column->resized_width;
+              bint old_width = column->resized_width;
 
               column->resized_width = MAX (column->resized_width,
                                            column->width);
@@ -5417,7 +5417,7 @@ btk_tree_view_key_press (BtkWidget   *widget,
           else if (event->keyval == (rtl ? BDK_Left : BDK_Right)
                    || event->keyval == (rtl ? BDK_KP_Left : BDK_KP_Right))
             {
-              gint old_width = column->resized_width;
+              bint old_width = column->resized_width;
 
               column->resized_width = MAX (column->resized_width,
                                            column->width);
@@ -5509,10 +5509,10 @@ btk_tree_view_key_press (BtkWidget   *widget,
       BdkEvent *new_event;
       char *old_text;
       const char *new_text;
-      gboolean retval;
+      bboolean retval;
       BdkScreen *screen;
-      gboolean text_modified;
-      gulong popup_menu_id;
+      bboolean text_modified;
+      bulong popup_menu_id;
 
       btk_tree_view_ensure_interactive_directory (tree_view);
 
@@ -5569,7 +5569,7 @@ btk_tree_view_key_press (BtkWidget   *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_key_release (BtkWidget   *widget,
 			   BdkEventKey *event)
 {
@@ -5584,14 +5584,14 @@ btk_tree_view_key_release (BtkWidget   *widget,
 /* FIXME Is this function necessary? Can I get an enter_notify event
  * w/o either an expose event or a mouse motion event?
  */
-static gboolean
+static bboolean
 btk_tree_view_enter_notify (BtkWidget        *widget,
 			    BdkEventCrossing *event)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
   BtkRBTree *tree;
   BtkRBNode *node;
-  gint new_y;
+  bint new_y;
 
   /* Sanity check it */
   if (event->window != tree_view->priv->bin_window)
@@ -5622,7 +5622,7 @@ btk_tree_view_enter_notify (BtkWidget        *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_leave_notify (BtkWidget        *widget,
 			    BdkEventCrossing *event)
 {
@@ -5650,7 +5650,7 @@ btk_tree_view_leave_notify (BtkWidget        *widget,
 }
 
 
-static gint
+static bint
 btk_tree_view_focus_out (BtkWidget     *widget,
 			 BdkEventFocus *event)
 {
@@ -5676,7 +5676,7 @@ btk_tree_view_node_queue_redraw (BtkTreeView *tree_view,
 				 BtkRBTree   *tree,
 				 BtkRBNode   *node)
 {
-  gint y;
+  bint y;
 
   y = _btk_rbtree_node_find_offset (tree, node)
     - tree_view->priv->vadjustment->value
@@ -5688,7 +5688,7 @@ btk_tree_view_node_queue_redraw (BtkTreeView *tree_view,
 			      BTK_RBNODE_GET_HEIGHT (node));
 }
 
-static gboolean
+static bboolean
 node_is_visible (BtkTreeView *tree_view,
 		 BtkRBTree   *tree,
 		 BtkRBNode   *node)
@@ -5709,7 +5709,7 @@ node_is_visible (BtkTreeView *tree_view,
 
 /* Returns TRUE if it updated the size
  */
-static gboolean
+static bboolean
 validate_row (BtkTreeView *tree_view,
 	      BtkRBTree   *tree,
 	      BtkRBNode   *node,
@@ -5718,18 +5718,18 @@ validate_row (BtkTreeView *tree_view,
 {
   BtkTreeViewColumn *column;
   GList *list, *first_column, *last_column;
-  gint height = 0;
-  gint horizontal_separator;
-  gint vertical_separator;
-  gint focus_line_width;
-  gint depth = btk_tree_path_get_depth (path);
-  gboolean retval = FALSE;
-  gboolean is_separator = FALSE;
-  gboolean draw_vgrid_lines, draw_hgrid_lines;
-  gint focus_pad;
-  gint grid_line_width;
-  gboolean wide_separators;
-  gint separator_height;
+  bint height = 0;
+  bint horizontal_separator;
+  bint vertical_separator;
+  bint focus_line_width;
+  bint depth = btk_tree_path_get_depth (path);
+  bboolean retval = FALSE;
+  bboolean is_separator = FALSE;
+  bboolean draw_vgrid_lines, draw_hgrid_lines;
+  bint focus_pad;
+  bint grid_line_width;
+  bboolean wide_separators;
+  bint separator_height;
 
   /* double check the row needs validating */
   if (! BTK_RBNODE_FLAG_SET (node, BTK_RBNODE_INVALID) &&
@@ -5767,8 +5767,8 @@ validate_row (BtkTreeView *tree_view,
 
   for (list = tree_view->priv->columns; list; list = list->next)
     {
-      gint tmp_width;
-      gint tmp_height;
+      bint tmp_width;
+      bint tmp_height;
 
       column = list->data;
 
@@ -5847,11 +5847,11 @@ validate_visible_area (BtkTreeView *tree_view)
   BtkTreeIter iter;
   BtkRBTree *tree = NULL;
   BtkRBNode *node = NULL;
-  gboolean need_redraw = FALSE;
-  gboolean size_changed = FALSE;
-  gint total_height;
-  gint area_above = 0;
-  gint area_below = 0;
+  bboolean need_redraw = FALSE;
+  bboolean size_changed = FALSE;
+  bint total_height;
+  bint area_above = 0;
+  bint area_below = 0;
 
   if (tree_view->priv->tree == NULL)
     return;
@@ -5884,7 +5884,7 @@ validate_visible_area (BtkTreeView *tree_view)
 
 	  if (tree_view->priv->scroll_to_use_align)
 	    {
-	      gint height = ROW_HEIGHT (tree_view, BTK_RBNODE_GET_HEIGHT (node));
+	      bint height = ROW_HEIGHT (tree_view, BTK_RBNODE_GET_HEIGHT (node));
 	      area_above = (total_height - height) *
 		tree_view->priv->scroll_to_row_align;
 	      area_below = total_height - area_above - height;
@@ -5897,8 +5897,8 @@ validate_visible_area (BtkTreeView *tree_view)
 	       * 1) row not visible
 	       * 2) row visible
 	       */
-	      gint dy;
-	      gint height = ROW_HEIGHT (tree_view, BTK_RBNODE_GET_HEIGHT (node));
+	      bint dy;
+	      bint height = ROW_HEIGHT (tree_view, BTK_RBNODE_GET_HEIGHT (node));
 
 	      dy = _btk_rbtree_node_find_offset (tree, node);
 
@@ -5968,7 +5968,7 @@ validate_visible_area (BtkTreeView *tree_view)
    */
   if (path == NULL)
     {
-      gint offset;
+      bint offset;
 
       offset = _btk_rbtree_find_offset (tree_view->priv->tree,
 					TREE_WINDOW_Y_TO_RBTREE_Y (tree_view, 0),
@@ -6044,7 +6044,7 @@ validate_visible_area (BtkTreeView *tree_view)
       if (node->children)
 	{
 	  BtkTreeIter parent = iter;
-	  gboolean has_child;
+	  bboolean has_child;
 
 	  tree = node->children;
 	  node = tree->root;
@@ -6061,13 +6061,13 @@ validate_visible_area (BtkTreeView *tree_view)
 	}
       else
 	{
-	  gboolean done = FALSE;
+	  bboolean done = FALSE;
 	  do
 	    {
 	      node = _btk_rbtree_next (tree, node);
 	      if (node != NULL)
 		{
-		  gboolean has_next = btk_tree_model_iter_next (tree_view->priv->model, &iter);
+		  bboolean has_next = btk_tree_model_iter_next (tree_view->priv->model, &iter);
 		  done = TRUE;
 		  btk_tree_path_next (path);
 
@@ -6077,7 +6077,7 @@ validate_visible_area (BtkTreeView *tree_view)
 	      else
 		{
 		  BtkTreeIter parent_iter = iter;
-		  gboolean has_parent;
+		  bboolean has_parent;
 
 		  node = tree->parent_node;
 		  tree = tree->parent_tree;
@@ -6185,8 +6185,8 @@ validate_visible_area (BtkTreeView *tree_view)
        * in an inconsistent state if we call top_row_to_dy. */
 
       btk_widget_size_request (BTK_WIDGET (tree_view), &requisition);
-      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (gfloat)requisition.width);
-      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (gfloat)requisition.height);
+      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (bfloat)requisition.width);
+      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (bfloat)requisition.height);
       btk_adjustment_changed (tree_view->priv->hadjustment);
       btk_adjustment_changed (tree_view->priv->vadjustment);
       btk_widget_queue_resize (BTK_WIDGET (tree_view));
@@ -6246,20 +6246,20 @@ initialize_fixed_height_mode (BtkTreeView *tree_view)
  * the first invalid node.
  */
 
-static gboolean
-do_validate_rows (BtkTreeView *tree_view, gboolean queue_resize)
+static bboolean
+do_validate_rows (BtkTreeView *tree_view, bboolean queue_resize)
 {
   BtkRBTree *tree = NULL;
   BtkRBNode *node = NULL;
-  gboolean validated_area = FALSE;
-  gint retval = TRUE;
+  bboolean validated_area = FALSE;
+  bint retval = TRUE;
   BtkTreePath *path = NULL;
   BtkTreeIter iter;
   GTimer *timer;
-  gint i = 0;
+  bint i = 0;
 
-  gint prev_height = -1;
-  gboolean fixed_height = TRUE;
+  bint prev_height = -1;
+  bboolean fixed_height = TRUE;
 
   g_assert (tree_view);
 
@@ -6343,7 +6343,7 @@ do_validate_rows (BtkTreeView *tree_view, gboolean queue_resize)
 
       if (!tree_view->priv->fixed_height_check)
         {
-	  gint height;
+	  bint height;
 
 	  height = ROW_HEIGHT (tree_view, BTK_RBNODE_GET_HEIGHT (node));
 	  if (prev_height < 0)
@@ -6373,8 +6373,8 @@ do_validate_rows (BtkTreeView *tree_view, gboolean queue_resize)
        * in an inconsistent state when we call top_row_to_dy. */
 
       btk_widget_size_request (BTK_WIDGET (tree_view), &requisition);
-      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (gfloat)requisition.width);
-      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (gfloat)requisition.height);
+      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (bfloat)requisition.width);
+      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (bfloat)requisition.height);
       btk_adjustment_changed (tree_view->priv->hadjustment);
       btk_adjustment_changed (tree_view->priv->vadjustment);
 
@@ -6388,10 +6388,10 @@ do_validate_rows (BtkTreeView *tree_view, gboolean queue_resize)
   return retval;
 }
 
-static gboolean
+static bboolean
 validate_rows (BtkTreeView *tree_view)
 {
-  gboolean retval;
+  bboolean retval;
   
   retval = do_validate_rows (tree_view, TRUE);
   
@@ -6404,10 +6404,10 @@ validate_rows (BtkTreeView *tree_view)
   return retval;
 }
 
-static gboolean
+static bboolean
 validate_rows_handler (BtkTreeView *tree_view)
 {
-  gboolean retval;
+  bboolean retval;
 
   retval = do_validate_rows (tree_view, TRUE);
   if (! retval && tree_view->priv->validate_rows_timer)
@@ -6419,7 +6419,7 @@ validate_rows_handler (BtkTreeView *tree_view)
   return retval;
 }
 
-static gboolean
+static bboolean
 do_presize_handler (BtkTreeView *tree_view)
 {
   if (tree_view->priv->mark_rows_col_dirty)
@@ -6437,8 +6437,8 @@ do_presize_handler (BtkTreeView *tree_view)
 
       btk_widget_size_request (BTK_WIDGET (tree_view), &requisition);
 
-      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (gfloat)requisition.width);
-      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (gfloat)requisition.height);
+      tree_view->priv->hadjustment->upper = MAX (tree_view->priv->hadjustment->upper, (bfloat)requisition.width);
+      tree_view->priv->vadjustment->upper = MAX (tree_view->priv->vadjustment->upper, (bfloat)requisition.height);
       btk_adjustment_changed (tree_view->priv->hadjustment);
       btk_adjustment_changed (tree_view->priv->vadjustment);
       btk_widget_queue_resize (BTK_WIDGET (tree_view));
@@ -6447,8 +6447,8 @@ do_presize_handler (BtkTreeView *tree_view)
   return FALSE;
 }
 
-static gboolean
-presize_handler_callback (gpointer data)
+static bboolean
+presize_handler_callback (bpointer data)
 {
   do_presize_handler (BTK_TREE_VIEW (data));
 		   
@@ -6473,7 +6473,7 @@ install_presize_handler (BtkTreeView *tree_view)
     }
 }
 
-static gboolean
+static bboolean
 scroll_sync_handler (BtkTreeView *tree_view)
 {
   if (tree_view->priv->height <= tree_view->priv->vadjustment->page_size)
@@ -6504,7 +6504,7 @@ install_scroll_sync_handler (BtkTreeView *tree_view)
 static void
 btk_tree_view_set_top_row (BtkTreeView *tree_view,
 			   BtkTreePath *path,
-			   gint         offset)
+			   bint         offset)
 {
   btk_tree_row_reference_free (tree_view->priv->top_row);
 
@@ -6526,7 +6526,7 @@ btk_tree_view_set_top_row (BtkTreeView *tree_view,
 static void
 btk_tree_view_dy_to_top_row (BtkTreeView *tree_view)
 {
-  gint offset;
+  bint offset;
   BtkTreePath *path;
   BtkRBTree *tree;
   BtkRBNode *node;
@@ -6607,7 +6607,7 @@ btk_tree_view_top_row_to_dy (BtkTreeView *tree_view)
   new_dy = MAX (0, new_dy);
 
   tree_view->priv->in_top_row_to_dy = TRUE;
-  btk_adjustment_set_value (tree_view->priv->vadjustment, (gdouble)new_dy);
+  btk_adjustment_set_value (tree_view->priv->vadjustment, (bdouble)new_dy);
   tree_view->priv->in_top_row_to_dy = FALSE;
 }
 
@@ -6670,14 +6670,14 @@ get_source_row (BdkDragContext *context)
 typedef struct
 {
   BtkTreeRowReference *dest_row;
-  guint                path_down_mode   : 1;
-  guint                empty_view_drop  : 1;
-  guint                drop_append_mode : 1;
+  buint                path_down_mode   : 1;
+  buint                empty_view_drop  : 1;
+  buint                drop_append_mode : 1;
 }
 DestRow;
 
 static void
-dest_row_free (gpointer data)
+dest_row_free (bpointer data)
 {
   DestRow *dr = (DestRow *)data;
 
@@ -6689,9 +6689,9 @@ static void
 set_dest_row (BdkDragContext *context,
               BtkTreeModel   *model,
               BtkTreePath    *dest_row,
-              gboolean        path_down_mode,
-              gboolean        empty_view_drop,
-              gboolean        drop_append_mode)
+              bboolean        path_down_mode,
+              bboolean        empty_view_drop,
+              bboolean        drop_append_mode)
 {
   DestRow *dr;
 
@@ -6715,7 +6715,7 @@ set_dest_row (BdkDragContext *context,
 
 static BtkTreePath*
 get_dest_row (BdkDragContext *context,
-              gboolean       *path_down_mode)
+              bboolean       *path_down_mode)
 {
   DestRow *dr =
     g_object_get_data (B_OBJECT (context), "btk-tree-view-dest-row");
@@ -6753,13 +6753,13 @@ set_status_pending (BdkDragContext *context,
 {
   g_object_set_data (B_OBJECT (context),
                      I_("btk-tree-view-status-pending"),
-                     GINT_TO_POINTER (suggested_action));
+                     BINT_TO_POINTER (suggested_action));
 }
 
 static BdkDragAction
 get_status_pending (BdkDragContext *context)
 {
-  return GPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
+  return BPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
                                              "btk-tree-view-status-pending"));
 }
 
@@ -6802,11 +6802,11 @@ remove_info (BtkTreeView *tree_view)
 }
 
 #if 0
-static gint
-drag_scan_timeout (gpointer data)
+static bint
+drag_scan_timeout (bpointer data)
 {
   BtkTreeView *tree_view;
-  gint x, y;
+  bint x, y;
   BdkModifierType state;
   BtkTreePath *path = NULL;
   BtkTreeViewColumn *column = NULL;
@@ -6873,10 +6873,10 @@ remove_scroll_timeout (BtkTreeView *tree_view)
     }
 }
 
-static gboolean
+static bboolean
 check_model_dnd (BtkTreeModel *model,
                  GType         required_iface,
-                 const gchar  *signal)
+                 const bchar  *signal)
 {
   if (model == NULL || !B_TYPE_CHECK_INSTANCE_TYPE ((model), required_iface))
     {
@@ -6908,13 +6908,13 @@ remove_open_timeout (BtkTreeView *tree_view)
 }
 
 
-static gint
-open_row_timeout (gpointer data)
+static bint
+open_row_timeout (bpointer data)
 {
   BtkTreeView *tree_view = data;
   BtkTreePath *dest_path = NULL;
   BtkTreeViewDropPosition pos;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   btk_tree_view_get_drag_dest_row (tree_view,
                                    &dest_path,
@@ -6940,8 +6940,8 @@ open_row_timeout (gpointer data)
   return result;
 }
 
-static gboolean
-scroll_row_timeout (gpointer data)
+static bboolean
+scroll_row_timeout (bpointer data)
 {
   BtkTreeView *tree_view = data;
 
@@ -6954,12 +6954,12 @@ scroll_row_timeout (gpointer data)
 }
 
 /* Returns TRUE if event should not be propagated to parent widgets */
-static gboolean
+static bboolean
 set_destination_row (BtkTreeView    *tree_view,
                      BdkDragContext *context,
                      /* coordinates relative to the widget */
-                     gint            x,
-                     gint            y,
+                     bint            x,
+                     bint            y,
                      BdkDragAction  *suggested_action,
                      BdkAtom        *target)
 {
@@ -6969,7 +6969,7 @@ set_destination_row (BtkTreeView    *tree_view,
   TreeViewDragInfo *di;
   BtkWidget *widget;
   BtkTreePath *old_dest_path = NULL;
-  gboolean can_drop = FALSE;
+  bboolean can_drop = FALSE;
 
   *suggested_action = 0;
   *target = BDK_NONE;
@@ -7006,7 +7006,7 @@ set_destination_row (BtkTreeView    *tree_view,
                                           &path,
                                           &pos))
     {
-      gint n_children;
+      bint n_children;
       BtkTreeModel *model;
 
       remove_open_timeout (tree_view);
@@ -7097,8 +7097,8 @@ out:
 
 static BtkTreePath*
 get_logical_dest_row (BtkTreeView *tree_view,
-                      gboolean    *path_down_mode,
-                      gboolean    *drop_append_mode)
+                      bboolean    *path_down_mode,
+                      bboolean    *drop_append_mode)
 {
   /* adjust path to point to the row the drop goes in front of */
   BtkTreePath *path = NULL;
@@ -7140,7 +7140,7 @@ get_logical_dest_row (BtkTreeView *tree_view,
   return path;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_maybe_begin_dragging_row (BtkTreeView      *tree_view,
                                         BdkEventMotion   *event)
 {
@@ -7148,10 +7148,10 @@ btk_tree_view_maybe_begin_dragging_row (BtkTreeView      *tree_view,
   BdkDragContext *context;
   TreeViewDragInfo *di;
   BtkTreePath *path = NULL;
-  gint button;
-  gint cell_x, cell_y;
+  bint button;
+  bint cell_x, cell_y;
   BtkTreeModel *model;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   di = get_info (tree_view);
 
@@ -7220,7 +7220,7 @@ btk_tree_view_drag_begin (BtkWidget      *widget,
 {
   BtkTreeView *tree_view;
   BtkTreePath *path = NULL;
-  gint cell_x, cell_y;
+  bint cell_x, cell_y;
   BdkPixmap *row_pix;
   TreeViewDragInfo *di;
 
@@ -7269,8 +7269,8 @@ static void
 btk_tree_view_drag_data_get (BtkWidget        *widget,
                              BdkDragContext   *context,
                              BtkSelectionData *selection_data,
-                             guint             info,
-                             guint             time)
+                             buint             info,
+                             buint             time)
 {
   BtkTreeView *tree_view;
   BtkTreeModel *model;
@@ -7354,7 +7354,7 @@ btk_tree_view_drag_data_delete (BtkWidget      *widget,
 static void
 btk_tree_view_drag_leave (BtkWidget      *widget,
                           BdkDragContext *context,
-                          guint             time)
+                          buint             time)
 {
   /* unset any highlight row */
   btk_tree_view_set_drag_dest_row (BTK_TREE_VIEW (widget),
@@ -7366,15 +7366,15 @@ btk_tree_view_drag_leave (BtkWidget      *widget,
 }
 
 
-static gboolean
+static bboolean
 btk_tree_view_drag_motion (BtkWidget        *widget,
                            BdkDragContext   *context,
 			   /* coordinates relative to the widget */
-                           gint              x,
-                           gint              y,
-                           guint             time)
+                           bint              x,
+                           bint              y,
+                           buint             time)
 {
-  gboolean empty;
+  bboolean empty;
   BtkTreePath *path = NULL;
   BtkTreeViewDropPosition pos;
   BtkTreeView *tree_view;
@@ -7432,13 +7432,13 @@ btk_tree_view_drag_motion (BtkWidget        *widget,
 }
 
 
-static gboolean
+static bboolean
 btk_tree_view_drag_drop (BtkWidget        *widget,
                          BdkDragContext   *context,
 			 /* coordinates relative to the widget */
-                         gint              x,
-                         gint              y,
-                         guint             time)
+                         bint              x,
+                         bint              y,
+                         buint             time)
 {
   BtkTreeView *tree_view;
   BtkTreePath *path;
@@ -7446,8 +7446,8 @@ btk_tree_view_drag_drop (BtkWidget        *widget,
   BdkAtom target = BDK_NONE;
   TreeViewDragInfo *di;
   BtkTreeModel *model;
-  gboolean path_down_mode;
-  gboolean drop_append_mode;
+  bboolean path_down_mode;
+  bboolean drop_append_mode;
 
   tree_view = BTK_TREE_VIEW (widget);
 
@@ -7501,21 +7501,21 @@ static void
 btk_tree_view_drag_data_received (BtkWidget        *widget,
                                   BdkDragContext   *context,
 				  /* coordinates relative to the widget */
-                                  gint              x,
-                                  gint              y,
+                                  bint              x,
+                                  bint              y,
                                   BtkSelectionData *selection_data,
-                                  guint             info,
-                                  guint             time)
+                                  buint             info,
+                                  buint             time)
 {
   BtkTreePath *path;
   TreeViewDragInfo *di;
-  gboolean accepted = FALSE;
+  bboolean accepted = FALSE;
   BtkTreeModel *model;
   BtkTreeView *tree_view;
   BtkTreePath *dest_row;
   BdkDragAction suggested_action;
-  gboolean path_down_mode;
-  gboolean drop_append_mode;
+  bboolean path_down_mode;
+  bboolean drop_append_mode;
 
   tree_view = BTK_TREE_VIEW (widget);
 
@@ -7672,9 +7672,9 @@ btk_tree_view_remove (BtkContainer *container,
 
 static void
 btk_tree_view_forall (BtkContainer *container,
-		      gboolean      include_internals,
+		      bboolean      include_internals,
 		      BtkCallback   callback,
-		      gpointer      callback_data)
+		      bpointer      callback_data)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (container);
   BtkTreeViewChild *child = NULL;
@@ -7704,7 +7704,7 @@ btk_tree_view_forall (BtkContainer *container,
 /* Returns TRUE if the treeview contains no "special" (editable or activatable)
  * cells. If so we draw one big row-spanning focus rectangle.
  */
-static gboolean
+static bboolean
 btk_tree_view_has_special_cell (BtkTreeView *tree_view)
 {
   GList *list;
@@ -7723,7 +7723,7 @@ btk_tree_view_has_special_cell (BtkTreeView *tree_view)
 static void
 column_sizing_notify (BObject    *object,
                       BParamSpec *pspec,
-                      gpointer    data)
+                      bpointer    data)
 {
   BtkTreeViewColumn *c = BTK_TREE_VIEW_COLUMN (object);
 
@@ -7747,7 +7747,7 @@ column_sizing_notify (BObject    *object,
  **/
 void
 btk_tree_view_set_fixed_height_mode (BtkTreeView *tree_view,
-                                     gboolean     enable)
+                                     bboolean     enable)
 {
   GList *l;
   
@@ -7799,7 +7799,7 @@ btk_tree_view_set_fixed_height_mode (BtkTreeView *tree_view,
  * 
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_tree_view_get_fixed_height_mode (BtkTreeView *tree_view)
 {
   return tree_view->priv->fixed_height_mode;
@@ -7808,16 +7808,16 @@ btk_tree_view_get_fixed_height_mode (BtkTreeView *tree_view)
 /* Returns TRUE if the focus is within the headers, after the focus operation is
  * done
  */
-static gboolean
+static bboolean
 btk_tree_view_header_focus (BtkTreeView      *tree_view,
 			    BtkDirectionType  dir,
-			    gboolean          clamp_column_visible)
+			    bboolean          clamp_column_visible)
 {
   BtkWidget *focus_child;
 
   GList *last_column, *first_column;
   GList *tmp_list;
-  gboolean rtl;
+  bboolean rtl;
 
   if (! BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_HEADERS_VISIBLE))
     return FALSE;
@@ -7960,10 +7960,10 @@ btk_tree_view_header_focus (BtkTreeView      *tree_view,
 /* This function returns in 'path' the first focusable path, if the given path
  * is already focusable, it's the returned one.
  */
-static gboolean
+static bboolean
 search_first_focusable_path (BtkTreeView  *tree_view,
 			     BtkTreePath **path,
-			     gboolean      search_forward,
+			     bboolean      search_forward,
 			     BtkRBTree   **new_tree,
 			     BtkRBNode   **new_node)
 {
@@ -8003,7 +8003,7 @@ search_first_focusable_path (BtkTreeView  *tree_view,
   return (*path != NULL);
 }
 
-static gint
+static bint
 btk_tree_view_focus (BtkWidget        *widget,
 		     BtkDirectionType  direction)
 {
@@ -8125,7 +8125,7 @@ btk_tree_view_set_adjustments (BtkTreeView   *tree_view,
 			       BtkAdjustment *hadj,
 			       BtkAdjustment *vadj)
 {
-  gboolean need_adjust = FALSE;
+  bboolean need_adjust = FALSE;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -8181,10 +8181,10 @@ btk_tree_view_set_adjustments (BtkTreeView   *tree_view,
 }
 
 
-static gboolean
+static bboolean
 btk_tree_view_real_move_cursor (BtkTreeView       *tree_view,
 				BtkMovementStep    step,
-				gint               count)
+				bint               count)
 {
   BdkModifierType state;
 
@@ -8243,10 +8243,10 @@ static void
 btk_tree_view_put (BtkTreeView *tree_view,
 		   BtkWidget   *child_widget,
 		   /* in bin_window coordinates */
-		   gint         x,
-		   gint         y,
-		   gint         width,
-		   gint         height)
+		   bint         x,
+		   bint         y,
+		   bint         width,
+		   bint         height)
 {
   BtkTreeViewChild *child;
   
@@ -8273,10 +8273,10 @@ void
 _btk_tree_view_child_move_resize (BtkTreeView *tree_view,
 				  BtkWidget   *widget,
 				  /* in tree coordinates */
-				  gint         x,
-				  gint         y,
-				  gint         width,
-				  gint         height)
+				  bint         x,
+				  bint         y,
+				  bint         width,
+				  bint         height)
 {
   BtkTreeViewChild *child = NULL;
   GList *list;
@@ -8313,12 +8313,12 @@ static void
 btk_tree_view_row_changed (BtkTreeModel *model,
 			   BtkTreePath  *path,
 			   BtkTreeIter  *iter,
-			   gpointer      data)
+			   bpointer      data)
 {
   BtkTreeView *tree_view = (BtkTreeView *)data;
   BtkRBTree *tree;
   BtkRBNode *node;
-  gboolean free_path = FALSE;
+  bboolean free_path = FALSE;
   GList *list;
   BtkTreePath *cursor_path;
 
@@ -8391,17 +8391,17 @@ static void
 btk_tree_view_row_inserted (BtkTreeModel *model,
 			    BtkTreePath  *path,
 			    BtkTreeIter  *iter,
-			    gpointer      data)
+			    bpointer      data)
 {
   BtkTreeView *tree_view = (BtkTreeView *) data;
-  gint *indices;
+  bint *indices;
   BtkRBTree *tmptree, *tree;
   BtkRBNode *tmpnode = NULL;
-  gint depth;
-  gint i = 0;
-  gint height;
-  gboolean free_path = FALSE;
-  gboolean node_visible = TRUE;
+  bint depth;
+  bint i = 0;
+  bint height;
+  bboolean free_path = FALSE;
+  bboolean node_visible = TRUE;
 
   g_return_if_fail (path != NULL || iter != NULL);
 
@@ -8506,14 +8506,14 @@ static void
 btk_tree_view_row_has_child_toggled (BtkTreeModel *model,
 				     BtkTreePath  *path,
 				     BtkTreeIter  *iter,
-				     gpointer      data)
+				     bpointer      data)
 {
   BtkTreeView *tree_view = (BtkTreeView *)data;
   BtkTreeIter real_iter;
-  gboolean has_child;
+  bboolean has_child;
   BtkRBTree *tree;
   BtkRBNode *node;
-  gboolean free_path = FALSE;
+  bboolean free_path = FALSE;
 
   g_return_if_fail (path != NULL || iter != NULL);
 
@@ -8579,19 +8579,19 @@ btk_tree_view_row_has_child_toggled (BtkTreeModel *model,
 static void
 count_children_helper (BtkRBTree *tree,
 		       BtkRBNode *node,
-		       gpointer   data)
+		       bpointer   data)
 {
   if (node->children)
     _btk_rbtree_traverse (node->children, node->children->root, G_POST_ORDER, count_children_helper, data);
-  (*((gint *)data))++;
+  (*((bint *)data))++;
 }
 
 static void
 check_selection_helper (BtkRBTree *tree,
                         BtkRBNode *node,
-                        gpointer   data)
+                        bpointer   data)
 {
-  gint *value = (gint *)data;
+  bint *value = (bint *)data;
 
   *value = BTK_RBNODE_FLAG_SET (node, BTK_RBNODE_IS_SELECTED);
 
@@ -8602,13 +8602,13 @@ check_selection_helper (BtkRBTree *tree,
 static void
 btk_tree_view_row_deleted (BtkTreeModel *model,
 			   BtkTreePath  *path,
-			   gpointer      data)
+			   bpointer      data)
 {
   BtkTreeView *tree_view = (BtkTreeView *)data;
   BtkRBTree *tree;
   BtkRBNode *node;
   GList *list;
-  gint selection_changed = FALSE;
+  bint selection_changed = FALSE;
 
   g_return_if_fail (path != NULL);
 
@@ -8640,7 +8640,7 @@ btk_tree_view_row_deleted (BtkTreeModel *model,
 
   if (tree_view->priv->destroy_count_func)
     {
-      gint child_count = 0;
+      bint child_count = 0;
       if (node->children)
 	_btk_rbtree_traverse (node->children, node->children->root, G_POST_ORDER, count_children_helper, &child_count);
       tree_view->priv->destroy_count_func (tree_view, path, child_count, tree_view->priv->destroy_count_data);
@@ -8676,13 +8676,13 @@ static void
 btk_tree_view_rows_reordered (BtkTreeModel *model,
 			      BtkTreePath  *parent,
 			      BtkTreeIter  *iter,
-			      gint         *new_order,
-			      gpointer      data)
+			      bint         *new_order,
+			      bpointer      data)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (data);
   BtkRBTree *tree;
   BtkRBNode *node;
-  gint len;
+  bint len;
 
   len = btk_tree_model_iter_n_children (model, iter);
 
@@ -8734,13 +8734,13 @@ static void
 btk_tree_view_get_background_xrange (BtkTreeView       *tree_view,
                                      BtkRBTree         *tree,
                                      BtkTreeViewColumn *column,
-                                     gint              *x1,
-                                     gint              *x2)
+                                     bint              *x1,
+                                     bint              *x2)
 {
   BtkTreeViewColumn *tmp_column = NULL;
-  gint total_width;
+  bint total_width;
   GList *list;
-  gboolean rtl;
+  bboolean rtl;
 
   if (x1)
     *x1 = 0;
@@ -8784,15 +8784,15 @@ btk_tree_view_get_background_xrange (BtkTreeView       *tree_view,
 static void
 btk_tree_view_get_arrow_xrange (BtkTreeView *tree_view,
 				BtkRBTree   *tree,
-                                gint        *x1,
-                                gint        *x2)
+                                bint        *x1,
+                                bint        *x2)
 {
-  gint x_offset = 0;
+  bint x_offset = 0;
   GList *list;
   BtkTreeViewColumn *tmp_column = NULL;
-  gint total_width;
-  gboolean indent_expanders;
-  gboolean rtl;
+  bint total_width;
+  bboolean indent_expanders;
+  bboolean rtl;
 
   rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
 
@@ -8841,12 +8841,12 @@ static void
 btk_tree_view_build_tree (BtkTreeView *tree_view,
 			  BtkRBTree   *tree,
 			  BtkTreeIter *iter,
-			  gint         depth,
-			  gboolean     recurse)
+			  bint         depth,
+			  bboolean     recurse)
 {
   BtkRBNode *temp = NULL;
   BtkTreePath *path = NULL;
-  gboolean is_list = BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_IS_LIST);
+  bboolean is_list = BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_IS_LIST);
 
   do
     {
@@ -8876,7 +8876,7 @@ btk_tree_view_build_tree (BtkTreeView *tree_view,
 
 	  if (btk_tree_model_iter_children (tree_view->priv->model, &child, iter))
 	    {
-	      gboolean expand;
+	      bboolean expand;
 
 	      g_signal_emit (tree_view, tree_view_signals[TEST_EXPAND_ROW], 0, iter, path, &expand);
 
@@ -8909,7 +8909,7 @@ btk_tree_view_clamp_node_visible (BtkTreeView *tree_view,
 				  BtkRBTree   *tree,
 				  BtkRBNode   *node)
 {
-  gint node_dy, height;
+  bint node_dy, height;
   BtkTreePath *path = NULL;
 
   if (!btk_widget_get_realized (BTK_WIDGET (tree_view)))
@@ -8938,9 +8938,9 @@ btk_tree_view_clamp_node_visible (BtkTreeView *tree_view,
 static void
 btk_tree_view_clamp_column_visible (BtkTreeView       *tree_view,
 				    BtkTreeViewColumn *column,
-				    gboolean           focus_to_cell)
+				    bboolean           focus_to_cell)
 {
-  gint x, width;
+  bint x, width;
 
   if (column == NULL)
     return;
@@ -9019,7 +9019,7 @@ _btk_tree_view_find_path (BtkTreeView *tree_view,
   BtkTreePath *path;
   BtkRBTree *tmp_tree;
   BtkRBNode *tmp_node, *last;
-  gint count;
+  bint count;
 
   path = btk_tree_path_new ();
 
@@ -9056,7 +9056,7 @@ _btk_tree_view_find_path (BtkTreeView *tree_view,
  * invalid (ie. points to a node that's not in the tree), *tree and *node are
  * both set to NULL.
  */
-gboolean
+bboolean
 _btk_tree_view_find_node (BtkTreeView  *tree_view,
 			  BtkTreePath  *path,
 			  BtkRBTree   **tree,
@@ -9064,9 +9064,9 @@ _btk_tree_view_find_node (BtkTreeView  *tree_view,
 {
   BtkRBNode *tmpnode = NULL;
   BtkRBTree *tmptree = tree_view->priv->tree;
-  gint *indices = btk_tree_path_get_indices (path);
-  gint depth = btk_tree_path_get_depth (path);
-  gint i = 0;
+  bint *indices = btk_tree_path_get_indices (path);
+  bint depth = btk_tree_path_get_depth (path);
+  bint i = 0;
 
   *node = NULL;
   *tree = NULL;
@@ -9098,7 +9098,7 @@ _btk_tree_view_find_node (BtkTreeView  *tree_view,
   while (1);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_is_expander_column (BtkTreeView       *tree_view,
 				  BtkTreeViewColumn *column)
 {
@@ -9128,11 +9128,11 @@ btk_tree_view_is_expander_column (BtkTreeView       *tree_view,
 
 static void
 btk_tree_view_add_move_binding (BtkBindingSet  *binding_set,
-				guint           keyval,
-				guint           modmask,
-				gboolean        add_shifted_binding,
+				buint           keyval,
+				buint           modmask,
+				bboolean        add_shifted_binding,
 				BtkMovementStep step,
-				gint            count)
+				bint            count)
 {
   
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
@@ -9160,13 +9160,13 @@ btk_tree_view_add_move_binding (BtkBindingSet  *binding_set,
                                 B_TYPE_INT, count);
 }
 
-static gint
+static bint
 btk_tree_view_unref_tree_helper (BtkTreeModel *model,
 				 BtkTreeIter  *iter,
 				 BtkRBTree    *tree,
 				 BtkRBNode    *node)
 {
-  gint retval = FALSE;
+  bint retval = FALSE;
   do
     {
       g_return_val_if_fail (node != NULL, FALSE);
@@ -9199,14 +9199,14 @@ btk_tree_view_unref_tree_helper (BtkTreeModel *model,
   return retval;
 }
 
-static gint
+static bint
 btk_tree_view_unref_and_check_selection_tree (BtkTreeView *tree_view,
 					      BtkRBTree   *tree)
 {
   BtkTreeIter iter;
   BtkTreePath *path;
   BtkRBNode *node;
-  gint retval;
+  bint retval;
 
   if (!tree)
     return FALSE;
@@ -9232,9 +9232,9 @@ btk_tree_view_set_column_drag_info (BtkTreeView       *tree_view,
   BtkTreeViewColumn *left_column;
   BtkTreeViewColumn *cur_column = NULL;
   BtkTreeViewColumnReorder *reorder;
-  gboolean rtl;
+  bboolean rtl;
   GList *tmp_list;
-  gint left;
+  bint left;
 
   /* We want to precalculate the motion list such that we know what column slots
    * are available.
@@ -9318,7 +9318,7 @@ btk_tree_view_set_column_drag_info (BtkTreeView       *tree_view,
 	}
       else
 	{
-	  gint width;
+	  bint width;
 
           width = bdk_window_get_width (tree_view->priv->header_window);
 	  reorder->right_align = width + TREE_VIEW_COLUMN_DRAG_DEAD_MULTIPLIER (tree_view);
@@ -9332,7 +9332,7 @@ _btk_tree_view_column_start_drag (BtkTreeView       *tree_view,
 {
   BdkEvent *send_event;
   BtkAllocation allocation;
-  gint x, y, width, height;
+  bint x, y, width, height;
   BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (tree_view));
   BdkDisplay *display = bdk_screen_get_display (screen);
 
@@ -9347,7 +9347,7 @@ _btk_tree_view_column_start_drag (BtkTreeView       *tree_view,
   if (tree_view->priv->drag_window == NULL)
     {
       BdkWindowAttr attributes;
-      guint attributes_mask;
+      buint attributes_mask;
 
       attributes.window_type = BDK_WINDOW_CHILD;
       attributes.wclass = BDK_INPUT_OUTPUT;
@@ -9514,16 +9514,16 @@ btk_tree_view_draw_arrow (BtkTreeView *tree_view,
                           BtkRBTree   *tree,
 			  BtkRBNode   *node,
 			  /* in bin_window coordinates */
-			  gint         x,
-			  gint         y)
+			  bint         x,
+			  bint         y)
 {
   BdkRectangle area;
   BtkStateType state;
   BtkWidget *widget;
-  gint x_offset = 0;
-  gint x2;
-  gint vertical_separator;
-  gint expander_size;
+  bint x_offset = 0;
+  bint x2;
+  bint vertical_separator;
+  bint expander_size;
   BtkExpanderStyle expander_style;
 
   widget = BTK_WIDGET (tree_view);
@@ -9659,16 +9659,16 @@ btk_tree_view_focus_to_cursor (BtkTreeView *tree_view)
 
 static void
 btk_tree_view_move_cursor_up_down (BtkTreeView *tree_view,
-				   gint         count)
+				   bint         count)
 {
-  gint selection_count;
+  bint selection_count;
   BtkRBTree *cursor_tree = NULL;
   BtkRBNode *cursor_node = NULL;
   BtkRBTree *new_cursor_tree = NULL;
   BtkRBNode *new_cursor_node = NULL;
   BtkTreePath *cursor_path = NULL;
-  gboolean grab_focus = TRUE;
-  gboolean selectable;
+  bboolean grab_focus = TRUE;
+  bboolean selectable;
 
   if (! btk_widget_has_focus (BTK_WIDGET (tree_view)))
     return;
@@ -9791,7 +9791,7 @@ btk_tree_view_move_cursor_up_down (BtkTreeView *tree_view,
 
 static void
 btk_tree_view_move_cursor_page_up_down (BtkTreeView *tree_view,
-					gint         count)
+					bint         count)
 {
   BtkRBTree *cursor_tree = NULL;
   BtkRBNode *cursor_node = NULL;
@@ -9799,9 +9799,9 @@ btk_tree_view_move_cursor_page_up_down (BtkTreeView *tree_view,
   BtkTreePath *cursor_path = NULL;
   BtkRBTree *start_cursor_tree = NULL;
   BtkRBNode *start_cursor_node = NULL;
-  gint y;
-  gint window_y;
-  gint vertical_separator;
+  bint y;
+  bint window_y;
+  bint vertical_separator;
 
   if (!btk_widget_has_focus (BTK_WIDGET (tree_view)))
     return;
@@ -9828,7 +9828,7 @@ btk_tree_view_move_cursor_page_up_down (BtkTreeView *tree_view,
   window_y = RBTREE_Y_TO_TREE_WINDOW_Y (tree_view, y);
   y += tree_view->priv->cursor_offset;
   y += count * (int)tree_view->priv->vadjustment->page_increment;
-  y = CLAMP (y, (gint)tree_view->priv->vadjustment->lower,  (gint)tree_view->priv->vadjustment->upper - vertical_separator);
+  y = CLAMP (y, (bint)tree_view->priv->vadjustment->lower,  (bint)tree_view->priv->vadjustment->upper - vertical_separator);
 
   if (y >= tree_view->priv->height)
     y = tree_view->priv->height - 1;
@@ -9899,7 +9899,7 @@ cleanup:
 
 static void
 btk_tree_view_move_cursor_left_right (BtkTreeView *tree_view,
-				      gint         count)
+				      bint         count)
 {
   BtkRBTree *cursor_tree = NULL;
   BtkRBNode *cursor_node = NULL;
@@ -9907,8 +9907,8 @@ btk_tree_view_move_cursor_left_right (BtkTreeView *tree_view,
   BtkTreeViewColumn *column;
   BtkTreeIter iter;
   GList *list;
-  gboolean found_column = FALSE;
-  gboolean rtl;
+  bboolean found_column = FALSE;
+  bboolean rtl;
 
   rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
 
@@ -9942,7 +9942,7 @@ btk_tree_view_move_cursor_left_right (BtkTreeView *tree_view,
 
   while (list)
     {
-      gboolean left, right;
+      bboolean left, right;
 
       column = list->data;
       if (column->visible == FALSE)
@@ -9999,7 +9999,7 @@ btk_tree_view_move_cursor_left_right (BtkTreeView *tree_view,
 
 static void
 btk_tree_view_move_cursor_start_end (BtkTreeView *tree_view,
-				     gint         count)
+				     bint         count)
 {
   BtkRBTree *cursor_tree;
   BtkRBNode *cursor_node;
@@ -10064,7 +10064,7 @@ cleanup:
   btk_tree_path_free (path);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_select_all (BtkTreeView *tree_view)
 {
   if (!btk_widget_has_focus (BTK_WIDGET (tree_view)))
@@ -10078,7 +10078,7 @@ btk_tree_view_real_select_all (BtkTreeView *tree_view)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_unselect_all (BtkTreeView *tree_view)
 {
   if (!btk_widget_has_focus (BTK_WIDGET (tree_view)))
@@ -10092,9 +10092,9 @@ btk_tree_view_real_unselect_all (BtkTreeView *tree_view)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_select_cursor_row (BtkTreeView *tree_view,
-				      gboolean     start_editing)
+				      bboolean     start_editing)
 {
   BtkRBTree *new_tree = NULL;
   BtkRBNode *new_node = NULL;
@@ -10166,7 +10166,7 @@ btk_tree_view_real_select_cursor_row (BtkTreeView *tree_view,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_toggle_cursor_row (BtkTreeView *tree_view)
 {
   BtkRBTree *new_tree = NULL;
@@ -10218,11 +10218,11 @@ btk_tree_view_real_toggle_cursor_row (BtkTreeView *tree_view)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_expand_collapse_cursor_row (BtkTreeView *tree_view,
-					       gboolean     logical,
-					       gboolean     expand,
-					       gboolean     open_all)
+					       bboolean     logical,
+					       bboolean     expand,
+					       bboolean     open_all)
 {
   BtkTreePath *cursor_path = NULL;
   BtkRBTree *tree;
@@ -10259,7 +10259,7 @@ btk_tree_view_real_expand_collapse_cursor_row (BtkTreeView *tree_view,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_select_cursor_parent (BtkTreeView *tree_view)
 {
   BtkRBTree *cursor_tree = NULL;
@@ -10317,7 +10317,7 @@ btk_tree_view_real_select_cursor_parent (BtkTreeView *tree_view)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_entry_flush_timeout (BtkTreeView *tree_view)
 {
   btk_tree_view_search_dialog_hide (tree_view->priv->search_window, tree_view);
@@ -10329,7 +10329,7 @@ btk_tree_view_search_entry_flush_timeout (BtkTreeView *tree_view)
 /* Cut and paste from btkwindow.c */
 static void
 send_focus_change (BtkWidget *widget,
-		   gboolean   in)
+		   bboolean   in)
 {
   BdkEvent *fevent = bdk_event_new (BDK_FOCUS_CHANGE);
 
@@ -10421,16 +10421,16 @@ btk_tree_view_ensure_interactive_directory (BtkTreeView *tree_view)
 /* Pops up the interactive search entry.  If keybinding is TRUE then the user
  * started this by typing the start_interactive_search keybinding.  Otherwise, it came from 
  */
-static gboolean
+static bboolean
 btk_tree_view_real_start_interactive_search (BtkTreeView *tree_view,
-					     gboolean     keybinding)
+					     bboolean     keybinding)
 {
   /* We only start interactive search if we have focus or the columns
    * have focus.  If one of our children have focus, we don't want to
    * start the search.
    */
   GList *list;
-  gboolean found_focus = FALSE;
+  bboolean found_focus = FALSE;
   BtkWidgetClass *entry_parent_class;
   
   if (!tree_view->priv->enable_search && !keybinding)
@@ -10503,7 +10503,7 @@ btk_tree_view_real_start_interactive_search (BtkTreeView *tree_view,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_start_interactive_search (BtkTreeView *tree_view)
 {
   return btk_tree_view_real_start_interactive_search (tree_view, TRUE);
@@ -10513,14 +10513,14 @@ btk_tree_view_start_interactive_search (BtkTreeView *tree_view)
  * the column and x position of the cursor; the x cursor position is passed
  * in as a pointer and automagicly corrected if it's beyond min/max limits
  */
-static gint
+static bint
 btk_tree_view_new_column_width (BtkTreeView *tree_view,
-				gint       i,
-				gint      *x)
+				bint       i,
+				bint      *x)
 {
   BtkTreeViewColumn *column;
-  gint width;
-  gboolean rtl;
+  bint width;
+  bboolean rtl;
 
   /* first translate the x position from widget->window
    * to clist->clist_window
@@ -10564,7 +10564,7 @@ typedef struct
 
 static void
 adjust_allocation_recurse (BtkWidget *widget,
-			   gpointer   data)
+			   bpointer   data)
 {
   ScrollData *scroll_data = data;
 
@@ -10623,7 +10623,7 @@ btk_tree_view_adjustment_changed (BtkAdjustment *adjustment,
 {
   if (btk_widget_get_realized (BTK_WIDGET (tree_view)))
     {
-      gint dy;
+      bint dy;
 	
       bdk_window_move (tree_view->priv->bin_window,
 		       - tree_view->priv->hadjustment->value,
@@ -10814,7 +10814,7 @@ btk_tree_view_set_model (BtkTreeView  *tree_view,
 
   if (tree_view->priv->model)
     {
-      gint i;
+      bint i;
       BtkTreePath *path;
       BtkTreeIter iter;
       BtkTreeModelFlags flags;
@@ -10988,7 +10988,7 @@ btk_tree_view_set_vadjustment (BtkTreeView   *tree_view,
  *
  * Return value: Whether the headers are visible or not.
  **/
-gboolean
+bboolean
 btk_tree_view_get_headers_visible (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -11005,9 +11005,9 @@ btk_tree_view_get_headers_visible (BtkTreeView *tree_view)
  **/
 void
 btk_tree_view_set_headers_visible (BtkTreeView *tree_view,
-				   gboolean     headers_visible)
+				   bboolean     headers_visible)
 {
-  gint x, y;
+  bint x, y;
   GList *list;
   BtkTreeViewColumn *column;
 
@@ -11067,7 +11067,7 @@ btk_tree_view_set_headers_visible (BtkTreeView *tree_view,
 void
 btk_tree_view_columns_autosize (BtkTreeView *tree_view)
 {
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   GList *list;
   BtkTreeViewColumn *column;
 
@@ -11095,7 +11095,7 @@ btk_tree_view_columns_autosize (BtkTreeView *tree_view)
  **/
 void
 btk_tree_view_set_headers_clickable (BtkTreeView *tree_view,
-				     gboolean   setting)
+				     bboolean   setting)
 {
   GList *list;
 
@@ -11118,7 +11118,7 @@ btk_tree_view_set_headers_clickable (BtkTreeView *tree_view,
  *
  * Since: 2.10
  **/
-gboolean 
+bboolean 
 btk_tree_view_get_headers_clickable (BtkTreeView *tree_view)
 {
   GList *list;
@@ -11153,7 +11153,7 @@ btk_tree_view_get_headers_clickable (BtkTreeView *tree_view)
  **/
 void
 btk_tree_view_set_rules_hint (BtkTreeView  *tree_view,
-                              gboolean      setting)
+                              bboolean      setting)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -11176,7 +11176,7 @@ btk_tree_view_set_rules_hint (BtkTreeView  *tree_view,
  *
  * Return value: %TRUE if rules are useful for the user of this tree
  **/
-gboolean
+bboolean
 btk_tree_view_get_rules_hint (BtkTreeView  *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -11198,7 +11198,7 @@ btk_tree_view_get_rules_hint (BtkTreeView  *tree_view)
  *
  * Return value: The number of columns in @tree_view after appending.
  **/
-gint
+bint
 btk_tree_view_append_column (BtkTreeView       *tree_view,
 			     BtkTreeViewColumn *column)
 {
@@ -11219,7 +11219,7 @@ btk_tree_view_append_column (BtkTreeView       *tree_view,
  *
  * Return value: The number of columns in @tree_view after removing.
  **/
-gint
+bint
 btk_tree_view_remove_column (BtkTreeView       *tree_view,
                              BtkTreeViewColumn *column)
 {
@@ -11290,10 +11290,10 @@ btk_tree_view_remove_column (BtkTreeView       *tree_view,
  *
  * Return value: The number of columns in @tree_view after insertion.
  **/
-gint
+bint
 btk_tree_view_insert_column (BtkTreeView       *tree_view,
                              BtkTreeViewColumn *column,
-                             gint               position)
+                             bint               position)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), -1);
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (column), -1);
@@ -11357,17 +11357,17 @@ btk_tree_view_insert_column (BtkTreeView       *tree_view,
  *
  * Return value: The number of columns in @tree_view after insertion.
  **/
-gint
+bint
 btk_tree_view_insert_column_with_attributes (BtkTreeView     *tree_view,
-					     gint             position,
-					     const gchar     *title,
+					     bint             position,
+					     const bchar     *title,
 					     BtkCellRenderer *cell,
 					     ...)
 {
   BtkTreeViewColumn *column;
-  gchar *attribute;
+  bchar *attribute;
   va_list args;
-  gint column_id;
+  bint column_id;
 
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), -1);
 
@@ -11380,13 +11380,13 @@ btk_tree_view_insert_column_with_attributes (BtkTreeView     *tree_view,
 
   va_start (args, cell);
 
-  attribute = va_arg (args, gchar *);
+  attribute = va_arg (args, bchar *);
 
   while (attribute != NULL)
     {
-      column_id = va_arg (args, gint);
+      column_id = va_arg (args, bint);
       btk_tree_view_column_add_attribute (column, cell, attribute, column_id);
-      attribute = va_arg (args, gchar *);
+      attribute = va_arg (args, bchar *);
     }
 
   va_end (args);
@@ -11415,13 +11415,13 @@ btk_tree_view_insert_column_with_attributes (BtkTreeView     *tree_view,
  *
  * Return value: number of columns in the tree view post-insert
  **/
-gint
+bint
 btk_tree_view_insert_column_with_data_func  (BtkTreeView               *tree_view,
-                                             gint                       position,
-                                             const gchar               *title,
+                                             bint                       position,
+                                             const bchar               *title,
                                              BtkCellRenderer           *cell,
                                              BtkTreeCellDataFunc        func,
-                                             gpointer                   data,
+                                             bpointer                   data,
                                              GDestroyNotify             dnotify)
 {
   BtkTreeViewColumn *column;
@@ -11453,7 +11453,7 @@ btk_tree_view_insert_column_with_data_func  (BtkTreeView               *tree_vie
  **/
 BtkTreeViewColumn *
 btk_tree_view_get_column (BtkTreeView *tree_view,
-			  gint         n)
+			  bint         n)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), NULL);
 
@@ -11620,7 +11620,7 @@ btk_tree_view_get_expander_column (BtkTreeView *tree_view)
 void
 btk_tree_view_set_column_drag_function (BtkTreeView               *tree_view,
 					BtkTreeViewColumnDropFunc  func,
-					gpointer                   user_data,
+					bpointer                   user_data,
 					GDestroyNotify             destroy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -11649,8 +11649,8 @@ btk_tree_view_set_column_drag_function (BtkTreeView               *tree_view,
  **/
 void
 btk_tree_view_scroll_to_point (BtkTreeView *tree_view,
-                               gint         tree_x,
-                               gint         tree_y)
+                               bint         tree_x,
+                               bint         tree_y)
 {
   BtkAdjustment *hadj;
   BtkAdjustment *vadj;
@@ -11697,9 +11697,9 @@ void
 btk_tree_view_scroll_to_cell (BtkTreeView       *tree_view,
                               BtkTreePath       *path,
                               BtkTreeViewColumn *column,
-			      gboolean           use_align,
-                              gfloat             row_align,
-                              gfloat             col_align)
+			      bboolean           use_align,
+                              bfloat             row_align,
+                              bfloat             col_align)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
   g_return_if_fail (tree_view->priv->model != NULL);
@@ -11745,7 +11745,7 @@ btk_tree_view_scroll_to_cell (BtkTreeView       *tree_view,
     {
       BdkRectangle cell_rect;
       BdkRectangle vis_rect;
-      gint dest_x, dest_y;
+      bint dest_x, dest_y;
 
       btk_tree_view_get_background_area (tree_view, path, column, &cell_rect);
       btk_tree_view_get_visible_rect (tree_view, &vis_rect);
@@ -11812,7 +11812,7 @@ btk_tree_view_row_activated (BtkTreeView       *tree_view,
 static void
 btk_tree_view_expand_all_emission_helper (BtkRBTree *tree,
                                           BtkRBNode *node,
-                                          gpointer   data)
+                                          bpointer   data)
 {
   BtkTreeView *tree_view = data;
 
@@ -11870,11 +11870,11 @@ btk_tree_view_expand_all (BtkTreeView *tree_view)
 }
 
 /* Timeout to animate the expander during expands and collapses */
-static gboolean
-expand_collapse_timeout (gpointer data)
+static bboolean
+expand_collapse_timeout (bpointer data)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (data);
-  gboolean retval = do_expand_collapse (data);
+  bboolean retval = do_expand_collapse (data);
 
   if (! retval)
     remove_expand_collapse_timeout (tree_view);
@@ -11886,7 +11886,7 @@ static void
 add_expand_collapse_timeout (BtkTreeView *tree_view,
                              BtkRBTree   *tree,
                              BtkRBNode   *node,
-                             gboolean     expand)
+                             bboolean     expand)
 {
   if (tree_view->priv->expand_collapse_timeout != 0)
     return;
@@ -11931,13 +11931,13 @@ cancel_arrow_animation (BtkTreeView *tree_view)
     }
 }
 
-static gboolean
+static bboolean
 do_expand_collapse (BtkTreeView *tree_view)
 {
   BtkRBNode *node;
   BtkRBTree *tree;
-  gboolean expanding;
-  gboolean redraw;
+  bboolean expanding;
+  bboolean redraw;
 
   redraw = FALSE;
   expanding = TRUE;
@@ -12005,7 +12005,7 @@ btk_tree_view_collapse_all (BtkTreeView *tree_view)
   BtkRBTree *tree;
   BtkRBNode *node;
   BtkTreePath *path;
-  gint *indices;
+  bint *indices;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -12046,8 +12046,8 @@ void
 btk_tree_view_expand_to_path (BtkTreeView *tree_view,
 			      BtkTreePath *path)
 {
-  gint i, depth;
-  gint *indices;
+  bint i, depth;
+  bint *indices;
   BtkTreePath *tmp;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -12074,17 +12074,17 @@ btk_tree_view_expand_to_path (BtkTreeView *tree_view,
  */
 
 
-static gboolean
+static bboolean
 btk_tree_view_real_expand_row (BtkTreeView *tree_view,
 			       BtkTreePath *path,
 			       BtkRBTree   *tree,
 			       BtkRBNode   *node,
-			       gboolean     open_all,
-			       gboolean     animate)
+			       bboolean     open_all,
+			       bboolean     animate)
 {
   BtkTreeIter iter;
   BtkTreeIter temp;
-  gboolean expand;
+  bboolean expand;
 
   if (animate)
     g_object_get (btk_widget_get_settings (BTK_WIDGET (tree_view)),
@@ -12106,7 +12106,7 @@ btk_tree_view_real_expand_row (BtkTreeView *tree_view,
 
    if (node->children && open_all)
     {
-      gboolean retval = FALSE;
+      bboolean retval = FALSE;
       BtkTreePath *tmp_path = btk_tree_path_copy (path);
 
       btk_tree_path_append_index (tmp_path, 0);
@@ -12117,7 +12117,7 @@ btk_tree_view_real_expand_row (BtkTreeView *tree_view,
       /* try to expand the children */
       do
         {
-         gboolean t;
+         bboolean t;
 	 t = btk_tree_view_real_expand_row (tree_view, tmp_path, tree, node,
 					    TRUE, animate);
          if (t)
@@ -12183,10 +12183,10 @@ btk_tree_view_real_expand_row (BtkTreeView *tree_view,
  *
  * Return value: %TRUE if the row existed and had children
  **/
-gboolean
+bboolean
 btk_tree_view_expand_row (BtkTreeView *tree_view,
 			  BtkTreePath *path,
-			  gboolean     open_all)
+			  bboolean     open_all)
 {
   BtkRBTree *tree;
   BtkRBNode *node;
@@ -12207,17 +12207,17 @@ btk_tree_view_expand_row (BtkTreeView *tree_view,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_real_collapse_row (BtkTreeView *tree_view,
 				 BtkTreePath *path,
 				 BtkRBTree   *tree,
 				 BtkRBNode   *node,
-				 gboolean     animate)
+				 bboolean     animate)
 {
   BtkTreeIter iter;
   BtkTreeIter children;
-  gboolean collapse;
-  gint x, y;
+  bboolean collapse;
+  bint x, y;
   GList *list;
   BdkWindow *child, *parent;
 
@@ -12275,7 +12275,7 @@ btk_tree_view_real_collapse_row (BtkTreeView *tree_view,
   if (tree_view->priv->destroy_count_func)
     {
       BtkTreePath *child_path;
-      gint child_count = 0;
+      bint child_count = 0;
       child_path = btk_tree_path_copy (path);
       btk_tree_path_down (child_path);
       if (node->children)
@@ -12344,7 +12344,7 @@ btk_tree_view_real_collapse_row (BtkTreeView *tree_view,
       if (bdk_window_get_pointer (parent, &x, &y, NULL) == child)
 	{
 	  BdkEventMotion event;
-	  gint child_x, child_y;
+	  bint child_x, child_y;
 
 	  bdk_window_get_position (child, &child_x, &child_y);
 
@@ -12371,7 +12371,7 @@ btk_tree_view_real_collapse_row (BtkTreeView *tree_view,
  *
  * Return value: %TRUE if the row was collapsed.
  **/
-gboolean
+bboolean
 btk_tree_view_collapse_row (BtkTreeView *tree_view,
 			    BtkTreePath *path)
 {
@@ -12399,7 +12399,7 @@ btk_tree_view_map_expanded_rows_helper (BtkTreeView            *tree_view,
 					BtkRBTree              *tree,
 					BtkTreePath            *path,
 					BtkTreeViewMappingFunc  func,
-					gpointer                user_data)
+					bpointer                user_data)
 {
   BtkRBNode *node;
 
@@ -12436,7 +12436,7 @@ btk_tree_view_map_expanded_rows_helper (BtkTreeView            *tree_view,
 void
 btk_tree_view_map_expanded_rows (BtkTreeView            *tree_view,
 				 BtkTreeViewMappingFunc  func,
-				 gpointer                user_data)
+				 bpointer                user_data)
 {
   BtkTreePath *path;
 
@@ -12461,7 +12461,7 @@ btk_tree_view_map_expanded_rows (BtkTreeView            *tree_view,
  *
  * Return value: %TRUE if #path is expanded.
  **/
-gboolean
+bboolean
 btk_tree_view_row_expanded (BtkTreeView *tree_view,
 			    BtkTreePath *path)
 {
@@ -12488,7 +12488,7 @@ btk_tree_view_row_expanded (BtkTreeView *tree_view,
  *
  * Return value: %TRUE if the tree can be reordered.
  **/
-gboolean
+bboolean
 btk_tree_view_get_reorderable (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -12517,7 +12517,7 @@ btk_tree_view_get_reorderable (BtkTreeView *tree_view)
  **/
 void
 btk_tree_view_set_reorderable (BtkTreeView *tree_view,
-			       gboolean     reorderable)
+			       bboolean     reorderable)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -12556,8 +12556,8 @@ btk_tree_view_set_reorderable (BtkTreeView *tree_view,
 static void
 btk_tree_view_real_set_cursor (BtkTreeView     *tree_view,
 			       BtkTreePath     *path,
-			       gboolean         clear_and_select,
-			       gboolean         clamp_node)
+			       bboolean         clear_and_select,
+			       bboolean         clamp_node)
 {
   BtkRBTree *tree = NULL;
   BtkRBNode *node = NULL;
@@ -12688,7 +12688,7 @@ void
 btk_tree_view_set_cursor (BtkTreeView       *tree_view,
 			  BtkTreePath       *path,
 			  BtkTreeViewColumn *focus_column,
-			  gboolean           start_editing)
+			  bboolean           start_editing)
 {
   btk_tree_view_set_cursor_on_cell (tree_view, path, focus_column,
 				    NULL, start_editing);
@@ -12724,7 +12724,7 @@ btk_tree_view_set_cursor_on_cell (BtkTreeView       *tree_view,
 				  BtkTreePath       *path,
 				  BtkTreeViewColumn *focus_column,
 				  BtkCellRenderer   *focus_cell,
-				  gboolean           start_editing)
+				  bboolean           start_editing)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
   g_return_if_fail (path != NULL);
@@ -12749,7 +12749,7 @@ btk_tree_view_set_cursor_on_cell (BtkTreeView       *tree_view,
   if (focus_column && focus_column->visible)
     {
       GList *list;
-      gboolean column_in_tree = FALSE;
+      bboolean column_in_tree = FALSE;
 
       for (list = tree_view->priv->columns; list; list = list->next)
 	if (list->data == focus_column)
@@ -12815,18 +12815,18 @@ btk_tree_view_get_bin_window (BtkTreeView *tree_view)
  *
  * Return value: %TRUE if a row exists at that coordinate.
  **/
-gboolean
+bboolean
 btk_tree_view_get_path_at_pos (BtkTreeView        *tree_view,
-			       gint                x,
-			       gint                y,
+			       bint                x,
+			       bint                y,
 			       BtkTreePath       **path,
 			       BtkTreeViewColumn **column,
-                               gint               *cell_x,
-                               gint               *cell_y)
+                               bint               *cell_x,
+                               bint               *cell_y)
 {
   BtkRBTree *tree;
   BtkRBNode *node;
-  gint y_offset;
+  bint y_offset;
 
   g_return_val_if_fail (tree_view != NULL, FALSE);
 
@@ -12852,9 +12852,9 @@ btk_tree_view_get_path_at_pos (BtkTreeView        *tree_view,
       BtkTreeViewColumn *tmp_column;
       BtkTreeViewColumn *last_column = NULL;
       GList *list;
-      gint remaining_x = x;
-      gboolean found = FALSE;
-      gboolean rtl;
+      bint remaining_x = x;
+      bboolean found = FALSE;
+      bboolean rtl;
 
       rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
       for (list = (rtl ? g_list_last (tree_view->priv->columns) : g_list_first (tree_view->priv->columns));
@@ -12944,8 +12944,8 @@ btk_tree_view_get_cell_area (BtkTreeView        *tree_view,
 {
   BtkRBTree *tree = NULL;
   BtkRBNode *node = NULL;
-  gint vertical_separator;
-  gint horizontal_separator;
+  bint vertical_separator;
+  bint horizontal_separator;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
   g_return_if_fail (column == NULL || BTK_IS_TREE_VIEW_COLUMN (column));
@@ -12971,7 +12971,7 @@ btk_tree_view_get_cell_area (BtkTreeView        *tree_view,
 
   if (path)
     {
-      gboolean ret = _btk_tree_view_find_node (tree_view, path, &tree, &node);
+      bboolean ret = _btk_tree_view_find_node (tree_view, path, &tree, &node);
 
       /* Get vertical coords */
       if ((!ret && tree == NULL) || ret)
@@ -12983,8 +12983,8 @@ btk_tree_view_get_cell_area (BtkTreeView        *tree_view,
       if (column &&
 	  btk_tree_view_is_expander_column (tree_view, column))
 	{
-	  gint depth = btk_tree_path_get_depth (path);
-	  gboolean rtl;
+	  bint depth = btk_tree_path_get_depth (path);
+	  bboolean rtl;
 
 	  rtl = btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL;
 
@@ -13055,7 +13055,7 @@ btk_tree_view_get_background_area (BtkTreeView        *tree_view,
 
   if (column)
     {
-      gint x2 = 0;
+      bint x2 = 0;
 
       btk_tree_view_get_background_xrange (tree_view, tree, column, &rect->x, &x2);
       rect->width = x2 - rect->x;
@@ -13111,10 +13111,10 @@ btk_tree_view_get_visible_rect (BtkTreeView  *tree_view,
  **/
 void
 btk_tree_view_widget_to_tree_coords (BtkTreeView *tree_view,
-				      gint         wx,
-				      gint         wy,
-				      gint        *tx,
-				      gint        *ty)
+				      bint         wx,
+				      bint         wy,
+				      bint        *tx,
+				      bint        *ty)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13143,10 +13143,10 @@ btk_tree_view_widget_to_tree_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_tree_to_widget_coords (BtkTreeView *tree_view,
-                                     gint         tx,
-                                     gint         ty,
-                                     gint        *wx,
-                                     gint        *wy)
+                                     bint         tx,
+                                     bint         ty,
+                                     bint        *wx,
+                                     bint        *wy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13172,12 +13172,12 @@ btk_tree_view_tree_to_widget_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_widget_to_tree_coords (BtkTreeView *tree_view,
-                                             gint         wx,
-                                             gint         wy,
-                                             gint        *tx,
-                                             gint        *ty)
+                                             bint         wx,
+                                             bint         wy,
+                                             bint        *tx,
+                                             bint        *ty)
 {
-  gint x, y;
+  bint x, y;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13204,12 +13204,12 @@ btk_tree_view_convert_widget_to_tree_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_tree_to_widget_coords (BtkTreeView *tree_view,
-                                             gint         tx,
-                                             gint         ty,
-                                             gint        *wx,
-                                             gint        *wy)
+                                             bint         tx,
+                                             bint         ty,
+                                             bint        *wx,
+                                             bint        *wy)
 {
-  gint x, y;
+  bint x, y;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13236,10 +13236,10 @@ btk_tree_view_convert_tree_to_widget_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_widget_to_bin_window_coords (BtkTreeView *tree_view,
-                                                   gint         wx,
-                                                   gint         wy,
-                                                   gint        *bx,
-                                                   gint        *by)
+                                                   bint         wx,
+                                                   bint         wy,
+                                                   bint        *bx,
+                                                   bint        *by)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13264,10 +13264,10 @@ btk_tree_view_convert_widget_to_bin_window_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_bin_window_to_widget_coords (BtkTreeView *tree_view,
-                                                   gint         bx,
-                                                   gint         by,
-                                                   gint        *wx,
-                                                   gint        *wy)
+                                                   bint         bx,
+                                                   bint         by,
+                                                   bint        *wx,
+                                                   bint        *wy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13292,10 +13292,10 @@ btk_tree_view_convert_bin_window_to_widget_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_tree_to_bin_window_coords (BtkTreeView *tree_view,
-                                                 gint         tx,
-                                                 gint         ty,
-                                                 gint        *bx,
-                                                 gint        *by)
+                                                 bint         tx,
+                                                 bint         ty,
+                                                 bint        *bx,
+                                                 bint        *by)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13320,10 +13320,10 @@ btk_tree_view_convert_tree_to_bin_window_coords (BtkTreeView *tree_view,
  **/
 void
 btk_tree_view_convert_bin_window_to_tree_coords (BtkTreeView *tree_view,
-                                                 gint         bx,
-                                                 gint         by,
-                                                 gint        *tx,
-                                                 gint        *ty)
+                                                 bint         bx,
+                                                 bint         by,
+                                                 bint        *tx,
+                                                 bint        *ty)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13351,14 +13351,14 @@ btk_tree_view_convert_bin_window_to_tree_coords (BtkTreeView *tree_view,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_tree_view_get_visible_range (BtkTreeView  *tree_view,
                                  BtkTreePath **start_path,
                                  BtkTreePath **end_path)
 {
   BtkRBTree *tree;
   BtkRBNode *node;
-  gboolean retval;
+  bboolean retval;
   
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
 
@@ -13380,7 +13380,7 @@ btk_tree_view_get_visible_range (BtkTreeView  *tree_view,
 
   if (end_path)
     {
-      gint y;
+      bint y;
 
       if (tree_view->priv->height < tree_view->priv->vadjustment->page_size)
         y = tree_view->priv->height - 1;
@@ -13423,7 +13423,7 @@ void
 btk_tree_view_enable_model_drag_source (BtkTreeView              *tree_view,
 					BdkModifierType           start_button_mask,
 					const BtkTargetEntry     *targets,
-					gint                      n_targets,
+					bint                      n_targets,
 					BdkDragAction             actions)
 {
   TreeViewDragInfo *di;
@@ -13459,7 +13459,7 @@ btk_tree_view_enable_model_drag_source (BtkTreeView              *tree_view,
 void
 btk_tree_view_enable_model_drag_dest (BtkTreeView              *tree_view,
 				      const BtkTargetEntry     *targets,
-				      gint                      n_targets,
+				      bint                      n_targets,
 				      BdkDragAction             actions)
 {
   TreeViewDragInfo *di;
@@ -13578,7 +13578,7 @@ btk_tree_view_set_drag_dest_row (BtkTreeView            *tree_view,
       && btk_tree_path_get_depth (path) == 1
       && btk_tree_path_get_indices (path)[0] == 0)
     {
-      gint n_children;
+      bint n_children;
 
       n_children = btk_tree_model_iter_n_children (tree_view->priv->model,
                                                    NULL);
@@ -13668,17 +13668,17 @@ btk_tree_view_get_drag_dest_row (BtkTreeView              *tree_view,
  * Return value: whether there is a row at the given position, %TRUE if this
  * is indeed the case.
  **/
-gboolean
+bboolean
 btk_tree_view_get_dest_row_at_pos (BtkTreeView             *tree_view,
-                                   gint                     drag_x,
-                                   gint                     drag_y,
+                                   bint                     drag_x,
+                                   bint                     drag_y,
                                    BtkTreePath            **path,
                                    BtkTreeViewDropPosition *pos)
 {
-  gint cell_y;
-  gint bin_x, bin_y;
-  gdouble offset_into_row;
-  gdouble third;
+  bint cell_y;
+  bint bin_x, bin_y;
+  bdouble offset_into_row;
+  bdouble third;
   BdkRectangle cell;
   BtkTreeViewColumn *column = NULL;
   BtkTreePath *tmp_path = NULL;
@@ -13773,18 +13773,18 @@ btk_tree_view_create_row_drag_icon (BtkTreeView  *tree_view,
   BtkTreeIter   iter;
   BtkRBTree    *tree;
   BtkRBNode    *node;
-  gint cell_offset;
+  bint cell_offset;
   GList *list;
   BdkRectangle background_area;
   BdkRectangle expose_area;
   BtkWidget *widget;
-  gint depth;
+  bint depth;
   /* start drawing inside the black outline */
-  gint x = 1, y = 1;
+  bint x = 1, y = 1;
   BdkDrawable *drawable;
-  gint bin_window_width;
-  gboolean is_separator = FALSE;
-  gboolean rtl;
+  bint bin_window_width;
+  bboolean is_separator = FALSE;
+  bboolean rtl;
   bairo_t *cr;
 
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), NULL);
@@ -13841,7 +13841,7 @@ btk_tree_view_create_row_drag_icon (BtkTreeView  *tree_view,
     {
       BtkTreeViewColumn *column = list->data;
       BdkRectangle cell_area;
-      gint vertical_separator;
+      bint vertical_separator;
 
       if (!column->visible)
         continue;
@@ -13927,7 +13927,7 @@ btk_tree_view_create_row_drag_icon (BtkTreeView  *tree_view,
 void
 btk_tree_view_set_destroy_count_func (BtkTreeView             *tree_view,
 				      BtkTreeDestroyCountFunc  func,
-				      gpointer                 data,
+				      bpointer                 data,
 				      GDestroyNotify           destroy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -13958,7 +13958,7 @@ btk_tree_view_set_destroy_count_func (BtkTreeView             *tree_view,
  */
 void
 btk_tree_view_set_enable_search (BtkTreeView *tree_view,
-				 gboolean     enable_search)
+				 bboolean     enable_search)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -13980,7 +13980,7 @@ btk_tree_view_set_enable_search (BtkTreeView *tree_view,
  *
  * Return value: whether or not to let the user search interactively
  */
-gboolean
+bboolean
 btk_tree_view_get_enable_search (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -13997,7 +13997,7 @@ btk_tree_view_get_enable_search (BtkTreeView *tree_view)
  *
  * Return value: the column the interactive search code searches in.
  */
-gint
+bint
 btk_tree_view_get_search_column (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), -1);
@@ -14022,7 +14022,7 @@ btk_tree_view_get_search_column (BtkTreeView *tree_view)
  */
 void
 btk_tree_view_set_search_column (BtkTreeView *tree_view,
-				 gint         column)
+				 bint         column)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
   g_return_if_fail (column >= -1);
@@ -14065,7 +14065,7 @@ btk_tree_view_get_search_equal_func (BtkTreeView *tree_view)
 void
 btk_tree_view_set_search_equal_func (BtkTreeView                *tree_view,
 				     BtkTreeViewSearchEqualFunc  search_equal_func,
-				     gpointer                    search_user_data,
+				     bpointer                    search_user_data,
 				     GDestroyNotify              search_destroy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -14186,7 +14186,7 @@ btk_tree_view_set_search_entry (BtkTreeView *tree_view,
 void
 btk_tree_view_set_search_position_func (BtkTreeView                   *tree_view,
 				        BtkTreeViewSearchPositionFunc  func,
-				        gpointer                       user_data,
+				        bpointer                       user_data,
 				        GDestroyNotify                 destroy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -14252,15 +14252,15 @@ btk_tree_view_search_dialog_hide (BtkWidget   *search_dialog,
 static void
 btk_tree_view_search_position_func (BtkTreeView *tree_view,
 				    BtkWidget   *search_dialog,
-				    gpointer     user_data)
+				    bpointer     user_data)
 {
-  gint x, y;
-  gint tree_x, tree_y;
-  gint tree_width, tree_height;
+  bint x, y;
+  bint tree_x, tree_y;
+  bint tree_width, tree_height;
   BdkWindow *tree_window = BTK_WIDGET (tree_view)->window;
   BdkScreen *screen = bdk_window_get_screen (tree_window);
   BtkRequisition requisition;
-  gint monitor_num;
+  bint monitor_num;
   BdkRectangle monitor;
 
   monitor_num = bdk_screen_get_monitor_at_window (screen, tree_window);
@@ -14293,7 +14293,7 @@ btk_tree_view_search_position_func (BtkTreeView *tree_view,
 static void
 btk_tree_view_search_disable_popdown (BtkEntry *entry,
 				      BtkMenu  *menu,
-				      gpointer  data)
+				      bpointer  data)
 {
   BtkTreeView *tree_view = (BtkTreeView *)data;
 
@@ -14347,8 +14347,8 @@ btk_tree_view_search_activate (BtkEntry    *entry,
     }
 }
 
-static gboolean
-btk_tree_view_real_search_enable_popdown (gpointer data)
+static bboolean
+btk_tree_view_real_search_enable_popdown (bpointer data)
 {
   BtkTreeView *tree_view = (BtkTreeView *)data;
 
@@ -14359,12 +14359,12 @@ btk_tree_view_real_search_enable_popdown (gpointer data)
 
 static void
 btk_tree_view_search_enable_popdown (BtkWidget *widget,
-				     gpointer   data)
+				     bpointer   data)
 {
   bdk_threads_add_timeout_full (G_PRIORITY_HIGH, 200, btk_tree_view_real_search_enable_popdown, g_object_ref (data), g_object_unref);
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_delete_event (BtkWidget *widget,
 				   BdkEventAny *event,
 				   BtkTreeView *tree_view)
@@ -14376,7 +14376,7 @@ btk_tree_view_search_delete_event (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_button_press_event (BtkWidget *widget,
 					 BdkEventButton *event,
 					 BtkTreeView *tree_view)
@@ -14391,12 +14391,12 @@ btk_tree_view_search_button_press_event (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_scroll_event (BtkWidget *widget,
 				   BdkEventScroll *event,
 				   BtkTreeView *tree_view)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   if (event->direction == BDK_SCROLL_UP)
     {
@@ -14423,12 +14423,12 @@ btk_tree_view_search_scroll_event (BtkWidget *widget,
   return retval;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_key_press_event (BtkWidget *widget,
 				      BdkEventKey *event,
 				      BtkTreeView *tree_view)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -14497,15 +14497,15 @@ btk_tree_view_search_key_press_event (BtkWidget *widget,
 /*  this function returns FALSE if there is a search string but
  *  nothing was found, and TRUE otherwise.
  */
-static gboolean
+static bboolean
 btk_tree_view_search_move (BtkWidget   *window,
 			   BtkTreeView *tree_view,
-			   gboolean     up)
+			   bboolean     up)
 {
-  gboolean ret;
-  gint len;
-  gint count = 0;
-  const gchar *text;
+  bboolean ret;
+  bint len;
+  bint count = 0;
+  const bchar *text;
   BtkTreeIter iter;
   BtkTreeModel *model;
   BtkTreeSelection *selection;
@@ -14553,19 +14553,19 @@ btk_tree_view_search_move (BtkWidget   *window,
     }
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_equal_func (BtkTreeModel *model,
-				 gint          column,
-				 const gchar  *key,
+				 bint          column,
+				 const bchar  *key,
 				 BtkTreeIter  *iter,
-				 gpointer      search_data)
+				 bpointer      search_data)
 {
-  gboolean retval = TRUE;
-  const gchar *str;
-  gchar *normalized_string;
-  gchar *normalized_key;
-  gchar *case_normalized_string = NULL;
-  gchar *case_normalized_key = NULL;
+  bboolean retval = TRUE;
+  const bchar *str;
+  bchar *normalized_string;
+  bchar *normalized_key;
+  bchar *case_normalized_string = NULL;
+  bchar *case_normalized_key = NULL;
   BValue value = {0,};
   BValue transformed = {0,};
 
@@ -14609,13 +14609,13 @@ btk_tree_view_search_equal_func (BtkTreeModel *model,
   return retval;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_search_iter (BtkTreeModel     *model,
 			   BtkTreeSelection *selection,
 			   BtkTreeIter      *iter,
-			   const gchar      *text,
-			   gint             *count,
-			   gint              n)
+			   const bchar      *text,
+			   bint             *count,
+			   bint              n)
 {
   BtkRBTree *tree = NULL;
   BtkRBNode *node = NULL;
@@ -14647,7 +14647,7 @@ btk_tree_view_search_iter (BtkTreeModel     *model,
 
       if (node->children)
 	{
-	  gboolean has_child;
+	  bboolean has_child;
 	  BtkTreeIter tmp;
 
 	  tree = node->children;
@@ -14665,7 +14665,7 @@ btk_tree_view_search_iter (BtkTreeModel     *model,
 	}
       else
 	{
-	  gboolean done = FALSE;
+	  bboolean done = FALSE;
 
 	  do
 	    {
@@ -14673,7 +14673,7 @@ btk_tree_view_search_iter (BtkTreeModel     *model,
 
 	      if (node)
 		{
-		  gboolean has_next;
+		  bboolean has_next;
 
 		  has_next = btk_tree_model_iter_next (model, iter);
 
@@ -14685,7 +14685,7 @@ btk_tree_view_search_iter (BtkTreeModel     *model,
 		}
 	      else
 		{
-		  gboolean has_parent;
+		  bboolean has_parent;
 		  BtkTreeIter tmp_iter = *iter;
 
 		  node = tree->parent_node;
@@ -14721,9 +14721,9 @@ static void
 btk_tree_view_search_init (BtkWidget   *entry,
 			   BtkTreeView *tree_view)
 {
-  gint ret;
-  gint count = 0;
-  const gchar *text;
+  bint ret;
+  bint count = 0;
+  const bchar *text;
   BtkTreeIter iter;
   BtkTreeModel *model;
   BtkTreeSelection *selection;
@@ -14786,7 +14786,7 @@ btk_tree_view_remove_widget (BtkCellEditable *cell_editable,
   btk_widget_queue_draw (BTK_WIDGET (tree_view));
 }
 
-static gboolean
+static bboolean
 btk_tree_view_start_editing (BtkTreeView *tree_view,
 			     BtkTreePath *cursor_path)
 {
@@ -14794,9 +14794,9 @@ btk_tree_view_start_editing (BtkTreeView *tree_view,
   BdkRectangle background_area;
   BdkRectangle cell_area;
   BtkCellEditable *editable_widget = NULL;
-  gchar *path_string;
-  guint flags = 0; /* can be 0, as the flags are primarily for rendering */
-  gint retval = FALSE;
+  bchar *path_string;
+  buint flags = 0; /* can be 0, as the flags are primarily for rendering */
+  bint retval = FALSE;
   BtkRBTree *cursor_tree;
   BtkRBNode *cursor_node;
 
@@ -14839,7 +14839,7 @@ btk_tree_view_start_editing (BtkTreeView *tree_view,
       retval = TRUE;
       if (editable_widget != NULL)
 	{
-	  gint left, right;
+	  bint left, right;
 	  BdkRectangle area;
 	  BtkCellRenderer *cell;
 
@@ -14872,9 +14872,9 @@ btk_tree_view_real_start_editing (BtkTreeView       *tree_view,
 				  BtkCellEditable   *cell_editable,
 				  BdkRectangle      *cell_area,
 				  BdkEvent          *event,
-				  guint              flags)
+				  buint              flags)
 {
-  gint pre_val = tree_view->priv->vadjustment->value;
+  bint pre_val = tree_view->priv->vadjustment->value;
   BtkRequisition requisition;
 
   tree_view->priv->edited_column = column;
@@ -14889,7 +14889,7 @@ btk_tree_view_real_start_editing (BtkTreeView       *tree_view,
 
   if (requisition.height < cell_area->height)
     {
-      gint diff = cell_area->height - requisition.height;
+      bint diff = cell_area->height - requisition.height;
       btk_tree_view_put (tree_view,
 			 BTK_WIDGET (cell_editable),
 			 cell_area->x, cell_area->y + diff/2,
@@ -14913,7 +14913,7 @@ btk_tree_view_real_start_editing (BtkTreeView       *tree_view,
 
 static void
 btk_tree_view_stop_editing (BtkTreeView *tree_view,
-			    gboolean     cancel_editing)
+			    bboolean     cancel_editing)
 {
   BtkTreeViewColumn *column;
   BtkCellRenderer *cell;
@@ -14960,7 +14960,7 @@ btk_tree_view_stop_editing (BtkTreeView *tree_view,
  **/
 void     
 btk_tree_view_set_hover_selection (BtkTreeView *tree_view,
-				   gboolean     hover)
+				   bboolean     hover)
 {
   hover = hover != FALSE;
 
@@ -14982,7 +14982,7 @@ btk_tree_view_set_hover_selection (BtkTreeView *tree_view,
  *
  * Since: 2.6 
  **/
-gboolean 
+bboolean 
 btk_tree_view_get_hover_selection (BtkTreeView *tree_view)
 {
   return tree_view->priv->hover_selection;
@@ -15001,7 +15001,7 @@ btk_tree_view_get_hover_selection (BtkTreeView *tree_view)
  **/
 void     
 btk_tree_view_set_hover_expand (BtkTreeView *tree_view,
-				gboolean     expand)
+				bboolean     expand)
 {
   expand = expand != FALSE;
 
@@ -15023,7 +15023,7 @@ btk_tree_view_set_hover_expand (BtkTreeView *tree_view,
  *
  * Since: 2.6 
  **/
-gboolean 
+bboolean 
 btk_tree_view_get_hover_expand (BtkTreeView *tree_view)
 {
   return tree_view->priv->hover_expand;
@@ -15042,7 +15042,7 @@ btk_tree_view_get_hover_expand (BtkTreeView *tree_view)
  **/
 void
 btk_tree_view_set_rubber_banding (BtkTreeView *tree_view,
-				  gboolean     enable)
+				  bboolean     enable)
 {
   enable = enable != FALSE;
 
@@ -15066,7 +15066,7 @@ btk_tree_view_set_rubber_banding (BtkTreeView *tree_view,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_tree_view_get_rubber_banding (BtkTreeView *tree_view)
 {
   return tree_view->priv->rubber_banding_enable;
@@ -15084,7 +15084,7 @@ btk_tree_view_get_rubber_banding (BtkTreeView *tree_view)
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_tree_view_is_rubber_banding_active (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -15130,7 +15130,7 @@ btk_tree_view_get_row_separator_func (BtkTreeView *tree_view)
 void
 btk_tree_view_set_row_separator_func (BtkTreeView                 *tree_view,
 				      BtkTreeViewRowSeparatorFunc  func,
-				      gpointer                     data,
+				      bpointer                     data,
 				      GDestroyNotify               destroy)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
@@ -15150,7 +15150,7 @@ btk_tree_view_set_row_separator_func (BtkTreeView                 *tree_view,
   
 static void
 btk_tree_view_grab_notify (BtkWidget *widget,
-			   gboolean   was_grabbed)
+			   bboolean   was_grabbed)
 {
   BtkTreeView *tree_view = BTK_TREE_VIEW (widget);
 
@@ -15236,11 +15236,11 @@ btk_tree_view_set_grid_lines (BtkTreeView           *tree_view,
       if (grid_lines != BTK_TREE_VIEW_GRID_LINES_NONE && 
 	  !priv->grid_line_width)
 	{
-	  gint8 *dash_list;
+	  bint8 *dash_list;
 
 	  btk_widget_style_get (widget,
 				"grid-line-width", &priv->grid_line_width,
-				"grid-line-pattern", (gchar *)&dash_list,
+				"grid-line-pattern", (bchar *)&dash_list,
 				NULL);
       
           if (dash_list)
@@ -15278,7 +15278,7 @@ btk_tree_view_set_grid_lines (BtkTreeView           *tree_view,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_tree_view_get_enable_tree_lines (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -15298,11 +15298,11 @@ btk_tree_view_get_enable_tree_lines (BtkTreeView *tree_view)
  */
 void
 btk_tree_view_set_enable_tree_lines (BtkTreeView *tree_view,
-				     gboolean     enabled)
+				     bboolean     enabled)
 {
   BtkTreeViewPrivate *priv;
   BtkWidget *widget;
-  gboolean was_enabled;
+  bboolean was_enabled;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -15324,10 +15324,10 @@ btk_tree_view_set_enable_tree_lines (BtkTreeView *tree_view,
       
       if (enabled && !priv->tree_line_width)
 	{
-	  gint8 *dash_list;
+	  bint8 *dash_list;
 	  btk_widget_style_get (widget,
 				"tree-line-width", &priv->tree_line_width,
-				"tree-line-pattern", (gchar *)&dash_list,
+				"tree-line-pattern", (bchar *)&dash_list,
 				NULL);
 	  
           if (dash_list)
@@ -15372,9 +15372,9 @@ btk_tree_view_set_enable_tree_lines (BtkTreeView *tree_view,
  */
 void
 btk_tree_view_set_show_expanders (BtkTreeView *tree_view,
-				  gboolean     enabled)
+				  bboolean     enabled)
 {
-  gboolean was_enabled;
+  bboolean was_enabled;
 
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -15401,7 +15401,7 @@ btk_tree_view_set_show_expanders (BtkTreeView *tree_view,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_tree_view_get_show_expanders (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), FALSE);
@@ -15424,7 +15424,7 @@ btk_tree_view_get_show_expanders (BtkTreeView *tree_view)
  */
 void
 btk_tree_view_set_level_indentation (BtkTreeView *tree_view,
-				     gint         indentation)
+				     bint         indentation)
 {
   tree_view->priv->level_indentation = indentation;
 
@@ -15443,7 +15443,7 @@ btk_tree_view_set_level_indentation (BtkTreeView *tree_view,
  *
  * Since: 2.12
  */
-gint
+bint
 btk_tree_view_get_level_indentation (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), 0);
@@ -15514,7 +15514,7 @@ btk_tree_view_set_tooltip_cell (BtkTreeView       *tree_view,
   if (column && cell)
     {
       BdkRectangle tmp;
-      gint start, width;
+      bint start, width;
 
       /* We always pass in path here, whether it is NULL or not.
        * For cells in expander columns path must be specified so that
@@ -15593,11 +15593,11 @@ btk_tree_view_set_tooltip_cell (BtkTreeView       *tree_view,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_tree_view_get_tooltip_context (BtkTreeView   *tree_view,
-				   gint          *x,
-				   gint          *y,
-				   gboolean       keyboard_tip,
+				   bint          *x,
+				   bint          *y,
+				   bboolean       keyboard_tip,
 				   BtkTreeModel **model,
 				   BtkTreePath  **path,
 				   BtkTreeIter   *iter)
@@ -15640,13 +15640,13 @@ btk_tree_view_get_tooltip_context (BtkTreeView   *tree_view,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_view_set_tooltip_query_cb (BtkWidget  *widget,
-				    gint        x,
-				    gint        y,
-				    gboolean    keyboard_tip,
+				    bint        x,
+				    bint        y,
+				    bboolean    keyboard_tip,
 				    BtkTooltip *tooltip,
-				    gpointer    data)
+				    bpointer    data)
 {
   BValue value = { 0, };
   BValue transformed = { 0, };
@@ -15713,7 +15713,7 @@ btk_tree_view_set_tooltip_query_cb (BtkWidget  *widget,
  */
 void
 btk_tree_view_set_tooltip_column (BtkTreeView *tree_view,
-			          gint         column)
+			          bint         column)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW (tree_view));
 
@@ -15753,7 +15753,7 @@ btk_tree_view_set_tooltip_column (BtkTreeView *tree_view,
  *
  * Since: 2.12
  */
-gint
+bint
 btk_tree_view_get_tooltip_column (BtkTreeView *tree_view)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW (tree_view), 0);

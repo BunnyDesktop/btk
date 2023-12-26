@@ -46,33 +46,33 @@ enum {
   PROP_DRAW_AS_RADIO
 };
 
-static gint btk_check_menu_item_expose               (BtkWidget             *widget,
+static bint btk_check_menu_item_expose               (BtkWidget             *widget,
 						      BdkEventExpose        *event);
 static void btk_check_menu_item_activate             (BtkMenuItem           *menu_item);
 static void btk_check_menu_item_toggle_size_request  (BtkMenuItem           *menu_item,
-						      gint                  *requisition);
+						      bint                  *requisition);
 static void btk_check_menu_item_draw_indicator       (BtkCheckMenuItem      *check_menu_item,
 						      BdkRectangle          *area);
 static void btk_real_check_menu_item_draw_indicator  (BtkCheckMenuItem      *check_menu_item,
 						      BdkRectangle          *area);
 static void btk_check_menu_item_set_property         (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      const BValue          *value,
 						      BParamSpec            *pspec);
 static void btk_check_menu_item_get_property         (BObject               *object,
-						      guint                  prop_id,
+						      buint                  prop_id,
 						      BValue                *value,
 						      BParamSpec            *pspec);
 
 static void btk_check_menu_item_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_check_menu_item_update                     (BtkActivatable       *activatable,
 							    BtkAction            *action,
-							    const gchar          *property_name);
+							    const bchar          *property_name);
 static void btk_check_menu_item_sync_action_properties     (BtkActivatable       *activatable,
 							    BtkAction            *action);
 
 static BtkActivatableIface *parent_activatable_iface;
-static guint                check_menu_item_signals[LAST_SIGNAL] = { 0 };
+static buint                check_menu_item_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkCheckMenuItem, btk_check_menu_item, BTK_TYPE_MENU_ITEM,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
@@ -121,7 +121,7 @@ btk_check_menu_item_class_init (BtkCheckMenuItemClass *klass)
                                                              P_("Indicator Size"),
                                                              P_("Size of check or radio indicator"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              13,
                                                              BTK_PARAM_READABLE));
 
@@ -155,7 +155,7 @@ btk_check_menu_item_activatable_interface_init (BtkActivatableIface  *iface)
 static void
 btk_check_menu_item_update (BtkActivatable *activatable,
 			    BtkAction      *action,
-			    const gchar    *property_name)
+			    const bchar    *property_name)
 {
   BtkCheckMenuItem *check_menu_item;
 
@@ -209,7 +209,7 @@ btk_check_menu_item_new (void)
 }
 
 BtkWidget*
-btk_check_menu_item_new_with_label (const gchar *label)
+btk_check_menu_item_new_with_label (const bchar *label)
 {
   return g_object_new (BTK_TYPE_CHECK_MENU_ITEM, 
 		       "label", label,
@@ -228,7 +228,7 @@ btk_check_menu_item_new_with_label (const gchar *label)
  * in @label indicate the mnemonic for the menu item.
  **/
 BtkWidget*
-btk_check_menu_item_new_with_mnemonic (const gchar *label)
+btk_check_menu_item_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_CHECK_MENU_ITEM, 
 		       "label", label,
@@ -238,7 +238,7 @@ btk_check_menu_item_new_with_mnemonic (const gchar *label)
 
 void
 btk_check_menu_item_set_active (BtkCheckMenuItem *check_menu_item,
-				gboolean          is_active)
+				bboolean          is_active)
 {
   g_return_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item));
 
@@ -257,7 +257,7 @@ btk_check_menu_item_set_active (BtkCheckMenuItem *check_menu_item,
  * 
  * Return value: %TRUE if the menu item is checked.
  */
-gboolean
+bboolean
 btk_check_menu_item_get_active (BtkCheckMenuItem *check_menu_item)
 {
   g_return_val_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item), FALSE);
@@ -267,10 +267,10 @@ btk_check_menu_item_get_active (BtkCheckMenuItem *check_menu_item)
 
 static void
 btk_check_menu_item_toggle_size_request (BtkMenuItem *menu_item,
-					 gint        *requisition)
+					 bint        *requisition)
 {
-  guint toggle_spacing;
-  guint indicator_size;
+  buint toggle_spacing;
+  buint indicator_size;
   
   g_return_if_fail (BTK_IS_CHECK_MENU_ITEM (menu_item));
   
@@ -284,7 +284,7 @@ btk_check_menu_item_toggle_size_request (BtkMenuItem *menu_item,
 
 void
 btk_check_menu_item_set_show_toggle (BtkCheckMenuItem *menu_item,
-				     gboolean          always)
+				     bboolean          always)
 {
   g_return_if_fail (BTK_IS_CHECK_MENU_ITEM (menu_item));
 
@@ -316,7 +316,7 @@ btk_check_menu_item_toggled (BtkCheckMenuItem *check_menu_item)
  **/
 void
 btk_check_menu_item_set_inconsistent (BtkCheckMenuItem *check_menu_item,
-                                      gboolean          setting)
+                                      bboolean          setting)
 {
   g_return_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item));
   
@@ -338,7 +338,7 @@ btk_check_menu_item_set_inconsistent (BtkCheckMenuItem *check_menu_item,
  * 
  * Return value: %TRUE if inconsistent
  **/
-gboolean
+bboolean
 btk_check_menu_item_get_inconsistent (BtkCheckMenuItem *check_menu_item)
 {
   g_return_val_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item), FALSE);
@@ -357,7 +357,7 @@ btk_check_menu_item_get_inconsistent (BtkCheckMenuItem *check_menu_item)
  **/
 void
 btk_check_menu_item_set_draw_as_radio (BtkCheckMenuItem *check_menu_item,
-				       gboolean          draw_as_radio)
+				       bboolean          draw_as_radio)
 {
   g_return_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item));
   
@@ -383,7 +383,7 @@ btk_check_menu_item_set_draw_as_radio (BtkCheckMenuItem *check_menu_item,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_check_menu_item_get_draw_as_radio (BtkCheckMenuItem *check_menu_item)
 {
   g_return_val_if_fail (BTK_IS_CHECK_MENU_ITEM (check_menu_item), FALSE);
@@ -398,7 +398,7 @@ btk_check_menu_item_init (BtkCheckMenuItem *check_menu_item)
   check_menu_item->always_show_toggle = TRUE;
 }
 
-static gint
+static bint
 btk_check_menu_item_expose (BtkWidget      *widget,
 			    BdkEventExpose *event)
 {
@@ -439,17 +439,17 @@ btk_real_check_menu_item_draw_indicator (BtkCheckMenuItem *check_menu_item,
   BtkWidget *widget;
   BtkStateType state_type;
   BtkShadowType shadow_type;
-  gint x, y;
+  bint x, y;
 
   widget = BTK_WIDGET (check_menu_item);
 
   if (btk_widget_is_drawable (widget))
     {
-      guint offset;
-      guint toggle_size;
-      guint toggle_spacing;
-      guint horizontal_padding;
-      guint indicator_size;
+      buint offset;
+      buint toggle_size;
+      buint toggle_spacing;
+      buint horizontal_padding;
+      buint indicator_size;
 
       btk_widget_style_get (widget,
  			    "toggle-spacing", &toggle_spacing,
@@ -512,7 +512,7 @@ btk_real_check_menu_item_draw_indicator (BtkCheckMenuItem *check_menu_item,
 
 static void
 btk_check_menu_item_get_property (BObject     *object,
-				  guint        prop_id,
+				  buint        prop_id,
 				  BValue      *value,
 				  BParamSpec  *pspec)
 {
@@ -538,7 +538,7 @@ btk_check_menu_item_get_property (BObject     *object,
 
 static void
 btk_check_menu_item_set_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  const BValue *value,
 				  BParamSpec   *pspec)
 {

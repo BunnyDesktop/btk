@@ -74,20 +74,20 @@ struct _BtkIMModule
 {
   GTypeModule parent_instance;
   
-  gboolean builtin;
+  bboolean builtin;
 
   GModule *library;
 
   void          (*list)   (const BtkIMContextInfo ***contexts,
- 		           guint                    *n_contexts);
+ 		           buint                    *n_contexts);
   void          (*init)   (GTypeModule              *module);
   void          (*exit)   (void);
-  BtkIMContext *(*create) (const gchar              *context_id);
+  BtkIMContext *(*create) (const bchar              *context_id);
 
   BtkIMContextInfo **contexts;
-  guint n_contexts;
+  buint n_contexts;
 
-  gchar *path;
+  bchar *path;
 };
 
 struct _BtkIMModuleClass 
@@ -97,13 +97,13 @@ struct _BtkIMModuleClass
 
 static GType btk_im_module_get_type (void);
 
-static gint n_loaded_contexts = 0;
+static bint n_loaded_contexts = 0;
 static GHashTable *contexts_hash = NULL;
 static GSList *modules_list = NULL;
 
 static BObjectClass *parent_class = NULL;
 
-static gboolean
+static bboolean
 btk_im_module_load (GTypeModule *module)
 {
   BtkIMModule *im_module = BTK_IM_MODULE (module);
@@ -119,13 +119,13 @@ btk_im_module_load (GTypeModule *module)
   
       /* extract symbols from the lib */
       if (!g_module_symbol (im_module->library, "im_module_init",
-			    (gpointer *)&im_module->init) ||
+			    (bpointer *)&im_module->init) ||
 	  !g_module_symbol (im_module->library, "im_module_exit", 
-			    (gpointer *)&im_module->exit) ||
+			    (bpointer *)&im_module->exit) ||
 	  !g_module_symbol (im_module->library, "im_module_list", 
-			    (gpointer *)&im_module->list) ||
+			    (bpointer *)&im_module->list) ||
 	  !g_module_symbol (im_module->library, "im_module_create", 
-			    (gpointer *)&im_module->create))
+			    (bpointer *)&im_module->create))
 	{
 	  g_warning ("%s", g_module_error());
 	  g_module_close (im_module->library);
@@ -209,8 +209,8 @@ static void
 add_module (BtkIMModule *module, GSList *infos)
 {
   GSList *tmp_list = infos;
-  gint i = 0;
-  gint n = b_slist_length (infos);
+  bint i = 0;
+  bint n = b_slist_length (infos);
   module->contexts = g_new (BtkIMContextInfo *, n);
 
   while (tmp_list)
@@ -239,7 +239,7 @@ add_module (BtkIMModule *module, GSList *infos)
 #ifdef G_OS_WIN32
 
 static void
-correct_libdir_prefix (gchar **path)
+correct_libdir_prefix (bchar **path)
 {
   /* BTK_LIBDIR here is supposed to still have the definition from
    * Makefile.am, i.e. the build-time value. Do *not* include btkprivate.h
@@ -255,23 +255,23 @@ correct_libdir_prefix (gchar **path)
        * builder's machine. Replace the path with the real
        * one on this machine.
        */
-      extern const gchar *_btk_get_libdir ();
-      gchar *tem = *path;
+      extern const bchar *_btk_get_libdir ();
+      bchar *tem = *path;
       *path = g_strconcat (_btk_get_libdir (), tem + strlen (BTK_LIBDIR), NULL);
       g_free (tem);
     }
 }
 
 static void
-correct_localedir_prefix (gchar **path)
+correct_localedir_prefix (bchar **path)
 {
   /* As above, but for BTK_LOCALEDIR. Use separate function in case
    * BTK_LOCALEDIR isn't a subfolder of BTK_LIBDIR.
    */
   if (strncmp (*path, BTK_LOCALEDIR, strlen (BTK_LOCALEDIR)) == 0)
     {
-      extern const gchar *_btk_get_localedir ();
-      gchar *tem = *path;
+      extern const bchar *_btk_get_localedir ();
+      bchar *tem = *path;
       *path = g_strconcat (_btk_get_localedir (), tem + strlen (BTK_LOCALEDIR), NULL);
       g_free (tem);
     }
@@ -280,7 +280,7 @@ correct_localedir_prefix (gchar **path)
 
 
 B_GNUC_UNUSED static BtkIMModule *
-add_builtin_module (const gchar             *module_name,
+add_builtin_module (const bchar             *module_name,
 		    const BtkIMContextInfo **contexts,
 		    int                      n_contexts)
 {
@@ -314,9 +314,9 @@ btk_im_module_initialize (void)
 {
   GString *line_buf = g_string_new (NULL);
   GString *tmp_buf = g_string_new (NULL);
-  gchar *filename = btk_rc_get_im_module_file();
+  bchar *filename = btk_rc_get_im_module_file();
   FILE *file;
-  gboolean have_error = FALSE;
+  bboolean have_error = FALSE;
 
   BtkIMModule *module = NULL;
   GSList *infos = NULL;
@@ -328,10 +328,10 @@ btk_im_module_initialize (void)
     const BtkIMContextInfo **contexts;					\
     int n_contexts;							\
     extern void _btk_immodule_ ## m ## _list (const BtkIMContextInfo ***contexts, \
-					      guint                    *n_contexts); \
+					      buint                    *n_contexts); \
     extern void _btk_immodule_ ## m ## _init (GTypeModule *module);	\
     extern void _btk_immodule_ ## m ## _exit (void);			\
-    extern BtkIMContext *_btk_immodule_ ## m ## _create (const gchar *context_id); \
+    extern BtkIMContext *_btk_immodule_ ## m ## _create (const bchar *context_id); \
 									\
     _btk_immodule_ ## m ## _list (&contexts, &n_contexts);		\
     module = add_builtin_module (#m, contexts, n_contexts);		\
@@ -495,7 +495,7 @@ btk_im_module_initialize (void)
   g_free (filename);
 }
 
-static gint
+static bint
 compare_btkimcontextinfo_name(const BtkIMContextInfo **a,
 			      const BtkIMContextInfo **b)
 {
@@ -514,7 +514,7 @@ compare_btkimcontextinfo_name(const BtkIMContextInfo **a,
  */
 void
 _btk_im_module_list (const BtkIMContextInfo ***contexts,
-		     guint                    *n_contexts)
+		     buint                    *n_contexts)
 {
   int n = 0;
 
@@ -535,7 +535,7 @@ _btk_im_module_list (const BtkIMContextInfo ***contexts,
   };
 
 #ifdef G_OS_WIN32
-  static gboolean beenhere = FALSE;
+  static bboolean beenhere = FALSE;
 #endif
 
   if (!contexts_hash)
@@ -592,7 +592,7 @@ _btk_im_module_list (const BtkIMContextInfo ***contexts,
  *     if that could not be created, a newly created BtkIMContextSimple.
  */
 BtkIMContext *
-_btk_im_module_create (const gchar *context_id)
+_btk_im_module_create (const bchar *context_id)
 {
   BtkIMModule *im_module;
   BtkIMContext *context = NULL;
@@ -633,10 +633,10 @@ _btk_im_module_create (const gchar *context_id)
  * 'en', 'en_UK' against 'en_US' => 2
  *  all locales, against '*' 	 => 1
  */
-static gint
-match_locale (const gchar *locale,
-	      const gchar *against,
-	      gint         against_len)
+static bint
+match_locale (const bchar *locale,
+	      const bchar *against,
+	      bint         against_len)
 {
   if (strcmp (against, "*") == 0)
     return 1;
@@ -650,8 +650,8 @@ match_locale (const gchar *locale,
   return 0;
 }
 
-static const gchar *
-lookup_immodule (gchar **immodules_list)
+static const bchar *
+lookup_immodule (bchar **immodules_list)
 {
   while (immodules_list && *immodules_list)
     {
@@ -659,8 +659,8 @@ lookup_immodule (gchar **immodules_list)
         return SIMPLE_ID;
       else
 	{
-	  gboolean found;
-	  gchar *context_id;
+	  bboolean found;
+	  bchar *context_id;
 	  found = g_hash_table_lookup_extended (contexts_hash, *immodules_list,
 						&context_id, NULL);
 	  if (found)
@@ -681,15 +681,15 @@ lookup_immodule (gchar **immodules_list)
  * 
  * Return value: the context ID (will never be %NULL)
  */
-const gchar *
+const bchar *
 _btk_im_module_get_default_context_id (BdkWindow *client_window)
 {
   GSList *tmp_list;
-  const gchar *context_id = NULL;
-  gint best_goodness = 0;
-  gint i;
-  gchar *tmp_locale, *tmp, **immodules;
-  const gchar *envvar;
+  const bchar *context_id = NULL;
+  bint best_goodness = 0;
+  bint i;
+  bchar *tmp_locale, *tmp, **immodules;
+  const bchar *envvar;
   BdkScreen *screen;
   BtkSettings *settings;
       
@@ -743,11 +743,11 @@ _btk_im_module_get_default_context_id (BdkWindow *client_window)
      
       for (i = 0; i < module->n_contexts; i++)
 	{
-	  const gchar *p = module->contexts[i]->default_locales;
+	  const bchar *p = module->contexts[i]->default_locales;
 	  while (p)
 	    {
-	      const gchar *q = strchr (p, ':');
-	      gint goodness = match_locale (tmp_locale, p, q ? q - p : strlen (p));
+	      const bchar *q = strchr (p, ':');
+	      bint goodness = match_locale (tmp_locale, p, q ? q - p : strlen (p));
 
 	      if (goodness > best_goodness)
 		{

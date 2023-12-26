@@ -69,7 +69,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkRadioAction.html#btk-radio-action-get-current-value" title="btk_radio_action_get_current_value ()">btk_radio_action_get_current_value</a> <span class="c_punctuation">()</span>
@@ -169,11 +169,11 @@ BtkRadioAction implements
 <div class="refsect2">
 <a name="btk-radio-action-new"></a><h3>btk_radio_action_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="returnvalue">BtkRadioAction</span></a> *
-btk_radio_action_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *tooltip</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> value</code></em>);</pre>
+btk_radio_action_new (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *tooltip</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> value</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="type">BtkRadioAction</span></a> object. To add the action to
 a <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> and set the accelerator for the action,
 call <a class="link" href="BtkActionGroup.html#btk-action-group-add-action-with-accel" title="btk_action_group_add_action_with_accel ()"><code class="function">btk_action_group_add_action_with_accel()</code></a>.</p>
@@ -317,7 +317,7 @@ btk_radio_action_set_group (<em class="parameter"><code><a class="link" href="Bt
 <hr>
 <div class="refsect2">
 <a name="btk-radio-action-get-current-value"></a><h3>btk_radio_action_get_current_value ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_radio_action_get_current_value (<em class="parameter"><code><a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="type">BtkRadioAction</span></a> *action</code></em>);</pre>
 <p>Obtains the value property of the currently active member of 
 the group to which <em class="parameter"><code>action</code></em>
@@ -348,7 +348,7 @@ the group to which <em class="parameter"><code>action</code></em>
 <a name="btk-radio-action-set-current-value"></a><h3>btk_radio_action_set_current_value ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_radio_action_set_current_value (<em class="parameter"><code><a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="type">BtkRadioAction</span></a> *action</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> current_value</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> current_value</code></em>);</pre>
 <p>Sets the currently active group member to the member with value
 property <em class="parameter"><code>current_value</code></em>
 .</p>
@@ -428,7 +428,7 @@ for convenient ways to get and set this property.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="type">BtkRadioAction</span></a> *action,
                <a class="link" href="BtkRadioAction.html" title="BtkRadioAction"><span class="type">BtkRadioAction</span></a> *current,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::changed signal is emitted on every member of a radio group when the
 active member is changed. The signal gets emitted after the ::activate signals
 for the previous and current active members.</p>

@@ -55,17 +55,17 @@ struct _BtkMenuItem
   BtkWidget *GSEAL (submenu);
   BdkWindow *GSEAL (event_window);
 
-  guint16 GSEAL (toggle_size);
-  guint16 GSEAL (accelerator_width);
-  gchar  *GSEAL (accel_path);
+  buint16 GSEAL (toggle_size);
+  buint16 GSEAL (accelerator_width);
+  bchar  *GSEAL (accel_path);
 
-  guint GSEAL (show_submenu_indicator) : 1;
-  guint GSEAL (submenu_placement) : 1;
-  guint GSEAL (submenu_direction) : 1;
-  guint GSEAL (right_justify): 1;
-  guint GSEAL (timer_from_keypress) : 1;
-  guint GSEAL (from_menubar) : 1;
-  guint GSEAL (timer);
+  buint GSEAL (show_submenu_indicator) : 1;
+  buint GSEAL (submenu_placement) : 1;
+  buint GSEAL (submenu_direction) : 1;
+  buint GSEAL (right_justify): 1;
+  buint GSEAL (timer_from_keypress) : 1;
+  buint GSEAL (from_menubar) : 1;
+  buint GSEAL (timer);
 };
 
 struct _BtkMenuItemClass
@@ -78,17 +78,17 @@ struct _BtkMenuItemClass
    * a menu with the keyboard, <Space> doesn't hide, but
    * <Return> does.
    */
-  guint hide_on_activate : 1;
+  buint hide_on_activate : 1;
   
   void (* activate)             (BtkMenuItem *menu_item);
   void (* activate_item)        (BtkMenuItem *menu_item);
   void (* toggle_size_request)  (BtkMenuItem *menu_item,
-				 gint        *requisition);
+				 bint        *requisition);
   void (* toggle_size_allocate) (BtkMenuItem *menu_item,
-				 gint         allocation);
+				 bint         allocation);
   void (* set_label)            (BtkMenuItem *menu_item,
-				 const gchar *label);
-  const gchar *(* get_label) (BtkMenuItem *menu_item);
+				 const bchar *label);
+  const bchar *(* get_label) (BtkMenuItem *menu_item);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -98,8 +98,8 @@ struct _BtkMenuItemClass
 
 GType	   btk_menu_item_get_type	      (void) B_GNUC_CONST;
 BtkWidget* btk_menu_item_new                  (void);
-BtkWidget* btk_menu_item_new_with_label       (const gchar         *label);
-BtkWidget* btk_menu_item_new_with_mnemonic    (const gchar         *label);
+BtkWidget* btk_menu_item_new_with_label       (const bchar         *label);
+BtkWidget* btk_menu_item_new_with_mnemonic    (const bchar         *label);
 void       btk_menu_item_set_submenu          (BtkMenuItem         *menu_item,
 					       BtkWidget           *submenu);
 BtkWidget* btk_menu_item_get_submenu          (BtkMenuItem         *menu_item);
@@ -107,32 +107,32 @@ void       btk_menu_item_select               (BtkMenuItem         *menu_item);
 void       btk_menu_item_deselect             (BtkMenuItem         *menu_item);
 void       btk_menu_item_activate             (BtkMenuItem         *menu_item);
 void       btk_menu_item_toggle_size_request  (BtkMenuItem         *menu_item,
-					       gint                *requisition);
+					       bint                *requisition);
 void       btk_menu_item_toggle_size_allocate (BtkMenuItem         *menu_item,
-					       gint                 allocation);
+					       bint                 allocation);
 void       btk_menu_item_set_right_justified  (BtkMenuItem         *menu_item,
-					       gboolean             right_justified);
-gboolean   btk_menu_item_get_right_justified  (BtkMenuItem         *menu_item);
+					       bboolean             right_justified);
+bboolean   btk_menu_item_get_right_justified  (BtkMenuItem         *menu_item);
 void	   btk_menu_item_set_accel_path	      (BtkMenuItem	   *menu_item,
-					       const gchar	   *accel_path);
-const gchar* btk_menu_item_get_accel_path     (BtkMenuItem    *menu_item);
+					       const bchar	   *accel_path);
+const bchar* btk_menu_item_get_accel_path     (BtkMenuItem    *menu_item);
 
 void       btk_menu_item_set_label            (BtkMenuItem         *menu_item,
- 					       const gchar         *label);
-const gchar *btk_menu_item_get_label          (BtkMenuItem         *menu_item);
+ 					       const bchar         *label);
+const bchar *btk_menu_item_get_label          (BtkMenuItem         *menu_item);
 
 void       btk_menu_item_set_use_underline    (BtkMenuItem         *menu_item,
- 					       gboolean             setting);
-gboolean   btk_menu_item_get_use_underline    (BtkMenuItem         *menu_item);
+ 					       bboolean             setting);
+bboolean   btk_menu_item_get_use_underline    (BtkMenuItem         *menu_item);
 
 /* private */
 void	  _btk_menu_item_refresh_accel_path   (BtkMenuItem	   *menu_item,
-					       const gchar	   *prefix,
+					       const bchar	   *prefix,
 					       BtkAccelGroup	   *accel_group,
-					       gboolean		    group_changed);
-gboolean  _btk_menu_item_is_selectable        (BtkWidget           *menu_item);
+					       bboolean		    group_changed);
+bboolean  _btk_menu_item_is_selectable        (BtkWidget           *menu_item);
 void      _btk_menu_item_popup_submenu        (BtkWidget           *menu_item,
-                                               gboolean             with_delay);
+                                               bboolean             with_delay);
 void      _btk_menu_item_popdown_submenu      (BtkWidget           *menu_item);
 
 #ifndef BTK_DISABLE_DEPRECATED

@@ -120,9 +120,9 @@ static char * WheelbarrowFull_xpm[] = {
 
 
 /* When invoked (via signal delete_event), terminates the application */
-gint close_application( BtkWidget *widget,
+bint close_application( BtkWidget *widget,
                         BdkEvent  *event,
-                        gpointer   data )
+                        bpointer   data )
 {
     btk_main_quit();
     return(FALSE);

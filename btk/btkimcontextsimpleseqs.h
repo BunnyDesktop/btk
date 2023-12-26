@@ -66,7 +66,7 @@
  * that depend on the locale or selected input method.
  */
 
-static const guint16 btk_compose_seqs_compact[] = {
+static const buint16 btk_compose_seqs_compact[] = {
 BDK_dead_stroke, 144, 232, 241, 241, 241, 
 BDK_Greek_accentdieresis, 241, 245, 245, 245, 245, 
 BDK_dead_grave, 245, 307, 394, 606, 606, 

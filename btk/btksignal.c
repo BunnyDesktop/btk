@@ -31,14 +31,14 @@
 
 
 /* --- functions --- */
-guint
-btk_signal_newv (const gchar         *name,
+buint
+btk_signal_newv (const bchar         *name,
 		 BtkSignalRunType     signal_flags,
 		 GType                object_type,
-		 guint                function_offset,
+		 buint                function_offset,
 		 GSignalCMarshaller   marshaller,
 		 GType                return_val,
-		 guint                n_params,
+		 buint                n_params,
 		 GType               *params)
 {
   GClosure *closure;
@@ -51,23 +51,23 @@ btk_signal_newv (const gchar         *name,
 			NULL, NULL, marshaller, return_val, n_params, params);
 }
 
-guint
-btk_signal_new (const gchar         *name,
+buint
+btk_signal_new (const bchar         *name,
 		BtkSignalRunType     signal_flags,
 		GType                object_type,
-		guint                function_offset,
+		buint                function_offset,
 		GSignalCMarshaller   marshaller,
 		GType                return_val,
-		guint                n_params,
+		buint                n_params,
 		...)
 {
   GType *params;
-  guint signal_id;
+  buint signal_id;
   
   if (n_params)
     {
       va_list args;
-      guint i;
+      buint i;
       
       params = g_new (GType, n_params);
       va_start (args, n_params);
@@ -92,7 +92,7 @@ btk_signal_new (const gchar         *name,
 
 void
 btk_signal_emit_stop_by_name (BtkObject   *object,
-			      const gchar *name)
+			      const bchar *name)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   
@@ -101,7 +101,7 @@ btk_signal_emit_stop_by_name (BtkObject   *object,
 
 void
 btk_signal_connect_object_while_alive (BtkObject    *object,
-				       const gchar  *name,
+				       const bchar  *name,
 				       GCallback     func,
 				       BtkObject    *alive_object)
 {
@@ -115,9 +115,9 @@ btk_signal_connect_object_while_alive (BtkObject    *object,
 
 void
 btk_signal_connect_while_alive (BtkObject    *object,
-				const gchar  *name,
+				const bchar  *name,
 				GCallback     func,
-				gpointer      func_data,
+				bpointer      func_data,
 				BtkObject    *alive_object)
 {
   GClosure *closure;
@@ -132,15 +132,15 @@ btk_signal_connect_while_alive (BtkObject    *object,
 				  FALSE);
 }
 
-gulong
+bulong
 btk_signal_connect_full (BtkObject           *object,
-			 const gchar         *name,
+			 const bchar         *name,
 			 GCallback            func,
 			 BtkCallbackMarshal   unsupported,
-			 gpointer             data,
+			 bpointer             data,
 			 GDestroyNotify       destroy_func,
-			 gint                 object_signal,
-			 gint                 after)
+			 bint                 object_signal,
+			 bint                 after)
 {
   g_return_val_if_fail (BTK_IS_OBJECT (object), 0);
   g_return_val_if_fail (unsupported == NULL, 0);
@@ -158,19 +158,19 @@ btk_signal_connect_full (BtkObject           *object,
 void
 btk_signal_compat_matched (BtkObject       *object,
 			   GCallback        func,
-			   gpointer         data,
+			   bpointer         data,
 			   GSignalMatchType match,
-			   guint            action)
+			   buint            action)
 {
-  guint n_handlers;
+  buint n_handlers;
   
   g_return_if_fail (BTK_IS_OBJECT (object));
 
   switch (action)
     {
-    case 0:  n_handlers = g_signal_handlers_disconnect_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
-    case 1:  n_handlers = g_signal_handlers_block_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
-    case 2:  n_handlers = g_signal_handlers_unblock_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
+    case 0:  n_handlers = g_signal_handlers_disconnect_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
+    case 1:  n_handlers = g_signal_handlers_block_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
+    case 2:  n_handlers = g_signal_handlers_unblock_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
     default: n_handlers = 0;										 break;
     }
   
@@ -179,7 +179,7 @@ btk_signal_compat_matched (BtkObject       *object,
 	       B_OBJECT_TYPE_NAME (object), object, func, data);
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_to_value (BtkArg *arg,
 		  BValue *value)
 {
@@ -206,7 +206,7 @@ btk_arg_to_value (BtkArg *arg,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_static_to_value (BtkArg *arg,
 			 BValue *value)
 {
@@ -233,10 +233,10 @@ btk_arg_static_to_value (BtkArg *arg,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_set_from_value (BtkArg  *arg,
 			BValue  *value,
-			gboolean copy_string)
+			bboolean copy_string)
 {
   switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
@@ -265,10 +265,10 @@ btk_arg_set_from_value (BtkArg  *arg,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_argloc_set_from_value (BtkArg  *arg,
 			   BValue  *value,
-			   gboolean copy_string)
+			   bboolean copy_string)
 {
   switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
@@ -299,13 +299,13 @@ btk_argloc_set_from_value (BtkArg  *arg,
 
 void
 btk_signal_emitv (BtkObject *object,
-		  guint      signal_id,
+		  buint      signal_id,
 		  BtkArg    *args)
 {
   GSignalQuery query;
   BValue params[SIGNAL_MAX_PARAMS + 1] = { { 0, }, };
   BValue rvalue = { 0, };
-  guint i;
+  buint i;
   
   g_return_if_fail (BTK_IS_OBJECT (object));
   
@@ -349,7 +349,7 @@ btk_signal_emitv (BtkObject *object,
 
 void
 btk_signal_emit (BtkObject *object,
-		 guint      signal_id,
+		 buint      signal_id,
 		 ...)
 {
   va_list var_args;
@@ -363,7 +363,7 @@ btk_signal_emit (BtkObject *object,
 
 void
 btk_signal_emit_by_name (BtkObject   *object,
-			 const gchar *name,
+			 const bchar *name,
 			 ...)
 {
   GSignalQuery query;
@@ -382,7 +382,7 @@ btk_signal_emit_by_name (BtkObject   *object,
 
 void
 btk_signal_emitv_by_name (BtkObject   *object,
-			  const gchar *name,
+			  const bchar *name,
 			  BtkArg      *args)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));

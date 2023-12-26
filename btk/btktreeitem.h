@@ -59,7 +59,7 @@ struct _BtkTreeItem
 
   GList *pixmaps;		/* pixmap node for this items color depth */
 
-  guint expanded : 1;
+  buint expanded : 1;
 };
 
 struct _BtkTreeItemClass
@@ -73,7 +73,7 @@ struct _BtkTreeItemClass
 
 GType      btk_tree_item_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_tree_item_new            (void);
-BtkWidget* btk_tree_item_new_with_label (const gchar *label);
+BtkWidget* btk_tree_item_new_with_label (const bchar *label);
 void       btk_tree_item_set_subtree    (BtkTreeItem *tree_item,
 					 BtkWidget   *subtree);
 void       btk_tree_item_remove_subtree (BtkTreeItem *tree_item);

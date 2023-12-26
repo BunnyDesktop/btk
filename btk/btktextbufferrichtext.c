@@ -31,25 +31,25 @@
 
 typedef struct
 {
-  gchar          *mime_type;
-  gboolean        can_create_tags;
+  bchar          *mime_type;
+  bboolean        can_create_tags;
   BdkAtom         atom;
-  gpointer        function;
-  gpointer        user_data;
+  bpointer        function;
+  bpointer        user_data;
   GDestroyNotify  user_data_destroy;
 } BtkRichTextFormat;
 
 
 static GList   * register_format   (GList             *formats,
-                                    const gchar       *mime_type,
-                                    gpointer           function,
-                                    gpointer           user_data,
+                                    const bchar       *mime_type,
+                                    bpointer           function,
+                                    bpointer           user_data,
                                     GDestroyNotify     user_data_destroy,
                                     BdkAtom           *atom);
 static GList   * unregister_format (GList             *formats,
                                     BdkAtom            atom);
 static BdkAtom * get_formats       (GList             *formats,
-                                    gint              *n_formats);
+                                    bint              *n_formats);
 static void      free_format       (BtkRichTextFormat *format);
 static void      free_format_list  (GList             *formats);
 static GQuark    serialize_quark   (void);
@@ -74,9 +74,9 @@ static GQuark    deserialize_quark (void);
  **/
 BdkAtom
 btk_text_buffer_register_serialize_format (BtkTextBuffer              *buffer,
-                                           const gchar                *mime_type,
+                                           const bchar                *mime_type,
                                            BtkTextBufferSerializeFunc  function,
-                                           gpointer                    user_data,
+                                           bpointer                    user_data,
                                            GDestroyNotify              user_data_destroy)
 {
   GList   *formats;
@@ -89,7 +89,7 @@ btk_text_buffer_register_serialize_format (BtkTextBuffer              *buffer,
   formats = g_object_steal_qdata (B_OBJECT (buffer), serialize_quark ());
 
   formats = register_format (formats, mime_type,
-                             (gpointer) function,
+                             (bpointer) function,
                              user_data, user_data_destroy,
                              &atom);
 
@@ -131,9 +131,9 @@ btk_text_buffer_register_serialize_format (BtkTextBuffer              *buffer,
  **/
 BdkAtom
 btk_text_buffer_register_serialize_tagset (BtkTextBuffer *buffer,
-                                           const gchar   *tagset_name)
+                                           const bchar   *tagset_name)
 {
-  gchar   *mime_type = "application/x-btk-text-buffer-rich-text";
+  bchar   *mime_type = "application/x-btk-text-buffer-rich-text";
   BdkAtom  format;
 
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
@@ -172,9 +172,9 @@ btk_text_buffer_register_serialize_tagset (BtkTextBuffer *buffer,
  **/
 BdkAtom
 btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffer,
-                                             const gchar                  *mime_type,
+                                             const bchar                  *mime_type,
                                              BtkTextBufferDeserializeFunc  function,
-                                             gpointer                      user_data,
+                                             bpointer                      user_data,
                                              GDestroyNotify                user_data_destroy)
 {
   GList   *formats;
@@ -187,7 +187,7 @@ btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffe
   formats = g_object_steal_qdata (B_OBJECT (buffer), deserialize_quark ());
 
   formats = register_format (formats, mime_type,
-                             (gpointer) function,
+                             (bpointer) function,
                              user_data, user_data_destroy,
                              &atom);
 
@@ -215,9 +215,9 @@ btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffe
  **/
 BdkAtom
 btk_text_buffer_register_deserialize_tagset (BtkTextBuffer *buffer,
-                                             const gchar   *tagset_name)
+                                             const bchar   *tagset_name)
 {
-  gchar   *mime_type = "application/x-btk-text-buffer-rich-text";
+  bchar   *mime_type = "application/x-btk-text-buffer-rich-text";
   BdkAtom  format;
 
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
@@ -327,11 +327,11 @@ btk_text_buffer_unregister_deserialize_format (BtkTextBuffer *buffer,
 void
 btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer *buffer,
                                                  BdkAtom        format,
-                                                 gboolean       can_create_tags)
+                                                 bboolean       can_create_tags)
 {
   GList *formats;
   GList *list;
-  gchar *format_name;
+  bchar *format_name;
 
   g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
   g_return_if_fail (format != BDK_NONE);
@@ -368,13 +368,13 @@ btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer *buffer,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer *buffer,
                                                  BdkAtom        format)
 {
   GList *formats;
   GList *list;
-  gchar *format_name;
+  bchar *format_name;
 
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), FALSE);
   g_return_val_if_fail (format != BDK_NONE, FALSE);
@@ -416,7 +416,7 @@ btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer *buffer,
  **/
 BdkAtom *
 btk_text_buffer_get_serialize_formats (BtkTextBuffer *buffer,
-                                       gint          *n_formats)
+                                       bint          *n_formats)
 {
   GList *formats;
 
@@ -444,7 +444,7 @@ btk_text_buffer_get_serialize_formats (BtkTextBuffer *buffer,
  **/
 BdkAtom *
 btk_text_buffer_get_deserialize_formats (BtkTextBuffer *buffer,
-                                         gint          *n_formats)
+                                         bint          *n_formats)
 {
   GList *formats;
 
@@ -477,13 +477,13 @@ btk_text_buffer_get_deserialize_formats (BtkTextBuffer *buffer,
  *
  * Since: 2.10
  **/
-guint8 *
+buint8 *
 btk_text_buffer_serialize (BtkTextBuffer     *register_buffer,
                            BtkTextBuffer     *content_buffer,
                            BdkAtom            format,
                            const BtkTextIter *start,
                            const BtkTextIter *end,
-                           gsize             *length)
+                           bsize             *length)
 {
   GList *formats;
   GList *list;
@@ -537,13 +537,13 @@ btk_text_buffer_serialize (BtkTextBuffer     *register_buffer,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
                              BtkTextBuffer  *content_buffer,
                              BdkAtom         format,
                              BtkTextIter    *iter,
-                             const guint8   *data,
-                             gsize           length,
+                             const buint8   *data,
+                             bsize           length,
                              GError        **error)
 {
   GList    *formats;
@@ -567,7 +567,7 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
       if (fmt->atom == format)
         {
           BtkTextBufferDeserializeFunc function = fmt->function;
-          gboolean                     success;
+          bboolean                     success;
           GSList                      *split_tags;
           GSList                      *list;
           BtkTextMark                 *left_end        = NULL;
@@ -719,9 +719,9 @@ btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
 
 static GList *
 register_format (GList          *formats,
-                 const gchar    *mime_type,
-                 gpointer        function,
-                 gpointer        user_data,
+                 const bchar    *mime_type,
+                 bpointer        function,
+                 bpointer        user_data,
                  GDestroyNotify  user_data_destroy,
                  BdkAtom        *atom)
 {
@@ -766,11 +766,11 @@ unregister_format (GList   *formats,
 
 static BdkAtom *
 get_formats (GList *formats,
-             gint  *n_formats)
+             bint  *n_formats)
 {
   BdkAtom *array;
   GList   *list;
-  gint     i;
+  bint     i;
 
   *n_formats = g_list_length (formats);
   array = g_new0 (BdkAtom, *n_formats);

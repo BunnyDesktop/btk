@@ -24,8 +24,8 @@
 int main (int argc, char *argv[])
 {
 	BtkWidget *window, *box, *button, *hbox;
-        gchar *text;
-	gboolean use_underline, use_stock;
+        bchar *text;
+	bboolean use_underline, use_stock;
 	BtkWidget *image, *label;
 
 	btk_init (&argc, &argv);

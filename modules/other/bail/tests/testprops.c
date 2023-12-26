@@ -10,19 +10,19 @@ static void _check_properties (BatkObject *obj);
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 static void _state_changed (BatkObject   *obj,
-                            const gchar *name,
-                            gboolean    set);
+                            const bchar *name,
+                            bboolean    set);
 static void _selection_changed (BatkObject   *obj);
 static void _visible_data_changed (BatkObject   *obj);
 static void _model_changed (BatkObject   *obj);
 static void _create_event_watcher (void);
 
-static guint id;
+static buint id;
 
 static void 
 _state_changed (BatkObject   *obj,
-                const gchar *name,
-                gboolean    set)
+                const bchar *name,
+                bboolean    set)
 {
   g_print ("_state_changed: %s: state %s %s\n", 
            g_type_name (B_OBJECT_TYPE (obj)),
@@ -32,7 +32,7 @@ _state_changed (BatkObject   *obj,
 static void 
 _selection_changed (BatkObject   *obj)
 {
-  gchar *type;
+  bchar *type;
 
   if (BATK_IS_TEXT (obj))
     type = "text";
@@ -66,8 +66,8 @@ static void
 _property_change_handler (BatkObject   *obj,
                           BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -117,7 +117,7 @@ _property_change_handler (BatkObject   *obj,
 static void 
 _traverse_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
   BatkRole role;
  
   role = batk_object_get_role (obj);
@@ -142,8 +142,8 @@ static void
 _add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
-  gboolean found = FALSE;
-  gint i;
+  bboolean found = FALSE;
+  bint i;
 
   /*
    * We create a property handler for each object if one was not associated 
@@ -210,7 +210,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testprops Module loaded\n");
 

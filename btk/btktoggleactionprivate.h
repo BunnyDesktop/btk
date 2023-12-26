@@ -36,8 +36,8 @@
 
 struct _BtkToggleActionPrivate 
 {
-  guint active        : 1;
-  guint draw_as_radio : 1;
+  buint active        : 1;
+  buint draw_as_radio : 1;
 };
 
 #endif  /* __BTK_TOGGLE_ACTION_PRIVATE_H__ */

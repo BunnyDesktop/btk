@@ -144,15 +144,15 @@ enum {
 };
 static void btk_text_tag_finalize     (BObject         *object);
 static void btk_text_tag_set_property (BObject         *object,
-                                       guint            prop_id,
+                                       buint            prop_id,
                                        const BValue    *value,
                                        BParamSpec      *pspec);
 static void btk_text_tag_get_property (BObject         *object,
-                                       guint            prop_id,
+                                       buint            prop_id,
                                        BValue          *value,
                                        BParamSpec      *pspec);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkTextTag, btk_text_tag, B_TYPE_OBJECT)
 
@@ -309,7 +309,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Font weight"),
                                                      P_("Font weight as an integer, see predefined values in BangoWeight; for example, BANGO_WEIGHT_BOLD"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      BANGO_WEIGHT_NORMAL,
                                                      BTK_PARAM_READWRITE));
   
@@ -329,7 +329,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Font size"),
                                                      P_("Font size in Bango units"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -339,7 +339,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                         P_("Font scale"),
                                                         P_("Font size as a scale factor relative to the default font size. This properly adapts to theme changes etc. so is recommended. Bango predefines some scales such as BANGO_SCALE_X_LARGE"),
                                                         0.0,
-                                                        G_MAXDOUBLE,
+                                                        B_MAXDOUBLE,
                                                         1.0,
                                                         BTK_PARAM_READWRITE));
   
@@ -349,7 +349,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                         P_("Font points"),
                                                         P_("Font size in points"),
                                                         0.0,
-                                                        G_MAXDOUBLE,
+                                                        B_MAXDOUBLE,
                                                         0.0,
                                                         BTK_PARAM_READWRITE));  
 
@@ -386,7 +386,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Left margin"),
                                                      P_("Width of the left margin in pixels"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -396,7 +396,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Right margin"),
                                                      P_("Width of the right margin in pixels"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -406,8 +406,8 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                    g_param_spec_int ("indent",
                                                      P_("Indent"),
                                                      P_("Amount to indent the paragraph, in pixels"),
-                                                     G_MININT,
-                                                     G_MAXINT,
+                                                     B_MININT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -417,8 +417,8 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                    g_param_spec_int ("rise",
                                                      P_("Rise"),
                                                      P_("Offset of text above the baseline (below the baseline if rise is negative) in Bango units"),
-						     G_MININT,
-                                                     G_MAXINT,
+						     B_MININT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -428,7 +428,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Pixels above lines"),
                                                      P_("Pixels of blank space above paragraphs"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
   
@@ -438,7 +438,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Pixels below lines"),
                                                      P_("Pixels of blank space below paragraphs"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -448,7 +448,7 @@ btk_text_tag_class_init (BtkTextTagClass *klass)
                                                      P_("Pixels inside wrap"),
                                                      P_("Pixels of blank space between wrapped lines in a paragraph"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -715,7 +715,7 @@ btk_text_tag_init (BtkTextTag *text_tag)
  * Return value: a new #BtkTextTag
  **/
 BtkTextTag*
-btk_text_tag_new (const gchar *name)
+btk_text_tag_new (const bchar *name)
 {
   BtkTextTag *tag;
 
@@ -821,7 +821,7 @@ set_pg_bg_color (BtkTextTag *tag, BdkColor *color)
 }
 
 static BangoFontMask
-get_property_font_set_mask (guint prop_id)
+get_property_font_set_mask (buint prop_id)
 {
   switch (prop_id)
     {
@@ -869,7 +869,7 @@ set_font_desc_fields (BangoFontDescription *desc,
     bango_font_description_set_stretch (desc, bango_font_description_get_stretch (desc));
   if (to_set & BANGO_FONT_MASK_SIZE)
     {
-      gint size = bango_font_description_get_size (desc);
+      bint size = bango_font_description_get_size (desc);
       if (size <= 0)
 	{
 	  size = 10 * BANGO_SCALE;
@@ -980,12 +980,12 @@ btk_text_tag_ensure_font (BtkTextTag *text_tag)
 
 static void
 btk_text_tag_set_property (BObject      *object,
-                           guint         prop_id,
+                           buint         prop_id,
                            const BValue *value,
                            BParamSpec   *pspec)
 {
   BtkTextTag *text_tag;
-  gboolean size_changed = FALSE;
+  bboolean size_changed = FALSE;
 
   text_tag = BTK_TEXT_TAG (object);
 
@@ -1087,7 +1087,7 @@ btk_text_tag_set_property (BObject      *object,
     case PROP_FONT:
       {
         BangoFontDescription *font_desc = NULL;
-        const gchar *name;
+        const bchar *name;
 
         name = b_value_get_string (value);
 
@@ -1485,7 +1485,7 @@ btk_text_tag_set_property (BObject      *object,
 
 static void
 btk_text_tag_get_property (BObject      *object,
-                           guint         prop_id,
+                           buint         prop_id,
                            BValue       *value,
                            BParamSpec   *pspec)
 {
@@ -1519,7 +1519,7 @@ btk_text_tag_get_property (BObject      *object,
 
     case PROP_FONT:
         {
-          gchar *str;
+          bchar *str;
 
 	  btk_text_tag_ensure_font (tag);
 	  
@@ -1771,13 +1771,13 @@ btk_text_tag_get_property (BObject      *object,
  */
 
 typedef struct {
-  gint high;
-  gint low;
-  gint delta;
+  bint high;
+  bint low;
+  bint delta;
 } DeltaData;
 
 static void
-delta_priority_foreach (BtkTextTag *tag, gpointer user_data)
+delta_priority_foreach (BtkTextTag *tag, bpointer user_data)
 {
   DeltaData *dd = user_data;
 
@@ -1793,7 +1793,7 @@ delta_priority_foreach (BtkTextTag *tag, gpointer user_data)
  * 
  * Return value: The tag's priority.
  **/
-gint
+bint
 btk_text_tag_get_priority (BtkTextTag *tag)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG (tag), 0);
@@ -1820,7 +1820,7 @@ btk_text_tag_get_priority (BtkTextTag *tag)
  **/
 void
 btk_text_tag_set_priority (BtkTextTag *tag,
-                           gint        priority)
+                           bint        priority)
 {
   DeltaData dd;
 
@@ -1863,13 +1863,13 @@ btk_text_tag_set_priority (BtkTextTag *tag,
  * 
  * Return value: result of signal emission (whether the event was handled)
  **/
-gboolean
+bboolean
 btk_text_tag_event (BtkTextTag        *tag,
                     BObject           *event_object,
                     BdkEvent          *event,
                     const BtkTextIter *iter)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   g_return_val_if_fail (BTK_IS_TEXT_TAG (tag), FALSE);
   g_return_val_if_fail (G_IS_OBJECT (event_object), FALSE);
@@ -1898,7 +1898,7 @@ tag_sort_func (gconstpointer first, gconstpointer second)
 
 void
 _btk_text_tag_array_sort (BtkTextTag** tag_array_p,
-                          guint len)
+                          buint len)
 {
   int i, j, prio;
   BtkTextTag **tag;
@@ -2022,7 +2022,7 @@ void
 btk_text_attributes_copy_values (BtkTextAttributes *src,
                                  BtkTextAttributes *dest)
 {
-  guint orig_refcount;
+  buint orig_refcount;
 
   g_return_if_fail (!dest->realized);
 
@@ -2182,12 +2182,12 @@ _btk_text_attributes_unrealize (BtkTextAttributes *values,
 void
 _btk_text_attributes_fill_from_tags (BtkTextAttributes *dest,
                                      BtkTextTag**       tags,
-                                     guint              n_tags)
+                                     buint              n_tags)
 {
-  guint n = 0;
+  buint n = 0;
 
-  guint left_margin_accumulative = 0;
-  guint right_margin_accumulative = 0;
+  buint left_margin_accumulative = 0;
+  buint right_margin_accumulative = 0;
 
   g_return_if_fail (!dest->realized);
 
@@ -2316,7 +2316,7 @@ _btk_text_attributes_fill_from_tags (BtkTextAttributes *dest,
   dest->right_margin += right_margin_accumulative;
 }
 
-gboolean
+bboolean
 _btk_text_tag_affects_size (BtkTextTag *tag)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG (tag), FALSE);
@@ -2338,7 +2338,7 @@ _btk_text_tag_affects_size (BtkTextTag *tag)
     tag->invisible_set;
 }
 
-gboolean
+bboolean
 _btk_text_tag_affects_nonsize_appearance (BtkTextTag *tag)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG (tag), FALSE);

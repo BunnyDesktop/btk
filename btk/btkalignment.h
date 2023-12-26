@@ -53,10 +53,10 @@ struct _BtkAlignment
 {
   BtkBin bin;
 
-  gfloat GSEAL (xalign);
-  gfloat GSEAL (yalign);
-  gfloat GSEAL (xscale);
-  gfloat GSEAL (yscale);
+  bfloat GSEAL (xalign);
+  bfloat GSEAL (yalign);
+  bfloat GSEAL (xscale);
+  bfloat GSEAL (yscale);
 };
 
 struct _BtkAlignmentClass
@@ -66,27 +66,27 @@ struct _BtkAlignmentClass
 
 
 GType      btk_alignment_get_type   (void) B_GNUC_CONST;
-BtkWidget* btk_alignment_new        (gfloat             xalign,
-				     gfloat             yalign,
-				     gfloat             xscale,
-				     gfloat             yscale);
+BtkWidget* btk_alignment_new        (bfloat             xalign,
+				     bfloat             yalign,
+				     bfloat             xscale,
+				     bfloat             yscale);
 void       btk_alignment_set        (BtkAlignment      *alignment,
-				     gfloat             xalign,
-				     gfloat             yalign,
-				     gfloat             xscale,
-				     gfloat             yscale);
+				     bfloat             xalign,
+				     bfloat             yalign,
+				     bfloat             xscale,
+				     bfloat             yscale);
 
 void       btk_alignment_set_padding (BtkAlignment      *alignment,
-				      guint              padding_top,
-				      guint              padding_bottom,
-				      guint              padding_left,
-				      guint              padding_right);
+				      buint              padding_top,
+				      buint              padding_bottom,
+				      buint              padding_left,
+				      buint              padding_right);
 
 void       btk_alignment_get_padding (BtkAlignment      *alignment,
-				      guint             *padding_top,
-				      guint             *padding_bottom,
-				      guint             *padding_left,
-				      guint             *padding_right);
+				      buint             *padding_top,
+				      buint             *padding_bottom,
+				      buint             *padding_left,
+				      buint             *padding_right);
 
 B_END_DECLS
 

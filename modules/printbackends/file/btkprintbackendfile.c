@@ -69,7 +69,7 @@ typedef enum
   N_FORMATS
 } OutputFormat;
 
-static const gchar* formats[N_FORMATS] =
+static const bchar* formats[N_FORMATS] =
 {
   "pdf",
   "ps",
@@ -95,12 +95,12 @@ static void                 btk_print_backend_file_print_stream    (BtkPrintBack
 								    BtkPrintJob             *job,
 								    BUNNYIOChannel              *data_io,
 								    BtkPrintJobCompleteFunc  callback,
-								    gpointer                 user_data,
+								    bpointer                 user_data,
 								    GDestroyNotify           dnotify);
 static bairo_surface_t *    file_printer_create_bairo_surface      (BtkPrinter              *printer,
 								    BtkPrintSettings        *settings,
-								    gdouble                  width,
-								    gdouble                  height,
+								    bdouble                  width,
+								    bdouble                  height,
 								    BUNNYIOChannel              *cache_io);
 
 static GList *              file_printer_list_papers               (BtkPrinter              *printer);
@@ -190,8 +190,8 @@ btk_print_backend_file_class_init (BtkPrintBackendFileClass *class)
 static OutputFormat
 format_from_settings (BtkPrintSettings *settings)
 {
-  const gchar *value;
-  gint i;
+  const bchar *value;
+  bint i;
 
   if (settings == NULL)
     return N_FORMATS;
@@ -210,19 +210,19 @@ format_from_settings (BtkPrintSettings *settings)
   return (OutputFormat) i;
 }
 
-static gchar *
+static bchar *
 output_file_from_settings (BtkPrintSettings *settings,
-			   const gchar      *default_format)
+			   const bchar      *default_format)
 {
-  gchar *uri = NULL;
+  bchar *uri = NULL;
   
   if (settings)
     uri = g_strdup (btk_print_settings_get (settings, BTK_PRINT_SETTINGS_OUTPUT_URI));
 
   if (uri == NULL)
     { 
-      const gchar *extension;
-      gchar *name, *locale_name, *path;
+      const bchar *extension;
+      bchar *name, *locale_name, *path;
 
       if (default_format)
         extension = default_format;
@@ -253,7 +253,7 @@ output_file_from_settings (BtkPrintSettings *settings,
 
       if (locale_name != NULL)
         {
-	  gchar *current_dir = g_get_current_dir ();
+	  bchar *current_dir = g_get_current_dir ();
           path = g_build_filename (current_dir, locale_name, NULL);
           g_free (locale_name);
 
@@ -272,7 +272,7 @@ _bairo_write (void                *closure,
               unsigned int         length)
 {
   BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
-  gsize written;
+  bsize written;
   GError *error;
 
   error = NULL;
@@ -282,7 +282,7 @@ _bairo_write (void                *closure,
 
   while (length > 0) 
     {
-      g_io_channel_write_chars (io, (const gchar *) data, length, &written, &error);
+      g_io_channel_write_chars (io, (const bchar *) data, length, &written, &error);
 
       if (error != NULL)
 	{
@@ -307,8 +307,8 @@ _bairo_write (void                *closure,
 static bairo_surface_t *
 file_printer_create_bairo_surface (BtkPrinter       *printer,
 				   BtkPrintSettings *settings,
-				   gdouble           width, 
-				   gdouble           height,
+				   bdouble           width, 
+				   bdouble           height,
 				   BUNNYIOChannel       *cache_io)
 {
   bairo_surface_t *surface;
@@ -347,14 +347,14 @@ typedef struct {
   BtkPrintJobCompleteFunc callback;
   BtkPrintJob *job;
   GFileOutputStream *target_io_stream;
-  gpointer user_data;
+  bpointer user_data;
   GDestroyNotify dnotify;
 } _PrintStreamData;
 
 static void
 file_print_cb (BtkPrintBackendFile *print_backend,
                GError              *error,
-               gpointer            user_data)
+               bpointer            user_data)
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
@@ -380,13 +380,13 @@ file_print_cb (BtkPrintBackendFile *print_backend,
   BDK_THREADS_LEAVE ();
 }
 
-static gboolean
+static bboolean
 file_write (BUNNYIOChannel   *source,
             BUNNYIOCondition  con,
-            gpointer      user_data)
+            bpointer      user_data)
 {
-  gchar buf[_STREAM_MAX_CHUNK_SIZE];
-  gsize bytes_read;
+  bchar buf[_STREAM_MAX_CHUNK_SIZE];
+  bsize bytes_read;
   GError *error;
   BUNNYIOStatus read_status;
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
@@ -402,7 +402,7 @@ file_write (BUNNYIOChannel   *source,
 
   if (read_status != G_IO_STATUS_ERROR)
     {
-      gsize bytes_written;
+      bsize bytes_written;
 
       g_output_stream_write_all (G_OUTPUT_STREAM (ps->target_io_stream),
                                  buf,
@@ -438,13 +438,13 @@ btk_print_backend_file_print_stream (BtkPrintBackend        *print_backend,
 				     BtkPrintJob            *job,
 				     BUNNYIOChannel             *data_io,
 				     BtkPrintJobCompleteFunc callback,
-				     gpointer                user_data,
+				     bpointer                user_data,
 				     GDestroyNotify          dnotify)
 {
   GError *internal_error = NULL;
   _PrintStreamData *ps;
   BtkPrintSettings *settings;
-  gchar *uri;
+  bchar *uri;
   GFile *file = NULL;
 
   settings = btk_print_job_get_settings (job);
@@ -516,8 +516,8 @@ set_printer_format_from_option_set (BtkPrinter          *printer,
 				    BtkPrinterOptionSet *set)
 {
   BtkPrinterOption *format_option;
-  const gchar *value;
-  gint i;
+  const bchar *value;
+  bint i;
 
   format_option = btk_printer_option_set_lookup (set, "output-file-format");
   if (format_option && format_option->value)
@@ -553,10 +553,10 @@ set_printer_format_from_option_set (BtkPrinter          *printer,
 
 static void
 file_printer_output_file_format_changed (BtkPrinterOption    *format_option,
-					 gpointer             user_data)
+					 bpointer             user_data)
 {
   BtkPrinterOption *uri_option;
-  gchar            *base = NULL;
+  bchar            *base = NULL;
   _OutputFormatChangedData *data = (_OutputFormatChangedData *) user_data;
 
   if (! format_option->value)
@@ -567,12 +567,12 @@ file_printer_output_file_format_changed (BtkPrinterOption    *format_option,
 
   if (uri_option && uri_option->value)
     {
-      const gchar *uri = uri_option->value;
-      const gchar *dot = strrchr (uri, '.');
+      const bchar *uri = uri_option->value;
+      const bchar *dot = strrchr (uri, '.');
 
       if (dot)
         {
-          gint i;
+          bint i;
 
           /*  check if the file extension matches one of the known ones  */
           for (i = 0; i < N_FORMATS; i++)
@@ -596,7 +596,7 @@ file_printer_output_file_format_changed (BtkPrinterOption    *format_option,
 
   if (base)
     {
-      gchar *tmp = g_strdup_printf ("%s.%s", base, format_option->value);
+      bchar *tmp = g_strdup_printf ("%s.%s", base, format_option->value);
 
       btk_printer_option_set (uri_option, tmp);
       g_free (tmp);
@@ -614,15 +614,15 @@ file_printer_get_options (BtkPrinter           *printer,
 {
   BtkPrinterOptionSet *set;
   BtkPrinterOption *option;
-  const gchar *n_up[] = {"1", "2", "4", "6", "9", "16" };
-  const gchar *pages_per_sheet = NULL;
-  const gchar *format_names[N_FORMATS] = { N_("PDF"), N_("Postscript"), N_("SVG") };
-  const gchar *supported_formats[N_FORMATS];
-  gchar *display_format_names[N_FORMATS];
-  gint n_formats = 0;
+  const bchar *n_up[] = {"1", "2", "4", "6", "9", "16" };
+  const bchar *pages_per_sheet = NULL;
+  const bchar *format_names[N_FORMATS] = { N_("PDF"), N_("Postscript"), N_("SVG") };
+  const bchar *supported_formats[N_FORMATS];
+  bchar *display_format_names[N_FORMATS];
+  bint n_formats = 0;
   OutputFormat format;
-  gchar *uri;
-  gint current_format = 0;
+  bchar *uri;
+  bint current_format = 0;
   _OutputFormatChangedData *format_changed_data;
 
   format = format_from_settings (settings);
@@ -751,7 +751,7 @@ file_printer_prepare_for_print (BtkPrinter       *printer,
 				BtkPrintSettings *settings,
 				BtkPageSetup     *page_setup)
 {
-  gdouble scale;
+  bdouble scale;
 
   print_job->print_pages = btk_print_settings_get_print_pages (settings);
   print_job->page_ranges = NULL;

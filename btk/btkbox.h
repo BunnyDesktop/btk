@@ -55,8 +55,8 @@ struct _BtkBox
 
   /*< public >*/
   GList *GSEAL (children);
-  gint16 GSEAL (spacing);
-  guint GSEAL (homogeneous) : 1;
+  bint16 GSEAL (spacing);
+  buint GSEAL (homogeneous) : 1;
 };
 
 struct _BtkBoxClass
@@ -93,29 +93,29 @@ typedef struct _BtkBoxChild   BtkBoxChild;
 struct _BtkBoxChild
 {
   BtkWidget *widget;
-  guint16 padding;
-  guint expand : 1;
-  guint fill : 1;
-  guint pack : 1;
-  guint is_secondary : 1;
+  buint16 padding;
+  buint expand : 1;
+  buint fill : 1;
+  buint pack : 1;
+  buint is_secondary : 1;
 };
 #endif
 
 GType       btk_box_get_type            (void) B_GNUC_CONST;
 BtkWidget* _btk_box_new                 (BtkOrientation  orientation,
-                                         gboolean        homogeneous,
-                                         gint            spacing);
+                                         bboolean        homogeneous,
+                                         bint            spacing);
 
 void        btk_box_pack_start          (BtkBox         *box,
                                          BtkWidget      *child,
-                                         gboolean        expand,
-                                         gboolean        fill,
-                                         guint           padding);
+                                         bboolean        expand,
+                                         bboolean        fill,
+                                         buint           padding);
 void        btk_box_pack_end            (BtkBox         *box,
                                          BtkWidget      *child,
-                                         gboolean        expand,
-                                         gboolean        fill,
-                                         guint           padding);
+                                         bboolean        expand,
+                                         bboolean        fill,
+                                         buint           padding);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void        btk_box_pack_start_defaults (BtkBox         *box,
@@ -125,34 +125,34 @@ void        btk_box_pack_end_defaults   (BtkBox         *box,
 #endif
 
 void        btk_box_set_homogeneous     (BtkBox         *box,
-                                         gboolean        homogeneous);
-gboolean    btk_box_get_homogeneous     (BtkBox         *box);
+                                         bboolean        homogeneous);
+bboolean    btk_box_get_homogeneous     (BtkBox         *box);
 void        btk_box_set_spacing         (BtkBox         *box,
-                                         gint            spacing);
-gint        btk_box_get_spacing         (BtkBox         *box);
+                                         bint            spacing);
+bint        btk_box_get_spacing         (BtkBox         *box);
 
 void        btk_box_reorder_child       (BtkBox         *box,
                                          BtkWidget      *child,
-                                         gint            position);
+                                         bint            position);
 
 void        btk_box_query_child_packing (BtkBox         *box,
                                          BtkWidget      *child,
-                                         gboolean       *expand,
-                                         gboolean       *fill,
-                                         guint          *padding,
+                                         bboolean       *expand,
+                                         bboolean       *fill,
+                                         buint          *padding,
                                          BtkPackType    *pack_type);
 void        btk_box_set_child_packing   (BtkBox         *box,
                                          BtkWidget      *child,
-                                         gboolean        expand,
-                                         gboolean        fill,
-                                         guint           padding,
+                                         bboolean        expand,
+                                         bboolean        fill,
+                                         buint           padding,
                                          BtkPackType     pack_type);
 
 /* internal API */
 void        _btk_box_set_old_defaults   (BtkBox         *box);
-gboolean    _btk_box_get_spacing_set    (BtkBox         *box);
+bboolean    _btk_box_get_spacing_set    (BtkBox         *box);
 void        _btk_box_set_spacing_set    (BtkBox         *box,
-                                         gboolean        spacing_set);
+                                         bboolean        spacing_set);
 
 B_END_DECLS
 

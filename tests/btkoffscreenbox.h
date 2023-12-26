@@ -28,7 +28,7 @@ struct _BtkOffscreenBox
   BdkWindow *offscreen_window1;
   BdkWindow *offscreen_window2;
 
-  gdouble angle;
+  bdouble angle;
 };
 
 struct _BtkOffscreenBoxClass

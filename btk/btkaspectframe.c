@@ -58,11 +58,11 @@ enum {
 };
 
 static void btk_aspect_frame_set_property (BObject         *object,
-					   guint            prop_id,
+					   buint            prop_id,
 					   const BValue    *value,
 					   BParamSpec      *pspec);
 static void btk_aspect_frame_get_property (BObject         *object,
-					   guint            prop_id,
+					   buint            prop_id,
 					   BValue          *value,
 					   BParamSpec      *pspec);
 static void btk_aspect_frame_compute_child_allocation (BtkFrame            *frame,
@@ -128,7 +128,7 @@ btk_aspect_frame_init (BtkAspectFrame *aspect_frame)
 
 static void
 btk_aspect_frame_set_property (BObject         *object,
-			       guint            prop_id,
+			       buint            prop_id,
 			       const BValue    *value,
 			       BParamSpec      *pspec)
 {
@@ -173,7 +173,7 @@ btk_aspect_frame_set_property (BObject         *object,
 
 static void
 btk_aspect_frame_get_property (BObject         *object,
-			       guint            prop_id,
+			       buint            prop_id,
 			       BValue          *value,
 			       BParamSpec      *pspec)
 {
@@ -217,11 +217,11 @@ btk_aspect_frame_get_property (BObject         *object,
  * Returns: the new #BtkAspectFrame.
  */
 BtkWidget*
-btk_aspect_frame_new (const gchar *label,
-		      gfloat       xalign,
-		      gfloat       yalign,
-		      gfloat       ratio,
-		      gboolean     obey_child)
+btk_aspect_frame_new (const bchar *label,
+		      bfloat       xalign,
+		      bfloat       yalign,
+		      bfloat       ratio,
+		      bboolean     obey_child)
 {
   BtkAspectFrame *aspect_frame;
 
@@ -254,10 +254,10 @@ btk_aspect_frame_new (const gchar *label,
  */
 void
 btk_aspect_frame_set (BtkAspectFrame *aspect_frame,
-		      gfloat          xalign,
-		      gfloat          yalign,
-		      gfloat          ratio,
-		      gboolean        obey_child)
+		      bfloat          xalign,
+		      bfloat          yalign,
+		      bfloat          ratio,
+		      bboolean        obey_child)
 {
   g_return_if_fail (BTK_IS_ASPECT_FRAME (aspect_frame));
   
@@ -305,7 +305,7 @@ btk_aspect_frame_compute_child_allocation (BtkFrame      *frame,
 {
   BtkAspectFrame *aspect_frame = BTK_ASPECT_FRAME (frame);
   BtkBin *bin = BTK_BIN (frame);
-  gdouble ratio;
+  bdouble ratio;
 
   if (bin->child && btk_widget_get_visible (bin->child))
     {
@@ -318,7 +318,7 @@ btk_aspect_frame_compute_child_allocation (BtkFrame      *frame,
 	  btk_widget_get_child_requisition (bin->child, &child_requisition);
 	  if (child_requisition.height != 0)
 	    {
-	      ratio = ((gdouble) child_requisition.width /
+	      ratio = ((bdouble) child_requisition.width /
 		       child_requisition.height);
 	      if (ratio < MIN_RATIO)
 		ratio = MIN_RATIO;

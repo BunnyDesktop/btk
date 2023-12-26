@@ -57,7 +57,7 @@ GC       bdk_x11_gc_get_xgc               (BdkGC       *gc);
 Screen * bdk_x11_screen_get_xscreen       (BdkScreen   *screen);
 int      bdk_x11_screen_get_screen_number (BdkScreen   *screen);
 void     bdk_x11_window_set_user_time     (BdkWindow   *window,
-					   guint32      timestamp);
+					   buint32      timestamp);
 void     bdk_x11_window_move_to_current_desktop (BdkWindow   *window);
 
 const char* bdk_x11_screen_get_window_manager_name (BdkScreen *screen);
@@ -65,7 +65,7 @@ const char* bdk_x11_screen_get_window_manager_name (BdkScreen *screen);
 #ifndef BDK_MULTIHEAD_SAFE
 Window   bdk_x11_get_default_root_xwindow (void);
 Display *bdk_x11_get_default_xdisplay     (void);
-gint     bdk_x11_get_default_screen       (void);
+bint     bdk_x11_get_default_screen       (void);
 #endif
 
 #define BDK_COLORMAP_XDISPLAY(cmap)   (bdk_x11_colormap_get_xdisplay (cmap))
@@ -142,33 +142,33 @@ BdkColormap *bdk_x11_colormap_foreign_new (BdkVisual *visual,
 					   Colormap   xcolormap);
 
 #if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
-gpointer      bdk_xid_table_lookup_for_display (BdkDisplay *display,
+bpointer      bdk_xid_table_lookup_for_display (BdkDisplay *display,
 						XID         xid);
 #endif
-guint32       bdk_x11_get_server_time  (BdkWindow       *window);
-guint32       bdk_x11_display_get_user_time (BdkDisplay *display);
+buint32       bdk_x11_get_server_time  (BdkWindow       *window);
+buint32       bdk_x11_display_get_user_time (BdkDisplay *display);
 
-const gchar * bdk_x11_display_get_startup_notification_id (BdkDisplay *display);
+const bchar * bdk_x11_display_get_startup_notification_id (BdkDisplay *display);
 
 void          bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
-						const gchar *theme,
-						const gint   size);
+						const bchar *theme,
+						const bint   size);
 
 void bdk_x11_display_broadcast_startup_message (BdkDisplay *display,
 						const char *message_type,
 						...) B_GNUC_NULL_TERMINATED;
 
 /* returns TRUE if we support the given WM spec feature */
-gboolean bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
+bboolean bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
 					      BdkAtom    property);
 
 XID      bdk_x11_screen_get_monitor_output   (BdkScreen *screen,
-                                              gint       monitor_num);
+                                              bint       monitor_num);
 
 #ifndef BDK_MULTIHEAD_SAFE
 #ifndef BDK_DISABLE_DEPRECATED
-gpointer      bdk_xid_table_lookup   (XID              xid);
-gboolean      bdk_net_wm_supports    (BdkAtom    property);
+bpointer      bdk_xid_table_lookup   (XID              xid);
+bboolean      bdk_net_wm_supports    (BdkAtom    property);
 #endif
 void          bdk_x11_grab_server    (void);
 void          bdk_x11_ungrab_server  (void);
@@ -183,25 +183,25 @@ Atom	              bdk_x11_atom_to_xatom_for_display (BdkDisplay  *display,
 BdkAtom		      bdk_x11_xatom_to_atom_for_display (BdkDisplay  *display,
 							 Atom	      xatom);
 Atom		      bdk_x11_get_xatom_by_name_for_display (BdkDisplay  *display,
-							     const gchar *atom_name);
-const gchar *         bdk_x11_get_xatom_name_for_display (BdkDisplay  *display,
+							     const bchar *atom_name);
+const bchar *         bdk_x11_get_xatom_name_for_display (BdkDisplay  *display,
 							  Atom         xatom);
 #ifndef BDK_MULTIHEAD_SAFE
 Atom                  bdk_x11_atom_to_xatom     (BdkAtom      atom);
 BdkAtom               bdk_x11_xatom_to_atom     (Atom         xatom);
-Atom                  bdk_x11_get_xatom_by_name (const gchar *atom_name);
-const gchar *         bdk_x11_get_xatom_name    (Atom         xatom);
+Atom                  bdk_x11_get_xatom_by_name (const bchar *atom_name);
+const bchar *         bdk_x11_get_xatom_name    (Atom         xatom);
 #endif
 
 void	    bdk_x11_display_grab	      (BdkDisplay *display);
 void	    bdk_x11_display_ungrab	      (BdkDisplay *display);
 void        bdk_x11_register_standard_event_type (BdkDisplay *display,
-						  gint        event_base,
-						  gint        n_events);
+						  bint        event_base,
+						  bint        n_events);
 
 #if !defined(BDK_DISABLE_DEPRECATED) || defined(BDK_COMPILATION)
 
-gpointer             bdk_x11_font_get_xfont    (BdkFont *font);
+bpointer             bdk_x11_font_get_xfont    (BdkFont *font);
 #define BDK_FONT_XFONT(font)          (bdk_x11_font_get_xfont (font))
 
 #define bdk_font_lookup_for_display(display, xid) ((BdkFont*) bdk_xid_table_lookup_for_display (display, ((xid)|XID_FONT_BIT)))
@@ -222,33 +222,33 @@ const char *         bdk_x11_font_get_name     (BdkFont *font);
 #endif /* BDK_MULTIHEAD_SAFE */
 #endif /* BDK_DISABLE_DEPRECATED */
 
-void        bdk_x11_set_sm_client_id (const gchar *sm_client_id);
+void        bdk_x11_set_sm_client_id (const bchar *sm_client_id);
 
 BdkWindow  *bdk_x11_window_foreign_new_for_display (BdkDisplay *display,
                                                     Window      window);
 BdkWindow  *bdk_x11_window_lookup_for_display      (BdkDisplay *display,
                                                     Window      window);
 
-gint     bdk_x11_display_text_property_to_text_list (BdkDisplay   *display,
+bint     bdk_x11_display_text_property_to_text_list (BdkDisplay   *display,
                                                      BdkAtom       encoding,
-                                                     gint          format,
-                                                     const guchar *text,
-                                                     gint          length,
-                                                     gchar      ***list);
-void     bdk_x11_free_text_list                     (gchar       **list);
-gint     bdk_x11_display_string_to_compound_text    (BdkDisplay   *display,
-                                                     const gchar  *str,
+                                                     bint          format,
+                                                     const buchar *text,
+                                                     bint          length,
+                                                     bchar      ***list);
+void     bdk_x11_free_text_list                     (bchar       **list);
+bint     bdk_x11_display_string_to_compound_text    (BdkDisplay   *display,
+                                                     const bchar  *str,
                                                      BdkAtom      *encoding,
-                                                     gint         *format,
-                                                     guchar      **ctext,
-                                                     gint         *length);
-gboolean bdk_x11_display_utf8_to_compound_text      (BdkDisplay   *display,
-                                                     const gchar  *str,
+                                                     bint         *format,
+                                                     buchar      **ctext,
+                                                     bint         *length);
+bboolean bdk_x11_display_utf8_to_compound_text      (BdkDisplay   *display,
+                                                     const bchar  *str,
                                                      BdkAtom      *encoding,
-                                                     gint         *format,
-                                                     guchar      **ctext,
-                                                     gint         *length);
-void     bdk_x11_free_compound_text                 (guchar       *ctext);
+                                                     bint         *format,
+                                                     buchar      **ctext,
+                                                     bint         *length);
+void     bdk_x11_free_compound_text                 (buchar       *ctext);
 
 
 B_END_DECLS

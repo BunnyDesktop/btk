@@ -45,16 +45,16 @@ static void btk_invisible_show          (BtkWidget         *widget);
 static void btk_invisible_size_allocate (BtkWidget         *widget,
 					 BtkAllocation     *allocation);
 static void btk_invisible_set_property  (BObject           *object,
-					 guint              prop_id,
+					 buint              prop_id,
 					 const BValue      *value,
 					 BParamSpec        *pspec);
 static void btk_invisible_get_property  (BObject           *object,
-					 guint              prop_id,
+					 buint              prop_id,
 					 BValue		   *value,
 					 BParamSpec        *pspec);
 
 static BObject *btk_invisible_constructor (GType                  type,
-					   guint                  n_construct_properties,
+					   buint                  n_construct_properties,
 					   BObjectConstructParam *construct_params);
 
 G_DEFINE_TYPE (BtkInvisible, btk_invisible, BTK_TYPE_WIDGET)
@@ -168,7 +168,7 @@ btk_invisible_set_screen (BtkInvisible *invisible,
 {
   BtkWidget *widget;
   BdkScreen *previous_screen;
-  gboolean was_realized;
+  bboolean was_realized;
   
   g_return_if_fail (BTK_IS_INVISIBLE (invisible));
   g_return_if_fail (BDK_IS_SCREEN (screen));
@@ -216,7 +216,7 @@ btk_invisible_realize (BtkWidget *widget)
 {
   BdkWindow *parent;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -266,7 +266,7 @@ btk_invisible_size_allocate (BtkWidget     *widget,
 
 static void 
 btk_invisible_set_property  (BObject      *object,
-			     guint         prop_id,
+			     buint         prop_id,
 			     const BValue *value,
 			     BParamSpec   *pspec)
 {
@@ -285,7 +285,7 @@ btk_invisible_set_property  (BObject      *object,
 
 static void 
 btk_invisible_get_property  (BObject      *object,
-			     guint         prop_id,
+			     buint         prop_id,
 			     BValue	  *value,
 			     BParamSpec   *pspec)
 {
@@ -307,7 +307,7 @@ btk_invisible_get_property  (BObject      *object,
  */
 static BObject*
 btk_invisible_constructor (GType                  type,
-			   guint                  n_construct_properties,
+			   buint                  n_construct_properties,
 			   BObjectConstructParam *construct_params)
 {
   BObject *object;

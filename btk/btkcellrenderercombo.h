@@ -44,11 +44,11 @@ struct _BtkCellRendererCombo
   BtkCellRendererText parent;
 
   BtkTreeModel *GSEAL (model);
-  gint          GSEAL (text_column);
-  gboolean      GSEAL (has_entry);
+  bint          GSEAL (text_column);
+  bboolean      GSEAL (has_entry);
 
   /*< private >*/
-  guint         GSEAL (focus_out_id);
+  buint         GSEAL (focus_out_id);
 };
 
 struct _BtkCellRendererComboClass

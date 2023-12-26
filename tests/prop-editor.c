@@ -26,13 +26,13 @@
 
 typedef struct
 {
-  gpointer instance;
+  bpointer instance;
   BObject *alive_object;
-  guint id;
+  buint id;
 } DisconnectData;
 
 static void
-disconnect_func (gpointer data)
+disconnect_func (bpointer data)
 {
   DisconnectData *dd = data;
   
@@ -40,7 +40,7 @@ disconnect_func (gpointer data)
 }
 
 static void
-signal_removed (gpointer  data,
+signal_removed (bpointer  data,
 		GClosure *closure)
 {
   DisconnectData *dd = data;
@@ -49,7 +49,7 @@ signal_removed (gpointer  data,
   g_free (dd);
 }
 
-static gboolean
+static bboolean
 is_child_property (BParamSpec *pspec)
 {
   return g_param_spec_get_qdata (pspec, g_quark_from_string ("is-child-prop")) != NULL;
@@ -59,18 +59,18 @@ static void
 mark_child_property (BParamSpec *pspec)
 {
   g_param_spec_set_qdata (pspec, g_quark_from_string ("is-child-prop"), 
-			  GINT_TO_POINTER (TRUE));
+			  BINT_TO_POINTER (TRUE));
 }
 
 static void
 g_object_connect_property (BObject     *object,
 			   BParamSpec  *spec,
                            GCallback    func,
-                           gpointer     data,
+                           bpointer     data,
                            BObject     *alive_object)
 {
   GClosure *closure;
-  gchar *with_detail;
+  bchar *with_detail;
   DisconnectData *dd;
 
   if (is_child_property (spec))
@@ -102,7 +102,7 @@ typedef struct
 {
   BObject *obj;
   BParamSpec *spec;
-  gint modified_id;
+  bint modified_id;
 } ObjectProperty;
 
 static void
@@ -113,7 +113,7 @@ free_object_property (ObjectProperty *p)
 
 static void
 connect_controller (BObject     *controller,
-                    const gchar *signal,
+                    const bchar *signal,
                     BObject     *model,
 		    BParamSpec  *spec,
                     GCallback    func)
@@ -149,7 +149,7 @@ unblock_controller (BObject *controller)
 }
 
 static void
-int_modified (BtkAdjustment *adj, gpointer data)
+int_modified (BtkAdjustment *adj, bpointer data)
 {
   ObjectProperty *p = data;
 
@@ -181,7 +181,7 @@ get_property_value (BObject *object, BParamSpec *pspec, BValue *value)
 }
 
 static void
-int_changed (BObject *object, BParamSpec *pspec, gpointer data)
+int_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkAdjustment *adj = BTK_ADJUSTMENT (data);
   BValue val = { 0, };  
@@ -201,7 +201,7 @@ int_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-uint_modified (BtkAdjustment *adj, gpointer data)
+uint_modified (BtkAdjustment *adj, bpointer data)
 {
   ObjectProperty *p = data;
 
@@ -211,14 +211,14 @@ uint_modified (BtkAdjustment *adj, gpointer data)
       BtkWidget *parent = btk_widget_get_parent (widget);
 
       btk_container_child_set (BTK_CONTAINER (parent), 
-			       widget, p->spec->name, (guint) adj->value, NULL);
+			       widget, p->spec->name, (buint) adj->value, NULL);
     }
   else
-    g_object_set (p->obj, p->spec->name, (guint) adj->value, NULL);
+    g_object_set (p->obj, p->spec->name, (buint) adj->value, NULL);
 }
 
 static void
-uint_changed (BObject *object, BParamSpec *pspec, gpointer data)
+uint_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkAdjustment *adj = BTK_ADJUSTMENT (data);
   BValue val = { 0, };  
@@ -226,7 +226,7 @@ uint_changed (BObject *object, BParamSpec *pspec, gpointer data)
   b_value_init (&val, B_TYPE_UINT);
   get_property_value (object, pspec, &val);
 
-  if (b_value_get_uint (&val) != (guint)adj->value)
+  if (b_value_get_uint (&val) != (buint)adj->value)
     {
       block_controller (B_OBJECT (adj));
       btk_adjustment_set_value (adj, b_value_get_uint (&val));
@@ -237,7 +237,7 @@ uint_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-float_modified (BtkAdjustment *adj, gpointer data)
+float_modified (BtkAdjustment *adj, bpointer data)
 {
   ObjectProperty *p = data;
 
@@ -254,7 +254,7 @@ float_modified (BtkAdjustment *adj, gpointer data)
 }
 
 static void
-float_changed (BObject *object, BParamSpec *pspec, gpointer data)
+float_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkAdjustment *adj = BTK_ADJUSTMENT (data);
   BValue val = { 0, };  
@@ -273,7 +273,7 @@ float_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-double_modified (BtkAdjustment *adj, gpointer data)
+double_modified (BtkAdjustment *adj, bpointer data)
 {
   ObjectProperty *p = data;
 
@@ -290,7 +290,7 @@ double_modified (BtkAdjustment *adj, gpointer data)
 }
 
 static void
-double_changed (BObject *object, BParamSpec *pspec, gpointer data)
+double_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkAdjustment *adj = BTK_ADJUSTMENT (data);
   BValue val = { 0, };  
@@ -309,10 +309,10 @@ double_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-string_modified (BtkEntry *entry, gpointer data)
+string_modified (BtkEntry *entry, bpointer data)
 {
   ObjectProperty *p = data;
-  const gchar *text;
+  const bchar *text;
 
   text = btk_entry_get_text (entry);
 
@@ -329,12 +329,12 @@ string_modified (BtkEntry *entry, gpointer data)
 }
 
 static void
-string_changed (BObject *object, BParamSpec *pspec, gpointer data)
+string_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
   BValue val = { 0, };  
-  const gchar *str;
-  const gchar *text;
+  const bchar *str;
+  const bchar *text;
   
   b_value_init (&val, B_TYPE_STRING);
   get_property_value (object, pspec, &val);
@@ -355,7 +355,7 @@ string_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-bool_modified (BtkToggleButton *tb, gpointer data)
+bool_modified (BtkToggleButton *tb, bpointer data)
 {
   ObjectProperty *p = data;
 
@@ -372,7 +372,7 @@ bool_modified (BtkToggleButton *tb, gpointer data)
 }
 
 static void
-bool_changed (BObject *object, BParamSpec *pspec, gpointer data)
+bool_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkToggleButton *tb = BTK_TOGGLE_BUTTON (data);
   BValue val = { 0, };  
@@ -395,10 +395,10 @@ bool_changed (BObject *object, BParamSpec *pspec, gpointer data)
 
 
 static void
-enum_modified (BtkComboBox *cb, gpointer data)
+enum_modified (BtkComboBox *cb, bpointer data)
 {
   ObjectProperty *p = data;
-  gint i;
+  bint i;
   GEnumClass *eclass;
   
   eclass = G_ENUM_CLASS (g_type_class_peek (p->spec->value_type));
@@ -418,12 +418,12 @@ enum_modified (BtkComboBox *cb, gpointer data)
 }
 
 static void
-enum_changed (BObject *object, BParamSpec *pspec, gpointer data)
+enum_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkComboBox *cb = BTK_COMBO_BOX (data);
   BValue val = { 0, };  
   GEnumClass *eclass;
-  gint i;
+  bint i;
 
   eclass = G_ENUM_CLASS (g_type_class_peek (pspec->value_type));
   
@@ -450,18 +450,18 @@ enum_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-flags_modified (BtkCheckButton *button, gpointer data)
+flags_modified (BtkCheckButton *button, bpointer data)
 {
   ObjectProperty *p = data;
-  gboolean active;
+  bboolean active;
   GFlagsClass *fclass;
-  guint flags;
-  gint i;
+  buint flags;
+  bint i;
   
   fclass = G_FLAGS_CLASS (g_type_class_peek (p->spec->value_type));
   
   active = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button));
-  i = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (button), "index"));
+  i = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (button), "index"));
 
   if (is_child_property (p->spec))
     {
@@ -492,13 +492,13 @@ flags_modified (BtkCheckButton *button, gpointer data)
 }
 
 static void
-flags_changed (BObject *object, BParamSpec *pspec, gpointer data)
+flags_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   GList *children, *c;
   BValue val = { 0, };  
   GFlagsClass *fclass;
-  guint flags;
-  gint i;
+  buint flags;
+  bint i;
 
   fclass = G_FLAGS_CLASS (g_type_class_peek (pspec->value_type));
   
@@ -523,7 +523,7 @@ flags_changed (BObject *object, BParamSpec *pspec, gpointer data)
 static gunichar
 unichar_get_value (BtkEntry *entry)
 {
-  const gchar *text = btk_entry_get_text (entry);
+  const bchar *text = btk_entry_get_text (entry);
   
   if (text[0])
     return g_utf8_get_char (text);
@@ -532,7 +532,7 @@ unichar_get_value (BtkEntry *entry)
 }
 
 static void
-unichar_modified (BtkEntry *entry, gpointer data)
+unichar_modified (BtkEntry *entry, bpointer data)
 {
   ObjectProperty *p = data;
   gunichar val = unichar_get_value (entry);
@@ -550,14 +550,14 @@ unichar_modified (BtkEntry *entry, gpointer data)
 }
 
 static void
-unichar_changed (BObject *object, BParamSpec *pspec, gpointer data)
+unichar_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
   gunichar new_val;
   gunichar old_val = unichar_get_value (entry);
   BValue val = { 0, };
-  gchar buf[7];
-  gint len;
+  bchar buf[7];
+  bint len;
   
   b_value_init (&val, pspec->value_type);
   get_property_value (object, pspec, &val);
@@ -579,11 +579,11 @@ unichar_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-pointer_changed (BObject *object, BParamSpec *pspec, gpointer data)
+pointer_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkLabel *label = BTK_LABEL (data);
-  gchar *str;
-  gpointer ptr;
+  bchar *str;
+  bpointer ptr;
   
   g_object_get (object, pspec->name, &ptr, NULL);
 
@@ -592,10 +592,10 @@ pointer_changed (BObject *object, BParamSpec *pspec, gpointer data)
   g_free (str);
 }
 
-static gchar *
+static bchar *
 object_label (BObject *obj, BParamSpec *pspec)
 {
-  const gchar *name;
+  const bchar *name;
 
   if (obj)
     name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
@@ -607,10 +607,10 @@ object_label (BObject *obj, BParamSpec *pspec)
 }
 
 static void
-object_changed (BObject *object, BParamSpec *pspec, gpointer data)
+object_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkWidget *label, *button;
-  gchar *str;
+  bchar *str;
   BObject *obj;
   
   GList *children = btk_container_get_children (BTK_CONTAINER (data)); 
@@ -631,14 +631,14 @@ object_changed (BObject *object, BParamSpec *pspec, gpointer data)
 }
 
 static void
-model_destroy (gpointer data)
+model_destroy (bpointer data)
 {
   g_object_steal_data (data, "model-object");
   btk_widget_destroy (data);
 }
 
 static void
-window_destroy (gpointer data)
+window_destroy (bpointer data)
 {
   g_object_steal_data (data, "prop-editor-win");
 }
@@ -647,17 +647,17 @@ static void
 object_properties (BtkWidget *button, 
 		   BObject   *object)
 {
-  gchar *name;
+  bchar *name;
   BObject *obj;
 
-  name = (gchar *) g_object_get_data (B_OBJECT (button), "property-name");
+  name = (bchar *) g_object_get_data (B_OBJECT (button), "property-name");
   g_object_get (object, name, &obj, NULL);
   if (G_IS_OBJECT (obj)) 
     create_prop_editor (obj, 0);
 }
  
 static void
-color_modified (BtkColorButton *cb, gpointer data)
+color_modified (BtkColorButton *cb, bpointer data)
 {
   ObjectProperty *p = data;
   BdkColor color;
@@ -677,7 +677,7 @@ color_modified (BtkColorButton *cb, gpointer data)
 }
 
 static void
-color_changed (BObject *object, BParamSpec *pspec, gpointer data)
+color_changed (BObject *object, BParamSpec *pspec, bpointer data)
 {
   BtkColorButton *cb = BTK_COLOR_BUTTON (data);
   BValue val = { 0, };
@@ -703,11 +703,11 @@ color_changed (BObject *object, BParamSpec *pspec, gpointer data)
 static BtkWidget *
 property_widget (BObject    *object, 
 		 BParamSpec *spec, 
-		 gboolean    can_modify)
+		 bboolean    can_modify)
 {
   BtkWidget *prop_edit;
   BtkAdjustment *adj;
-  gchar *msg;
+  bchar *msg;
   GType type = G_PARAM_SPEC_TYPE (spec);
 
   if (type == B_TYPE_PARAM_INT)
@@ -820,7 +820,7 @@ property_widget (BObject    *object,
     {
       {
 	GEnumClass *eclass;
-	gint j;
+	bint j;
 	
 	prop_edit = btk_combo_box_text_new ();
 	
@@ -849,7 +849,7 @@ property_widget (BObject    *object,
     {
       {
 	GFlagsClass *fclass;
-	gint j;
+	bint j;
 	
 	prop_edit = btk_vbox_new (FALSE, 0);
 	
@@ -860,7 +860,7 @@ property_widget (BObject    *object,
 	    BtkWidget *b;
 	    
 	    b = btk_check_button_new_with_label (fclass->values[j].value_name);
-            g_object_set_data (B_OBJECT (b), "index", GINT_TO_POINTER (j));
+            g_object_set_data (B_OBJECT (b), "index", BINT_TO_POINTER (j));
 	    btk_widget_show (b);
 	    btk_box_pack_start (BTK_BOX (prop_edit), b, FALSE, FALSE, 0);
 	    if (can_modify) 
@@ -951,12 +951,12 @@ properties_from_type (BObject *object,
   BtkWidget *vbox;
   BtkWidget *table;
   BParamSpec **specs;
-  guint n_specs;
+  buint n_specs;
   int i;
 
   if (B_TYPE_IS_INTERFACE (type))
     {
-      gpointer vtable = g_type_default_interface_peek (type);
+      bpointer vtable = g_type_default_interface_peek (type);
       specs = g_object_interface_list_properties (vtable, &n_specs);
     }
   else
@@ -978,7 +978,7 @@ properties_from_type (BObject *object,
   while (i < n_specs)
     {
       BParamSpec *spec = specs[i];
-      gboolean can_modify;
+      bboolean can_modify;
       
       prop_edit = NULL;
 
@@ -1046,8 +1046,8 @@ child_properties_from_object (BObject *object)
   BtkWidget *table;
   BtkWidget *parent;
   BParamSpec **specs;
-  guint n_specs;
-  gint i;
+  buint n_specs;
+  bint i;
 
   if (!BTK_IS_WIDGET (object))
     return NULL;
@@ -1067,7 +1067,7 @@ child_properties_from_object (BObject *object)
   while (i < n_specs)
     {
       BParamSpec *spec = specs[i];
-      gboolean can_modify;
+      bboolean can_modify;
       
       prop_edit = NULL;
 
@@ -1130,8 +1130,8 @@ children_from_object (BObject *object)
 {
   GList *children, *c;
   BtkWidget *table, *label, *prop_edit, *button, *vbox, *sw;
-  gchar *str;
-  gint i;
+  bchar *str;
+  bint i;
 
   if (!BTK_IS_CONTAINER (object))
     return NULL;
@@ -1185,8 +1185,8 @@ cells_from_object (BObject *object)
 {
   GList *cells, *c;
   BtkWidget *table, *label, *prop_edit, *button, *vbox, *sw;
-  gchar *str;
-  gint i;
+  bchar *str;
+  bint i;
 
   if (!BTK_IS_CELL_LAYOUT (object))
     return NULL;
@@ -1244,9 +1244,9 @@ create_prop_editor (BObject   *object,
   BtkWidget *notebook;
   BtkWidget *properties;
   BtkWidget *label;
-  gchar *title;
+  bchar *title;
   GType *ifaces;
-  guint n_ifaces;
+  buint n_ifaces;
   
   if ((win = g_object_get_data (B_OBJECT (object), "prop-editor-win")))
     {

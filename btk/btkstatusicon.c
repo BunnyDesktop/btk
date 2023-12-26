@@ -98,7 +98,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint status_icon_signals [LAST_SIGNAL] = { 0 };
+static buint status_icon_signals [LAST_SIGNAL] = { 0 };
 
 #ifdef BDK_WINDOWING_QUARTZ
 #include "btkstatusicon-quartz.c"
@@ -114,53 +114,53 @@ struct _BtkStatusIconPrivate
 #ifdef BDK_WINDOWING_WIN32
   BtkWidget     *dummy_widget;
   NOTIFYICONDATAW nid;
-  gint          taskbar_top;
-  gint		last_click_x, last_click_y;
+  bint          taskbar_top;
+  bint		last_click_x, last_click_y;
   BtkOrientation orientation;
-  gchar         *tooltip_text;
-  gchar         *title;
+  bchar         *tooltip_text;
+  bchar         *title;
 #endif
 	
 #ifdef BDK_WINDOWING_QUARTZ
   BtkWidget     *dummy_widget;
   BtkQuartzStatusIcon *status_item;
-  gchar         *tooltip_text;
-  gchar         *title;
+  bchar         *tooltip_text;
+  bchar         *title;
 #endif
 
-  gint          size;
+  bint          size;
 
-  gint          image_width;
-  gint          image_height;
+  bint          image_width;
+  bint          image_height;
 
   BtkImageType  storage_type;
 
   union
     {
       BdkPixbuf *pixbuf;
-      gchar     *stock_id;
-      gchar     *icon_name;
+      bchar     *stock_id;
+      bchar     *icon_name;
       GIcon     *gicon;
     } image_data;
 
   BdkPixbuf    *blank_icon;
-  guint         blinking_timeout;
+  buint         blinking_timeout;
 
-  guint         blinking : 1;
-  guint         blink_off : 1;
-  guint         visible : 1;
+  buint         blinking : 1;
+  buint         blink_off : 1;
+  buint         visible : 1;
 };
 
 static BObject* btk_status_icon_constructor      (GType                  type,
-                                                  guint                  n_construct_properties,
+                                                  buint                  n_construct_properties,
                                                   BObjectConstructParam *construct_params);
 static void     btk_status_icon_finalize         (BObject        *object);
 static void     btk_status_icon_set_property     (BObject        *object,
-						  guint           prop_id,
+						  buint           prop_id,
 						  const BValue   *value,
 						  BParamSpec     *pspec);
 static void     btk_status_icon_get_property     (BObject        *object,
-						  guint           prop_id,
+						  buint           prop_id,
 						  BValue         *value,
 					          BParamSpec     *pspec);
 
@@ -171,21 +171,21 @@ static void     btk_status_icon_screen_changed   (BtkStatusIcon  *status_icon,
 						  BdkScreen      *old_screen);
 static void     btk_status_icon_embedded_changed (BtkStatusIcon *status_icon);
 static void     btk_status_icon_orientation_changed (BtkStatusIcon *status_icon);
-static gboolean btk_status_icon_scroll           (BtkStatusIcon  *status_icon,
+static bboolean btk_status_icon_scroll           (BtkStatusIcon  *status_icon,
 						  BdkEventScroll *event);
-static gboolean btk_status_icon_query_tooltip    (BtkStatusIcon *status_icon,
-						  gint           x,
-						  gint           y,
-						  gboolean       keyboard_tip,
+static bboolean btk_status_icon_query_tooltip    (BtkStatusIcon *status_icon,
+						  bint           x,
+						  bint           y,
+						  bboolean       keyboard_tip,
 						  BtkTooltip    *tooltip);
 
-static gboolean btk_status_icon_key_press        (BtkStatusIcon  *status_icon,
+static bboolean btk_status_icon_key_press        (BtkStatusIcon  *status_icon,
 						  BdkEventKey    *event);
 static void     btk_status_icon_popup_menu       (BtkStatusIcon  *status_icon);
 #endif
-static gboolean btk_status_icon_button_press     (BtkStatusIcon  *status_icon,
+static bboolean btk_status_icon_button_press     (BtkStatusIcon  *status_icon,
 						  BdkEventButton *event);
-static gboolean btk_status_icon_button_release   (BtkStatusIcon  *status_icon,
+static bboolean btk_status_icon_button_release   (BtkStatusIcon  *status_icon,
 						  BdkEventButton *event);
 static void     btk_status_icon_disable_blinking (BtkStatusIcon  *status_icon);
 static void     btk_status_icon_reset_image_data (BtkStatusIcon  *status_icon);
@@ -271,7 +271,7 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
 						     P_("Size"),
 						     P_("The size of the icon"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READABLE));
 
@@ -642,7 +642,7 @@ btk_status_icon_class_init (BtkStatusIconClass *class)
 static void
 build_button_event (BtkStatusIconPrivate *priv,
 		    BdkEventButton       *e,
-		    guint                 button)
+		    buint                 button)
 {
   POINT pos;
   BdkRectangle monitor0;
@@ -669,8 +669,8 @@ typedef struct
   BdkEventButton *event;
 } ButtonCallbackData;
 
-static gboolean
-button_callback (gpointer data)
+static bboolean
+button_callback (bpointer data)
 {
   ButtonCallbackData *bc = (ButtonCallbackData *) data;
 
@@ -747,7 +747,7 @@ wndproc (HWND   hwnd,
   if (message == WM_BTK_TRAY_NOTIFICATION)
     {
       ButtonCallbackData *bc;
-      guint button;
+      buint button;
       
       switch (lparam)
 	{
@@ -972,7 +972,7 @@ btk_status_icon_init (BtkStatusIcon *status_icon)
 
 static BObject*
 btk_status_icon_constructor (GType                  type,
-                             guint                  n_construct_properties,
+                             buint                  n_construct_properties,
                              BObjectConstructParam *construct_params)
 {
   BObject *object;
@@ -1057,7 +1057,7 @@ btk_status_icon_finalize (BObject *object)
 
 static void
 btk_status_icon_set_property (BObject      *object,
-			      guint         prop_id,
+			      buint         prop_id,
 			      const BValue *value,
 			      BParamSpec   *pspec)
 {
@@ -1109,7 +1109,7 @@ btk_status_icon_set_property (BObject      *object,
 
 static void
 btk_status_icon_get_property (BObject    *object,
-			      guint       prop_id,
+			      buint       prop_id,
 			      BValue     *value,
 			      BParamSpec *pspec)
 {
@@ -1242,7 +1242,7 @@ btk_status_icon_new_from_pixbuf (BdkPixbuf *pixbuf)
  * Since: 2.10
  **/
 BtkStatusIcon *
-btk_status_icon_new_from_file (const gchar *filename)
+btk_status_icon_new_from_file (const bchar *filename)
 {
   return g_object_new (BTK_TYPE_STATUS_ICON,
 		       "file", filename,
@@ -1263,7 +1263,7 @@ btk_status_icon_new_from_file (const gchar *filename)
  * Since: 2.10
  **/
 BtkStatusIcon *
-btk_status_icon_new_from_stock (const gchar *stock_id)
+btk_status_icon_new_from_stock (const bchar *stock_id)
 {
   return g_object_new (BTK_TYPE_STATUS_ICON,
 		       "stock", stock_id,
@@ -1283,7 +1283,7 @@ btk_status_icon_new_from_stock (const gchar *stock_id)
  * Since: 2.10
  **/
 BtkStatusIcon *
-btk_status_icon_new_from_icon_name (const gchar *icon_name)
+btk_status_icon_new_from_icon_name (const bchar *icon_name)
 {
   return g_object_new (BTK_TYPE_STATUS_ICON,
 		       "icon-name", icon_name,
@@ -1318,8 +1318,8 @@ emit_activate_signal (BtkStatusIcon *status_icon)
 
 static void
 emit_popup_menu_signal (BtkStatusIcon *status_icon,
-			guint          button,
-			guint32        activate_time)
+			buint          button,
+			buint32        activate_time)
 {
   g_signal_emit (status_icon,
 		 status_icon_signals [POPUP_MENU_SIGNAL], 0,
@@ -1329,11 +1329,11 @@ emit_popup_menu_signal (BtkStatusIcon *status_icon,
 
 #ifdef BDK_WINDOWING_X11
 
-static gboolean
+static bboolean
 emit_size_changed_signal (BtkStatusIcon *status_icon,
-			  gint           size)
+			  bint           size)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
   
   g_signal_emit (status_icon,
 		 status_icon_signals [SIZE_CHANGED_SIGNAL], 0,
@@ -1352,7 +1352,7 @@ btk_status_icon_blank_icon (BtkStatusIcon *status_icon)
 
   if (priv->blank_icon)
     {
-      gint width, height;
+      bint width, height;
 
       width  = bdk_pixbuf_get_width (priv->blank_icon);
       height = bdk_pixbuf_get_height (priv->blank_icon);
@@ -1380,12 +1380,12 @@ btk_status_icon_blank_icon (BtkStatusIcon *status_icon)
 
 static BtkIconSize
 find_icon_size (BtkWidget *widget, 
-		gint       pixel_size)
+		bint       pixel_size)
 {
   BdkScreen *screen;
   BtkSettings *settings;
   BtkIconSize s, size;
-  gint w, h, d, dist;
+  bint w, h, d, dist;
 
   screen = btk_widget_get_screen (widget);
 
@@ -1394,7 +1394,7 @@ find_icon_size (BtkWidget *widget,
 
   settings = btk_settings_get_for_screen (screen);
   
-  dist = G_MAXINT;
+  dist = B_MAXINT;
   size = BTK_ICON_SIZE_MENU;
 
   for (s = BTK_ICON_SIZE_MENU; s <= BTK_ICON_SIZE_DIALOG; s++)
@@ -1459,9 +1459,9 @@ btk_status_icon_update_image (BtkStatusIcon *status_icon)
 	if (pixbuf)
 	  {
 	    BdkPixbuf *scaled;
-	    gint size;
-	    gint width;
-	    gint height;
+	    bint size;
+	    bint width;
+	    bint height;
 
 	    size = priv->size;
 
@@ -1684,7 +1684,7 @@ btk_status_icon_size_allocate (BtkStatusIcon *status_icon,
 {
   BtkStatusIconPrivate *priv = status_icon->priv;
   BtkOrientation orientation;
-  gint size;
+  bint size;
 
   orientation = _btk_tray_icon_get_orientation (BTK_TRAY_ICON (priv->tray_icon));
 
@@ -1735,11 +1735,11 @@ btk_status_icon_orientation_changed (BtkStatusIcon *status_icon)
   g_object_notify (B_OBJECT (status_icon), "orientation");
 }
 
-static gboolean
+static bboolean
 btk_status_icon_key_press (BtkStatusIcon  *status_icon,
 			   BdkEventKey    *event)
 {
-  guint state, keyval;
+  buint state, keyval;
 
   state = event->state & btk_accelerator_get_default_mod_mask ();
   keyval = event->keyval;
@@ -1765,11 +1765,11 @@ btk_status_icon_popup_menu (BtkStatusIcon  *status_icon)
 
 #endif
 
-static gboolean
+static bboolean
 btk_status_icon_button_press (BtkStatusIcon  *status_icon,
 			      BdkEventButton *event)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   g_signal_emit (status_icon,
 		 status_icon_signals [BUTTON_PRESS_EVENT_SIGNAL], 0,
@@ -1791,11 +1791,11 @@ btk_status_icon_button_press (BtkStatusIcon  *status_icon,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_status_icon_button_release (BtkStatusIcon  *status_icon,
 				BdkEventButton *event)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
   g_signal_emit (status_icon,
 		 status_icon_signals [BUTTON_RELEASE_EVENT_SIGNAL], 0,
 		 event, &handled);
@@ -1803,25 +1803,25 @@ btk_status_icon_button_release (BtkStatusIcon  *status_icon,
 }
 
 #ifdef BDK_WINDOWING_X11
-static gboolean
+static bboolean
 btk_status_icon_scroll (BtkStatusIcon  *status_icon,
 			BdkEventScroll *event)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
   g_signal_emit (status_icon,
 		 status_icon_signals [SCROLL_EVENT_SIGNAL], 0,
 		 event, &handled);
   return handled;
 }
 
-static gboolean
+static bboolean
 btk_status_icon_query_tooltip (BtkStatusIcon *status_icon,
-			       gint           x,
-			       gint           y,
-			       gboolean       keyboard_tip,
+			       bint           x,
+			       bint           y,
+			       bboolean       keyboard_tip,
 			       BtkTooltip    *tooltip)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
   g_signal_emit (status_icon,
 		 status_icon_signals [QUERY_TOOLTIP_SIGNAL], 0,
 		 x, y, keyboard_tip, tooltip, &handled);
@@ -1879,7 +1879,7 @@ btk_status_icon_reset_image_data (BtkStatusIcon *status_icon)
 static void
 btk_status_icon_set_image (BtkStatusIcon *status_icon,
     			   BtkImageType   storage_type,
-			   gpointer       data)
+			   bpointer       data)
 {
   BtkStatusIconPrivate *priv = status_icon->priv;
 
@@ -1897,11 +1897,11 @@ btk_status_icon_set_image (BtkStatusIcon *status_icon,
       g_object_notify (B_OBJECT (status_icon), "pixbuf");
       break;
     case BTK_IMAGE_STOCK:
-      priv->image_data.stock_id = g_strdup ((const gchar *)data);
+      priv->image_data.stock_id = g_strdup ((const bchar *)data);
       g_object_notify (B_OBJECT (status_icon), "stock");
       break;
     case BTK_IMAGE_ICON_NAME:
-      priv->image_data.icon_name = g_strdup ((const gchar *)data);
+      priv->image_data.icon_name = g_strdup ((const bchar *)data);
       g_object_notify (B_OBJECT (status_icon), "icon-name");
       break;
     case BTK_IMAGE_GICON:
@@ -1938,7 +1938,7 @@ btk_status_icon_set_from_pixbuf (BtkStatusIcon *status_icon,
     g_object_ref (pixbuf);
 
   btk_status_icon_set_image (status_icon, BTK_IMAGE_PIXBUF,
-      			     (gpointer) pixbuf);
+      			     (bpointer) pixbuf);
 }
 
 /**
@@ -1953,7 +1953,7 @@ btk_status_icon_set_from_pixbuf (BtkStatusIcon *status_icon,
  **/
 void
 btk_status_icon_set_from_file (BtkStatusIcon *status_icon,
- 			       const gchar   *filename)
+ 			       const bchar   *filename)
 {
   BdkPixbuf *pixbuf;
   
@@ -1980,13 +1980,13 @@ btk_status_icon_set_from_file (BtkStatusIcon *status_icon,
  **/
 void
 btk_status_icon_set_from_stock (BtkStatusIcon *status_icon,
-				const gchar   *stock_id)
+				const bchar   *stock_id)
 {
   g_return_if_fail (BTK_IS_STATUS_ICON (status_icon));
   g_return_if_fail (stock_id != NULL);
 
   btk_status_icon_set_image (status_icon, BTK_IMAGE_STOCK,
-      			     (gpointer) stock_id);
+      			     (bpointer) stock_id);
 }
 
 /**
@@ -2002,13 +2002,13 @@ btk_status_icon_set_from_stock (BtkStatusIcon *status_icon,
  **/
 void
 btk_status_icon_set_from_icon_name (BtkStatusIcon *status_icon,
-				    const gchar   *icon_name)
+				    const bchar   *icon_name)
 {
   g_return_if_fail (BTK_IS_STATUS_ICON (status_icon));
   g_return_if_fail (icon_name != NULL);
 
   btk_status_icon_set_image (status_icon, BTK_IMAGE_ICON_NAME,
-      			     (gpointer) icon_name);
+      			     (bpointer) icon_name);
 }
 
 /**
@@ -2032,7 +2032,7 @@ btk_status_icon_set_from_gicon (BtkStatusIcon *status_icon,
     g_object_ref (icon);
 
   btk_status_icon_set_image (status_icon, BTK_IMAGE_GICON,
-                             (gpointer) icon);
+                             (bpointer) icon);
 }
 
 /**
@@ -2102,7 +2102,7 @@ btk_status_icon_get_pixbuf (BtkStatusIcon *status_icon)
  *
  * Since: 2.10
  **/
-const gchar *
+const bchar *
 btk_status_icon_get_stock (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
@@ -2134,7 +2134,7 @@ btk_status_icon_get_stock (BtkStatusIcon *status_icon)
  *
  * Since: 2.10
  **/
-const gchar *
+const bchar *
 btk_status_icon_get_icon_name (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
@@ -2203,7 +2203,7 @@ btk_status_icon_get_gicon (BtkStatusIcon *status_icon)
  *
  * Since: 2.10
  **/
-gint
+bint
 btk_status_icon_get_size (BtkStatusIcon *status_icon)
 {
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), 0);
@@ -2268,12 +2268,12 @@ btk_status_icon_get_screen (BtkStatusIcon *status_icon)
  */
 void
 btk_status_icon_set_tooltip (BtkStatusIcon *status_icon,
-			     const gchar   *tooltip_text)
+			     const bchar   *tooltip_text)
 {
   btk_status_icon_set_tooltip_text (status_icon, tooltip_text);
 }
 
-static gboolean
+static bboolean
 btk_status_icon_blinker (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv = status_icon->priv;
@@ -2327,7 +2327,7 @@ btk_status_icon_disable_blinking (BtkStatusIcon *status_icon)
  **/
 void
 btk_status_icon_set_visible (BtkStatusIcon *status_icon,
-			     gboolean       visible)
+			     bboolean       visible)
 {
   BtkStatusIconPrivate *priv;
 
@@ -2381,7 +2381,7 @@ btk_status_icon_set_visible (BtkStatusIcon *status_icon,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_status_icon_get_visible (BtkStatusIcon *status_icon)
 {
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), FALSE);
@@ -2405,7 +2405,7 @@ btk_status_icon_get_visible (BtkStatusIcon *status_icon)
  **/
 void
 btk_status_icon_set_blinking (BtkStatusIcon *status_icon,
-			      gboolean       blinking)
+			      bboolean       blinking)
 {
   BtkStatusIconPrivate *priv;
 
@@ -2441,7 +2441,7 @@ btk_status_icon_set_blinking (BtkStatusIcon *status_icon,
  *
  * Deprecated: 2.22: This function will be removed in BTK+ 3
  **/
-gboolean
+bboolean
 btk_status_icon_get_blinking (BtkStatusIcon *status_icon)
 {
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), FALSE);
@@ -2461,7 +2461,7 @@ btk_status_icon_get_blinking (BtkStatusIcon *status_icon)
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_status_icon_is_embedded (BtkStatusIcon *status_icon)
 {
 #ifdef BDK_WINDOWING_X11
@@ -2502,10 +2502,10 @@ btk_status_icon_is_embedded (BtkStatusIcon *status_icon)
  **/
 void
 btk_status_icon_position_menu (BtkMenu  *menu,
-			       gint     *x,
-			       gint     *y,
-			       gboolean *push_in,
-			       gpointer  user_data)
+			       bint     *x,
+			       bint     *y,
+			       bboolean *push_in,
+			       bpointer  user_data)
 {
 #ifdef BDK_WINDOWING_X11
   BtkStatusIcon *status_icon;
@@ -2516,7 +2516,7 @@ btk_status_icon_position_menu (BtkMenu  *menu,
   BtkTextDirection direction;
   BtkRequisition menu_req;
   BdkRectangle monitor;
-  gint monitor_num, height, width, xoffset, yoffset;
+  bint monitor_num, height, width, xoffset, yoffset;
   
   g_return_if_fail (BTK_IS_MENU (menu));
   g_return_if_fail (BTK_IS_STATUS_ICON (user_data));
@@ -2642,7 +2642,7 @@ btk_status_icon_position_menu (BtkMenu  *menu,
  *
  * Since: 2.10
  */
-gboolean  
+bboolean  
 btk_status_icon_get_geometry (BtkStatusIcon    *status_icon,
 			      BdkScreen       **screen,
 			      BdkRectangle     *area,
@@ -2651,7 +2651,7 @@ btk_status_icon_get_geometry (BtkStatusIcon    *status_icon,
 #ifdef BDK_WINDOWING_X11   
   BtkWidget *widget;
   BtkStatusIconPrivate *priv;
-  gint x, y;
+  bint x, y;
 
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), FALSE);
 
@@ -2691,7 +2691,7 @@ btk_status_icon_get_geometry (BtkStatusIcon    *status_icon,
  */
 void
 btk_status_icon_set_has_tooltip (BtkStatusIcon *status_icon,
-				 gboolean       has_tooltip)
+				 bboolean       has_tooltip)
 {
   BtkStatusIconPrivate *priv;
 
@@ -2723,11 +2723,11 @@ btk_status_icon_set_has_tooltip (BtkStatusIcon *status_icon,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 btk_status_icon_get_has_tooltip (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
-  gboolean has_tooltip = FALSE;
+  bboolean has_tooltip = FALSE;
 
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), FALSE);
 
@@ -2764,7 +2764,7 @@ btk_status_icon_get_has_tooltip (BtkStatusIcon *status_icon)
  */
 void
 btk_status_icon_set_tooltip_text (BtkStatusIcon *status_icon,
-				  const gchar   *text)
+				  const bchar   *text)
 {
   BtkStatusIconPrivate *priv;
 
@@ -2817,11 +2817,11 @@ btk_status_icon_set_tooltip_text (BtkStatusIcon *status_icon,
  *
  * Since: 2.16
  */
-gchar *
+bchar *
 btk_status_icon_get_tooltip_text (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
-  gchar *tooltip_text = NULL;
+  bchar *tooltip_text = NULL;
 
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), NULL);
 
@@ -2860,11 +2860,11 @@ btk_status_icon_get_tooltip_text (BtkStatusIcon *status_icon)
  */
 void
 btk_status_icon_set_tooltip_markup (BtkStatusIcon *status_icon,
-				    const gchar   *markup)
+				    const bchar   *markup)
 {
   BtkStatusIconPrivate *priv;
 #ifndef BDK_WINDOWING_X11
-  gchar *text = NULL;
+  bchar *text = NULL;
 #endif
 
   g_return_if_fail (BTK_IS_STATUS_ICON (status_icon));
@@ -2899,11 +2899,11 @@ btk_status_icon_set_tooltip_markup (BtkStatusIcon *status_icon,
  *
  * Since: 2.16
  */
-gchar *
+bchar *
 btk_status_icon_get_tooltip_markup (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
-  gchar *markup = NULL;
+  bchar *markup = NULL;
 
   g_return_val_if_fail (BTK_IS_STATUS_ICON (status_icon), NULL);
 
@@ -2944,7 +2944,7 @@ btk_status_icon_get_tooltip_markup (BtkStatusIcon *status_icon)
  *
  * Since: 2.14
  */
-guint32
+buint32
 btk_status_icon_get_x11_window_id (BtkStatusIcon *status_icon)
 {
 #ifdef BDK_WINDOWING_X11
@@ -2969,7 +2969,7 @@ btk_status_icon_get_x11_window_id (BtkStatusIcon *status_icon)
  */
 void
 btk_status_icon_set_title (BtkStatusIcon *status_icon,
-                           const gchar   *title)
+                           const bchar   *title)
 {
   BtkStatusIconPrivate *priv;
 
@@ -3002,7 +3002,7 @@ btk_status_icon_set_title (BtkStatusIcon *status_icon,
  *
  * Since: 2.18
  */
-const gchar *
+const bchar *
 btk_status_icon_get_title (BtkStatusIcon *status_icon)
 {
   BtkStatusIconPrivate *priv;
@@ -3037,7 +3037,7 @@ btk_status_icon_get_title (BtkStatusIcon *status_icon)
  */
 void
 btk_status_icon_set_name (BtkStatusIcon *status_icon,
-                          const gchar   *name)
+                          const bchar   *name)
 {
   BtkStatusIconPrivate *priv;
 

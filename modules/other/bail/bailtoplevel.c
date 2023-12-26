@@ -31,14 +31,14 @@
 static void             bail_toplevel_class_init        (BailToplevelClass      *klass);
 static void             bail_toplevel_init              (BailToplevel           *toplevel);
 static void             bail_toplevel_initialize        (BatkObject              *accessible,
-                                                         gpointer                data);
+                                                         bpointer                data);
 static void             bail_toplevel_object_finalize   (BObject                *obj);
 
 /* batkobject.h */
 
-static gint             bail_toplevel_get_n_children    (BatkObject              *obj);
+static bint             bail_toplevel_get_n_children    (BatkObject              *obj);
 static BatkObject*       bail_toplevel_ref_child         (BatkObject              *obj,
-                                                        gint                    i);
+                                                        bint                    i);
 static BatkObject*       bail_toplevel_get_parent        (BatkObject              *obj);
 
 /* Callbacks */
@@ -46,21 +46,21 @@ static BatkObject*       bail_toplevel_get_parent        (BatkObject            
 
 static void             bail_toplevel_window_destroyed  (BtkWindow              *window,
                                                         BailToplevel            *text);
-static gboolean         bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
-                                                        guint                   n_param_values,
+static bboolean         bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
+                                                        buint                   n_param_values,
                                                         const BValue            *param_values,
-                                                        gpointer                data);
-static gboolean         bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
-                                                        guint                   n_param_values,
+                                                        bpointer                data);
+static bboolean         bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
+                                                        buint                   n_param_values,
                                                         const BValue            *param_values,
-                                                        gpointer                data);
+                                                        bpointer                data);
 
 /* Misc */
 
 static void      _bail_toplevel_remove_child            (BailToplevel           *toplevel,
                                                         BtkWindow               *window);
-static gboolean  is_attached_menu_window                (BtkWidget              *widget);
-static gboolean  is_combo_window                        (BtkWidget              *widget);
+static bboolean  is_attached_menu_window                (BtkWidget              *widget);
+static bboolean  is_combo_window                        (BtkWidget              *widget);
 
 
 G_DEFINE_TYPE (BailToplevel, bail_toplevel, BATK_TYPE_OBJECT)
@@ -85,7 +85,7 @@ bail_toplevel_init (BailToplevel *toplevel)
   BtkWindow *window;
   BtkWidget *widget;
   GList *l;
-  guint signal_id;
+  buint signal_id;
   
   l = toplevel->window_list = btk_window_list_toplevels ();
 
@@ -127,7 +127,7 @@ bail_toplevel_init (BailToplevel *toplevel)
 
 static void
 bail_toplevel_initialize (BatkObject *accessible,
-                          gpointer  data)
+                          bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_toplevel_parent_class)->initialize (accessible, data);
 
@@ -153,21 +153,21 @@ bail_toplevel_get_parent (BatkObject *obj)
     return NULL;
 }
 
-static gint
+static bint
 bail_toplevel_get_n_children (BatkObject *obj)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (obj);
 
-  gint rc = g_list_length (toplevel->window_list);
+  bint rc = g_list_length (toplevel->window_list);
   return rc;
 }
 
 static BatkObject*
 bail_toplevel_ref_child (BatkObject *obj,
-                         gint      i)
+                         bint      i)
 {
   BailToplevel *toplevel;
-  gpointer ptr;
+  bpointer ptr;
   BtkWidget *widget;
   BatkObject *batk_obj;
 
@@ -196,17 +196,17 @@ bail_toplevel_window_destroyed (BtkWindow    *window,
 /*
  * Show events cause a child to be added to the toplevel
  */
-static gboolean
+static bboolean
 bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
-                                  guint                  n_param_values,
+                                  buint                  n_param_values,
                                   const BValue          *param_values,
-                                  gpointer               data)
+                                  bpointer               data)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (data);
   BatkObject *batk_obj = BATK_OBJECT (toplevel);
   BObject *object;
   BtkWidget *widget;
-  gint n_children;
+  bint n_children;
   BatkObject *child;
 
   object = b_value_get_object (param_values + 0);
@@ -261,11 +261,11 @@ bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
 /*
  * Hide events on BtkWindow cause a child to be removed from the toplevel
  */
-static gboolean
+static bboolean
 bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
-                                  guint                  n_param_values,
+                                  buint                  n_param_values,
                                   const BValue          *param_values,
-                                  gpointer               data)
+                                  bpointer               data)
 {
   BailToplevel *toplevel = BAIL_TOPLEVEL (data);
   BObject *object;
@@ -288,7 +288,7 @@ _bail_toplevel_remove_child (BailToplevel *toplevel,
 {
   BatkObject *batk_obj = BATK_OBJECT (toplevel);
   GList *l;
-  guint window_count = 0;
+  buint window_count = 0;
   BatkObject *child;
 
   if (toplevel->window_list)
@@ -318,11 +318,11 @@ _bail_toplevel_remove_child (BailToplevel *toplevel,
     }
 }
 
-static gboolean
+static bboolean
 is_attached_menu_window (BtkWidget *widget)
 {
   BtkWidget *child = BTK_BIN (widget)->child;
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   if (BTK_IS_MENU (child))
     {
@@ -338,7 +338,7 @@ is_attached_menu_window (BtkWidget *widget)
   return ret;
 }
 
-static gboolean
+static bboolean
 is_combo_window (BtkWidget *widget)
 {
   BtkWidget *child = BTK_BIN (widget)->child;

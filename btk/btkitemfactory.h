@@ -37,16 +37,16 @@
 
 B_BEGIN_DECLS
 
-typedef void	(*BtkPrintFunc)		   (gpointer		 func_data,
-					    const gchar		*str);
+typedef void	(*BtkPrintFunc)		   (bpointer		 func_data,
+					    const bchar		*str);
 /* We use () here to mean unspecified arguments. This is deprecated
  * as of C99, but we can't change it without breaking compatibility.
  * (Note that if we are included from a C++ program () will mean
  * (void) so an explicit cast will be needed.)
  */
 typedef	void	(*BtkItemFactoryCallback)  ();
-typedef	void	(*BtkItemFactoryCallback1) (gpointer		 callback_data,
-					    guint		 callback_action,
+typedef	void	(*BtkItemFactoryCallback1) (bpointer		 callback_data,
+					    buint		 callback_action,
 					    BtkWidget		*widget);
 
 #define BTK_TYPE_ITEM_FACTORY            (btk_item_factory_get_type ())
@@ -66,13 +66,13 @@ struct _BtkItemFactory
 {
   BtkObject		 object;
 
-  gchar			*path;
+  bchar			*path;
   BtkAccelGroup		*accel_group;
   BtkWidget		*widget;
   GSList		*items;
 
   BtkTranslateFunc       translate_func;
-  gpointer               translate_data;
+  bpointer               translate_data;
   GDestroyNotify         translate_notify;
 };
 
@@ -91,11 +91,11 @@ struct _BtkItemFactoryClass
 
 struct _BtkItemFactoryEntry
 {
-  gchar *path;
-  gchar *accelerator;
+  bchar *path;
+  bchar *accelerator;
 
   BtkItemFactoryCallback callback;
-  guint			 callback_action;
+  buint			 callback_action;
 
   /* possible values:
    * NULL		-> "<Item>"
@@ -113,7 +113,7 @@ struct _BtkItemFactoryEntry
    * "<Branch>"		-> create an item to hold sub items
    * "<LastBranch>"	-> create a right justified item to hold sub items
    */
-  gchar		 *item_type;
+  bchar		 *item_type;
 
   /* Extra data for some item types:
    *  ImageItem  -> pointer to inlined pixbuf stream
@@ -124,7 +124,7 @@ struct _BtkItemFactoryEntry
 
 struct _BtkItemFactoryItem
 {
-  gchar *path;
+  bchar *path;
   GSList *widgets;
 };
 
@@ -135,65 +135,65 @@ GType		btk_item_factory_get_type	    (void) B_GNUC_CONST;
  * or BTK_TYPE_OPTION_MENU.
  */
 BtkItemFactory*	btk_item_factory_new	   (GType		 container_type,
-					    const gchar		*path,
+					    const bchar		*path,
 					    BtkAccelGroup       *accel_group);
 void		btk_item_factory_construct (BtkItemFactory	*ifactory,
 					    GType		 container_type,
-					    const gchar		*path,
+					    const bchar		*path,
 					    BtkAccelGroup       *accel_group);
      
 /* These functions operate on BtkItemFactoryClass basis.
  */
 void		btk_item_factory_add_foreign        (BtkWidget	    *accel_widget,
-						     const gchar    *full_path,
+						     const bchar    *full_path,
 						     BtkAccelGroup  *accel_group,
-						     guint	     keyval,
+						     buint	     keyval,
 						     BdkModifierType modifiers);
      
 BtkItemFactory*       btk_item_factory_from_widget      (BtkWidget *widget);
-const gchar *         btk_item_factory_path_from_widget (BtkWidget *widget);
+const bchar *         btk_item_factory_path_from_widget (BtkWidget *widget);
 
 BtkWidget*	btk_item_factory_get_item	      (BtkItemFactory *ifactory,
-						       const gchar    *path);
+						       const bchar    *path);
 BtkWidget*	btk_item_factory_get_widget	      (BtkItemFactory *ifactory,
-						       const gchar    *path);
+						       const bchar    *path);
 BtkWidget*	btk_item_factory_get_widget_by_action (BtkItemFactory *ifactory,
-						       guint	       action);
+						       buint	       action);
 BtkWidget*	btk_item_factory_get_item_by_action   (BtkItemFactory *ifactory,
-						       guint	       action);
+						       buint	       action);
 
 void	btk_item_factory_create_item	(BtkItemFactory		*ifactory,
 					 BtkItemFactoryEntry	*entry,
-					 gpointer		 callback_data,
-					 guint			 callback_type);
+					 bpointer		 callback_data,
+					 buint			 callback_type);
 void	btk_item_factory_create_items	(BtkItemFactory		*ifactory,
-					 guint			 n_entries,
+					 buint			 n_entries,
 					 BtkItemFactoryEntry	*entries,
-					 gpointer		 callback_data);
+					 bpointer		 callback_data);
 void	btk_item_factory_delete_item	(BtkItemFactory		*ifactory,
-					 const gchar		*path);
+					 const bchar		*path);
 void	btk_item_factory_delete_entry	(BtkItemFactory		*ifactory,
 					 BtkItemFactoryEntry	*entry);
 void	btk_item_factory_delete_entries	(BtkItemFactory		*ifactory,
-					 guint			 n_entries,
+					 buint			 n_entries,
 					 BtkItemFactoryEntry	*entries);
 void	btk_item_factory_popup		(BtkItemFactory		*ifactory,
-					 guint			 x,
-					 guint			 y,
-					 guint			 mouse_button,
-					 guint32		 time_);
+					 buint			 x,
+					 buint			 y,
+					 buint			 mouse_button,
+					 buint32		 time_);
 void	btk_item_factory_popup_with_data(BtkItemFactory		*ifactory,
-					 gpointer		 popup_data,
+					 bpointer		 popup_data,
 					 GDestroyNotify          destroy,
-					 guint			 x,
-					 guint			 y,
-					 guint			 mouse_button,
-					 guint32		 time_);
-gpointer btk_item_factory_popup_data	(BtkItemFactory		*ifactory);
-gpointer btk_item_factory_popup_data_from_widget (BtkWidget	*widget);
+					 buint			 x,
+					 buint			 y,
+					 buint			 mouse_button,
+					 buint32		 time_);
+bpointer btk_item_factory_popup_data	(BtkItemFactory		*ifactory);
+bpointer btk_item_factory_popup_data_from_widget (BtkWidget	*widget);
 void   btk_item_factory_set_translate_func (BtkItemFactory      *ifactory,
 					    BtkTranslateFunc     func,
-					    gpointer             data,
+					    bpointer             data,
 					    GDestroyNotify       notify);
 
 /* Compatibility functions for deprecated BtkMenuFactory code
@@ -201,32 +201,32 @@ void   btk_item_factory_set_translate_func (BtkItemFactory      *ifactory,
 
 /* Used by btk_item_factory_create_menu_entries () */
 typedef void (*BtkMenuCallback) (BtkWidget *widget,
-				 gpointer   user_data);
+				 bpointer   user_data);
 typedef struct {
-  gchar *path;
-  gchar *accelerator;
+  bchar *path;
+  bchar *accelerator;
   BtkMenuCallback callback;
-  gpointer callback_data;
+  bpointer callback_data;
   BtkWidget *widget;
 } BtkMenuEntry;
 
 /* Used by btk_item_factory_callback_marshal () */
 typedef	void	(*BtkItemFactoryCallback2) (BtkWidget		*widget,
-					    gpointer		 callback_data,
-					    guint		 callback_action);
+					    bpointer		 callback_data,
+					    buint		 callback_action);
 
 /* Used by btk_item_factory_create_items () */
 void	btk_item_factory_create_items_ac (BtkItemFactory	*ifactory,
-					  guint			 n_entries,
+					  buint			 n_entries,
 					  BtkItemFactoryEntry	*entries,
-					  gpointer		 callback_data,
-					  guint			 callback_type);
+					  bpointer		 callback_data,
+					  buint			 callback_type);
 
-BtkItemFactory*	btk_item_factory_from_path   (const gchar       *path);
-void	btk_item_factory_create_menu_entries (guint		 n_entries,
+BtkItemFactory*	btk_item_factory_from_path   (const bchar       *path);
+void	btk_item_factory_create_menu_entries (buint		 n_entries,
 					      BtkMenuEntry      *entries);
-void	btk_item_factories_path_delete	   (const gchar		*ifactory_path,
-					    const gchar		*path);
+void	btk_item_factories_path_delete	   (const bchar		*ifactory_path,
+					    const bchar		*path);
 
 B_END_DECLS
 

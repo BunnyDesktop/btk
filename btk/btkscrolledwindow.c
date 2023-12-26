@@ -74,7 +74,7 @@
 #define DEFAULT_SCROLLBAR_SPACING  3
 
 typedef struct {
-	gboolean window_placement_set;
+	bboolean window_placement_set;
 	BtkCornerType real_window_placement;
 } BtkScrolledWindowPrivate;
 
@@ -101,59 +101,59 @@ enum
 
 static void     btk_scrolled_window_destroy            (BtkObject         *object);
 static void     btk_scrolled_window_set_property       (BObject           *object,
-                                                        guint              prop_id,
+                                                        buint              prop_id,
                                                         const BValue      *value,
                                                         BParamSpec        *pspec);
 static void     btk_scrolled_window_get_property       (BObject           *object,
-                                                        guint              prop_id,
+                                                        buint              prop_id,
                                                         BValue            *value,
                                                         BParamSpec        *pspec);
 
 static void     btk_scrolled_window_screen_changed     (BtkWidget         *widget,
                                                         BdkScreen         *previous_screen);
-static gboolean btk_scrolled_window_expose             (BtkWidget         *widget,
+static bboolean btk_scrolled_window_expose             (BtkWidget         *widget,
                                                         BdkEventExpose    *event);
 static void     btk_scrolled_window_size_request       (BtkWidget         *widget,
                                                         BtkRequisition    *requisition);
 static void     btk_scrolled_window_size_allocate      (BtkWidget         *widget,
                                                         BtkAllocation     *allocation);
-static gboolean btk_scrolled_window_scroll_event       (BtkWidget         *widget,
+static bboolean btk_scrolled_window_scroll_event       (BtkWidget         *widget,
                                                         BdkEventScroll    *event);
-static gboolean btk_scrolled_window_focus              (BtkWidget         *widget,
+static bboolean btk_scrolled_window_focus              (BtkWidget         *widget,
                                                         BtkDirectionType   direction);
 static void     btk_scrolled_window_add                (BtkContainer      *container,
                                                         BtkWidget         *widget);
 static void     btk_scrolled_window_remove             (BtkContainer      *container,
                                                         BtkWidget         *widget);
 static void     btk_scrolled_window_forall             (BtkContainer      *container,
-                                                        gboolean           include_internals,
+                                                        bboolean           include_internals,
                                                         BtkCallback        callback,
-                                                        gpointer           callback_data);
-static gboolean btk_scrolled_window_scroll_child       (BtkScrolledWindow *scrolled_window,
+                                                        bpointer           callback_data);
+static bboolean btk_scrolled_window_scroll_child       (BtkScrolledWindow *scrolled_window,
                                                         BtkScrollType      scroll,
-                                                        gboolean           horizontal);
+                                                        bboolean           horizontal);
 static void     btk_scrolled_window_move_focus_out     (BtkScrolledWindow *scrolled_window,
                                                         BtkDirectionType   direction_type);
 
 static void     btk_scrolled_window_relative_allocation(BtkWidget         *widget,
                                                         BtkAllocation     *allocation);
 static void     btk_scrolled_window_adjustment_changed (BtkAdjustment     *adjustment,
-                                                        gpointer           data);
+                                                        bpointer           data);
 
 static void  btk_scrolled_window_update_real_placement (BtkScrolledWindow *scrolled_window);
 
-static guint signals[LAST_SIGNAL] = {0};
+static buint signals[LAST_SIGNAL] = {0};
 
 G_DEFINE_TYPE (BtkScrolledWindow, btk_scrolled_window, BTK_TYPE_BIN)
 
 static void
 add_scroll_binding (BtkBindingSet  *binding_set,
-		    guint           keyval,
+		    buint           keyval,
 		    BdkModifierType mask,
 		    BtkScrollType   scroll,
-		    gboolean        horizontal)
+		    bboolean        horizontal)
 {
-  guint keypad_keyval = keyval - BDK_Left + BDK_KP_Left;
+  buint keypad_keyval = keyval - BDK_Left + BDK_KP_Left;
   
   btk_binding_entry_add_signal (binding_set, keyval, mask,
                                 "scroll-child", 2,
@@ -296,7 +296,7 @@ btk_scrolled_window_class_init (BtkScrolledWindowClass *class)
 							     P_("Scrollbar spacing"),
 							     P_("Number of pixels between the scrollbars and the scrolled window"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     DEFAULT_SCROLLBAR_SPACING,
 							     BTK_PARAM_READABLE));
 
@@ -703,8 +703,8 @@ btk_scrolled_window_set_placement_internal (BtkScrolledWindow *scrolled_window,
 
 static void
 btk_scrolled_window_set_placement_set (BtkScrolledWindow *scrolled_window,
-				       gboolean           placement_set,
-				       gboolean           emit_resize)
+				       bboolean           placement_set,
+				       bboolean           emit_resize)
 {
   BtkScrolledWindowPrivate *priv = BTK_SCROLLED_WINDOW_GET_PRIVATE (scrolled_window);
 
@@ -873,7 +873,7 @@ btk_scrolled_window_destroy (BtkObject *object)
 
 static void
 btk_scrolled_window_set_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  const BValue *value,
 				  BParamSpec   *pspec)
 {
@@ -920,7 +920,7 @@ btk_scrolled_window_set_property (BObject      *object,
 
 static void
 btk_scrolled_window_get_property (BObject    *object,
-				  guint       prop_id,
+				  buint       prop_id,
 				  BValue     *value,
 				  BParamSpec *pspec)
 {
@@ -960,7 +960,7 @@ btk_scrolled_window_get_property (BObject    *object,
 
 static void
 traverse_container (BtkWidget *widget,
-		    gpointer   data)
+		    bpointer   data)
 {
   if (BTK_IS_SCROLLED_WINDOW (widget))
     {
@@ -990,7 +990,7 @@ btk_scrolled_window_screen_changed (BtkWidget *widget,
 				    BdkScreen *previous_screen)
 {
   BtkSettings *settings;
-  guint window_placement_connection;
+  buint window_placement_connection;
 
   btk_scrolled_window_update_real_placement (BTK_SCROLLED_WINDOW (widget));
 
@@ -1000,7 +1000,7 @@ btk_scrolled_window_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
 
   window_placement_connection = 
-    GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
+    BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
 					 "btk-scrolled-window-connection"));
   
   if (window_placement_connection)
@@ -1011,7 +1011,7 @@ btk_scrolled_window_screen_changed (BtkWidget *widget,
 		      G_CALLBACK (btk_scrolled_window_settings_changed), NULL);
   g_object_set_data (B_OBJECT (settings), 
 		     I_("btk-scrolled-window-connection"),
-		     GUINT_TO_POINTER (window_placement_connection));
+		     BUINT_TO_POINTER (window_placement_connection));
 }
 
 static void
@@ -1023,7 +1023,7 @@ btk_scrolled_window_paint (BtkWidget    *widget,
   if (scrolled_window->shadow_type != BTK_SHADOW_NONE)
     {
       BtkAllocation relative_allocation;
-      gboolean scrollbars_within_bevel;
+      bboolean scrollbars_within_bevel;
 
       btk_widget_style_get (widget, "scrollbars-within-bevel", &scrollbars_within_bevel, NULL);
       
@@ -1056,7 +1056,7 @@ btk_scrolled_window_paint (BtkWidget    *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_scrolled_window_expose (BtkWidget      *widget,
 			    BdkEventExpose *event)
 {
@@ -1072,9 +1072,9 @@ btk_scrolled_window_expose (BtkWidget      *widget,
 
 static void
 btk_scrolled_window_forall (BtkContainer *container,
-			    gboolean	  include_internals,
+			    bboolean	  include_internals,
 			    BtkCallback   callback,
-			    gpointer      callback_data)
+			    bpointer      callback_data)
 {
   g_return_if_fail (BTK_IS_SCROLLED_WINDOW (container));
   g_return_if_fail (callback != NULL);
@@ -1096,10 +1096,10 @@ btk_scrolled_window_forall (BtkContainer *container,
     }
 }
 
-static gboolean
+static bboolean
 btk_scrolled_window_scroll_child (BtkScrolledWindow *scrolled_window,
 				  BtkScrollType      scroll,
-				  gboolean           horizontal)
+				  bboolean           horizontal)
 {
   BtkAdjustment *adjustment = NULL;
   
@@ -1166,7 +1166,7 @@ btk_scrolled_window_scroll_child (BtkScrolledWindow *scrolled_window,
 
   if (adjustment)
     {
-      gdouble value = adjustment->value;
+      bdouble value = adjustment->value;
       
       switch (scroll)
 	{
@@ -1231,9 +1231,9 @@ btk_scrolled_window_size_request (BtkWidget      *widget,
 {
   BtkScrolledWindow *scrolled_window;
   BtkBin *bin;
-  gint extra_width;
-  gint extra_height;
-  gint scrollbar_spacing;
+  bint extra_width;
+  bint extra_height;
+  bint scrollbar_spacing;
   BtkRequisition hscrollbar_requisition;
   BtkRequisition vscrollbar_requisition;
   BtkRequisition child_requisition;
@@ -1323,7 +1323,7 @@ btk_scrolled_window_relative_allocation (BtkWidget     *widget,
 {
   BtkScrolledWindow *scrolled_window;
   BtkScrolledWindowPrivate *priv;
-  gint scrollbar_spacing;
+  bint scrollbar_spacing;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (allocation != NULL);
@@ -1342,13 +1342,13 @@ btk_scrolled_window_relative_allocation (BtkWidget     *widget,
       allocation->y += widget->style->ythickness;
     }
   
-  allocation->width = MAX (1, (gint)widget->allocation.width - allocation->x * 2);
-  allocation->height = MAX (1, (gint)widget->allocation.height - allocation->y * 2);
+  allocation->width = MAX (1, (bint)widget->allocation.width - allocation->x * 2);
+  allocation->height = MAX (1, (bint)widget->allocation.height - allocation->y * 2);
 
   if (scrolled_window->vscrollbar_visible)
     {
       BtkRequisition vscrollbar_requisition;
-      gboolean is_rtl;
+      bboolean is_rtl;
 
       btk_widget_get_child_requisition (scrolled_window->vscrollbar,
 					&vscrollbar_requisition);
@@ -1387,8 +1387,8 @@ btk_scrolled_window_size_allocate (BtkWidget     *widget,
   BtkBin *bin;
   BtkAllocation relative_allocation;
   BtkAllocation child_allocation;
-  gboolean scrollbars_within_bevel;
-  gint scrollbar_spacing;
+  bboolean scrollbars_within_bevel;
+  bint scrollbar_spacing;
   
   g_return_if_fail (BTK_IS_SCROLLED_WINDOW (widget));
   g_return_if_fail (allocation != NULL);
@@ -1414,9 +1414,9 @@ btk_scrolled_window_size_allocate (BtkWidget     *widget,
 
   if (bin->child && btk_widget_get_visible (bin->child))
     {
-      gboolean previous_hvis;
-      gboolean previous_vvis;
-      guint count = 0;
+      bboolean previous_hvis;
+      bboolean previous_vvis;
+      buint count = 0;
       
       do
 	{
@@ -1561,7 +1561,7 @@ btk_scrolled_window_size_allocate (BtkWidget     *widget,
     btk_widget_hide (scrolled_window->vscrollbar);
 }
 
-static gboolean
+static bboolean
 btk_scrolled_window_scroll_event (BtkWidget      *widget,
 				  BdkEventScroll *event)
 {
@@ -1578,7 +1578,7 @@ btk_scrolled_window_scroll_event (BtkWidget      *widget,
   if (range && btk_widget_get_visible (range))
     {
       BtkAdjustment *adj = BTK_RANGE (range)->adjustment;
-      gdouble delta, new_value;
+      bdouble delta, new_value;
 
       delta = _btk_range_get_wheel_delta (BTK_RANGE (range), event->direction);
 
@@ -1592,12 +1592,12 @@ btk_scrolled_window_scroll_event (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_scrolled_window_focus (BtkWidget        *widget,
 			   BtkDirectionType  direction)
 {
   BtkScrolledWindow *scrolled_window = BTK_SCROLLED_WINDOW (widget);
-  gboolean had_focus_child = BTK_CONTAINER (widget)->focus_child != NULL;
+  bboolean had_focus_child = BTK_CONTAINER (widget)->focus_child != NULL;
   
   if (scrolled_window->focus_out)
     {
@@ -1628,7 +1628,7 @@ btk_scrolled_window_focus (BtkWidget        *widget,
 
 static void
 btk_scrolled_window_adjustment_changed (BtkAdjustment *adjustment,
-					gpointer       data)
+					bpointer       data)
 {
   BtkScrolledWindow *scrolled_win;
 
@@ -1642,7 +1642,7 @@ btk_scrolled_window_adjustment_changed (BtkAdjustment *adjustment,
     {
       if (scrolled_win->hscrollbar_policy == BTK_POLICY_AUTOMATIC)
 	{
-	  gboolean visible;
+	  bboolean visible;
 	  
 	  visible = scrolled_win->hscrollbar_visible;
 	  scrolled_win->hscrollbar_visible = (adjustment->upper - adjustment->lower >
@@ -1656,7 +1656,7 @@ btk_scrolled_window_adjustment_changed (BtkAdjustment *adjustment,
     {
       if (scrolled_win->vscrollbar_policy == BTK_POLICY_AUTOMATIC)
 	{
-	  gboolean visible;
+	  bboolean visible;
 
 	  visible = scrolled_win->vscrollbar_visible;
 	  scrolled_win->vscrollbar_visible = (adjustment->upper - adjustment->lower >
@@ -1768,7 +1768,7 @@ btk_scrolled_window_add_with_viewport (BtkScrolledWindow *scrolled_window,
  * 
  * Return value: the spacing, in pixels.
  */
-gint
+bint
 _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window)
 {
   BtkScrolledWindowClass *class;
@@ -1781,7 +1781,7 @@ _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window)
     return class->scrollbar_spacing;
   else
     {
-      gint scrollbar_spacing;
+      bint scrollbar_spacing;
       
       btk_widget_style_get (BTK_WIDGET (scrolled_window),
 			    "scrollbar-spacing", &scrollbar_spacing,

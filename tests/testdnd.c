@@ -289,7 +289,7 @@ static const char * trashcan_open_xpm[] = {
 BdkPixbuf *trashcan_open;
 BdkPixbuf *trashcan_closed;
 
-gboolean have_drag;
+bboolean have_drag;
 
 enum {
   TARGET_STRING,
@@ -302,24 +302,24 @@ static BtkTargetEntry target_table[] = {
   { "application/x-rootwindow-drop", 0, TARGET_ROOTWIN }
 };
 
-static guint n_targets = sizeof(target_table) / sizeof(target_table[0]);
+static buint n_targets = sizeof(target_table) / sizeof(target_table[0]);
 
 void  
 target_drag_leave	   (BtkWidget	       *widget,
 			    BdkDragContext     *context,
-			    guint               time)
+			    buint               time)
 {
   g_print("leave\n");
   have_drag = FALSE;
   btk_image_set_from_pixbuf (BTK_IMAGE (widget), trashcan_closed);
 }
 
-gboolean
+bboolean
 target_drag_motion	   (BtkWidget	       *widget,
 			    BdkDragContext     *context,
-			    gint                x,
-			    gint                y,
-			    guint               time)
+			    bint                x,
+			    bint                y,
+			    buint               time)
 {
   BtkWidget *source_widget;
   GList *tmp_list;
@@ -349,12 +349,12 @@ target_drag_motion	   (BtkWidget	       *widget,
   return TRUE;
 }
 
-gboolean
+bboolean
 target_drag_drop	   (BtkWidget	       *widget,
 			    BdkDragContext     *context,
-			    gint                x,
-			    gint                y,
-			    guint               time)
+			    bint                x,
+			    bint                y,
+			    buint               time)
 {
   g_print("drop\n");
   have_drag = FALSE;
@@ -375,15 +375,15 @@ target_drag_drop	   (BtkWidget	       *widget,
 void  
 target_drag_data_received  (BtkWidget          *widget,
 			    BdkDragContext     *context,
-			    gint                x,
-			    gint                y,
+			    bint                x,
+			    bint                y,
 			    BtkSelectionData   *data,
-			    guint               info,
-			    guint               time)
+			    buint               info,
+			    buint               time)
 {
   if ((data->length >= 0) && (data->format == 8))
     {
-      g_print ("Received \"%s\" in trashcan\n", (gchar *)data->data);
+      g_print ("Received \"%s\" in trashcan\n", (bchar *)data->data);
       btk_drag_finish (context, TRUE, FALSE, time);
       return;
     }
@@ -394,15 +394,15 @@ target_drag_data_received  (BtkWidget          *widget,
 void  
 label_drag_data_received  (BtkWidget          *widget,
 			    BdkDragContext     *context,
-			    gint                x,
-			    gint                y,
+			    bint                x,
+			    bint                y,
 			    BtkSelectionData   *data,
-			    guint               info,
-			    guint               time)
+			    buint               info,
+			    buint               time)
 {
   if ((data->length >= 0) && (data->format == 8))
     {
-      g_print ("Received \"%s\" in label\n", (gchar *)data->data);
+      g_print ("Received \"%s\" in label\n", (bchar *)data->data);
       btk_drag_finish (context, TRUE, FALSE, time);
       return;
     }
@@ -414,16 +414,16 @@ void
 source_drag_data_get  (BtkWidget          *widget,
 		       BdkDragContext     *context,
 		       BtkSelectionData   *selection_data,
-		       guint               info,
-		       guint               time,
-		       gpointer            data)
+		       buint               info,
+		       buint               time,
+		       bpointer            data)
 {
   if (info == TARGET_ROOTWIN)
     g_print ("I was dropped on the rootwin\n");
   else
     btk_selection_data_set (selection_data,
 			    selection_data->target,
-			    8, (guchar *) "I'm Data!", 9);
+			    8, (buchar *) "I'm Data!", 9);
 }
   
 /* The following is a rather elaborate example demonstrating/testing
@@ -432,13 +432,13 @@ source_drag_data_get  (BtkWidget          *widget,
  */
 static BtkWidget *popup_window = NULL;
 
-static gboolean popped_up = FALSE;
-static gboolean in_popup = FALSE;
-static guint popdown_timer = 0;
-static guint popup_timer = 0;
+static bboolean popped_up = FALSE;
+static bboolean in_popup = FALSE;
+static buint popdown_timer = 0;
+static buint popup_timer = 0;
 
-gint
-popdown_cb (gpointer data)
+bint
+popdown_cb (bpointer data)
 {
   popdown_timer = 0;
 
@@ -448,12 +448,12 @@ popdown_cb (gpointer data)
   return FALSE;
 }
 
-gboolean
+bboolean
 popup_motion	   (BtkWidget	       *widget,
 		    BdkDragContext     *context,
-		    gint                x,
-		    gint                y,
-		    guint               time)
+		    bint                x,
+		    bint                y,
+		    buint               time)
 {
   if (!in_popup)
     {
@@ -472,7 +472,7 @@ popup_motion	   (BtkWidget	       *widget,
 void  
 popup_leave	   (BtkWidget	       *widget,
 		    BdkDragContext     *context,
-		    guint               time)
+		    buint               time)
 {
   if (in_popup)
     {
@@ -485,8 +485,8 @@ popup_leave	   (BtkWidget	       *widget,
     }
 }
 
-gboolean
-popup_cb (gpointer data)
+bboolean
+popup_cb (bpointer data)
 {
   if (!popped_up)
     {
@@ -537,12 +537,12 @@ popup_cb (gpointer data)
   return FALSE;
 }
 
-gboolean
+bboolean
 popsite_motion	   (BtkWidget	       *widget,
 		    BdkDragContext     *context,
-		    gint                x,
-		    gint                y,
-		    guint               time)
+		    bint                x,
+		    bint                y,
+		    buint               time)
 {
   if (!popup_timer)
     popup_timer = bdk_threads_add_timeout (500, popup_cb, NULL);
@@ -553,7 +553,7 @@ popsite_motion	   (BtkWidget	       *widget,
 void  
 popsite_leave	   (BtkWidget	       *widget,
 		    BdkDragContext     *context,
-		    guint               time)
+		    buint               time)
 {
   if (popup_timer)
     {
@@ -565,7 +565,7 @@ popsite_leave	   (BtkWidget	       *widget,
 void  
 source_drag_data_delete  (BtkWidget          *widget,
 			  BdkDragContext     *context,
-			  gpointer            data)
+			  bpointer            data)
 {
   g_print ("Delete the data!\n");
 }

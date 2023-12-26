@@ -40,11 +40,11 @@ struct _BailLabel
   BailWidget parent;
 
   BailTextUtil   *textutil;
-  gint           cursor_position;
-  gint           selection_bound;
-  gint           label_length;
-  guint          window_create_handler;
-  gboolean       has_top_level;
+  bint           cursor_position;
+  bint           selection_bound;
+  bint           label_length;
+  buint          window_create_handler;
+  bboolean       has_top_level;
 };
 
 GType bail_label_get_type (void);

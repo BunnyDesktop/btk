@@ -51,8 +51,8 @@ struct _BdkWindowImplQuartz
   BdkWindowTypeHint type_hint;
 
   BdkRebunnyion *paint_clip_rebunnyion;
-  gint begin_paint_count;
-  gint in_paint_rect_count;
+  bint begin_paint_count;
+  bint in_paint_rect_count;
 
   BdkWindow *transient_for;
 

@@ -40,7 +40,7 @@ struct _BtkWidgetProfilerClass {
 	void (* report) (BtkWidgetProfiler      *profiler,
 			 BtkWidgetProfilerReport report,
 			 BtkWidget              *widget,
-			 gdouble                 elapsed);
+			 bdouble                 elapsed);
 };
 
 GType btk_widget_profiler_get_type (void) B_GNUC_CONST;
@@ -48,7 +48,7 @@ GType btk_widget_profiler_get_type (void) B_GNUC_CONST;
 BtkWidgetProfiler *btk_widget_profiler_new (void);
 
 void btk_widget_profiler_set_num_iterations (BtkWidgetProfiler *profiler,
-					     gint               n_iterations);
+					     bint               n_iterations);
 
 void btk_widget_profiler_profile_boot (BtkWidgetProfiler *profiler);
 

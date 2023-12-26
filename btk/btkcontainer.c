@@ -69,11 +69,11 @@ static void     btk_container_class_init           (BtkContainerClass *klass);
 static void     btk_container_init                 (BtkContainer      *container);
 static void     btk_container_destroy              (BtkObject         *object);
 static void     btk_container_set_property         (BObject         *object,
-						    guint            prop_id,
+						    buint            prop_id,
 						    const BValue    *value,
 						    BParamSpec      *pspec);
 static void     btk_container_get_property         (BObject         *object,
-						    guint            prop_id,
+						    buint            prop_id,
 						    BValue          *value,
 						    BParamSpec      *pspec);
 static void     btk_container_add_unimplemented    (BtkContainer      *container,
@@ -81,24 +81,24 @@ static void     btk_container_add_unimplemented    (BtkContainer      *container
 static void     btk_container_remove_unimplemented (BtkContainer      *container,
 						    BtkWidget         *widget);
 static void     btk_container_real_check_resize    (BtkContainer      *container);
-static gboolean btk_container_focus                (BtkWidget         *widget,
+static bboolean btk_container_focus                (BtkWidget         *widget,
 						    BtkDirectionType   direction);
 static void     btk_container_real_set_focus_child (BtkContainer      *container,
 						    BtkWidget         *widget);
 
-static gboolean btk_container_focus_move           (BtkContainer      *container,
+static bboolean btk_container_focus_move           (BtkContainer      *container,
 						    GList             *children,
 						    BtkDirectionType   direction);
 static void     btk_container_children_callback    (BtkWidget         *widget,
-						    gpointer           client_data);
+						    bpointer           client_data);
 static void     btk_container_show_all             (BtkWidget         *widget);
 static void     btk_container_hide_all             (BtkWidget         *widget);
-static gint     btk_container_expose               (BtkWidget         *widget,
+static bint     btk_container_expose               (BtkWidget         *widget,
 						    BdkEventExpose    *event);
 static void     btk_container_map                  (BtkWidget         *widget);
 static void     btk_container_unmap                (BtkWidget         *widget);
 
-static gchar* btk_container_child_default_composite_name (BtkContainer *container,
+static bchar* btk_container_child_default_composite_name (BtkContainer *container,
 							  BtkWidget    *child);
 
 /* BtkBuildable */
@@ -106,27 +106,27 @@ static void btk_container_buildable_init           (BtkBuildableIface *iface);
 static void btk_container_buildable_add_child      (BtkBuildable *buildable,
 						    BtkBuilder   *builder,
 						    BObject      *child,
-						    const gchar  *type);
-static gboolean btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
+						    const bchar  *type);
+static bboolean btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
 							  BtkBuilder    *builder,
 							  BObject       *child,
-							  const gchar   *tagname,
+							  const bchar   *tagname,
 							  GMarkupParser *parser,
-							  gpointer      *data);
+							  bpointer      *data);
 static void    btk_container_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
 						       BObject      *child,
-						       const gchar  *tagname,
-						       gpointer     *data);
+						       const bchar  *tagname,
+						       bpointer     *data);
 
 
 /* --- variables --- */
-static const gchar           vadjustment_key[] = "btk-vadjustment";
-static guint                 vadjustment_key_id = 0;
-static const gchar           hadjustment_key[] = "btk-hadjustment";
-static guint                 hadjustment_key_id = 0;
+static const bchar           vadjustment_key[] = "btk-vadjustment";
+static buint                 vadjustment_key_id = 0;
+static const bchar           hadjustment_key[] = "btk-hadjustment";
+static buint                 hadjustment_key_id = 0;
 static GSList	            *container_resize_queue = NULL;
-static guint                 container_signals[LAST_SIGNAL] = { 0 };
+static buint                 container_signals[LAST_SIGNAL] = { 0 };
 static BtkWidgetClass       *parent_class = NULL;
 extern BParamSpecPool       *_btk_widget_child_property_pool;
 extern BObjectNotifyContext *_btk_widget_child_property_notify_context;
@@ -306,7 +306,7 @@ static void
 btk_container_buildable_add_child (BtkBuildable  *buildable,
 				   BtkBuilder    *builder,
 				   BObject       *child,
-				   const gchar   *type)
+				   const bchar   *type)
 {
   if (type)
     {
@@ -325,8 +325,8 @@ static void
 btk_container_buildable_set_child_property (BtkContainer *container,
 					    BtkBuilder   *builder,
 					    BtkWidget    *child,
-					    gchar        *name,
-					    const gchar  *value)
+					    bchar        *name,
+					    const bchar  *value)
 {
   BParamSpec *pspec;
   BValue gvalue = { 0, };
@@ -361,21 +361,21 @@ typedef struct {
   BtkBuilder   *builder;
   BtkContainer *container;
   BtkWidget    *child;
-  gchar        *child_prop_name;
-  gchar        *context;
-  gboolean     translatable;
+  bchar        *child_prop_name;
+  bchar        *context;
+  bboolean     translatable;
 } PackingPropertiesData;
 
 static void
 attributes_start_element (GMarkupParseContext *context,
-			  const gchar         *element_name,
-			  const gchar        **names,
-			  const gchar        **values,
-			  gpointer             user_data,
+			  const bchar         *element_name,
+			  const bchar        **names,
+			  const bchar        **values,
+			  bpointer             user_data,
 			  GError             **error)
 {
   PackingPropertiesData *parser_data = (PackingPropertiesData*)user_data;
-  guint i;
+  buint i;
 
   if (strcmp (element_name, "property") == 0)
     {
@@ -405,20 +405,20 @@ attributes_start_element (GMarkupParseContext *context,
 
 static void
 attributes_text_element (GMarkupParseContext *context,
-			 const gchar         *text,
-			 gsize                text_len,
-			 gpointer             user_data,
+			 const bchar         *text,
+			 bsize                text_len,
+			 bpointer             user_data,
 			 GError             **error)
 {
   PackingPropertiesData *parser_data = (PackingPropertiesData*)user_data;
-  gchar* value;
+  bchar* value;
 
   if (!parser_data->child_prop_name)
     return;
   
   if (parser_data->translatable && text_len)
     {
-      const gchar* domain;
+      const bchar* domain;
       domain = btk_builder_get_translation_domain (parser_data->builder);
       
       value = _btk_builder_parser_translate (domain,
@@ -451,13 +451,13 @@ static const GMarkupParser attributes_parser =
     attributes_text_element,
   };
 
-static gboolean
+static bboolean
 btk_container_buildable_custom_tag_start (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
 					  BObject       *child,
-					  const gchar   *tagname,
+					  const bchar   *tagname,
 					  GMarkupParser *parser,
-					  gpointer      *data)
+					  bpointer      *data)
 {
   PackingPropertiesData *parser_data;
 
@@ -485,12 +485,12 @@ static void
 btk_container_buildable_custom_tag_end (BtkBuildable *buildable,
 					BtkBuilder   *builder,
 					BObject      *child,
-					const gchar  *tagname,
-					gpointer     *data)
+					const bchar  *tagname,
+					bpointer     *data)
 {
   if (strcmp (tagname, "packing") == 0)
     {
-      g_slice_free (PackingPropertiesData, (gpointer)data);
+      g_slice_free (PackingPropertiesData, (bpointer)data);
       return;
 
     }
@@ -561,7 +561,7 @@ container_set_child_property (BtkContainer       *container,
 	       G_VALUE_TYPE_NAME (value));
   else if (g_param_value_validate (pspec, &tmp_value) && !(pspec->flags & G_PARAM_LAX_VALIDATION))
     {
-      gchar *contents = g_strdup_value_contents (value);
+      bchar *contents = g_strdup_value_contents (value);
 
       g_warning ("value \"%s\" of type `%s' is invalid for property `%s' of type `%s'",
 		 contents,
@@ -591,10 +591,10 @@ container_set_child_property (BtkContainer       *container,
 void
 btk_container_child_get_valist (BtkContainer *container,
 				BtkWidget    *child,
-				const gchar  *first_property_name,
+				const bchar  *first_property_name,
 				va_list       var_args)
 {
-  const gchar *name;
+  const bchar *name;
 
   g_return_if_fail (BTK_IS_CONTAINER (container));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -608,7 +608,7 @@ btk_container_child_get_valist (BtkContainer *container,
     {
       BValue value = { 0, };
       BParamSpec *pspec;
-      gchar *error;
+      bchar *error;
 
       pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool,
 					name,
@@ -641,7 +641,7 @@ btk_container_child_get_valist (BtkContainer *container,
 	  break;
 	}
       b_value_unset (&value);
-      name = va_arg (var_args, gchar*);
+      name = va_arg (var_args, bchar*);
     }
 
   g_object_unref (child);
@@ -660,7 +660,7 @@ btk_container_child_get_valist (BtkContainer *container,
 void
 btk_container_child_get_property (BtkContainer *container,
 				  BtkWidget    *child,
-				  const gchar  *property_name,
+				  const bchar  *property_name,
 				  BValue       *value)
 {
   BParamSpec *pspec;
@@ -735,11 +735,11 @@ btk_container_child_get_property (BtkContainer *container,
 void
 btk_container_child_set_valist (BtkContainer *container,
 				BtkWidget    *child,
-				const gchar  *first_property_name,
+				const bchar  *first_property_name,
 				va_list       var_args)
 {
   BObjectNotifyQueue *nqueue;
-  const gchar *name;
+  const bchar *name;
 
   g_return_if_fail (BTK_IS_CONTAINER (container));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -753,7 +753,7 @@ btk_container_child_set_valist (BtkContainer *container,
   while (name)
     {
       BValue value = { 0, };
-      gchar *error = NULL;
+      bchar *error = NULL;
       BParamSpec *pspec = g_param_spec_pool_lookup (_btk_widget_child_property_pool,
 						    name,
 						    B_OBJECT_TYPE (container),
@@ -788,7 +788,7 @@ btk_container_child_set_valist (BtkContainer *container,
 	}
       container_set_child_property (container, child, pspec, &value, nqueue);
       b_value_unset (&value);
-      name = va_arg (var_args, gchar*);
+      name = va_arg (var_args, bchar*);
     }
   g_object_notify_queue_thaw (B_OBJECT (child), nqueue);
 
@@ -808,7 +808,7 @@ btk_container_child_set_valist (BtkContainer *container,
 void
 btk_container_child_set_property (BtkContainer *container,
 				  BtkWidget    *child,
-				  const gchar  *property_name,
+				  const bchar  *property_name,
 				  const BValue *value)
 {
   BObjectNotifyQueue *nqueue;
@@ -859,7 +859,7 @@ btk_container_child_set_property (BtkContainer *container,
 void
 btk_container_add_with_properties (BtkContainer *container,
 				   BtkWidget    *widget,
-				   const gchar  *first_prop_name,
+				   const bchar  *first_prop_name,
 				   ...)
 {
   g_return_if_fail (BTK_IS_CONTAINER (container));
@@ -898,7 +898,7 @@ btk_container_add_with_properties (BtkContainer *container,
 void
 btk_container_child_set (BtkContainer      *container,
 			 BtkWidget         *child,
-			 const gchar       *first_prop_name,
+			 const bchar       *first_prop_name,
 			 ...)
 {
   va_list var_args;
@@ -925,7 +925,7 @@ btk_container_child_set (BtkContainer      *container,
 void
 btk_container_child_get (BtkContainer      *container,
 			 BtkWidget         *child,
-			 const gchar       *first_prop_name,
+			 const bchar       *first_prop_name,
 			 ...)
 {
   va_list var_args;
@@ -949,7 +949,7 @@ btk_container_child_get (BtkContainer      *container,
  **/
 void
 btk_container_class_install_child_property (BtkContainerClass *cclass,
-					    guint              property_id,
+					    buint              property_id,
 					    BParamSpec        *pspec)
 {
   g_return_if_fail (BTK_IS_CONTAINER_CLASS (cclass));
@@ -987,7 +987,7 @@ btk_container_class_install_child_property (BtkContainerClass *cclass,
  */
 BParamSpec*
 btk_container_class_find_child_property (BObjectClass *cclass,
-					 const gchar  *property_name)
+					 const bchar  *property_name)
 {
   g_return_val_if_fail (BTK_IS_CONTAINER_CLASS (cclass), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
@@ -1010,10 +1010,10 @@ btk_container_class_find_child_property (BObjectClass *cclass,
  */
 BParamSpec**
 btk_container_class_list_child_properties (BObjectClass *cclass,
-					   guint        *n_properties)
+					   buint        *n_properties)
 {
   BParamSpec **pspecs;
-  guint n;
+  buint n;
 
   g_return_val_if_fail (BTK_IS_CONTAINER_CLASS (cclass), NULL);
 
@@ -1077,7 +1077,7 @@ btk_container_destroy (BtkObject *object)
 
 static void
 btk_container_set_property (BObject         *object,
-			    guint            prop_id,
+			    buint            prop_id,
 			    const BValue    *value,
 			    BParamSpec      *pspec)
 {
@@ -1102,7 +1102,7 @@ btk_container_set_property (BObject         *object,
 
 static void
 btk_container_get_property (BObject         *object,
-			    guint            prop_id,
+			    buint            prop_id,
 			    BValue          *value,
 			    BParamSpec      *pspec)
 {
@@ -1141,7 +1141,7 @@ btk_container_get_property (BObject         *object,
  **/
 void
 btk_container_set_border_width (BtkContainer *container,
-				guint         border_width)
+				buint         border_width)
 {
   g_return_if_fail (BTK_IS_CONTAINER (container));
 
@@ -1164,7 +1164,7 @@ btk_container_set_border_width (BtkContainer *container,
  *
  * Return value: the current border width
  **/
-guint
+buint
 btk_container_get_border_width (BtkContainer *container)
 {
   g_return_val_if_fail (BTK_IS_CONTAINER (container), 0);
@@ -1312,7 +1312,7 @@ btk_container_get_resize_mode (BtkContainer *container)
  **/ 
 void
 btk_container_set_reallocate_redraws (BtkContainer *container,
-				      gboolean      needs_redraws)
+				      bboolean      needs_redraws)
 {
   g_return_if_fail (BTK_IS_CONTAINER (container));
 
@@ -1334,8 +1334,8 @@ btk_container_get_resize_container (BtkContainer *container)
   return BTK_IS_RESIZE_CONTAINER (widget) ? (BtkContainer*) widget : NULL;
 }
 
-static gboolean
-btk_container_idle_sizer (gpointer data)
+static bboolean
+btk_container_idle_sizer (bpointer data)
 {
   /* we may be invoked with a container_resize_queue of NULL, because
    * queue_resize could have been adding an extra idle function while
@@ -1494,7 +1494,7 @@ btk_container_resize_children (BtkContainer *container)
 void
 btk_container_forall (BtkContainer *container,
 		      BtkCallback   callback,
-		      gpointer      callback_data)
+		      bpointer      callback_data)
 {
   BtkContainerClass *class;
 
@@ -1521,7 +1521,7 @@ btk_container_forall (BtkContainer *container,
 void
 btk_container_foreach (BtkContainer *container,
 		       BtkCallback   callback,
-		       gpointer      callback_data)
+		       bpointer      callback_data)
 {
   BtkContainerClass *class;
   
@@ -1539,12 +1539,12 @@ struct _BtkForeachData
 {
   BtkObject         *container;
   BtkCallbackMarshal callback;
-  gpointer           callback_data;
+  bpointer           callback_data;
 };
 
 static void
 btk_container_foreach_unmarshal (BtkWidget *child,
-				 gpointer data)
+				 bpointer data)
 {
   BtkForeachData *fdata = (BtkForeachData*) data;
   BtkArg args[2];
@@ -1565,7 +1565,7 @@ void
 btk_container_foreach_full (BtkContainer       *container,
 			    BtkCallback         callback,
 			    BtkCallbackMarshal  marshal,
-			    gpointer            callback_data,
+			    bpointer            callback_data,
 			    GDestroyNotify      notify)
 {
   g_return_if_fail (BTK_IS_CONTAINER (container));
@@ -1661,12 +1661,12 @@ btk_container_get_children (BtkContainer *container)
 
 static void
 btk_container_child_position_callback (BtkWidget *widget,
-				       gpointer   client_data)
+				       bpointer   client_data)
 {
   struct {
     BtkWidget *child;
-    guint i;
-    guint index;
+    buint i;
+    buint index;
   } *data = client_data;
 
   data->i++;
@@ -1674,16 +1674,16 @@ btk_container_child_position_callback (BtkWidget *widget,
     data->index = data->i;
 }
 
-static gchar*
+static bchar*
 btk_container_child_default_composite_name (BtkContainer *container,
 					    BtkWidget    *child)
 {
   struct {
     BtkWidget *child;
-    guint i;
-    guint index;
+    buint i;
+    buint index;
   } data;
-  gchar *name;
+  bchar *name;
 
   /* fallback implementation */
   data.child = child;
@@ -1700,11 +1700,11 @@ btk_container_child_default_composite_name (BtkContainer *container,
   return name;
 }
 
-gchar*
+bchar*
 _btk_container_child_composite_name (BtkContainer *container,
 				    BtkWidget    *child)
 {
-  gboolean composite_child;
+  bboolean composite_child;
 
   g_return_val_if_fail (BTK_IS_CONTAINER (container), NULL);
   g_return_val_if_fail (BTK_IS_WIDGET (child), NULL);
@@ -1714,7 +1714,7 @@ _btk_container_child_composite_name (BtkContainer *container,
   if (composite_child)
     {
       static GQuark quark_composite_name = 0;
-      gchar *name;
+      bchar *name;
 
       if (!quark_composite_name)
 	quark_composite_name = g_quark_from_static_string ("btk-composite-name");
@@ -1761,7 +1761,7 @@ btk_container_real_set_focus_child (BtkContainer     *container,
       BtkAdjustment *hadj;
       BtkAdjustment *vadj;
       BtkWidget *focus_child;
-      gint x, y;
+      bint x, y;
 
       hadj = g_object_get_qdata (B_OBJECT (container), hadjustment_key_id);   
       vadj = g_object_get_qdata (B_OBJECT (container), vadjustment_key_id);
@@ -1810,13 +1810,13 @@ btk_container_get_all_children (BtkContainer *container)
   return children;
 }
 
-static gboolean
+static bboolean
 btk_container_focus (BtkWidget        *widget,
                      BtkDirectionType  direction)
 {
   GList *children;
   GList *sorted_children;
-  gint return_val;
+  bint return_val;
   BtkContainer *container;
 
   g_return_val_if_fail (BTK_IS_CONTAINER (widget), FALSE);
@@ -1864,22 +1864,22 @@ btk_container_focus (BtkWidget        *widget,
   return return_val;
 }
 
-static gint
+static bint
 tab_compare (gconstpointer a,
 	     gconstpointer b,
-	     gpointer      data)
+	     bpointer      data)
 {
   const BtkWidget *child1 = a;
   const BtkWidget *child2 = b;
-  BtkTextDirection text_direction = GPOINTER_TO_INT (data);
+  BtkTextDirection text_direction = BPOINTER_TO_INT (data);
 
-  gint y1 = child1->allocation.y + child1->allocation.height / 2;
-  gint y2 = child2->allocation.y + child2->allocation.height / 2;
+  bint y1 = child1->allocation.y + child1->allocation.height / 2;
+  bint y2 = child2->allocation.y + child2->allocation.height / 2;
 
   if (y1 == y2)
     {
-      gint x1 = child1->allocation.x + child1->allocation.width / 2;
-      gint x2 = child2->allocation.x + child2->allocation.width / 2;
+      bint x1 = child1->allocation.x + child1->allocation.width / 2;
+      bint x2 = child2->allocation.x + child2->allocation.width / 2;
       
       if (text_direction == BTK_TEXT_DIR_RTL) 
 	return (x1 < x2) ? 1 : ((x1 == x2) ? 0 : -1);
@@ -1897,7 +1897,7 @@ btk_container_focus_sort_tab (BtkContainer     *container,
 			      BtkWidget        *old_focus)
 {
   BtkTextDirection text_direction = btk_widget_get_direction (BTK_WIDGET (container));
-  children = g_list_sort_with_data (children, tab_compare, GINT_TO_POINTER (text_direction));
+  children = g_list_sort_with_data (children, tab_compare, BINT_TO_POINTER (text_direction));
 
   /* if we are going backwards then reverse the order
    *  of the children.
@@ -1911,7 +1911,7 @@ btk_container_focus_sort_tab (BtkContainer     *container,
 /* Get coordinates of @widget's allocation with respect to
  * allocation of @container.
  */
-static gboolean
+static bboolean
 get_allocation_coords (BtkContainer  *container,
 		       BtkWidget     *widget,
 		       BdkRectangle  *allocation)
@@ -1954,7 +1954,7 @@ find_old_focus (BtkContainer *container,
   return NULL;
 }
 
-static gboolean
+static bboolean
 old_focus_coords (BtkContainer *container,
 		  BdkRectangle *old_focus_rect)
 {
@@ -1976,20 +1976,20 @@ typedef struct _CompareInfo CompareInfo;
 struct _CompareInfo
 {
   BtkContainer *container;
-  gint x;
-  gint y;
-  gboolean reverse;
+  bint x;
+  bint y;
+  bboolean reverse;
 };
 
-static gint
+static bint
 up_down_compare (gconstpointer a,
 		 gconstpointer b,
-		 gpointer      data)
+		 bpointer      data)
 {
   BdkRectangle allocation1;
   BdkRectangle allocation2;
   CompareInfo *compare = data;
-  gint y1, y2;
+  bint y1, y2;
 
   get_allocation_coords (compare->container, (BtkWidget *)a, &allocation1);
   get_allocation_coords (compare->container, (BtkWidget *)b, &allocation2);
@@ -1999,8 +1999,8 @@ up_down_compare (gconstpointer a,
 
   if (y1 == y2)
     {
-      gint x1 = abs (allocation1.x + allocation1.width / 2 - compare->x);
-      gint x2 = abs (allocation2.x + allocation2.width / 2 - compare->x);
+      bint x1 = abs (allocation1.x + allocation1.width / 2 - compare->x);
+      bint x2 = abs (allocation2.x + allocation2.width / 2 - compare->x);
 
       if (compare->reverse)
 	return (x1 < x2) ? 1 : ((x1 == x2) ? 0 : -1);
@@ -2029,9 +2029,9 @@ btk_container_focus_sort_up_down (BtkContainer     *container,
   
   if (old_focus && get_allocation_coords (container, old_focus, &old_allocation))
     {
-      gint compare_x1;
-      gint compare_x2;
-      gint compare_y;
+      bint compare_x1;
+      bint compare_x2;
+      bint compare_y;
 
       /* Delete widgets from list that don't match minimum criteria */
 
@@ -2048,7 +2048,7 @@ btk_container_focus_sort_up_down (BtkContainer     *container,
 	{
 	  BtkWidget *child = tmp_list->data;
 	  GList *next = tmp_list->next;
-	  gint child_x1, child_x2;
+	  bint child_x1, child_x2;
 	  BdkRectangle child_allocation;
 	  
 	  if (child != old_focus)
@@ -2108,15 +2108,15 @@ btk_container_focus_sort_up_down (BtkContainer     *container,
   return children;
 }
 
-static gint
+static bint
 left_right_compare (gconstpointer a,
 		    gconstpointer b,
-		    gpointer      data)
+		    bpointer      data)
 {
   BdkRectangle allocation1;
   BdkRectangle allocation2;
   CompareInfo *compare = data;
-  gint x1, x2;
+  bint x1, x2;
 
   get_allocation_coords (compare->container, (BtkWidget *)a, &allocation1);
   get_allocation_coords (compare->container, (BtkWidget *)b, &allocation2);
@@ -2126,8 +2126,8 @@ left_right_compare (gconstpointer a,
 
   if (x1 == x2)
     {
-      gint y1 = abs (allocation1.y + allocation1.height / 2 - compare->y);
-      gint y2 = abs (allocation2.y + allocation2.height / 2 - compare->y);
+      bint y1 = abs (allocation1.y + allocation1.height / 2 - compare->y);
+      bint y2 = abs (allocation2.y + allocation2.height / 2 - compare->y);
 
       if (compare->reverse)
 	return (y1 < y2) ? 1 : ((y1 == y2) ? 0 : -1);
@@ -2156,9 +2156,9 @@ btk_container_focus_sort_left_right (BtkContainer     *container,
   
   if (old_focus && get_allocation_coords (container, old_focus, &old_allocation))
     {
-      gint compare_y1;
-      gint compare_y2;
-      gint compare_x;
+      bint compare_y1;
+      bint compare_y2;
+      bint compare_x;
       
       /* Delete widgets from list that don't match minimum criteria */
 
@@ -2175,7 +2175,7 @@ btk_container_focus_sort_left_right (BtkContainer     *container,
 	{
 	  BtkWidget *child = tmp_list->data;
 	  GList *next = tmp_list->next;
-	  gint child_y1, child_y2;
+	  bint child_y1, child_y2;
 	  BdkRectangle child_allocation;
 	  
 	  if (child != old_focus)
@@ -2287,7 +2287,7 @@ _btk_container_focus_sort (BtkContainer     *container,
   return NULL;
 }
 
-static gboolean
+static bboolean
 btk_container_focus_move (BtkContainer     *container,
 			  GList            *children,
 			  BtkDirectionType  direction)
@@ -2329,7 +2329,7 @@ btk_container_focus_move (BtkContainer     *container,
 
 static void
 btk_container_children_callback (BtkWidget *widget,
-				 gpointer   client_data)
+				 bpointer   client_data)
 {
   GList **children;
 
@@ -2339,7 +2339,7 @@ btk_container_children_callback (BtkWidget *widget,
 
 static void
 chain_widget_destroyed (BtkWidget *widget,
-                        gpointer   user_data)
+                        bpointer   user_data)
 {
   BtkContainer *container;
   GList *chain;
@@ -2437,7 +2437,7 @@ btk_container_set_focus_chain (BtkContainer *container,
  * Return value: %TRUE if the focus chain of the container 
  * has been set explicitly.
  **/
-gboolean
+bboolean
 btk_container_get_focus_chain (BtkContainer *container,
 			       GList       **focus_chain)
 {
@@ -2628,7 +2628,7 @@ btk_container_hide_all (BtkWidget *widget)
 
 static void
 btk_container_expose_child (BtkWidget *child,
-			    gpointer   client_data)
+			    bpointer   client_data)
 {
   struct {
     BtkWidget *container;
@@ -2640,7 +2640,7 @@ btk_container_expose_child (BtkWidget *child,
 				  data->event);
 }
 
-static gint 
+static bint 
 btk_container_expose (BtkWidget      *widget,
 		      BdkEventExpose *event)
 {
@@ -2668,7 +2668,7 @@ btk_container_expose (BtkWidget      *widget,
 
 static void
 btk_container_map_child (BtkWidget *child,
-			 gpointer   client_data)
+			 bpointer   client_data)
 {
   if (btk_widget_get_visible (child) &&
       BTK_WIDGET_CHILD_VISIBLE (child) &&

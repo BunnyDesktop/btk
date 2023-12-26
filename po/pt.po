@@ -244,7 +244,7 @@ msgstr "KP_Page_Down"
 #: ../bdk/keyname-table.h:3971
 msgctxt "keyboard label"
 msgid "KP_Next"
-msgstr "KP_Seguinte"
+msgstr "KP_Sebuinte"
 
 #: ../bdk/keyname-table.h:3972
 msgctxt "keyboard label"
@@ -2518,7 +2518,7 @@ msgstr "_Avançar"
 #: ../btk/btkstock.c:381
 msgctxt "Stock label, media"
 msgid "_Next"
-msgstr "_Seguinte"
+msgstr "_Sebuinte"
 
 #. Media label, as in "pause music"
 #: ../btk/btkstock.c:383
@@ -4868,7 +4868,7 @@ msgstr ""
 #~ msgstr "Erro de ficheiro ao ler atom QTIF: %s"
 
 #~ msgid "Failed to skip the next %d bytes with seek()."
-#~ msgstr "Falha ao saltar os %d bytes seguintes com o seek()."
+#~ msgstr "Falha ao saltar os %d bytes sebuintes com o seek()."
 
 #~ msgid "Failed to allocate QTIF context structure."
 #~ msgstr "Falha ao alocar a estrutura de contexto QTIF."
@@ -5309,7 +5309,7 @@ msgstr ""
 #~ msgstr "_Direita"
 
 #~ msgid "Media|_Next"
-#~ msgstr "_Seguinte"
+#~ msgstr "_Sebuinte"
 
 #~ msgid "Media|P_ause"
 #~ msgstr "P_ausar"

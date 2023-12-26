@@ -44,35 +44,35 @@ struct _BtkPrinterCups
 {
   BtkPrinter parent_instance;
 
-  gchar *device_uri;
-  gchar *printer_uri;
-  gchar *hostname;
-  gint port;
-  gchar **auth_info_required;
+  bchar *device_uri;
+  bchar *printer_uri;
+  bchar *hostname;
+  bint port;
+  bchar **auth_info_required;
 
   ipp_pstate_t state;
-  gboolean reading_ppd;
-  gchar      *ppd_name;
+  bboolean reading_ppd;
+  bchar      *ppd_name;
   ppd_file_t *ppd_file;
 
-  gchar  *default_cover_before;
-  gchar  *default_cover_after;
+  bchar  *default_cover_before;
+  bchar  *default_cover_after;
 
-  gboolean remote;
-  guint get_remote_ppd_poll;
-  gint  get_remote_ppd_attempts;
+  bboolean remote;
+  buint get_remote_ppd_poll;
+  bint  get_remote_ppd_attempts;
   BtkCupsConnectionTest *remote_cups_connection_test;
 #ifdef HAVE_CUPS_API_1_6
-  gboolean  avahi_browsed;
-  gchar    *avahi_name;
-  gchar    *avahi_type;
-  gchar    *avahi_domain;
+  bboolean  avahi_browsed;
+  bchar    *avahi_name;
+  bchar    *avahi_type;
+  bchar    *avahi_domain;
 #endif
-  guchar ipp_version_major;
-  guchar ipp_version_minor;
-  gboolean supports_copies;
-  gboolean supports_collate;
-  gboolean supports_number_up;
+  buchar ipp_version_major;
+  buchar ipp_version_minor;
+  bboolean supports_copies;
+  bboolean supports_collate;
+  bboolean supports_number_up;
 };
 
 struct _BtkPrinterCupsClass
@@ -86,7 +86,7 @@ void                     btk_printer_cups_register_type (GTypeModule     *module
 BtkPrinterCups          *btk_printer_cups_new           (const char      *name,
 							 BtkPrintBackend *backend);
 ppd_file_t 		*btk_printer_cups_get_ppd       (BtkPrinterCups  *printer);
-const gchar		*btk_printer_cups_get_ppd_name  (BtkPrinterCups  *printer);
+const bchar		*btk_printer_cups_get_ppd_name  (BtkPrinterCups  *printer);
 
 B_END_DECLS
 

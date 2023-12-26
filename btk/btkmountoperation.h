@@ -70,7 +70,7 @@ struct _BtkMountOperationClass
 
 GType            btk_mount_operation_get_type   (void);
 GMountOperation *btk_mount_operation_new        (BtkWindow         *parent);
-gboolean         btk_mount_operation_is_showing (BtkMountOperation *op);
+bboolean         btk_mount_operation_is_showing (BtkMountOperation *op);
 void             btk_mount_operation_set_parent (BtkMountOperation *op,
                                                  BtkWindow         *parent);
 BtkWindow *      btk_mount_operation_get_parent (BtkMountOperation *op);

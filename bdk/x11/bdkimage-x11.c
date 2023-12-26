@@ -62,7 +62,7 @@ struct _BdkImagePrivateX11
 {
   XImage *ximage;
   BdkScreen *screen;
-  gpointer x_shm_info;
+  bpointer x_shm_info;
   Pixmap shm_pixmap;
 };
 
@@ -132,9 +132,9 @@ _bdk_image_exit (void)
  **/
 BdkImage *
 bdk_image_new_bitmap (BdkVisual *visual, 
-		      gpointer   data, 
-		      gint       width, 
-		      gint       height)
+		      bpointer   data, 
+		      bint       width, 
+		      bint       height)
 {
   Visual *xvisual;
   BdkImage *image;
@@ -203,9 +203,9 @@ BdkImage*
 _bdk_image_new_for_depth (BdkScreen    *screen,
 			  BdkImageType  type,
 			  BdkVisual    *visual,
-			  gint          width,
-			  gint          height,
-			  gint          depth)
+			  bint          width,
+			  bint          height,
+			  bint          depth)
 {
   BdkImage *image;
   BdkImagePrivateX11 *private;
@@ -418,10 +418,10 @@ _bdk_x11_image_get_shm_pixmap (BdkImage *image)
 
 static BdkImage*
 get_full_image (BdkDrawable    *drawable,
-		gint            src_x,
-		gint            src_y,
-		gint            width,
-		gint            height)
+		bint            src_x,
+		bint            src_y,
+		bint            width,
+		bint            height)
 {
   BdkImage *image;
   BdkImagePrivateX11 *private;
@@ -463,23 +463,23 @@ get_full_image (BdkDrawable    *drawable,
 BdkImage*
 _bdk_x11_copy_to_image (BdkDrawable    *drawable,
 			BdkImage       *image,
-			gint            src_x,
-			gint            src_y,
-			gint            dest_x,
-			gint            dest_y,
-			gint            width,
-			gint            height)
+			bint            src_x,
+			bint            src_y,
+			bint            dest_x,
+			bint            dest_y,
+			bint            width,
+			bint            height)
 {
   BdkImagePrivateX11 *private;
   BdkDrawableImplX11 *impl;
   BdkVisual *visual;
   BdkDisplay *display;
   Display *xdisplay;
-  gboolean have_grab;
+  bboolean have_grab;
   BdkRectangle req;
   BdkRectangle window_rect;
   Pixmap shm_pixmap = None;
-  gboolean success = TRUE;
+  bboolean success = TRUE;
   
   g_return_val_if_fail (BDK_IS_DRAWABLE_IMPL_X11 (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
@@ -601,7 +601,7 @@ _bdk_x11_copy_to_image (BdkDrawable    *drawable,
     }
   else
     {
-      gboolean created_image = FALSE;
+      bboolean created_image = FALSE;
       
       if (!image)
 	{
@@ -650,12 +650,12 @@ _bdk_x11_copy_to_image (BdkDrawable    *drawable,
   return image;
 }
 
-guint32
+buint32
 bdk_image_get_pixel (BdkImage *image,
-		     gint x,
-		     gint y)
+		     bint x,
+		     bint y)
 {
-  guint32 pixel;
+  buint32 pixel;
   BdkImagePrivateX11 *private;
 
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
@@ -674,9 +674,9 @@ bdk_image_get_pixel (BdkImage *image,
 
 void
 bdk_image_put_pixel (BdkImage *image,
-		     gint x,
-		     gint y,
-		     guint32 pixel)
+		     bint x,
+		     bint y,
+		     buint32 pixel)
 {
   BdkImagePrivateX11 *private;
 
@@ -788,19 +788,19 @@ bdk_x11_image_get_ximage (BdkImage *image)
     return private->ximage;
 }
 
-gint
+bint
 _bdk_windowing_get_bits_for_depth (BdkDisplay *display,
-				   gint        depth)
+				   bint        depth)
 {
   XPixmapFormatValues *formats;
-  gint count, i;
+  bint count, i;
 
   formats = XListPixmapFormats (BDK_DISPLAY_XDISPLAY (display), &count);
   
   for (i = 0; i < count; i++)
     if (formats[i].depth == depth)
       {
-	gint result = formats[i].bits_per_pixel;
+	bint result = formats[i].bits_per_pixel;
 	XFree (formats);
 	return result;
       }

@@ -41,7 +41,7 @@ static GHashTable *fontset_name_hash = NULL;
 static void
 bdk_font_hash_insert (BdkFontType  type,
 		      BdkFont     *font,
-		      const gchar *font_name)
+		      const bchar *font_name)
 {
   BdkFontPrivateWin32 *private = (BdkFontPrivateWin32 *) font;
   GHashTable **hashp = (type == BDK_FONT_FONT) ?
@@ -78,7 +78,7 @@ bdk_font_hash_remove (BdkFontType type,
 
 static BdkFont *
 bdk_font_hash_lookup (BdkFontType  type,
-		      const gchar *font_name)
+		      const bchar *font_name)
 {
   BdkFont *result;
   GHashTable *hash = (type == BDK_FONT_FONT) ?
@@ -215,7 +215,7 @@ typedef enum
 static struct {
   wchar_t low, high;
   unicode_subset bit; 
-  gchar *name;
+  bchar *name;
 } utab[] =
 {
   { 0x0000, 0x007E,
@@ -373,8 +373,8 @@ static void
 print_unicode_subranges (FONTSIGNATURE *fsp)
 {
   int i;
-  gboolean checked[G_N_ELEMENTS (utab)];
-  gboolean need_comma = FALSE;
+  bboolean checked[G_N_ELEMENTS (utab)];
+  bboolean need_comma = FALSE;
 
   memset (checked, 0, sizeof (checked));
 
@@ -392,12 +392,12 @@ print_unicode_subranges (FONTSIGNATURE *fsp)
 }
 #endif
 
-static gboolean
+static bboolean
 check_unicode_subranges (UINT           charset,
 			 FONTSIGNATURE *fsp)
 {
-  gint i;
-  gboolean retval = FALSE;
+  bint i;
+  bboolean retval = FALSE;
 
   /* If the fsUsb bit array has at least one of the bits set, trust it */
   for (i = 0; i < U_LAST_PLUS_ONE; i++)
@@ -824,7 +824,7 @@ bdk_font_load_logfont (LOGFONT *lfp)
   CHARSETINFO csi;
   HGDIOBJ oldfont;
   int tries;
-  gchar face[100];
+  bchar face[100];
 
   for (tries = 0; ; tries++)
     {
@@ -901,7 +901,7 @@ bdk_font_load_logfont (LOGFONT *lfp)
   singlefont->charset = GetTextCharsetInfo (_bdk_display_hdc, &singlefont->fs, 0);
   GetTextFace (_bdk_display_hdc, sizeof (face), face);
   SelectObject (_bdk_display_hdc, oldfont);
-  if (TranslateCharsetInfo ((DWORD *) (gintptr) singlefont->charset, &csi,
+  if (TranslateCharsetInfo ((DWORD *) (bintptr) singlefont->charset, &csi,
 			    TCI_SRCCHARSET)
       && singlefont->charset != MAC_CHARSET)
     singlefont->codepage = csi.ciACP;
@@ -922,7 +922,7 @@ bdk_font_load_logfont (LOGFONT *lfp)
 }
 
 static BdkWin32SingleFont *
-bdk_font_load_internal (const gchar *font_name)
+bdk_font_load_internal (const bchar *font_name)
 {
   LOGFONT logfont;
 
@@ -1194,7 +1194,7 @@ bdk_font_from_one_singlefont (BdkWin32SingleFont *singlefont)
 
 BdkFont*
 bdk_font_load_for_display (BdkDisplay  *display,
-                           const gchar *font_name)
+                           const bchar *font_name)
 {
   BdkFont *font;
   BdkFontPrivateWin32 *private;
@@ -1270,15 +1270,15 @@ bdk_font_from_description_for_display (BdkDisplay           *display,
 }
 
 BdkFont*
-bdk_fontset_load (const gchar *fontset_name)
+bdk_fontset_load (const bchar *fontset_name)
 {
   BdkFont *font;
   BdkFontPrivateWin32 *private;
   BdkWin32SingleFont *singlefont;
   HGDIOBJ oldfont;
   TEXTMETRIC textmetric;
-  gchar *fs;
-  gchar *b, *p, *s;
+  bchar *fs;
+  bchar *b, *p, *s;
 
   g_return_val_if_fail (fontset_name != NULL, NULL);
 
@@ -1344,7 +1344,7 @@ bdk_fontset_load (const gchar *fontset_name)
 
 BdkFont*
 bdk_fontset_load_for_display (BdkDisplay  *display,
-			      const gchar *fontset_name)
+			      const bchar *fontset_name)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
@@ -1385,9 +1385,9 @@ _bdk_font_destroy (BdkFont *font)
   g_free (font);
 }
 
-gint
+bint
 _bdk_font_strlen (BdkFont     *font,
-		  const gchar *str)
+		  const bchar *str)
 {
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (str != NULL, -1);
@@ -1395,7 +1395,7 @@ _bdk_font_strlen (BdkFont     *font,
   return strlen (str);
 }
 
-gint
+bint
 bdk_font_id (const BdkFont *font)
 {
   const BdkFontPrivateWin32 *private;
@@ -1406,12 +1406,12 @@ bdk_font_id (const BdkFont *font)
 
   /* FIXME: What to do on Win64? */
   if (font->type == BDK_FONT_FONT)
-    return (gint) (gintptr) ((BdkWin32SingleFont *) private->fonts->data)->hfont;
+    return (bint) (bintptr) ((BdkWin32SingleFont *) private->fonts->data)->hfont;
   else
     return 0;
 }
 
-gboolean
+bboolean
 bdk_font_equal (const BdkFont *fonta,
                 const BdkFont *fontb)
 {
@@ -1565,24 +1565,24 @@ bdk_text_size_handler (BdkWin32SingleFont *singlefont,
   arg->total.cy = MAX (arg->total.cy, this_size.cy);
 }
 
-gint
+bint
 bdk_text_width (BdkFont      *font,
-		const gchar  *text,
-		gint          text_length)
+		const bchar  *text,
+		bint          text_length)
 {
-  gint width = -1;
+  bint width = -1;
 
   bdk_text_extents (font, text, text_length, NULL, NULL, &width, NULL, NULL);
 
   return width;
 }
 
-gint
+bint
 bdk_text_width_wc (BdkFont	  *font,
 		   const BdkWChar *text,
-		   gint		   text_length)
+		   bint		   text_length)
 {
-  gint width = -1;
+  bint width = -1;
 
   bdk_text_extents_wc (font, text, text_length, NULL, NULL, &width, NULL, NULL);
 
@@ -1591,16 +1591,16 @@ bdk_text_width_wc (BdkFont	  *font,
 
 void
 bdk_text_extents (BdkFont     *font,
-                  const gchar *text,
-                  gint         text_length,
-		  gint        *lbearing,
-		  gint        *rbearing,
-		  gint        *width,
-		  gint        *ascent,
-		  gint        *descent)
+                  const bchar *text,
+                  bint         text_length,
+		  bint        *lbearing,
+		  bint        *rbearing,
+		  bint        *width,
+		  bint        *ascent,
+		  bint        *descent)
 {
   bdk_text_size_arg arg;
-  glong wlen;
+  blong wlen;
   wchar_t *wcstr, wc;
 
   g_return_if_fail (font != NULL);
@@ -1627,7 +1627,7 @@ bdk_text_extents (BdkFont     *font,
 
   if (text_length == 1)
     {
-      wc = (guchar) text[0];
+      wc = (buchar) text[0];
       _bdk_wchar_text_handle (font, &wc, 1, bdk_text_size_handler, &arg);
     }
   else
@@ -1654,16 +1654,16 @@ bdk_text_extents (BdkFont     *font,
 void
 bdk_text_extents_wc (BdkFont        *font,
 		     const BdkWChar *text,
-		     gint            text_length,
-		     gint           *lbearing,
-		     gint           *rbearing,
-		     gint           *width,
-		     gint           *ascent,
-		     gint           *descent)
+		     bint            text_length,
+		     bint           *lbearing,
+		     bint           *rbearing,
+		     bint           *width,
+		     bint           *ascent,
+		     bint           *descent)
 {
   bdk_text_size_arg arg;
   wchar_t *wcstr;
-  gint i;
+  bint i;
 
   g_return_if_fail (font != NULL);
   g_return_if_fail (text != NULL);

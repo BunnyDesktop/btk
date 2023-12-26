@@ -116,16 +116,16 @@ static void btk_text_layout_real_invalidate_cursors(BtkTextLayout     *layout,
 						    const BtkTextIter *end);
 static void btk_text_layout_invalidate_cache       (BtkTextLayout     *layout,
 						    BtkTextLine       *line,
-						    gboolean           cursors_only);
+						    bboolean           cursors_only);
 static void btk_text_layout_invalidate_cursor_line (BtkTextLayout     *layout,
-						    gboolean           cursors_only);
+						    bboolean           cursors_only);
 static void btk_text_layout_real_free_line_data    (BtkTextLayout     *layout,
 						    BtkTextLine       *line,
 						    BtkTextLineData   *line_data);
 static void btk_text_layout_emit_changed           (BtkTextLayout     *layout,
-						    gint               y,
-						    gint               old_height,
-						    gint               new_height);
+						    bint               y,
+						    bint               old_height,
+						    bint               new_height);
 
 static void btk_text_layout_invalidate_all (BtkTextLayout *layout);
 
@@ -134,26 +134,26 @@ static BangoAttribute *btk_text_attr_appearance_new (const BtkTextAppearance *ap
 static void btk_text_layout_mark_set_handler    (BtkTextBuffer     *buffer,
 						 const BtkTextIter *location,
 						 BtkTextMark       *mark,
-						 gpointer           data);
+						 bpointer           data);
 static void btk_text_layout_buffer_insert_text  (BtkTextBuffer     *textbuffer,
 						 BtkTextIter       *iter,
-						 gchar             *str,
-						 gint               len,
-						 gpointer           data);
+						 bchar             *str,
+						 bint               len,
+						 bpointer           data);
 static void btk_text_layout_buffer_delete_range (BtkTextBuffer     *textbuffer,
 						 BtkTextIter       *start,
 						 BtkTextIter       *end,
-						 gpointer           data);
+						 bpointer           data);
 
 static void btk_text_layout_update_cursor_line (BtkTextLayout *layout);
 
 static void line_display_index_to_iter (BtkTextLayout      *layout,
 	                                BtkTextLineDisplay *display,
 			                BtkTextIter        *iter,
-                                        gint                index,
-                                        gint                trailing);
+                                        bint                index,
+                                        bint                trailing);
 
-static gint line_display_iter_to_index (BtkTextLayout      *layout,
+static bint line_display_iter_to_index (BtkTextLayout      *layout,
                                         BtkTextLineDisplay *display,
                                         const BtkTextIter  *iter);
 
@@ -173,7 +173,7 @@ enum {
 
 static void btk_text_layout_finalize (BObject *object);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 BangoAttrType btk_text_attr_appearance_type = 0;
 
@@ -421,7 +421,7 @@ btk_text_layout_set_contexts (BtkTextLayout *layout,
  */
 void
 btk_text_layout_set_overwrite_mode (BtkTextLayout *layout,
-				    gboolean       overwrite)
+				    bboolean       overwrite)
 {
   overwrite = overwrite != 0;
   if (overwrite != layout->overwrite_mode)
@@ -492,7 +492,7 @@ btk_text_layout_get_buffer (BtkTextLayout *layout)
 }
 
 void
-btk_text_layout_set_screen_width (BtkTextLayout *layout, gint width)
+btk_text_layout_set_screen_width (BtkTextLayout *layout, bint width)
 {
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
   g_return_if_fail (width >= 0);
@@ -519,14 +519,14 @@ btk_text_layout_set_screen_width (BtkTextLayout *layout, gint width)
  */
 void
 btk_text_layout_set_cursor_visible (BtkTextLayout *layout,
-                                    gboolean       cursor_visible)
+                                    bboolean       cursor_visible)
 {
   cursor_visible = (cursor_visible != FALSE);
 
   if (layout->cursor_visible != cursor_visible)
     {
       BtkTextIter iter;
-      gint y, height;
+      bint y, height;
 
       layout->cursor_visible = cursor_visible;
 
@@ -551,7 +551,7 @@ btk_text_layout_set_cursor_visible (BtkTextLayout *layout,
  * Return value: if %FALSE, the insertion cursor will not be
  *     shown, even if the text is editable.
  */
-gboolean
+bboolean
 btk_text_layout_get_cursor_visible (BtkTextLayout *layout)
 {
   return layout->cursor_visible;
@@ -570,9 +570,9 @@ btk_text_layout_get_cursor_visible (BtkTextLayout *layout)
  */
 void
 btk_text_layout_set_preedit_string (BtkTextLayout *layout,
-				    const gchar   *preedit_string,
+				    const bchar   *preedit_string,
 				    BangoAttrList *preedit_attrs,
-				    gint           cursor_pos)
+				    bint           cursor_pos)
 {
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
   g_return_if_fail (preedit_attrs != NULL || preedit_string == NULL);
@@ -605,8 +605,8 @@ btk_text_layout_set_preedit_string (BtkTextLayout *layout,
 
 void
 btk_text_layout_get_size (BtkTextLayout *layout,
-                          gint *width,
-                          gint *height)
+                          bint *width,
+                          bint *height)
 {
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
 
@@ -625,19 +625,19 @@ btk_text_layout_invalidated (BtkTextLayout *layout)
 
 static void
 btk_text_layout_emit_changed (BtkTextLayout *layout,
-			      gint           y,
-			      gint           old_height,
-			      gint           new_height)
+			      bint           y,
+			      bint           old_height,
+			      bint           new_height)
 {
   g_signal_emit (layout, signals[CHANGED], 0, y, old_height, new_height);
 }
 
 static void
 text_layout_changed (BtkTextLayout *layout,
-                     gint           y,
-                     gint           old_height,
-                     gint           new_height,
-                     gboolean       cursors_only)
+                     bint           y,
+                     bint           old_height,
+                     bint           new_height,
+                     bboolean       cursors_only)
 {
   /* Check if the range intersects our cached line display,
    * and invalidate the cached line if so.
@@ -645,9 +645,9 @@ text_layout_changed (BtkTextLayout *layout,
   if (layout->one_display_cache)
     {
       BtkTextLine *line = layout->one_display_cache->line;
-      gint cache_y = _btk_text_btree_find_line_top (_btk_text_buffer_get_btree (layout->buffer),
+      bint cache_y = _btk_text_btree_find_line_top (_btk_text_buffer_get_btree (layout->buffer),
 						    line, layout);
-      gint cache_height = layout->one_display_cache->height;
+      bint cache_height = layout->one_display_cache->height;
 
       if (cache_y + cache_height > y && cache_y < y + old_height)
 	btk_text_layout_invalidate_cache (layout, line, cursors_only);
@@ -658,18 +658,18 @@ text_layout_changed (BtkTextLayout *layout,
 
 void
 btk_text_layout_changed (BtkTextLayout *layout,
-                         gint           y,
-                         gint           old_height,
-                         gint           new_height)
+                         bint           y,
+                         bint           old_height,
+                         bint           new_height)
 {
   text_layout_changed (layout, y, old_height, new_height, FALSE);
 }
 
 void
 btk_text_layout_cursors_changed (BtkTextLayout *layout,
-                                 gint           y,
-				 gint           old_height,
-				 gint           new_height)
+                                 bint           y,
+				 bint           old_height,
+				 bint           new_height)
 {
   text_layout_changed (layout, y, old_height, new_height, TRUE);
 }
@@ -716,9 +716,9 @@ btk_text_layout_wrap (BtkTextLayout *layout,
 GSList*
 btk_text_layout_get_lines (BtkTextLayout *layout,
                            /* [top_y, bottom_y) */
-                           gint top_y,
-                           gint bottom_y,
-                           gint *first_line_y)
+                           bint top_y,
+                           bint bottom_y,
+                           bint *first_line_y)
 {
   BtkTextLine *first_btree_line;
   BtkTextLine *last_btree_line;
@@ -820,7 +820,7 @@ btk_text_layout_invalidate_all (BtkTextLayout *layout)
 static void
 btk_text_layout_invalidate_cache (BtkTextLayout *layout,
                                   BtkTextLine   *line,
-				  gboolean       cursors_only)
+				  bboolean       cursors_only)
 {
   if (layout->one_display_cache && line == layout->one_display_cache->line)
     {
@@ -846,7 +846,7 @@ btk_text_layout_invalidate_cache (BtkTextLayout *layout,
  */
 static void
 btk_text_layout_invalidate_cursor_line (BtkTextLayout *layout,
-					gboolean cursors_only)
+					bboolean cursors_only)
 {
   BtkTextLayoutPrivate *priv = BTK_TEXT_LAYOUT_GET_PRIVATE (layout);
   BtkTextLineData *line_data;
@@ -979,7 +979,7 @@ btk_text_layout_real_free_line_data (BtkTextLayout     *layout,
  *
  * Return value: %TRUE if any invalid rebunnyions were found
  */
-gboolean
+bboolean
 btk_text_layout_is_valid (BtkTextLayout *layout)
 {
   g_return_val_if_fail (BTK_IS_TEXT_LAYOUT (layout), FALSE);
@@ -1014,16 +1014,16 @@ update_layout_size (BtkTextLayout *layout)
 void
 btk_text_layout_validate_yrange (BtkTextLayout *layout,
                                  BtkTextIter   *anchor,
-                                 gint           y0,
-                                 gint           y1)
+                                 bint           y0,
+                                 bint           y1)
 {
   BtkTextLine *line;
   BtkTextLine *first_line = NULL;
   BtkTextLine *last_line = NULL;
-  gint seen;
-  gint delta_height = 0;
-  gint first_line_y = 0;        /* Quiet GCC */
-  gint last_line_y = 0;         /* Quiet GCC */
+  bint seen;
+  bint delta_height = 0;
+  bint first_line_y = 0;        /* Quiet GCC */
+  bint last_line_y = 0;         /* Quiet GCC */
 
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
 
@@ -1042,7 +1042,7 @@ btk_text_layout_validate_yrange (BtkTextLayout *layout,
       BtkTextLineData *line_data = _btk_text_line_get_data (line, layout);
       if (!line_data || !line_data->valid)
         {
-          gint old_height, new_height;
+          bint old_height, new_height;
 	  
 	  old_height = line_data ? line_data->height : 0;
 
@@ -1075,7 +1075,7 @@ btk_text_layout_validate_yrange (BtkTextLayout *layout,
       BtkTextLineData *line_data = _btk_text_line_get_data (line, layout);
       if (!line_data || !line_data->valid)
         {
-          gint old_height, new_height;
+          bint old_height, new_height;
 	  
 	  old_height = line_data ? line_data->height : 0;
 
@@ -1104,7 +1104,7 @@ btk_text_layout_validate_yrange (BtkTextLayout *layout,
    */
   if (first_line)
     {
-      gint line_top;
+      bint line_top;
 
       update_layout_size (layout);
 
@@ -1129,9 +1129,9 @@ btk_text_layout_validate_yrange (BtkTextLayout *layout,
  **/
 void
 btk_text_layout_validate (BtkTextLayout *layout,
-                          gint           max_pixels)
+                          bint           max_pixels)
 {
-  gint y, old_height, new_height;
+  bint y, old_height, new_height;
 
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
 
@@ -1245,7 +1245,7 @@ release_style (BtkTextLayout *layout,
 
 /* This function tries to optimize the case where a line
    is completely invisible */
-static gboolean
+static bboolean
 totally_invisible_line (BtkTextLayout *layout,
                         BtkTextLine   *line,
                         BtkTextIter   *iter)
@@ -1433,7 +1433,7 @@ btk_text_attr_appearance_destroy (BangoAttribute *attr)
   g_slice_free (BtkTextAttrAppearance, appearance_attr);
 }
 
-static gboolean
+static bboolean
 btk_text_attr_appearance_compare (const BangoAttribute *attr1,
                                   const BangoAttribute *attr2)
 {
@@ -1491,11 +1491,11 @@ btk_text_attr_appearance_new (const BtkTextAppearance *appearance)
 static void
 add_generic_attrs (BtkTextLayout      *layout,
                    BtkTextAppearance  *appearance,
-                   gint                byte_count,
+                   bint                byte_count,
                    BangoAttrList      *attrs,
-                   gint                start,
-                   gboolean            size_only,
-                   gboolean            is_text)
+                   bint                start,
+                   bboolean            size_only,
+                   bboolean            is_text)
 {
   BangoAttribute *attr;
 
@@ -1545,10 +1545,10 @@ add_generic_attrs (BtkTextLayout      *layout,
 static void
 add_text_attrs (BtkTextLayout      *layout,
                 BtkTextAttributes  *style,
-                gint                byte_count,
+                bint                byte_count,
                 BangoAttrList      *attrs,
-                gint                start,
-                gboolean            size_only)
+                bint                start,
+                bboolean            size_only)
 {
   BangoAttribute *attr;
 
@@ -1575,12 +1575,12 @@ add_pixbuf_attrs (BtkTextLayout      *layout,
                   BtkTextAttributes  *style,
                   BtkTextLineSegment *seg,
                   BangoAttrList      *attrs,
-                  gint                start)
+                  bint                start)
 {
   BangoAttribute *attr;
   BangoRectangle logical_rect;
   BtkTextPixbuf *pixbuf = &seg->body.pixbuf;
-  gint width, height;
+  bint width, height;
 
   width = bdk_pixbuf_get_width (pixbuf->pixbuf);
   height = bdk_pixbuf_get_height (pixbuf->pixbuf);
@@ -1606,11 +1606,11 @@ add_child_attrs (BtkTextLayout      *layout,
                  BtkTextAttributes  *style,
                  BtkTextLineSegment *seg,
                  BangoAttrList      *attrs,
-                 gint                start)
+                 bint                start)
 {
   BangoAttribute *attr;
   BangoRectangle logical_rect;
-  gint width, height;
+  bint width, height;
   GSList *tmp_list;
   BtkWidget *widget;
 
@@ -1685,13 +1685,13 @@ add_child_attrs (BtkTextLayout      *layout,
  * For this layout must be in overwrite mode and text at @insert_iter 
  * must be editable.
  */
-static gboolean
+static bboolean
 get_block_cursor (BtkTextLayout      *layout,
 		  BtkTextLineDisplay *display,
 		  const BtkTextIter  *insert_iter,
-		  gint                insert_index,
+		  bint                insert_index,
 		  BdkRectangle       *pos,
-		  gboolean           *cursor_at_line_end)
+		  bboolean           *cursor_at_line_end)
 {
   BangoRectangle bango_pos;
 
@@ -1720,12 +1720,12 @@ static void
 add_cursor (BtkTextLayout      *layout,
             BtkTextLineDisplay *display,
             BtkTextLineSegment *seg,
-            gint                start)
+            bint                start)
 {
   BangoRectangle strong_pos, weak_pos;
   BtkTextCursorDisplay *cursor = NULL; /* Quiet GCC */
-  gboolean add_weak = FALSE;
-  gboolean add_strong = FALSE;
+  bboolean add_weak = FALSE;
+  bboolean add_strong = FALSE;
   
   /* Hide insertion cursor when we have a selection or the layout
    * user has hidden the cursor.
@@ -1741,7 +1741,7 @@ add_cursor (BtkTextLayout      *layout,
 				      seg->body.mark.obj))
     {
       BtkTextIter iter;
-      gboolean cursor_at_line_end;
+      bboolean cursor_at_line_end;
 
       _btk_text_btree_get_iter_at_mark (_btk_text_buffer_get_btree (layout->buffer),
 					&iter, seg->body.mark.obj);
@@ -1798,7 +1798,7 @@ add_cursor (BtkTextLayout      *layout,
     }
 }
 
-static gboolean
+static bboolean
 is_shape (BangoLayoutRun *run)
 {
   GSList *tmp_list = run->item->analysis.extra_attrs;
@@ -1830,7 +1830,7 @@ allocate_child_widgets (BtkTextLayout      *text_layout,
 
       if (run && is_shape (run))
         {
-          gint byte_index;
+          bint byte_index;
           BtkTextIter text_iter;
           BtkTextChildAnchor *anchor = NULL;
           GList *widgets = NULL;
@@ -1895,8 +1895,8 @@ static void
 add_preedit_attrs (BtkTextLayout     *layout,
 		   BtkTextAttributes *style,
 		   BangoAttrList     *attrs,
-		   gint               offset,
-		   gboolean           size_only)
+		   bint               offset,
+		   bboolean           size_only)
 {
   BangoAttrIterator *iter = bango_attr_list_get_iterator (layout->preedit_attrs);
 
@@ -1908,11 +1908,11 @@ add_preedit_attrs (BtkTextLayout     *layout,
       GSList *extra_attrs = NULL;
       GSList *tmp_list;
       BangoLanguage *language;
-      gint start, end;
+      bint start, end;
 
       bango_attr_iterator_range (iter, &start, &end);
 
-      if (end == G_MAXINT)
+      if (end == B_MAXINT)
 	end = layout->preedit_len;
       
       if (end == start)
@@ -1988,7 +1988,7 @@ update_text_display_cursors (BtkTextLayout      *layout,
 {
   BtkTextLineSegment *seg;
   BtkTextIter iter;
-  gint layout_byte_offset, buffer_byte_offset;
+  bint layout_byte_offset, buffer_byte_offset;
   GSList *cursor_byte_offsets = NULL;
   GSList *cursor_segs = NULL;
   GSList *tmp_list1, *tmp_list2;
@@ -2033,7 +2033,7 @@ update_text_display_cursors (BtkTextLayout      *layout,
       else if (seg->type == &btk_text_right_mark_type ||
                seg->type == &btk_text_left_mark_type)
         {
-	  gint cursor_offset = 0;
+	  bint cursor_offset = 0;
 
 	  /* At the insertion point, add the preedit string, if any */
 
@@ -2055,7 +2055,7 @@ update_text_display_cursors (BtkTextLayout      *layout,
           if (seg->body.mark.visible)
             {
               cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets,
-                                                     GINT_TO_POINTER (layout_byte_offset + cursor_offset));
+                                                     BINT_TO_POINTER (layout_byte_offset + cursor_offset));
               cursor_segs = b_slist_prepend (cursor_segs, seg);
             }
         }
@@ -2077,7 +2077,7 @@ update_text_display_cursors (BtkTextLayout      *layout,
   while (tmp_list1)
     {
       add_cursor (layout, display, tmp_list2->data,
-                  GPOINTER_TO_INT (tmp_list1->data));
+                  BPOINTER_TO_INT (tmp_list1->data));
       tmp_list1 = tmp_list1->next;
       tmp_list2 = tmp_list2->next;
     }
@@ -2092,7 +2092,7 @@ get_tags_array_at_iter (BtkTextIter *iter)
 {
   BtkTextTag **tags;
   GPtrArray *array = NULL;
-  gint n_tags;
+  bint n_tags;
 
   tags = _btk_text_btree_get_tags (iter, &n_tags);
 
@@ -2113,7 +2113,7 @@ static GPtrArray *
 tags_array_toggle_tag (GPtrArray  *array,
 		       BtkTextTag *tag)
 {
-  gint pos;
+  bint pos;
   BtkTextTag **tags;
 
   if (array == NULL)
@@ -2140,25 +2140,25 @@ tags_array_toggle_tag (GPtrArray  *array,
 BtkTextLineDisplay *
 btk_text_layout_get_line_display (BtkTextLayout *layout,
                                   BtkTextLine   *line,
-                                  gboolean       size_only)
+                                  bboolean       size_only)
 {
   BtkTextLayoutPrivate *priv = BTK_TEXT_LAYOUT_GET_PRIVATE (layout);
   BtkTextLineDisplay *display;
   BtkTextLineSegment *seg;
   BtkTextIter iter;
   BtkTextAttributes *style;
-  gchar *text;
+  bchar *text;
   BangoAttrList *attrs;
-  gint text_allocated, layout_byte_offset, buffer_byte_offset;
+  bint text_allocated, layout_byte_offset, buffer_byte_offset;
   BangoRectangle extents;
-  gboolean para_values_set = FALSE;
+  bboolean para_values_set = FALSE;
   GSList *cursor_byte_offsets = NULL;
   GSList *cursor_segs = NULL;
   GSList *tmp_list1, *tmp_list2;
-  gboolean saw_widget = FALSE;
+  bboolean saw_widget = FALSE;
   BangoDirection base_dir;
   GPtrArray *tags;
-  gboolean initial_toggle_segments;
+  bboolean initial_toggle_segments;
   
   g_return_val_if_fail (line != NULL, NULL);
 
@@ -2266,7 +2266,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
                    * if there are toggles in-between
                    */
 
-                  gint bytes = 0;
+                  bint bytes = 0;
  		  BtkTextLineSegment *prev_seg = NULL;
   
  		  while (seg)
@@ -2292,7 +2292,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
 
  			  if (seg->body.mark.visible)
  			    {
-			      cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets, GINT_TO_POINTER (layout_byte_offset));
+			      cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets, BINT_TO_POINTER (layout_byte_offset));
 			      cursor_segs = b_slist_prepend (cursor_segs, seg);
 			      if (_btk_text_btree_mark_is_insert (_btk_text_buffer_get_btree (layout->buffer),
 								  seg->body.mark.obj))
@@ -2376,7 +2376,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
       else if (seg->type == &btk_text_right_mark_type ||
                seg->type == &btk_text_left_mark_type)
         {
-	  gint cursor_offset = 0;
+	  bint cursor_offset = 0;
  	  
 	  /* At the insertion point, add the preedit string, if any */
 	  
@@ -2408,7 +2408,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
           if (seg->body.mark.visible)
             {
               cursor_byte_offsets = b_slist_prepend (cursor_byte_offsets,
-                                                     GINT_TO_POINTER (layout_byte_offset + cursor_offset));
+                                                     BINT_TO_POINTER (layout_byte_offset + cursor_offset));
               cursor_segs = b_slist_prepend (cursor_segs, seg);
             }
         }
@@ -2460,7 +2460,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
   while (tmp_list1)
     {
       add_cursor (layout, display, tmp_list2->data,
-                  GPOINTER_TO_INT (tmp_list1->data));
+                  BPOINTER_TO_INT (tmp_list1->data));
       tmp_list1 = tmp_list1->next;
       tmp_list2 = tmp_list2->next;
     }
@@ -2477,7 +2477,7 @@ btk_text_layout_get_line_display (BtkTextLayout *layout,
    */
   if (bango_layout_get_width (display->layout) < 0)
     {
-      gint excess = display->total_width - display->width;
+      bint excess = display->total_width - display->width;
 
       switch (bango_layout_get_alignment (display->layout))
 	{
@@ -2535,12 +2535,12 @@ btk_text_layout_free_line_display (BtkTextLayout      *layout,
 /* Functions to convert iter <=> index for the line of a BtkTextLineDisplay
  * taking into account the preedit string and invisible text if necessary.
  */
-static gint
+static bint
 line_display_iter_to_index (BtkTextLayout      *layout,
 			    BtkTextLineDisplay *display,
 			    const BtkTextIter  *iter)
 {
-  gint index;
+  bint index;
 
   g_return_val_if_fail (_btk_text_iter_get_text_line (iter) == display->line, 0);
 
@@ -2559,8 +2559,8 @@ static void
 line_display_index_to_iter (BtkTextLayout      *layout,
 			    BtkTextLineDisplay *display,
 			    BtkTextIter        *iter,
-			    gint                index,
-			    gint                trailing)
+			    bint                index,
+			    bint                trailing)
 {
   g_return_if_fail (!_btk_text_line_is_last (display->line,
                                              _btk_text_buffer_get_btree (layout->buffer)));
@@ -2598,9 +2598,9 @@ line_display_index_to_iter (BtkTextLayout      *layout,
 
 static void
 get_line_at_y (BtkTextLayout *layout,
-               gint           y,
+               bint           y,
                BtkTextLine  **line,
-               gint          *line_top)
+               bint          *line_top)
 {
   if (y < 0)
     y = 0;
@@ -2634,8 +2634,8 @@ get_line_at_y (BtkTextLayout *layout,
 void
 btk_text_layout_get_line_at_y (BtkTextLayout *layout,
                                BtkTextIter   *target_iter,
-                               gint           y,
-                               gint          *line_top)
+                               bint           y,
+                               bint          *line_top)
 {
   BtkTextLine *line;
 
@@ -2650,10 +2650,10 @@ btk_text_layout_get_line_at_y (BtkTextLayout *layout,
 void
 btk_text_layout_get_iter_at_pixel (BtkTextLayout *layout,
                                    BtkTextIter   *target_iter,
-                                   gint           x, 
-				   gint           y)
+                                   bint           x, 
+				   bint           y)
 {
-  gint trailing;
+  bint trailing;
 
   btk_text_layout_get_iter_at_position (layout, target_iter, &trailing, x, y);
 
@@ -2662,13 +2662,13 @@ btk_text_layout_get_iter_at_pixel (BtkTextLayout *layout,
 
 void btk_text_layout_get_iter_at_position (BtkTextLayout     *layout,
 					   BtkTextIter       *target_iter,
-					   gint              *trailing,
-					   gint               x,
-					   gint               y)
+					   bint              *trailing,
+					   bint               x,
+					   bint               y)
 {
   BtkTextLine *line;
-  gint byte_index;
-  gint line_top;
+  bint byte_index;
+  bint line_top;
   BtkTextLineDisplay *display;
 
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
@@ -2730,8 +2730,8 @@ btk_text_layout_get_cursor_locations (BtkTextLayout  *layout,
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_top;
-  gint index;
+  bint line_top;
+  bint index;
   BtkTextIter insert_iter;
 
   BangoRectangle bango_strong_pos;
@@ -2787,7 +2787,7 @@ btk_text_layout_get_cursor_locations (BtkTextLayout  *layout,
  * the line display, otherwise it has to compute the position
  * (see get_block_cursor()).
  **/
-gboolean
+bboolean
 _btk_text_layout_get_block_cursor (BtkTextLayout *layout,
 				   BdkRectangle  *pos)
 {
@@ -2795,7 +2795,7 @@ _btk_text_layout_get_block_cursor (BtkTextLayout *layout,
   BtkTextLineDisplay *display;
   BtkTextIter iter;
   BdkRectangle rect;
-  gboolean block = FALSE;
+  bboolean block = FALSE;
 
   g_return_val_if_fail (layout != NULL, FALSE);
 
@@ -2811,7 +2811,7 @@ _btk_text_layout_get_block_cursor (BtkTextLayout *layout,
     }
   else
     {
-      gint index = display->insert_index;
+      bint index = display->insert_index;
 
       if (index < 0)
         index = btk_text_iter_get_line_index (&iter);
@@ -2822,7 +2822,7 @@ _btk_text_layout_get_block_cursor (BtkTextLayout *layout,
 
   if (block && pos)
     {
-      gint line_top;
+      bint line_top;
 
       line_top = _btk_text_btree_find_line_top (_btk_text_buffer_get_btree (layout->buffer),
 						line, layout);
@@ -2851,8 +2851,8 @@ _btk_text_layout_get_block_cursor (BtkTextLayout *layout,
 void
 btk_text_layout_get_line_yrange (BtkTextLayout     *layout,
                                  const BtkTextIter *iter,
-                                 gint              *y,
-                                 gint              *height)
+                                 bint              *y,
+                                 bint              *height)
 {
   BtkTextLine *line;
 
@@ -2890,8 +2890,8 @@ btk_text_layout_get_line_yrange (BtkTextLayout     *layout,
 void
 _btk_text_layout_get_line_xrange (BtkTextLayout     *layout,
                                   const BtkTextIter *iter,
-                                  gint              *x,
-                                  gint              *width)
+                                  bint              *x,
+                                  bint              *width)
 {
   BtkTextLine *line;
 
@@ -2922,8 +2922,8 @@ btk_text_layout_get_iter_location (BtkTextLayout     *layout,
   BtkTextLine *line;
   BtkTextBTree *tree;
   BtkTextLineDisplay *display;
-  gint byte_index;
-  gint x_offset;
+  bint byte_index;
+  bint x_offset;
   
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
   g_return_if_fail (_btk_text_iter_get_btree (iter) == _btk_text_buffer_get_btree (layout->buffer));
@@ -2959,12 +2959,12 @@ btk_text_layout_get_iter_location (BtkTextLayout     *layout,
 static void
 find_display_line_below (BtkTextLayout *layout,
                          BtkTextIter   *iter,
-                         gint           y)
+                         bint           y)
 {
   BtkTextLine *line, *next;
   BtkTextLine *found_line = NULL;
-  gint line_top;
-  gint found_byte = 0;
+  bint line_top;
+  bint found_byte = 0;
 
   line = _btk_text_btree_find_line_by_y (_btk_text_buffer_get_btree (layout->buffer),
                                         layout, y, &line_top);
@@ -2989,7 +2989,7 @@ find_display_line_below (BtkTextLayout *layout,
 
       do
         {
-          gint first_y, last_y;
+          bint first_y, last_y;
           BangoLayoutLine *layout_line = bango_layout_iter_get_line_readonly (layout_iter);
 
           found_byte = layout_line->start_index;
@@ -3028,12 +3028,12 @@ find_display_line_below (BtkTextLayout *layout,
 static void
 find_display_line_above (BtkTextLayout *layout,
                          BtkTextIter   *iter,
-                         gint           y)
+                         bint           y)
 {
   BtkTextLine *line;
   BtkTextLine *found_line = NULL;
-  gint line_top;
-  gint found_byte = 0;
+  bint line_top;
+  bint found_byte = 0;
 
   line = _btk_text_btree_find_line_by_y (_btk_text_buffer_get_btree (layout->buffer), layout, y, &line_top);
   if (!line)
@@ -3048,7 +3048,7 @@ find_display_line_above (BtkTextLayout *layout,
       BtkTextLineDisplay *display = btk_text_layout_get_line_display (layout, line, FALSE);
       BangoRectangle logical_rect;
       BangoLayoutIter *layout_iter;
-      gint tmp_top;
+      bint tmp_top;
 
       layout_iter = bango_layout_get_iter (display->layout);
       
@@ -3060,7 +3060,7 @@ find_display_line_above (BtkTextLayout *layout,
 
       do
         {
-          gint first_y, last_y;
+          bint first_y, last_y;
           BangoLayoutLine *layout_line = bango_layout_iter_get_line_readonly (layout_iter);
 
           found_byte = layout_line->start_index;
@@ -3107,11 +3107,11 @@ find_display_line_above (BtkTextLayout *layout,
  *
  * Returns: %TRUE if the iterator was moved, otherwise %FALSE.
  **/
-gboolean
+bboolean
 btk_text_layout_clamp_iter_to_vrange (BtkTextLayout *layout,
                                       BtkTextIter   *iter,
-                                      gint           top,
-                                      gint           bottom)
+                                      bint           top,
+                                      bint           bottom)
 {
   BdkRectangle iter_rect;
 
@@ -3148,17 +3148,17 @@ btk_text_layout_clamp_iter_to_vrange (BtkTextLayout *layout,
  * Move the iterator to the beginning of the previous line. The lines
  * of a wrapped paragraph are treated as distinct for this operation.
  **/
-gboolean
+bboolean
 btk_text_layout_move_iter_to_previous_line (BtkTextLayout *layout,
                                             BtkTextIter   *iter)
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_byte;
+  bint line_byte;
   GSList *tmp_list;
   BangoLayoutLine *layout_line;
   BtkTextIter orig;
-  gboolean update_byte = FALSE;
+  bboolean update_byte = FALSE;
   
   g_return_val_if_fail (BTK_IS_TEXT_LAYOUT (layout), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -3231,7 +3231,7 @@ btk_text_layout_move_iter_to_previous_line (BtkTextLayout *layout,
     }
   else
     {
-      gint prev_offset = layout_line->start_index;
+      bint prev_offset = layout_line->start_index;
 
       tmp_list = tmp_list->next;
       while (tmp_list)
@@ -3268,17 +3268,17 @@ btk_text_layout_move_iter_to_previous_line (BtkTextLayout *layout,
  * lines of a wrapped paragraph are treated as distinct for
  * this operation.
  **/
-gboolean
+bboolean
 btk_text_layout_move_iter_to_next_line (BtkTextLayout *layout,
                                         BtkTextIter   *iter)
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_byte;
+  bint line_byte;
   BtkTextIter orig;
-  gboolean found = FALSE;
-  gboolean found_after = FALSE;
-  gboolean first = TRUE;
+  bboolean found = FALSE;
+  bboolean found_after = FALSE;
+  bboolean first = TRUE;
 
   g_return_val_if_fail (BTK_IS_TEXT_LAYOUT (layout), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -3344,14 +3344,14 @@ btk_text_layout_move_iter_to_next_line (BtkTextLayout *layout,
  *
  * Move to the beginning or end of a display line.
  **/
-gboolean
+bboolean
 btk_text_layout_move_iter_to_line_end (BtkTextLayout *layout,
                                        BtkTextIter   *iter,
-                                       gint           direction)
+                                       bint           direction)
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_byte;
+  bint line_byte;
   GSList *tmp_list;
   BtkTextIter orig;
   
@@ -3404,13 +3404,13 @@ btk_text_layout_move_iter_to_line_end (BtkTextLayout *layout,
  *
  * Tests whether an iterator is at the start of a display line.
  **/
-gboolean
+bboolean
 btk_text_layout_iter_starts_line (BtkTextLayout       *layout,
                                   const BtkTextIter   *iter)
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_byte;
+  bint line_byte;
   GSList *tmp_list;
   
   g_return_val_if_fail (BTK_IS_TEXT_LAYOUT (layout), FALSE);
@@ -3450,7 +3450,7 @@ void
 btk_text_layout_get_iter_at_line (BtkTextLayout  *layout,
                                   BtkTextIter    *iter,
                                   BtkTextLine    *line,
-                                  gint            byte_offset)
+                                  bint            byte_offset)
 {
   _btk_text_btree_get_iter_at_line (_btk_text_buffer_get_btree (layout->buffer),
                                     iter, line, byte_offset);
@@ -3470,11 +3470,11 @@ btk_text_layout_get_iter_at_line (BtkTextLayout  *layout,
 void
 btk_text_layout_move_iter_to_x (BtkTextLayout *layout,
                                 BtkTextIter   *iter,
-                                gint           x)
+                                bint           x)
 {
   BtkTextLine *line;
   BtkTextLineDisplay *display;
-  gint line_byte;
+  bint line_byte;
   BangoLayoutIter *layout_iter;
   
   g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
@@ -3495,8 +3495,8 @@ btk_text_layout_move_iter_to_x (BtkTextLayout *layout,
           bango_layout_iter_at_last_line (layout_iter))
         {
           BangoRectangle logical_rect;
-          gint byte_index, trailing;
-          gint x_offset = display->x_offset * BANGO_SCALE;
+          bint byte_index, trailing;
+          bint x_offset = display->x_offset * BANGO_SCALE;
 
           bango_layout_iter_get_line_extents (layout_iter, NULL, &logical_rect);
 
@@ -3535,10 +3535,10 @@ btk_text_layout_move_iter_to_x (BtkTextLayout *layout,
  * is moved off of the end of a run.
  **/
 
-gboolean
+bboolean
 btk_text_layout_move_iter_visually (BtkTextLayout *layout,
                                     BtkTextIter   *iter,
-                                    gint           count)
+                                    bint           count)
 {
   BtkTextLineDisplay *display = NULL;
   BtkTextIter orig;
@@ -3552,9 +3552,9 @@ btk_text_layout_move_iter_visually (BtkTextLayout *layout,
   while (count != 0)
     {
       BtkTextLine *line = _btk_text_iter_get_text_line (iter);
-      gint line_byte;
-      gint extra_back = 0;
-      gboolean strong;
+      bint line_byte;
+      bint extra_back = 0;
+      bboolean strong;
 
       int byte_count = _btk_text_line_byte_count (line);
 
@@ -3654,8 +3654,8 @@ btk_text_layout_spew (BtkTextLayout *layout)
 {
 #if 0
   BtkTextDisplayLine *iter;
-  guint wrapped = 0;
-  guint paragraphs = 0;
+  buint wrapped = 0;
+  buint paragraphs = 0;
   BtkTextLine *last_line = NULL;
 
   iter = layout->line_list;
@@ -3691,7 +3691,7 @@ static void
 btk_text_layout_mark_set_handler (BtkTextBuffer     *buffer,
                                   const BtkTextIter *location,
                                   BtkTextMark       *mark,
-                                  gpointer           data)
+                                  bpointer           data)
 {
   BtkTextLayout *layout = BTK_TEXT_LAYOUT (data);
 
@@ -3702,9 +3702,9 @@ btk_text_layout_mark_set_handler (BtkTextBuffer     *buffer,
 static void
 btk_text_layout_buffer_insert_text (BtkTextBuffer *textbuffer,
 				    BtkTextIter   *iter,
-				    gchar         *str,
-				    gint           len,
-				    gpointer       data)
+				    bchar         *str,
+				    bint           len,
+				    bpointer       data)
 {
   BtkTextLayout *layout = BTK_TEXT_LAYOUT (data);
 
@@ -3715,7 +3715,7 @@ static void
 btk_text_layout_buffer_delete_range (BtkTextBuffer *textbuffer,
 				     BtkTextIter   *start,
 				     BtkTextIter   *end,
-				     gpointer       data)
+				     bpointer       data)
 {
   BtkTextLayout *layout = BTK_TEXT_LAYOUT (data);
 

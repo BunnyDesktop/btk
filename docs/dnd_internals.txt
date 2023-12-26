@@ -70,13 +70,13 @@ straightforward manner.
 
 void             bdk_drag_status        (BdkDragContext   *context,
 				         BdkDragAction     action,
-					 guint32           time);
+					 buint32           time);
 void             bdk_drop_reply         (BdkDragContext   *context,
-					 gboolean          ok,
-					 guint32           time);
+					 bboolean          ok,
+					 buint32           time);
 void             bdk_drop_finish        (BdkDragContext   *context,
-					 gboolean          success,
-					 guint32           time);
+					 bboolean          success,
+					 buint32           time);
 BdkAtom          bdk_drag_get_selection (BdkDragContext   *context);
 
 /* Source side */
@@ -84,25 +84,25 @@ BdkAtom          bdk_drag_get_selection (BdkDragContext   *context);
 BdkDragContext * bdk_drag_begin      (BdkWindow      *window,
 				      GList          *targets,
 				      BdkDragAction   actions);
-gboolean         bdk_drag_get_protocol (guint32          xid,
+bboolean         bdk_drag_get_protocol (buint32          xid,
 					BdkDragProtocol *protocol);
 void             bdk_drag_find_window (BdkDragContext   *context,
 				       BdkWindow       *drag_window,
-			 	       gint             x_root,
-				       gint             y_root,
+			 	       bint             x_root,
+				       bint             y_root,
 				       BdkWindow      **dest_window,
 				       BdkDragProtocol *protocol);
-gboolean        bdk_drag_motion      (BdkDragContext *context,
+bboolean        bdk_drag_motion      (BdkDragContext *context,
 				      BdkWindow      *dest_window,
 				      BdkDragProtocol protocol,
-				      gint            x_root, 
-				      gint            y_root,
+				      bint            x_root, 
+				      bint            y_root,
 				      BdkDragAction   action,
-				      guint32         time);
+				      buint32         time);
 void            bdk_drag_drop        (BdkDragContext *context,
-				      guint32         time);
+				      buint32         time);
 void            bdk_drag_abort       (BdkDragContext *context,
-				      guint32         time);
+				      buint32         time);
 
 BdkAtom       bdk_drag_get_selection (BdkDragContext *context);
 

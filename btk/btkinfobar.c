@@ -143,7 +143,7 @@ typedef struct _ResponseData ResponseData;
 
 struct _ResponseData
 {
-  gint response_id;
+  bint response_id;
 };
 
 enum
@@ -153,36 +153,36 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL];
+static buint signals[LAST_SIGNAL];
 
 
 static void     btk_info_bar_set_property (BObject        *object,
-                                           guint           prop_id,
+                                           buint           prop_id,
                                            const BValue   *value,
                                            BParamSpec     *pspec);
 static void     btk_info_bar_get_property (BObject        *object,
-                                           guint           prop_id,
+                                           buint           prop_id,
                                            BValue         *value,
                                            BParamSpec     *pspec);
 static void     btk_info_bar_style_set    (BtkWidget      *widget,
                                            BtkStyle       *prev_style);
-static gboolean btk_info_bar_expose       (BtkWidget      *widget,
+static bboolean btk_info_bar_expose       (BtkWidget      *widget,
                                            BdkEventExpose *event);
 static void     btk_info_bar_buildable_interface_init     (BtkBuildableIface *iface);
 static BObject *btk_info_bar_buildable_get_internal_child (BtkBuildable  *buildable,
                                                            BtkBuilder    *builder,
-                                                           const gchar   *childname);
-static gboolean  btk_info_bar_buildable_custom_tag_start   (BtkBuildable  *buildable,
+                                                           const bchar   *childname);
+static bboolean  btk_info_bar_buildable_custom_tag_start   (BtkBuildable  *buildable,
                                                             BtkBuilder    *builder,
                                                             BObject       *child,
-                                                            const gchar   *tagname,
+                                                            const bchar   *tagname,
                                                             GMarkupParser *parser,
-                                                            gpointer      *data);
+                                                            bpointer      *data);
 static void      btk_info_bar_buildable_custom_finished    (BtkBuildable  *buildable,
                                                             BtkBuilder    *builder,
                                                             BObject       *child,
-                                                            const gchar   *tagname,
-                                                            gpointer       user_data);
+                                                            const bchar   *tagname,
+                                                            bpointer       user_data);
 
 
 G_DEFINE_TYPE_WITH_CODE (BtkInfoBar, btk_info_bar, BTK_TYPE_HBOX,
@@ -191,7 +191,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkInfoBar, btk_info_bar, BTK_TYPE_HBOX,
 
 static void
 btk_info_bar_set_property (BObject      *object,
-                           guint         prop_id,
+                           buint         prop_id,
                            const BValue *value,
                            BParamSpec   *pspec)
 {
@@ -214,7 +214,7 @@ btk_info_bar_set_property (BObject      *object,
 
 static void
 btk_info_bar_get_property (BObject    *object,
-                           guint       prop_id,
+                           buint       prop_id,
                            BValue     *value,
                            BParamSpec *pspec)
 {
@@ -242,14 +242,14 @@ btk_info_bar_finalize (BObject *object)
 }
 
 static void
-response_data_free (gpointer data)
+response_data_free (bpointer data)
 {
   g_slice_free (ResponseData, data);
 }
 
 static ResponseData *
 get_response_data (BtkWidget *widget,
-                   gboolean   create)
+                   bboolean   create)
 {
   ResponseData *ad = g_object_get_data (B_OBJECT (widget),
                                         "btk-info-bar-response-data");
@@ -269,7 +269,7 @@ get_response_data (BtkWidget *widget,
 
 static BtkWidget *
 find_button (BtkInfoBar *info_bar,
-             gint        response_id)
+             bint        response_id)
 {
   GList *children, *list;
   BtkWidget *child = NULL;
@@ -302,7 +302,7 @@ btk_info_bar_close (BtkInfoBar *info_bar)
                          BTK_RESPONSE_CANCEL);
 }
 
-static gboolean
+static bboolean
 btk_info_bar_expose (BtkWidget      *widget,
                      BdkEventExpose *event)
 {
@@ -439,7 +439,7 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
                                                              P_("Content area border"),
                                                              P_("Width of border around the content area"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              8,
                                                              BTK_PARAM_READABLE));
 
@@ -456,7 +456,7 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
                                                              P_("Content area spacing"),
                                                              P_("Spacing between elements of the area"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              16,
                                                              BTK_PARAM_READABLE));
 
@@ -472,7 +472,7 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
                                                              P_("Button spacing"),
                                                              P_("Spacing between buttons"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              6,
                                                              BTK_PARAM_READABLE));
 
@@ -488,7 +488,7 @@ btk_info_bar_class_init (BtkInfoBarClass *klass)
                                                              P_("Action area border"),
                                                              P_("Width of border around the action area"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              5,
                                                              BTK_PARAM_READABLE));
 
@@ -588,10 +588,10 @@ btk_info_bar_style_set (BtkWidget *widget,
                         BtkStyle  *prev_style)
 {
   BtkInfoBar *info_bar = BTK_INFO_BAR (widget);
-  gint button_spacing;
-  gint action_area_border;
-  gint content_area_spacing;
-  gint content_area_border;
+  bint button_spacing;
+  bint action_area_border;
+  bint content_area_spacing;
+  bint content_area_border;
 
   btk_widget_style_get (widget,
                         "button-spacing", &button_spacing,
@@ -652,7 +652,7 @@ btk_info_bar_buildable_interface_init (BtkBuildableIface *iface)
 static BObject *
 btk_info_bar_buildable_get_internal_child (BtkBuildable *buildable,
                                            BtkBuilder   *builder,
-                                           const gchar  *childname)
+                                           const bchar  *childname)
 {
   if (strcmp (childname, "content_area") == 0)
     return B_OBJECT (BTK_INFO_BAR (buildable)->priv->content_area);
@@ -664,7 +664,7 @@ btk_info_bar_buildable_get_internal_child (BtkBuildable *buildable,
                                                      childname);
 }
 
-static gint
+static bint
 get_response_for_widget (BtkInfoBar *info_bar,
                          BtkWidget  *widget)
 {
@@ -681,7 +681,7 @@ static void
 action_widget_activated (BtkWidget  *widget,
                          BtkInfoBar *info_bar)
 {
-  gint response_id;
+  bint response_id;
 
   response_id = get_response_for_widget (info_bar, widget);
   btk_info_bar_response (info_bar, response_id);
@@ -703,10 +703,10 @@ action_widget_activated (BtkWidget  *widget,
 void
 btk_info_bar_add_action_widget (BtkInfoBar *info_bar,
                                 BtkWidget  *child,
-                                gint        response_id)
+                                bint        response_id)
 {
   ResponseData *ad;
-  guint signal_id;
+  buint signal_id;
 
   g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -792,8 +792,8 @@ btk_info_bar_get_content_area (BtkInfoBar *info_bar)
  */
 BtkWidget*
 btk_info_bar_add_button (BtkInfoBar  *info_bar,
-                         const gchar *button_text,
-                         gint         response_id)
+                         const bchar *button_text,
+                         bint         response_id)
 {
   BtkWidget *button;
 
@@ -813,11 +813,11 @@ btk_info_bar_add_button (BtkInfoBar  *info_bar,
 
 static void
 add_buttons_valist (BtkInfoBar  *info_bar,
-                    const gchar *first_button_text,
+                    const bchar *first_button_text,
                     va_list      args)
 {
-  const gchar* text;
-  gint response_id;
+  const bchar* text;
+  bint response_id;
 
   g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
@@ -825,13 +825,13 @@ add_buttons_valist (BtkInfoBar  *info_bar,
     return;
 
   text = first_button_text;
-  response_id = va_arg (args, gint);
+  response_id = va_arg (args, bint);
 
   while (text != NULL)
     {
       btk_info_bar_add_button (info_bar, text, response_id);
 
-      text = va_arg (args, gchar*);
+      text = va_arg (args, bchar*);
       if (text == NULL)
         break;
 
@@ -855,7 +855,7 @@ add_buttons_valist (BtkInfoBar  *info_bar,
  */
 void
 btk_info_bar_add_buttons (BtkInfoBar  *info_bar,
-                          const gchar *first_button_text,
+                          const bchar *first_button_text,
                           ...)
 {
   va_list args;
@@ -897,7 +897,7 @@ btk_info_bar_new (void)
  * Returns: a new #BtkInfoBar
  */
 BtkWidget*
-btk_info_bar_new_with_buttons (const gchar *first_button_text,
+btk_info_bar_new_with_buttons (const bchar *first_button_text,
                                ...)
 {
   BtkInfoBar *info_bar;
@@ -926,8 +926,8 @@ btk_info_bar_new_with_buttons (const gchar *first_button_text,
  */
 void
 btk_info_bar_set_response_sensitive (BtkInfoBar *info_bar,
-                                     gint        response_id,
-                                     gboolean    setting)
+                                     bint        response_id,
+                                     bboolean    setting)
 {
   GList *children, *list;
 
@@ -963,7 +963,7 @@ btk_info_bar_set_response_sensitive (BtkInfoBar *info_bar,
  */
 void
 btk_info_bar_set_default_response (BtkInfoBar *info_bar,
-                                   gint        response_id)
+                                   bint        response_id)
 {
   GList *children, *list;
 
@@ -994,7 +994,7 @@ btk_info_bar_set_default_response (BtkInfoBar *info_bar,
  */
 void
 btk_info_bar_response (BtkInfoBar *info_bar,
-                       gint        response_id)
+                       bint        response_id)
 {
   g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
@@ -1003,8 +1003,8 @@ btk_info_bar_response (BtkInfoBar *info_bar,
 
 typedef struct
 {
-  gchar *widget_name;
-  gchar *response_id;
+  bchar *widget_name;
+  bchar *response_id;
 } ActionWidgetInfo;
 
 typedef struct
@@ -1012,19 +1012,19 @@ typedef struct
   BtkInfoBar *info_bar;
   BtkBuilder *builder;
   GSList *items;
-  gchar *response;
+  bchar *response;
 } ActionWidgetsSubParserData;
 
 static void
 attributes_start_element (GMarkupParseContext  *context,
-                          const gchar          *element_name,
-                          const gchar         **names,
-                          const gchar         **values,
-                          gpointer              user_data,
+                          const bchar          *element_name,
+                          const bchar         **names,
+                          const bchar         **values,
+                          bpointer              user_data,
                           GError              **error)
 {
   ActionWidgetsSubParserData *parser_data = (ActionWidgetsSubParserData*)user_data;
-  guint i;
+  buint i;
 
   if (strcmp (element_name, "action-widget") == 0)
     {
@@ -1040,9 +1040,9 @@ attributes_start_element (GMarkupParseContext  *context,
 
 static void
 attributes_text_element (GMarkupParseContext  *context,
-                         const gchar          *text,
-                         gsize                 text_len,
-                         gpointer              user_data,
+                         const bchar          *text,
+                         bsize                 text_len,
+                         bpointer              user_data,
                          GError              **error)
 {
   ActionWidgetsSubParserData *parser_data = (ActionWidgetsSubParserData*)user_data;
@@ -1065,13 +1065,13 @@ static const GMarkupParser attributes_parser =
   attributes_text_element,
 };
 
-gboolean
+bboolean
 btk_info_bar_buildable_custom_tag_start (BtkBuildable  *buildable,
                                          BtkBuilder    *builder,
                                          BObject       *child,
-                                         const gchar   *tagname,
+                                         const bchar   *tagname,
                                          GMarkupParser *parser,
-                                         gpointer      *data)
+                                         bpointer      *data)
 {
   ActionWidgetsSubParserData *parser_data;
 
@@ -1097,15 +1097,15 @@ static void
 btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
                                         BtkBuilder   *builder,
                                         BObject      *child,
-                                        const gchar  *tagname,
-                                        gpointer      user_data)
+                                        const bchar  *tagname,
+                                        bpointer      user_data)
 {
   GSList *l;
   ActionWidgetsSubParserData *parser_data;
   BObject *object;
   BtkInfoBar *info_bar;
   ResponseData *ad;
-  guint signal_id;
+  buint signal_id;
 
   if (strcmp (tagname, "action-widgets"))
     {

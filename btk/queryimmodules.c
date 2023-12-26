@@ -83,23 +83,23 @@ print_escaped (GString *contents, const char *str)
   g_string_append_c (contents, ' ');
 }
 
-static gboolean
+static bboolean
 query_module (const char *dir, const char *name, GString *contents)
 {
   void          (*list)   (const BtkIMContextInfo ***contexts,
-                           guint                    *n_contexts);
+                           buint                    *n_contexts);
   void          (*init)   (GTypeModule              *type_module);
   void          (*exit)   (void);
-  BtkIMContext *(*create) (const gchar             *context_id);
+  BtkIMContext *(*create) (const bchar             *context_id);
 
-  gpointer list_ptr;
-  gpointer init_ptr;
-  gpointer exit_ptr;
-  gpointer create_ptr;
+  bpointer list_ptr;
+  bpointer init_ptr;
+  bpointer exit_ptr;
+  bpointer create_ptr;
 
   GModule *module;
-  gchar *path;
-  gboolean error = FALSE;
+  bchar *path;
+  bboolean error = FALSE;
 
   if (g_path_is_absolute (name))
     path = g_strdup (name);
@@ -121,7 +121,7 @@ query_module (const char *dir, const char *name, GString *contents)
       g_module_symbol (module, "im_module_create", &create_ptr))
     {
       const BtkIMContextInfo **contexts;
-      guint n_contexts;
+      buint n_contexts;
       int i;
 
       list = list_ptr;
@@ -164,9 +164,9 @@ int main (int argc, char **argv)
   char *cwd;
   int i;
   char *path;
-  gboolean error = FALSE;
-  gchar *cache_file = NULL;
-  gint first_file = 1;
+  bboolean error = FALSE;
+  bchar *cache_file = NULL;
+  bint first_file = 1;
   GString *contents;
 
   if (argc > 1 && strcmp (argv[1], "--update-cache") == 0)
@@ -220,7 +220,7 @@ int main (int argc, char **argv)
                 g_dir_close (dir);
               }
 
-            g_hash_table_insert (dirs_done, dirs[i], GUINT_TO_POINTER (TRUE));
+            g_hash_table_insert (dirs_done, dirs[i], BUINT_TO_POINTER (TRUE));
           }
 
       g_hash_table_destroy (dirs_done);

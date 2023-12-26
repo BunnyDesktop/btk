@@ -39,7 +39,7 @@ struct _BailContainerCell
 {
   BailCell parent;
   GList *children;
-  gint NChildren;
+  bint NChildren;
 };
 
 GType bail_container_cell_get_type (void);

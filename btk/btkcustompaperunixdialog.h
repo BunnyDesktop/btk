@@ -59,7 +59,7 @@ struct _BtkCustomPaperUnixDialogClass
 
 GType             btk_custom_paper_unix_dialog_get_type           (void) B_GNUC_CONST;
 BtkWidget *       _btk_custom_paper_unix_dialog_new                (BtkWindow   *parent,
-								   const gchar *title);
+								   const bchar *title);
 BtkUnit           _btk_print_get_default_user_units                (void);
 void              _btk_print_load_custom_papers                    (BtkListStore *store);
 void              _btk_print_save_custom_papers                    (BtkListStore *store);

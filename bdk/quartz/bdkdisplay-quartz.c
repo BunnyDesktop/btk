@@ -41,7 +41,7 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
 }
 
 BdkDisplay *
-bdk_display_open (const gchar *display_name)
+bdk_display_open (const bchar *display_name)
 {
   if (_bdk_display != NULL)
     return NULL;
@@ -71,10 +71,10 @@ bdk_display_open (const gchar *display_name)
   return _bdk_display;
 }
 
-const gchar *
+const bchar *
 bdk_display_get_name (BdkDisplay *display)
 {
-  static gchar *display_name = NULL;
+  static bchar *display_name = NULL;
 
   if (!display_name)
     {
@@ -96,7 +96,7 @@ bdk_display_get_n_screens (BdkDisplay *display)
 
 BdkScreen *
 bdk_display_get_screen (BdkDisplay *display,
-			gint        screen_num)
+			bint        screen_num)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (screen_num == 0, NULL);
@@ -118,7 +118,7 @@ bdk_display_beep (BdkDisplay *display)
   NSBeep();
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_selection_notification (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -127,7 +127,7 @@ bdk_display_supports_selection_notification (BdkDisplay *display)
   return FALSE;
 }
 
-gboolean 
+bboolean 
 bdk_display_request_selection_notification (BdkDisplay *display,
                                             BdkAtom     selection)
 
@@ -136,21 +136,21 @@ bdk_display_request_selection_notification (BdkDisplay *display,
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_shapes (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   /* FIXME: Implement */
@@ -160,22 +160,22 @@ bdk_display_supports_input_shapes (BdkDisplay *display)
 void
 bdk_display_store_clipboard (BdkDisplay    *display,
 			     BdkWindow     *clipboard_window,
-			     guint32        time_,
+			     buint32        time_,
 			     const BdkAtom *targets,
-			     gint           n_targets)
+			     bint           n_targets)
 {
   /* FIXME: Implement */
 }
 
 
-gboolean
+bboolean
 bdk_display_supports_composite (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-gulong
+bulong
 _bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
   return 0;

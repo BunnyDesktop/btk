@@ -82,195 +82,195 @@ static BdkPixbuf *btk_default_render_icon      (BtkStyle            *style,
                                                 BtkStateType         state,
                                                 BtkIconSize          size,
                                                 BtkWidget           *widget,
-                                                const gchar         *detail);
+                                                const bchar         *detail);
 static void btk_default_draw_hline      (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x1,
-					 gint             x2,
-					 gint             y);
+					 const bchar     *detail,
+					 bint             x1,
+					 bint             x2,
+					 bint             y);
 static void btk_default_draw_vline      (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             y1,
-					 gint             y2,
-					 gint             x);
+					 const bchar     *detail,
+					 bint             y1,
+					 bint             y2,
+					 bint             x);
 static void btk_default_draw_shadow     (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_polygon    (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
+					 const bchar     *detail,
 					 BdkPoint        *points,
-					 gint             npoints,
-					 gboolean         fill);
+					 bint             npoints,
+					 bboolean         fill);
 static void btk_default_draw_arrow      (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
+					 const bchar     *detail,
 					 BtkArrowType     arrow_type,
-					 gboolean         fill,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 bboolean         fill,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_diamond    (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_string     (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 const gchar     *string);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 const bchar     *string);
 static void btk_default_draw_box        (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_flat_box   (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_check      (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_option     (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_tab        (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_shadow_gap (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
 					 BtkPositionType  gap_side,
-					 gint             gap_x,
-					 gint             gap_width);
+					 bint             gap_x,
+					 bint             gap_width);
 static void btk_default_draw_box_gap    (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
 					 BtkPositionType  gap_side,
-					 gint             gap_x,
-					 gint             gap_width);
+					 bint             gap_x,
+					 bint             gap_width);
 static void btk_default_draw_extension  (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
 					 BtkPositionType  gap_side);
 static void btk_default_draw_focus      (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void btk_default_draw_slider     (BtkStyle        *style,
 					 BdkWindow       *window,
 					 BtkStateType     state_type,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
 					 BtkOrientation   orientation);
 static void btk_default_draw_handle     (BtkStyle        *style,
 					 BdkWindow       *window,
@@ -278,60 +278,60 @@ static void btk_default_draw_handle     (BtkStyle        *style,
 					 BtkShadowType    shadow_type,
 					 BdkRectangle    *area,
 					 BtkWidget       *widget,
-					 const gchar     *detail,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
+					 const bchar     *detail,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
 					 BtkOrientation   orientation);
 static void btk_default_draw_expander   (BtkStyle        *style,
                                          BdkWindow       *window,
                                          BtkStateType     state_type,
                                          BdkRectangle    *area,
                                          BtkWidget       *widget,
-                                         const gchar     *detail,
-                                         gint             x,
-                                         gint             y,
+                                         const bchar     *detail,
+                                         bint             x,
+                                         bint             y,
 					 BtkExpanderStyle expander_style);
 static void btk_default_draw_layout     (BtkStyle        *style,
                                          BdkWindow       *window,
                                          BtkStateType     state_type,
-					 gboolean         use_text,
+					 bboolean         use_text,
                                          BdkRectangle    *area,
                                          BtkWidget       *widget,
-                                         const gchar     *detail,
-                                         gint             x,
-                                         gint             y,
+                                         const bchar     *detail,
+                                         bint             x,
+                                         bint             y,
                                          BangoLayout     *layout);
 static void btk_default_draw_resize_grip (BtkStyle       *style,
                                           BdkWindow      *window,
                                           BtkStateType    state_type,
                                           BdkRectangle   *area,
                                           BtkWidget      *widget,
-                                          const gchar    *detail,
+                                          const bchar    *detail,
                                           BdkWindowEdge   edge,
-                                          gint            x,
-                                          gint            y,
-                                          gint            width,
-                                          gint            height);
+                                          bint            x,
+                                          bint            y,
+                                          bint            width,
+                                          bint            height);
 static void btk_default_draw_spinner     (BtkStyle       *style,
 					  BdkWindow      *window,
 					  BtkStateType    state_type,
                                           BdkRectangle   *area,
                                           BtkWidget      *widget,
-                                          const gchar    *detail,
-					  guint           step,
-					  gint            x,
-					  gint            y,
-					  gint            width,
-					  gint            height);
+                                          const bchar    *detail,
+					  buint           step,
+					  bint            x,
+					  bint            y,
+					  bint            width,
+					  bint            height);
 
-static void rgb_to_hls			(gdouble	 *r,
-					 gdouble	 *g,
-					 gdouble	 *b);
-static void hls_to_rgb			(gdouble	 *h,
-					 gdouble	 *l,
-					 gdouble	 *s);
+static void rgb_to_hls			(bdouble	 *r,
+					 bdouble	 *g,
+					 bdouble	 *b);
+static void hls_to_rgb			(bdouble	 *h,
+					 bdouble	 *l,
+					 bdouble	 *s);
 
 static void style_unrealize_cursor_gcs (BtkStyle *style);
 
@@ -369,8 +369,8 @@ static const BdkColor btk_default_selected_base =  { 0, BTK_BLUE };
 static const BdkColor btk_default_active_base =    { 0, BTK_VERY_DARK_GRAY };
 
 /* --- signals --- */
-static guint realize_signal = 0;
-static guint unrealize_signal = 0;
+static buint realize_signal = 0;
+static buint unrealize_signal = 0;
 
 G_DEFINE_TYPE (BtkStyle, btk_style, B_TYPE_OBJECT)
 
@@ -393,7 +393,7 @@ void
 _btk_style_init_for_settings (BtkStyle    *style,
 			      BtkSettings *settings)
 {
-  const gchar *font_name = _btk_rc_context_get_default_font_name (settings);
+  const bchar *font_name = _btk_rc_context_get_default_font_name (settings);
 
   if (style->font_desc)
     bango_font_description_free (style->font_desc);
@@ -415,7 +415,7 @@ _btk_style_init_for_settings (BtkStyle    *style,
 static void
 btk_style_init (BtkStyle *style)
 {
-  gint i;
+  bint i;
   
   BtkSettings *settings = btk_settings_get_default ();
   
@@ -570,7 +570,7 @@ clear_property_cache (BtkStyle *style)
 {
   if (style->property_cache)
     {
-      guint i;
+      buint i;
 
       for (i = 0; i < style->property_cache->len; i++)
 	{
@@ -918,7 +918,7 @@ btk_style_lookup_icon_set (BtkStyle   *style,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_style_lookup_color (BtkStyle   *style,
                         const char *color_name,
                         BdkColor   *color)
@@ -967,9 +967,9 @@ void
 btk_draw_hline (BtkStyle     *style,
                 BdkWindow    *window,
                 BtkStateType  state_type,
-                gint          x1,
-                gint          x2,
-                gint          y)
+                bint          x1,
+                bint          x2,
+                bint          y)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
@@ -996,9 +996,9 @@ void
 btk_draw_vline (BtkStyle     *style,
                 BdkWindow    *window,
                 BtkStateType  state_type,
-                gint          y1_,
-                gint          y2_,
-                gint          x)
+                bint          y1_,
+                bint          y2_,
+                bint          x)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
@@ -1027,10 +1027,10 @@ btk_draw_shadow (BtkStyle      *style,
                  BdkWindow     *window,
                  BtkStateType   state_type,
                  BtkShadowType  shadow_type,
-                 gint           x,
-                 gint           y,
-                 gint           width,
-                 gint           height)
+                 bint           x,
+                 bint           y,
+                 bint           width,
+                 bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
@@ -1058,8 +1058,8 @@ btk_draw_polygon (BtkStyle      *style,
                   BtkStateType   state_type,
                   BtkShadowType  shadow_type,
                   BdkPoint      *points,
-                  gint           npoints,
-                  gboolean       fill)
+                  bint           npoints,
+                  bboolean       fill)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
@@ -1091,11 +1091,11 @@ btk_draw_arrow (BtkStyle      *style,
                 BtkStateType   state_type,
                 BtkShadowType  shadow_type,
                 BtkArrowType   arrow_type,
-                gboolean       fill,
-                gint           x,
-                gint           y,
-                gint           width,
-                gint           height)
+                bboolean       fill,
+                bint           x,
+                bint           y,
+                bint           width,
+                bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
@@ -1124,10 +1124,10 @@ btk_draw_diamond (BtkStyle      *style,
                   BdkWindow     *window,
                   BtkStateType   state_type,
                   BtkShadowType  shadow_type,
-                  gint           x,
-                  gint           y,
-                  gint           width,
-                  gint           height)
+                  bint           x,
+                  bint           y,
+                  bint           width,
+                  bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
@@ -1152,9 +1152,9 @@ void
 btk_draw_string (BtkStyle      *style,
                  BdkWindow     *window,
                  BtkStateType   state_type,
-                 gint           x,
-                 gint           y,
-                 const gchar   *string)
+                 bint           x,
+                 bint           y,
+                 const bchar   *string)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_string != NULL);
@@ -1182,10 +1182,10 @@ btk_draw_box (BtkStyle      *style,
               BdkWindow     *window,
               BtkStateType   state_type,
               BtkShadowType  shadow_type,
-              gint           x,
-              gint           y,
-              gint           width,
-              gint           height)
+              bint           x,
+              bint           y,
+              bint           width,
+              bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box != NULL);
@@ -1213,10 +1213,10 @@ btk_draw_flat_box (BtkStyle      *style,
                    BdkWindow     *window,
                    BtkStateType   state_type,
                    BtkShadowType  shadow_type,
-                   gint           x,
-                   gint           y,
-                   gint           width,
-                   gint           height)
+                   bint           x,
+                   bint           y,
+                   bint           width,
+                   bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
@@ -1245,10 +1245,10 @@ btk_draw_check (BtkStyle      *style,
                 BdkWindow     *window,
                 BtkStateType   state_type,
                 BtkShadowType  shadow_type,
-                gint           x,
-                gint           y,
-                gint           width,
-                gint           height)
+                bint           x,
+                bint           y,
+                bint           width,
+                bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_check != NULL);
@@ -1277,10 +1277,10 @@ btk_draw_option (BtkStyle      *style,
 		 BdkWindow     *window,
 		 BtkStateType   state_type,
 		 BtkShadowType  shadow_type,
-		 gint           x,
-		 gint           y,
-		 gint           width,
-		 gint           height)
+		 bint           x,
+		 bint           y,
+		 bint           width,
+		 bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_option != NULL);
@@ -1309,10 +1309,10 @@ btk_draw_tab (BtkStyle      *style,
 	      BdkWindow     *window,
 	      BtkStateType   state_type,
 	      BtkShadowType  shadow_type,
-	      gint           x,
-	      gint           y,
-	      gint           width,
-	      gint           height)
+	      bint           x,
+	      bint           y,
+	      bint           width,
+	      bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
@@ -1345,13 +1345,13 @@ btk_draw_shadow_gap (BtkStyle       *style,
                      BdkWindow      *window,
                      BtkStateType    state_type,
                      BtkShadowType   shadow_type,
-                     gint            x,
-                     gint            y,
-                     gint            width,
-                     gint            height,
+                     bint            x,
+                     bint            y,
+                     bint            width,
+                     bint            height,
                      BtkPositionType gap_side,
-                     gint            gap_x,
-                     gint            gap_width)
+                     bint            gap_x,
+                     bint            gap_width)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
@@ -1383,13 +1383,13 @@ btk_draw_box_gap (BtkStyle       *style,
                   BdkWindow      *window,
                   BtkStateType    state_type,
                   BtkShadowType   shadow_type,
-                  gint            x,
-                  gint            y,
-                  gint            width,
-                  gint            height,
+                  bint            x,
+                  bint            y,
+                  bint            width,
+                  bint            height,
                   BtkPositionType gap_side,
-                  gint            gap_x,
-                  gint            gap_width)
+                  bint            gap_x,
+                  bint            gap_width)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
@@ -1418,10 +1418,10 @@ btk_draw_extension (BtkStyle       *style,
                     BdkWindow      *window,
                     BtkStateType    state_type,
                     BtkShadowType   shadow_type,
-                    gint            x,
-                    gint            y,
-                    gint            width,
-                    gint            height,
+                    bint            x,
+                    bint            y,
+                    bint            width,
+                    bint            height,
                     BtkPositionType gap_side)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -1447,10 +1447,10 @@ btk_draw_extension (BtkStyle       *style,
 void
 btk_draw_focus (BtkStyle      *style,
 		BdkWindow     *window,
-		gint           x,
-		gint           y,
-		gint           width,
-		gint           height)
+		bint           x,
+		bint           y,
+		bint           width,
+		bint           height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
@@ -1478,10 +1478,10 @@ btk_draw_slider (BtkStyle      *style,
 		 BdkWindow     *window,
 		 BtkStateType   state_type,
 		 BtkShadowType  shadow_type,
-		 gint           x,
-		 gint           y,
-		 gint           width,
-		 gint           height,
+		 bint           x,
+		 bint           y,
+		 bint           width,
+		 bint           height,
 		 BtkOrientation orientation)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -1511,10 +1511,10 @@ btk_draw_handle (BtkStyle      *style,
 		 BdkWindow     *window,
 		 BtkStateType   state_type,
 		 BtkShadowType  shadow_type,
-		 gint           x,
-		 gint           y,
-		 gint           width,
-		 gint           height,
+		 bint           x,
+		 bint           y,
+		 bint           width,
+		 bint           height,
 		 BtkOrientation orientation)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -1540,8 +1540,8 @@ void
 btk_draw_expander (BtkStyle        *style,
                    BdkWindow       *window,
                    BtkStateType     state_type,
-                   gint             x,
-                   gint             y,
+                   bint             x,
+                   bint             y,
 		   BtkExpanderStyle expander_style)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -1569,9 +1569,9 @@ void
 btk_draw_layout (BtkStyle        *style,
                  BdkWindow       *window,
                  BtkStateType     state_type,
-		 gboolean         use_text,
-                 gint             x,
-                 gint             y,
+		 bboolean         use_text,
+                 bint             x,
+                 bint             y,
                  BangoLayout     *layout)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -1603,10 +1603,10 @@ btk_draw_resize_grip (BtkStyle     *style,
                       BdkWindow    *window,
                       BtkStateType  state_type,
                       BdkWindowEdge edge,
-                      gint          x,
-                      gint          y,
-                      gint          width,
-                      gint          height)
+                      bint          x,
+                      bint          y,
+                      bint          width,
+                      bint          height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_resize_grip != NULL);
@@ -1651,7 +1651,7 @@ btk_style_real_copy (BtkStyle *style,
 {
   BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
   BtkStylePrivate *src_priv = BTK_STYLE_GET_PRIVATE (src);
-  gint i;
+  bint i;
   
   for (i = 0; i < 5; i++)
     {
@@ -1708,7 +1708,7 @@ btk_style_real_init_from_rc (BtkStyle   *style,
 			     BtkRcStyle *rc_style)
 {
   BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
-  gint i;
+  bint i;
 
   /* cache _should_ be still empty */
   clear_property_cache (style);
@@ -1740,7 +1740,7 @@ btk_style_real_init_from_rc (BtkStyle   *style,
   b_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
 }
 
-static gint
+static bint
 style_property_values_cmp (gconstpointer bsearch_node1,
 			   gconstpointer bsearch_node2)
 {
@@ -1769,7 +1769,7 @@ style_property_values_cmp (gconstpointer bsearch_node1,
 void 
 btk_style_get_style_property (BtkStyle     *style,
                               GType        widget_type,
-                              const gchar *property_name,
+                              const bchar *property_name,
                               BValue      *value)
 {
   BtkWidgetClass *klass;
@@ -1823,7 +1823,7 @@ btk_style_get_style_property (BtkStyle     *style,
 void 
 btk_style_get_valist (BtkStyle    *style,
                       GType        widget_type,
-                      const gchar *first_property_name,
+                      const bchar *first_property_name,
                       va_list      var_args)
 {
   const char *property_name;
@@ -1839,7 +1839,7 @@ btk_style_get_valist (BtkStyle    *style,
       BParamSpec *pspec;
       BtkRcPropertyParser parser;
       const BValue *peek_value;
-      gchar *error;
+      bchar *error;
 
       pspec = btk_widget_class_find_style_property (klass, property_name);
 
@@ -1864,7 +1864,7 @@ btk_style_get_valist (BtkStyle    *style,
           break;
         }
 
-      property_name = va_arg (var_args, gchar*);
+      property_name = va_arg (var_args, bchar*);
     }
 
   g_type_class_unref (klass);
@@ -1887,7 +1887,7 @@ btk_style_get_valist (BtkStyle    *style,
 void
 btk_style_get (BtkStyle    *style,
                GType        widget_type,
-               const gchar *first_property_name,
+               const bchar *first_property_name,
                ...)
 {
   va_list var_args;
@@ -1905,7 +1905,7 @@ _btk_style_peek_property_value (BtkStyle           *style,
 {
   PropertyValue *pcache, key = { 0, NULL, { 0, } };
   const BtkRcProperty *rcprop = NULL;
-  guint i;
+  buint i;
 
   g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
@@ -1960,7 +1960,7 @@ _btk_style_peek_property_value (BtkStyle           *style,
   if (rcprop && !_btk_settings_parse_convert (parser, &rcprop->value,
 					      pspec, &pcache->value))
     {
-      gchar *contents = g_strdup_value_contents (&rcprop->value);
+      bchar *contents = g_strdup_value_contents (&rcprop->value);
       
       g_message ("%s: failed to retrieve property `%s::%s' of type `%s' from rc file value \"%s\" of type `%s'",
 		 rcprop->origin ? rcprop->origin : "(for origin information, set BTK_DEBUG)",
@@ -1982,7 +1982,7 @@ _btk_style_peek_property_value (BtkStyle           *style,
 static BdkPixmap *
 load_bg_image (BdkColormap *colormap,
 	       BdkColor    *bg_color,
-	       const gchar *filename)
+	       const bchar *filename)
 {
   if (strcmp (filename, "<parent>") == 0)
     return (BdkPixmap*) BDK_PARENT_RELATIVE;
@@ -2000,7 +2000,7 @@ btk_style_real_realize (BtkStyle *style)
   BdkGCValues gc_values;
   BdkGCValuesMask gc_values_mask;
   
-  gint i;
+  bint i;
 
   for (i = 0; i < 5; i++)
     {
@@ -2141,7 +2141,7 @@ btk_style_real_set_background (BtkStyle    *style,
 			       BtkStateType state_type)
 {
   BdkPixmap *pixmap;
-  gint parent_relative;
+  bint parent_relative;
   
   if (style->bg_pixmap[state_type])
     {
@@ -2188,7 +2188,7 @@ btk_style_render_icon (BtkStyle            *style,
                        BtkStateType         state,
                        BtkIconSize          size,
                        BtkWidget           *widget,
-                       const gchar         *detail)
+                       const bchar         *detail)
 {
   BdkPixbuf *pixbuf;
   
@@ -2220,13 +2220,13 @@ btk_style_render_icon (BtkStyle            *style,
 void
 btk_style_apply_default_background (BtkStyle          *style,
                                     BdkWindow         *window,
-                                    gboolean           set_bg,
+                                    bboolean           set_bg,
                                     BtkStateType        state_type,
                                     const BdkRectangle *area,
-                                    gint                x,
-                                    gint                y,
-                                    gint                width,
-                                    gint                height)
+                                    bint                x,
+                                    bint                y,
+                                    bint                width,
+                                    bint                height)
 {
   BdkRectangle new_rect, old_rect;
   
@@ -2283,8 +2283,8 @@ btk_style_apply_default_background (BtkStyle          *style,
 
 static BdkPixbuf *
 scale_or_ref (BdkPixbuf *src,
-              gint       width,
-              gint       height)
+              bint       width,
+              bint       height)
 {
   if (width == bdk_pixbuf_get_width (src) &&
       height == bdk_pixbuf_get_height (src))
@@ -2299,12 +2299,12 @@ scale_or_ref (BdkPixbuf *src,
     }
 }
 
-static gboolean
+static bboolean
 lookup_icon_size (BtkStyle    *style,
 		  BtkWidget   *widget,
 		  BtkIconSize  size,
-		  gint        *width,
-		  gint        *height)
+		  bint        *width,
+		  bint        *height)
 {
   BdkScreen *screen;
   BtkSettings *settings;
@@ -2336,10 +2336,10 @@ btk_default_render_icon (BtkStyle            *style,
                          BtkStateType         state,
                          BtkIconSize          size,
                          BtkWidget           *widget,
-                         const gchar         *detail)
+                         const bchar         *detail)
 {
-  gint width = 1;
-  gint height = 1;
+  bint width = 1;
+  bint height = 1;
   BdkPixbuf *scaled;
   BdkPixbuf *stated;
   BdkPixbuf *base_pixbuf;
@@ -2401,8 +2401,8 @@ btk_default_render_icon (BtkStyle            *style,
 
 static void
 sanitize_size (BdkWindow *window,
-	       gint      *width,
-	       gint      *height)
+	       bint      *width,
+	       bint      *height)
 {
   if ((*width == -1) && (*height == -1))
     bdk_drawable_get_size (window, width, height);
@@ -2418,14 +2418,14 @@ btk_default_draw_hline (BtkStyle     *style,
                         BtkStateType  state_type,
                         BdkRectangle  *area,
                         BtkWidget     *widget,
-                        const gchar   *detail,
-                        gint          x1,
-                        gint          x2,
-                        gint          y)
+                        const bchar   *detail,
+                        bint          x1,
+                        bint          x2,
+                        bint          y)
 {
-  gint thickness_light;
-  gint thickness_dark;
-  gint i;
+  bint thickness_light;
+  bint thickness_dark;
+  bint i;
   
   thickness_light = style->ythickness / 2;
   thickness_dark = style->ythickness - thickness_light;
@@ -2472,14 +2472,14 @@ btk_default_draw_vline (BtkStyle     *style,
                         BtkStateType  state_type,
                         BdkRectangle  *area,
                         BtkWidget     *widget,
-                        const gchar   *detail,
-                        gint          y1,
-                        gint          y2,
-                        gint          x)
+                        const bchar   *detail,
+                        bint          y1,
+                        bint          y2,
+                        bint          x)
 {
-  gint thickness_light;
-  gint thickness_dark;
-  gint i;
+  bint thickness_light;
+  bint thickness_dark;
+  bint i;
   
   thickness_light = style->xthickness / 2;
   thickness_dark = style->xthickness - thickness_light;
@@ -2513,10 +2513,10 @@ draw_thin_shadow (BtkStyle      *style,
 		  BdkWindow     *window,
 		  BtkStateType   state,
 		  BdkRectangle  *area,
-		  gint           x,
-		  gint           y,
-		  gint           width,
-		  gint           height)
+		  bint           x,
+		  bint           y,
+		  bint           width,
+		  bint           height)
 {
   BdkGC *gc1, *gc2;
 
@@ -2554,10 +2554,10 @@ draw_spinbutton_shadow (BtkStyle        *style,
 			BtkStateType     state,
 			BtkTextDirection direction,
 			BdkRectangle    *area,
-			gint             x,
-			gint             y,
-			gint             width,
-			gint             height)
+			bint             x,
+			bint             y,
+			bint             width,
+			bint             height)
 {
   sanitize_size (window, &width, &height);
 
@@ -2618,10 +2618,10 @@ draw_menu_shadow (BtkStyle        *style,
 		  BdkWindow       *window,
 		  BtkStateType     state,
 		  BdkRectangle    *area,
-		  gint             x,
-		  gint             y,
-		  gint             width,
-		  gint             height)
+		  bint             x,
+		  bint             y,
+		  bint             width,
+		  bint             height)
 {
   if (style->ythickness > 0)
     {
@@ -2694,17 +2694,17 @@ btk_default_draw_shadow (BtkStyle      *style,
                          BtkShadowType  shadow_type,
                          BdkRectangle  *area,
                          BtkWidget     *widget,
-                         const gchar   *detail,
-                         gint           x,
-                         gint           y,
-                         gint           width,
-                         gint           height)
+                         const bchar   *detail,
+                         bint           x,
+                         bint           y,
+                         bint           width,
+                         bint           height)
 {
   BdkGC *gc1 = NULL;
   BdkGC *gc2 = NULL;
-  gint thickness_light;
-  gint thickness_dark;
-  gint i;
+  bint thickness_light;
+  bint thickness_dark;
+  bint i;
   
   if (shadow_type == BTK_SHADOW_IN)
     {
@@ -3025,21 +3025,21 @@ btk_default_draw_polygon (BtkStyle      *style,
                           BtkShadowType  shadow_type,
                           BdkRectangle  *area,
                           BtkWidget     *widget,
-                          const gchar   *detail,
+                          const bchar   *detail,
                           BdkPoint      *points,
-                          gint           npoints,
-                          gboolean       fill)
+                          bint           npoints,
+                          bboolean       fill)
 {
-  static const gdouble pi_over_4 = G_PI_4;
-  static const gdouble pi_3_over_4 = G_PI_4 * 3;
+  static const bdouble pi_over_4 = G_PI_4;
+  static const bdouble pi_3_over_4 = G_PI_4 * 3;
   BdkGC *gc1;
   BdkGC *gc2;
   BdkGC *gc3;
   BdkGC *gc4;
-  gdouble angle;
-  gint xadjust;
-  gint yadjust;
-  gint i;
+  bdouble angle;
+  bint xadjust;
+  bint yadjust;
+  bint i;
   
   switch (shadow_type)
     {
@@ -3153,10 +3153,10 @@ draw_arrow (BdkWindow     *window,
 	    BdkColor      *color,
 	    BdkRectangle  *area,
 	    BtkArrowType   arrow_type,
-	    gint           x,
-	    gint           y,
-	    gint           width,
-	    gint           height)
+	    bint           x,
+	    bint           y,
+	    bint           width,
+	    bint           height)
 {
   bairo_t *cr = bdk_bairo_create (window);
   bdk_bairo_set_source_color (cr, color);
@@ -3200,13 +3200,13 @@ draw_arrow (BdkWindow     *window,
 
 static void
 calculate_arrow_geometry (BtkArrowType  arrow_type,
-			  gint         *x,
-			  gint         *y,
-			  gint         *width,
-			  gint         *height)
+			  bint         *x,
+			  bint         *y,
+			  bint         *width,
+			  bint         *height)
 {
-  gint w = *width;
-  gint h = *height;
+  bint w = *width;
+  bint h = *height;
   
   switch (arrow_type)
     {
@@ -3274,13 +3274,13 @@ btk_default_draw_arrow (BtkStyle      *style,
 			BtkShadowType  shadow,
 			BdkRectangle  *area,
 			BtkWidget     *widget,
-			const gchar   *detail,
+			const bchar   *detail,
 			BtkArrowType   arrow_type,
-			gboolean       fill,
-			gint           x,
-			gint           y,
-			gint           width,
-			gint           height)
+			bboolean       fill,
+			bint           x,
+			bint           y,
+			bint           width,
+			bint           height)
 {
   sanitize_size (window, &width, &height);
 
@@ -3303,14 +3303,14 @@ btk_default_draw_diamond (BtkStyle      *style,
                           BtkShadowType  shadow_type,
                           BdkRectangle  *area,
                           BtkWidget     *widget,
-                          const gchar   *detail,
-                          gint           x,
-                          gint           y,
-                          gint           width,
-                          gint           height)
+                          const bchar   *detail,
+                          bint           x,
+                          bint           y,
+                          bint           width,
+                          bint           height)
 {
-  gint half_width;
-  gint half_height;
+  bint half_width;
+  bint half_height;
   BdkGC *outer_nw = NULL;
   BdkGC *outer_ne = NULL;
   BdkGC *outer_sw = NULL;
@@ -3436,10 +3436,10 @@ btk_default_draw_string (BtkStyle      *style,
                          BtkStateType   state_type,
                          BdkRectangle  *area,
                          BtkWidget     *widget,
-                         const gchar   *detail,
-                         gint           x,
-                         gint           y,
-                         const gchar   *string)
+                         const bchar   *detail,
+                         bint           x,
+                         bint           y,
+                         const bchar   *string)
 {
   if (area)
     {
@@ -3501,13 +3501,13 @@ btk_default_draw_box (BtkStyle      *style,
 		      BtkShadowType  shadow_type,
 		      BdkRectangle  *area,
 		      BtkWidget     *widget,
-		      const gchar   *detail,
-		      gint           x,
-		      gint           y,
-		      gint           width,
-		      gint           height)
+		      const bchar   *detail,
+		      bint           x,
+		      bint           y,
+		      bint           width,
+		      bint           height)
 {
-  gboolean is_spinbutton_box = FALSE;
+  bboolean is_spinbutton_box = FALSE;
   
   sanitize_size (window, &width, &height);
 
@@ -3599,7 +3599,7 @@ btk_default_draw_box (BtkStyle      *style,
     {
       BtkRequisition indicator_size;
       BtkBorder indicator_spacing;
-      gint vline_x;
+      bint vline_x;
 
       option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
@@ -3621,7 +3621,7 @@ btk_default_draw_box (BtkStyle      *style,
 static BdkGC *
 get_darkened_gc (BdkWindow      *window,
                  const BdkColor *color,
-                 gint            darken_count)
+                 bint            darken_count)
 {
   BdkColor src = *color;
   BdkColor shaded = *color;
@@ -3648,11 +3648,11 @@ btk_default_draw_flat_box (BtkStyle      *style,
                            BtkShadowType  shadow_type,
                            BdkRectangle  *area,
                            BtkWidget     *widget,
-                           const gchar   *detail,
-                           gint           x,
-                           gint           y,
-                           gint           width,
-                           gint           height)
+                           const bchar   *detail,
+                           bint           x,
+                           bint           y,
+                           bint           width,
+                           bint           height)
 {
   BdkGC *gc1;
   BdkGC *freeme = NULL;
@@ -3852,11 +3852,11 @@ btk_default_draw_check (BtkStyle      *style,
 			BtkShadowType  shadow_type,
 			BdkRectangle  *area,
 			BtkWidget     *widget,
-			const gchar   *detail,
-			gint           x,
-			gint           y,
-			gint           width,
-			gint           height)
+			const bchar   *detail,
+			bint           x,
+			bint           y,
+			bint           width,
+			bint           height)
 {
   bairo_t *cr = bdk_bairo_create (window);
   enum { BUTTON, MENU, CELL } type = BUTTON;
@@ -3977,11 +3977,11 @@ btk_default_draw_option (BtkStyle      *style,
 			 BtkShadowType  shadow_type,
 			 BdkRectangle  *area,
 			 BtkWidget     *widget,
-			 const gchar   *detail,
-			 gint           x,
-			 gint           y,
-			 gint           width,
-			 gint           height)
+			 const bchar   *detail,
+			 bint           x,
+			 bint           y,
+			 bint           width,
+			 bint           height)
 {
   bairo_t *cr = bdk_bairo_create (window);
   enum { BUTTON, MENU, CELL } type = BUTTON;
@@ -4097,17 +4097,17 @@ btk_default_draw_tab (BtkStyle      *style,
 		      BtkShadowType  shadow_type,
 		      BdkRectangle  *area,
 		      BtkWidget     *widget,
-		      const gchar   *detail,
-		      gint           x,
-		      gint           y,
-		      gint           width,
-		      gint           height)
+		      const bchar   *detail,
+		      bint           x,
+		      bint           y,
+		      bint           width,
+		      bint           height)
 {
 #define ARROW_SPACE 4
 
   BtkRequisition indicator_size;
   BtkBorder indicator_spacing;
-  gint arrow_height;
+  bint arrow_height;
   
   option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
@@ -4145,14 +4145,14 @@ btk_default_draw_shadow_gap (BtkStyle       *style,
                              BtkShadowType   shadow_type,
                              BdkRectangle   *area,
                              BtkWidget      *widget,
-                             const gchar    *detail,
-                             gint            x,
-                             gint            y,
-                             gint            width,
-                             gint            height,
+                             const bchar    *detail,
+                             bint            x,
+                             bint            y,
+                             bint            width,
+                             bint            height,
                              BtkPositionType gap_side,
-                             gint            gap_x,
-                             gint            gap_width)
+                             bint            gap_x,
+                             bint            gap_width)
 {
   BdkGC *gc1 = NULL;
   BdkGC *gc2 = NULL;
@@ -4358,14 +4358,14 @@ btk_default_draw_box_gap (BtkStyle       *style,
                           BtkShadowType   shadow_type,
                           BdkRectangle   *area,
                           BtkWidget      *widget,
-                          const gchar    *detail,
-                          gint            x,
-                          gint            y,
-                          gint            width,
-                          gint            height,
+                          const bchar    *detail,
+                          bint            x,
+                          bint            y,
+                          bint            width,
+                          bint            height,
                           BtkPositionType gap_side,
-                          gint            gap_x,
-                          gint            gap_width)
+                          bint            gap_x,
+                          bint            gap_width)
 {
   BdkGC *gc1 = NULL;
   BdkGC *gc2 = NULL;
@@ -4576,11 +4576,11 @@ btk_default_draw_extension (BtkStyle       *style,
                             BtkShadowType   shadow_type,
                             BdkRectangle   *area,
                             BtkWidget      *widget,
-                            const gchar    *detail,
-                            gint            x,
-                            gint            y,
-                            gint            width,
-                            gint            height,
+                            const bchar    *detail,
+                            bint            x,
+                            bint            y,
+                            bint            width,
+                            bint            height,
                             BtkPositionType gap_side)
 {
   BdkGC *gc1 = NULL;
@@ -4747,22 +4747,22 @@ btk_default_draw_focus (BtkStyle      *style,
 			BtkStateType   state_type,
 			BdkRectangle  *area,
 			BtkWidget     *widget,
-			const gchar   *detail,
-			gint           x,
-			gint           y,
-			gint           width,
-			gint           height)
+			const bchar   *detail,
+			bint           x,
+			bint           y,
+			bint           width,
+			bint           height)
 {
   bairo_t *cr;
-  gboolean free_dash_list = FALSE;
-  gint line_width = 1;
-  gint8 *dash_list = (gint8 *) "\1\1";
+  bboolean free_dash_list = FALSE;
+  bint line_width = 1;
+  bint8 *dash_list = (bint8 *) "\1\1";
 
   if (widget)
     {
       btk_widget_style_get (widget,
 			    "focus-line-width", &line_width,
-			    "focus-line-pattern", (gchar *)&dash_list,
+			    "focus-line-pattern", (bchar *)&dash_list,
 			    NULL);
 
       free_dash_list = TRUE;
@@ -4773,7 +4773,7 @@ btk_default_draw_focus (BtkStyle      *style,
       if (free_dash_list)
 	g_free (dash_list);
 
-      dash_list = (gint8 *) "\4\4";
+      dash_list = (bint8 *) "\4\4";
       free_dash_list = FALSE;
     }
 
@@ -4792,11 +4792,11 @@ btk_default_draw_focus (BtkStyle      *style,
 
   if (dash_list[0])
     {
-      gint n_dashes = strlen ((const gchar *) dash_list);
-      gdouble *dashes = g_new (gdouble, n_dashes);
-      gdouble total_length = 0;
-      gdouble dash_offset;
-      gint i;
+      bint n_dashes = strlen ((const bchar *) dash_list);
+      bdouble *dashes = g_new (bdouble, n_dashes);
+      bdouble total_length = 0;
+      bdouble dash_offset;
+      bint i;
 
       for (i = 0; i < n_dashes; i++)
 	{
@@ -4842,11 +4842,11 @@ btk_default_draw_slider (BtkStyle      *style,
                          BtkShadowType  shadow_type,
                          BdkRectangle  *area,
                          BtkWidget     *widget,
-                         const gchar   *detail,
-                         gint           x,
-                         gint           y,
-                         gint           width,
-                         gint           height,
+                         const bchar   *detail,
+                         bint           x,
+                         bint           y,
+                         bint           width,
+                         bint           height,
                          BtkOrientation orientation)
 {
   sanitize_size (window, &width, &height);
@@ -4873,9 +4873,9 @@ static void
 draw_dot (BdkWindow    *window,
 	  BdkGC        *light_gc,
 	  BdkGC        *dark_gc,
-	  gint          x,
-	  gint          y,
-	  gushort       size)
+	  bint          x,
+	  bint          y,
+	  bushort       size)
 {
   size = CLAMP (size, 2, 3);
 
@@ -4902,20 +4902,20 @@ btk_default_draw_handle (BtkStyle      *style,
 			 BtkShadowType  shadow_type,
 			 BdkRectangle  *area,
 			 BtkWidget     *widget,
-			 const gchar   *detail,
-			 gint           x,
-			 gint           y,
-			 gint           width,
-			 gint           height,
+			 const bchar   *detail,
+			 bint           x,
+			 bint           y,
+			 bint           width,
+			 bint           height,
 			 BtkOrientation orientation)
 {
-  gint xx, yy;
-  gint xthick, ythick;
+  bint xx, yy;
+  bint xthick, ythick;
   BdkGC *light_gc, *dark_gc;
   BdkGC *free_me = NULL;
   BdkRectangle rect;
   BdkRectangle dest;
-  gint intersect;
+  bint intersect;
   
   sanitize_size (window, &width, &height);
   
@@ -5005,15 +5005,15 @@ btk_default_draw_expander (BtkStyle        *style,
                            BtkStateType     state_type,
                            BdkRectangle    *area,
                            BtkWidget       *widget,
-                           const gchar     *detail,
-                           gint             x,
-                           gint             y,
+                           const bchar     *detail,
+                           bint             x,
+                           bint             y,
 			   BtkExpanderStyle expander_style)
 {
 #define DEFAULT_EXPANDER_SIZE 12
 
-  gint expander_size;
-  gint line_width;
+  bint expander_size;
+  bint line_width;
   double vertical_overshoot;
   int diameter;
   double radius;
@@ -5021,7 +5021,7 @@ btk_default_draw_expander (BtkStyle        *style,
   double x_double_horz, y_double_horz;
   double x_double_vert, y_double_vert;
   double x_double, y_double;
-  gint degrees = 0;
+  bint degrees = 0;
 
   bairo_t *cr = bdk_bairo_create (window);
   
@@ -5137,13 +5137,13 @@ typedef struct _ByteRange ByteRange;
 
 struct _ByteRange
 {
-  guint start;
-  guint end;
+  buint start;
+  buint end;
 };
 
 static ByteRange*
-range_new (guint start,
-           guint end)
+range_new (buint start,
+           buint end)
 {
   ByteRange *br = g_new (ByteRange, 1);
 
@@ -5171,7 +5171,7 @@ get_insensitive_layout (BdkDrawable *drawable,
     {
       BangoLayoutRun *run;
       BangoAttribute *attr;
-      gboolean need_stipple = FALSE;
+      bboolean need_stipple = FALSE;
       ByteRange *br;
       
       run = bango_layout_iter_get_run_readonly (iter);
@@ -5287,12 +5287,12 @@ static void
 btk_default_draw_layout (BtkStyle        *style,
                          BdkWindow       *window,
                          BtkStateType     state_type,
-			 gboolean         use_text,
+			 bboolean         use_text,
                          BdkRectangle    *area,
                          BtkWidget       *widget,
-                         const gchar     *detail,
-                         gint             x,
-                         gint             y,
+                         const bchar     *detail,
+                         bint             x,
+                         bint             y,
                          BangoLayout     *layout)
 {
   BdkGC *gc;
@@ -5327,15 +5327,15 @@ btk_default_draw_resize_grip (BtkStyle       *style,
                               BtkStateType    state_type,
                               BdkRectangle   *area,
                               BtkWidget      *widget,
-                              const gchar    *detail,
+                              const bchar    *detail,
                               BdkWindowEdge   edge,
-                              gint            x,
-                              gint            y,
-                              gint            width,
-                              gint            height)
+                              bint            x,
+                              bint            y,
+                              bint            width,
+                              bint            height)
 {
   BdkPoint points[4];
-  gint i, j, skip;
+  bint i, j, skip;
 
   if (area)
     {
@@ -5438,7 +5438,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
     case BDK_WINDOW_EDGE_WEST:
     case BDK_WINDOW_EDGE_EAST:
       {
-	gint xi;
+	bint xi;
 
 	xi = x;
 
@@ -5462,7 +5462,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
     case BDK_WINDOW_EDGE_NORTH:
     case BDK_WINDOW_EDGE_SOUTH:
       {
-	gint yi;
+	bint yi;
 
 	yi = y;
 
@@ -5485,7 +5485,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
       break;
     case BDK_WINDOW_EDGE_NORTH_WEST:
       {
-	gint xi, yi;
+	bint xi, yi;
 
 	xi = x + width;
 	yi = y + height;
@@ -5521,7 +5521,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
       break;
     case BDK_WINDOW_EDGE_NORTH_EAST:
       {
-        gint xi, yi;
+        bint xi, yi;
 
         xi = x;
         yi = y + height;
@@ -5556,7 +5556,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
       break;
     case BDK_WINDOW_EDGE_SOUTH_WEST:
       {
-	gint xi, yi;
+	bint xi, yi;
 
 	xi = x + width;
 	yi = y;
@@ -5592,7 +5592,7 @@ btk_default_draw_resize_grip (BtkStyle       *style,
       break;
     case BDK_WINDOW_EDGE_SOUTH_EAST:
       {
-        gint xi, yi;
+        bint xi, yi;
 
         xi = x;
         yi = y;
@@ -5644,21 +5644,21 @@ btk_default_draw_spinner (BtkStyle     *style,
                           BtkStateType  state_type,
                           BdkRectangle *area,
                           BtkWidget    *widget,
-                          const gchar  *detail,
-                          guint         step,
-                          gint          x,
-                          gint          y,
-                          gint          width,
-                          gint          height)
+                          const bchar  *detail,
+                          buint         step,
+                          bint          x,
+                          bint          y,
+                          bint          width,
+                          bint          height)
 {
   BdkColor *color;
   bairo_t *cr;
-  guint num_steps;
-  gdouble dx, dy;
-  gdouble radius;
-  gdouble half;
-  gint i;
-  guint real_step;
+  buint num_steps;
+  bdouble dx, dy;
+  bdouble radius;
+  bdouble half;
+  bint i;
+  buint real_step;
 
   btk_style_get (style, BTK_TYPE_SPINNER,
                  "num-steps", &num_steps,
@@ -5685,10 +5685,10 @@ btk_default_draw_spinner (BtkStyle     *style,
 
   for (i = 0; i < num_steps; i++)
     {
-      gint inset = 0.7 * radius;
+      bint inset = 0.7 * radius;
 
       /* transparency is a function of time and intial value */
-      gdouble t = (gdouble) ((i + num_steps - real_step)
+      bdouble t = (bdouble) ((i + num_steps - real_step)
                              % num_steps) / num_steps;
 
       bairo_save (cr);
@@ -5718,15 +5718,15 @@ btk_default_draw_spinner (BtkStyle     *style,
 void
 _btk_style_shade (const BdkColor *a,
                   BdkColor       *b,
-                  gdouble         k)
+                  bdouble         k)
 {
-  gdouble red;
-  gdouble green;
-  gdouble blue;
+  bdouble red;
+  bdouble green;
+  bdouble blue;
   
-  red = (gdouble) a->red / 65535.0;
-  green = (gdouble) a->green / 65535.0;
-  blue = (gdouble) a->blue / 65535.0;
+  red = (bdouble) a->red / 65535.0;
+  green = (bdouble) a->green / 65535.0;
+  blue = (bdouble) a->blue / 65535.0;
   
   rgb_to_hls (&red, &green, &blue);
   
@@ -5750,17 +5750,17 @@ _btk_style_shade (const BdkColor *a,
 }
 
 static void
-rgb_to_hls (gdouble *r,
-            gdouble *g,
-            gdouble *b)
+rgb_to_hls (bdouble *r,
+            bdouble *g,
+            bdouble *b)
 {
-  gdouble min;
-  gdouble max;
-  gdouble red;
-  gdouble green;
-  gdouble blue;
-  gdouble h, l, s;
-  gdouble delta;
+  bdouble min;
+  bdouble max;
+  bdouble red;
+  bdouble green;
+  bdouble blue;
+  bdouble h, l, s;
+  bdouble delta;
   
   red = *r;
   green = *g;
@@ -5821,15 +5821,15 @@ rgb_to_hls (gdouble *r,
 }
 
 static void
-hls_to_rgb (gdouble *h,
-            gdouble *l,
-            gdouble *s)
+hls_to_rgb (bdouble *h,
+            bdouble *l,
+            bdouble *s)
 {
-  gdouble hue;
-  gdouble lightness;
-  gdouble saturation;
-  gdouble m1, m2;
-  gdouble r, g, b;
+  bdouble hue;
+  bdouble lightness;
+  bdouble saturation;
+  bdouble m1, m2;
+  bdouble r, g, b;
   
   lightness = *l;
   saturation = *s;
@@ -5922,10 +5922,10 @@ btk_paint_hline (BtkStyle           *style,
                  BtkStateType        state_type,
                  const BdkRectangle *area,
                  BtkWidget          *widget,
-                 const gchar        *detail,
-                 gint                x1,
-                 gint                x2,
-                 gint                y)
+                 const bchar        *detail,
+                 bint                x1,
+                 bint                x2,
+                 bint                y)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
@@ -5958,10 +5958,10 @@ btk_paint_vline (BtkStyle           *style,
                  BtkStateType        state_type,
                  const BdkRectangle *area,
                  BtkWidget          *widget,
-                 const gchar        *detail,
-                 gint                y1_,
-                 gint                y2_,
-                 gint                x)
+                 const bchar        *detail,
+                 bint                y1_,
+                 bint                y2_,
+                 bint                x)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
@@ -5997,11 +5997,11 @@ btk_paint_shadow (BtkStyle           *style,
                   BtkShadowType       shadow_type,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
-                  gint                width,
-                  gint                height)
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
+                  bint                width,
+                  bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
@@ -6035,10 +6035,10 @@ btk_paint_polygon (BtkStyle           *style,
                    BtkShadowType       shadow_type,
                    const BdkRectangle *area,
                    BtkWidget          *widget,
-                   const gchar        *detail,
+                   const bchar        *detail,
                    const BdkPoint     *points,
-                   gint                n_points,
-                   gboolean            fill)
+                   bint                n_points,
+                   bboolean            fill)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
@@ -6076,13 +6076,13 @@ btk_paint_arrow (BtkStyle           *style,
                  BtkShadowType       shadow_type,
                  const BdkRectangle *area,
                  BtkWidget          *widget,
-                 const gchar        *detail,
+                 const bchar        *detail,
                  BtkArrowType        arrow_type,
-                 gboolean            fill,
-                 gint                x,
-                 gint                y,
-                 gint                width,
-                 gint                height)
+                 bboolean            fill,
+                 bint                x,
+                 bint                y,
+                 bint                width,
+                 bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
@@ -6118,11 +6118,11 @@ btk_paint_diamond (BtkStyle           *style,
                    BtkShadowType       shadow_type,
                    const BdkRectangle *area,
                    BtkWidget          *widget,
-                   const gchar        *detail,
-                   gint                x,
-                   gint                y,
-                   gint                width,
-                   gint                height)
+                   const bchar        *detail,
+                   bint                x,
+                   bint                y,
+                   bint                width,
+                   bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
@@ -6156,10 +6156,10 @@ btk_paint_string (BtkStyle           *style,
                   BtkStateType        state_type,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
-                  const gchar        *string)
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
+                  const bchar        *string)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_string != NULL);
@@ -6194,11 +6194,11 @@ btk_paint_box (BtkStyle           *style,
                BtkShadowType       shadow_type,
                const BdkRectangle *area,
                BtkWidget          *widget,
-               const gchar        *detail,
-               gint                x,
-               gint                y,
-               gint                width,
-               gint                height)
+               const bchar        *detail,
+               bint                x,
+               bint                y,
+               bint                width,
+               bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box != NULL);
@@ -6233,11 +6233,11 @@ btk_paint_flat_box (BtkStyle           *style,
                     BtkShadowType       shadow_type,
                     const BdkRectangle *area,
                     BtkWidget          *widget,
-                    const gchar        *detail,
-                    gint                x,
-                    gint                y,
-                    gint                width,
-                    gint                height)
+                    const bchar        *detail,
+                    bint                x,
+                    bint                y,
+                    bint                width,
+                    bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
@@ -6273,11 +6273,11 @@ btk_paint_check (BtkStyle           *style,
                  BtkShadowType       shadow_type,
                  const BdkRectangle *area,
                  BtkWidget          *widget,
-                 const gchar        *detail,
-                 gint                x,
-                 gint                y,
-                 gint                width,
-                 gint                height)
+                 const bchar        *detail,
+                 bint                x,
+                 bint                y,
+                 bint                width,
+                 bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_check != NULL);
@@ -6313,11 +6313,11 @@ btk_paint_option (BtkStyle           *style,
                   BtkShadowType       shadow_type,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
-                  gint                width,
-                  gint                height)
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
+                  bint                width,
+                  bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_option != NULL);
@@ -6353,11 +6353,11 @@ btk_paint_tab (BtkStyle           *style,
                BtkShadowType       shadow_type,
                const BdkRectangle *area,
                BtkWidget          *widget,
-               const gchar        *detail,
-               gint                x,
-               gint                y,
-               gint                width,
-               gint                height)
+               const bchar        *detail,
+               bint                x,
+               bint                y,
+               bint                width,
+               bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
@@ -6397,14 +6397,14 @@ btk_paint_shadow_gap (BtkStyle           *style,
                       BtkShadowType       shadow_type,
                       const BdkRectangle *area,
                       BtkWidget          *widget,
-                      const gchar        *detail,
-                      gint                x,
-                      gint                y,
-                      gint                width,
-                      gint                height,
+                      const bchar        *detail,
+                      bint                x,
+                      bint                y,
+                      bint                width,
+                      bint                height,
                       BtkPositionType     gap_side,
-                      gint                gap_x,
-                      gint                gap_width)
+                      bint                gap_x,
+                      bint                gap_width)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
@@ -6444,14 +6444,14 @@ btk_paint_box_gap (BtkStyle           *style,
                    BtkShadowType       shadow_type,
                    const BdkRectangle *area,
                    BtkWidget          *widget,
-                   const gchar        *detail,
-                   gint                x,
-                   gint                y,
-                   gint                width,
-                   gint                height,
+                   const bchar        *detail,
+                   bint                x,
+                   bint                y,
+                   bint                width,
+                   bint                height,
                    BtkPositionType     gap_side,
-                   gint                gap_x,
-                   gint                gap_width)
+                   bint                gap_x,
+                   bint                gap_width)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
@@ -6487,11 +6487,11 @@ btk_paint_extension (BtkStyle           *style,
                      BtkShadowType       shadow_type,
                      const BdkRectangle *area,
                      BtkWidget          *widget,
-                     const gchar        *detail,
-                     gint                x,
-                     gint                y,
-                     gint                width,
-                     gint                height,
+                     const bchar        *detail,
+                     bint                x,
+                     bint                y,
+                     bint                width,
+                     bint                height,
                      BtkPositionType     gap_side)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6526,11 +6526,11 @@ btk_paint_focus (BtkStyle           *style,
 		 BtkStateType        state_type,
                  const BdkRectangle *area,
                  BtkWidget          *widget,
-                 const gchar        *detail,
-                 gint                x,
-                 gint                y,
-                 gint                width,
-                 gint                height)
+                 const bchar        *detail,
+                 bint                x,
+                 bint                y,
+                 bint                width,
+                 bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
@@ -6567,11 +6567,11 @@ btk_paint_slider (BtkStyle           *style,
                   BtkShadowType       shadow_type,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
-                  gint                width,
-                  gint                height,
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
+                  bint                width,
+                  bint                height,
                   BtkOrientation      orientation)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6608,11 +6608,11 @@ btk_paint_handle (BtkStyle           *style,
                   BtkShadowType       shadow_type,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
-                  gint                width,
-                  gint                height,
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
+                  bint                width,
+                  bint                height,
                   BtkOrientation      orientation)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6655,9 +6655,9 @@ btk_paint_expander (BtkStyle           *style,
                     BtkStateType        state_type,
                     const BdkRectangle *area,
                     BtkWidget          *widget,
-                    const gchar        *detail,
-                    gint                x,
-                    gint                y,
+                    const bchar        *detail,
+                    bint                x,
+                    bint                y,
 		    BtkExpanderStyle    expander_style)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6690,12 +6690,12 @@ void
 btk_paint_layout (BtkStyle           *style,
                   BdkWindow          *window,
                   BtkStateType        state_type,
-                  gboolean            use_text,
+                  bboolean            use_text,
                   const BdkRectangle *area,
                   BtkWidget          *widget,
-                  const gchar        *detail,
-                  gint                x,
-                  gint                y,
+                  const bchar        *detail,
+                  bint                x,
+                  bint                y,
                   BangoLayout        *layout)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6731,12 +6731,12 @@ btk_paint_resize_grip (BtkStyle           *style,
                        BtkStateType        state_type,
                        const BdkRectangle *area,
                        BtkWidget          *widget,
-                       const gchar        *detail,
+                       const bchar        *detail,
                        BdkWindowEdge       edge,
-                       gint                x,
-                       gint                y,
-                       gint                width,
-                       gint                height)
+                       bint                x,
+                       bint                y,
+                       bint                width,
+                       bint                height)
 
 {
   g_return_if_fail (BTK_IS_STYLE (style));
@@ -6773,12 +6773,12 @@ btk_paint_spinner (BtkStyle           *style,
 		   BtkStateType        state_type,
                    const BdkRectangle *area,
                    BtkWidget          *widget,
-                   const gchar        *detail,
-		   guint               step,
-		   gint                x,
-		   gint                y,
-		   gint                width,
-		   gint                height)
+                   const bchar        *detail,
+		   buint               step,
+		   bint                x,
+		   bint                y,
+		   bint                width,
+		   bint                height)
 {
   g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_spinner != NULL);
@@ -6983,7 +6983,7 @@ style_unrealize_cursor_gcs (BtkStyle *style)
 
 static BdkGC *
 make_cursor_gc (BtkWidget      *widget,
-		const gchar    *property_name,
+		const bchar    *property_name,
 		const BdkColor *fallback)
 {
   BdkGCValues gc_values;
@@ -7007,7 +7007,7 @@ make_cursor_gc (BtkWidget      *widget,
 
 static BdkGC *
 get_insertion_cursor_gc (BtkWidget *widget,
-			 gboolean   is_primary)
+			 bboolean   is_primary)
 {
   CursorInfo *cursor_info;
 
@@ -7100,14 +7100,14 @@ draw_insertion_cursor (BtkWidget          *widget,
 		       BdkGC              *gc,
 		       const BdkRectangle *location,
 		       BtkTextDirection    direction,
-		       gboolean            draw_arrow)
+		       bboolean            draw_arrow)
 {
-  gint stem_width;
-  gint arrow_width;
-  gint x, y;
-  gint i;
-  gfloat cursor_aspect_ratio;
-  gint offset;
+  bint stem_width;
+  bint arrow_width;
+  bint x, y;
+  bint i;
+  bfloat cursor_aspect_ratio;
+  bint offset;
   
   /* When changing the shape or size of the cursor here,
    * propagate the changes to btktextview.c:text_window_invalidate_cursors().
@@ -7183,9 +7183,9 @@ btk_draw_insertion_cursor (BtkWidget          *widget,
 			   BdkDrawable        *drawable,
 			   const BdkRectangle *area,
 			   const BdkRectangle *location,
-			   gboolean            is_primary,
+			   bboolean            is_primary,
 			   BtkTextDirection    direction,
-			   gboolean            draw_arrow)
+			   bboolean            draw_arrow)
 {
   BdkGC *gc;
 

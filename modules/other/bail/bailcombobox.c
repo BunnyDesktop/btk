@@ -28,41 +28,41 @@
 static void         bail_combo_box_class_init              (BailComboBoxClass *klass);
 static void         bail_combo_box_init                    (BailComboBox      *combo_box);
 static void         bail_combo_box_real_initialize         (BatkObject      *obj,
-                                                            gpointer       data);
+                                                            bpointer       data);
 
 static void         bail_combo_box_changed_btk             (BtkWidget      *widget);
 
-static const gchar* bail_combo_box_get_name                (BatkObject      *obj);
-static gint         bail_combo_box_get_n_children          (BatkObject      *obj);
+static const bchar* bail_combo_box_get_name                (BatkObject      *obj);
+static bint         bail_combo_box_get_n_children          (BatkObject      *obj);
 static BatkObject*   bail_combo_box_ref_child               (BatkObject      *obj,
-                                                            gint           i);
+                                                            bint           i);
 static void         bail_combo_box_finalize                (BObject        *object);
 static void         batk_action_interface_init              (BatkActionIface *iface);
 
-static gboolean     bail_combo_box_do_action               (BatkAction      *action,
-                                                            gint           i);
-static gboolean     idle_do_action                         (gpointer       data);
-static gint         bail_combo_box_get_n_actions           (BatkAction      *action);
-static const gchar* bail_combo_box_get_description         (BatkAction      *action,
-                                                            gint           i);
-static const gchar* bail_combo_box_get_keybinding          (BatkAction       *action,
-		                                             gint            i);
-static const gchar* bail_combo_box_action_get_name         (BatkAction      *action,
-                                                            gint           i);
-static gboolean              bail_combo_box_set_description(BatkAction      *action,
-                                                            gint           i,
-                                                            const gchar    *desc);
+static bboolean     bail_combo_box_do_action               (BatkAction      *action,
+                                                            bint           i);
+static bboolean     idle_do_action                         (bpointer       data);
+static bint         bail_combo_box_get_n_actions           (BatkAction      *action);
+static const bchar* bail_combo_box_get_description         (BatkAction      *action,
+                                                            bint           i);
+static const bchar* bail_combo_box_get_keybinding          (BatkAction       *action,
+		                                             bint            i);
+static const bchar* bail_combo_box_action_get_name         (BatkAction      *action,
+                                                            bint           i);
+static bboolean              bail_combo_box_set_description(BatkAction      *action,
+                                                            bint           i,
+                                                            const bchar    *desc);
 static void         batk_selection_interface_init           (BatkSelectionIface *iface);
-static gboolean     bail_combo_box_add_selection           (BatkSelection   *selection,
-                                                            gint           i);
-static gboolean     bail_combo_box_clear_selection         (BatkSelection   *selection);
+static bboolean     bail_combo_box_add_selection           (BatkSelection   *selection,
+                                                            bint           i);
+static bboolean     bail_combo_box_clear_selection         (BatkSelection   *selection);
 static BatkObject*   bail_combo_box_ref_selection           (BatkSelection   *selection,
-                                                            gint           i);
-static gint         bail_combo_box_get_selection_count     (BatkSelection   *selection);
-static gboolean     bail_combo_box_is_child_selected       (BatkSelection   *selection,
-                                                            gint           i);
-static gboolean     bail_combo_box_remove_selection        (BatkSelection   *selection,
-                                                            gint           i);
+                                                            bint           i);
+static bint         bail_combo_box_get_selection_count     (BatkSelection   *selection);
+static bboolean     bail_combo_box_is_child_selected       (BatkSelection   *selection,
+                                                            bint           i);
+static bboolean     bail_combo_box_remove_selection        (BatkSelection   *selection,
+                                                            bint           i);
 
 G_DEFINE_TYPE_WITH_CODE (BailComboBox, bail_combo_box, BAIL_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
@@ -94,7 +94,7 @@ bail_combo_box_init (BailComboBox      *combo_box)
 
 static void
 bail_combo_box_real_initialize (BatkObject *obj,
-                                gpointer  data)
+                                bpointer  data)
 {
   BtkComboBox *combo_box;
   BailComboBox *bail_combo_box;
@@ -130,7 +130,7 @@ bail_combo_box_changed_btk (BtkWidget *widget)
   BtkComboBox *combo_box;
   BatkObject *obj;
   BailComboBox *bail_combo_box;
-  gint index;
+  bint index;
 
   combo_box = BTK_COMBO_BOX (widget);
 
@@ -145,17 +145,17 @@ bail_combo_box_changed_btk (BtkWidget *widget)
     }
 }
 
-static const gchar*
+static const bchar*
 bail_combo_box_get_name (BatkObject *obj)
 {
   BtkWidget *widget;
   BtkComboBox *combo_box;
   BailComboBox *bail_combo_box;
   BtkTreeIter iter;
-  const gchar *name;
+  const bchar *name;
   BtkTreeModel *model;
-  gint n_columns;
-  gint i;
+  bint n_columns;
+  bint i;
 
   g_return_val_if_fail (BAIL_IS_COMBO_BOX (obj), NULL);
 
@@ -184,7 +184,7 @@ bail_combo_box_get_name (BatkObject *obj)
           if (G_VALUE_HOLDS_STRING (&value))
             {
 	      if (bail_combo_box->name) g_free (bail_combo_box->name);
-              bail_combo_box->name =  g_strdup ((gchar *) 
+              bail_combo_box->name =  g_strdup ((bchar *) 
 						b_value_get_string (&value));
 	      b_value_unset (&value);
               break;
@@ -200,10 +200,10 @@ bail_combo_box_get_name (BatkObject *obj)
  * The children of a BailComboBox are the list of items and the entry field
  * if it is editable.
  */
-static gint
+static bint
 bail_combo_box_get_n_children (BatkObject* obj)
 {
-  gint n_children = 0;
+  bint n_children = 0;
   BtkWidget *widget;
 
   g_return_val_if_fail (BAIL_IS_COMBO_BOX (obj), 0);
@@ -225,7 +225,7 @@ bail_combo_box_get_n_children (BatkObject* obj)
 
 static BatkObject*
 bail_combo_box_ref_child (BatkObject *obj,
-                          gint      i)
+                          bint      i)
 {
   BtkWidget *widget;
   BatkObject *child;
@@ -274,9 +274,9 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_combo_box_set_description;
 }
 
-static gboolean
+static bboolean
 bail_combo_box_do_action (BatkAction *action,
-                          gint      i)
+                          bint      i)
 {
   BailComboBox *combo_box;
   BtkWidget *widget;
@@ -304,14 +304,14 @@ bail_combo_box_do_action (BatkAction *action,
     return FALSE;
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BtkComboBox *combo_box;
   BtkWidget *widget;
   BailComboBox *bail_combo_box;
   BatkObject *popup;
-  gboolean do_popup;
+  bboolean do_popup;
 
   bail_combo_box = BAIL_COMBO_BOX (data);
   bail_combo_box->action_idle_handler = 0;
@@ -332,7 +332,7 @@ idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 bail_combo_box_get_n_actions (BatkAction *action)
 {
   /*
@@ -341,9 +341,9 @@ bail_combo_box_get_n_actions (BatkAction *action)
   return 1;
 }
 
-static const gchar*
+static const bchar*
 bail_combo_box_get_description (BatkAction *action,
-                           gint      i)
+                           bint      i)
 {
   if (i == 0)
     {
@@ -356,12 +356,12 @@ bail_combo_box_get_description (BatkAction *action,
     return NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_combo_box_get_keybinding (BatkAction *action,
-		                    gint      i)
+		                    bint      i)
 {
   BailComboBox *combo_box;
-  gchar *return_value = NULL;
+  bchar *return_value = NULL;
   switch (i)
   {
      case 0:
@@ -371,8 +371,8 @@ bail_combo_box_get_keybinding (BatkAction *action,
 	  BatkRelationSet *set;
 	  BatkRelation *relation;
 	  GPtrArray *target;
-	  gpointer target_object;
-	  guint key_val;
+	  bpointer target_object;
+	  buint key_val;
 
 	  combo_box = BAIL_COMBO_BOX (action);
 	  widget = BTK_ACCESSIBLE (combo_box)->widget;
@@ -410,9 +410,9 @@ bail_combo_box_get_keybinding (BatkAction *action,
 }
 
 
-static const gchar*
+static const bchar*
 bail_combo_box_action_get_name (BatkAction *action,
-                                gint      i)
+                                bint      i)
 {
   if (i == 0)
     return "press";
@@ -420,10 +420,10 @@ bail_combo_box_action_get_name (BatkAction *action,
     return NULL;
 }
 
-static gboolean
+static bboolean
 bail_combo_box_set_description (BatkAction   *action,
-                                gint        i,
-                                const gchar *desc)
+                                bint        i,
+                                const bchar *desc)
 {
   if (i == 0)
     {
@@ -453,9 +453,9 @@ batk_selection_interface_init (BatkSelectionIface *iface)
    */
 }
 
-static gboolean
+static bboolean
 bail_combo_box_add_selection (BatkSelection *selection,
-                              gint         i)
+                              bint         i)
 {
   BtkComboBox *combo_box;
   BtkWidget *widget;
@@ -473,7 +473,7 @@ bail_combo_box_add_selection (BatkSelection *selection,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 bail_combo_box_clear_selection (BatkSelection *selection)
 {
   BtkComboBox *combo_box;
@@ -494,12 +494,12 @@ bail_combo_box_clear_selection (BatkSelection *selection)
 
 static BatkObject*
 bail_combo_box_ref_selection (BatkSelection *selection,
-                              gint         i)
+                              bint         i)
 {
   BtkComboBox *combo_box;
   BtkWidget *widget;
   BatkObject *obj;
-  gint index;
+  bint index;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
@@ -521,7 +521,7 @@ bail_combo_box_ref_selection (BatkSelection *selection,
   return batk_object_ref_accessible_child (obj, index);
 }
 
-static gint
+static bint
 bail_combo_box_get_selection_count (BatkSelection *selection)
 {
   BtkComboBox *combo_box;
@@ -539,12 +539,12 @@ bail_combo_box_get_selection_count (BatkSelection *selection)
   return (btk_combo_box_get_active (combo_box) == -1) ? 0 : 1;
 }
 
-static gboolean
+static bboolean
 bail_combo_box_is_child_selected (BatkSelection *selection,
-                                  gint         i)
+                                  bint         i)
 {
   BtkComboBox *combo_box;
-  gint j;
+  bint j;
   BtkWidget *widget;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
@@ -561,9 +561,9 @@ bail_combo_box_is_child_selected (BatkSelection *selection,
   return (j == i);
 }
 
-static gboolean
+static bboolean
 bail_combo_box_remove_selection (BatkSelection *selection,
-                                 gint         i)
+                                 bint         i)
 {
   if (batk_selection_is_child_selected (selection, i))
     batk_selection_clear_selection (selection);

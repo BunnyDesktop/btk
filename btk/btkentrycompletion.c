@@ -68,86 +68,86 @@ enum
 
 static void                                                             btk_entry_completion_cell_layout_init    (BtkCellLayoutIface      *iface);
 static void     btk_entry_completion_set_property        (BObject      *object,
-                                                          guint         prop_id,
+                                                          buint         prop_id,
                                                           const BValue *value,
                                                           BParamSpec   *pspec);
 static void     btk_entry_completion_get_property        (BObject      *object,
-                                                          guint         prop_id,
+                                                          buint         prop_id,
                                                           BValue       *value,
                                                           BParamSpec   *pspec);
 static void                                                             btk_entry_completion_finalize            (BObject                 *object);
 
 static void     btk_entry_completion_pack_start          (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
-                                                          gboolean               expand);
+                                                          bboolean               expand);
 static void     btk_entry_completion_pack_end            (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
-                                                          gboolean               expand);
+                                                          bboolean               expand);
 static void                                                                      btk_entry_completion_clear               (BtkCellLayout           *cell_layout);
 static void     btk_entry_completion_add_attribute       (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
                                                           const char            *attribute,
-                                                          gint                   column);
+                                                          bint                   column);
 static void     btk_entry_completion_set_cell_data_func  (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
                                                           BtkCellLayoutDataFunc  func,
-                                                          gpointer               func_data,
+                                                          bpointer               func_data,
                                                           GDestroyNotify         destroy);
 static void     btk_entry_completion_clear_attributes    (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell);
 static void     btk_entry_completion_reorder             (BtkCellLayout         *cell_layout,
                                                           BtkCellRenderer       *cell,
-                                                          gint                   position);
+                                                          bint                   position);
 static GList *  btk_entry_completion_get_cells           (BtkCellLayout         *cell_layout);
 
-static gboolean btk_entry_completion_visible_func        (BtkTreeModel       *model,
+static bboolean btk_entry_completion_visible_func        (BtkTreeModel       *model,
                                                           BtkTreeIter        *iter,
-                                                          gpointer            data);
-static gboolean btk_entry_completion_popup_key_event     (BtkWidget          *widget,
+                                                          bpointer            data);
+static bboolean btk_entry_completion_popup_key_event     (BtkWidget          *widget,
                                                           BdkEventKey        *event,
-                                                          gpointer            user_data);
-static gboolean btk_entry_completion_popup_button_press  (BtkWidget          *widget,
+                                                          bpointer            user_data);
+static bboolean btk_entry_completion_popup_button_press  (BtkWidget          *widget,
                                                           BdkEventButton     *event,
-                                                          gpointer            user_data);
-static gboolean btk_entry_completion_list_button_press   (BtkWidget          *widget,
+                                                          bpointer            user_data);
+static bboolean btk_entry_completion_list_button_press   (BtkWidget          *widget,
                                                           BdkEventButton     *event,
-                                                          gpointer            user_data);
-static gboolean btk_entry_completion_action_button_press (BtkWidget          *widget,
+                                                          bpointer            user_data);
+static bboolean btk_entry_completion_action_button_press (BtkWidget          *widget,
                                                           BdkEventButton     *event,
-                                                          gpointer            user_data);
+                                                          bpointer            user_data);
 static void     btk_entry_completion_selection_changed   (BtkTreeSelection   *selection,
-                                                          gpointer            data);
-static gboolean	btk_entry_completion_list_enter_notify	 (BtkWidget          *widget,
+                                                          bpointer            data);
+static bboolean	btk_entry_completion_list_enter_notify	 (BtkWidget          *widget,
 							  BdkEventCrossing   *event,
-							  gpointer            data);
-static gboolean btk_entry_completion_list_motion_notify	 (BtkWidget	     *widget,
+							  bpointer            data);
+static bboolean btk_entry_completion_list_motion_notify	 (BtkWidget	     *widget,
 							  BdkEventMotion     *event,
-							  gpointer 	      data);
+							  bpointer 	      data);
 static void     btk_entry_completion_insert_action       (BtkEntryCompletion *completion,
-                                                          gint                index,
-                                                          const gchar        *string,
-                                                          gboolean            markup);
+                                                          bint                index,
+                                                          const bchar        *string,
+                                                          bboolean            markup);
 static void     btk_entry_completion_action_data_func    (BtkTreeViewColumn  *tree_column,
                                                           BtkCellRenderer    *cell,
                                                           BtkTreeModel       *model,
                                                           BtkTreeIter        *iter,
-                                                          gpointer            data);
+                                                          bpointer            data);
 
-static gboolean btk_entry_completion_match_selected      (BtkEntryCompletion *completion,
+static bboolean btk_entry_completion_match_selected      (BtkEntryCompletion *completion,
 							  BtkTreeModel       *model,
 							  BtkTreeIter        *iter);
-static gboolean btk_entry_completion_real_insert_prefix  (BtkEntryCompletion *completion,
-							  const gchar        *prefix);
-static gboolean btk_entry_completion_cursor_on_match     (BtkEntryCompletion *completion,
+static bboolean btk_entry_completion_real_insert_prefix  (BtkEntryCompletion *completion,
+							  const bchar        *prefix);
+static bboolean btk_entry_completion_cursor_on_match     (BtkEntryCompletion *completion,
 							  BtkTreeModel       *model,
 							  BtkTreeIter        *iter);
-static gboolean btk_entry_completion_insert_completion   (BtkEntryCompletion *completion,
+static bboolean btk_entry_completion_insert_completion   (BtkEntryCompletion *completion,
                                                           BtkTreeModel       *model,
                                                           BtkTreeIter        *iter);
 static void     btk_entry_completion_insert_completion_text (BtkEntryCompletion *completion,
-                                                             const gchar *text);
+                                                             const bchar *text);
 
-static guint entry_completion_signals[LAST_SIGNAL] = { 0 };
+static buint entry_completion_signals[LAST_SIGNAL] = { 0 };
 
 /* BtkBuildable */
 static void     btk_entry_completion_buildable_init      (BtkBuildableIface  *iface);
@@ -286,7 +286,7 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
                                                      P_("Minimum Key Length"),
                                                      P_("Minimum length of the search key in order to look up matches"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      1,
                                                      BTK_PARAM_READWRITE));
   /**
@@ -303,7 +303,7 @@ btk_entry_completion_class_init (BtkEntryCompletionClass *klass)
                                                      P_("Text column"),
                                                      P_("The column of the model containing the strings."),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -538,7 +538,7 @@ btk_entry_completion_init (BtkEntryCompletion *completion)
 
 static void
 btk_entry_completion_set_property (BObject      *object,
-                                   guint         prop_id,
+                                   buint         prop_id,
                                    const BValue *value,
                                    BParamSpec   *pspec)
 {
@@ -589,7 +589,7 @@ btk_entry_completion_set_property (BObject      *object,
 
 static void
 btk_entry_completion_get_property (BObject    *object,
-                                   guint       prop_id,
+                                   buint       prop_id,
                                    BValue     *value,
                                    BParamSpec *pspec)
 {
@@ -669,7 +669,7 @@ btk_entry_completion_finalize (BObject *object)
 static void
 btk_entry_completion_pack_start (BtkCellLayout   *cell_layout,
                                  BtkCellRenderer *cell,
-                                 gboolean         expand)
+                                 bboolean         expand)
 {
   BtkEntryCompletionPrivate *priv;
 
@@ -681,7 +681,7 @@ btk_entry_completion_pack_start (BtkCellLayout   *cell_layout,
 static void
 btk_entry_completion_pack_end (BtkCellLayout   *cell_layout,
                                BtkCellRenderer *cell,
-                               gboolean         expand)
+                               bboolean         expand)
 {
   BtkEntryCompletionPrivate *priv;
 
@@ -703,8 +703,8 @@ btk_entry_completion_clear (BtkCellLayout *cell_layout)
 static void
 btk_entry_completion_add_attribute (BtkCellLayout   *cell_layout,
                                     BtkCellRenderer *cell,
-                                    const gchar     *attribute,
-                                    gint             column)
+                                    const bchar     *attribute,
+                                    bint             column)
 {
   BtkEntryCompletionPrivate *priv;
 
@@ -717,7 +717,7 @@ static void
 btk_entry_completion_set_cell_data_func (BtkCellLayout          *cell_layout,
                                          BtkCellRenderer        *cell,
                                          BtkCellLayoutDataFunc   func,
-                                         gpointer                func_data,
+                                         bpointer                func_data,
                                          GDestroyNotify          destroy)
 {
   BtkEntryCompletionPrivate *priv;
@@ -742,7 +742,7 @@ btk_entry_completion_clear_attributes (BtkCellLayout   *cell_layout,
 static void
 btk_entry_completion_reorder (BtkCellLayout   *cell_layout,
                               BtkCellRenderer *cell,
-                              gint             position)
+                              bint             position)
 {
   BtkEntryCompletionPrivate *priv;
 
@@ -762,17 +762,17 @@ btk_entry_completion_get_cells (BtkCellLayout *cell_layout)
 }
 
 /* all those callbacks */
-static gboolean
+static bboolean
 btk_entry_completion_default_completion_func (BtkEntryCompletion *completion,
-                                              const gchar        *key,
+                                              const bchar        *key,
                                               BtkTreeIter        *iter,
-                                              gpointer            user_data)
+                                              bpointer            user_data)
 {
-  gchar *item = NULL;
-  gchar *normalized_string;
-  gchar *case_normalized_string;
+  bchar *item = NULL;
+  bchar *normalized_string;
+  bchar *case_normalized_string;
 
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   BtkTreeModel *model;
 
@@ -805,12 +805,12 @@ btk_entry_completion_default_completion_func (BtkEntryCompletion *completion,
   return ret;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_visible_func (BtkTreeModel *model,
                                    BtkTreeIter  *iter,
-                                   gpointer      data)
+                                   bpointer      data)
 {
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (data);
 
@@ -831,10 +831,10 @@ btk_entry_completion_visible_func (BtkTreeModel *model,
   return ret;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_popup_key_event (BtkWidget   *widget,
                                       BdkEventKey *event,
-                                      gpointer     user_data)
+                                      bpointer     user_data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
 
@@ -847,10 +847,10 @@ btk_entry_completion_popup_key_event (BtkWidget   *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_popup_button_press (BtkWidget      *widget,
                                          BdkEventButton *event,
-                                         gpointer        user_data)
+                                         bpointer        user_data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
 
@@ -863,10 +863,10 @@ btk_entry_completion_popup_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_list_button_press (BtkWidget      *widget,
                                         BdkEventButton *event,
-                                        gpointer        user_data)
+                                        bpointer        user_data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
   BtkTreePath *path = NULL;
@@ -879,7 +879,7 @@ btk_entry_completion_list_button_press (BtkWidget      *widget,
                                      &path, NULL, NULL, NULL))
     {
       BtkTreeIter iter;
-      gboolean entry_set;
+      bboolean entry_set;
       BtkTreeModel *model;
       BtkTreeIter child_iter;
 
@@ -906,10 +906,10 @@ btk_entry_completion_list_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_action_button_press (BtkWidget      *widget,
                                           BdkEventButton *event,
-                                          gpointer        user_data)
+                                          bpointer        user_data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
   BtkTreePath *path = NULL;
@@ -939,10 +939,10 @@ btk_entry_completion_action_data_func (BtkTreeViewColumn *tree_column,
                                        BtkCellRenderer   *cell,
                                        BtkTreeModel      *model,
                                        BtkTreeIter       *iter,
-                                       gpointer           data)
+                                       bpointer           data)
 {
-  gchar *string = NULL;
-  gboolean markup;
+  bchar *string = NULL;
+  bboolean markup;
 
   btk_tree_model_get (model, iter,
                       0, &string,
@@ -968,7 +968,7 @@ btk_entry_completion_action_data_func (BtkTreeViewColumn *tree_column,
 
 static void
 btk_entry_completion_selection_changed (BtkTreeSelection *selection,
-                                        gpointer          data)
+                                        bpointer          data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (data);
 
@@ -1103,7 +1103,7 @@ btk_entry_completion_get_model (BtkEntryCompletion *completion)
 void
 btk_entry_completion_set_match_func (BtkEntryCompletion          *completion,
                                      BtkEntryCompletionMatchFunc  func,
-                                     gpointer                     func_data,
+                                     bpointer                     func_data,
                                      GDestroyNotify               func_notify)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
@@ -1130,7 +1130,7 @@ btk_entry_completion_set_match_func (BtkEntryCompletion          *completion,
  */
 void
 btk_entry_completion_set_minimum_key_length (BtkEntryCompletion *completion,
-                                             gint                length)
+                                             bint                length)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   g_return_if_fail (length >= 0);
@@ -1153,7 +1153,7 @@ btk_entry_completion_set_minimum_key_length (BtkEntryCompletion *completion,
  *
  * Since: 2.4
  */
-gint
+bint
 btk_entry_completion_get_minimum_key_length (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), 0);
@@ -1174,7 +1174,7 @@ btk_entry_completion_get_minimum_key_length (BtkEntryCompletion *completion)
 void
 btk_entry_completion_complete (BtkEntryCompletion *completion)
 {
-  gchar *tmp;
+  bchar *tmp;
 
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
 
@@ -1196,9 +1196,9 @@ btk_entry_completion_complete (BtkEntryCompletion *completion)
 
 static void
 btk_entry_completion_insert_action (BtkEntryCompletion *completion,
-                                    gint                index,
-                                    const gchar        *string,
-                                    gboolean            markup)
+                                    bint                index,
+                                    const bchar        *string,
+                                    bboolean            markup)
 {
   BtkTreeIter iter;
 
@@ -1236,8 +1236,8 @@ btk_entry_completion_insert_action (BtkEntryCompletion *completion,
  */
 void
 btk_entry_completion_insert_action_text (BtkEntryCompletion *completion,
-                                         gint                index_,
-                                         const gchar        *text)
+                                         bint                index_,
+                                         const bchar        *text)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   g_return_if_fail (text != NULL);
@@ -1258,8 +1258,8 @@ btk_entry_completion_insert_action_text (BtkEntryCompletion *completion,
  */
 void
 btk_entry_completion_insert_action_markup (BtkEntryCompletion *completion,
-                                           gint                index_,
-                                           const gchar        *markup)
+                                           bint                index_,
+                                           const bchar        *markup)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   g_return_if_fail (markup != NULL);
@@ -1278,7 +1278,7 @@ btk_entry_completion_insert_action_markup (BtkEntryCompletion *completion,
  */
 void
 btk_entry_completion_delete_action (BtkEntryCompletion *completion,
-                                    gint                index_)
+                                    bint                index_)
 {
   BtkTreeIter iter;
 
@@ -1308,7 +1308,7 @@ btk_entry_completion_delete_action (BtkEntryCompletion *completion,
  */
 void
 btk_entry_completion_set_text_column (BtkEntryCompletion *completion,
-                                      gint                column)
+                                      bint                column)
 {
   BtkCellRenderer *cell;
 
@@ -1337,7 +1337,7 @@ btk_entry_completion_set_text_column (BtkEntryCompletion *completion,
  *
  * Since: 2.6
  **/
-gint
+bint
 btk_entry_completion_get_text_column (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), -1);
@@ -1347,20 +1347,20 @@ btk_entry_completion_get_text_column (BtkEntryCompletion *completion)
 
 /* private */
 
-static gboolean
+static bboolean
 btk_entry_completion_list_enter_notify (BtkWidget        *widget,
 					BdkEventCrossing *event,
-					gpointer          data)
+					bpointer          data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (data);
   
   return completion->priv->ignore_enter;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_list_motion_notify (BtkWidget      *widget,
 					 BdkEventMotion *event,
-					 gpointer        data)
+					 bpointer        data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (data);
 
@@ -1371,22 +1371,22 @@ btk_entry_completion_list_motion_notify (BtkWidget      *widget,
 
 
 /* some nasty size requisition */
-gboolean
+bboolean
 _btk_entry_completion_resize_popup (BtkEntryCompletion *completion)
 {
-  gint x, y;
-  gint matches, actions, items, height, x_border, y_border;
+  bint x, y;
+  bint matches, actions, items, height, x_border, y_border;
   BdkScreen *screen;
-  gint monitor_num;
-  gint vertical_separator;
+  bint monitor_num;
+  bint vertical_separator;
   BdkRectangle monitor;
   BtkRequisition popup_req;
   BtkRequisition entry_req;
   BtkTreePath *path;
-  gboolean above;
-  gint width;
+  bboolean above;
+  bint width;
   BtkTreeViewColumn *action_column;
-  gint action_height;
+  bint action_height;
 
   if (!completion->priv->entry->window)
     return FALSE;
@@ -1548,12 +1548,12 @@ _btk_entry_completion_popdown (BtkEntryCompletion *completion)
   btk_widget_hide (completion->priv->popup_window);
 }
 
-static gboolean 
+static bboolean 
 btk_entry_completion_match_selected (BtkEntryCompletion *completion,
 				     BtkTreeModel       *model,
 				     BtkTreeIter        *iter)
 {
-  gchar *str = NULL;
+  bchar *str = NULL;
 
   btk_tree_model_get (model, iter, completion->priv->text_column, &str, -1);
   btk_entry_set_text (BTK_ENTRY (completion->priv->entry), str ? str : "");
@@ -1566,7 +1566,7 @@ btk_entry_completion_match_selected (BtkEntryCompletion *completion,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_cursor_on_match (BtkEntryCompletion *completion,
 				      BtkTreeModel       *model,
 				      BtkTreeIter        *iter)
@@ -1576,13 +1576,13 @@ btk_entry_completion_cursor_on_match (BtkEntryCompletion *completion,
   return TRUE;
 }
 
-gchar *
+bchar *
 _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
 				      const char         *key)
 {
   BtkTreeIter iter;
-  gchar *prefix = NULL;
-  gboolean valid;
+  bchar *prefix = NULL;
+  bboolean valid;
 
   if (completion->priv->text_column < 0)
     return NULL;
@@ -1592,7 +1592,7 @@ _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
   
   while (valid)
     {
-      gchar *text;
+      bchar *text;
       
       btk_tree_model_get (BTK_TREE_MODEL (completion->priv->filter_model),
 			  &iter, completion->priv->text_column, &text,
@@ -1604,8 +1604,8 @@ _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
 	    prefix = g_strdup (text);
 	  else
 	    {
-	      gchar *p = prefix;
-	      gchar *q = text;
+	      bchar *p = prefix;
+	      bchar *q = text;
 	      
 	      while (*p && *p == *q)
 		{
@@ -1639,15 +1639,15 @@ _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
 }
 
 
-static gboolean
+static bboolean
 btk_entry_completion_real_insert_prefix (BtkEntryCompletion *completion,
-					 const gchar        *prefix)
+					 const bchar        *prefix)
 {
   if (prefix)
     {
-      gint key_len;
-      gint prefix_len;
-      const gchar *key;
+      bint key_len;
+      bint prefix_len;
+      const bchar *key;
 
       prefix_len = g_utf8_strlen (prefix, -1);
 
@@ -1656,7 +1656,7 @@ btk_entry_completion_real_insert_prefix (BtkEntryCompletion *completion,
 
       if (prefix_len > key_len)
 	{
-	  gint pos = prefix_len;
+	  bint pos = prefix_len;
 
 	  btk_editable_insert_text (BTK_EDITABLE (completion->priv->entry),
 				    prefix + strlen (key), -1, &pos);
@@ -1681,7 +1681,7 @@ btk_entry_completion_real_insert_prefix (BtkEntryCompletion *completion,
  * 
  * Since: 2.12
  **/
-const gchar*
+const bchar*
 btk_entry_completion_get_completion_prefix (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), NULL);
@@ -1691,10 +1691,10 @@ btk_entry_completion_get_completion_prefix (BtkEntryCompletion *completion)
 
 static void
 btk_entry_completion_insert_completion_text (BtkEntryCompletion *completion,
-					     const gchar *text)
+					     const bchar *text)
 {
   BtkEntryCompletionPrivate *priv = completion->priv;
-  gint len;
+  bint len;
 
   priv = completion->priv;
 
@@ -1716,12 +1716,12 @@ btk_entry_completion_insert_completion_text (BtkEntryCompletion *completion,
     g_signal_handler_unblock (priv->entry, priv->insert_text_id);
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_insert_completion (BtkEntryCompletion *completion,
 					BtkTreeModel       *model,
 					BtkTreeIter        *iter)
 {
-  gchar *str = NULL;
+  bchar *str = NULL;
 
   if (completion->priv->text_column < 0)
     return FALSE;
@@ -1749,8 +1749,8 @@ btk_entry_completion_insert_completion (BtkEntryCompletion *completion,
 void
 btk_entry_completion_insert_prefix (BtkEntryCompletion *completion)
 {
-  gboolean done;
-  gchar *prefix;
+  bboolean done;
+  bchar *prefix;
 
   if (completion->priv->insert_text_id > 0)
     g_signal_handler_block (completion->priv->entry,
@@ -1782,7 +1782,7 @@ btk_entry_completion_insert_prefix (BtkEntryCompletion *completion)
  **/
 void 
 btk_entry_completion_set_inline_completion (BtkEntryCompletion *completion,
-					    gboolean            inline_completion)
+					    bboolean            inline_completion)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   
@@ -1807,7 +1807,7 @@ btk_entry_completion_set_inline_completion (BtkEntryCompletion *completion,
  * 
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_entry_completion_get_inline_completion (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), FALSE);
@@ -1826,7 +1826,7 @@ btk_entry_completion_get_inline_completion (BtkEntryCompletion *completion)
  **/
 void 
 btk_entry_completion_set_popup_completion (BtkEntryCompletion *completion,
-					   gboolean            popup_completion)
+					   bboolean            popup_completion)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   
@@ -1851,7 +1851,7 @@ btk_entry_completion_set_popup_completion (BtkEntryCompletion *completion,
  * 
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_entry_completion_get_popup_completion (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), TRUE);
@@ -1871,7 +1871,7 @@ btk_entry_completion_get_popup_completion (BtkEntryCompletion *completion)
  */
 void 
 btk_entry_completion_set_popup_set_width (BtkEntryCompletion *completion,
-					  gboolean            popup_set_width)
+					  bboolean            popup_set_width)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   
@@ -1897,7 +1897,7 @@ btk_entry_completion_set_popup_set_width (BtkEntryCompletion *completion,
  * 
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_entry_completion_get_popup_set_width (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), TRUE);
@@ -1921,7 +1921,7 @@ btk_entry_completion_get_popup_set_width (BtkEntryCompletion *completion)
  */
 void 
 btk_entry_completion_set_popup_single_match (BtkEntryCompletion *completion,
-					     gboolean            popup_single_match)
+					     bboolean            popup_single_match)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
   
@@ -1947,7 +1947,7 @@ btk_entry_completion_set_popup_single_match (BtkEntryCompletion *completion,
  * 
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_entry_completion_get_popup_single_match (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), TRUE);
@@ -1967,7 +1967,7 @@ btk_entry_completion_get_popup_single_match (BtkEntryCompletion *completion)
  **/
 void
 btk_entry_completion_set_inline_selection (BtkEntryCompletion *completion,
-					   gboolean inline_selection)
+					   bboolean inline_selection)
 {
   g_return_if_fail (BTK_IS_ENTRY_COMPLETION (completion));
 
@@ -1991,7 +1991,7 @@ btk_entry_completion_set_inline_selection (BtkEntryCompletion *completion,
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_entry_completion_get_inline_selection (BtkEntryCompletion *completion)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_COMPLETION (completion), FALSE);

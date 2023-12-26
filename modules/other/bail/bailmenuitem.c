@@ -29,37 +29,37 @@ static void bail_menu_item_init        (BailMenuItem      *menu_item);
 
 static void                  bail_menu_item_real_initialize
                                                           (BatkObject       *obj,
-                                                           gpointer        data);
-static gint                  bail_menu_item_get_n_children (BatkObject      *obj);
+                                                           bpointer        data);
+static bint                  bail_menu_item_get_n_children (BatkObject      *obj);
 static BatkObject*            bail_menu_item_ref_child      (BatkObject      *obj,
-                                                            gint           i);
+                                                            bint           i);
 static BatkStateSet*          bail_menu_item_ref_state_set  (BatkObject      *obj);
 static void                  bail_menu_item_finalize       (BObject        *object);
 
 static void                  batk_action_interface_init     (BatkActionIface *iface);
-static gboolean              bail_menu_item_do_action      (BatkAction      *action,
-                                                            gint           i);
-static gboolean              idle_do_action                (gpointer       data);
-static gint                  bail_menu_item_get_n_actions  (BatkAction      *action);
-static const gchar*          bail_menu_item_get_description(BatkAction      *action,
-                                                            gint           i);
-static const gchar*          bail_menu_item_get_name       (BatkAction      *action,
-                                                            gint           i);
-static const gchar*          bail_menu_item_get_keybinding (BatkAction      *action,
-                                                            gint           i);
-static gboolean              bail_menu_item_set_description(BatkAction      *action,
-                                                            gint           i,
-                                                            const gchar    *desc);
+static bboolean              bail_menu_item_do_action      (BatkAction      *action,
+                                                            bint           i);
+static bboolean              idle_do_action                (bpointer       data);
+static bint                  bail_menu_item_get_n_actions  (BatkAction      *action);
+static const bchar*          bail_menu_item_get_description(BatkAction      *action,
+                                                            bint           i);
+static const bchar*          bail_menu_item_get_name       (BatkAction      *action,
+                                                            bint           i);
+static const bchar*          bail_menu_item_get_keybinding (BatkAction      *action,
+                                                            bint           i);
+static bboolean              bail_menu_item_set_description(BatkAction      *action,
+                                                            bint           i,
+                                                            const bchar    *desc);
 static void                  menu_item_select              (BtkItem        *item);
 static void                  menu_item_deselect            (BtkItem        *item);
 static void                  menu_item_selection           (BtkItem        *item,
-                                                            gboolean       selected);
-static gboolean              find_accel                    (BtkAccelKey    *key,
+                                                            bboolean       selected);
+static bboolean              find_accel                    (BtkAccelKey    *key,
                                                             GClosure       *closure,
-                                                            gpointer       data);
-static gboolean              find_accel_new                (BtkAccelKey    *key,
+                                                            bpointer       data);
+static bboolean              find_accel_new                (BtkAccelKey    *key,
                                                             GClosure       *closure,
-                                                            gpointer       data);
+                                                            bpointer       data);
 
 G_DEFINE_TYPE_WITH_CODE (BailMenuItem, bail_menu_item, BAIL_TYPE_ITEM,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init))
@@ -80,7 +80,7 @@ bail_menu_item_class_init (BailMenuItemClass *klass)
 
 static void
 bail_menu_item_real_initialize (BatkObject *obj,
-                                gpointer  data)
+                                bpointer  data)
 {
   BtkWidget *widget;
   BtkWidget *parent;
@@ -111,7 +111,7 @@ bail_menu_item_real_initialize (BatkObject *obj,
         }
     }
   g_object_set_data (B_OBJECT (obj), "batk-component-layer",
-                     GINT_TO_POINTER (BATK_LAYER_POPUP));
+                     BINT_TO_POINTER (BATK_LAYER_POPUP));
 
   if (BTK_IS_TEAROFF_MENU_ITEM (data))
     obj->role = BATK_ROLE_TEAR_OFF_MENU_ITEM;
@@ -178,12 +178,12 @@ get_children (BtkWidget *submenu)
  * If a menu item has a submenu return the items of the submenu as the 
  * accessible children; otherwise expose no accessible children.
  */
-static gint
+static bint
 bail_menu_item_get_n_children (BatkObject* obj)
 {
   BtkWidget *widget;
   BtkWidget *submenu;
-  gint count = 0;
+  bint count = 0;
 
   g_return_val_if_fail (BAIL_IS_MENU_ITEM (obj), count);
 
@@ -205,7 +205,7 @@ bail_menu_item_get_n_children (BatkObject* obj)
 
 static BatkObject*
 bail_menu_item_ref_child (BatkObject *obj,
-                          gint       i)
+                          bint       i)
 {
   BatkObject  *accessible;
   BtkWidget *widget;
@@ -277,9 +277,9 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_menu_item_set_description;
 }
 
-static gboolean
+static bboolean
 bail_menu_item_do_action (BatkAction *action,
-                          gint      i)
+                          bint      i)
 {
   if (i == 0)
     {
@@ -335,13 +335,13 @@ ensure_menus_unposted (BailMenuItem *menu_item)
     }
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BtkWidget *item;
   BtkWidget *item_parent;
   BailMenuItem *menu_item;
-  gboolean item_mapped;
+  bboolean item_mapped;
 
   menu_item = BAIL_MENU_ITEM (data);
   menu_item->action_idle_handler = 0;
@@ -364,7 +364,7 @@ idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 bail_menu_item_get_n_actions (BatkAction *action)
 {
   /*
@@ -373,9 +373,9 @@ bail_menu_item_get_n_actions (BatkAction *action)
   return 1;
 }
 
-static const gchar*
+static const bchar*
 bail_menu_item_get_description (BatkAction *action,
-                                gint      i)
+                                bint      i)
 {
   if (i == 0)
     {
@@ -388,9 +388,9 @@ bail_menu_item_get_description (BatkAction *action,
     return NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_menu_item_get_name (BatkAction *action,
-                         gint      i)
+                         bint      i)
 {
   if (i == 0)
     return "click";
@@ -398,9 +398,9 @@ bail_menu_item_get_name (BatkAction *action,
     return NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_menu_item_get_keybinding (BatkAction *action,
-                               gint      i)
+                               bint      i)
 {
   /*
    * This function returns a string of the form A;B;C where
@@ -410,10 +410,10 @@ bail_menu_item_get_keybinding (BatkAction *action,
    * by ":".
    */
   BailMenuItem  *bail_menu_item;
-  gchar *keybinding = NULL;
-  gchar *item_keybinding = NULL;
-  gchar *full_keybinding = NULL;
-  gchar *accelerator = NULL;
+  bchar *keybinding = NULL;
+  bchar *item_keybinding = NULL;
+  bchar *full_keybinding = NULL;
+  bchar *accelerator = NULL;
 
   bail_menu_item = BAIL_MENU_ITEM (action);
   if (i == 0)
@@ -432,8 +432,8 @@ bail_menu_item_get_keybinding (BatkAction *action,
       while (TRUE)
         {
           BdkModifierType mnemonic_modifier = 0;
-          guint key_val;
-          gchar *key, *temp_keybinding;
+          buint key_val;
+          bchar *key, *temp_keybinding;
 
           child = btk_bin_get_child (BTK_BIN (temp_item));
           if (child == NULL)
@@ -551,7 +551,7 @@ bail_menu_item_get_keybinding (BatkAction *action,
    */
   if (item_keybinding || full_keybinding || accelerator)
     {
-      gchar *temp;
+      bchar *temp;
       if (item_keybinding)
         {
           keybinding = g_strconcat (item_keybinding, KEYBINDING_SEPARATOR, NULL);
@@ -584,10 +584,10 @@ bail_menu_item_get_keybinding (BatkAction *action,
   return keybinding;
 }
 
-static gboolean
+static bboolean
 bail_menu_item_set_description (BatkAction      *action,
-                                gint           i,
-                                const gchar    *desc)
+                                bint           i,
+                                const bchar    *desc)
 {
   if (i == 0)
     {
@@ -632,10 +632,10 @@ menu_item_deselect (BtkItem *item)
 
 static void
 menu_item_selection (BtkItem  *item,
-                     gboolean selected)
+                     bboolean selected)
 {
   BatkObject *obj, *parent;
-  gint i;
+  bint i;
 
   obj = btk_widget_get_accessible (BTK_WIDGET (item));
   batk_object_notify_state_change (obj, BATK_STATE_SELECTED, selected);
@@ -651,22 +651,22 @@ menu_item_selection (BtkItem  *item,
   g_signal_emit_by_name (parent, "selection_changed"); 
 }
 
-static gboolean
+static bboolean
 find_accel (BtkAccelKey *key,
             GClosure    *closure,
-            gpointer     data)
+            bpointer     data)
 {
   /*
    * We assume that closure->data points to the widget
    * pending btk_widget_get_accel_closures being made public
    */
-  return data == (gpointer) closure->data;
+  return data == (bpointer) closure->data;
 }
 
-static gboolean
+static bboolean
 find_accel_new (BtkAccelKey *key,
                 GClosure    *closure,
-                gpointer     data)
+                bpointer     data)
 {
-  return data == (gpointer) closure;
+  return data == (bpointer) closure;
 }

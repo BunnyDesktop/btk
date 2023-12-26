@@ -120,7 +120,7 @@ typedef struct _HistoryCallbackArg HistoryCallbackArg;
 
 struct _HistoryCallbackArg
 {
-  gchar *directory;
+  bchar *directory;
   BtkWidget *menu_item;
 };
 
@@ -157,7 +157,7 @@ struct _CompletionDirSent
   dev_t device;
 #endif
 
-  gint entry_count;
+  bint entry_count;
   struct _CompletionDirEntry *entries;
 };
 
@@ -165,12 +165,12 @@ struct _CompletionDir
 {
   CompletionDirSent *sent;
 
-  gchar *fullname;
-  gint fullname_len;
+  bchar *fullname;
+  bint fullname_len;
 
   struct _CompletionDir *cmpl_parent;
-  gint cmpl_index;
-  gchar *cmpl_text;
+  bint cmpl_index;
+  bchar *cmpl_text;
 };
 
 /* This structure contains pairs of directory entry names with a flag saying
@@ -183,15 +183,15 @@ struct _CompletionDir
  */
 struct _CompletionDirEntry
 {
-  gboolean is_dir;
-  gchar *entry_name;
-  gchar *sort_key;
+  bboolean is_dir;
+  bchar *entry_name;
+  bchar *sort_key;
 };
 
 struct _CompletionUserDir
 {
-  gchar *login;
-  gchar *homedir;
+  bchar *login;
+  bchar *homedir;
 };
 
 struct _PossibleCompletion
@@ -199,29 +199,29 @@ struct _PossibleCompletion
   /* accessible fields, all are accessed externally by functions
    * declared above
    */
-  gchar *text;
-  gint is_a_completion;
-  gboolean is_directory;
+  bchar *text;
+  bint is_a_completion;
+  bboolean is_directory;
 
   /* Private fields
    */
-  gint text_alloc;
+  bint text_alloc;
 };
 
 struct _CompletionState
 {
-  gint last_valid_char;
-  gchar *updated_text;
-  gint updated_text_len;
-  gint updated_text_alloc;
-  gboolean re_complete;
+  bint last_valid_char;
+  bchar *updated_text;
+  bint updated_text_len;
+  bint updated_text_alloc;
+  bboolean re_complete;
 
-  gchar *user_dir_name_buffer;
-  gint user_directories_len;
+  bchar *user_dir_name_buffer;
+  bint user_directories_len;
 
-  gchar *last_completion_text;
+  bchar *last_completion_text;
 
-  gint user_completion_index; /* if >= 0, currently completing ~user */
+  bint user_completion_index; /* if >= 0, currently completing ~user */
 
   struct _CompletionDir *completion_dir; /* directory completing from */
   struct _CompletionDir *active_completion_dir;
@@ -257,11 +257,11 @@ enum {
 
 static CompletionState*    cmpl_init_state        (void);
 static void                cmpl_free_state        (CompletionState *cmpl_state);
-static gint                cmpl_state_okay        (CompletionState* cmpl_state);
-static const gchar*        cmpl_strerror          (gint);
+static bint                cmpl_state_okay        (CompletionState* cmpl_state);
+static const bchar*        cmpl_strerror          (bint);
 
-static PossibleCompletion* cmpl_completion_matches(gchar           *text_to_complete,
-						   gchar          **remaining_text,
+static PossibleCompletion* cmpl_completion_matches(bchar           *text_to_complete,
+						   bchar          **remaining_text,
 						   CompletionState *cmpl_state);
 
 /* Returns a name for consideration, possibly a completion, this name
@@ -272,11 +272,11 @@ static char*               cmpl_this_completion   (PossibleCompletion*);
 /* True if this completion matches the given text.  Otherwise, this
  * output can be used to have a list of non-completions.
  */
-static gint                cmpl_is_a_completion   (PossibleCompletion*);
+static bint                cmpl_is_a_completion   (PossibleCompletion*);
 
 /* True if the completion is a directory
  */
-static gboolean            cmpl_is_directory      (PossibleCompletion*);
+static bboolean            cmpl_is_directory      (PossibleCompletion*);
 
 /* Obtains the next completion, or NULL
  */
@@ -289,19 +289,19 @@ static PossibleCompletion* cmpl_next_completion   (CompletionState*);
  * string.  You must CALL THIS AFTER ALL cmpl_text_completions have
  * been received.
  */
-static gchar*              cmpl_updated_text       (CompletionState* cmpl_state);
+static bchar*              cmpl_updated_text       (CompletionState* cmpl_state);
 
 /* After updating, to see if the completion was a directory, call
  * this.  If it was, you should consider re-calling completion_matches.
  */
-static gboolean            cmpl_updated_dir        (CompletionState* cmpl_state);
+static bboolean            cmpl_updated_dir        (CompletionState* cmpl_state);
 
 /* Current location: if using file completion, return the current
  * directory, from which file completion begins.  More specifically,
  * the cwd concatenated with all exact completions up to the last
  * directory delimiter('/').
  */
-static gchar*              cmpl_reference_position (CompletionState* cmpl_state);
+static bchar*              cmpl_reference_position (CompletionState* cmpl_state);
 
 #if 0
 /* This doesn't work currently and would require changes
@@ -310,43 +310,43 @@ static gchar*              cmpl_reference_position (CompletionState* cmpl_state)
 /* backing up: if cmpl_completion_matches returns NULL, you may query
  * the index of the last completable character into cmpl_updated_text.
  */
-static gint                cmpl_last_valid_char    (CompletionState* cmpl_state);
+static bint                cmpl_last_valid_char    (CompletionState* cmpl_state);
 #endif
 
 /* When the user selects a non-directory, call cmpl_completion_fullname
  * to get the full name of the selected file.
  */
-static gchar*              cmpl_completion_fullname (const gchar*, CompletionState* cmpl_state);
+static bchar*              cmpl_completion_fullname (const bchar*, CompletionState* cmpl_state);
 
 
 /* Directory operations. */
-static CompletionDir* open_ref_dir         (gchar* text_to_complete,
-					    gchar** remaining_text,
+static CompletionDir* open_ref_dir         (bchar* text_to_complete,
+					    bchar** remaining_text,
 					    CompletionState* cmpl_state);
 #ifndef G_PLATFORM_WIN32
-static gboolean       check_dir            (gchar *dir_name, 
+static bboolean       check_dir            (bchar *dir_name, 
 					    GStatBuf *result, 
-					    gboolean *stat_subdirs);
+					    bboolean *stat_subdirs);
 #endif
-static CompletionDir* open_dir             (gchar* dir_name,
+static CompletionDir* open_dir             (bchar* dir_name,
 					    CompletionState* cmpl_state);
 #ifdef HAVE_PWD_H
-static CompletionDir* open_user_dir        (const gchar* text_to_complete,
+static CompletionDir* open_user_dir        (const bchar* text_to_complete,
 					    CompletionState *cmpl_state);
 #endif
-static CompletionDir* open_relative_dir    (gchar* dir_name, CompletionDir* dir,
+static CompletionDir* open_relative_dir    (bchar* dir_name, CompletionDir* dir,
 					    CompletionState *cmpl_state);
-static CompletionDirSent* open_new_dir     (gchar* dir_name, 
+static CompletionDirSent* open_new_dir     (bchar* dir_name, 
 					    GStatBuf *sbuf,
-					    gboolean stat_subdirs);
-static gint           correct_dir_fullname (CompletionDir* cmpl_dir);
-static gint           correct_parent       (CompletionDir* cmpl_dir,
+					    bboolean stat_subdirs);
+static bint           correct_dir_fullname (CompletionDir* cmpl_dir);
+static bint           correct_parent       (CompletionDir* cmpl_dir,
 					    GStatBuf *sbuf);
 #ifndef G_PLATFORM_WIN32
-static gchar*         find_parent_dir_fullname    (gchar* dirname);
+static bchar*         find_parent_dir_fullname    (bchar* dirname);
 #endif
 static CompletionDir* attach_dir           (CompletionDirSent* sent,
-					    gchar* dir_name,
+					    bchar* dir_name,
 					    CompletionState *cmpl_state);
 static void           free_dir_sent (CompletionDirSent* sent);
 static void           free_dir      (CompletionDir  *dir);
@@ -354,68 +354,68 @@ static void           prune_memory_usage(CompletionState *cmpl_state);
 
 /* Completion operations */
 #ifdef HAVE_PWD_H
-static PossibleCompletion* attempt_homedir_completion(gchar* text_to_complete,
+static PossibleCompletion* attempt_homedir_completion(bchar* text_to_complete,
 						      CompletionState *cmpl_state);
 #endif
 static PossibleCompletion* attempt_file_completion(CompletionState *cmpl_state);
-static CompletionDir* find_completion_dir(gchar* text_to_complete,
-					  gchar** remaining_text,
+static CompletionDir* find_completion_dir(bchar* text_to_complete,
+					  bchar** remaining_text,
 					  CompletionState* cmpl_state);
-static PossibleCompletion* append_completion_text(gchar* text,
+static PossibleCompletion* append_completion_text(bchar* text,
 						  CompletionState* cmpl_state);
 #ifdef HAVE_PWD_H
-static gint get_pwdb(CompletionState* cmpl_state);
-static gint compare_user_dir(const void* a, const void* b);
+static bint get_pwdb(CompletionState* cmpl_state);
+static bint compare_user_dir(const void* a, const void* b);
 #endif
-static gint first_diff_index(gchar* pat, gchar* text);
-static gint compare_cmpl_dir(const void* a, const void* b);
+static bint first_diff_index(bchar* pat, bchar* text);
+static bint compare_cmpl_dir(const void* a, const void* b);
 static void update_cmpl(PossibleCompletion* poss,
 			CompletionState* cmpl_state);
 
 static void btk_file_selection_set_property  (BObject         *object,
-					      guint            prop_id,
+					      buint            prop_id,
 					      const BValue    *value,
 					      BParamSpec      *pspec);
 static void btk_file_selection_get_property  (BObject         *object,
-					      guint            prop_id,
+					      buint            prop_id,
 					      BValue          *value,
 					      BParamSpec      *pspec);
 static void btk_file_selection_finalize      (BObject               *object);
 static void btk_file_selection_destroy       (BtkObject             *object);
 static void btk_file_selection_map           (BtkWidget             *widget);
-static gint btk_file_selection_key_press     (BtkWidget             *widget,
+static bint btk_file_selection_key_press     (BtkWidget             *widget,
 					      BdkEventKey           *event,
-					      gpointer               user_data);
-static gint btk_file_selection_insert_text   (BtkWidget             *widget,
-					      const gchar           *new_text,
-					      gint                   new_text_length,
-					      gint                  *position,
-					      gpointer               user_data);
+					      bpointer               user_data);
+static bint btk_file_selection_insert_text   (BtkWidget             *widget,
+					      const bchar           *new_text,
+					      bint                   new_text_length,
+					      bint                  *position,
+					      bpointer               user_data);
 static void btk_file_selection_update_fileops (BtkFileSelection     *filesel);
 
 static void btk_file_selection_file_activate (BtkTreeView       *tree_view,
 					      BtkTreePath       *path,
 					      BtkTreeViewColumn *column,
-					      gpointer           user_data);
+					      bpointer           user_data);
 static void btk_file_selection_file_changed  (BtkTreeSelection  *selection,
-					      gpointer           user_data);
+					      bpointer           user_data);
 static void btk_file_selection_dir_activate  (BtkTreeView       *tree_view,
 					      BtkTreePath       *path,
 					      BtkTreeViewColumn *column,
-					      gpointer           user_data);
+					      bpointer           user_data);
 
 static void btk_file_selection_populate      (BtkFileSelection      *fs,
-					      gchar                 *rel_path,
-					      gboolean               try_complete,
-					      gboolean               reset_entry);
+					      bchar                 *rel_path,
+					      bboolean               try_complete,
+					      bboolean               reset_entry);
 static void btk_file_selection_abort         (BtkFileSelection      *fs);
 
 static void btk_file_selection_update_history_menu (BtkFileSelection       *fs,
-						    gchar                  *current_dir);
+						    bchar                  *current_dir);
 
-static void btk_file_selection_create_dir  (BtkWidget *widget, gpointer data);
-static void btk_file_selection_delete_file (BtkWidget *widget, gpointer data);
-static void btk_file_selection_rename_file (BtkWidget *widget, gpointer data);
+static void btk_file_selection_create_dir  (BtkWidget *widget, bpointer data);
+static void btk_file_selection_delete_file (BtkWidget *widget, bpointer data);
+static void btk_file_selection_rename_file (BtkWidget *widget, bpointer data);
 
 static void free_selected_names (GPtrArray *names);
 
@@ -426,12 +426,12 @@ static void free_selected_names (GPtrArray *names);
 
 #else
 
-static gint
-compare_utf8_filenames (const gchar *a,
-			const gchar *b)
+static bint
+compare_utf8_filenames (const bchar *a,
+			const bchar *b)
 {
-  gchar *a_folded, *b_folded;
-  gint retval;
+  bchar *a_folded, *b_folded;
+  bint retval;
 
   a_folded = g_utf8_strdown (a, -1);
   b_folded = g_utf8_strdown (b, -1);
@@ -444,12 +444,12 @@ compare_utf8_filenames (const gchar *a,
   return retval;
 }
 
-static gint
-compare_sys_filenames (const gchar *a,
-		       const gchar *b)
+static bint
+compare_sys_filenames (const bchar *a,
+		       const bchar *b)
 {
-  gchar *a_utf8, *b_utf8;
-  gint retval;
+  bchar *a_utf8, *b_utf8;
+  bint retval;
 
   a_utf8 = g_filename_to_utf8 (a, -1, NULL, NULL, NULL);
   b_utf8 = g_filename_to_utf8 (b, -1, NULL, NULL, NULL);
@@ -465,7 +465,7 @@ compare_sys_filenames (const gchar *a,
 #endif
 
 /* Saves errno when something cmpl does fails. */
-static gint cmpl_errno;
+static bint cmpl_errno;
 
 #ifdef G_WITH_CYGWIN
 /*
@@ -485,8 +485,8 @@ static int
 translate_win32_path (BtkFileSelection *filesel)
 {
   int updated = 0;
-  const gchar *path;
-  gchar newPath[MAX_PATH];
+  const bchar *path;
+  bchar newPath[MAX_PATH];
 
   /*
    * Retrieve the current path
@@ -546,7 +546,7 @@ btk_file_selection_class_init (BtkFileSelectionClass *class)
 }
 
 static void btk_file_selection_set_property (BObject         *object,
-					     guint            prop_id,
+					     buint            prop_id,
 					     const BValue    *value,
 					     BParamSpec      *pspec)
 {
@@ -576,7 +576,7 @@ static void btk_file_selection_set_property (BObject         *object,
 }
 
 static void btk_file_selection_get_property (BObject         *object,
-					     guint            prop_id,
+					     buint            prop_id,
 					     BValue          *value,
 					     BParamSpec      *pspec)
 {
@@ -608,7 +608,7 @@ static void btk_file_selection_get_property (BObject         *object,
     }
 }
 
-static gboolean
+static bboolean
 grab_default (BtkWidget *widget)
 {
   btk_widget_grab_default (widget);
@@ -816,7 +816,7 @@ btk_file_selection_init (BtkFileSelection *filesel)
 
   if (!cmpl_state_okay (filesel->cmpl_state))
     {
-      gchar err_buf[256];
+      bchar err_buf[256];
 
       g_snprintf (err_buf, sizeof (err_buf), _("Folder unreadable: %s"), cmpl_strerror (cmpl_errno));
 
@@ -833,9 +833,9 @@ btk_file_selection_init (BtkFileSelection *filesel)
 }
 
 static void
-dnd_really_drop  (BtkWidget *dialog, gint response_id, BtkFileSelection *fs)
+dnd_really_drop  (BtkWidget *dialog, bint response_id, BtkFileSelection *fs)
 {
-  gchar *filename;
+  bchar *filename;
   
   if (response_id == BTK_RESPONSE_YES)
     {
@@ -850,11 +850,11 @@ dnd_really_drop  (BtkWidget *dialog, gint response_id, BtkFileSelection *fs)
 static void
 filenames_dropped (BtkWidget        *widget,
 		   BdkDragContext   *context,
-		   gint              x,
-		   gint              y,
+		   bint              x,
+		   bint              y,
 		   BtkSelectionData *selection_data,
-		   guint             info,
-		   guint             time)
+		   buint             info,
+		   buint             time)
 {
   char **uris = NULL;
   char *filename = NULL;
@@ -890,7 +890,7 @@ filenames_dropped (BtkWidget        *widget,
   else
     {
       BtkWidget *dialog;
-      gchar *filename_utf8;
+      bchar *filename_utf8;
 
       /* Conversion back to UTF-8 should always succeed for the result
        * of g_filename_from_uri()
@@ -923,12 +923,12 @@ static void
 filenames_drag_get (BtkWidget        *widget,
 		    BdkDragContext   *context,
 		    BtkSelectionData *selection_data,
-		    guint             info,
-		    guint             time,
+		    buint             info,
+		    buint             time,
 		    BtkFileSelection *filesel)
 {
-  const gchar *file;
-  gchar *filename_utf8;
+  const bchar *file;
+  bchar *filename_utf8;
 
   file = btk_file_selection_get_filename (filesel);
   if (!file)
@@ -936,7 +936,7 @@ filenames_drag_get (BtkWidget        *widget,
 
   if (btk_targets_include_uri (&selection_data->target, 1))
     {
-      gchar *file_uri;
+      bchar *file_uri;
       const char *hostname;
       GError *error;
       char *uris[2];
@@ -996,7 +996,7 @@ file_selection_setup_dnd (BtkFileSelection *filesel)
 }
 
 BtkWidget*
-btk_file_selection_new (const gchar *title)
+btk_file_selection_new (const bchar *title)
 {
   BtkFileSelection *filesel;
 
@@ -1098,9 +1098,9 @@ btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel)
  **/
 void
 btk_file_selection_set_filename (BtkFileSelection *filesel,
-				 const gchar      *filename)
+				 const bchar      *filename)
 {
-  gchar *buf;
+  bchar *buf;
   const char *name, *last_slash;
   char *filename_utf8;
 
@@ -1147,10 +1147,10 @@ btk_file_selection_set_filename (BtkFileSelection *filesel,
  * 
  * Return value: currently-selected filename in the on-disk encoding.
  **/
-const gchar*
+const bchar*
 btk_file_selection_get_filename (BtkFileSelection *filesel)
 {
-  static const gchar nothing[2] = "";
+  static const bchar nothing[2] = "";
   static GString *something;
   char *sys_filename;
   const char *text;
@@ -1163,7 +1163,7 @@ btk_file_selection_get_filename (BtkFileSelection *filesel)
   text = btk_entry_get_text (BTK_ENTRY (filesel->selection_entry));
   if (text)
     {
-      gchar *fullname = cmpl_completion_fullname (text, filesel->cmpl_state);
+      bchar *fullname = cmpl_completion_fullname (text, filesel->cmpl_state);
       sys_filename = g_filename_from_utf8 (fullname, -1, NULL, NULL, NULL);
       g_free (fullname);
       if (!sys_filename)
@@ -1182,14 +1182,14 @@ btk_file_selection_get_filename (BtkFileSelection *filesel)
 
 void
 btk_file_selection_complete (BtkFileSelection *filesel,
-			     const gchar      *pattern)
+			     const bchar      *pattern)
 {
   g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
   g_return_if_fail (pattern != NULL);
 
   if (filesel->selection_entry)
     btk_entry_set_text (BTK_ENTRY (filesel->selection_entry), pattern);
-  btk_file_selection_populate (filesel, (gchar*) pattern, TRUE, TRUE);
+  btk_file_selection_populate (filesel, (bchar*) pattern, TRUE, TRUE);
 }
 
 static void
@@ -1269,7 +1269,7 @@ btk_file_selection_finalize (BObject *object)
 
 static void
 btk_file_selection_fileop_error (BtkFileSelection *fs,
-				 gchar            *error_message)
+				 bchar            *error_message)
 {
   BtkWidget *dialog;
     
@@ -1296,7 +1296,7 @@ btk_file_selection_fileop_error (BtkFileSelection *fs,
 
 static void
 btk_file_selection_fileop_destroy (BtkWidget *widget,
-				   gpointer   data)
+				   bpointer   data)
 {
   BtkFileSelection *fs = data;
 
@@ -1305,10 +1305,10 @@ btk_file_selection_fileop_destroy (BtkWidget *widget,
   fs->fileop_dialog = NULL;
 }
 
-static gboolean
+static bboolean
 entry_is_empty (BtkEntry *entry)
 {
-  const gchar *text = btk_entry_get_text (entry);
+  const bchar *text = btk_entry_get_text (entry);
   
   return *text == '\0';
 }
@@ -1322,14 +1322,14 @@ btk_file_selection_fileop_entry_changed (BtkEntry   *entry,
 
 static void
 btk_file_selection_create_dir_confirmed (BtkWidget *widget,
-					 gpointer   data)
+					 bpointer   data)
 {
   BtkFileSelection *fs = data;
-  const gchar *dirname;
-  gchar *path;
-  gchar *full_path;
-  gchar *sys_full_path;
-  gchar *buf;
+  const bchar *dirname;
+  bchar *path;
+  bchar *full_path;
+  bchar *sys_full_path;
+  bchar *buf;
   GError *error = NULL;
   CompletionState *cmpl_state;
   
@@ -1372,7 +1372,7 @@ btk_file_selection_create_dir_confirmed (BtkWidget *widget,
   
 static void
 btk_file_selection_create_dir (BtkWidget *widget,
-			       gpointer   data)
+			       bpointer   data)
 {
   BtkFileSelection *fs = data;
   BtkWidget *label;
@@ -1446,16 +1446,16 @@ btk_file_selection_create_dir (BtkWidget *widget,
 
 static void
 btk_file_selection_delete_file_response (BtkDialog *dialog, 
-                                         gint       response_id,
-                                         gpointer   data)
+                                         bint       response_id,
+                                         bpointer   data)
 {
   BtkFileSelection *fs = data;
   CompletionState *cmpl_state;
-  gchar *path;
-  gchar *full_path;
-  gchar *sys_full_path;
+  bchar *path;
+  bchar *full_path;
+  bchar *sys_full_path;
   GError *error = NULL;
-  gchar *buf;
+  bchar *buf;
   
   g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
@@ -1503,11 +1503,11 @@ btk_file_selection_delete_file_response (BtkDialog *dialog,
 
 static void
 btk_file_selection_delete_file (BtkWidget *widget,
-				gpointer   data)
+				bpointer   data)
 {
   BtkFileSelection *fs = data;
   BtkWidget *dialog;
-  const gchar *filename;
+  const bchar *filename;
   
   g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
@@ -1556,16 +1556,16 @@ btk_file_selection_delete_file (BtkWidget *widget,
 
 static void
 btk_file_selection_rename_file_confirmed (BtkWidget *widget,
-					  gpointer   data)
+					  bpointer   data)
 {
   BtkFileSelection *fs = data;
-  gchar *buf;
-  const gchar *file;
-  gchar *path;
-  gchar *new_filename;
-  gchar *old_filename;
-  gchar *sys_new_filename;
-  gchar *sys_old_filename;
+  bchar *buf;
+  const bchar *file;
+  bchar *path;
+  bchar *new_filename;
+  bchar *old_filename;
+  bchar *sys_new_filename;
+  bchar *sys_old_filename;
   CompletionState *cmpl_state;
   GError *error = NULL;
   
@@ -1631,14 +1631,14 @@ btk_file_selection_rename_file_confirmed (BtkWidget *widget,
   
 static void
 btk_file_selection_rename_file (BtkWidget *widget,
-				gpointer   data)
+				bpointer   data)
 {
   BtkFileSelection *fs = data;
   BtkWidget *label;
   BtkWidget *dialog;
   BtkWidget *vbox;
   BtkWidget *button;
-  gchar *buf;
+  bchar *buf;
   
   g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
@@ -1712,14 +1712,14 @@ btk_file_selection_rename_file (BtkWidget *widget,
   btk_widget_show (dialog);
 }
 
-static gint
+static bint
 btk_file_selection_insert_text (BtkWidget   *widget,
-				const gchar *new_text,
-				gint         new_text_length,
-				gint        *position,
-				gpointer     user_data)
+				const bchar *new_text,
+				bint         new_text_length,
+				bint        *position,
+				bpointer     user_data)
 {
-  gchar *filename;
+  bchar *filename;
 
   filename = g_filename_from_utf8 (new_text, new_text_length, NULL, NULL, NULL);
 
@@ -1738,7 +1738,7 @@ btk_file_selection_insert_text (BtkWidget   *widget,
 static void
 btk_file_selection_update_fileops (BtkFileSelection *fs)
 {
-  gboolean sensitive;
+  bboolean sensitive;
 
   if (!fs->selection_entry)
     return;
@@ -1752,10 +1752,10 @@ btk_file_selection_update_fileops (BtkFileSelection *fs)
     btk_widget_set_sensitive (fs->fileop_ren_file, sensitive);
 }
 
-static gint
+static bint
 btk_file_selection_key_press (BtkWidget   *widget,
 			      BdkEventKey *event,
-			      gpointer     user_data)
+			      bpointer     user_data)
 {
   BtkFileSelection *fs;
   char *text;
@@ -1784,7 +1784,7 @@ btk_file_selection_key_press (BtkWidget   *widget,
 
 static void
 btk_file_selection_history_callback (BtkWidget *widget,
-				     gpointer   data)
+				     bpointer   data)
 {
   BtkFileSelection *fs = data;
   HistoryCallbackArg *callback_arg;
@@ -1809,14 +1809,14 @@ btk_file_selection_history_callback (BtkWidget *widget,
 
 static void 
 btk_file_selection_update_history_menu (BtkFileSelection *fs,
-					gchar            *current_directory)
+					bchar            *current_directory)
 {
   HistoryCallbackArg *callback_arg;
   BtkWidget *menu_item;
   GList *list;
-  gchar *current_dir;
-  gint dir_len;
-  gint i;
+  bchar *current_dir;
+  bint dir_len;
+  bint i;
   
   g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
   g_return_if_fail (current_directory != NULL);
@@ -1888,15 +1888,15 @@ btk_file_selection_update_history_menu (BtkFileSelection *fs,
   g_free (current_dir);
 }
 
-static gchar *
-get_real_filename (gchar    *filename,
-                   gboolean  free_old)
+static bchar *
+get_real_filename (bchar    *filename,
+                   bboolean  free_old)
 {
 #ifdef G_WITH_CYGWIN
   /* Check to see if the selection was a drive selector */
   if (isalpha (filename[0]) && (filename[1] == ':'))
     {
-      gchar temp_filename[MAX_PATH];
+      bchar temp_filename[MAX_PATH];
       int len;
 
       cygwin_conv_to_posix_path (filename, temp_filename);
@@ -1922,12 +1922,12 @@ static void
 btk_file_selection_file_activate (BtkTreeView       *tree_view,
 				  BtkTreePath       *path,
 				  BtkTreeViewColumn *column,
-				  gpointer           user_data)
+				  bpointer           user_data)
 {
   BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
   BtkTreeIter iter;  
-  gchar *filename;
+  bchar *filename;
   
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, FILE_COLUMN, &filename, -1);
@@ -1942,12 +1942,12 @@ static void
 btk_file_selection_dir_activate (BtkTreeView       *tree_view,
 				 BtkTreePath       *path,
 				 BtkTreeViewColumn *column,
-				 gpointer           user_data)
+				 bpointer           user_data)
 {
   BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
   BtkTreeIter iter;
-  gchar *filename;
+  bchar *filename;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, DIR_COLUMN, &filename, -1);
@@ -1961,8 +1961,8 @@ btk_file_selection_dir_activate (BtkTreeView       *tree_view,
 static void
 win32_btk_add_drives_to_dir_list (BtkListStore *model)
 {
-  gchar *textPtr;
-  gchar buffer[128];
+  bchar *textPtr;
+  bchar buffer[128];
   char formatBuffer[128];
   BtkTreeIter iter;
 
@@ -1988,8 +1988,8 @@ win32_btk_add_drives_to_dir_list (BtkListStore *model)
 }
 #endif
 
-static gchar *
-escape_underscores (const gchar *str)
+static bchar *
+escape_underscores (const bchar *str)
 {
   GString *result = g_string_new (NULL);
   while (*str)
@@ -2006,20 +2006,20 @@ escape_underscores (const gchar *str)
 
 static void
 btk_file_selection_populate (BtkFileSelection *fs,
-			     gchar            *rel_path,
-			     gboolean          try_complete,
-			     gboolean          reset_entry)
+			     bchar            *rel_path,
+			     bboolean          try_complete,
+			     bboolean          reset_entry)
 {
   CompletionState *cmpl_state;
   PossibleCompletion* poss;
   BtkTreeIter iter;
   BtkListStore *dir_model;
   BtkListStore *file_model;
-  gchar* filename;
-  gchar* rem_path = rel_path;
-  gchar* sel_text;
-  gint did_recurse = FALSE;
-  gint possible_count = 0;
+  bchar* filename;
+  bchar* rem_path = rel_path;
+  bchar* sel_text;
+  bint did_recurse = FALSE;
+  bint possible_count = 0;
   
   g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
@@ -2096,7 +2096,7 @@ btk_file_selection_populate (BtkFileSelection *fs,
 
           if (cmpl_updated_dir (cmpl_state))
             {
-	      gchar* dir_name = g_strdup (cmpl_updated_text (cmpl_state));
+	      bchar* dir_name = g_strdup (cmpl_updated_text (cmpl_state));
 
               did_recurse = TRUE;
 
@@ -2149,7 +2149,7 @@ btk_file_selection_populate (BtkFileSelection *fs,
 static void
 btk_file_selection_abort (BtkFileSelection *fs)
 {
-  gchar err_buf[256];
+  bchar err_buf[256];
 
   g_snprintf (err_buf, sizeof (err_buf), _("Folder unreadable: %s"), cmpl_strerror (cmpl_errno));
 
@@ -2170,7 +2170,7 @@ btk_file_selection_abort (BtkFileSelection *fs)
  **/
 void
 btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
-					gboolean          select_multiple)
+					bboolean          select_multiple)
 {
   BtkTreeSelection *sel;
   BtkSelectionMode mode;
@@ -2199,7 +2199,7 @@ btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
  * Return value: %TRUE if the user is allowed to select multiple files in the
  * file list
  **/
-gboolean
+bboolean
 btk_file_selection_get_select_multiple (BtkFileSelection *filesel)
 {
   BtkTreeSelection *sel;
@@ -2214,10 +2214,10 @@ static void
 multiple_changed_foreach (BtkTreeModel *model,
 			  BtkTreePath  *path,
 			  BtkTreeIter  *iter,
-			  gpointer      data)
+			  bpointer      data)
 {
   GPtrArray *names = data;
-  gchar *filename;
+  bchar *filename;
 
   btk_tree_model_get (model, iter, FILE_COLUMN, &filename, -1);
 
@@ -2227,7 +2227,7 @@ multiple_changed_foreach (BtkTreeModel *model,
 static void
 free_selected_names (GPtrArray *names)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < names->len; i++)
     g_free (g_ptr_array_index (names, i));
@@ -2237,13 +2237,13 @@ free_selected_names (GPtrArray *names)
 
 static void
 btk_file_selection_file_changed (BtkTreeSelection *selection,
-				 gpointer          user_data)
+				 bpointer          user_data)
 {
   BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
   GPtrArray *new_names;
-  gchar *filename;
-  const gchar *entry;
-  gint index = -1;
+  bchar *filename;
+  const bchar *entry;
+  bint index = -1;
 
   new_names = g_ptr_array_sized_new (8);
 
@@ -2279,7 +2279,7 @@ btk_file_selection_file_changed (BtkTreeSelection *selection,
 	    index = new_names->len - 1;
 	  else
 	    {
-	      gint i = 0, j = 0, cmp;
+	      bint i = 0, j = 0, cmp;
 
 	      /* do a quick diff, stopping at the first file not in the
 	       * old list
@@ -2368,15 +2368,15 @@ maybe_clear_entry:
  * Return value: a newly-allocated %NULL-terminated array of strings. Use
  * g_strfreev() to free it.
  **/
-gchar **
+bchar **
 btk_file_selection_get_selections (BtkFileSelection *filesel)
 {
   GPtrArray *names;
-  gchar **selections;
-  gchar *filename, *dirname;
-  gchar *current, *buf;
-  gint i, count;
-  gboolean unselected_entry;
+  bchar **selections;
+  bchar *filename, *dirname;
+  bchar *current, *buf;
+  bint i, count;
+  bboolean unselected_entry;
 
   g_return_val_if_fail (BTK_IS_FILE_SELECTION (filesel), NULL);
 
@@ -2391,9 +2391,9 @@ btk_file_selection_get_selections (BtkFileSelection *filesel)
   names = filesel->selected_names;
 
   if (names != NULL)
-    selections = g_new (gchar *, names->len + 2);
+    selections = g_new (bchar *, names->len + 2);
   else
-    selections = g_new (gchar *, 2);
+    selections = g_new (bchar *, 2);
 
   count = 0;
   unselected_entry = TRUE;
@@ -2443,19 +2443,19 @@ btk_file_selection_get_selections (BtkFileSelection *filesel)
 
 /* The four completion state selectors
  */
-static gchar*
+static bchar*
 cmpl_updated_text (CompletionState *cmpl_state)
 {
   return cmpl_state->updated_text;
 }
 
-static gboolean
+static bboolean
 cmpl_updated_dir (CompletionState *cmpl_state)
 {
   return cmpl_state->re_complete;
 }
 
-static gchar*
+static bchar*
 cmpl_reference_position (CompletionState *cmpl_state)
 {
   return cmpl_state->reference_dir->fullname;
@@ -2465,15 +2465,15 @@ cmpl_reference_position (CompletionState *cmpl_state)
 /* This doesn't work currently and would require changes
  * to fnmatch.c to get working.
  */
-static gint
+static bint
 cmpl_last_valid_char (CompletionState *cmpl_state)
 {
   return cmpl_state->last_valid_char;
 }
 #endif
 
-static gchar*
-cmpl_completion_fullname (const gchar     *text,
+static bchar*
+cmpl_completion_fullname (const bchar     *text,
 			  CompletionState *cmpl_state)
 {
   if (!cmpl_state_okay (cmpl_state))
@@ -2509,19 +2509,19 @@ cmpl_completion_fullname (const gchar     *text,
 
 /* The three completion selectors
  */
-static gchar*
+static bchar*
 cmpl_this_completion (PossibleCompletion* pc)
 {
   return pc->text;
 }
 
-static gboolean
+static bboolean
 cmpl_is_directory (PossibleCompletion* pc)
 {
   return pc->is_directory;
 }
 
-static gint
+static bint
 cmpl_is_a_completion (PossibleCompletion* pc)
 {
   return pc->is_a_completion;
@@ -2535,15 +2535,15 @@ cmpl_is_a_completion (PossibleCompletion* pc)
  * we can convert the filename into UTF-8. With paranoia.
  * Returns "." when all goes wrong.
  */
-static gchar *
+static bchar *
 get_current_dir_utf8 (void)
 {
-  gchar *dir = g_get_current_dir ();
-  gchar *dir_utf8 = NULL;
+  bchar *dir = g_get_current_dir ();
+  bchar *dir_utf8 = NULL;
 
   while (TRUE)
     {
-      gchar *last_slash;
+      bchar *last_slash;
 
       dir_utf8 = g_filename_to_utf8 (dir, -1, NULL, NULL, NULL);
       if (dir_utf8)
@@ -2574,9 +2574,9 @@ get_current_dir_utf8 (void)
 static CompletionState*
 cmpl_init_state (void)
 {
-  gchar *utf8_cwd;
+  bchar *utf8_cwd;
   CompletionState *new_state;
-  gint tries = 0;
+  bint tries = 0;
 
   new_state = g_new (CompletionState, 1);
 
@@ -2590,9 +2590,9 @@ tryagain:
   new_state->directory_storage = NULL;
   new_state->directory_sent_storage = NULL;
   new_state->last_valid_char = 0;
-  new_state->updated_text = g_new (gchar, MAXPATHLEN);
+  new_state->updated_text = g_new (bchar, MAXPATHLEN);
   new_state->updated_text_alloc = MAXPATHLEN;
-  new_state->the_completion.text = g_new (gchar, MAXPATHLEN);
+  new_state->the_completion.text = g_new (bchar, MAXPATHLEN);
   new_state->the_completion.text_alloc = MAXPATHLEN;
   new_state->user_dir_name_buffer = NULL;
   new_state->user_directories = NULL;
@@ -2666,7 +2666,7 @@ free_dir (CompletionDir* dir)
 static void
 free_dir_sent (CompletionDirSent* sent)
 {
-  gint i;
+  bint i;
   for (i = 0; i < sent->entry_count; i++)
     {
       g_free (sent->entries[i].entry_name);
@@ -2682,7 +2682,7 @@ prune_memory_usage (CompletionState *cmpl_state)
   GList* cdsl = cmpl_state->directory_sent_storage;
   GList* cdl = cmpl_state->directory_storage;
   GList* cdl0 = cdl;
-  gint len = 0;
+  bint len = 0;
 
   for (; cdsl && len < CMPL_DIRECTORY_CACHE_SIZE; len += 1)
     cdsl = cdsl->next;
@@ -2711,12 +2711,12 @@ prune_memory_usage (CompletionState *cmpl_state)
 /**********************************************************************/
 
 static PossibleCompletion*
-cmpl_completion_matches (gchar           *text_to_complete,
-			 gchar          **remaining_text,
+cmpl_completion_matches (bchar           *text_to_complete,
+			 bchar          **remaining_text,
 			 CompletionState *cmpl_state)
 {
 #ifdef HAVE_PWD_H
-  gchar* first_slash;
+  bchar* first_slash;
 #endif
   PossibleCompletion *poss;
 
@@ -2803,11 +2803,11 @@ cmpl_next_completion (CompletionState* cmpl_state)
 
 /* Open the directory where completion will begin from, if possible. */
 static CompletionDir*
-open_ref_dir (gchar           *text_to_complete,
-	      gchar          **remaining_text,
+open_ref_dir (bchar           *text_to_complete,
+	      bchar          **remaining_text,
 	      CompletionState *cmpl_state)
 {
-  gchar* first_slash;
+  bchar* first_slash;
   CompletionDir *new_dir;
 
   first_slash = strchr (text_to_complete, G_DIR_SEPARATOR);
@@ -2848,8 +2848,8 @@ open_ref_dir (gchar           *text_to_complete,
 #endif
   else if (g_path_is_absolute (text_to_complete) || !cmpl_state->reference_dir)
     {
-      gchar *tmp = g_strdup (text_to_complete);
-      gchar *p;
+      bchar *tmp = g_strdup (text_to_complete);
+      bchar *p;
 
       p = tmp;
       while (*p && *p != '*' && *p != '?')
@@ -2872,7 +2872,7 @@ open_ref_dir (gchar           *text_to_complete,
       else
 	{
 	  /* If no possible candidates, use the cwd */
-	  gchar *utf8_curdir = get_current_dir_utf8 ();
+	  bchar *utf8_curdir = get_current_dir_utf8 ();
 
 	  new_dir = open_dir (utf8_curdir, cmpl_state);
 
@@ -2904,12 +2904,12 @@ open_ref_dir (gchar           *text_to_complete,
 
 /* open a directory by user name */
 static CompletionDir*
-open_user_dir (const gchar     *text_to_complete,
+open_user_dir (const bchar     *text_to_complete,
 	       CompletionState *cmpl_state)
 {
   CompletionDir *result;
-  gchar *first_slash;
-  gint cmp_len;
+  bchar *first_slash;
+  bint cmp_len;
 
   g_assert (text_to_complete && text_to_complete[0] == '~');
 
@@ -2923,8 +2923,8 @@ open_user_dir (const gchar     *text_to_complete,
   if (!cmp_len)
     {
       /* ~/ */
-      const gchar *homedir = g_get_home_dir ();
-      gchar *utf8_homedir = g_filename_to_utf8 (homedir, -1, NULL, NULL, NULL);
+      const bchar *homedir = g_get_home_dir ();
+      bchar *utf8_homedir = g_filename_to_utf8 (homedir, -1, NULL, NULL, NULL);
 
       if (utf8_homedir)
 	result = open_dir (utf8_homedir, cmpl_state);
@@ -2936,8 +2936,8 @@ open_user_dir (const gchar     *text_to_complete,
   else
     {
       /* ~user/ */
-      gchar* copy = g_new (char, cmp_len + 1);
-      gchar *utf8_dir;
+      bchar* copy = g_new (char, cmp_len + 1);
+      bchar *utf8_dir;
       struct passwd *pwd;
 
       strncpy (copy, text_to_complete + 1, cmp_len);
@@ -2960,7 +2960,7 @@ open_user_dir (const gchar     *text_to_complete,
 
 /* open a directory relative to the current relative directory */
 static CompletionDir*
-open_relative_dir (gchar           *dir_name,
+open_relative_dir (bchar           *dir_name,
 		   CompletionDir   *dir,
 		   CompletionState *cmpl_state)
 {
@@ -2984,20 +2984,20 @@ open_relative_dir (gchar           *dir_name,
 
 /* after the cache lookup fails, really open a new directory */
 static CompletionDirSent*
-open_new_dir (gchar    *dir_name,
+open_new_dir (bchar    *dir_name,
 	      GStatBuf *sbuf,
-	      gboolean  stat_subdirs)
+	      bboolean  stat_subdirs)
 {
   CompletionDirSent *sent;
   GDir *directory;
   const char *dirent;
   GError *error = NULL;
-  gint entry_count = 0;
-  gint n_entries = 0;
-  gint i;
+  bint entry_count = 0;
+  bint n_entries = 0;
+  bint i;
   GStatBuf ent_sbuf;
   GString *path;
-  gchar *sys_dir_name;
+  bchar *sys_dir_name;
 
   sent = g_new (CompletionDirSent, 1);
 #ifndef G_PLATFORM_WIN32
@@ -3052,7 +3052,7 @@ open_new_dir (gchar    *dir_name,
       if (sent->entries[n_entries].entry_name == NULL
 	  || !g_utf8_validate (sent->entries[n_entries].entry_name, -1, NULL))
 	{
-	  gchar *escaped_str = g_strescape (dirent, NULL);
+	  bchar *escaped_str = g_strescape (dirent, NULL);
 	  g_message (_("The filename \"%s\" couldn't be converted to UTF-8. "
 		       "(try setting the environment variable G_FILENAME_ENCODING): %s"),
 		     escaped_str,
@@ -3100,10 +3100,10 @@ open_new_dir (gchar    *dir_name,
 
 #ifndef G_PLATFORM_WIN32
 
-static gboolean
-check_dir (gchar    *dir_name,
+static bboolean
+check_dir (bchar    *dir_name,
 	   GStatBuf *result,
-	   gboolean *stat_subdirs)
+	   bboolean *stat_subdirs)
 {
   /* A list of directories that we know only contain other directories.
    * Trying to stat every file in these directories would be very
@@ -3111,18 +3111,18 @@ check_dir (gchar    *dir_name,
    */
 
   static struct {
-    const gchar name[5];
-    gboolean present;
+    const bchar name[5];
+    bboolean present;
     GStatBuf statbuf;
   } no_stat_dirs[] = {
     { "/afs", FALSE, { 0 } },
     { "/net", FALSE, { 0 } }
   };
 
-  static const gint n_no_stat_dirs = G_N_ELEMENTS (no_stat_dirs);
-  static gboolean initialized = FALSE;
-  gchar *sys_dir_name;
-  gint i;
+  static const bint n_no_stat_dirs = G_N_ELEMENTS (no_stat_dirs);
+  static bboolean initialized = FALSE;
+  bchar *sys_dir_name;
+  bint i;
 
   if (!initialized)
     {
@@ -3168,12 +3168,12 @@ check_dir (gchar    *dir_name,
 
 /* open a directory by absolute pathname */
 static CompletionDir*
-open_dir (gchar           *dir_name,
+open_dir (bchar           *dir_name,
 	  CompletionState *cmpl_state)
 {
 #ifndef G_PLATFORM_WIN32
   GStatBuf sbuf;
-  gboolean stat_subdirs;
+  bboolean stat_subdirs;
   GList* cdsl;
 #endif
   CompletionDirSent *sent;
@@ -3214,7 +3214,7 @@ open_dir (gchar           *dir_name,
 
 static CompletionDir*
 attach_dir (CompletionDirSent *sent,
-	    gchar             *dir_name,
+	    bchar             *dir_name,
 	    CompletionState   *cmpl_state)
 {
   CompletionDir* new_dir;
@@ -3232,12 +3232,12 @@ attach_dir (CompletionDirSent *sent,
   return new_dir;
 }
 
-static gint
+static bint
 correct_dir_fullname (CompletionDir* cmpl_dir)
 {
-  gint length = strlen (cmpl_dir->fullname);
-  gchar *first_slash = strchr (cmpl_dir->fullname, G_DIR_SEPARATOR);
-  gchar *sys_filename;
+  bint length = strlen (cmpl_dir->fullname);
+  bchar *first_slash = strchr (cmpl_dir->fullname, G_DIR_SEPARATOR);
+  bchar *sys_filename;
   GStatBuf sbuf;
 
   /* Does it end with /. (\.) ? */
@@ -3336,18 +3336,18 @@ correct_dir_fullname (CompletionDir* cmpl_dir)
   return TRUE;
 }
 
-static gint
+static bint
 correct_parent (CompletionDir *cmpl_dir,
 		GStatBuf      *sbuf)
 {
   GStatBuf parbuf;
-  gchar *last_slash;
-  gchar *first_slash;
+  bchar *last_slash;
+  bchar *first_slash;
 #ifndef G_PLATFORM_WIN32
-  gchar *new_name;
+  bchar *new_name;
 #endif
-  gchar *sys_filename;
-  gchar c = 0;
+  bchar *sys_filename;
+  bchar c = 0;
 
   last_slash = strrchr (cmpl_dir->fullname, G_DIR_SEPARATOR);
   g_assert (last_slash);
@@ -3412,13 +3412,13 @@ correct_parent (CompletionDir *cmpl_dir,
 
 #ifndef G_PLATFORM_WIN32
 
-static gchar*
-find_parent_dir_fullname (gchar* dirname)
+static bchar*
+find_parent_dir_fullname (bchar* dirname)
 {
-  gchar *sys_orig_dir;
-  gchar *result;
-  gchar *sys_cwd;
-  gchar *sys_dirname;
+  bchar *sys_orig_dir;
+  bchar *result;
+  bchar *sys_cwd;
+  bchar *sys_dirname;
 
   sys_orig_dir = g_get_current_dir ();
   sys_dirname = g_filename_from_utf8 (dirname, -1, NULL, NULL, NULL);
@@ -3465,10 +3465,10 @@ find_parent_dir_fullname (gchar* dirname)
 #ifdef HAVE_PWD_H
 
 static PossibleCompletion*
-attempt_homedir_completion (gchar           *text_to_complete,
+attempt_homedir_completion (bchar           *text_to_complete,
 			    CompletionState *cmpl_state)
 {
-  gint index;
+  bint index;
 
   if (!cmpl_state->user_dir_name_buffer &&
       !get_pwdb (cmpl_state))
@@ -3536,11 +3536,11 @@ attempt_homedir_completion (gchar           *text_to_complete,
 
 /* returns the index (>= 0) of the first differing character,
  * PATTERN_MATCH if the completion matches */
-static gint
-first_diff_index (gchar *pat,
-		  gchar *text)
+static bint
+first_diff_index (bchar *pat,
+		  bchar *text)
 {
-  gint diff = 0;
+  bint diff = 0;
 
   while (*pat && *text && FOLD (*text) == FOLD (*pat))
     {
@@ -3556,10 +3556,10 @@ first_diff_index (gchar *pat,
 }
 
 static PossibleCompletion*
-append_completion_text (gchar           *text,
+append_completion_text (bchar           *text,
 			CompletionState *cmpl_state)
 {
-  gint len, i = 1;
+  bint len, i = 1;
 
   if (!cmpl_state->the_completion.text)
     return NULL;
@@ -3577,7 +3577,7 @@ append_completion_text (gchar           *text,
 
   cmpl_state->the_completion.text_alloc = i;
 
-  cmpl_state->the_completion.text = (gchar*) g_realloc (cmpl_state->the_completion.text, i);
+  cmpl_state->the_completion.text = (bchar*) g_realloc (cmpl_state->the_completion.text, i);
 
   if (!cmpl_state->the_completion.text)
     return NULL;
@@ -3589,22 +3589,22 @@ append_completion_text (gchar           *text,
 }
 
 static CompletionDir*
-find_completion_dir (gchar          *text_to_complete,
-		    gchar          **remaining_text,
+find_completion_dir (bchar          *text_to_complete,
+		    bchar          **remaining_text,
 		    CompletionState *cmpl_state)
 {
-  gchar* first_slash = strchr (text_to_complete, G_DIR_SEPARATOR);
+  bchar* first_slash = strchr (text_to_complete, G_DIR_SEPARATOR);
   CompletionDir* dir = cmpl_state->reference_dir;
   CompletionDir* next;
   *remaining_text = text_to_complete;
 
   while (first_slash)
     {
-      gint len = first_slash - *remaining_text;
-      gint found = 0;
-      gchar *found_name = NULL;         /* Quiet gcc */
-      gint i;
-      gchar* pat_buf = g_new (gchar, len + 1);
+      bint len = first_slash - *remaining_text;
+      bint found = 0;
+      bchar *found_name = NULL;         /* Quiet gcc */
+      bint i;
+      bchar* pat_buf = g_new (bchar, len + 1);
 
       strncpy (pat_buf, *remaining_text, len);
       pat_buf[len] = 0;
@@ -3664,7 +3664,7 @@ static void
 update_cmpl (PossibleCompletion *poss,
 	     CompletionState    *cmpl_state)
 {
-  gint cmpl_len;
+  bint cmpl_len;
 
   if (!poss || !cmpl_is_a_completion (poss))
     return;
@@ -3675,7 +3675,7 @@ update_cmpl (PossibleCompletion *poss,
     {
       cmpl_state->updated_text_alloc = 2*cmpl_len;
       cmpl_state->updated_text =
-	(gchar*)g_realloc (cmpl_state->updated_text,
+	(bchar*)g_realloc (cmpl_state->updated_text,
 			   cmpl_state->updated_text_alloc);
     }
 
@@ -3691,7 +3691,7 @@ update_cmpl (PossibleCompletion *poss,
     }
   else
     {
-      gint first_diff =
+      bint first_diff =
 	first_diff_index (cmpl_state->updated_text,
 			  cmpl_this_completion (poss));
 
@@ -3711,7 +3711,7 @@ update_cmpl (PossibleCompletion *poss,
 static PossibleCompletion*
 attempt_file_completion (CompletionState *cmpl_state)
 {
-  gchar *pat_buf, *first_slash;
+  bchar *pat_buf, *first_slash;
   CompletionDir *dir = cmpl_state->active_completion_dir;
 
   dir->cmpl_index += 1;
@@ -3738,17 +3738,17 @@ attempt_file_completion (CompletionState *cmpl_state)
 
   if (first_slash)
     {
-      gint len = first_slash - dir->cmpl_text;
+      bint len = first_slash - dir->cmpl_text;
 
-      pat_buf = g_new (gchar, len + 1);
+      pat_buf = g_new (bchar, len + 1);
       strncpy (pat_buf, dir->cmpl_text, len);
       pat_buf[len] = 0;
     }
   else
     {
-      gint len = strlen (dir->cmpl_text);
+      bint len = strlen (dir->cmpl_text);
 
-      pat_buf = g_new (gchar, len + 2);
+      pat_buf = g_new (bchar, len + 2);
       strcpy (pat_buf, dir->cmpl_text);
       /* Don't append a * if the user entered one herself.
        * This way one can complete *.h and don't get matches
@@ -3823,13 +3823,13 @@ attempt_file_completion (CompletionState *cmpl_state)
 
 #ifdef HAVE_PWD_H
 
-static gint
+static bint
 get_pwdb (CompletionState* cmpl_state)
 {
   struct passwd *pwd_ptr;
-  gchar* buf_ptr;
-  gchar *utf8;
-  gint len = 0, i, count = 0;
+  bchar* buf_ptr;
+  bchar *utf8;
+  bint len = 0, i, count = 0;
 
   if (cmpl_state->user_dir_name_buffer)
     return TRUE;
@@ -3849,7 +3849,7 @@ get_pwdb (CompletionState* cmpl_state)
 
   setpwent ();
 
-  cmpl_state->user_dir_name_buffer = g_new (gchar, len);
+  cmpl_state->user_dir_name_buffer = g_new (bchar, len);
   cmpl_state->user_directories = g_new (CompletionUserDir, count);
   cmpl_state->user_directories_len = count;
 
@@ -3903,7 +3903,7 @@ error:
   return FALSE;
 }
 
-static gint
+static bint
 compare_user_dir (const void *a,
 		  const void *b)
 {
@@ -3913,7 +3913,7 @@ compare_user_dir (const void *a,
 
 #endif
 
-static gint
+static bint
 compare_cmpl_dir (const void *a,
 		  const void *b)
 {
@@ -3922,14 +3922,14 @@ compare_cmpl_dir (const void *a,
 		 (((CompletionDirEntry*)b))->sort_key);
 }
 
-static gint
+static bint
 cmpl_state_okay (CompletionState* cmpl_state)
 {
   return  cmpl_state && cmpl_state->reference_dir;
 }
 
-static const gchar*
-cmpl_strerror (gint err)
+static const bchar*
+cmpl_strerror (bint err)
 {
   if (err == CMPL_ERRNO_TOO_LONG)
     return _("Name too long");
@@ -3945,11 +3945,11 @@ cmpl_strerror (gint err)
 
 #undef btk_file_selection_get_filename
 
-const gchar*
+const bchar*
 btk_file_selection_get_filename (BtkFileSelection *filesel)
 {
-  static gchar retval[MAXPATHLEN*2+1];
-  gchar *tem;
+  static bchar retval[MAXPATHLEN*2+1];
+  bchar *tem;
 
   tem = g_locale_from_utf8 (btk_file_selection_get_filename_utf8 (filesel),
 			    -1, NULL, NULL, NULL);
@@ -3965,25 +3965,25 @@ btk_file_selection_get_filename (BtkFileSelection *filesel)
 
 void
 btk_file_selection_set_filename (BtkFileSelection *filesel,
-				 const gchar      *filename)
+				 const bchar      *filename)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
+  bchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
   btk_file_selection_set_filename_utf8 (filesel, utf8_filename);
   g_free (utf8_filename);
 }
 
 #undef btk_file_selection_get_selections
 
-gchar **
+bchar **
 btk_file_selection_get_selections (BtkFileSelection *filesel)
 {
   int i = 0;
-  gchar **selections = btk_file_selection_get_selections_utf8 (filesel);
+  bchar **selections = btk_file_selection_get_selections_utf8 (filesel);
 
   if (selections != NULL)
     while (selections[i] != NULL)
       {
-	gchar *tem = selections[i];
+	bchar *tem = selections[i];
 	selections[i] = g_locale_from_utf8 (selections[i],
 					    -1, NULL, NULL, NULL);
 	g_free (tem);

@@ -5,15 +5,15 @@ typedef struct _ProgressData {
   BtkWidget *window;
   BtkWidget *pbar;
   int timer;
-  gboolean activity_mode;
+  bboolean activity_mode;
 } ProgressData;
 
 /* Update the value of the progress bar so that we get
  * some movement */
-static gboolean progress_timeout( gpointer data )
+static bboolean progress_timeout( bpointer data )
 {
   ProgressData *pdata = (ProgressData *)data;
-  gdouble new_val;
+  bdouble new_val;
   
   if (pdata->activity_mode) 
     btk_progress_bar_pulse (BTK_PROGRESS_BAR (pdata->pbar));
@@ -40,7 +40,7 @@ static gboolean progress_timeout( gpointer data )
 static void toggle_show_text( BtkWidget    *widget,
                               ProgressData *pdata )
 {
-  const gchar *text;
+  const bchar *text;
   
   text = btk_progress_bar_get_text (BTK_PROGRESS_BAR (pdata->pbar));
   if (text && *text)
@@ -112,7 +112,7 @@ int main( int   argc,
 
     g_signal_connect (B_OBJECT (pdata->window), "destroy",
 	              G_CALLBACK (destroy_progress),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_window_set_title (BTK_WINDOW (pdata->window), "BtkProgressBar");
     btk_container_set_border_width (BTK_CONTAINER (pdata->window), 0);
 
@@ -152,7 +152,7 @@ int main( int   argc,
 		      5, 5);
     g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_show_text),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a check button to toggle activity mode */
@@ -162,7 +162,7 @@ int main( int   argc,
                       5, 5);
     g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_activity_mode),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a check button to toggle orientation */
@@ -172,7 +172,7 @@ int main( int   argc,
                       5, 5);
     g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_orientation),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a button to exit the program */

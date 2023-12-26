@@ -60,15 +60,15 @@ create_blank_cursor (void)
   return bdk_quartz_cursor_new_from_nscursor (nscursor, BDK_BLANK_CURSOR);
 }
 
-static gboolean
-get_bit (const guchar *data,
-         gint          width,
-         gint          height,
-         gint          x,
-         gint          y)
+static bboolean
+get_bit (const buchar *data,
+         bint          width,
+         bint          height,
+         bint          x,
+         bint          y)
 {
-  gint bytes_per_line;
-  const guchar *src;
+  bint bytes_per_line;
+  const buchar *src;
 
   if (x < 0 || y < 0 || x >= width || y >= height)
     return FALSE;
@@ -85,11 +85,11 @@ create_builtin_cursor (BdkCursorType cursor_type)
   BdkCursor *cursor;
   NSBitmapImageRep *bitmap_rep;
   NSInteger mask_width, mask_height;
-  gint src_width, src_height;
-  gint dst_stride;
-  const guchar *mask_start, *src_start;
-  gint dx, dy;
-  gint x, y;
+  bint src_width, src_height;
+  bint dst_stride;
+  const buchar *mask_start, *src_start;
+  bint dx, dy;
+  bint x, y;
   NSPoint hotspot;
   NSImage *image;
   NSCursor *nscursor;
@@ -124,7 +124,7 @@ create_builtin_cursor (BdkCursorType cursor_type)
 
   for (y = 0; y < mask_height; y++)
     {
-      guchar *dst = [bitmap_rep bitmapData] + y * dst_stride;
+      buchar *dst = [bitmap_rep bitmapData] + y * dst_stride;
 
       for (x = 0; x < mask_width; x++)
 	{
@@ -242,17 +242,17 @@ bdk_cursor_new_from_pixmap (BdkPixmap      *source,
 			    BdkPixmap      *mask,
 			    const BdkColor *fg,
 			    const BdkColor *bg,
-			    gint            x,
-			    gint            y)
+			    bint            x,
+			    bint            y)
 {
   NSBitmapImageRep *bitmap_rep;
   NSImage *image;
   NSCursor *nscursor;
   BdkCursor *cursor;
   int width, height;
-  gint tmp_x, tmp_y;
-  guchar *dst_data, *mask_data, *src_data;
-  guchar *mask_start, *src_start;
+  bint tmp_x, tmp_y;
+  buchar *dst_data, *mask_data, *src_data;
+  buchar *mask_start, *src_start;
   int dst_stride;
 
   g_return_val_if_fail (BDK_IS_PIXMAP (source), NULL);
@@ -327,7 +327,7 @@ _bdk_quartz_pixbuf_to_ns_image (BdkPixbuf *pixbuf)
 {
   NSBitmapImageRep  *bitmap_rep;
   NSImage           *image;
-  gboolean           has_alpha;
+  bboolean           has_alpha;
   
   has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
   
@@ -341,7 +341,7 @@ _bdk_quartz_pixbuf_to_ns_image (BdkPixbuf *pixbuf)
 	
   {
     /* Add pixel data to bitmap rep */
-    guchar *src, *dst;
+    buchar *src, *dst;
     int src_stride, dst_stride;
     int x, y;
 		
@@ -357,7 +357,7 @@ _bdk_quartz_pixbuf_to_ns_image (BdkPixbuf *pixbuf)
 	  {
 	    if (has_alpha)
 	      {
-		guchar red, green, blue, alpha;
+		buchar red, green, blue, alpha;
 		
 		red = *src++;
 		green = *src++;
@@ -390,13 +390,13 @@ _bdk_quartz_pixbuf_to_ns_image (BdkPixbuf *pixbuf)
 BdkCursor *
 bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
 			    BdkPixbuf  *pixbuf,
-			    gint        x,
-			    gint        y)
+			    bint        x,
+			    bint        y)
 {
   NSImage *image;
   NSCursor *nscursor;
   BdkCursor *cursor;
-  gboolean has_alpha;
+  bboolean has_alpha;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
@@ -419,7 +419,7 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
 
 BdkCursor*  
 bdk_cursor_new_from_name (BdkDisplay  *display,  
-			  const gchar *name)
+			  const bchar *name)
 {
   /* FIXME: Implement */
   return NULL;
@@ -439,7 +439,7 @@ _bdk_cursor_destroy (BdkCursor *cursor)
   g_free (private);
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_alpha (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -447,7 +447,7 @@ bdk_display_supports_cursor_alpha (BdkDisplay *display)
   return TRUE;
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_color (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -455,7 +455,7 @@ bdk_display_supports_cursor_color (BdkDisplay *display)
   return TRUE;
 }
 
-guint     
+buint     
 bdk_display_get_default_cursor_size (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -466,8 +466,8 @@ bdk_display_get_default_cursor_size (BdkDisplay *display)
 
 void     
 bdk_display_get_maximal_cursor_size (BdkDisplay *display,
-				     guint       *width,
-				     guint       *height)
+				     buint       *width,
+				     buint       *height)
 {
   g_return_if_fail (BDK_IS_DISPLAY (display));
 

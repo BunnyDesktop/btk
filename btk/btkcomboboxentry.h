@@ -65,11 +65,11 @@ struct _BtkComboBoxEntryClass
 GType       btk_combo_box_entry_get_type        (void) B_GNUC_CONST;
 BtkWidget  *btk_combo_box_entry_new             (void);
 BtkWidget  *btk_combo_box_entry_new_with_model  (BtkTreeModel     *model,
-                                                 gint              text_column);
+                                                 bint              text_column);
 
 void        btk_combo_box_entry_set_text_column (BtkComboBoxEntry *entry_box,
-                                                 gint              text_column);
-gint        btk_combo_box_entry_get_text_column (BtkComboBoxEntry *entry_box);
+                                                 bint              text_column);
+bint        btk_combo_box_entry_get_text_column (BtkComboBoxEntry *entry_box);
 
 /* convenience -- text */
 BtkWidget  *btk_combo_box_entry_new_text        (void);

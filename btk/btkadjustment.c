@@ -51,20 +51,20 @@ enum
 
 
 static void btk_adjustment_get_property                (BObject      *object,
-                                                        guint         prop_id,
+                                                        buint         prop_id,
                                                         BValue       *value,
                                                         BParamSpec   *pspec);
 static void btk_adjustment_set_property                (BObject      *object,
-                                                        guint         prop_id,
+                                                        buint         prop_id,
                                                         const BValue *value,
                                                         BParamSpec   *pspec);
 static void btk_adjustment_dispatch_properties_changed (BObject      *object,
-                                                        guint         n_pspecs,
+                                                        buint         n_pspecs,
                                                         BParamSpec  **pspecs);
 
-static guint adjustment_signals[LAST_SIGNAL] = { 0 };
+static buint adjustment_signals[LAST_SIGNAL] = { 0 };
 
-static guint64 adjustment_changed_stamp = 0; /* protected by global bdk lock */
+static buint64 adjustment_changed_stamp = 0; /* protected by global bdk lock */
 
 G_DEFINE_TYPE (BtkAdjustment, btk_adjustment, BTK_TYPE_OBJECT)
 
@@ -92,8 +92,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("value",
 							P_("Value"),
 							P_("The value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0, 
 							BTK_PARAM_READWRITE));
   
@@ -109,8 +109,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("lower",
 							P_("Minimum Value"),
 							P_("The minimum value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0,
 							BTK_PARAM_READWRITE));
   
@@ -129,8 +129,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("upper",
 							P_("Maximum Value"),
 							P_("The maximum value of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0, 
 							BTK_PARAM_READWRITE));
   
@@ -146,8 +146,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("step-increment",
 							P_("Step Increment"),
 							P_("The step increment of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0, 
 							BTK_PARAM_READWRITE));
   
@@ -163,8 +163,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("page-increment",
 							P_("Page Increment"),
 							P_("The page increment of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0, 
 							BTK_PARAM_READWRITE));
   
@@ -183,8 +183,8 @@ btk_adjustment_class_init (BtkAdjustmentClass *class)
                                    g_param_spec_double ("page-size",
 							P_("Page Size"),
 							P_("The page size of the adjustment"),
-							-G_MAXDOUBLE, 
-							G_MAXDOUBLE, 
+							-B_MAXDOUBLE, 
+							B_MAXDOUBLE, 
 							0.0, 
 							BTK_PARAM_READWRITE));
 
@@ -220,7 +220,7 @@ btk_adjustment_init (BtkAdjustment *adjustment)
 
 static void
 btk_adjustment_get_property (BObject    *object,
-                             guint       prop_id,
+                             buint       prop_id,
                              BValue     *value,
                              BParamSpec *pspec)
 {
@@ -254,12 +254,12 @@ btk_adjustment_get_property (BObject    *object,
 
 static void
 btk_adjustment_set_property (BObject      *object,
-                             guint         prop_id,
+                             buint         prop_id,
                              const BValue *value,
                              BParamSpec   *pspec)
 {
   BtkAdjustment *adjustment = BTK_ADJUSTMENT (object);
-  gdouble double_value = b_value_get_double (value);
+  bdouble double_value = b_value_get_double (value);
 
   switch (prop_id)
     {
@@ -289,11 +289,11 @@ btk_adjustment_set_property (BObject      *object,
 
 static void
 btk_adjustment_dispatch_properties_changed (BObject     *object,
-                                            guint        n_pspecs,
+                                            buint        n_pspecs,
                                             BParamSpec **pspecs)
 {
-  gboolean changed = FALSE;
-  gint i;
+  bboolean changed = FALSE;
+  bint i;
 
   B_OBJECT_CLASS (btk_adjustment_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
 
@@ -319,12 +319,12 @@ btk_adjustment_dispatch_properties_changed (BObject     *object,
 }
 
 BtkObject *
-btk_adjustment_new (gdouble value,
-		    gdouble lower,
-		    gdouble upper,
-		    gdouble step_increment,
-		    gdouble page_increment,
-		    gdouble page_size)
+btk_adjustment_new (bdouble value,
+		    bdouble lower,
+		    bdouble upper,
+		    bdouble step_increment,
+		    bdouble page_increment,
+		    bdouble page_size)
 {
   return g_object_new (BTK_TYPE_ADJUSTMENT,
 		       "lower", lower,
@@ -345,7 +345,7 @@ btk_adjustment_new (gdouble value,
  *
  * Return value: The current value of the adjustment.
  **/
-gdouble
+bdouble
 btk_adjustment_get_value (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -355,7 +355,7 @@ btk_adjustment_get_value (BtkAdjustment *adjustment)
 
 void
 btk_adjustment_set_value (BtkAdjustment *adjustment,
-			  gdouble        value)
+			  bdouble        value)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -379,7 +379,7 @@ btk_adjustment_set_value (BtkAdjustment *adjustment,
  *
  * Since: 2.14
  **/
-gdouble
+bdouble
 btk_adjustment_get_lower (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -410,7 +410,7 @@ btk_adjustment_get_lower (BtkAdjustment *adjustment)
  **/
 void
 btk_adjustment_set_lower (BtkAdjustment *adjustment,
-                          gdouble        lower)
+                          bdouble        lower)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -428,7 +428,7 @@ btk_adjustment_set_lower (BtkAdjustment *adjustment,
  *
  * Since: 2.14
  **/
-gdouble
+bdouble
 btk_adjustment_get_upper (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -455,7 +455,7 @@ btk_adjustment_get_upper (BtkAdjustment *adjustment)
  **/
 void
 btk_adjustment_set_upper (BtkAdjustment *adjustment,
-                          gdouble        upper)
+                          bdouble        upper)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -473,7 +473,7 @@ btk_adjustment_set_upper (BtkAdjustment *adjustment,
  *
  * Since: 2.14
  **/
-gdouble
+bdouble
 btk_adjustment_get_step_increment (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -496,7 +496,7 @@ btk_adjustment_get_step_increment (BtkAdjustment *adjustment)
  **/
 void
 btk_adjustment_set_step_increment (BtkAdjustment *adjustment,
-                                   gdouble        step_increment)
+                                   bdouble        step_increment)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -514,7 +514,7 @@ btk_adjustment_set_step_increment (BtkAdjustment *adjustment,
  *
  * Since: 2.14
  **/
-gdouble
+bdouble
 btk_adjustment_get_page_increment (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -537,7 +537,7 @@ btk_adjustment_get_page_increment (BtkAdjustment *adjustment)
  **/
 void
 btk_adjustment_set_page_increment (BtkAdjustment *adjustment,
-                                   gdouble        page_increment)
+                                   bdouble        page_increment)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -555,7 +555,7 @@ btk_adjustment_set_page_increment (BtkAdjustment *adjustment,
  *
  * Since: 2.14
  **/
-gdouble
+bdouble
 btk_adjustment_get_page_size (BtkAdjustment *adjustment)
 {
   g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), 0.0);
@@ -578,7 +578,7 @@ btk_adjustment_get_page_size (BtkAdjustment *adjustment)
  **/
 void
 btk_adjustment_set_page_size (BtkAdjustment *adjustment,
-                              gdouble        page_size)
+                              bdouble        page_size)
 {
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -606,15 +606,15 @@ btk_adjustment_set_page_size (BtkAdjustment *adjustment,
  **/
 void
 btk_adjustment_configure (BtkAdjustment *adjustment,
-                          gdouble        value,
-                          gdouble        lower,
-                          gdouble        upper,
-                          gdouble        step_increment,
-                          gdouble        page_increment,
-                          gdouble        page_size)
+                          bdouble        value,
+                          bdouble        lower,
+                          bdouble        upper,
+                          bdouble        step_increment,
+                          bdouble        page_increment,
+                          bdouble        page_size)
 {
-  gboolean value_changed = FALSE;
-  guint64 old_stamp = adjustment_changed_stamp;
+  bboolean value_changed = FALSE;
+  buint64 old_stamp = adjustment_changed_stamp;
 
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -671,10 +671,10 @@ btk_adjustment_value_changed (BtkAdjustment *adjustment)
 
 void
 btk_adjustment_clamp_page (BtkAdjustment *adjustment,
-			   gdouble        lower,
-			   gdouble        upper)
+			   bdouble        lower,
+			   bdouble        upper)
 {
-  gboolean need_emission;
+  bboolean need_emission;
 
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 

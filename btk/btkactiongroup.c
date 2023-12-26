@@ -49,13 +49,13 @@
 
 struct _BtkActionGroupPrivate 
 {
-  gchar           *name;
-  gboolean	   sensitive;
-  gboolean	   visible;
+  bchar           *name;
+  bboolean	   sensitive;
+  bboolean	   visible;
   GHashTable      *actions;
 
   BtkTranslateFunc translate_func;
-  gpointer         translate_data;
+  bpointer         translate_data;
   GDestroyNotify   translate_notify;
 };
 
@@ -80,36 +80,36 @@ static void       btk_action_group_init            (BtkActionGroup      *self);
 static void       btk_action_group_class_init      (BtkActionGroupClass *class);
 static void       btk_action_group_finalize        (BObject             *object);
 static void       btk_action_group_set_property    (BObject             *object,
-						    guint                prop_id,
+						    buint                prop_id,
 						    const BValue        *value,
 						    BParamSpec          *pspec);
 static void       btk_action_group_get_property    (BObject             *object,
-						    guint                prop_id,
+						    buint                prop_id,
 						    BValue              *value,
 						    BParamSpec          *pspec);
 static BtkAction *btk_action_group_real_get_action (BtkActionGroup      *self,
-						    const gchar         *name);
+						    const bchar         *name);
 
 /* BtkBuildable */
 static void btk_action_group_buildable_init (BtkBuildableIface *iface);
 static void btk_action_group_buildable_add_child (BtkBuildable  *buildable,
 						  BtkBuilder    *builder,
 						  BObject       *child,
-						  const gchar   *type);
+						  const bchar   *type);
 static void btk_action_group_buildable_set_name (BtkBuildable *buildable,
-						 const gchar  *name);
-static const gchar* btk_action_group_buildable_get_name (BtkBuildable *buildable);
-static gboolean btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
+						 const bchar  *name);
+static const bchar* btk_action_group_buildable_get_name (BtkBuildable *buildable);
+static bboolean btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
 							     BtkBuilder       *builder,
 							     BObject          *child,
-							     const gchar      *tagname,
+							     const bchar      *tagname,
 							     GMarkupParser    *parser,
-							     gpointer         *data);
+							     bpointer         *data);
 static void btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
 						       BObject      *child,
-						       const gchar  *tagname,
-						       gpointer     *user_data);
+						       const bchar  *tagname,
+						       bpointer     *user_data);
 
 GType
 btk_action_group_get_type (void)
@@ -149,7 +149,7 @@ btk_action_group_get_type (void)
 }
 
 static BObjectClass *parent_class = NULL;
-static guint         action_group_signals[LAST_SIGNAL] = { 0 };
+static buint         action_group_signals[LAST_SIGNAL] = { 0 };
 
 static void
 btk_action_group_class_init (BtkActionGroupClass *klass)
@@ -322,7 +322,7 @@ static void
 btk_action_group_buildable_add_child (BtkBuildable  *buildable,
 				      BtkBuilder    *builder,
 				      BObject       *child,
-				      const gchar   *type)
+				      const bchar   *type)
 {
   btk_action_group_add_action_with_accel (BTK_ACTION_GROUP (buildable),
 					  BTK_ACTION (child), NULL);
@@ -330,7 +330,7 @@ btk_action_group_buildable_add_child (BtkBuildable  *buildable,
 
 static void
 btk_action_group_buildable_set_name (BtkBuildable *buildable,
-				     const gchar  *name)
+				     const bchar  *name)
 {
   BtkActionGroup *self = BTK_ACTION_GROUP (buildable);
   BtkActionGroupPrivate *private = BTK_ACTION_GROUP_GET_PRIVATE (self);
@@ -338,7 +338,7 @@ btk_action_group_buildable_set_name (BtkBuildable *buildable,
   private->name = g_strdup (name);
 }
 
-static const gchar *
+static const bchar *
 btk_action_group_buildable_get_name (BtkBuildable *buildable)
 {
   BtkActionGroup *self = BTK_ACTION_GROUP (buildable);
@@ -348,20 +348,20 @@ btk_action_group_buildable_get_name (BtkBuildable *buildable)
 
 typedef struct {
   BObject         *child;
-  guint            key;
+  buint            key;
   BdkModifierType  modifiers;
 } AcceleratorParserData;
 
 static void
 accelerator_start_element (GMarkupParseContext *context,
-			   const gchar         *element_name,
-			   const gchar        **names,
-			   const gchar        **values,
-			   gpointer             user_data,
+			   const bchar         *element_name,
+			   const bchar        **names,
+			   const bchar        **values,
+			   bpointer             user_data,
 			   GError             **error)
 {
-  gint i;
-  guint key = 0;
+  bint i;
+  buint key = 0;
   BdkModifierType modifiers = 0;
   AcceleratorParserData *parser_data = (AcceleratorParserData*)user_data;
 
@@ -396,13 +396,13 @@ static const GMarkupParser accelerator_parser =
     accelerator_start_element
   };
 
-static gboolean
+static bboolean
 btk_action_group_buildable_custom_tag_start (BtkBuildable     *buildable,
 					     BtkBuilder       *builder,
 					     BObject          *child,
-					     const gchar      *tagname,
+					     const bchar      *tagname,
 					     GMarkupParser    *parser,
-					     gpointer         *user_data)
+					     bpointer         *user_data)
 {
   AcceleratorParserData *parser_data;
 
@@ -422,8 +422,8 @@ static void
 btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
 					   BObject      *child,
-					   const gchar  *tagname,
-					   gpointer     *user_data)
+					   const bchar  *tagname,
+					   bpointer     *user_data)
 {
   AcceleratorParserData *data;
   
@@ -432,7 +432,7 @@ btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
       BtkActionGroup *action_group;
       BtkActionGroupPrivate *private;
       BtkAction *action;
-      gchar *accel_path;
+      bchar *accel_path;
       
       data = (AcceleratorParserData*)user_data;
       action_group = BTK_ACTION_GROUP (buildable);
@@ -468,7 +468,7 @@ btk_action_group_buildable_custom_tag_end (BtkBuildable *buildable,
  * Since: 2.4
  */
 BtkActionGroup *
-btk_action_group_new (const gchar *name)
+btk_action_group_new (const bchar *name)
 {
   BtkActionGroup *self;
   BtkActionGroupPrivate *private;
@@ -503,13 +503,13 @@ btk_action_group_finalize (BObject *object)
 
 static void
 btk_action_group_set_property (BObject         *object,
-			       guint            prop_id,
+			       buint            prop_id,
 			       const BValue    *value,
 			       BParamSpec      *pspec)
 {
   BtkActionGroup *self;
   BtkActionGroupPrivate *private;
-  gchar *tmp;
+  bchar *tmp;
   
   self = BTK_ACTION_GROUP (object);
   private = BTK_ACTION_GROUP_GET_PRIVATE (self);
@@ -535,7 +535,7 @@ btk_action_group_set_property (BObject         *object,
 
 static void
 btk_action_group_get_property (BObject    *object,
-			       guint       prop_id,
+			       buint       prop_id,
 			       BValue     *value,
 			       BParamSpec *pspec)
 {
@@ -564,7 +564,7 @@ btk_action_group_get_property (BObject    *object,
 
 static BtkAction *
 btk_action_group_real_get_action (BtkActionGroup *self,
-				  const gchar    *action_name)
+				  const bchar    *action_name)
 {
   BtkActionGroupPrivate *private;
 
@@ -583,7 +583,7 @@ btk_action_group_real_get_action (BtkActionGroup *self,
  * 
  * Since: 2.4
  */
-const gchar *
+const bchar *
 btk_action_group_get_name (BtkActionGroup *action_group)
 {
   BtkActionGroupPrivate *private;
@@ -608,7 +608,7 @@ btk_action_group_get_name (BtkActionGroup *action_group)
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_action_group_get_sensitive (BtkActionGroup *action_group)
 {
   BtkActionGroupPrivate *private;
@@ -621,7 +621,7 @@ btk_action_group_get_sensitive (BtkActionGroup *action_group)
 }
 
 static void
-cb_set_action_sensitivity (const gchar *name, 
+cb_set_action_sensitivity (const bchar *name, 
 			   BtkAction   *action)
 {
   /* Minor optimization, the action_groups state only affects actions 
@@ -641,7 +641,7 @@ cb_set_action_sensitivity (const gchar *name,
  */
 void
 btk_action_group_set_sensitive (BtkActionGroup *action_group, 
-				gboolean        sensitive)
+				bboolean        sensitive)
 {
   BtkActionGroupPrivate *private;
 
@@ -673,7 +673,7 @@ btk_action_group_set_sensitive (BtkActionGroup *action_group,
  * 
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_action_group_get_visible (BtkActionGroup *action_group)
 {
   BtkActionGroupPrivate *private;
@@ -686,7 +686,7 @@ btk_action_group_get_visible (BtkActionGroup *action_group)
 }
 
 static void
-cb_set_action_visiblity (const gchar *name, 
+cb_set_action_visiblity (const bchar *name, 
 			 BtkAction   *action)
 {
   /* Minor optimization, the action_groups state only affects actions 
@@ -705,7 +705,7 @@ cb_set_action_visiblity (const gchar *name,
  */
 void
 btk_action_group_set_visible (BtkActionGroup *action_group, 
-			      gboolean        visible)
+			      bboolean        visible)
 {
   BtkActionGroupPrivate *private;
 
@@ -737,7 +737,7 @@ btk_action_group_set_visible (BtkActionGroup *action_group,
  */
 BtkAction *
 btk_action_group_get_action (BtkActionGroup *action_group,
-			     const gchar    *action_name)
+			     const bchar    *action_name)
 {
   g_return_val_if_fail (BTK_IS_ACTION_GROUP (action_group), NULL);
   g_return_val_if_fail (BTK_ACTION_GROUP_GET_CLASS (action_group)->get_action != NULL, NULL);
@@ -746,9 +746,9 @@ btk_action_group_get_action (BtkActionGroup *action_group,
                                                                 action_name);
 }
 
-static gboolean
+static bboolean
 check_unique_action (BtkActionGroup *action_group,
-	             const gchar    *action_name)
+	             const bchar    *action_name)
 {
   if (btk_action_group_get_action (action_group, action_name) != NULL)
     {
@@ -784,7 +784,7 @@ btk_action_group_add_action (BtkActionGroup *action_group,
 			     BtkAction      *action)
 {
   BtkActionGroupPrivate *private;
-  const gchar *name;
+  const bchar *name;
 
   g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
   g_return_if_fail (BTK_IS_ACTION (action));
@@ -798,7 +798,7 @@ btk_action_group_add_action (BtkActionGroup *action_group,
   private = BTK_ACTION_GROUP_GET_PRIVATE (action_group);
 
   g_hash_table_insert (private->actions, 
-		       (gpointer) name,
+		       (bpointer) name,
                        g_object_ref (action));
   g_object_set (action, I_("action-group"), action_group, NULL);
 }
@@ -824,13 +824,13 @@ btk_action_group_add_action (BtkActionGroup *action_group,
 void
 btk_action_group_add_action_with_accel (BtkActionGroup *action_group,
 					BtkAction      *action,
-					const gchar    *accelerator)
+					const bchar    *accelerator)
 {
   BtkActionGroupPrivate *private;
-  gchar *accel_path;
-  guint  accel_key = 0;
+  bchar *accel_path;
+  buint  accel_key = 0;
   BdkModifierType accel_mods;
-  const gchar *name;
+  const bchar *name;
 
   name = btk_action_get_name (action);
   if (!check_unique_action (action_group, name))
@@ -854,7 +854,7 @@ btk_action_group_add_action_with_accel (BtkActionGroup *action_group,
     }
   else 
     {
-      gchar *stock_id;
+      bchar *stock_id;
       BtkStockItem stock_item;
 
       g_object_get (action, "stock-id", &stock_id, NULL);
@@ -891,7 +891,7 @@ btk_action_group_remove_action (BtkActionGroup *action_group,
 				BtkAction      *action)
 {
   BtkActionGroupPrivate *private;
-  const gchar *name;
+  const bchar *name;
 
   g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
   g_return_if_fail (BTK_IS_ACTION (action));
@@ -905,9 +905,9 @@ btk_action_group_remove_action (BtkActionGroup *action_group,
 }
 
 static void
-add_single_action (gpointer key, 
-		   gpointer value, 
-		   gpointer user_data)
+add_single_action (bpointer key, 
+		   bpointer value, 
+		   bpointer user_data)
 {
   GList **list = user_data;
 
@@ -959,8 +959,8 @@ btk_action_group_list_actions (BtkActionGroup *action_group)
 void
 btk_action_group_add_actions (BtkActionGroup       *action_group,
 			      const BtkActionEntry *entries,
-			      guint                 n_entries,
-			      gpointer              user_data)
+			      buint                 n_entries,
+			      bpointer              user_data)
 {
   btk_action_group_add_actions_full (action_group, 
 				     entries, n_entries, 
@@ -970,13 +970,13 @@ btk_action_group_add_actions (BtkActionGroup       *action_group,
 typedef struct _SharedData  SharedData;
 
 struct _SharedData {
-  guint          ref_count;
-  gpointer       data;
+  buint          ref_count;
+  bpointer       data;
   GDestroyNotify destroy;
 };
 
 static void
-shared_data_unref (gpointer data)
+shared_data_unref (bpointer data)
 {
   SharedData *shared_data = (SharedData *)data;
 
@@ -1007,15 +1007,15 @@ shared_data_unref (gpointer data)
 void
 btk_action_group_add_actions_full (BtkActionGroup       *action_group,
 				   const BtkActionEntry *entries,
-				   guint                 n_entries,
-				   gpointer              user_data,
+				   buint                 n_entries,
+				   bpointer              user_data,
 				   GDestroyNotify        destroy)
 {
 
   /* Keep this in sync with the other 
    * btk_action_group_add_..._actions_full() functions.
    */
-  guint i;
+  buint i;
   SharedData *shared_data;
 
   g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
@@ -1028,8 +1028,8 @@ btk_action_group_add_actions_full (BtkActionGroup       *action_group,
   for (i = 0; i < n_entries; i++)
     {
       BtkAction *action;
-      const gchar *label;
-      const gchar *tooltip;
+      const bchar *label;
+      const bchar *tooltip;
 
       if (!check_unique_action (action_group, entries[i].name))
         continue;
@@ -1090,8 +1090,8 @@ btk_action_group_add_actions_full (BtkActionGroup       *action_group,
 void
 btk_action_group_add_toggle_actions (BtkActionGroup             *action_group,
 				     const BtkToggleActionEntry *entries,
-				     guint                       n_entries,
-				     gpointer                    user_data)
+				     buint                       n_entries,
+				     bpointer                    user_data)
 {
   btk_action_group_add_toggle_actions_full (action_group, 
 					    entries, n_entries, 
@@ -1115,14 +1115,14 @@ btk_action_group_add_toggle_actions (BtkActionGroup             *action_group,
 void
 btk_action_group_add_toggle_actions_full (BtkActionGroup             *action_group,
 					  const BtkToggleActionEntry *entries,
-					  guint                       n_entries,
-					  gpointer                    user_data,
+					  buint                       n_entries,
+					  bpointer                    user_data,
 					  GDestroyNotify              destroy)
 {
   /* Keep this in sync with the other 
    * btk_action_group_add_..._actions_full() functions.
    */
-  guint i;
+  buint i;
   SharedData *shared_data;
 
   g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
@@ -1135,8 +1135,8 @@ btk_action_group_add_toggle_actions_full (BtkActionGroup             *action_gro
   for (i = 0; i < n_entries; i++)
     {
       BtkToggleAction *action;
-      const gchar *label;
-      const gchar *tooltip;
+      const bchar *label;
+      const bchar *tooltip;
 
       if (!check_unique_action (action_group, entries[i].name))
         continue;
@@ -1202,10 +1202,10 @@ btk_action_group_add_toggle_actions_full (BtkActionGroup             *action_gro
 void            
 btk_action_group_add_radio_actions (BtkActionGroup            *action_group,
 				    const BtkRadioActionEntry *entries,
-				    guint                      n_entries,
-				    gint                       value,
+				    buint                      n_entries,
+				    bint                       value,
 				    GCallback                  on_change,
-				    gpointer                   user_data)
+				    bpointer                   user_data)
 {
   btk_action_group_add_radio_actions_full (action_group, 
 					   entries, n_entries, 
@@ -1232,16 +1232,16 @@ btk_action_group_add_radio_actions (BtkActionGroup            *action_group,
 void            
 btk_action_group_add_radio_actions_full (BtkActionGroup            *action_group,
 					 const BtkRadioActionEntry *entries,
-					 guint                      n_entries,
-					 gint                       value,
+					 buint                      n_entries,
+					 bint                       value,
 					 GCallback                  on_change,
-					 gpointer                   user_data,
+					 bpointer                   user_data,
 					 GDestroyNotify             destroy)
 {
   /* Keep this in sync with the other 
    * btk_action_group_add_..._actions_full() functions.
    */
-  guint i;
+  buint i;
   GSList *group = NULL;
   BtkRadioAction *first_action = NULL;
 
@@ -1250,8 +1250,8 @@ btk_action_group_add_radio_actions_full (BtkActionGroup            *action_group
   for (i = 0; i < n_entries; i++)
     {
       BtkRadioAction *action;
-      const gchar *label;
-      const gchar *tooltip; 
+      const bchar *label;
+      const bchar *tooltip; 
 
       if (!check_unique_action (action_group, entries[i].name))
         continue;
@@ -1313,7 +1313,7 @@ btk_action_group_add_radio_actions_full (BtkActionGroup            *action_group
 void
 btk_action_group_set_translate_func (BtkActionGroup   *action_group,
 				     BtkTranslateFunc  func,
-				     gpointer          data,
+				     bpointer          data,
 				     GDestroyNotify    notify)
 {
   BtkActionGroupPrivate *private;
@@ -1330,15 +1330,15 @@ btk_action_group_set_translate_func (BtkActionGroup   *action_group,
   private->translate_notify = notify;
 }
 
-static gchar *
-dgettext_swapped (const gchar *msgid, 
-		  const gchar *domainname)
+static bchar *
+dgettext_swapped (const bchar *msgid, 
+		  const bchar *domainname)
 {
   /* Pass through g_dgettext if and only if msgid is nonempty. */
   if (msgid && *msgid) 
-    return (gchar*) g_dgettext (domainname, msgid); 
+    return (bchar*) g_dgettext (domainname, msgid); 
   else
-    return (gchar*) msgid;
+    return (bchar*) msgid;
 }
 
 /**
@@ -1357,7 +1357,7 @@ dgettext_swapped (const gchar *msgid,
  **/
 void 
 btk_action_group_set_translation_domain (BtkActionGroup *action_group,
-					 const gchar    *domain)
+					 const bchar    *domain)
 {
   g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
 
@@ -1380,13 +1380,13 @@ btk_action_group_set_translation_domain (BtkActionGroup *action_group,
  *
  * Since: 2.6
  **/
-const gchar *
+const bchar *
 btk_action_group_translate_string (BtkActionGroup *action_group,
-				   const gchar    *string)
+				   const bchar    *string)
 {
   BtkActionGroupPrivate *private;
   BtkTranslateFunc translate_func;
-  gpointer translate_data;
+  bpointer translate_data;
   
   g_return_val_if_fail (BTK_IS_ACTION_GROUP (action_group), string);
   

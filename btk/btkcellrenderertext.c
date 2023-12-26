@@ -31,20 +31,20 @@
 static void btk_cell_renderer_text_finalize   (BObject                  *object);
 
 static void btk_cell_renderer_text_get_property  (BObject                  *object,
-						  guint                     param_id,
+						  buint                     param_id,
 						  BValue                   *value,
 						  BParamSpec               *pspec);
 static void btk_cell_renderer_text_set_property  (BObject                  *object,
-						  guint                     param_id,
+						  buint                     param_id,
 						  const BValue             *value,
 						  BParamSpec               *pspec);
 static void btk_cell_renderer_text_get_size   (BtkCellRenderer          *cell,
 					       BtkWidget                *widget,
 					       BdkRectangle             *cell_area,
-					       gint                     *x_offset,
-					       gint                     *y_offset,
-					       gint                     *width,
-					       gint                     *height);
+					       bint                     *x_offset,
+					       bint                     *y_offset,
+					       bint                     *width,
+					       bint                     *height);
 static void btk_cell_renderer_text_render     (BtkCellRenderer          *cell,
 					       BdkWindow                *window,
 					       BtkWidget                *widget,
@@ -56,7 +56,7 @@ static void btk_cell_renderer_text_render     (BtkCellRenderer          *cell,
 static BtkCellEditable *btk_cell_renderer_text_start_editing (BtkCellRenderer      *cell,
 							      BdkEvent             *event,
 							      BtkWidget            *widget,
-							      const gchar          *path,
+							      const bchar          *path,
 							      BdkRectangle         *background_area,
 							      BdkRectangle         *cell_area,
 							      BtkCellRendererState  flags);
@@ -119,7 +119,7 @@ enum {
   PROP_ALIGN_SET
 };
 
-static guint text_cell_renderer_signals [LAST_SIGNAL];
+static buint text_cell_renderer_signals [LAST_SIGNAL];
 
 #define BTK_CELL_RENDERER_TEXT_PATH "btk-cell-renderer-text-path"
 
@@ -128,24 +128,24 @@ static guint text_cell_renderer_signals [LAST_SIGNAL];
 typedef struct _BtkCellRendererTextPrivate BtkCellRendererTextPrivate;
 struct _BtkCellRendererTextPrivate
 {
-  guint single_paragraph : 1;
-  guint language_set : 1;
-  guint markup_set : 1;
-  guint ellipsize_set : 1;
-  guint align_set : 1;
+  buint single_paragraph : 1;
+  buint language_set : 1;
+  buint markup_set : 1;
+  buint ellipsize_set : 1;
+  buint align_set : 1;
   
-  gulong focus_out_id;
+  bulong focus_out_id;
   BangoLanguage *language;
   BangoEllipsizeMode ellipsize;
   BangoWrapMode wrap_mode;
   BangoAlignment align;
   
-  gulong populate_popup_id;
-  gulong entry_menu_popdown_timeout;
-  gboolean in_entry_menu;
+  bulong populate_popup_id;
+  bulong entry_menu_popdown_timeout;
+  bboolean in_entry_menu;
   
-  gint width_chars;
-  gint wrap_width;
+  bint width_chars;
+  bint wrap_width;
   
   BtkWidget *entry;
 };
@@ -312,7 +312,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                      P_("Font weight"),
                                                      P_("Font weight"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      BANGO_WEIGHT_NORMAL,
                                                      BTK_PARAM_READWRITE));
 
@@ -331,7 +331,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                      P_("Font size"),
                                                      P_("Font size"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -341,7 +341,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                         P_("Font points"),
                                                         P_("Font size in points"),
                                                         0.0,
-                                                        G_MAXDOUBLE,
+                                                        B_MAXDOUBLE,
                                                         0.0,
                                                         BTK_PARAM_READWRITE));  
 
@@ -351,7 +351,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                         P_("Font scale"),
                                                         P_("Font scaling factor"),
                                                         0.0,
-                                                        G_MAXDOUBLE,
+                                                        B_MAXDOUBLE,
                                                         1.0,
                                                         BTK_PARAM_READWRITE));
   
@@ -361,8 +361,8 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                      P_("Rise"),
                                                      P_("Offset of text above the baseline "
 							"(below the baseline if rise is negative)"),
-                                                     -G_MAXINT,
-                                                     G_MAXINT,
+                                                     -B_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -431,7 +431,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
                                                      P_("Width In Characters"),
                                                      P_("The desired width of the label, in characters"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
   
@@ -470,7 +470,7 @@ btk_cell_renderer_text_class_init (BtkCellRendererTextClass *class)
 						     P_("Wrap width"),
 						     P_("The width at which the text is wrapped"),
 						     -1,
-						     G_MAXINT,
+						     B_MAXINT,
 						     -1,
 						     BTK_PARAM_READWRITE));
 
@@ -609,7 +609,7 @@ btk_cell_renderer_text_finalize (BObject *object)
 }
 
 static BangoFontMask
-get_property_font_set_mask (guint prop_id)
+get_property_font_set_mask (buint prop_id)
 {
   switch (prop_id)
     {
@@ -632,7 +632,7 @@ get_property_font_set_mask (guint prop_id)
 
 static void
 btk_cell_renderer_text_get_property (BObject        *object,
-				     guint           param_id,
+				     buint           param_id,
 				     BValue         *value,
 				     BParamSpec     *pspec)
 {
@@ -902,7 +902,7 @@ set_font_desc_fields (BangoFontDescription *desc,
     bango_font_description_set_stretch (desc, bango_font_description_get_stretch (desc));
   if (to_set & BANGO_FONT_MASK_SIZE)
     {
-      gint size = bango_font_description_get_size (desc);
+      bint size = bango_font_description_get_size (desc);
       if (size <= 0)
 	{
 	  size = 10 * BANGO_SCALE;
@@ -1001,7 +1001,7 @@ set_font_description (BtkCellRendererText  *celltext,
 
 static void
 btk_cell_renderer_text_set_property (BObject      *object,
-				     guint         param_id,
+				     buint         param_id,
 				     const BValue *value,
 				     BParamSpec   *pspec)
 {
@@ -1037,8 +1037,8 @@ btk_cell_renderer_text_set_property (BObject      *object,
       break;
     case PROP_MARKUP:
       {
-	const gchar *str;
-	gchar *text = NULL;
+	const bchar *str;
+	bchar *text = NULL;
 	GError *error = NULL;
 	BangoAttrList *attrs = NULL;
 
@@ -1115,7 +1115,7 @@ btk_cell_renderer_text_set_property (BObject      *object,
     case PROP_FONT:
       {
         BangoFontDescription *font_desc = NULL;
-        const gchar *name;
+        const bchar *name;
 
         name = b_value_get_string (value);
 
@@ -1354,7 +1354,7 @@ add_attr (BangoAttrList  *attr_list,
           BangoAttribute *attr)
 {
   attr->start_index = 0;
-  attr->end_index = G_MAXINT;
+  attr->end_index = B_MAXINT;
   
   bango_attr_list_insert (attr_list, attr);
 }
@@ -1362,7 +1362,7 @@ add_attr (BangoAttrList  *attr_list,
 static BangoLayout*
 get_layout (BtkCellRendererText *celltext,
             BtkWidget           *widget,
-            gboolean             will_render,
+            bboolean             will_render,
             BtkCellRendererState flags)
 {
   BangoAttrList *attr_list;
@@ -1484,10 +1484,10 @@ get_size (BtkCellRenderer *cell,
 	  BtkWidget       *widget,
 	  BdkRectangle    *cell_area,
 	  BangoLayout     *layout,
-	  gint            *x_offset,
-	  gint            *y_offset,
-	  gint            *width,
-	  gint            *height)
+	  bint            *x_offset,
+	  bint            *y_offset,
+	  bint            *width,
+	  bint            *height)
 {
   BtkCellRendererText *celltext = (BtkCellRendererText *) cell;
   BangoRectangle rect;
@@ -1500,7 +1500,7 @@ get_size (BtkCellRenderer *cell,
       BangoContext *context;
       BangoFontMetrics *metrics;
       BangoFontDescription *font_desc;
-      gint row_height;
+      bint row_height;
 
       font_desc = bango_font_description_copy_static (widget->style->font_desc);
       bango_font_description_merge_static (font_desc, celltext->font, TRUE);
@@ -1551,7 +1551,7 @@ get_size (BtkCellRenderer *cell,
 	{
 	  BangoContext *context;
 	  BangoFontMetrics *metrics;
-	  gint char_width;
+	  bint char_width;
 
 	  context = bango_layout_get_context (layout);
 	  metrics = bango_context_get_metrics (context, widget->style->font_desc, bango_context_get_language (context));
@@ -1599,10 +1599,10 @@ static void
 btk_cell_renderer_text_get_size (BtkCellRenderer *cell,
 				 BtkWidget       *widget,
 				 BdkRectangle    *cell_area,
-				 gint            *x_offset,
-				 gint            *y_offset,
-				 gint            *width,
-				 gint            *height)
+				 bint            *x_offset,
+				 bint            *y_offset,
+				 bint            *width,
+				 bint            *height)
 {
   get_size (cell, widget, cell_area, NULL,
 	    x_offset, y_offset, width, height);
@@ -1621,8 +1621,8 @@ btk_cell_renderer_text_render (BtkCellRenderer      *cell,
   BtkCellRendererText *celltext = (BtkCellRendererText *) cell;
   BangoLayout *layout;
   BtkStateType state;
-  gint x_offset;
-  gint y_offset;
+  bint x_offset;
+  bint y_offset;
   BtkCellRendererTextPrivate *priv;
 
   priv = BTK_CELL_RENDERER_TEXT_GET_PRIVATE (cell);
@@ -1697,11 +1697,11 @@ btk_cell_renderer_text_render (BtkCellRenderer      *cell,
 
 static void
 btk_cell_renderer_text_editing_done (BtkCellEditable *entry,
-				     gpointer         data)
+				     bpointer         data)
 {
-  const gchar *path;
-  const gchar *new_text;
-  gboolean canceled;
+  const bchar *path;
+  const bchar *new_text;
+  bboolean canceled;
   BtkCellRendererTextPrivate *priv;
 
   priv = BTK_CELL_RENDERER_TEXT_GET_PRIVATE (data);
@@ -1740,8 +1740,8 @@ btk_cell_renderer_text_editing_done (BtkCellEditable *entry,
   g_signal_emit (data, text_cell_renderer_signals[EDITED], 0, path, new_text);
 }
 
-static gboolean
-popdown_timeout (gpointer data)
+static bboolean
+popdown_timeout (bpointer data)
 {
   BtkCellRendererTextPrivate *priv;
 
@@ -1757,7 +1757,7 @@ popdown_timeout (gpointer data)
 
 static void
 btk_cell_renderer_text_popup_unmap (BtkMenu *menu,
-                                    gpointer data)
+                                    bpointer data)
 {
   BtkCellRendererTextPrivate *priv;
 
@@ -1775,7 +1775,7 @@ btk_cell_renderer_text_popup_unmap (BtkMenu *menu,
 static void
 btk_cell_renderer_text_populate_popup (BtkEntry *entry,
                                        BtkMenu  *menu,
-                                       gpointer  data)
+                                       bpointer  data)
 {
   BtkCellRendererTextPrivate *priv;
 
@@ -1793,10 +1793,10 @@ btk_cell_renderer_text_populate_popup (BtkEntry *entry,
                     G_CALLBACK (btk_cell_renderer_text_popup_unmap), data);
 }
 
-static gboolean
+static bboolean
 btk_cell_renderer_text_focus_out_event (BtkWidget *entry,
 		                        BdkEvent  *event,
-					gpointer   data)
+					bpointer   data)
 {
   BtkCellRendererTextPrivate *priv;
 
@@ -1819,7 +1819,7 @@ static BtkCellEditable *
 btk_cell_renderer_text_start_editing (BtkCellRenderer      *cell,
 				      BdkEvent             *event,
 				      BtkWidget            *widget,
-				      const gchar          *path,
+				      const bchar          *path,
 				      BdkRectangle         *background_area,
 				      BdkRectangle         *cell_area,
 				      BtkCellRendererState  flags)
@@ -1912,7 +1912,7 @@ btk_cell_renderer_text_start_editing (BtkCellRenderer      *cell,
  **/
 void
 btk_cell_renderer_text_set_fixed_height_from_font (BtkCellRendererText *renderer,
-						   gint                 number_of_rows)
+						   bint                 number_of_rows)
 {
   g_return_if_fail (BTK_IS_CELL_RENDERER_TEXT (renderer));
   g_return_if_fail (number_of_rows == -1 || number_of_rows > 0);

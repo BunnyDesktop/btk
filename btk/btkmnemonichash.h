@@ -29,25 +29,25 @@ B_BEGIN_DECLS
 
 typedef struct _BtkMnemnonicHash BtkMnemonicHash;
 
-typedef void (*BtkMnemonicHashForeach) (guint      keyval,
+typedef void (*BtkMnemonicHashForeach) (buint      keyval,
 					GSList    *targets,
-					gpointer   data);
+					bpointer   data);
 
 BtkMnemonicHash *_btk_mnemonic_hash_new      (void);
 void             _btk_mnemonic_hash_free     (BtkMnemonicHash        *mnemonic_hash);
 void             _btk_mnemonic_hash_add      (BtkMnemonicHash        *mnemonic_hash,
-					      guint                   keyval,
+					      buint                   keyval,
 					      BtkWidget              *target);
 void             _btk_mnemonic_hash_remove   (BtkMnemonicHash        *mnemonic_hash,
-					      guint                   keyval,
+					      buint                   keyval,
 					      BtkWidget              *target);
-gboolean         _btk_mnemonic_hash_activate (BtkMnemonicHash        *mnemonic_hash,
-					      guint                   keyval);
+bboolean         _btk_mnemonic_hash_activate (BtkMnemonicHash        *mnemonic_hash,
+					      buint                   keyval);
 GSList *         _btk_mnemonic_hash_lookup   (BtkMnemonicHash        *mnemonic_hash,
-					      guint                   keyval);
+					      buint                   keyval);
 void             _btk_mnemonic_hash_foreach  (BtkMnemonicHash        *mnemonic_hash,
 					      BtkMnemonicHashForeach  func,
-					      gpointer                func_data);
+					      bpointer                func_data);
 
 B_END_DECLS
 

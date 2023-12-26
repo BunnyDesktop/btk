@@ -39,17 +39,17 @@ struct _BtkPrintContext
   bairo_t *cr;
   BtkPageSetup *page_setup;
 
-  gdouble surface_dpi_x;
-  gdouble surface_dpi_y;
+  bdouble surface_dpi_x;
+  bdouble surface_dpi_y;
   
-  gdouble pixels_per_unit_x;
-  gdouble pixels_per_unit_y;
+  bdouble pixels_per_unit_x;
+  bdouble pixels_per_unit_y;
 
-  gboolean has_hard_margins;
-  gdouble hard_margin_top;
-  gdouble hard_margin_bottom;
-  gdouble hard_margin_left;
-  gdouble hard_margin_right;
+  bboolean has_hard_margins;
+  bdouble hard_margin_top;
+  bdouble hard_margin_bottom;
+  bdouble hard_margin_left;
+  bdouble hard_margin_right;
 
 };
 
@@ -170,7 +170,7 @@ _btk_print_context_rotate_according_to_orientation (BtkPrintContext *context)
   bairo_t *cr = context->cr;
   bairo_matrix_t matrix;
   BtkPaperSize *paper_size;
-  gdouble width, height;
+  bdouble width, height;
 
   paper_size = btk_page_setup_get_paper_size (context->page_setup);
 
@@ -215,7 +215,7 @@ void
 _btk_print_context_translate_into_margin (BtkPrintContext *context)
 {
   BtkPrintOperationPrivate *priv;
-  gdouble left, top;
+  bdouble left, top;
 
   g_return_if_fail (BTK_IS_PRINT_CONTEXT (context));
 
@@ -295,11 +295,11 @@ btk_print_context_get_page_setup (BtkPrintContext *context)
  *
  * Since: 2.10 
  */
-gdouble
+bdouble
 btk_print_context_get_width (BtkPrintContext *context)
 {
   BtkPrintOperationPrivate *priv;
-  gdouble width;
+  bdouble width;
 
   g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
@@ -324,11 +324,11 @@ btk_print_context_get_width (BtkPrintContext *context)
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_context_get_height (BtkPrintContext *context)
 {
   BtkPrintOperationPrivate *priv;
-  gdouble height;
+  bdouble height;
 
   g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
@@ -354,7 +354,7 @@ btk_print_context_get_height (BtkPrintContext *context)
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_context_get_dpi_x (BtkPrintContext *context)
 {
   g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
@@ -373,7 +373,7 @@ btk_print_context_get_dpi_x (BtkPrintContext *context)
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_context_get_dpi_y (BtkPrintContext *context)
 {
   g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
@@ -395,12 +395,12 @@ btk_print_context_get_dpi_y (BtkPrintContext *context)
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_print_context_get_hard_margins (BtkPrintContext *context,
-				    gdouble         *top,
-				    gdouble         *bottom,
-				    gdouble         *left,
-				    gdouble         *right)
+				    bdouble         *top,
+				    bdouble         *bottom,
+				    bdouble         *left,
+				    bdouble         *right)
 {
   if (context->has_hard_margins)
     {
@@ -425,10 +425,10 @@ btk_print_context_get_hard_margins (BtkPrintContext *context,
  */
 void
 _btk_print_context_set_hard_margins (BtkPrintContext *context,
-				     gdouble          top,
-				     gdouble          bottom,
-				     gdouble          left,
-				     gdouble          right)
+				     bdouble          top,
+				     bdouble          bottom,
+				     bdouble          left,
+				     bdouble          right)
 {
   context->hard_margin_top    = top;
   context->hard_margin_bottom = bottom;

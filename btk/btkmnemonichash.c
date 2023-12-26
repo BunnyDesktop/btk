@@ -39,14 +39,14 @@ _btk_mnemonic_hash_new (void)
 }
 
 static void
-mnemonic_hash_free_foreach (gpointer	key,
-			    gpointer	value,
-			    gpointer	user)
+mnemonic_hash_free_foreach (bpointer	key,
+			    bpointer	value,
+			    bpointer	user)
 {
-  guint keyval = GPOINTER_TO_UINT (key);
+  buint keyval = BPOINTER_TO_UINT (key);
   GSList *targets = value;
 
-  gchar *name = btk_accelerator_name (keyval, 0);
+  bchar *name = btk_accelerator_name (keyval, 0);
       
   g_warning ("mnemonic \"%s\" wasn't removed for widget (%p)",
 	     name, targets->data);
@@ -68,10 +68,10 @@ _btk_mnemonic_hash_free (BtkMnemonicHash *mnemonic_hash)
 
 void
 _btk_mnemonic_hash_add (BtkMnemonicHash *mnemonic_hash,
-			guint            keyval,
+			buint            keyval,
 			BtkWidget       *target)
 {
-  gpointer key = GUINT_TO_POINTER (keyval);
+  bpointer key = BUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
   
   g_return_if_fail (BTK_IS_WIDGET (target));
@@ -86,10 +86,10 @@ _btk_mnemonic_hash_add (BtkMnemonicHash *mnemonic_hash,
 
 void
 _btk_mnemonic_hash_remove (BtkMnemonicHash *mnemonic_hash,
-			   guint           keyval,
+			   buint           keyval,
 			   BtkWidget      *target)
 {
-  gpointer key = GUINT_TO_POINTER (keyval);
+  bpointer key = BUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
   
   g_return_if_fail (BTK_IS_WIDGET (target));
@@ -108,16 +108,16 @@ _btk_mnemonic_hash_remove (BtkMnemonicHash *mnemonic_hash,
     }
 }
 
-gboolean
+bboolean
 _btk_mnemonic_hash_activate (BtkMnemonicHash *mnemonic_hash,
-			     guint            keyval)
+			     buint            keyval)
 {
   GSList *list, *targets;
   BtkWidget *widget, *chosen_widget;
-  gboolean overloaded;
+  bboolean overloaded;
 
   targets = g_hash_table_lookup (mnemonic_hash->hash,
-				 GUINT_TO_POINTER (keyval));
+				 BUINT_TO_POINTER (keyval));
   if (!targets)
     return FALSE;
   
@@ -150,7 +150,7 @@ _btk_mnemonic_hash_activate (BtkMnemonicHash *mnemonic_hash,
       targets = b_slist_remove (targets, chosen_widget);
       targets = b_slist_append (targets, chosen_widget);
       g_hash_table_insert (mnemonic_hash->hash,
-			   GUINT_TO_POINTER (keyval),
+			   BUINT_TO_POINTER (keyval),
 			   targets);
 
       return btk_widget_mnemonic_activate (chosen_widget, overloaded);
@@ -160,22 +160,22 @@ _btk_mnemonic_hash_activate (BtkMnemonicHash *mnemonic_hash,
 
 GSList *
 _btk_mnemonic_hash_lookup (BtkMnemonicHash *mnemonic_hash,
-			   guint            keyval)
+			   buint            keyval)
 {
-  return g_hash_table_lookup (mnemonic_hash->hash, GUINT_TO_POINTER (keyval));
+  return g_hash_table_lookup (mnemonic_hash->hash, BUINT_TO_POINTER (keyval));
 }
 
 static void
-mnemonic_hash_foreach_func (gpointer key,
-			    gpointer value,
-			    gpointer data)
+mnemonic_hash_foreach_func (bpointer key,
+			    bpointer value,
+			    bpointer data)
 {
   struct {
     BtkMnemonicHashForeach func;
-    gpointer func_data;
+    bpointer func_data;
   } *info = data;
 
-  guint keyval = GPOINTER_TO_UINT (key);
+  buint keyval = BPOINTER_TO_UINT (key);
   GSList *targets = value;
   
   (*info->func) (keyval, targets, info->func_data);
@@ -184,11 +184,11 @@ mnemonic_hash_foreach_func (gpointer key,
 void
 _btk_mnemonic_hash_foreach (BtkMnemonicHash       *mnemonic_hash,
 			    BtkMnemonicHashForeach func,
-			    gpointer               func_data)
+			    bpointer               func_data)
 {
   struct {
     BtkMnemonicHashForeach func;
-    gpointer func_data;
+    bpointer func_data;
   } info;
   
   info.func = func;

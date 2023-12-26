@@ -47,39 +47,39 @@ static void bail_window_class_init (BailWindowClass *klass);
 static void                  bail_window_init            (BailWindow   *accessible);
 
 static void                  bail_window_real_initialize (BatkObject    *obj,
-                                                          gpointer     data);
+                                                          bpointer     data);
 static void                  bail_window_finalize        (BObject      *object);
 
-static const gchar*          bail_window_get_name        (BatkObject     *accessible);
+static const bchar*          bail_window_get_name        (BatkObject     *accessible);
 
 static BatkObject*            bail_window_get_parent     (BatkObject     *accessible);
-static gint                  bail_window_get_index_in_parent (BatkObject *accessible);
-static gboolean              bail_window_real_focus_btk (BtkWidget     *widget,
+static bint                  bail_window_get_index_in_parent (BatkObject *accessible);
+static bboolean              bail_window_real_focus_btk (BtkWidget     *widget,
                                                          BdkEventFocus *event);
 
 static BatkStateSet*          bail_window_ref_state_set  (BatkObject     *accessible);
 static BatkRelationSet*       bail_window_ref_relation_set  (BatkObject     *accessible);
 static void                  bail_window_real_notify_btk (BObject      *obj,
                                                           BParamSpec   *pspec);
-static gint                  bail_window_get_mdi_zorder (BatkComponent  *component);
+static bint                  bail_window_get_mdi_zorder (BatkComponent  *component);
 
-static gboolean              bail_window_state_event_btk (BtkWidget           *widget,
+static bboolean              bail_window_state_event_btk (BtkWidget           *widget,
                                                           BdkEventWindowState *event);
 
 /* batkcomponent.h */
 static void                  batk_component_interface_init (BatkComponentIface    *iface);
 
 static void                  bail_window_get_extents      (BatkComponent         *component,
-                                                           gint                 *x,
-                                                           gint                 *y,
-                                                           gint                 *width,
-                                                           gint                 *height,
+                                                           bint                 *x,
+                                                           bint                 *y,
+                                                           bint                 *width,
+                                                           bint                 *height,
                                                            BatkCoordType         coord_type);
 static void                  bail_window_get_size         (BatkComponent         *component,
-                                                           gint                 *width,
-                                                           gint                 *height);
+                                                           bint                 *width,
+                                                           bint                 *height);
 
-static guint bail_window_signals [LAST_SIGNAL] = { 0, };
+static buint bail_window_signals [LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE_WITH_CODE (BailWindow, bail_window, BAIL_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_COMPONENT, batk_component_interface_init))
@@ -185,7 +185,7 @@ bail_window_init (BailWindow   *accessible)
 
 static void
 bail_window_real_initialize (BatkObject *obj,
-                             gpointer  data)
+                             bpointer  data)
 {
   BtkWidget *widget = BTK_WIDGET (data);
   BailWindow *window;
@@ -208,7 +208,7 @@ bail_window_real_initialize (BatkObject *obj,
                     G_CALLBACK (bail_window_state_event_btk),
                     NULL);
   g_object_set_data (B_OBJECT (obj), "batk-component-layer",
-                     GINT_TO_POINTER (BATK_LAYER_WINDOW));
+                     BINT_TO_POINTER (BATK_LAYER_WINDOW));
 
   if (BTK_IS_FILE_SELECTION (widget))
     obj->role = BATK_ROLE_FILE_CHOOSER;
@@ -222,7 +222,7 @@ bail_window_real_initialize (BatkObject *obj,
     obj->role = BATK_ROLE_DIALOG;
   else
     {
-      const gchar *name;
+      const bchar *name;
 
       name = btk_widget_get_name (widget);
       if (name && (!strcmp (name, "btk-tooltip") ||
@@ -263,10 +263,10 @@ bail_window_finalize (BObject *object)
   B_OBJECT_CLASS (bail_window_parent_class)->finalize (object);
 }
 
-static const gchar*
+static const bchar*
 bail_window_get_name (BatkObject *accessible)
 {
-  const gchar* name;
+  const bchar* name;
 
   name = BATK_OBJECT_CLASS (bail_window_parent_class)->get_name (accessible);
   if (name == NULL)
@@ -304,7 +304,7 @@ bail_window_get_name (BatkObject *accessible)
                   if (BTK_IS_BOX(child)) 
                     {
                       GList *children;
-                      guint count;
+                      buint count;
                       children = btk_container_get_children (BTK_CONTAINER (child));
                       count = g_list_length (children);
                       if (count == 2) 
@@ -337,12 +337,12 @@ bail_window_get_parent (BatkObject *accessible)
   return parent;
 }
 
-static gint
+static bint
 bail_window_get_index_in_parent (BatkObject *accessible)
 {
   BtkWidget* widget = BTK_ACCESSIBLE (accessible)->widget; 
   BatkObject* batk_obj = batk_get_root ();
-  gint index = -1;
+  bint index = -1;
 
   if (widget == NULL)
     /*
@@ -378,7 +378,7 @@ bail_window_get_index_in_parent (BatkObject *accessible)
   return index;
 }
 
-static gboolean
+static bboolean
 bail_window_real_focus_btk (BtkWidget     *widget,
                             BdkEventFocus *event)
 {
@@ -464,8 +464,8 @@ bail_window_ref_state_set (BatkObject *accessible)
   return state_set;
 }
 
-static gboolean
-idle_notify_name_change (gpointer data)
+static bboolean
+idle_notify_name_change (bpointer data)
 {
   BailWindow *window;
   BatkObject *obj;
@@ -495,8 +495,8 @@ bail_window_real_notify_btk (BObject		*obj,
   BtkWidget *widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);
   BailWindow *window = BAIL_WINDOW (batk_obj);
-  const gchar *name;
-  gboolean name_changed = FALSE;
+  const bchar *name;
+  bboolean name_changed = FALSE;
 
   if (strcmp (pspec->name, "title") == 0)
     {
@@ -523,7 +523,7 @@ bail_window_real_notify_btk (BObject		*obj,
     BAIL_WIDGET_CLASS (bail_window_parent_class)->notify_btk (obj, pspec);
 }
 
-static gboolean
+static bboolean
 bail_window_state_event_btk (BtkWidget           *widget,
                              BdkEventWindowState *event)
 {
@@ -545,15 +545,15 @@ batk_component_interface_init (BatkComponentIface *iface)
 
 static void
 bail_window_get_extents (BatkComponent  *component,
-                         gint          *x,
-                         gint          *y,
-                         gint          *width,
-                         gint          *height,
+                         bint          *x,
+                         bint          *y,
+                         bint          *width,
+                         bint          *height,
                          BatkCoordType  coord_type)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget; 
   BdkRectangle rect;
-  gint x_toplevel, y_toplevel;
+  bint x_toplevel, y_toplevel;
 
   if (widget == NULL)
     /*
@@ -578,8 +578,8 @@ bail_window_get_extents (BatkComponent  *component,
   *height = rect.height;
   if (!btk_widget_is_drawable (widget))
     {
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
       return;
     }
   *x = rect.x;
@@ -594,8 +594,8 @@ bail_window_get_extents (BatkComponent  *component,
 
 static void
 bail_window_get_size (BatkComponent *component,
-                      gint         *width,
-                      gint         *height)
+                      bint         *width,
+                      bint         *height)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget; 
   BdkRectangle rect;
@@ -634,13 +634,13 @@ typedef struct {
   Window     *stacked_windows;
   int         stacked_windows_len;
   BdkWindow  *root_window;
-  guint       update_handler;
+  buint       update_handler;
   int        *desktop;
-  guint       update_desktop_handler;
-  gboolean   *desktop_changed;
+  buint       update_desktop_handler;
+  bboolean   *desktop_changed;
 
-  guint       screen_initialized : 1;
-  guint       update_stacked_windows : 1;
+  buint       screen_initialized : 1;
+  buint       update_stacked_windows : 1;
 } BailScreenInfo;
 
 static BailScreenInfo *bail_screens = NULL;
@@ -648,14 +648,14 @@ static int             num_screens = 0;
 static Atom            _net_client_list_stacking = None;
 static Atom            _net_wm_desktop = None;
 
-static gint
+static bint
 get_window_desktop (Window window)
 {
   Atom            ret_type;
   int             format;
-  gulong          nitems;
-  gulong          bytes_after;
-  guchar         *cardinals;
+  bulong          nitems;
+  bulong          bytes_after;
+  buchar         *cardinals;
   int             error;
   int             result;
   int             desktop;
@@ -666,7 +666,7 @@ get_window_desktop (Window window)
 
   bdk_error_trap_push ();
   result = XGetWindowProperty (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), window, _net_wm_desktop,
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, XA_CARDINAL,
                                &ret_type, &format, &nitems,
                                &bytes_after, &cardinals);
@@ -699,20 +699,20 @@ free_screen_info (BailScreenInfo *info)
   info->desktop_changed = NULL;
 }
 
-static gboolean
+static bboolean
 get_stacked_windows (BailScreenInfo *info)
 {
   Atom    ret_type;
   int     format;
-  gulong  nitems;
-  gulong  bytes_after;
-  guchar *data;
+  bulong  nitems;
+  bulong  bytes_after;
+  buchar *data;
   int     error;
   int     result;
   int     i;
   int     j;
   int    *desktops;
-  gboolean *desktops_changed;
+  bboolean *desktops_changed;
 
   if (_net_client_list_stacking == None)
     _net_client_list_stacking =
@@ -723,7 +723,7 @@ get_stacked_windows (BailScreenInfo *info)
   result = XGetWindowProperty (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()),
                                BDK_WINDOW_XWINDOW (info->root_window),
                                _net_client_list_stacking,
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, XA_WINDOW, &ret_type, &format, &nitems,
                                &bytes_after, &data);
   error = bdk_error_trap_pop ();
@@ -742,10 +742,10 @@ get_stacked_windows (BailScreenInfo *info)
     }
 
   desktops = g_malloc0 (nitems * sizeof (int));
-  desktops_changed = g_malloc0 (nitems * sizeof (gboolean));
+  desktops_changed = g_malloc0 (nitems * sizeof (bboolean));
   for (i = 0; i < nitems; i++)
     {
-      gboolean window_found = FALSE;
+      bboolean window_found = FALSE;
 
       for (j = 0; j < info->stacked_windows_len; j++)
         {
@@ -772,10 +772,10 @@ get_stacked_windows (BailScreenInfo *info)
   return TRUE;
 }
 
-static gboolean
-update_screen_info (gpointer data)
+static bboolean
+update_screen_info (bpointer data)
 {
-  int screen_n = GPOINTER_TO_INT (data);
+  int screen_n = BPOINTER_TO_INT (data);
 
   bail_screens [screen_n].update_handler = 0;
   bail_screens [screen_n].update_stacked_windows = FALSE;
@@ -785,10 +785,10 @@ update_screen_info (gpointer data)
   return FALSE;
 }
 
-static gboolean
-update_desktop_info (gpointer data)
+static bboolean
+update_desktop_info (bpointer data)
 {
-  int screen_n = GPOINTER_TO_INT (data);
+  int screen_n = BPOINTER_TO_INT (data);
   BailScreenInfo *info;
   int i;
 
@@ -810,7 +810,7 @@ update_desktop_info (gpointer data)
 static BdkFilterReturn
 filter_func (BdkXEvent *bdkxevent,
 	     BdkEvent  *event,
-	     gpointer   data)
+	     bpointer   data)
 {
   XEvent *xevent = bdkxevent;
 
@@ -831,7 +831,7 @@ filter_func (BdkXEvent *bdkxevent,
               if (!bail_screens [screen_n].update_handler)
                 {
                   bail_screens [screen_n].update_handler = bdk_threads_add_idle (update_screen_info,
-	        						                 GINT_TO_POINTER (screen_n));
+	        						                 BINT_TO_POINTER (screen_n));
                 }
             }
         }
@@ -852,7 +852,7 @@ filter_func (BdkXEvent *bdkxevent,
                       if (!info->update_desktop_handler)
                         {
                           info->update_desktop_handler = bdk_threads_add_idle (update_desktop_info,
-                                                                               GINT_TO_POINTER (i));
+                                                                               BINT_TO_POINTER (i));
                         }
                       break;
                     }
@@ -865,7 +865,7 @@ filter_func (BdkXEvent *bdkxevent,
 
 static void
 display_closed (BdkDisplay *display,
-		gboolean    is_error)
+		bboolean    is_error)
 {
   int i;
 
@@ -951,7 +951,7 @@ get_screen_info (BdkScreen *screen)
   return &bail_screens [screen_n];
 }
 
-static gint
+static bint
 get_window_zorder (BdkWindow *window)
 {
   BailScreenInfo *info;
@@ -997,7 +997,7 @@ get_window_zorder (BdkWindow *window)
   return -1;
 }
 
-static gint
+static bint
 bail_window_get_mdi_zorder (BatkComponent *component)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
@@ -1015,7 +1015,7 @@ bail_window_get_mdi_zorder (BatkComponent *component)
 
 #elif defined (BDK_WINDOWING_WIN32)
 
-static gint
+static bint
 bail_window_get_mdi_zorder (BatkComponent *component)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
@@ -1033,7 +1033,7 @@ bail_window_get_mdi_zorder (BatkComponent *component)
 
 #else
 
-static gint
+static bint
 bail_window_get_mdi_zorder (BatkComponent *component)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;

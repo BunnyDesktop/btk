@@ -51,13 +51,13 @@ struct _BtkAccelMapClass
 };
 
 typedef struct {
-  const gchar *accel_path;
-  guint        accel_key;
-  guint        accel_mods;
-  guint	       std_accel_key;
-  guint	       std_accel_mods;
-  guint        changed    :  1;
-  guint        lock_count : 15;
+  const bchar *accel_path;
+  buint        accel_key;
+  buint        accel_mods;
+  buint	       std_accel_key;
+  buint	       std_accel_mods;
+  buint        changed    :  1;
+  buint        lock_count : 15;
   GSList      *groups;
 } AccelEntry;
 
@@ -71,14 +71,14 @@ enum {
 
 static GHashTable  *accel_entry_ht = NULL;	/* accel_path -> AccelEntry */
 static GSList      *accel_filters = NULL;
-static gulong	    accel_map_signals[LAST_SIGNAL] = { 0, };
+static bulong	    accel_map_signals[LAST_SIGNAL] = { 0, };
 static BtkAccelMap *accel_map;
 
 /* --- prototypes --- */
 static void do_accel_map_changed (AccelEntry *entry);
 
 /* --- functions --- */
-static guint
+static buint
 accel_entry_hash (gconstpointer key)
 {
   const AccelEntry *entry = key;
@@ -86,7 +86,7 @@ accel_entry_hash (gconstpointer key)
   return g_str_hash (entry->accel_path);
 }
 
-static gboolean
+static bboolean
 accel_entry_equal (gconstpointer key1,
 		   gconstpointer key2)
 {
@@ -97,7 +97,7 @@ accel_entry_equal (gconstpointer key1,
 }
 
 static inline AccelEntry*
-accel_path_lookup (const gchar *accel_path)
+accel_path_lookup (const bchar *accel_path)
 {
   AccelEntry ekey;
 
@@ -115,10 +115,10 @@ _btk_accel_map_init (void)
   accel_entry_ht = g_hash_table_new (accel_entry_hash, accel_entry_equal);
 }
 
-gboolean
-_btk_accel_path_is_valid (const gchar *accel_path)
+bboolean
+_btk_accel_path_is_valid (const bchar *accel_path)
 {
-  gchar *p;
+  bchar *p;
 
   if (!accel_path || accel_path[0] != '<' ||
       accel_path[1] == '<' || accel_path[1] == '>' || !accel_path[1])
@@ -155,8 +155,8 @@ _btk_accel_path_is_valid (const gchar *accel_path)
  * g_intern_static_string().
  */
 void
-btk_accel_map_add_entry (const gchar    *accel_path,
-			 guint           accel_key,
+btk_accel_map_add_entry (const bchar    *accel_path,
+			 buint           accel_key,
 			 BdkModifierType accel_mods)
 {
   AccelEntry *entry;
@@ -204,8 +204,8 @@ btk_accel_map_add_entry (const gchar    *accel_path,
  *
  * Looks up the accelerator entry for @accel_path and fills in @key.
  */
-gboolean
-btk_accel_map_lookup_entry (const gchar *accel_path,
+bboolean
+btk_accel_map_lookup_entry (const bchar *accel_path,
 			    BtkAccelKey *key)
 {
   AccelEntry *entry;
@@ -224,9 +224,9 @@ btk_accel_map_lookup_entry (const gchar *accel_path,
 }
 
 static void
-hash2slist_foreach (gpointer  key,
-		    gpointer  value,
-		    gpointer  user_data)
+hash2slist_foreach (bpointer  key,
+		    bpointer  value,
+		    bpointer  user_data)
 {
   GSList **slist_p = user_data;
 
@@ -249,16 +249,16 @@ g_hash_table_slist_values (GHashTable *hash_table)
  * accel_key && accel_mods. otherwise, return whether accel_path
  * was actually changed.
  */
-static gboolean
-internal_change_entry (const gchar    *accel_path,
-		       guint           accel_key,
+static bboolean
+internal_change_entry (const bchar    *accel_path,
+		       buint           accel_key,
 		       BdkModifierType accel_mods,
-		       gboolean        replace,
-		       gboolean	       simulate)
+		       bboolean        replace,
+		       bboolean	       simulate)
 {
   GSList *node, *slist, *win_list, *group_list, *replace_list = NULL;
   GHashTable *group_hm, *window_hm;
-  gboolean change_accel, removable, can_change = TRUE, seen_accel = FALSE;
+  bboolean change_accel, removable, can_change = TRUE, seen_accel = FALSE;
   GQuark entry_quark;
   AccelEntry *entry = accel_path_lookup (accel_path);
 
@@ -350,7 +350,7 @@ internal_change_entry (const gchar    *accel_path,
       {
 	BtkAccelGroup *group = slist->data;
 	BtkAccelGroupEntry *ag_entry;
-	guint i, n;
+	buint i, n;
 	
 	n = 0;
 	ag_entry = entry->accel_key ? btk_accel_group_query (group, entry->accel_key, entry->accel_mods, &n) : NULL;
@@ -371,7 +371,7 @@ internal_change_entry (const gchar    *accel_path,
 	    if (!removable)
 	      goto break_loop_step5;
 	    if (ag_entry[i].accel_path_quark)
-	      replace_list = b_slist_prepend (replace_list, GUINT_TO_POINTER (ag_entry[i].accel_path_quark));
+	      replace_list = b_slist_prepend (replace_list, BUINT_TO_POINTER (ag_entry[i].accel_path_quark));
 	  }
       }
  break_loop_step5:
@@ -379,7 +379,7 @@ internal_change_entry (const gchar    *accel_path,
   /* 6) check whether we can remove existing accelerators */
   if (removable && can_change)
     for (slist = replace_list; slist; slist = slist->next)
-      if (!internal_change_entry (g_quark_to_string (GPOINTER_TO_UINT (slist->data)), 0, 0, FALSE, TRUE))
+      if (!internal_change_entry (g_quark_to_string (BPOINTER_TO_UINT (slist->data)), 0, 0, FALSE, TRUE))
 	{
 	  removable = FALSE;
 	  break;
@@ -396,7 +396,7 @@ internal_change_entry (const gchar    *accel_path,
 
       /* 8) remove existing accelerators */
       for (slist = replace_list; slist; slist = slist->next)
-	internal_change_entry (g_quark_to_string (GPOINTER_TO_UINT (slist->data)), 0, 0, FALSE, FALSE);
+	internal_change_entry (g_quark_to_string (BPOINTER_TO_UINT (slist->data)), 0, 0, FALSE, FALSE);
 
       /* 9) install new accelerator */
       entry->accel_key = accel_key;
@@ -438,23 +438,23 @@ internal_change_entry (const gchar    *accel_path,
  * pass a static string, you can save some memory by interning it first with 
  * g_intern_static_string().
  */
-gboolean
-btk_accel_map_change_entry (const gchar    *accel_path,
-			    guint           accel_key,
+bboolean
+btk_accel_map_change_entry (const bchar    *accel_path,
+			    buint           accel_key,
 			    BdkModifierType accel_mods,
-			    gboolean        replace)
+			    bboolean        replace)
 {
   g_return_val_if_fail (_btk_accel_path_is_valid (accel_path), FALSE);
 
   return internal_change_entry (accel_path, accel_key, accel_key ? accel_mods : 0, replace, FALSE);
 }
 
-static guint
+static buint
 accel_map_parse_accel_path (GScanner *scanner)
 {
-  guint accel_key = 0;
+  buint accel_key = 0;
   BdkModifierType accel_mods = 0;
-  gchar *path, *accel;
+  bchar *path, *accel;
   
   /* parse accel path */
   g_scanner_get_next_token (scanner);
@@ -496,15 +496,15 @@ accel_map_parse_accel_path (GScanner *scanner)
 static void
 accel_map_parse_statement (GScanner *scanner)
 {
-  guint expected_token;
+  buint expected_token;
 
   g_scanner_get_next_token (scanner);
 
   if (scanner->token == G_TOKEN_SYMBOL)
     {
-      guint (*parser_func) (GScanner*);
+      buint (*parser_func) (GScanner*);
 
-      parser_func = (guint (*) (GScanner *))scanner->value.v_symbol;
+      parser_func = (buint (*) (GScanner *))scanner->value.v_symbol;
 
       expected_token = parser_func (scanner);
     }
@@ -515,7 +515,7 @@ accel_map_parse_statement (GScanner *scanner)
    */
   if (expected_token != G_TOKEN_NONE)
     {
-      register guint level;
+      register buint level;
 
       level = 1;
       if (scanner->token == ')')
@@ -544,10 +544,10 @@ accel_map_parse_statement (GScanner *scanner)
 void
 btk_accel_map_load_scanner (GScanner *scanner)
 {
-  gboolean skip_comment_single;
-  gboolean symbol_2_token;
-  gchar *cpair_comment_single;
-  gpointer saved_symbol;
+  bboolean skip_comment_single;
+  bboolean symbol_2_token;
+  bchar *cpair_comment_single;
+  bpointer saved_symbol;
   
   g_return_if_fail (scanner != NULL);
 
@@ -592,7 +592,7 @@ btk_accel_map_load_scanner (GScanner *scanner)
  * Note that the file descriptor will not be closed by this function.
  */
 void
-btk_accel_map_load_fd (gint fd)
+btk_accel_map_load_fd (bint fd)
 {
   GScanner *scanner;
 
@@ -616,9 +616,9 @@ btk_accel_map_load_fd (gint fd)
  * accelerator specifications, and propagates them accordingly.
  */
 void
-btk_accel_map_load (const gchar *file_name)
+btk_accel_map_load (const bchar *file_name)
 {
-  gint fd;
+  bint fd;
 
   g_return_if_fail (file_name != NULL);
 
@@ -634,14 +634,14 @@ btk_accel_map_load (const gchar *file_name)
   close (fd);
 }
 
-static gboolean
-write_all (gint   fd,
-	   gchar *buf,
-	   gsize  to_write)
+static bboolean
+write_all (bint   fd,
+	   bchar *buf,
+	   bsize  to_write)
 {
   while (to_write > 0)
     {
-      gssize count = write (fd, buf, to_write);
+      bssize count = write (fd, buf, to_write);
       if (count < 0)
 	{
 	  if (errno != EINTR)
@@ -658,15 +658,15 @@ write_all (gint   fd,
 }
 
 static void
-accel_map_print (gpointer        data,
-		 const gchar    *accel_path,
-		 guint           accel_key,
+accel_map_print (bpointer        data,
+		 const bchar    *accel_path,
+		 buint           accel_key,
 		 BdkModifierType accel_mods,
-		 gboolean        changed)
+		 bboolean        changed)
 {
   GString *gstring = g_string_new (changed ? NULL : "; ");
-  gint fd = GPOINTER_TO_INT (data);
-  gchar *tmp, *name;
+  bint fd = BPOINTER_TO_INT (data);
+  bchar *tmp, *name;
 
   g_string_append (gstring, "(btk_accel_path \"");
 
@@ -698,7 +698,7 @@ accel_map_print (gpointer        data,
  * Note that the file descriptor will not be closed by this function.
  */
 void
-btk_accel_map_save_fd (gint fd)
+btk_accel_map_save_fd (bint fd)
 {
   GString *gstring;
 
@@ -715,7 +715,7 @@ btk_accel_map_save_fd (gint fd)
   
   g_string_free (gstring, TRUE);
 
-  btk_accel_map_foreach (GINT_TO_POINTER (fd), accel_map_print);
+  btk_accel_map_foreach (BINT_TO_POINTER (fd), accel_map_print);
 }
 
 /**
@@ -729,9 +729,9 @@ btk_accel_map_save_fd (gint fd)
  * btk_accel_map_load().
  */
 void
-btk_accel_map_save (const gchar *file_name)
+btk_accel_map_save (const bchar *file_name)
 {
-  gint fd;
+  bint fd;
 
   g_return_if_fail (file_name != NULL);
 
@@ -758,7 +758,7 @@ btk_accel_map_save (const gchar *file_name)
  * saving during an accelerator map dump).
  */
 void
-btk_accel_map_foreach (gpointer           data,
+btk_accel_map_foreach (bpointer           data,
 		       BtkAccelMapForeach foreach_func)
 {
   GSList *entries, *slist, *node;
@@ -769,7 +769,7 @@ btk_accel_map_foreach (gpointer           data,
   for (slist = entries; slist; slist = slist->next)
     {
       AccelEntry *entry = slist->data;
-      gboolean changed = entry->accel_key != entry->std_accel_key || entry->accel_mods != entry->std_accel_mods;
+      bboolean changed = entry->accel_key != entry->std_accel_key || entry->accel_mods != entry->std_accel_mods;
 
       for (node = accel_filters; node; node = node->next)
 	if (g_pattern_match_string (node->data, entry->accel_path))
@@ -793,7 +793,7 @@ btk_accel_map_foreach (gpointer           data,
  * saving during an accelerator map dump).
  */
 void
-btk_accel_map_foreach_unfiltered (gpointer           data,
+btk_accel_map_foreach_unfiltered (bpointer           data,
 				  BtkAccelMapForeach foreach_func)
 {
   GSList *entries, *slist;
@@ -804,7 +804,7 @@ btk_accel_map_foreach_unfiltered (gpointer           data,
   for (slist = entries; slist; slist = slist->next)
     {
       AccelEntry *entry = slist->data;
-      gboolean changed = entry->accel_key != entry->std_accel_key || entry->accel_mods != entry->std_accel_mods;
+      bboolean changed = entry->accel_key != entry->std_accel_key || entry->accel_mods != entry->std_accel_mods;
 
       foreach_func (data, entry->accel_path, entry->accel_key, entry->accel_mods, changed);
     }
@@ -825,7 +825,7 @@ btk_accel_map_foreach_unfiltered (gpointer           data,
  * map dump.
  */
 void
-btk_accel_map_add_filter (const gchar *filter_pattern)
+btk_accel_map_add_filter (const bchar *filter_pattern)
 {
   GPatternSpec *pspec;
   GSList *slist;
@@ -843,7 +843,7 @@ btk_accel_map_add_filter (const gchar *filter_pattern)
 }
 
 void
-_btk_accel_map_add_group (const gchar   *accel_path,
+_btk_accel_map_add_group (const bchar   *accel_path,
 			  BtkAccelGroup *accel_group)
 {
   AccelEntry *entry;
@@ -861,7 +861,7 @@ _btk_accel_map_add_group (const gchar   *accel_path,
 }
 
 void
-_btk_accel_map_remove_group (const gchar   *accel_path,
+_btk_accel_map_remove_group (const bchar   *accel_path,
 			     BtkAccelGroup *accel_group)
 {
   AccelEntry *entry;
@@ -898,7 +898,7 @@ _btk_accel_map_remove_group (const gchar   *accel_path,
  * Since: 2.4
  **/
 void 
-btk_accel_map_lock_path (const gchar *accel_path)
+btk_accel_map_lock_path (const bchar *accel_path)
 {
   AccelEntry *entry;
 
@@ -925,7 +925,7 @@ btk_accel_map_lock_path (const gchar *accel_path)
  * Since: 2.4
  **/
 void 
-btk_accel_map_unlock_path (const gchar *accel_path)
+btk_accel_map_unlock_path (const bchar *accel_path)
 {
   AccelEntry *entry;
 
@@ -1010,9 +1010,9 @@ do_accel_map_changed (AccelEntry *entry)
 #undef btk_accel_map_load
 
 void
-btk_accel_map_load (const gchar *file_name)
+btk_accel_map_load (const bchar *file_name)
 {
-  gchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
+  bchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
 
   btk_accel_map_load_utf8 (utf8_file_name);
 
@@ -1022,9 +1022,9 @@ btk_accel_map_load (const gchar *file_name)
 #undef btk_accel_map_save
 
 void
-btk_accel_map_save (const gchar *file_name)
+btk_accel_map_save (const bchar *file_name)
 {
-  gchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
+  bchar *utf8_file_name = g_locale_to_utf8 (file_name, -1, NULL, NULL, NULL);
 
   btk_accel_map_save_utf8 (utf8_file_name);
 

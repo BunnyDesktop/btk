@@ -30,14 +30,14 @@ typedef struct _BtkKeyHashEntry BtkKeyHashEntry;
 
 struct _BtkKeyHashEntry
 {
-  guint keyval;
+  buint keyval;
   BdkModifierType modifiers;
-  gpointer value;
+  bpointer value;
 
   /* Set as a side effect of generating key_hash->keycode_hash
    */
   BdkKeymapKey *keys;		
-  gint n_keys;
+  bint n_keys;
 };
 
 struct _BtkKeyHash
@@ -50,9 +50,9 @@ struct _BtkKeyHash
 };
 
 static void
-key_hash_clear_keycode (gpointer key,
-			gpointer value,
-			gpointer data)
+key_hash_clear_keycode (bpointer key,
+			bpointer value,
+			bpointer data)
 {
   GSList *keys = value;
   b_slist_free (keys);
@@ -62,7 +62,7 @@ static void
 key_hash_insert_entry (BtkKeyHash      *key_hash,
 		       BtkKeyHashEntry *entry)
 {
-  gint i;
+  bint i;
 
   g_free (entry->keys);
   bdk_keymap_get_entries_for_keyval (key_hash->keymap,
@@ -72,10 +72,10 @@ key_hash_insert_entry (BtkKeyHash      *key_hash,
   for (i = 0; i < entry->n_keys; i++)
     {
       GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
-					      GUINT_TO_POINTER (entry->keys[i].keycode));
+					      BUINT_TO_POINTER (entry->keys[i].keycode));
       old_keys = b_slist_prepend (old_keys, entry);
       g_hash_table_insert (key_hash->keycode_hash,
-			   GUINT_TO_POINTER (entry->keys[i].keycode),
+			   BUINT_TO_POINTER (entry->keys[i].keycode),
 			   old_keys);
     }
 }
@@ -154,8 +154,8 @@ key_hash_free_entry (BtkKeyHash      *key_hash,
 }
 
 static void
-key_hash_free_entry_foreach (gpointer value,
-			     gpointer data)
+key_hash_free_entry_foreach (bpointer value,
+			     bpointer data)
 {
   BtkKeyHashEntry *entry = value;
   BtkKeyHash *key_hash = data;
@@ -201,9 +201,9 @@ _btk_key_hash_free (BtkKeyHash *key_hash)
  **/
 void
 _btk_key_hash_add_entry (BtkKeyHash      *key_hash,
-			 guint            keyval,
+			 buint            keyval,
 			 BdkModifierType  modifiers,
-			 gpointer         value)
+			 bpointer         value)
 {
   BtkKeyHashEntry *entry = g_slice_new (BtkKeyHashEntry);
 
@@ -229,7 +229,7 @@ _btk_key_hash_add_entry (BtkKeyHash      *key_hash,
  **/
 void
 _btk_key_hash_remove_entry (BtkKeyHash *key_hash,
-			    gpointer    value)
+			    bpointer    value)
 {
   GList *entry_node = g_hash_table_lookup (key_hash->reverse_hash, value);
   
@@ -239,23 +239,23 @@ _btk_key_hash_remove_entry (BtkKeyHash *key_hash,
 
       if (key_hash->keycode_hash)
 	{
-	  gint i;
+	  bint i;
 	  
 	  for (i = 0; i < entry->n_keys; i++)
 	    {
 	      GSList *old_keys = g_hash_table_lookup (key_hash->keycode_hash,
-						      GUINT_TO_POINTER (entry->keys[i].keycode));
+						      BUINT_TO_POINTER (entry->keys[i].keycode));
 	      
 	      GSList *new_keys = b_slist_remove (old_keys, entry);
 	      if (new_keys != old_keys)
 		{
 		  if (new_keys)
 		    g_hash_table_insert (key_hash->keycode_hash,
-					 GUINT_TO_POINTER (entry->keys[i].keycode),
+					 BUINT_TO_POINTER (entry->keys[i].keycode),
 					 new_keys);
 		  else
 		    g_hash_table_remove (key_hash->keycode_hash,
-					 GUINT_TO_POINTER (entry->keys[i].keycode));
+					 BUINT_TO_POINTER (entry->keys[i].keycode));
 		}
 	    }
 	}
@@ -267,16 +267,16 @@ _btk_key_hash_remove_entry (BtkKeyHash *key_hash,
     }
 }
 
-static gint
+static bint
 lookup_result_compare (gconstpointer a,
 		       gconstpointer b)
 {
   const BtkKeyHashEntry *entry_a = a;
   const BtkKeyHashEntry *entry_b = b;
-  guint modifiers;
+  buint modifiers;
 
-  gint n_bits_a = 0;
-  gint n_bits_b = 0;
+  bint n_bits_a = 0;
+  bint n_bits_b = 0;
 
   modifiers = entry_a->modifiers;
   while (modifiers)
@@ -307,7 +307,7 @@ sort_lookup_results (GSList *slist)
   return b_slist_sort (slist, lookup_result_compare);
 }
 
-static gint
+static bint
 lookup_result_compare_by_keyval (gconstpointer a,
 		                 gconstpointer b)
 {
@@ -330,13 +330,13 @@ sort_lookup_results_by_keyval (GSList *slist)
 
 /* Return true if keyval is defined in keyboard group
  */
-static gboolean 
+static bboolean 
 keyval_in_group (BdkKeymap  *keymap,
-                 guint      keyval,
-                 gint       group)
+                 buint      keyval,
+                 bint       group)
 {                 
   BtkKeyHashEntry entry;
-  gint i;
+  bint i;
 
   bdk_keymap_get_entries_for_keyval (keymap,
 				     keyval,
@@ -380,22 +380,22 @@ keyval_in_group (BdkKeymap  *keymap,
  **/
 GSList *
 _btk_key_hash_lookup (BtkKeyHash      *key_hash,
-		      guint16          hardware_keycode,
+		      buint16          hardware_keycode,
 		      BdkModifierType  state,
 		      BdkModifierType  mask,
-		      gint             group)
+		      bint             group)
 {
   GHashTable *keycode_hash = key_hash_get_keycode_hash (key_hash);
-  GSList *keys = g_hash_table_lookup (keycode_hash, GUINT_TO_POINTER ((guint)hardware_keycode));
+  GSList *keys = g_hash_table_lookup (keycode_hash, BUINT_TO_POINTER ((buint)hardware_keycode));
   GSList *results = NULL;
   GSList *l;
-  gboolean have_exact = FALSE;
-  guint keyval;
-  gint effective_group;
-  gint level;
+  bboolean have_exact = FALSE;
+  buint keyval;
+  bint effective_group;
+  bint level;
   BdkModifierType modifiers;
   BdkModifierType consumed_modifiers;
-  gboolean group_mod_is_accel_mod = FALSE;
+  bboolean group_mod_is_accel_mod = FALSE;
   const BdkModifierType xmods = BDK_MOD2_MASK|BDK_MOD3_MASK|BDK_MOD4_MASK|BDK_MOD5_MASK;
   const BdkModifierType vmods = BDK_SUPER_MASK|BDK_HYPER_MASK|BDK_META_MASK;
 
@@ -442,7 +442,7 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
 	      ((modifiers & ~consumed_modifiers & mask & ~vmods) == (state & ~consumed_modifiers & mask & ~vmods) ||
 	       (modifiers & ~consumed_modifiers & mask & ~xmods) == (state & ~consumed_modifiers & mask & ~xmods)))
 	    {
-	      gint i;
+	      bint i;
 
 	      if (keyval == entry->keyval && /* Exact match */
                   /* but also match for group if it is an accel mod, because
@@ -497,7 +497,7 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
        * define these keyvals; if yes, discard results because a widget up in 
        * the stack may have an exact match and we don't want to 'steal' it.
        */
-      guint oldkeyval = 0;
+      buint oldkeyval = 0;
       BtkKeyHashEntry *keyhashentry;
 
       results = sort_lookup_results_by_keyval (results);
@@ -538,11 +538,11 @@ _btk_key_hash_lookup (BtkKeyHash      *key_hash,
  **/
 GSList *
 _btk_key_hash_lookup_keyval (BtkKeyHash     *key_hash,
-			     guint           keyval,
+			     buint           keyval,
 			     BdkModifierType modifiers)
 {
   BdkKeymapKey *keys;
-  gint n_keys;
+  bint n_keys;
   GSList *results = NULL;
   GSList *l;
 
@@ -557,7 +557,7 @@ _btk_key_hash_lookup_keyval (BtkKeyHash     *key_hash,
   if (n_keys)
     {
       GHashTable *keycode_hash = key_hash_get_keycode_hash (key_hash);
-      GSList *entries = g_hash_table_lookup (keycode_hash, GUINT_TO_POINTER (keys[0].keycode));
+      GSList *entries = g_hash_table_lookup (keycode_hash, BUINT_TO_POINTER (keys[0].keycode));
 
       while (entries)
 	{

@@ -30,7 +30,7 @@ static BtkWidget *create_list( void )
    
     /* Add some messages to the window */
     for (i = 0; i < 10; i++) {
-        gchar *msg = g_strdup_printf ("Message #%d", i);
+        bchar *msg = g_strdup_printf ("Message #%d", i);
         btk_list_store_append (BTK_LIST_STORE (model), &iter);
         btk_list_store_set (BTK_LIST_STORE (model), 
 	                    &iter,

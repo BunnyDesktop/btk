@@ -15,11 +15,11 @@ enum
   TEXT_COL
 };
 
-static gchar *
-strip_underscore (const gchar *text)
+static bchar *
+strip_underscore (const bchar *text)
 {
-  gchar *p, *q;
-  gchar *result;
+  bchar *p, *q;
+  bchar *result;
   
   result = g_strdup (text);
   p = q = result;
@@ -40,7 +40,7 @@ strip_underscore (const gchar *text)
 static BtkTreeModel *
 create_stock_icon_store (void)
 {
-  gchar *stock_id[6] = {
+  bchar *stock_id[6] = {
     BTK_STOCK_DIALOG_WARNING,
     BTK_STOCK_STOP,
     BTK_STOCK_NEW,
@@ -54,8 +54,8 @@ create_stock_icon_store (void)
   BtkWidget *cellview;
   BtkTreeIter iter;
   BtkListStore *store;
-  gchar *label;
-  gint i;
+  bchar *label;
+  bint i;
 
   cellview = btk_cell_view_new ();
   
@@ -101,11 +101,11 @@ set_sensitive (BtkCellLayout   *cell_layout,
 	       BtkCellRenderer *cell,
 	       BtkTreeModel    *tree_model,
 	       BtkTreeIter     *iter,
-	       gpointer         data)
+	       bpointer         data)
 {
   BtkTreePath *path;
-  gint *indices;
-  gboolean sensitive;
+  bint *indices;
+  bboolean sensitive;
 
   path = btk_tree_model_get_path (tree_model, iter);
   indices = btk_tree_path_get_indices (path);
@@ -119,13 +119,13 @@ set_sensitive (BtkCellLayout   *cell_layout,
  * rendered as separators. This particular function does nothing 
  * useful and just turns the fourth row into a separator.
  */
-static gboolean
+static bboolean
 is_separator (BtkTreeModel *model,
 	      BtkTreeIter  *iter,
-	      gpointer      data)
+	      bpointer      data)
 {
   BtkTreePath *path;
-  gboolean result;
+  bboolean result;
 
   path = btk_tree_model_get_path (model, iter);
   result = btk_tree_path_get_indices (path)[0] == 4;
@@ -138,8 +138,8 @@ static BtkTreeModel *
 create_capital_store (void)
 {
   struct {
-    gchar *group;
-    gchar *capital;
+    bchar *group;
+    bchar *capital;
   } capitals[] = {
     { "A - B", NULL }, 
     { NULL, "Albany" },
@@ -202,7 +202,7 @@ create_capital_store (void)
   
   BtkTreeIter iter, iter2;
   BtkTreeStore *store;
-  gint i;
+  bint i;
 
   store = btk_tree_store_new (1, B_TYPE_STRING);
   
@@ -228,9 +228,9 @@ is_capital_sensitive (BtkCellLayout   *cell_layout,
 		      BtkCellRenderer *cell,
 		      BtkTreeModel    *tree_model,
 		      BtkTreeIter     *iter,
-		      gpointer         data)
+		      bpointer         data)
 {
-  gboolean sensitive;
+  bboolean sensitive;
 
   sensitive = !btk_tree_model_iter_has_child (tree_model, iter);
 
@@ -261,7 +261,7 @@ typedef struct _MaskEntry MaskEntry;
 struct _MaskEntry
 {
   BtkEntry entry;
-  gchar *mask;
+  bchar *mask;
 };
 
 typedef struct _MaskEntryClass MaskEntryClass;

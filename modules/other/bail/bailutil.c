@@ -31,15 +31,15 @@ static void		bail_util_class_init			(BailUtilClass		*klass);
 static void             bail_util_init                          (BailUtil               *utils);
 /* batkutil.h */
 
-static guint		bail_util_add_global_event_listener	(GSignalEmissionHook	listener,
-							         const gchar*           event_type);
-static void 		bail_util_remove_global_event_listener	(guint			remove_listener);
-static guint		bail_util_add_key_event_listener	(BatkKeySnoopFunc	listener,
-								 gpointer               data);
-static void 		bail_util_remove_key_event_listener	(guint			remove_listener);
+static buint		bail_util_add_global_event_listener	(GSignalEmissionHook	listener,
+							         const bchar*           event_type);
+static void 		bail_util_remove_global_event_listener	(buint			remove_listener);
+static buint		bail_util_add_key_event_listener	(BatkKeySnoopFunc	listener,
+								 bpointer               data);
+static void 		bail_util_remove_key_event_listener	(buint			remove_listener);
 static BatkObject*	bail_util_get_root			(void);
-static const gchar *    bail_util_get_toolkit_name		(void);
-static const gchar *    bail_util_get_toolkit_version      (void);
+static const bchar *    bail_util_get_toolkit_name		(void);
+static const bchar *    bail_util_get_toolkit_version      (void);
 
 /* bailmisc/BatkMisc */
 static void		bail_misc_class_init			(BailMiscClass		*klass);
@@ -50,50 +50,50 @@ static void bail_misc_threads_leave (BatkMisc *misc);
 
 /* Misc */
 
-static void		_listener_info_destroy			(gpointer		data);
-static guint            add_listener	                        (GSignalEmissionHook    listener,
-                                                                 const gchar            *object_type,
-                                                                 const gchar            *signal,
-                                                                 const gchar            *hook_data);
+static void		_listener_info_destroy			(bpointer		data);
+static buint            add_listener	                        (GSignalEmissionHook    listener,
+                                                                 const bchar            *object_type,
+                                                                 const bchar            *signal,
+                                                                 const bchar            *hook_data);
 static void             do_window_event_initialization          (void);
-static gboolean         state_event_watcher                     (GSignalInvocationHint  *hint,
-                                                                 guint                  n_param_values,
+static bboolean         state_event_watcher                     (GSignalInvocationHint  *hint,
+                                                                 buint                  n_param_values,
                                                                  const BValue           *param_values,
-                                                                 gpointer               data);
+                                                                 bpointer               data);
 static void             window_added                             (BatkObject             *batk_obj,
-                                                                  guint                 index,
+                                                                  buint                 index,
                                                                   BatkObject             *child);
 static void             window_removed                           (BatkObject             *batk_obj,
-                                                                  guint                 index,
+                                                                  buint                 index,
                                                                   BatkObject             *child);
-static gboolean        window_focus                              (BtkWidget             *widget,
+static bboolean        window_focus                              (BtkWidget             *widget,
                                                                   BdkEventFocus         *event);
-static gboolean         configure_event_watcher                 (GSignalInvocationHint  *hint,
-                                                                 guint                  n_param_values,
+static bboolean         configure_event_watcher                 (GSignalInvocationHint  *hint,
+                                                                 buint                  n_param_values,
                                                                  const BValue           *param_values,
-                                                                 gpointer               data);
+                                                                 bpointer               data);
                                                                   
 
 static BatkObject* root = NULL;
 static GHashTable *listener_list = NULL;
-static gint listener_idx = 1;
+static bint listener_idx = 1;
 static GSList *key_listener_list = NULL;
-static guint key_snooper_id = 0;
+static buint key_snooper_id = 0;
 
 typedef struct _BailUtilListenerInfo BailUtilListenerInfo;
 typedef struct _BailKeyEventInfo BailKeyEventInfo;
 
 struct _BailUtilListenerInfo
 {
-   gint key;
-   guint signal_id;
-   gulong hook_id;
+   bint key;
+   buint signal_id;
+   bulong hook_id;
 };
 
 struct _BailKeyEventInfo
 {
   BatkKeyEventStruct *key_event;
-  gpointer func_data;
+  bpointer func_data;
 };
 
 G_DEFINE_TYPE (BailUtil, bail_util, BATK_TYPE_UTIL)
@@ -102,7 +102,7 @@ static void
 bail_util_class_init (BailUtilClass *klass)
 {
   BatkUtilClass *batk_class;
-  gpointer data;
+  bpointer data;
 
   data = g_type_class_peek (BATK_TYPE_UTIL);
   batk_class = BATK_UTIL_CLASS (data);
@@ -128,12 +128,12 @@ bail_util_init (BailUtil *utils)
 {
 }
 
-static guint
+static buint
 bail_util_add_global_event_listener (GSignalEmissionHook listener,
-				     const gchar *event_type)
+				     const bchar *event_type)
 {
-  guint rc = 0;
-  gchar **split_string;
+  buint rc = 0;
+  bchar **split_string;
 
   split_string = g_strsplit (event_type, ":", 3);
 
@@ -141,7 +141,7 @@ bail_util_add_global_event_listener (GSignalEmissionHook listener,
     {
       if (!strcmp ("window", split_string[0]))
         {
-          static gboolean initialized = FALSE;
+          static bboolean initialized = FALSE;
 
           if (!initialized)
             {
@@ -162,12 +162,12 @@ bail_util_add_global_event_listener (GSignalEmissionHook listener,
 }
 
 static void
-bail_util_remove_global_event_listener (guint remove_listener)
+bail_util_remove_global_event_listener (buint remove_listener)
 {
   if (remove_listener > 0)
   {
     BailUtilListenerInfo *listener_info;
-    gint tmp_idx = remove_listener;
+    bint tmp_idx = remove_listener;
 
     listener_info = (BailUtilListenerInfo *)
       g_hash_table_lookup(listener_list, &tmp_idx);
@@ -247,16 +247,16 @@ batk_key_event_from_bdk_event_key (BdkEventKey *key)
 
 typedef struct {
   BatkKeySnoopFunc func;
-  gpointer        data;
-  guint           key;
+  bpointer        data;
+  buint           key;
 } KeyEventListener;
 
-static gint
-bail_key_snooper (BtkWidget *the_widget, BdkEventKey *event, gpointer data)
+static bint
+bail_key_snooper (BtkWidget *the_widget, BdkEventKey *event, bpointer data)
 {
   GSList *l;
   BatkKeyEventStruct *batk_event;
-  gboolean result;
+  bboolean result;
 
   batk_event = batk_key_event_from_bdk_event_key (event);
 
@@ -273,11 +273,11 @@ bail_key_snooper (BtkWidget *the_widget, BdkEventKey *event, gpointer data)
   return result;
 }
 
-static guint
+static buint
 bail_util_add_key_event_listener (BatkKeySnoopFunc  listener_func,
-                                  gpointer         listener_data)
+                                  bpointer         listener_data)
 {
-  static guint key = 0;
+  static buint key = 0;
   KeyEventListener *listener;
 
   if (key_snooper_id == 0)
@@ -296,7 +296,7 @@ bail_util_add_key_event_listener (BatkKeySnoopFunc  listener_func,
 }
 
 static void
-bail_util_remove_key_event_listener (guint listener_key)
+bail_util_remove_key_event_listener (buint listener_key)
 {
   GSList *l;
 
@@ -332,13 +332,13 @@ bail_util_get_root (void)
   return root;
 }
 
-static const gchar *
+static const bchar *
 bail_util_get_toolkit_name (void)
 {
   return "BAIL";
 }
 
-static const gchar *
+static const bchar *
 bail_util_get_toolkit_version (void)
 {
  /*
@@ -349,20 +349,20 @@ bail_util_get_toolkit_version (void)
 }
 
 static void
-_listener_info_destroy (gpointer data)
+_listener_info_destroy (bpointer data)
 {
    g_free(data);
 }
 
-static guint
+static buint
 add_listener (GSignalEmissionHook listener,
-              const gchar         *object_type,
-              const gchar         *signal,
-              const gchar         *hook_data)
+              const bchar         *object_type,
+              const bchar         *signal,
+              const bchar         *hook_data)
 {
   GType type;
-  guint signal_id;
-  gint  rc = 0;
+  buint signal_id;
+  bint  rc = 0;
 
   type = g_type_from_name (object_type);
   if (type)
@@ -418,19 +418,19 @@ do_window_event_initialization (void)
                     (GCallback) window_removed, NULL);
 }
 
-static gboolean
+static bboolean
 state_event_watcher (GSignalInvocationHint  *hint,
-                     guint                  n_param_values,
+                     buint                  n_param_values,
                      const BValue           *param_values,
-                     gpointer               data)
+                     bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
   BatkObject *batk_obj;
   BatkObject *parent;
   BdkEventWindowState *event;
-  gchar *signal_name;
-  guint signal_id;
+  bchar *signal_name;
+  buint signal_id;
 
   object = b_value_get_object (param_values + 0);
   /*
@@ -479,7 +479,7 @@ state_event_watcher (GSignalInvocationHint  *hint,
 
 static void
 window_added (BatkObject *batk_obj,
-              guint     index,
+              buint     index,
               BatkObject *child)
 {
   BtkWidget *widget;
@@ -499,7 +499,7 @@ window_added (BatkObject *batk_obj,
 
 static void
 window_removed (BatkObject *batk_obj,
-                 guint     index,
+                 buint     index,
                  BatkObject *child)
 {
   BtkWidget *widget;
@@ -518,7 +518,7 @@ window_removed (BatkObject *batk_obj,
   if (window->is_active &&
       window->has_toplevel_focus)
     {
-      gchar *signal_name;
+      bchar *signal_name;
       BatkObject *batk_obj;
 
       batk_obj = btk_widget_get_accessible (widget);
@@ -526,15 +526,15 @@ window_removed (BatkObject *batk_obj,
       g_signal_emit (batk_obj, g_signal_lookup (signal_name, BAIL_TYPE_WINDOW), 0); 
     }
 
-  g_signal_handlers_disconnect_by_func (widget, (gpointer) window_focus, NULL);
+  g_signal_handlers_disconnect_by_func (widget, (bpointer) window_focus, NULL);
   g_signal_emit (child, g_signal_lookup ("destroy", BAIL_TYPE_WINDOW), 0); 
 }
 
-static gboolean
+static bboolean
 window_focus (BtkWidget     *widget,
               BdkEventFocus *event)
 {
-  gchar *signal_name;
+  bchar *signal_name;
   BatkObject *batk_obj;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
@@ -546,19 +546,19 @@ window_focus (BtkWidget     *widget,
   return FALSE;
 }
 
-static gboolean 
+static bboolean 
 configure_event_watcher (GSignalInvocationHint  *hint,
-                         guint                  n_param_values,
+                         buint                  n_param_values,
                          const BValue           *param_values,
-                         gpointer               data)
+                         bpointer               data)
 {
   BObject *object;
   BtkWidget *widget;
   BatkObject *batk_obj;
   BatkObject *parent;
   BdkEvent *event;
-  gchar *signal_name;
-  guint signal_id;
+  bchar *signal_name;
+  buint signal_id;
 
   object = b_value_get_object (param_values + 0);
   if (!BTK_IS_WINDOW (object))

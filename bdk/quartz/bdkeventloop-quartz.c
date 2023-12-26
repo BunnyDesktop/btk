@@ -60,12 +60,12 @@ static int acquired_loop_level = -1;
 /* Between run_loop_before_waiting() and run_loop_after_waiting();
  * whether we we need to call select_thread_collect_poll()
  */
-static gboolean run_loop_polling_async = FALSE;
+static bboolean run_loop_polling_async = FALSE;
 
 /* Between run_loop_before_waiting() and run_loop_after_waiting();
  * max_prioritiy to pass to g_main_loop_check()
  */
-static gint run_loop_max_priority;
+static bint run_loop_max_priority;
 
 /* Timer that we've added to wake up the run loop when a GLib timeout
  */
@@ -77,8 +77,8 @@ static CFRunLoopTimerRef run_loop_timer = NULL;
  */
 #define RUN_LOOP_POLLFDS_INITIAL_SIZE 16
 static GPollFD *run_loop_pollfds;
-static guint run_loop_pollfds_size; /* Allocated size of the array */
-static guint run_loop_n_pollfds;    /* Number of file descriptors in the array */
+static buint run_loop_pollfds_size; /* Allocated size of the array */
+static buint run_loop_n_pollfds;    /* Number of file descriptors in the array */
 
 /******* Other global variables *******/
 
@@ -124,7 +124,7 @@ static NSAutoreleasePool *autorelease_pool;
  * a run loop iteration, so we need to detect that and avoid triggering
  * our "run the GLib main looop while the run loop is active machinery.
  */
-static gint getting_events = 0;
+static bint getting_events = 0;
 
 /************************************************************
  *********              Select Thread               *********
@@ -166,16 +166,16 @@ static pthread_cond_t select_thread_cond = PTHREAD_COND_INITIALIZER;
  * polling.
  */
 static GPollFD *current_pollfds;
-static guint current_n_pollfds;
+static buint current_n_pollfds;
 
 /* These are the file descriptors that the select thread should pick
  * up and start polling when it has a chance.
  */
 static GPollFD *next_pollfds;
-static guint next_n_pollfds;
+static buint next_n_pollfds;
 
 /* Pipe used to wake up the select thread */
-static gint select_thread_wakeup_pipe[2];
+static bint select_thread_wakeup_pipe[2];
 
 /* Run loop source used to wake up the main thread */
 static CFRunLoopSourceRef select_main_thread_source;
@@ -183,7 +183,7 @@ static CFRunLoopSourceRef select_main_thread_source;
 static void
 select_thread_set_state (SelectThreadState new_state)
 {
-  gboolean old_state;
+  bboolean old_state;
 
   if (select_thread_state == new_state)
     return;
@@ -339,9 +339,9 @@ select_thread_start (void)
 #ifdef G_ENABLE_DEBUG
 static void
 dump_poll_result (GPollFD *ufds,
-		  guint    nfds)
+		  buint    nfds)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < nfds; i++)
     {
@@ -360,13 +360,13 @@ dump_poll_result (GPollFD *ufds,
 }
 #endif
 
-gboolean
+bboolean
 pollfds_equal (GPollFD *old_pollfds,
-	       guint    old_n_pollfds,
+	       buint    old_n_pollfds,
 	       GPollFD *new_pollfds,
-	       guint    new_n_pollfds)
+	       buint    new_n_pollfds)
 {
-  gint i;
+  bint i;
   
   if (old_n_pollfds != new_n_pollfds)
     return FALSE;
@@ -390,14 +390,14 @@ pollfds_equal (GPollFD *old_pollfds,
  *   0: No file descriptors ready, asynchronous poll not needed
  * > 0: Number of file descriptors ready
  */
-static gint
+static bint
 select_thread_start_poll (GPollFD *ufds,
-			  guint    nfds,			  gint     timeout)
+			  buint    nfds,			  bint     timeout)
 {
-  gint n_ready;
-  gboolean have_new_pollfds = FALSE;
-  gint poll_fd_index = -1;
-  gint i;
+  bint n_ready;
+  bboolean have_new_pollfds = FALSE;
+  bint poll_fd_index = -1;
+  bint i;
 
   for (i = 0; i < nfds; i++)
     if (ufds[i].fd == -1)
@@ -545,10 +545,10 @@ select_thread_start_poll (GPollFD *ufds,
  * Return Value: number of file descriptors ready
  */
 static int
-select_thread_collect_poll (GPollFD *ufds, guint nfds)
+select_thread_collect_poll (GPollFD *ufds, buint nfds)
 {
-  gint i;
-  gint n_ready = 0;
+  bint i;
+  bint n_ready = 0;
   
   SELECT_THREAD_LOCK ();
 
@@ -587,7 +587,7 @@ select_thread_collect_poll (GPollFD *ufds, guint nfds)
  *********             Main Loop Source             *********
  ************************************************************/
 
-gboolean
+bboolean
 _bdk_quartz_event_loop_check_pending (void)
 {
   return current_events && current_events->head;
@@ -610,11 +610,11 @@ _bdk_quartz_event_loop_release_event (NSEvent *event)
   [event release];
 }
 
-static gboolean
+static bboolean
 bdk_event_prepare (GSource *source,
-		   gint    *timeout)
+		   bint    *timeout)
 {
-  gboolean retval;
+  bboolean retval;
 
   BDK_THREADS_ENTER ();
 
@@ -653,10 +653,10 @@ bdk_event_prepare (GSource *source,
   return retval;
 }
 
-static gboolean
+static bboolean
 bdk_event_check (GSource *source)
 {
-  gboolean retval;
+  bboolean retval;
 
   BDK_THREADS_ENTER ();
 
@@ -668,10 +668,10 @@ bdk_event_check (GSource *source)
   return retval;
 }
 
-static gboolean
+static bboolean
 bdk_event_dispatch (GSource     *source,
 		    GSourceFunc  callback,
-		    gpointer     user_data)
+		    bpointer     user_data)
 {
   BdkEvent *event;
 
@@ -705,14 +705,14 @@ static GSourceFuncs event_funcs = {
  *********             Our Poll Function            *********
  ************************************************************/
 
-static gint
+static bint
 poll_func (GPollFD *ufds,
-	   guint    nfds,
-	   gint     timeout_)
+	   buint    nfds,
+	   bint     timeout_)
 {
   NSEvent *event;
   NSDate *limit_date;
-  gint n_ready;
+  bint n_ready;
 
   static GPollFD *last_ufds;
 
@@ -776,12 +776,12 @@ poll_func (GPollFD *ufds,
 /* Wrapper around g_main_context_query() that handles reallocating
  * run_loop_pollfds up to the proper size
  */
-static gint
+static bint
 query_main_context (GMainContext *context,
 		    int           max_priority,
 		    int          *timeout)
 {
-  gint nfds;
+  bint nfds;
   
   if (!run_loop_pollfds)
     {
@@ -837,8 +837,8 @@ static void
 run_loop_before_sources (void)
 {
   GMainContext *context = g_main_context_default ();
-  gint max_priority;
-  gint nfds;
+  bint max_priority;
+  bint nfds;
 
   /* Before we let the CFRunLoop process sources, we want to check if there
    * are any pending GLib main loop sources more urgent than
@@ -877,8 +877,8 @@ static void
 run_loop_before_waiting (void)
 {
   GMainContext *context = g_main_context_default ();
-  gint timeout;
-  gint n_ready;
+  bint timeout;
+  bint n_ready;
 
   /* At this point, the CFRunLoop is ready to wait. We start a GMain loop
    * iteration by calling the check() and query() stages. We start a

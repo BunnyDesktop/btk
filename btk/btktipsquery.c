@@ -65,25 +65,25 @@ enum
 static void	btk_tips_query_class_init	(BtkTipsQueryClass	*class);
 static void	btk_tips_query_init		(BtkTipsQuery		*tips_query);
 static void	btk_tips_query_destroy		(BtkObject		*object);
-static gint	btk_tips_query_event		(BtkWidget		*widget,
+static bint	btk_tips_query_event		(BtkWidget		*widget,
 						 BdkEvent		*event);
 static void	btk_tips_query_set_arg		(BtkObject              *object,
 						 BtkArg			*arg,
-						 guint			 arg_id);
+						 buint			 arg_id);
 static void	btk_tips_query_get_arg		(BtkObject              *object,
 						 BtkArg			*arg,
-						 guint			arg_id);
+						 buint			arg_id);
 static void	btk_tips_query_real_start_query	(BtkTipsQuery		*tips_query);
 static void	btk_tips_query_real_stop_query	(BtkTipsQuery		*tips_query);
 static void	btk_tips_query_widget_entered	(BtkTipsQuery		*tips_query,
 						 BtkWidget		*widget,
-						 const gchar		*tip_text,
-						 const gchar		*tip_private);
+						 const bchar		*tip_text,
+						 const bchar		*tip_private);
 
 
 /* --- variables --- */
 static BtkLabelClass	*parent_class = NULL;
-static guint		 tips_query_signals[SIGNAL_LAST] = { 0 };
+static buint		 tips_query_signals[SIGNAL_LAST] = { 0 };
 
 
 /* --- functions --- */
@@ -196,7 +196,7 @@ btk_tips_query_init (BtkTipsQuery *tips_query)
 static void
 btk_tips_query_set_arg (BtkObject              *object,
 			BtkArg                 *arg,
-			guint                   arg_id)
+			buint                   arg_id)
 {
   BtkTipsQuery *tips_query;
 
@@ -224,7 +224,7 @@ btk_tips_query_set_arg (BtkObject              *object,
 static void
 btk_tips_query_get_arg (BtkObject             *object,
 			BtkArg                *arg,
-			guint                  arg_id)
+			buint                  arg_id)
 {
   BtkTipsQuery *tips_query;
 
@@ -280,10 +280,10 @@ btk_tips_query_new (void)
 
 void
 btk_tips_query_set_labels (BtkTipsQuery   *tips_query,
-			   const gchar	  *label_inactive,
-			   const gchar	  *label_no_tip)
+			   const bchar	  *label_inactive,
+			   const bchar	  *label_no_tip)
 {
-  gchar *old;
+  bchar *old;
 
   g_return_if_fail (BTK_IS_TIPS_QUERY (tips_query));
   g_return_if_fail (label_inactive != NULL);
@@ -339,7 +339,7 @@ btk_tips_query_stop_query (BtkTipsQuery *tips_query)
 static void
 btk_tips_query_real_start_query (BtkTipsQuery *tips_query)
 {
-  gint failure;
+  bint failure;
   
   g_return_if_fail (BTK_IS_TIPS_QUERY (tips_query));
   
@@ -385,15 +385,15 @@ btk_tips_query_real_stop_query (BtkTipsQuery *tips_query)
 static void
 btk_tips_query_widget_entered (BtkTipsQuery   *tips_query,
 			       BtkWidget      *widget,
-			       const gchar    *tip_text,
-			       const gchar    *tip_private)
+			       const bchar    *tip_text,
+			       const bchar    *tip_private)
 {
   g_return_if_fail (BTK_IS_TIPS_QUERY (tips_query));
 
   if (!tip_text)
     tip_text = tips_query->label_no_tip;
 
-  if (!g_str_equal (BTK_LABEL (tips_query)->label, (gchar*) tip_text))
+  if (!g_str_equal (BTK_LABEL (tips_query)->label, (bchar*) tip_text))
     btk_label_set_text (BTK_LABEL (tips_query), tip_text);
 }
 
@@ -436,13 +436,13 @@ btk_tips_query_emit_widget_entered (BtkTipsQuery *tips_query,
     }
 }
 
-static gint
+static bint
 btk_tips_query_event (BtkWidget	       *widget,
 		      BdkEvent	       *event)
 {
   BtkTipsQuery *tips_query;
   BtkWidget *event_widget;
-  gboolean event_handled;
+  bboolean event_handled;
   
   g_return_val_if_fail (BTK_IS_TIPS_QUERY (widget), FALSE);
 
@@ -470,7 +470,7 @@ btk_tips_query_event (BtkWidget	       *widget,
       event_widget = NULL;
       if (pointer_window)
 	{
-	  gpointer event_widget_ptr;
+	  bpointer event_widget_ptr;
 	  bdk_window_get_user_data (pointer_window, &event_widget_ptr);
 	  event_widget = event_widget_ptr;
 	}
@@ -492,7 +492,7 @@ btk_tips_query_event (BtkWidget	       *widget,
 	    btk_tips_query_stop_query (tips_query);
 	  else
 	    {
-	      gint stop;
+	      bint stop;
 	      BtkTooltipsData *tdata;
 	      
 	      stop = TRUE;

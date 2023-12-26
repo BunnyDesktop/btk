@@ -61,27 +61,27 @@ struct _BtkAccelLabel
 {
   BtkLabel label;
 
-  guint          GSEAL (btk_reserved);
-  guint          GSEAL (accel_padding);      /* should be style property? */
+  buint          GSEAL (btk_reserved);
+  buint          GSEAL (accel_padding);      /* should be style property? */
   BtkWidget     *GSEAL (accel_widget);       /* done*/
   GClosure      *GSEAL (accel_closure);      /* has set function */
   BtkAccelGroup *GSEAL (accel_group);        /* set by set_accel_closure() */
-  gchar         *GSEAL (accel_string);       /* has set function */
-  guint16        GSEAL (accel_string_width); /* seems to be private */
+  bchar         *GSEAL (accel_string);       /* has set function */
+  buint16        GSEAL (accel_string_width); /* seems to be private */
 };
 
 struct _BtkAccelLabelClass
 {
   BtkLabelClass	 parent_class;
 
-  gchar		*signal_quote1;
-  gchar		*signal_quote2;
-  gchar		*mod_name_shift;
-  gchar		*mod_name_control;
-  gchar		*mod_name_alt;
-  gchar		*mod_separator;
-  gchar		*accel_seperator;
-  guint		 latin1_to_char : 1;
+  bchar		*signal_quote1;
+  bchar		*signal_quote2;
+  bchar		*mod_name_shift;
+  bchar		*mod_name_control;
+  bchar		*mod_name_alt;
+  bchar		*mod_separator;
+  bchar		*accel_seperator;
+  buint		 latin1_to_char : 1;
   
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -95,18 +95,18 @@ struct _BtkAccelLabelClass
 #endif /* BTK_DISABLE_DEPRECATED */
 
 GType	   btk_accel_label_get_type	     (void) B_GNUC_CONST;
-BtkWidget* btk_accel_label_new		     (const gchar   *string);
+BtkWidget* btk_accel_label_new		     (const bchar   *string);
 BtkWidget* btk_accel_label_get_accel_widget  (BtkAccelLabel *accel_label);
-guint	   btk_accel_label_get_accel_width   (BtkAccelLabel *accel_label);
+buint	   btk_accel_label_get_accel_width   (BtkAccelLabel *accel_label);
 void	   btk_accel_label_set_accel_widget  (BtkAccelLabel *accel_label,
 					      BtkWidget	    *accel_widget);
 void	   btk_accel_label_set_accel_closure (BtkAccelLabel *accel_label,
 					      GClosure	    *accel_closure);
-gboolean   btk_accel_label_refetch           (BtkAccelLabel *accel_label);
+bboolean   btk_accel_label_refetch           (BtkAccelLabel *accel_label);
 
 /* private */
-gchar *    _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
-							 guint               accelerator_key,
+bchar *    _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
+							 buint               accelerator_key,
 							 BdkModifierType     accelerator_mods);
 
 B_END_DECLS

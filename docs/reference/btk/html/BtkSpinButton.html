@@ -110,7 +110,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-value-as-int" title="btk_spin_button_get_value_as_int ()">btk_spin_button_get_value_as_int</a> <span class="c_punctuation">()</span>
@@ -174,7 +174,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-digits" title="btk_spin_button_get_digits ()">btk_spin_button_get_digits</a> <span class="c_punctuation">()</span>
@@ -190,7 +190,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-numeric" title="btk_spin_button_get_numeric ()">btk_spin_button_get_numeric</a> <span class="c_punctuation">()</span>
@@ -206,7 +206,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-snap-to-ticks" title="btk_spin_button_get_snap_to_ticks ()">btk_spin_button_get_snap_to_ticks</a> <span class="c_punctuation">()</span>
@@ -222,7 +222,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-value" title="btk_spin_button_get_value ()">btk_spin_button_get_value</a> <span class="c_punctuation">()</span>
@@ -230,7 +230,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkSpinButton.html#btk-spin-button-get-wrap" title="btk_spin_button_get_wrap ()">btk_spin_button_get_wrap</a> <span class="c_punctuation">()</span>
@@ -260,17 +260,17 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkSpinButton.html#BtkSpinButton--digits" title="The “digits” property">digits</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkSpinButton.html#BtkSpinButton--numeric" title="The “numeric” property">numeric</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkSpinButton.html#BtkSpinButton--snap-to-ticks" title="The “snap-to-ticks” property">snap-to-ticks</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -285,7 +285,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkSpinButton.html#BtkSpinButton--wrap" title="The “wrap” property">wrap</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -327,7 +327,7 @@
 <td class="signal_flags">Run Last</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkSpinButton.html#BtkSpinButton-output" title="The “output” signal">output</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -406,8 +406,8 @@ BtkSpinButton implements
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_configure (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> climb_rate</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> digits</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> climb_rate</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> digits</code></em>);</pre>
 <p>Changes the properties of an existing spin button. The adjustment, climb rate,
 and number of decimal places are all changed accordingly, after this function call.</p>
 <div class="refsect3">
@@ -448,16 +448,16 @@ and number of decimal places are all changed accordingly, after this function ca
 <a name="btk-spin-button-new"></a><h3>btk_spin_button_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_spin_button_new (<em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>,
-                     <em class="parameter"><code><span class="type">gdouble</span> climb_rate</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> digits</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bdouble</span> climb_rate</code></em>,
+                     <em class="parameter"><code><span class="type">buint</span> digits</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-new-with-range"></a><h3>btk_spin_button_new_with_range ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_spin_button_new_with_range (<em class="parameter"><code><span class="type">gdouble</span> min</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> max</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> step</code></em>);</pre>
+btk_spin_button_new_with_range (<em class="parameter"><code><span class="type">bdouble</span> min</code></em>,
+                                <em class="parameter"><code><span class="type">bdouble</span> max</code></em>,
+                                <em class="parameter"><code><span class="type">bdouble</span> step</code></em>);</pre>
 <p>This is a convenience constructor that allows creation of a numeric 
 <a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> without manually creating an adjustment. The value is 
 initially set to the minimum value and a page increment of 10 * <em class="parameter"><code>step</code></em>
@@ -565,7 +565,7 @@ btk_spin_button_get_adjustment (<em class="parameter"><code><a class="link" href
 <a name="btk-spin-button-set-digits"></a><h3>btk_spin_button_set_digits ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_digits (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> digits</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">buint</span> digits</code></em>);</pre>
 <p>Set the precision to be displayed by <em class="parameter"><code>spin_button</code></em>
 . Up to 20 digit precision
 is allowed.</p>
@@ -597,8 +597,8 @@ is allowed.</p>
 <a name="btk-spin-button-set-increments"></a><h3>btk_spin_button_set_increments ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_increments (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> step</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> page</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bdouble</span> step</code></em>,
+                                <em class="parameter"><code><span class="type">bdouble</span> page</code></em>);</pre>
 <p>Sets the step and page increments for spin_button.  This affects how 
 quickly the value changes when the spin button's arrows are activated.</p>
 <div class="refsect3">
@@ -634,8 +634,8 @@ quickly the value changes when the spin button's arrows are activated.</p>
 <a name="btk-spin-button-set-range"></a><h3>btk_spin_button_set_range ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_range (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> min</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> max</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> min</code></em>,
+                           <em class="parameter"><code><span class="type">bdouble</span> max</code></em>);</pre>
 <p>Sets the minimum and maximum allowable values for <em class="parameter"><code>spin_button</code></em>
 </p>
 <div class="refsect3">
@@ -669,7 +669,7 @@ btk_spin_button_set_range (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-value-as-int"></a><h3>btk_spin_button_get_value_as_int ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_spin_button_get_value_as_int (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Get the value <em class="parameter"><code>spin_button</code></em>
  represented as an integer.</p>
@@ -699,7 +699,7 @@ btk_spin_button_get_value_as_int (<em class="parameter"><code><a class="link" hr
 <a name="btk-spin-button-set-value"></a><h3>btk_spin_button_set_value ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_value (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> value</code></em>);</pre>
 <p>Set the value of <em class="parameter"><code>spin_button</code></em>
 .</p>
 <div class="refsect3">
@@ -761,7 +761,7 @@ spin button is always updated or only when a valid value is set.</p>
 <a name="btk-spin-button-set-numeric"></a><h3>btk_spin_button_set_numeric ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_numeric (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> numeric</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> numeric</code></em>);</pre>
 <p>Sets the flag that determines if non-numeric text can be typed into
 the spin button.</p>
 <div class="refsect3">
@@ -793,7 +793,7 @@ the spin button.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_spin (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
                       <em class="parameter"><code><a class="link" href="BtkSpinButton.html#BtkSpinType" title="enum BtkSpinType"><span class="type">BtkSpinType</span></a> direction</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> increment</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bdouble</span> increment</code></em>);</pre>
 <p>Increment or decrement a spin button's value in a specified direction
 by a specified amount.</p>
 <div class="refsect3">
@@ -829,7 +829,7 @@ by a specified amount.</p>
 <a name="btk-spin-button-set-wrap"></a><h3>btk_spin_button_set_wrap ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_wrap (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                          <em class="parameter"><code><span class="type">gboolean</span> wrap</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bboolean</span> wrap</code></em>);</pre>
 <p>Sets the flag that determines if a spin button value wraps around to the
 opposite limit when the upper or lower limit of the range is exceeded.</p>
 <div class="refsect3">
@@ -860,7 +860,7 @@ opposite limit when the upper or lower limit of the range is exceeded.</p>
 <a name="btk-spin-button-set-snap-to-ticks"></a><h3>btk_spin_button_set_snap_to_ticks ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_set_snap_to_ticks (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> snap_to_ticks</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> snap_to_ticks</code></em>);</pre>
 <p>Sets the policy as to whether values are corrected to the nearest step 
 increment when a spin button is activated after providing an invalid value.</p>
 <div class="refsect3">
@@ -911,7 +911,7 @@ btk_spin_button_update (<em class="parameter"><code><a class="link" href="BtkSpi
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-digits"></a><h3>btk_spin_button_get_digits ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_spin_button_get_digits (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Fetches the precision of <em class="parameter"><code>spin_button</code></em>
 . See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-digits" title="btk_spin_button_set_digits ()"><code class="function">btk_spin_button_set_digits()</code></a>.</p>
@@ -940,8 +940,8 @@ btk_spin_button_get_digits (<em class="parameter"><code><a class="link" href="Bt
 <a name="btk-spin-button-get-increments"></a><h3>btk_spin_button_get_increments ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_get_increments (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> *step</code></em>,
-                                <em class="parameter"><code><span class="type">gdouble</span> *page</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bdouble</span> *step</code></em>,
+                                <em class="parameter"><code><span class="type">bdouble</span> *page</code></em>);</pre>
 <p>Gets the current step and page the increments used by <em class="parameter"><code>spin_button</code></em>
 . See
 <a class="link" href="BtkSpinButton.html#btk-spin-button-set-increments" title="btk_spin_button_set_increments ()"><code class="function">btk_spin_button_set_increments()</code></a>.</p>
@@ -976,7 +976,7 @@ btk_spin_button_get_increments (<em class="parameter"><code><a class="link" href
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-numeric"></a><h3>btk_spin_button_get_numeric ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_spin_button_get_numeric (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Returns whether non-numeric text can be typed into the spin button.
 See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-numeric" title="btk_spin_button_set_numeric ()"><code class="function">btk_spin_button_set_numeric()</code></a>.</p>
@@ -1005,8 +1005,8 @@ See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-numeric" title=
 <a name="btk-spin-button-get-range"></a><h3>btk_spin_button_get_range ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_spin_button_get_range (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> *min</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> *max</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> *min</code></em>,
+                           <em class="parameter"><code><span class="type">bdouble</span> *max</code></em>);</pre>
 <p>Gets the range allowed for <em class="parameter"><code>spin_button</code></em>
 . See
 <a class="link" href="BtkSpinButton.html#btk-spin-button-set-range" title="btk_spin_button_set_range ()"><code class="function">btk_spin_button_set_range()</code></a>.</p>
@@ -1041,7 +1041,7 @@ btk_spin_button_get_range (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-snap-to-ticks"></a><h3>btk_spin_button_get_snap_to_ticks ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_spin_button_get_snap_to_ticks (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Returns whether the values are corrected to the nearest step. See
 <a class="link" href="BtkSpinButton.html#btk-spin-button-set-snap-to-ticks" title="btk_spin_button_set_snap_to_ticks ()"><code class="function">btk_spin_button_set_snap_to_ticks()</code></a>.</p>
@@ -1095,7 +1095,7 @@ btk_spin_button_get_update_policy (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-value"></a><h3>btk_spin_button_get_value ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_spin_button_get_value (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Get the value in the <em class="parameter"><code>spin_button</code></em>
 .</p>
@@ -1123,7 +1123,7 @@ btk_spin_button_get_value (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-spin-button-get-wrap"></a><h3>btk_spin_button_get_wrap ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_spin_button_get_wrap (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button</code></em>);</pre>
 <p>Returns whether the spin button's value wraps around to the
 opposite limit when the upper or lower limit of the range is
@@ -1268,7 +1268,7 @@ exceeded. See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-wrap"
 <hr>
 <div class="refsect2">
 <a name="BtkSpinButton--digits"></a><h3>The <code class="literal">“digits”</code> property</h3>
-<pre class="programlisting">  “digits”                   <span class="type">guint</span></pre>
+<pre class="programlisting">  “digits”                   <span class="type">buint</span></pre>
 <p>The number of decimal places to display.</p>
 <p>Owner: BtkSpinButton</p>
 <p>Flags: Read / Write</p>
@@ -1278,7 +1278,7 @@ exceeded. See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-wrap"
 <hr>
 <div class="refsect2">
 <a name="BtkSpinButton--numeric"></a><h3>The <code class="literal">“numeric”</code> property</h3>
-<pre class="programlisting">  “numeric”                  <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “numeric”                  <span class="type">bboolean</span></pre>
 <p>Whether non-numeric characters should be ignored.</p>
 <p>Owner: BtkSpinButton</p>
 <p>Flags: Read / Write</p>
@@ -1287,7 +1287,7 @@ exceeded. See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-wrap"
 <hr>
 <div class="refsect2">
 <a name="BtkSpinButton--snap-to-ticks"></a><h3>The <code class="literal">“snap-to-ticks”</code> property</h3>
-<pre class="programlisting">  “snap-to-ticks”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “snap-to-ticks”            <span class="type">bboolean</span></pre>
 <p>Whether erroneous values are automatically changed to a spin button's nearest step increment.</p>
 <p>Owner: BtkSpinButton</p>
 <p>Flags: Read / Write</p>
@@ -1314,7 +1314,7 @@ exceeded. See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-wrap"
 <hr>
 <div class="refsect2">
 <a name="BtkSpinButton--wrap"></a><h3>The <code class="literal">“wrap”</code> property</h3>
-<pre class="programlisting">  “wrap”                     <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “wrap”                     <span class="type">bboolean</span></pre>
 <p>Whether a spin button should wrap upon reaching its limits.</p>
 <p>Owner: BtkSpinButton</p>
 <p>Flags: Read / Write</p>
@@ -1339,7 +1339,7 @@ exceeded. See <a class="link" href="BtkSpinButton.html#btk-spin-button-set-wrap"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spinbutton,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a>  arg1,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -1347,16 +1347,16 @@ user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><
 <a name="BtkSpinButton-input"></a><h3>The <code class="literal">“input”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">int</span>
 user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spinbutton,
-               <span class="type">gpointer</span>       arg1,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       arg1,
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkSpinButton-output"></a><h3>The <code class="literal">“output”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spin_button,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>The ::output signal can be used to change to formatting
 of the value that is displayed in the spin buttons entry.</p>
 <div class="informalexample">
@@ -1381,12 +1381,12 @@ of the value that is displayed in the spin buttons entry.</p>
 16
 17</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="cm">/* show leading zeros */</span>
-<span class="k">static</span> <span class="n">gboolean</span>
+<span class="k">static</span> <span class="n">bboolean</span>
 <span class="nf">on_output</span> <span class="p">(</span><span class="n">BtkSpinButton</span> <span class="o">*</span><span class="n">spin</span><span class="p">,</span>
-           <span class="n">gpointer</span>       <span class="n">data</span><span class="p">)</span>
+           <span class="n">bpointer</span>       <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="n">BtkAdjustment</span> <span class="o">*</span><span class="n">adj</span><span class="p">;</span>
-   <span class="n">gchar</span> <span class="o">*</span><span class="n">text</span><span class="p">;</span>
+   <span class="n">bchar</span> <span class="o">*</span><span class="n">text</span><span class="p">;</span>
    <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
 
    <span class="n">adj</span> <span class="o">=</span> <span class="n">btk_spin_button_get_adjustment</span> <span class="p">(</span><span class="n">spin</span><span class="p">);</span>
@@ -1436,7 +1436,7 @@ of the value that is displayed in the spin buttons entry.</p>
 <a name="BtkSpinButton-value-changed"></a><h3>The <code class="literal">“value-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spinbutton,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 <hr>
@@ -1444,7 +1444,7 @@ user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><
 <a name="BtkSpinButton-wrapped"></a><h3>The <code class="literal">“wrapped”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spinbutton,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>The wrapped signal is emitted right after the spinbutton wraps
 from its maximum to minimum value or vice-versa.</p>
 <div class="refsect3">

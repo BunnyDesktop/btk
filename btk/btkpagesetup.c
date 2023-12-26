@@ -233,7 +233,7 @@ btk_page_setup_set_paper_size_and_default_margins (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_top_margin (BtkPageSetup *setup,
 			       BtkUnit       unit)
 {
@@ -252,7 +252,7 @@ btk_page_setup_get_top_margin (BtkPageSetup *setup,
  */
 void
 btk_page_setup_set_top_margin (BtkPageSetup *setup,
-			       gdouble       margin,
+			       bdouble       margin,
 			       BtkUnit       unit)
 {
   setup->top_margin = _btk_print_convert_to_mm (margin, unit);
@@ -269,7 +269,7 @@ btk_page_setup_set_top_margin (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_bottom_margin (BtkPageSetup *setup,
 				  BtkUnit       unit)
 {
@@ -288,7 +288,7 @@ btk_page_setup_get_bottom_margin (BtkPageSetup *setup,
  */
 void
 btk_page_setup_set_bottom_margin (BtkPageSetup *setup,
-				  gdouble       margin,
+				  bdouble       margin,
 				  BtkUnit       unit)
 {
   setup->bottom_margin = _btk_print_convert_to_mm (margin, unit);
@@ -305,7 +305,7 @@ btk_page_setup_set_bottom_margin (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_left_margin (BtkPageSetup *setup,
 				BtkUnit       unit)
 {
@@ -324,7 +324,7 @@ btk_page_setup_get_left_margin (BtkPageSetup *setup,
  */
 void
 btk_page_setup_set_left_margin (BtkPageSetup *setup,
-				gdouble       margin,
+				bdouble       margin,
 				BtkUnit       unit)
 {
   setup->left_margin = _btk_print_convert_to_mm (margin, unit);
@@ -341,7 +341,7 @@ btk_page_setup_set_left_margin (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_right_margin (BtkPageSetup *setup,
 				 BtkUnit       unit)
 {
@@ -360,7 +360,7 @@ btk_page_setup_get_right_margin (BtkPageSetup *setup,
  */
 void
 btk_page_setup_set_right_margin (BtkPageSetup *setup,
-				 gdouble       margin,
+				 bdouble       margin,
 				 BtkUnit       unit)
 {
   setup->right_margin = _btk_print_convert_to_mm (margin, unit);
@@ -381,7 +381,7 @@ btk_page_setup_set_right_margin (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_paper_width (BtkPageSetup *setup,
 				BtkUnit       unit)
 {
@@ -407,7 +407,7 @@ btk_page_setup_get_paper_width (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_paper_height (BtkPageSetup *setup,
 				 BtkUnit       unit)
 {
@@ -433,11 +433,11 @@ btk_page_setup_get_paper_height (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_page_width (BtkPageSetup *setup,
 			       BtkUnit       unit)
 {
-  gdouble width;
+  bdouble width;
   
   width = btk_page_setup_get_paper_width (setup, BTK_UNIT_MM);
   width -= setup->left_margin + setup->right_margin;
@@ -460,11 +460,11 @@ btk_page_setup_get_page_width (BtkPageSetup *setup,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_page_setup_get_page_height (BtkPageSetup *setup,
 				BtkUnit       unit)
 {
-  gdouble height;
+  bdouble height;
   
   height = btk_page_setup_get_paper_height (setup, BTK_UNIT_MM);
   height -= setup->top_margin + setup->bottom_margin;
@@ -485,12 +485,12 @@ btk_page_setup_get_page_height (BtkPageSetup *setup,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_page_setup_load_file (BtkPageSetup *setup,
-                          const gchar  *file_name,
+                          const bchar  *file_name,
 			  GError      **error)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   GKeyFile *key_file;
 
   g_return_val_if_fail (BTK_IS_PAGE_SETUP (setup), FALSE);
@@ -521,7 +521,7 @@ btk_page_setup_load_file (BtkPageSetup *setup,
  * Since: 2.12
  */
 BtkPageSetup *
-btk_page_setup_new_from_file (const gchar  *file_name,
+btk_page_setup_new_from_file (const bchar  *file_name,
 			      GError      **error)
 {
   BtkPageSetup *setup = btk_page_setup_new ();
@@ -536,13 +536,13 @@ btk_page_setup_new_from_file (const gchar  *file_name,
 }
 
 /* something like this should really be in bobject! */
-static guint
+static buint
 string_to_enum (GType type,
                 const char *enum_string)
 {
   GEnumClass *enum_class;
   const GEnumValue *value;
-  guint retval = 0;
+  buint retval = 0;
 
   g_return_val_if_fail (enum_string != NULL, 0);
 
@@ -571,16 +571,16 @@ string_to_enum (GType type,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_page_setup_load_key_file (BtkPageSetup *setup,
                               GKeyFile     *key_file,
-                              const gchar  *group_name,
+                              const bchar  *group_name,
                               GError      **error)
 {
   BtkPaperSize *paper_size;
-  gdouble top, bottom, left, right;
+  bdouble top, bottom, left, right;
   char *orientation = NULL, *freeme = NULL;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   GError *err = NULL;
 
   g_return_val_if_fail (BTK_IS_PAGE_SETUP (setup), FALSE);
@@ -662,7 +662,7 @@ out:
  */
 BtkPageSetup *
 btk_page_setup_new_from_key_file (GKeyFile     *key_file,
-				  const gchar  *group_name,
+				  const bchar  *group_name,
 				  GError      **error)
 {
   BtkPageSetup *setup = btk_page_setup_new ();
@@ -688,15 +688,15 @@ btk_page_setup_new_from_key_file (GKeyFile     *key_file,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_page_setup_to_file (BtkPageSetup  *setup,
 		        const char    *file_name,
 			GError       **error)
 {
   GKeyFile *key_file;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   char *data = NULL;
-  gsize len;
+  bsize len;
 
   g_return_val_if_fail (BTK_IS_PAGE_SETUP (setup), FALSE);
   g_return_val_if_fail (file_name != NULL, FALSE);
@@ -720,7 +720,7 @@ out:
 /* something like this should really be in bobject! */
 static char *
 enum_to_string (GType type,
-                guint enum_value)
+                buint enum_value)
 {
   GEnumClass *enum_class;
   GEnumValue *value;
@@ -751,7 +751,7 @@ enum_to_string (GType type,
 void
 btk_page_setup_to_key_file (BtkPageSetup *setup,
 			    GKeyFile     *key_file,
-			    const gchar  *group_name)
+			    const bchar  *group_name)
 {
   BtkPaperSize *paper_size;
   char *orientation;

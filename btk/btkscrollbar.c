@@ -51,7 +51,7 @@ btk_scrollbar_class_init (BtkScrollbarClass *class)
 							     P_("Minimum Slider Length"),
 							     P_("Minimum length of scrollbar slider"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     21,
 							     BTK_PARAM_READABLE));
 
@@ -101,9 +101,9 @@ btk_scrollbar_style_set (BtkWidget *widget,
                          BtkStyle  *previous)
 {
   BtkRange *range = BTK_RANGE (widget);
-  gint slider_length;
-  gboolean fixed_size;
-  gboolean has_a, has_b, has_c, has_d;
+  bint slider_length;
+  bboolean fixed_size;
+  bboolean has_a, has_b, has_c, has_d;
 
   btk_widget_style_get (widget,
                         "min-slider-length", &slider_length,

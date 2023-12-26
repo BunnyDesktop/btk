@@ -25,7 +25,7 @@
 static GHashTable *names_to_atoms;
 static GPtrArray *atoms_to_names;
 
-static const gchar xatoms_string[] = 
+static const bchar xatoms_string[] = 
   /* These are all the standard predefined X atoms */
   "NONE\0"
   "PRIMARY\0"
@@ -101,7 +101,7 @@ static const gchar xatoms_string[] =
    */
   "CLIPBOARD\0"			/* = 69 */;
 
-static const gint xatoms_offset[] = {
+static const bint xatoms_offset[] = {
     0,   5,  13,  23,  27,  32,  39,  48,  57,  64,  76,  88, 
   100, 112, 124, 136, 148, 160, 169, 174, 182, 189, 195, 205, 
   222, 236, 249, 262, 278, 291, 305, 317, 324, 333, 340, 351, 
@@ -125,16 +125,16 @@ ensure_atom_tables (void)
 
   for (i = 0; i < G_N_ELEMENTS (xatoms_offset); i++)
     {
-      g_hash_table_insert(names_to_atoms, (gchar *)xatoms_string + xatoms_offset[i], GINT_TO_POINTER (i));
-      g_ptr_array_add(atoms_to_names, (gchar *)xatoms_string + xatoms_offset[i]);
+      g_hash_table_insert(names_to_atoms, (bchar *)xatoms_string + xatoms_offset[i], BINT_TO_POINTER (i));
+      g_ptr_array_add(atoms_to_names, (bchar *)xatoms_string + xatoms_offset[i]);
     }
 }
 
 static BdkAtom
-intern_atom_internal (const gchar *atom_name, gboolean allocate)
+intern_atom_internal (const bchar *atom_name, bboolean allocate)
 {
-  gpointer result;
-  gchar *name;
+  bpointer result;
+  bchar *name;
   g_return_val_if_fail (atom_name != NULL, BDK_NONE);
 
   ensure_atom_tables ();
@@ -142,8 +142,8 @@ intern_atom_internal (const gchar *atom_name, gboolean allocate)
   if (g_hash_table_lookup_extended (names_to_atoms, atom_name, NULL, &result))
     return result;
   
-  result = GINT_TO_POINTER (atoms_to_names->len);
-  name = allocate ? g_strdup (atom_name) : (gchar *)atom_name;
+  result = BINT_TO_POINTER (atoms_to_names->len);
+  name = allocate ? g_strdup (atom_name) : (bchar *)atom_name;
   g_hash_table_insert(names_to_atoms, name, result);
   g_ptr_array_add(atoms_to_names, name);
   
@@ -151,28 +151,28 @@ intern_atom_internal (const gchar *atom_name, gboolean allocate)
 }
 
 BdkAtom
-bdk_atom_intern (const gchar *atom_name,
-		 gboolean     only_if_exists)
+bdk_atom_intern (const bchar *atom_name,
+		 bboolean     only_if_exists)
 {
   return intern_atom_internal (atom_name, TRUE);
 }
 
 BdkAtom
-bdk_atom_intern_static_string (const gchar *atom_name)
+bdk_atom_intern_static_string (const bchar *atom_name)
 {
   return intern_atom_internal (atom_name, FALSE);
 }
 
 
-gchar *
+bchar *
 bdk_atom_name (BdkAtom atom)
 {
   ensure_atom_tables ();
     
-  if (GPOINTER_TO_INT (atom) >= atoms_to_names->len)
+  if (BPOINTER_TO_INT (atom) >= atoms_to_names->len)
     return NULL;
     
-  return g_strdup (g_ptr_array_index (atoms_to_names, GPOINTER_TO_INT (atom)));
+  return g_strdup (g_ptr_array_index (atoms_to_names, BPOINTER_TO_INT (atom)));
 }
 
 void
@@ -182,17 +182,17 @@ bdk_property_delete (BdkWindow *window,
   /* FIXME: Implement */
 }
 
-gint
+bint
 bdk_property_get (BdkWindow   *window,
 		  BdkAtom      property,
 		  BdkAtom      type,
-		  gulong       offset,
-		  gulong       length,
-		  gint         pdelete,
+		  bulong       offset,
+		  bulong       length,
+		  bint         pdelete,
 		  BdkAtom     *actual_property_type,
-		  gint        *actual_format_type,
-		  gint        *actual_length,
-		  guchar     **data)
+		  bint        *actual_format_type,
+		  bint        *actual_length,
+		  buchar     **data)
 {
   /* FIXME: Implement */
   return 0;
@@ -202,10 +202,10 @@ void
 bdk_property_change (BdkWindow   *window,
 		     BdkAtom      property,
 		     BdkAtom      type,
-		     gint         format,
+		     bint         format,
 		     BdkPropMode  mode,
-		     const guchar *data,
-		     gint         nelements)
+		     const buchar *data,
+		     bint         nelements)
 {
   /* FIXME: Implement */
 }

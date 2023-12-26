@@ -58,15 +58,15 @@ struct _BtkToolItemClass
   BtkBinClass parent_class;
 
   /* signals */
-  gboolean   (* create_menu_proxy)    (BtkToolItem *tool_item);
+  bboolean   (* create_menu_proxy)    (BtkToolItem *tool_item);
   void       (* toolbar_reconfigured) (BtkToolItem *tool_item);
 #ifndef BTK_DISABLE_DEPRECATED
-  gboolean   (* set_tooltip)	      (BtkToolItem *tool_item,
+  bboolean   (* set_tooltip)	      (BtkToolItem *tool_item,
 				       BtkTooltips *tooltips,
-				       const gchar *tip_text,
-				       const gchar *tip_private);
+				       const bchar *tip_text,
+				       const bchar *tip_private);
 #else
-  gpointer _set_tooltip;
+  bpointer _set_tooltip;
 #endif
 
   /* Padding for future expansion */
@@ -80,54 +80,54 @@ GType        btk_tool_item_get_type (void) B_GNUC_CONST;
 BtkToolItem *btk_tool_item_new      (void);
 
 void            btk_tool_item_set_homogeneous          (BtkToolItem *tool_item,
-							gboolean     homogeneous);
-gboolean        btk_tool_item_get_homogeneous          (BtkToolItem *tool_item);
+							bboolean     homogeneous);
+bboolean        btk_tool_item_get_homogeneous          (BtkToolItem *tool_item);
 
 void            btk_tool_item_set_expand               (BtkToolItem *tool_item,
-							gboolean     expand);
-gboolean        btk_tool_item_get_expand               (BtkToolItem *tool_item);
+							bboolean     expand);
+bboolean        btk_tool_item_get_expand               (BtkToolItem *tool_item);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void            btk_tool_item_set_tooltip              (BtkToolItem *tool_item,
 							BtkTooltips *tooltips,
-							const gchar *tip_text,
-							const gchar *tip_private);
+							const bchar *tip_text,
+							const bchar *tip_private);
 #endif /* BTK_DISABLE_DEPRECATED */
 void            btk_tool_item_set_tooltip_text         (BtkToolItem *tool_item,
-							const gchar *text);
+							const bchar *text);
 void            btk_tool_item_set_tooltip_markup       (BtkToolItem *tool_item,
-							const gchar *markup);
+							const bchar *markup);
 
 void            btk_tool_item_set_use_drag_window      (BtkToolItem *tool_item,
-							gboolean     use_drag_window);
-gboolean        btk_tool_item_get_use_drag_window      (BtkToolItem *tool_item);
+							bboolean     use_drag_window);
+bboolean        btk_tool_item_get_use_drag_window      (BtkToolItem *tool_item);
 
 void            btk_tool_item_set_visible_horizontal   (BtkToolItem *tool_item,
-							gboolean     visible_horizontal);
-gboolean        btk_tool_item_get_visible_horizontal   (BtkToolItem *tool_item);
+							bboolean     visible_horizontal);
+bboolean        btk_tool_item_get_visible_horizontal   (BtkToolItem *tool_item);
 
 void            btk_tool_item_set_visible_vertical     (BtkToolItem *tool_item,
-							gboolean     visible_vertical);
-gboolean        btk_tool_item_get_visible_vertical     (BtkToolItem *tool_item);
+							bboolean     visible_vertical);
+bboolean        btk_tool_item_get_visible_vertical     (BtkToolItem *tool_item);
 
-gboolean        btk_tool_item_get_is_important         (BtkToolItem *tool_item);
+bboolean        btk_tool_item_get_is_important         (BtkToolItem *tool_item);
 void            btk_tool_item_set_is_important         (BtkToolItem *tool_item,
-							gboolean     is_important);
+							bboolean     is_important);
 
 BangoEllipsizeMode btk_tool_item_get_ellipsize_mode    (BtkToolItem *tool_item);
 BtkIconSize     btk_tool_item_get_icon_size            (BtkToolItem *tool_item);
 BtkOrientation  btk_tool_item_get_orientation          (BtkToolItem *tool_item);
 BtkToolbarStyle btk_tool_item_get_toolbar_style        (BtkToolItem *tool_item);
 BtkReliefStyle  btk_tool_item_get_relief_style         (BtkToolItem *tool_item);
-gfloat          btk_tool_item_get_text_alignment       (BtkToolItem *tool_item);
+bfloat          btk_tool_item_get_text_alignment       (BtkToolItem *tool_item);
 BtkOrientation  btk_tool_item_get_text_orientation     (BtkToolItem *tool_item);
 BtkSizeGroup *  btk_tool_item_get_text_size_group      (BtkToolItem *tool_item);
 
 BtkWidget *     btk_tool_item_retrieve_proxy_menu_item (BtkToolItem *tool_item);
 BtkWidget *     btk_tool_item_get_proxy_menu_item      (BtkToolItem *tool_item,
-							const gchar *menu_item_id);
+							const bchar *menu_item_id);
 void            btk_tool_item_set_proxy_menu_item      (BtkToolItem *tool_item,
-							const gchar *menu_item_id,
+							const bchar *menu_item_id,
 							BtkWidget   *menu_item);
 void		btk_tool_item_rebuild_menu	       (BtkToolItem *tool_item);
 
@@ -135,7 +135,7 @@ void            btk_tool_item_toolbar_reconfigured     (BtkToolItem *tool_item);
 
 /* private */
 
-gboolean       _btk_tool_item_create_menu_proxy        (BtkToolItem *tool_item);
+bboolean       _btk_tool_item_create_menu_proxy        (BtkToolItem *tool_item);
 
 B_END_DECLS
 

@@ -43,7 +43,7 @@ static void            btk_win32_embed_widget_size_allocate         (BtkWidget  
 								     BtkAllocation    *allocation);
 static void            btk_win32_embed_widget_set_focus             (BtkWindow        *window,
 								     BtkWidget        *focus);
-static gboolean        btk_win32_embed_widget_focus                 (BtkWidget        *widget,
+static bboolean        btk_win32_embed_widget_focus                 (BtkWidget        *widget,
 								     BtkDirectionType  direction);
 static void            btk_win32_embed_widget_check_resize          (BtkContainer     *container);
 
@@ -147,7 +147,7 @@ btk_win32_embed_widget_window_process (HWND hwnd, UINT msg, WPARAM wparam, LPARA
 {
   BdkWindow *window;
   BtkWin32EmbedWidget *embed_widget;
-  gpointer user_data;
+  bpointer user_data;
 
   window = bdk_window_lookup ((BdkNativeWindow)hwnd);
   if (window == NULL) {
@@ -174,7 +174,7 @@ btk_win32_embed_widget_realize (BtkWidget *widget)
   BtkWindow *window = BTK_WINDOW (widget);
   BtkWin32EmbedWidget *embed_widget = BTK_WIN32_EMBED_WIDGET (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   LONG_PTR styles;
 
   /* ensure widget tree is properly size allocated */
@@ -232,7 +232,7 @@ btk_win32_embed_widget_realize (BtkWidget *widget)
 
   bdk_window_set_user_data (widget->window, window);
 
-  embed_widget->old_window_procedure = (gpointer)
+  embed_widget->old_window_procedure = (bpointer)
     SetWindowLongPtrW(BDK_WINDOW_HWND (widget->window),
 		      GWLP_WNDPROC,
 		      (LONG_PTR)btk_win32_embed_widget_window_process);
@@ -308,9 +308,9 @@ btk_win32_embed_widget_size_allocate (BtkWidget     *widget,
       child_allocation.x = btk_container_get_border_width (BTK_CONTAINER (widget));
       child_allocation.y = child_allocation.x;
       child_allocation.width =
-	MAX (1, (gint)allocation->width - child_allocation.x * 2);
+	MAX (1, (bint)allocation->width - child_allocation.x * 2);
       child_allocation.height =
-	MAX (1, (gint)allocation->height - child_allocation.y * 2);
+	MAX (1, (bint)allocation->height - child_allocation.y * 2);
       
       btk_widget_size_allocate (child, &child_allocation);
     }
@@ -322,7 +322,7 @@ btk_win32_embed_widget_check_resize (BtkContainer *container)
   BTK_CONTAINER_CLASS (bin_class)->check_resize (container);
 }
 
-static gboolean
+static bboolean
 btk_win32_embed_widget_focus (BtkWidget        *widget,
 			      BtkDirectionType  direction)
 {

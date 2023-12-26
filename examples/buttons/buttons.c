@@ -5,8 +5,8 @@
 /* Create a new hbox with an image and a label packed into it
  * and return the box. */
 
-static BtkWidget *xpm_label_box( gchar     *xpm_filename,
-                                 gchar     *label_text )
+static BtkWidget *xpm_label_box( bchar     *xpm_filename,
+                                 bchar     *label_text )
 {
     BtkWidget *box;
     BtkWidget *label;
@@ -34,7 +34,7 @@ static BtkWidget *xpm_label_box( gchar     *xpm_filename,
 
 /* Our usual callback function */
 static void callback( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (char *) data);
 }
@@ -69,7 +69,7 @@ int main( int   argc,
 
     /* Connect the "clicked" signal of the button to our callback */
     g_signal_connect (B_OBJECT (button), "clicked",
-		      G_CALLBACK (callback), (gpointer) "cool button");
+		      G_CALLBACK (callback), (bpointer) "cool button");
 
     /* This calls our box creating function */
     box = xpm_label_box ("info.xpm", "cool button");

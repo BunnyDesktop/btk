@@ -56,23 +56,23 @@ struct _BtkMenuShell
   BtkWidget *GSEAL (active_menu_item);
   BtkWidget *GSEAL (parent_menu_shell);
 
-  guint GSEAL (button);
-  guint32 GSEAL (activate_time);
+  buint GSEAL (button);
+  buint32 GSEAL (activate_time);
 
-  guint GSEAL (active) : 1;
-  guint GSEAL (have_grab) : 1;
-  guint GSEAL (have_xgrab) : 1;
-  guint GSEAL (ignore_leave) : 1; /* unused */
-  guint GSEAL (menu_flag) : 1;    /* unused */
-  guint GSEAL (ignore_enter) : 1;
-  guint GSEAL (keyboard_mode) : 1;
+  buint GSEAL (active) : 1;
+  buint GSEAL (have_grab) : 1;
+  buint GSEAL (have_xgrab) : 1;
+  buint GSEAL (ignore_leave) : 1; /* unused */
+  buint GSEAL (menu_flag) : 1;    /* unused */
+  buint GSEAL (ignore_enter) : 1;
+  buint GSEAL (keyboard_mode) : 1;
 };
 
 struct _BtkMenuShellClass
 {
   BtkContainerClass parent_class;
   
-  guint submenu_placement : 1;
+  buint submenu_placement : 1;
   
   void (*deactivate)     (BtkMenuShell *menu_shell);
   void (*selection_done) (BtkMenuShell *menu_shell);
@@ -80,16 +80,16 @@ struct _BtkMenuShellClass
   void (*move_current)     (BtkMenuShell        *menu_shell,
 			    BtkMenuDirectionType direction);
   void (*activate_current) (BtkMenuShell *menu_shell,
-			    gboolean      force_hide);
+			    bboolean      force_hide);
   void (*cancel)           (BtkMenuShell *menu_shell);
   void (*select_item)      (BtkMenuShell *menu_shell,
 			    BtkWidget    *menu_item);
   void (*insert)           (BtkMenuShell *menu_shell,
 			    BtkWidget    *child,
-			    gint          position);
-  gint (*get_popup_delay)  (BtkMenuShell *menu_shell);
-  gboolean (*move_selected) (BtkMenuShell *menu_shell,
-			     gint          distance);
+			    bint          position);
+  bint (*get_popup_delay)  (BtkMenuShell *menu_shell);
+  bboolean (*move_selected) (BtkMenuShell *menu_shell,
+			     bint          distance);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -104,36 +104,36 @@ void  btk_menu_shell_prepend           (BtkMenuShell *menu_shell,
 					BtkWidget    *child);
 void  btk_menu_shell_insert            (BtkMenuShell *menu_shell,
 					BtkWidget    *child,
-					gint          position);
+					bint          position);
 void  btk_menu_shell_deactivate        (BtkMenuShell *menu_shell);
 void  btk_menu_shell_select_item       (BtkMenuShell *menu_shell,
 					BtkWidget    *menu_item);
 void  btk_menu_shell_deselect          (BtkMenuShell *menu_shell);
 void  btk_menu_shell_activate_item     (BtkMenuShell *menu_shell,
 					BtkWidget    *menu_item,
-					gboolean      force_deactivate);
+					bboolean      force_deactivate);
 void  btk_menu_shell_select_first      (BtkMenuShell *menu_shell,
-					gboolean      search_sensitive);
+					bboolean      search_sensitive);
 void _btk_menu_shell_select_last       (BtkMenuShell *menu_shell,
-					gboolean      search_sensitive);
-gint  _btk_menu_shell_get_popup_delay  (BtkMenuShell *menu_shell);
+					bboolean      search_sensitive);
+bint  _btk_menu_shell_get_popup_delay  (BtkMenuShell *menu_shell);
 void  btk_menu_shell_cancel            (BtkMenuShell *menu_shell);
 
 void  _btk_menu_shell_add_mnemonic     (BtkMenuShell *menu_shell,
-                                        guint         keyval,
+                                        buint         keyval,
                                         BtkWidget    *target);
 void  _btk_menu_shell_remove_mnemonic  (BtkMenuShell *menu_shell,
-                                        guint         keyval,
+                                        buint         keyval,
                                         BtkWidget    *target);
 
-gboolean btk_menu_shell_get_take_focus (BtkMenuShell *menu_shell);
+bboolean btk_menu_shell_get_take_focus (BtkMenuShell *menu_shell);
 void     btk_menu_shell_set_take_focus (BtkMenuShell *menu_shell,
-                                        gboolean      take_focus);
+                                        bboolean      take_focus);
 
 void     _btk_menu_shell_update_mnemonics  (BtkMenuShell *menu_shell);
 void     _btk_menu_shell_set_keyboard_mode (BtkMenuShell *menu_shell,
-                                            gboolean      keyboard_mode);
-gboolean _btk_menu_shell_get_keyboard_mode (BtkMenuShell *menu_shell);
+                                            bboolean      keyboard_mode);
+bboolean _btk_menu_shell_get_keyboard_mode (BtkMenuShell *menu_shell);
 
 B_END_DECLS
 

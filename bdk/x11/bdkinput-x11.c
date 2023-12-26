@@ -37,19 +37,19 @@
 /* Forward declarations */
 static BdkDevicePrivate *bdk_input_device_new            (BdkDisplay       *display,
 							  XDeviceInfo      *device,
-							  gint              include_core);
+							  bint              include_core);
 static void              bdk_input_translate_coordinates (BdkDevicePrivate *bdkdev,
 							  BdkWindow        *window,
-							  gint             *axis_data,
-							  gdouble          *axis_out,
-							  gdouble          *x_out,
-							  gdouble          *y_out);
+							  bint             *axis_data,
+							  bdouble          *axis_out,
+							  bdouble          *x_out,
+							  bdouble          *y_out);
 static void              bdk_input_update_axes           (BdkDevicePrivate *bdkdev,
-							  gint             axes_count,
-							  gint             first_axis,
-							  gint             *axis_data);
-static guint             bdk_input_translate_state       (guint             state,
-							  guint             device_state);
+							  bint             axes_count,
+							  bint             first_axis,
+							  bint             *axis_data);
+static buint             bdk_input_translate_state       (buint             state,
+							  buint             device_state);
 
 /* A temporary error handler for ignoring device unplugging-related errors. */
 static int
@@ -60,7 +60,7 @@ ignore_errors (Display *display, XErrorEvent *event)
 
 BdkDevicePrivate *
 _bdk_input_find_device (BdkDisplay *display,
-			guint32     id)
+			buint32     id)
 {
   GList *tmp_list = BDK_DISPLAY_X11 (display)->input_devices;
   BdkDevicePrivate *bdkdev;
@@ -79,7 +79,7 @@ _bdk_input_get_root_relative_geometry (BdkWindow *window,
 				       int *x_ret, int *y_ret)
 {
   Window child;
-  gint x,y;
+  bint x,y;
 
   XTranslateCoordinates (BDK_WINDOW_XDISPLAY (window),
 			 BDK_WINDOW_XWINDOW (window),
@@ -95,12 +95,12 @@ _bdk_input_get_root_relative_geometry (BdkWindow *window,
 static BdkDevicePrivate *
 bdk_input_device_new (BdkDisplay  *display,
 		      XDeviceInfo *device,
-		      gint         include_core)
+		      bint         include_core)
 {
   BdkDevicePrivate *bdkdev;
-  gchar *tmp_name;
+  bchar *tmp_name;
   XAnyClassPtr class;
-  gint i,j;
+  bint i,j;
 
   bdkdev = g_object_new (BDK_TYPE_DEVICE, NULL);
 
@@ -186,7 +186,7 @@ bdk_input_device_new (BdkDisplay  *display,
 	  XValuatorInfo *xvi = (XValuatorInfo *)class;
 	  bdkdev->info.num_axes = xvi->num_axes;
 	  bdkdev->axes = g_new (BdkAxisInfo, xvi->num_axes);
-	  bdkdev->axis_data = g_new0 (gint, xvi->num_axes);
+	  bdkdev->axis_data = g_new0 (bint, xvi->num_axes);
 	  bdkdev->info.axes = g_new0 (BdkDeviceAxis, xvi->num_axes);
 	  for (j=0;j<xvi->num_axes;j++)
 	    {
@@ -253,11 +253,11 @@ bdk_input_device_new (BdkDisplay  *display,
 
 void
 _bdk_input_common_find_events (BdkDevicePrivate *bdkdev,
-			       gint mask,
+			       bint mask,
 			       XEventClass *classes,
 			       int *num_classes)
 {
-  gint i;
+  bint i;
   XEventClass class;
 
   i = 0;
@@ -323,8 +323,8 @@ _bdk_input_select_events (BdkWindow *impl_window,
 {
   int (*old_handler) (Display *, XErrorEvent *);
   XEventClass classes[BDK_MAX_DEVICE_CLASSES];
-  gint num_classes;
-  guint event_mask;
+  bint num_classes;
+  buint event_mask;
   BdkWindowObject *w;
   BdkInputWindow *iw;
   GList *l;
@@ -367,9 +367,9 @@ _bdk_input_select_events (BdkWindow *impl_window,
   XSetErrorHandler (old_handler);
 }
 
-gint
+bint
 _bdk_input_common_init (BdkDisplay *display,
-			gint        include_core)
+			bint        include_core)
 {
   XDeviceInfo   *devices;
   int num_devices, loop;
@@ -407,9 +407,9 @@ _bdk_input_common_init (BdkDisplay *display,
 
 static void
 bdk_input_update_axes (BdkDevicePrivate *bdkdev,
-		       gint             axes_count,
-		       gint             first_axis,
-		       gint             *axis_data)
+		       bint             axes_count,
+		       bint             first_axis,
+		       bint             *axis_data)
 {
   int i;
   g_return_if_fail (first_axis >= 0 && first_axis + axes_count <= bdkdev->info.num_axes);
@@ -421,10 +421,10 @@ bdk_input_update_axes (BdkDevicePrivate *bdkdev,
 static void
 bdk_input_translate_coordinates (BdkDevicePrivate *bdkdev,
 				 BdkWindow        *window,
-				 gint             *axis_data,
-				 gdouble          *axis_out,
-				 gdouble          *x_out,
-				 gdouble          *y_out)
+				 bint             *axis_data,
+				 bdouble          *axis_out,
+				 bdouble          *x_out,
+				 bdouble          *y_out)
 {
   BdkWindowObject *priv, *impl_window;
 
@@ -555,14 +555,14 @@ bdk_input_translate_coordinates (BdkDevicePrivate *bdkdev,
  * the button portion (all of?) the device state.
  * Any button remapping should go on here.
  */
-static guint
-bdk_input_translate_state(guint state, guint device_state)
+static buint
+bdk_input_translate_state(buint state, buint device_state)
 {
   return device_state | (state & 0xFF);
 }
 
 
-gboolean
+bboolean
 _bdk_input_common_other_event (BdkEvent         *event,
 			       XEvent           *xevent,
 			       BdkWindow        *window,
@@ -603,7 +603,7 @@ _bdk_input_common_other_event (BdkEvent         *event,
       event->button.window = window;
       event->button.time = xdbe->time;
 
-      event->button.axes = g_new (gdouble, bdkdev->info.num_axes);
+      event->button.axes = g_new (bdouble, bdkdev->info.num_axes);
       bdk_input_update_axes (bdkdev, xdbe->axes_count, xdbe->first_axis,
 			     xdbe->axis_data);
       bdk_input_translate_coordinates (bdkdev, window, bdkdev->axis_data,
@@ -677,14 +677,14 @@ _bdk_input_common_other_event (BdkEvent         *event,
       if ((event->key.keyval >= 0x20) && (event->key.keyval <= 0xFF))
 	{
 	  event->key.length = 1;
-	  event->key.string = g_new (gchar, 2);
-	  event->key.string[0] = (gchar)event->key.keyval;
+	  event->key.string = g_new (bchar, 2);
+	  event->key.string[0] = (bchar)event->key.keyval;
 	  event->key.string[1] = 0;
 	}
       else
 	{
 	  event->key.length = 0;
-	  event->key.string = g_new0 (gchar, 1);
+	  event->key.string = g_new0 (bchar, 1);
 	}
 
       BDK_NOTE (EVENTS,
@@ -707,7 +707,7 @@ _bdk_input_common_other_event (BdkEvent         *event,
 
       event->motion.device = &bdkdev->info;
 
-      event->motion.axes = g_new (gdouble, bdkdev->info.num_axes);
+      event->motion.axes = g_new (bdouble, bdkdev->info.num_axes);
       bdk_input_update_axes (bdkdev, xdme->axes_count, xdme->first_axis, xdme->axis_data);
       bdk_input_translate_coordinates(bdkdev, window, bdkdev->axis_data,
 				      event->motion.axes,
@@ -783,7 +783,7 @@ _bdk_input_common_other_event (BdkEvent         *event,
   return FALSE;			/* wasn't one of our event types */
 }
 
-gboolean
+bboolean
 _bdk_input_common_event_selected (BdkEvent         *event,
 				  BdkWindow        *window,
 				  BdkDevicePrivate *bdkdev)
@@ -832,21 +832,21 @@ _bdk_input_common_event_selected (BdkEvent         *event,
 }
 
 
-gboolean
+bboolean
 _bdk_device_get_history (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   BdkTimeCoord **coords;
   XDeviceTimeCoord *device_coords;
   BdkWindow *impl_window;
   BdkDevicePrivate *bdkdev;
-  gint mode_return;
-  gint axis_count_return;
-  gint i;
+  bint mode_return;
+  bint axis_count_return;
+  bint i;
 
   bdkdev = (BdkDevicePrivate *)device;
 
@@ -894,17 +894,17 @@ _bdk_device_get_history (BdkDevice         *device,
 void
 bdk_device_get_state (BdkDevice       *device,
 		      BdkWindow       *window,
-		      gdouble         *axes,
+		      bdouble         *axes,
 		      BdkModifierType *mask)
 {
-  gint i;
+  bint i;
 
   g_return_if_fail (device != NULL);
   g_return_if_fail (BDK_IS_WINDOW (window));
 
   if (BDK_IS_CORE (device))
     {
-      gint x_int, y_int;
+      bint x_int, y_int;
 
       bdk_window_get_pointer (window, &x_int, &y_int, mask);
 

@@ -113,7 +113,7 @@ struct _BtkObject
    *  aligned on 4 or 8 byte boundaries. If a new bitfield were
    *  used in BtkWidget much space would be wasted.
    */
-  guint32 GSEAL (flags);
+  buint32 GSEAL (flags);
 };
 
 struct _BtkObjectClass
@@ -123,10 +123,10 @@ struct _BtkObjectClass
   /* Non overridable class methods to set and get per class arguments */
   void (*set_arg) (BtkObject *object,
 		   BtkArg    *arg,
-		   guint      arg_id);
+		   buint      arg_id);
   void (*get_arg) (BtkObject *object,
 		   BtkArg    *arg,
-		   guint      arg_id);
+		   buint      arg_id);
 
   /* Default signal handler for the ::destroy signal, which is
    *  invoked to request that references to the widget be dropped.
@@ -155,16 +155,16 @@ void btk_object_destroy	  (BtkObject *object);
 #ifndef BTK_DISABLE_DEPRECATED
 
 BtkObject*	btk_object_new		  (GType	       type,
-					   const gchar	      *first_property_name,
+					   const bchar	      *first_property_name,
 					   ...);
 BtkObject*	btk_object_ref		  (BtkObject	      *object);
 void		btk_object_unref	  (BtkObject	      *object);
 void btk_object_weakref	  (BtkObject	    *object,
 			   GDestroyNotify    notify,
-			   gpointer	     data);
+			   bpointer	     data);
 void btk_object_weakunref (BtkObject	    *object,
 			   GDestroyNotify    notify,
-			   gpointer	     data);
+			   bpointer	     data);
 
 /* Set 'data' to the "object_data" field of the object. The
  *  data is indexed by the "key". If there is already data
@@ -179,18 +179,18 @@ void btk_object_weakunref (BtkObject	    *object,
  *  `btk_object_get_data' gets the data associated with "key".
  */
 void	 btk_object_set_data	     (BtkObject	     *object,
-				      const gchar    *key,
-				      gpointer	      data);
+				      const bchar    *key,
+				      bpointer	      data);
 void	 btk_object_set_data_full    (BtkObject	     *object,
-				      const gchar    *key,
-				      gpointer	      data,
+				      const bchar    *key,
+				      bpointer	      data,
 				      GDestroyNotify  destroy);
 void	 btk_object_remove_data	     (BtkObject	     *object,
-				      const gchar    *key);
-gpointer btk_object_get_data	     (BtkObject	     *object,
-				      const gchar    *key);
+				      const bchar    *key);
+bpointer btk_object_get_data	     (BtkObject	     *object,
+				      const bchar    *key);
 void	 btk_object_remove_no_notify (BtkObject	     *object,
-				      const gchar    *key);
+				      const bchar    *key);
 
 /* Set/get the "user_data" object data field of "object". It should
  *  be noted that these functions are no different than calling
@@ -198,8 +198,8 @@ void	 btk_object_remove_no_notify (BtkObject	     *object,
  *  They are merely provided as a convenience.
  */
 void	 btk_object_set_user_data (BtkObject	*object,
-				   gpointer	 data);
-gpointer btk_object_get_user_data (BtkObject	*object);
+				   bpointer	 data);
+bpointer btk_object_get_user_data (BtkObject	*object);
 
 
 /* Object-level methods */
@@ -207,12 +207,12 @@ gpointer btk_object_get_user_data (BtkObject	*object);
 /* Object data method variants that operate on key ids. */
 void btk_object_set_data_by_id		(BtkObject	 *object,
 					 GQuark		  data_id,
-					 gpointer	  data);
+					 bpointer	  data);
 void btk_object_set_data_by_id_full	(BtkObject	 *object,
 					 GQuark		  data_id,
-					 gpointer	  data,
+					 bpointer	  data,
 					 GDestroyNotify   destroy);
-gpointer btk_object_get_data_by_id	(BtkObject	 *object,
+bpointer btk_object_get_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
 void  btk_object_remove_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
@@ -233,15 +233,15 @@ typedef enum
 } BtkArgFlags;
 #define	BTK_ARG_READWRITE	(BTK_ARG_READABLE | BTK_ARG_WRITABLE)
 void	btk_object_get		(BtkObject	*object,
-				 const gchar	*first_property_name,
+				 const bchar	*first_property_name,
 				 ...) B_GNUC_NULL_TERMINATED;
 void	btk_object_set		(BtkObject	*object,
-				 const gchar	*first_property_name,
+				 const bchar	*first_property_name,
 				 ...) B_GNUC_NULL_TERMINATED;
-void	btk_object_add_arg_type		(const gchar    *arg_name,
+void	btk_object_add_arg_type		(const bchar    *arg_name,
 					 GType           arg_type,
-					 guint           arg_flags,
-					 guint           arg_id);
+					 buint           arg_flags,
+					 buint           arg_id);
 
 #endif /* BTK_DISABLE_DEPRECATED */
 

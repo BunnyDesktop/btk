@@ -4,7 +4,7 @@
 #include "tictactoe.h"
 
 void win( BtkWidget *widget,
-          gpointer   data )
+          bpointer   data )
 {
   g_print ("Yay!\n");
   tictactoe_clear (TICTACTOE (widget));

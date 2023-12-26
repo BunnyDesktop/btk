@@ -57,16 +57,16 @@ struct _BtkList
   BtkWidget *last_focus_child;
   BtkWidget *undo_focus_child;
 
-  guint htimer;
-  guint vtimer;
+  buint htimer;
+  buint vtimer;
 
-  gint anchor;
-  gint drag_pos;
+  bint anchor;
+  bint drag_pos;
   BtkStateType anchor_state;
 
-  guint selection_mode : 2;
-  guint drag_selection:1;
-  guint add_mode:1;
+  buint selection_mode : 2;
+  buint drag_selection:1;
+  buint add_mode:1;
 };
 
 struct _BtkListClass
@@ -85,7 +85,7 @@ GType      btk_list_get_type		  (void) B_GNUC_CONST;
 BtkWidget* btk_list_new			  (void);
 void	   btk_list_insert_items	  (BtkList	    *list,
 					   GList	    *items,
-					   gint		     position);
+					   bint		     position);
 void	   btk_list_append_items	  (BtkList	    *list,
 					   GList	    *items);
 void	   btk_list_prepend_items	  (BtkList	    *list,
@@ -95,35 +95,35 @@ void	   btk_list_remove_items	  (BtkList	    *list,
 void	   btk_list_remove_items_no_unref (BtkList	    *list,
 					   GList	    *items);
 void	   btk_list_clear_items		  (BtkList	    *list,
-					   gint		     start,
-					   gint		     end);
+					   bint		     start,
+					   bint		     end);
 void	   btk_list_select_item		  (BtkList	    *list,
-					   gint		     item);
+					   bint		     item);
 void	   btk_list_unselect_item	  (BtkList	    *list,
-					   gint		     item);
+					   bint		     item);
 void	   btk_list_select_child	  (BtkList	    *list,
 					   BtkWidget	    *child);
 void	   btk_list_unselect_child	  (BtkList	    *list,
 					   BtkWidget	    *child);
-gint	   btk_list_child_position	  (BtkList	    *list,
+bint	   btk_list_child_position	  (BtkList	    *list,
 					   BtkWidget	    *child);
 void	   btk_list_set_selection_mode	  (BtkList	    *list,
 					   BtkSelectionMode  mode);
 
 void       btk_list_extend_selection      (BtkList          *list,
 					   BtkScrollType     scroll_type,
-					   gfloat            position,
-					   gboolean          auto_start_selection);
+					   bfloat            position,
+					   bboolean          auto_start_selection);
 void       btk_list_start_selection       (BtkList          *list);
 void       btk_list_end_selection         (BtkList          *list);
 void       btk_list_select_all            (BtkList          *list);
 void       btk_list_unselect_all          (BtkList          *list);
 void       btk_list_scroll_horizontal     (BtkList          *list,
 					   BtkScrollType     scroll_type,
-					   gfloat            position);
+					   bfloat            position);
 void       btk_list_scroll_vertical       (BtkList          *list,
 					   BtkScrollType     scroll_type,
-					   gfloat            position);
+					   bfloat            position);
 void       btk_list_toggle_add_mode       (BtkList          *list);
 void       btk_list_toggle_focus_row      (BtkList          *list);
 void       btk_list_toggle_row            (BtkList          *list,

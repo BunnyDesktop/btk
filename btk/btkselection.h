@@ -60,16 +60,16 @@ struct _BtkSelectionData
   BdkAtom       GSEAL (selection);
   BdkAtom       GSEAL (target);
   BdkAtom       GSEAL (type);
-  gint          GSEAL (format);
-  guchar       *GSEAL (data);
-  gint          GSEAL (length);
+  bint          GSEAL (format);
+  buchar       *GSEAL (data);
+  bint          GSEAL (length);
   BdkDisplay   *GSEAL (display);
 };
 
 struct _BtkTargetEntry {
-  gchar *target;
-  guint  flags;
-  guint  info;
+  bchar *target;
+  buint  flags;
+  buint  info;
 };
 
 /* These structures not public, and are here only for the convenience of
@@ -78,119 +78,119 @@ struct _BtkTargetEntry {
 
 typedef struct _BtkTargetPair BtkTargetPair;
 
-/* This structure is a list of destinations, and associated guint id's */
+/* This structure is a list of destinations, and associated buint id's */
 struct _BtkTargetList {
   GList *list;
-  guint ref_count;
+  buint ref_count;
 };
 
 struct _BtkTargetPair {
   BdkAtom   target;
-  guint     flags;
-  guint     info;
+  buint     flags;
+  buint     info;
 };
 
 BtkTargetList *btk_target_list_new       (const BtkTargetEntry *targets,
-					  guint                 ntargets);
+					  buint                 ntargets);
 BtkTargetList *btk_target_list_ref       (BtkTargetList  *list);
 void           btk_target_list_unref     (BtkTargetList  *list);
 void           btk_target_list_add       (BtkTargetList  *list,
 				  	  BdkAtom         target,
-					  guint           flags,
-					  guint           info);
+					  buint           flags,
+					  buint           info);
 void           btk_target_list_add_text_targets      (BtkTargetList  *list,
-                                                      guint           info);
+                                                      buint           info);
 void           btk_target_list_add_rich_text_targets (BtkTargetList  *list,
-                                                      guint           info,
-                                                      gboolean        deserializable,
+                                                      buint           info,
+                                                      bboolean        deserializable,
                                                       BtkTextBuffer  *buffer);
 void           btk_target_list_add_image_targets     (BtkTargetList  *list,
-                                                      guint           info,
-                                                      gboolean        writable);
+                                                      buint           info,
+                                                      bboolean        writable);
 void           btk_target_list_add_uri_targets       (BtkTargetList  *list,
-                                                      guint           info);
+                                                      buint           info);
 void           btk_target_list_add_table (BtkTargetList        *list,
 					  const BtkTargetEntry *targets,
-					  guint                 ntargets);
+					  buint                 ntargets);
 void           btk_target_list_remove    (BtkTargetList  *list,
 					  BdkAtom         target);
-gboolean       btk_target_list_find      (BtkTargetList  *list,
+bboolean       btk_target_list_find      (BtkTargetList  *list,
 					  BdkAtom         target,
-					  guint          *info);
+					  buint          *info);
 
 BtkTargetEntry * btk_target_table_new_from_list (BtkTargetList  *list,
-                                                 gint           *n_targets);
+                                                 bint           *n_targets);
 void             btk_target_table_free          (BtkTargetEntry *targets,
-                                                 gint            n_targets);
+                                                 bint            n_targets);
 
 /* Public interface */
 
-gboolean btk_selection_owner_set             (BtkWidget  *widget,
+bboolean btk_selection_owner_set             (BtkWidget  *widget,
 					      BdkAtom     selection,
-					      guint32     time_);
-gboolean btk_selection_owner_set_for_display (BdkDisplay *display,
+					      buint32     time_);
+bboolean btk_selection_owner_set_for_display (BdkDisplay *display,
 					      BtkWidget  *widget,
 					      BdkAtom     selection,
-					      guint32     time_);
+					      buint32     time_);
 
 void     btk_selection_add_target    (BtkWidget            *widget,
 				      BdkAtom               selection,
 				      BdkAtom               target,
-				      guint                 info);
+				      buint                 info);
 void     btk_selection_add_targets   (BtkWidget            *widget,
 				      BdkAtom               selection,
 				      const BtkTargetEntry *targets,
-				      guint                 ntargets);
+				      buint                 ntargets);
 void     btk_selection_clear_targets (BtkWidget            *widget,
 				      BdkAtom               selection);
-gboolean btk_selection_convert       (BtkWidget            *widget,
+bboolean btk_selection_convert       (BtkWidget            *widget,
 				      BdkAtom               selection,
 				      BdkAtom               target,
-				      guint32               time_);
+				      buint32               time_);
 
 BdkAtom       btk_selection_data_get_selection (BtkSelectionData *selection_data);
 BdkAtom       btk_selection_data_get_target    (BtkSelectionData *selection_data);
 BdkAtom       btk_selection_data_get_data_type (BtkSelectionData *selection_data);
-gint          btk_selection_data_get_format    (BtkSelectionData *selection_data);
-const guchar *btk_selection_data_get_data      (BtkSelectionData *selection_data);
-gint          btk_selection_data_get_length    (BtkSelectionData *selection_data);
+bint          btk_selection_data_get_format    (BtkSelectionData *selection_data);
+const buchar *btk_selection_data_get_data      (BtkSelectionData *selection_data);
+bint          btk_selection_data_get_length    (BtkSelectionData *selection_data);
 BdkDisplay   *btk_selection_data_get_display   (BtkSelectionData *selection_data);
 
 void     btk_selection_data_set      (BtkSelectionData     *selection_data,
 				      BdkAtom               type,
-				      gint                  format,
-				      const guchar         *data,
-				      gint                  length);
-gboolean btk_selection_data_set_text (BtkSelectionData     *selection_data,
-				      const gchar          *str,
-				      gint                  len);
-guchar * btk_selection_data_get_text (BtkSelectionData     *selection_data);
-gboolean btk_selection_data_set_pixbuf   (BtkSelectionData  *selection_data,
+				      bint                  format,
+				      const buchar         *data,
+				      bint                  length);
+bboolean btk_selection_data_set_text (BtkSelectionData     *selection_data,
+				      const bchar          *str,
+				      bint                  len);
+buchar * btk_selection_data_get_text (BtkSelectionData     *selection_data);
+bboolean btk_selection_data_set_pixbuf   (BtkSelectionData  *selection_data,
 				          BdkPixbuf         *pixbuf);
 BdkPixbuf *btk_selection_data_get_pixbuf (BtkSelectionData  *selection_data);
-gboolean btk_selection_data_set_uris (BtkSelectionData     *selection_data,
-				      gchar               **uris);
-gchar  **btk_selection_data_get_uris (BtkSelectionData     *selection_data);
+bboolean btk_selection_data_set_uris (BtkSelectionData     *selection_data,
+				      bchar               **uris);
+bchar  **btk_selection_data_get_uris (BtkSelectionData     *selection_data);
 
-gboolean btk_selection_data_get_targets          (BtkSelectionData  *selection_data,
+bboolean btk_selection_data_get_targets          (BtkSelectionData  *selection_data,
 						  BdkAtom          **targets,
-						  gint              *n_atoms);
-gboolean btk_selection_data_targets_include_text (BtkSelectionData  *selection_data);
-gboolean btk_selection_data_targets_include_rich_text (BtkSelectionData *selection_data,
+						  bint              *n_atoms);
+bboolean btk_selection_data_targets_include_text (BtkSelectionData  *selection_data);
+bboolean btk_selection_data_targets_include_rich_text (BtkSelectionData *selection_data,
                                                        BtkTextBuffer    *buffer);
-gboolean btk_selection_data_targets_include_image (BtkSelectionData  *selection_data,
-						   gboolean           writable);
-gboolean btk_selection_data_targets_include_uri  (BtkSelectionData  *selection_data);
-gboolean btk_targets_include_text                (BdkAtom       *targets,
-						  gint           n_targets);
-gboolean btk_targets_include_rich_text           (BdkAtom       *targets,
-						  gint           n_targets,
+bboolean btk_selection_data_targets_include_image (BtkSelectionData  *selection_data,
+						   bboolean           writable);
+bboolean btk_selection_data_targets_include_uri  (BtkSelectionData  *selection_data);
+bboolean btk_targets_include_text                (BdkAtom       *targets,
+						  bint           n_targets);
+bboolean btk_targets_include_rich_text           (BdkAtom       *targets,
+						  bint           n_targets,
                                                   BtkTextBuffer *buffer);
-gboolean btk_targets_include_image               (BdkAtom       *targets,
-						  gint           n_targets,
-						  gboolean       writable);
-gboolean btk_targets_include_uri                 (BdkAtom       *targets,
-						  gint           n_targets);
+bboolean btk_targets_include_image               (BdkAtom       *targets,
+						  bint           n_targets,
+						  bboolean       writable);
+bboolean btk_targets_include_uri                 (BdkAtom       *targets,
+						  bint           n_targets);
 
 /* Called when a widget is destroyed */
 
@@ -198,16 +198,16 @@ void btk_selection_remove_all      (BtkWidget *widget);
 
 /* Event handlers */
 #if !defined(BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
-gboolean btk_selection_clear		  (BtkWidget 	     *widget,
+bboolean btk_selection_clear		  (BtkWidget 	     *widget,
 					   BdkEventSelection *event);
 #endif
-gboolean _btk_selection_request		  (BtkWidget  	     *widget,
+bboolean _btk_selection_request		  (BtkWidget  	     *widget,
 					   BdkEventSelection *event);
-gboolean _btk_selection_incr_event	  (BdkWindow         *window,
+bboolean _btk_selection_incr_event	  (BdkWindow         *window,
 					   BdkEventProperty  *event);
-gboolean _btk_selection_notify		  (BtkWidget         *widget,
+bboolean _btk_selection_notify		  (BtkWidget         *widget,
 					   BdkEventSelection *event);
-gboolean _btk_selection_property_notify	  (BtkWidget         *widget,
+bboolean _btk_selection_property_notify	  (BtkWidget         *widget,
 					   BdkEventProperty  *event);
 
 GType             btk_selection_data_get_type (void) B_GNUC_CONST;

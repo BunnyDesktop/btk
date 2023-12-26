@@ -61,21 +61,21 @@ struct _BtkScrolledWindow
   BtkWidget *GSEAL (vscrollbar);
 
   /*< private >*/
-  guint GSEAL (hscrollbar_policy)      : 2;
-  guint GSEAL (vscrollbar_policy)      : 2;
-  guint GSEAL (hscrollbar_visible)     : 1;
-  guint GSEAL (vscrollbar_visible)     : 1;
-  guint GSEAL (window_placement)       : 2;
-  guint GSEAL (focus_out)              : 1;	/* Flag used by ::move-focus-out implementation */
+  buint GSEAL (hscrollbar_policy)      : 2;
+  buint GSEAL (vscrollbar_policy)      : 2;
+  buint GSEAL (hscrollbar_visible)     : 1;
+  buint GSEAL (vscrollbar_visible)     : 1;
+  buint GSEAL (window_placement)       : 2;
+  buint GSEAL (focus_out)              : 1;	/* Flag used by ::move-focus-out implementation */
 
-  guint16 GSEAL (shadow_type);
+  buint16 GSEAL (shadow_type);
 };
 
 struct _BtkScrolledWindowClass
 {
   BtkBinClass parent_class;
 
-  gint scrollbar_spacing;
+  bint scrollbar_spacing;
 
   /* Action signals for keybindings. Do not connect to these signals
    */
@@ -84,9 +84,9 @@ struct _BtkScrolledWindowClass
    * no horizontal/vertical variants for BTK_SCROLL_START/END,
    * so we have to add an additional boolean flag.
    */
-  gboolean (*scroll_child) (BtkScrolledWindow *scrolled_window,
+  bboolean (*scroll_child) (BtkScrolledWindow *scrolled_window,
 	  		    BtkScrollType      scroll,
-			    gboolean           horizontal);
+			    bboolean           horizontal);
 
   void (* move_focus_out) (BtkScrolledWindow *scrolled_window,
 			   BtkDirectionType   direction);
@@ -127,7 +127,7 @@ BtkShadowType  btk_scrolled_window_get_shadow_type   (BtkScrolledWindow *scrolle
 void	       btk_scrolled_window_add_with_viewport (BtkScrolledWindow *scrolled_window,
 						      BtkWidget		*child);
 
-gint _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window);
+bint _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window);
 
 
 B_END_DECLS

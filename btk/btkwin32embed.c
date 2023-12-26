@@ -28,11 +28,11 @@
 
 #include "btkalias.h"
 
-static guint message_type[BTK_WIN32_EMBED_LAST];
+static buint message_type[BTK_WIN32_EMBED_LAST];
 
 static GSList *current_messages;
 
-guint
+buint
 _btk_win32_embed_message_type (BtkWin32EmbedMessageType type)
 {
   if (type < 0 || type >= BTK_WIN32_EMBED_LAST)
@@ -121,7 +121,7 @@ _btk_win32_embed_set_focus_wrapped (void)
   msg->lParam |= BTK_WIN32_EMBED_FOCUS_WRAPAROUND;
 }
 
-gboolean
+bboolean
 _btk_win32_embed_get_focus_wrapped (void)
 {
   MSG *msg;

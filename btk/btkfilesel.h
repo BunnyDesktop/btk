@@ -65,8 +65,8 @@ struct _BtkFileSelection
   GList     *history_list;
   BtkWidget *fileop_dialog;
   BtkWidget *fileop_entry;
-  gchar     *fileop_file;
-  gpointer   cmpl_state;
+  bchar     *fileop_file;
+  bpointer   cmpl_state;
   
   BtkWidget *fileop_c_dir;
   BtkWidget *fileop_del_file;
@@ -77,7 +77,7 @@ struct _BtkFileSelection
 
   /*< private >*/
   GPtrArray *selected_names;
-  gchar     *last_selected;
+  bchar     *last_selected;
 };
 
 struct _BtkFileSelectionClass
@@ -100,21 +100,21 @@ struct _BtkFileSelectionClass
 #endif
 
 GType      btk_file_selection_get_type            (void) B_GNUC_CONST;
-BtkWidget* btk_file_selection_new                 (const gchar      *title);
+BtkWidget* btk_file_selection_new                 (const bchar      *title);
 void       btk_file_selection_set_filename        (BtkFileSelection *filesel,
-						   const gchar      *filename);
-const gchar* btk_file_selection_get_filename      (BtkFileSelection *filesel);
+						   const bchar      *filename);
+const bchar* btk_file_selection_get_filename      (BtkFileSelection *filesel);
 
 void	   btk_file_selection_complete		  (BtkFileSelection *filesel,
-						   const gchar	    *pattern);
+						   const bchar	    *pattern);
 void       btk_file_selection_show_fileop_buttons (BtkFileSelection *filesel);
 void       btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel);
 
-gchar**    btk_file_selection_get_selections      (BtkFileSelection *filesel);
+bchar**    btk_file_selection_get_selections      (BtkFileSelection *filesel);
 
 void       btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
-						   gboolean          select_multiple);
-gboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
+						   bboolean          select_multiple);
+bboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
 
 
 B_END_DECLS

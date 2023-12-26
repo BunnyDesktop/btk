@@ -25,18 +25,18 @@
 static void         bail_menu_shell_class_init          (BailMenuShellClass *klass);
 static void         bail_menu_shell_init                (BailMenuShell      *menu_shell);
 static void         bail_menu_shell_initialize          (BatkObject          *accessible,
-                                                         gpointer            data);
+                                                         bpointer            data);
 static void         batk_selection_interface_init        (BatkSelectionIface  *iface);
-static gboolean     bail_menu_shell_add_selection       (BatkSelection   *selection,
-                                                         gint           i);
-static gboolean     bail_menu_shell_clear_selection     (BatkSelection   *selection);
+static bboolean     bail_menu_shell_add_selection       (BatkSelection   *selection,
+                                                         bint           i);
+static bboolean     bail_menu_shell_clear_selection     (BatkSelection   *selection);
 static BatkObject*   bail_menu_shell_ref_selection       (BatkSelection   *selection,
-                                                         gint           i);
-static gint         bail_menu_shell_get_selection_count (BatkSelection   *selection);
-static gboolean     bail_menu_shell_is_child_selected   (BatkSelection   *selection,
-                                                         gint           i);
-static gboolean     bail_menu_shell_remove_selection    (BatkSelection   *selection,
-                                                         gint           i);
+                                                         bint           i);
+static bint         bail_menu_shell_get_selection_count (BatkSelection   *selection);
+static bboolean     bail_menu_shell_is_child_selected   (BatkSelection   *selection,
+                                                         bint           i);
+static bboolean     bail_menu_shell_remove_selection    (BatkSelection   *selection,
+                                                         bint           i);
 
 G_DEFINE_TYPE_WITH_CODE (BailMenuShell, bail_menu_shell, BAIL_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_SELECTION, batk_selection_interface_init))
@@ -56,7 +56,7 @@ bail_menu_shell_init (BailMenuShell *menu_shell)
 
 static void
 bail_menu_shell_initialize (BatkObject *accessible,
-                            gpointer  data)
+                            bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_menu_shell_parent_class)->initialize (accessible, data);
 
@@ -84,13 +84,13 @@ batk_selection_interface_init (BatkSelectionIface *iface)
    */
 }
 
-static gboolean
+static bboolean
 bail_menu_shell_add_selection (BatkSelection *selection,
-                               gint          i)
+                               bint          i)
 {
   BtkMenuShell *shell;
   GList *item;
-  guint length;
+  buint length;
   BtkWidget *widget;
 
   widget =  BTK_ACCESSIBLE (selection)->widget;
@@ -113,7 +113,7 @@ bail_menu_shell_add_selection (BatkSelection *selection,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 bail_menu_shell_clear_selection (BatkSelection   *selection)
 {
   BtkMenuShell *shell;
@@ -134,7 +134,7 @@ bail_menu_shell_clear_selection (BatkSelection   *selection)
 
 static BatkObject*
 bail_menu_shell_ref_selection (BatkSelection   *selection,
-                               gint           i)
+                               bint           i)
 {
   BtkMenuShell *shell;
   BatkObject *obj;
@@ -164,7 +164,7 @@ bail_menu_shell_ref_selection (BatkSelection   *selection,
   }
 }
 
-static gint
+static bint
 bail_menu_shell_get_selection_count (BatkSelection   *selection)
 {
   BtkMenuShell *shell;
@@ -192,12 +192,12 @@ bail_menu_shell_get_selection_count (BatkSelection   *selection)
   }
 }
 
-static gboolean
+static bboolean
 bail_menu_shell_is_child_selected (BatkSelection   *selection,
-                                   gint           i)
+                                   bint           i)
 {
   BtkMenuShell *shell;
-  gint j;
+  bint j;
   BtkWidget *widget;
 
   widget =  BTK_ACCESSIBLE (selection)->widget;
@@ -216,9 +216,9 @@ bail_menu_shell_is_child_selected (BatkSelection   *selection,
   return (j==i);   
 }
 
-static gboolean
+static bboolean
 bail_menu_shell_remove_selection (BatkSelection   *selection,
-                                  gint           i)
+                                  bint           i)
 {
   BtkMenuShell *shell;
   BtkWidget *widget;

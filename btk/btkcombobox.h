@@ -57,7 +57,7 @@ struct _BtkComboBoxClass
   void     (* changed)          (BtkComboBox *combo_box);
 
   /* vfuncs */
-  gchar *  (* get_active_text)  (BtkComboBox *combo_box);
+  bchar *  (* get_active_text)  (BtkComboBox *combo_box);
 
   /* Padding for future expansion */
   void (*_btk_reserved0) (void);
@@ -74,33 +74,33 @@ BtkWidget    *btk_combo_box_new_with_model           (BtkTreeModel *model);
 BtkWidget    *btk_combo_box_new_with_model_and_entry (BtkTreeModel *model);
 
 /* grids */
-gint          btk_combo_box_get_wrap_width         (BtkComboBox *combo_box);
+bint          btk_combo_box_get_wrap_width         (BtkComboBox *combo_box);
 void          btk_combo_box_set_wrap_width         (BtkComboBox *combo_box,
-                                                    gint         width);
-gint          btk_combo_box_get_row_span_column    (BtkComboBox *combo_box);
+                                                    bint         width);
+bint          btk_combo_box_get_row_span_column    (BtkComboBox *combo_box);
 void          btk_combo_box_set_row_span_column    (BtkComboBox *combo_box,
-                                                    gint         row_span);
-gint          btk_combo_box_get_column_span_column (BtkComboBox *combo_box);
+                                                    bint         row_span);
+bint          btk_combo_box_get_column_span_column (BtkComboBox *combo_box);
 void          btk_combo_box_set_column_span_column (BtkComboBox *combo_box,
-                                                    gint         column_span);
+                                                    bint         column_span);
 
-gboolean      btk_combo_box_get_add_tearoffs       (BtkComboBox *combo_box);
+bboolean      btk_combo_box_get_add_tearoffs       (BtkComboBox *combo_box);
 void          btk_combo_box_set_add_tearoffs       (BtkComboBox *combo_box,
-						    gboolean     add_tearoffs);
+						    bboolean     add_tearoffs);
 
-const gchar * btk_combo_box_get_title              (BtkComboBox *combo_box);
+const bchar * btk_combo_box_get_title              (BtkComboBox *combo_box);
 void                  btk_combo_box_set_title      (BtkComboBox *combo_box,
-					            const gchar *title);
+					            const bchar *title);
 
-gboolean      btk_combo_box_get_focus_on_click     (BtkComboBox *combo);
+bboolean      btk_combo_box_get_focus_on_click     (BtkComboBox *combo);
 void          btk_combo_box_set_focus_on_click     (BtkComboBox *combo,
-						    gboolean     focus_on_click);
+						    bboolean     focus_on_click);
 
 /* get/set active item */
-gint          btk_combo_box_get_active       (BtkComboBox     *combo_box);
+bint          btk_combo_box_get_active       (BtkComboBox     *combo_box);
 void          btk_combo_box_set_active       (BtkComboBox     *combo_box,
-                                              gint             index_);
-gboolean      btk_combo_box_get_active_iter  (BtkComboBox     *combo_box,
+                                              bint             index_);
+bboolean      btk_combo_box_get_active_iter  (BtkComboBox     *combo_box,
                                               BtkTreeIter     *iter);
 void          btk_combo_box_set_active_iter  (BtkComboBox     *combo_box,
                                               BtkTreeIter     *iter);
@@ -113,32 +113,32 @@ BtkTreeModel *btk_combo_box_get_model        (BtkComboBox     *combo_box);
 BtkTreeViewRowSeparatorFunc btk_combo_box_get_row_separator_func (BtkComboBox                *combo_box);
 void                        btk_combo_box_set_row_separator_func (BtkComboBox                *combo_box,
 								  BtkTreeViewRowSeparatorFunc func,
-								  gpointer                    data,
+								  bpointer                    data,
 								  GDestroyNotify              destroy);
 
 void               btk_combo_box_set_button_sensitivity (BtkComboBox        *combo_box,
 							 BtkSensitivityType  sensitivity);
 BtkSensitivityType btk_combo_box_get_button_sensitivity (BtkComboBox        *combo_box);
 
-gboolean           btk_combo_box_get_has_entry          (BtkComboBox        *combo_box);
+bboolean           btk_combo_box_get_has_entry          (BtkComboBox        *combo_box);
 void               btk_combo_box_set_entry_text_column  (BtkComboBox        *combo_box,
-							 gint                text_column);
-gint               btk_combo_box_get_entry_text_column  (BtkComboBox        *combo_box);
+							 bint                text_column);
+bint               btk_combo_box_get_entry_text_column  (BtkComboBox        *combo_box);
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
 
 /* convenience -- text */
 BtkWidget    *btk_combo_box_new_text         (void);
 void          btk_combo_box_append_text      (BtkComboBox     *combo_box,
-                                              const gchar     *text);
+                                              const bchar     *text);
 void          btk_combo_box_insert_text      (BtkComboBox     *combo_box,
-                                              gint             position,
-                                              const gchar     *text);
+                                              bint             position,
+                                              const bchar     *text);
 void          btk_combo_box_prepend_text     (BtkComboBox     *combo_box,
-                                              const gchar     *text);
+                                              const bchar     *text);
 void          btk_combo_box_remove_text      (BtkComboBox     *combo_box,
-                                              gint             position);
-gchar        *btk_combo_box_get_active_text  (BtkComboBox     *combo_box);
+                                              bint             position);
+bchar        *btk_combo_box_get_active_text  (BtkComboBox     *combo_box);
 
 #endif
 

@@ -77,7 +77,7 @@ typedef enum {					/* send or post? */
  */
 #define BTK_WIN32_EMBED_FOCUS_WRAPAROUND         (1 << 0)
 
-guint _btk_win32_embed_message_type (BtkWin32EmbedMessageType type);
+buint _btk_win32_embed_message_type (BtkWin32EmbedMessageType type);
 void _btk_win32_embed_push_message (MSG *msg);
 void _btk_win32_embed_pop_message (void);
 void _btk_win32_embed_send (BdkWindow		    *recipient,
@@ -88,7 +88,7 @@ void _btk_win32_embed_send_focus_message (BdkWindow		  *recipient,
 					  BtkWin32EmbedMessageType message,
 					  WPARAM	           wparam);
 void     _btk_win32_embed_set_focus_wrapped  (void);
-gboolean _btk_win32_embed_get_focus_wrapped  (void);
+bboolean _btk_win32_embed_get_focus_wrapped  (void);
 
 B_END_DECLS
 

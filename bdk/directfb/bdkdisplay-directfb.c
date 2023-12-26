@@ -43,8 +43,8 @@ extern void _bdk_windowing_window_init  (BdkScreen *screen);
 extern void _bdk_windowing_image_init   (void);
 extern void _bdk_directfb_keyboard_init (void);
 
-static gboolean   bdk_directfb_argb_font           = FALSE;
-static gint       bdk_directfb_glyph_surface_cache = 8;
+static bboolean   bdk_directfb_argb_font           = FALSE;
+static bint       bdk_directfb_glyph_surface_cache = 8;
 
 
 const GOptionEntry _bdk_windowing_args[] =
@@ -60,7 +60,7 @@ const GOptionEntry _bdk_windowing_args[] =
 /* Main entry point for bdk in 2.6 args are parsed
  */
 BdkDisplay *
-bdk_display_open (const gchar *display_name)
+bdk_display_open (const bchar *display_name)
 {
   IDirectFB             *directfb;
   IDirectFBDisplayLayer *layer;
@@ -193,7 +193,7 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
   _bdk_display = BDK_DISPLAY_DFB (display);
 }
 
-const gchar *
+const bchar *
 bdk_display_get_name (BdkDisplay *display)
 {
   return bdk_get_display_arg_name ();
@@ -207,7 +207,7 @@ bdk_display_get_n_screens (BdkDisplay *display)
 
 BdkScreen *
 bdk_display_get_screen (BdkDisplay *display,
-			gint        screen_num)
+			bint        screen_num)
 {
   return _bdk_screen;
 }
@@ -218,13 +218,13 @@ bdk_display_get_default_screen (BdkDisplay *display)
   return _bdk_screen;
 }
 
-gboolean
+bboolean
 bdk_display_supports_shapes (BdkDisplay *display)
 {
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   return FALSE;
@@ -242,13 +242,13 @@ BdkWindow *bdk_display_get_default_group (BdkDisplay *display)
  * Selection and Clipboard
  */
 
-gboolean
+bboolean
 bdk_display_supports_selection_notification (BdkDisplay *display)
 {
   return FALSE;
 }
 
-gboolean bdk_display_request_selection_notification  (BdkDisplay *display,
+bboolean bdk_display_request_selection_notification  (BdkDisplay *display,
                                                       BdkAtom     selection)
 
 {
@@ -256,7 +256,7 @@ gboolean bdk_display_request_selection_notification  (BdkDisplay *display,
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   g_warning("bdk_display_supports_clipboard_persistence Unimplemented function \n");
@@ -266,9 +266,9 @@ bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 void
 bdk_display_store_clipboard (BdkDisplay    *display,
                              BdkWindow     *clipboard_window,
-                             guint32        time_,
+                             buint32        time_,
                              const BdkAtom *targets,
-                             gint           n_targets)
+                             bint           n_targets)
 {
 
   g_warning("bdk_display_store_clipboard Unimplemented function \n");
@@ -280,16 +280,16 @@ bdk_display_store_clipboard (BdkDisplay    *display,
  * Pointer
  */
 
-static gboolean _bdk_directfb_pointer_implicit_grab = FALSE;
+static bboolean _bdk_directfb_pointer_implicit_grab = FALSE;
 
 BdkGrabStatus
 bdk_directfb_pointer_grab (BdkWindow    *window,
-                           gint          owner_events,
+                           bint          owner_events,
                            BdkEventMask  event_mask,
                            BdkWindow    *confine_to,
                            BdkCursor    *cursor,
-                           guint32       time,
-                           gboolean      implicit_grab)
+                           buint32       time,
+                           bboolean      implicit_grab)
 {
   BdkWindow             *toplevel;
   BdkWindowImplDirectFB *impl;
@@ -335,8 +335,8 @@ bdk_directfb_pointer_grab (BdkWindow    *window,
 }
 
 void
-bdk_directfb_pointer_ungrab (guint32  time,
-                             gboolean implicit_grab)
+bdk_directfb_pointer_ungrab (buint32  time,
+                             bboolean implicit_grab)
 {
   BdkWindow             *toplevel;
   BdkWindow             *mousewin;
@@ -382,7 +382,7 @@ bdk_directfb_pointer_ungrab (guint32  time,
 
 void
 bdk_display_pointer_ungrab (BdkDisplay *display,
-                            guint32 time)
+                            buint32 time)
 {
   BdkPointerGrabInfo *grab = _bdk_display_get_last_pointer_grab (display);
 
@@ -402,8 +402,8 @@ bdk_display_pointer_ungrab (BdkDisplay *display,
 BdkGrabStatus
 bdk_directfb_keyboard_grab (BdkDisplay *display,
                             BdkWindow  *window,
-                            gint        owner_events,
-                            guint32     time)
+                            bint        owner_events,
+                            buint32     time)
 {
   BdkWindow             *toplevel;
   BdkWindowImplDirectFB *impl;
@@ -429,7 +429,7 @@ bdk_directfb_keyboard_grab (BdkDisplay *display,
 
 void
 bdk_directfb_keyboard_ungrab (BdkDisplay *display,
-                              guint32     time)
+                              buint32     time)
 {
   BdkWindow             *toplevel;
   BdkWindowImplDirectFB *impl;
@@ -470,15 +470,15 @@ bdk_directfb_keyboard_ungrab (BdkDisplay *display,
 BdkGrabStatus
 bdk_display_keyboard_grab (BdkDisplay *display,
                            BdkWindow  *window,
-                           gint        owner_events,
-                           guint32     time)
+                           bint        owner_events,
+                           buint32     time)
 {
   return bdk_directfb_keyboard_grab (display, window, owner_events, time);
 }
 
 void
 bdk_display_keyboard_ungrab (BdkDisplay *display,
-                             guint32     time)
+                             buint32     time)
 {
   return bdk_directfb_keyboard_ungrab (display, time);
 }
@@ -530,7 +530,7 @@ bdk_notify_startup_complete (void)
  * Since: 2.12
  **/
 void
-bdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const bchar* startup_id)
 {
 }
 
@@ -539,7 +539,7 @@ bdk_notify_startup_complete_with_id (const gchar* startup_id)
  * Compositing
  */
 
-gboolean
+bboolean
 bdk_display_supports_composite (BdkDisplay *display)
 {
   return FALSE;

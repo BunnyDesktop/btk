@@ -47,18 +47,18 @@ struct _BtkTreeStore
 {
   BObject parent;
 
-  gint GSEAL (stamp);
-  gpointer GSEAL (root);
-  gpointer GSEAL (last);
-  gint GSEAL (n_columns);
-  gint GSEAL (sort_column_id);
+  bint GSEAL (stamp);
+  bpointer GSEAL (root);
+  bpointer GSEAL (last);
+  bint GSEAL (n_columns);
+  bint GSEAL (sort_column_id);
   GList *GSEAL (sort_list);
   BtkSortType GSEAL (order);
   GType *GSEAL (column_headers);
   BtkTreeIterCompareFunc GSEAL (default_sort_func);
-  gpointer GSEAL (default_sort_data);
+  bpointer GSEAL (default_sort_data);
   GDestroyNotify GSEAL (default_sort_destroy);
-  guint GSEAL (columns_dirty) : 1;
+  buint GSEAL (columns_dirty) : 1;
 };
 
 struct _BtkTreeStoreClass
@@ -74,37 +74,37 @@ struct _BtkTreeStoreClass
 
 
 GType         btk_tree_store_get_type         (void) B_GNUC_CONST;
-BtkTreeStore *btk_tree_store_new              (gint          n_columns,
+BtkTreeStore *btk_tree_store_new              (bint          n_columns,
 					       ...);
-BtkTreeStore *btk_tree_store_newv             (gint          n_columns,
+BtkTreeStore *btk_tree_store_newv             (bint          n_columns,
 					       GType        *types);
 void          btk_tree_store_set_column_types (BtkTreeStore *tree_store,
-					       gint          n_columns,
+					       bint          n_columns,
 					       GType        *types);
 
 /* NOTE: use btk_tree_model_get to get values from a BtkTreeStore */
 
 void          btk_tree_store_set_value        (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
-					       gint          column,
+					       bint          column,
 					       BValue       *value);
 void          btk_tree_store_set              (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       ...);
 void          btk_tree_store_set_valuesv      (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
-					       gint         *columns,
+					       bint         *columns,
 					       BValue       *values,
-					       gint          n_values);
+					       bint          n_values);
 void          btk_tree_store_set_valist       (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       va_list       var_args);
-gboolean      btk_tree_store_remove           (BtkTreeStore *tree_store,
+bboolean      btk_tree_store_remove           (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter);
 void          btk_tree_store_insert           (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *parent,
-					       gint          position);
+					       bint          position);
 void          btk_tree_store_insert_before    (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *parent,
@@ -116,32 +116,32 @@ void          btk_tree_store_insert_after     (BtkTreeStore *tree_store,
 void          btk_tree_store_insert_with_values (BtkTreeStore *tree_store,
 						 BtkTreeIter  *iter,
 						 BtkTreeIter  *parent,
-						 gint          position,
+						 bint          position,
 						 ...);
 void          btk_tree_store_insert_with_valuesv (BtkTreeStore *tree_store,
 						  BtkTreeIter  *iter,
 						  BtkTreeIter  *parent,
-						  gint          position,
-						  gint         *columns,
+						  bint          position,
+						  bint         *columns,
 						  BValue       *values,
-						  gint          n_values);
+						  bint          n_values);
 void          btk_tree_store_prepend          (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *parent);
 void          btk_tree_store_append           (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *parent);
-gboolean      btk_tree_store_is_ancestor      (BtkTreeStore *tree_store,
+bboolean      btk_tree_store_is_ancestor      (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *descendant);
-gint          btk_tree_store_iter_depth       (BtkTreeStore *tree_store,
+bint          btk_tree_store_iter_depth       (BtkTreeStore *tree_store,
 					       BtkTreeIter  *iter);
 void          btk_tree_store_clear            (BtkTreeStore *tree_store);
-gboolean      btk_tree_store_iter_is_valid    (BtkTreeStore *tree_store,
+bboolean      btk_tree_store_iter_is_valid    (BtkTreeStore *tree_store,
                                                BtkTreeIter  *iter);
 void          btk_tree_store_reorder          (BtkTreeStore *tree_store,
                                                BtkTreeIter  *parent,
-                                               gint         *new_order);
+                                               bint         *new_order);
 void          btk_tree_store_swap             (BtkTreeStore *tree_store,
                                                BtkTreeIter  *a,
                                                BtkTreeIter  *b);

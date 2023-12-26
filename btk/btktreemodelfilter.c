@@ -61,19 +61,19 @@ struct _FilterElt
 {
   BtkTreeIter iter;
   FilterLevel *children;
-  gint offset;
-  gint ref_count;
-  gint zero_ref_count;
-  gboolean visible;
+  bint offset;
+  bint ref_count;
+  bint zero_ref_count;
+  bboolean visible;
 };
 
 struct _FilterLevel
 {
   GArray *array;
-  gint ref_count;
-  gint visible_nodes;
+  bint ref_count;
+  bint visible_nodes;
 
-  gint parent_elt_index;
+  bint parent_elt_index;
   FilterLevel *parent_level;
 };
 
@@ -81,38 +81,38 @@ struct _FilterLevel
 
 struct _BtkTreeModelFilterPrivate
 {
-  gpointer root;
-  gint stamp;
-  guint child_flags;
+  bpointer root;
+  bint stamp;
+  buint child_flags;
   BtkTreeModel *child_model;
-  gint zero_ref_count;
+  bint zero_ref_count;
 
   BtkTreePath *virtual_root;
 
   BtkTreeModelFilterVisibleFunc visible_func;
-  gpointer visible_data;
+  bpointer visible_data;
   GDestroyNotify visible_destroy;
 
-  gint modify_n_columns;
+  bint modify_n_columns;
   GType *modify_types;
   BtkTreeModelFilterModifyFunc modify_func;
-  gpointer modify_data;
+  bpointer modify_data;
   GDestroyNotify modify_destroy;
 
-  gint visible_column;
+  bint visible_column;
 
-  gboolean visible_method_set;
-  gboolean modify_func_set;
+  bboolean visible_method_set;
+  bboolean modify_func_set;
 
-  gboolean in_row_deleted;
-  gboolean virtual_root_deleted;
+  bboolean in_row_deleted;
+  bboolean virtual_root_deleted;
 
   /* signal ids */
-  guint changed_id;
-  guint inserted_id;
-  guint has_child_toggled_id;
-  guint deleted_id;
-  guint reordered_id;
+  buint changed_id;
+  buint inserted_id;
+  buint has_child_toggled_id;
+  buint deleted_id;
+  buint reordered_id;
 };
 
 /* properties */
@@ -137,11 +137,11 @@ static void         btk_tree_model_filter_tree_model_init                 (BtkTr
 static void         btk_tree_model_filter_drag_source_init                (BtkTreeDragSourceIface  *iface);
 static void         btk_tree_model_filter_finalize                        (BObject                 *object);
 static void         btk_tree_model_filter_set_property                    (BObject                 *object,
-                                                                           guint                    prop_id,
+                                                                           buint                    prop_id,
                                                                            const BValue            *value,
                                                                            BParamSpec              *pspec);
 static void         btk_tree_model_filter_get_property                    (BObject                 *object,
-                                                                           guint                    prop_id,
+                                                                           buint                    prop_id,
                                                                            BValue                 *value,
                                                                            BParamSpec             *pspec);
 
@@ -149,55 +149,55 @@ static void         btk_tree_model_filter_get_property                    (BObje
 static void         btk_tree_model_filter_row_changed                     (BtkTreeModel           *c_model,
                                                                            BtkTreePath            *c_path,
                                                                            BtkTreeIter            *c_iter,
-                                                                           gpointer                data);
+                                                                           bpointer                data);
 static void         btk_tree_model_filter_row_inserted                    (BtkTreeModel           *c_model,
                                                                            BtkTreePath            *c_path,
                                                                            BtkTreeIter            *c_iter,
-                                                                           gpointer                data);
+                                                                           bpointer                data);
 static void         btk_tree_model_filter_row_has_child_toggled           (BtkTreeModel           *c_model,
                                                                            BtkTreePath            *c_path,
                                                                            BtkTreeIter            *c_iter,
-                                                                           gpointer                data);
+                                                                           bpointer                data);
 static void         btk_tree_model_filter_row_deleted                     (BtkTreeModel           *c_model,
                                                                            BtkTreePath            *c_path,
-                                                                           gpointer                data);
+                                                                           bpointer                data);
 static void         btk_tree_model_filter_rows_reordered                  (BtkTreeModel           *c_model,
                                                                            BtkTreePath            *c_path,
                                                                            BtkTreeIter            *c_iter,
-                                                                           gint                   *new_order,
-                                                                           gpointer                data);
+                                                                           bint                   *new_order,
+                                                                           bpointer                data);
 
 /* BtkTreeModel interface */
 static BtkTreeModelFlags btk_tree_model_filter_get_flags                       (BtkTreeModel           *model);
-static gint         btk_tree_model_filter_get_n_columns                   (BtkTreeModel           *model);
+static bint         btk_tree_model_filter_get_n_columns                   (BtkTreeModel           *model);
 static GType        btk_tree_model_filter_get_column_type                 (BtkTreeModel           *model,
-                                                                           gint                    index);
-static gboolean     btk_tree_model_filter_get_iter_full                   (BtkTreeModel           *model,
+                                                                           bint                    index);
+static bboolean     btk_tree_model_filter_get_iter_full                   (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            BtkTreePath            *path);
-static gboolean     btk_tree_model_filter_get_iter                        (BtkTreeModel           *model,
+static bboolean     btk_tree_model_filter_get_iter                        (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            BtkTreePath            *path);
 static BtkTreePath *btk_tree_model_filter_get_path                        (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter);
 static void         btk_tree_model_filter_get_value                       (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
-                                                                           gint                    column,
+                                                                           bint                    column,
                                                                            BValue                 *value);
-static gboolean     btk_tree_model_filter_iter_next                       (BtkTreeModel           *model,
+static bboolean     btk_tree_model_filter_iter_next                       (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter);
-static gboolean     btk_tree_model_filter_iter_children                   (BtkTreeModel           *model,
+static bboolean     btk_tree_model_filter_iter_children                   (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            BtkTreeIter            *parent);
-static gboolean     btk_tree_model_filter_iter_has_child                  (BtkTreeModel           *model,
+static bboolean     btk_tree_model_filter_iter_has_child                  (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter);
-static gint         btk_tree_model_filter_iter_n_children                 (BtkTreeModel           *model,
+static bint         btk_tree_model_filter_iter_n_children                 (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter);
-static gboolean     btk_tree_model_filter_iter_nth_child                  (BtkTreeModel           *model,
+static bboolean     btk_tree_model_filter_iter_nth_child                  (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            BtkTreeIter            *parent,
-                                                                           gint                    n);
-static gboolean     btk_tree_model_filter_iter_parent                     (BtkTreeModel           *model,
+                                                                           bint                    n);
+static bboolean     btk_tree_model_filter_iter_parent                     (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
                                                                            BtkTreeIter            *child);
 static void         btk_tree_model_filter_ref_node                        (BtkTreeModel           *model,
@@ -206,19 +206,19 @@ static void         btk_tree_model_filter_unref_node                      (BtkTr
                                                                            BtkTreeIter            *iter);
 
 /* TreeDragSource interface */
-static gboolean    btk_tree_model_filter_row_draggable                    (BtkTreeDragSource      *drag_source,
+static bboolean    btk_tree_model_filter_row_draggable                    (BtkTreeDragSource      *drag_source,
                                                                            BtkTreePath            *path);
-static gboolean    btk_tree_model_filter_drag_data_get                    (BtkTreeDragSource      *drag_source,
+static bboolean    btk_tree_model_filter_drag_data_get                    (BtkTreeDragSource      *drag_source,
                                                                            BtkTreePath            *path,
                                                                            BtkSelectionData       *selection_data);
-static gboolean    btk_tree_model_filter_drag_data_delete                 (BtkTreeDragSource      *drag_source,
+static bboolean    btk_tree_model_filter_drag_data_delete                 (BtkTreeDragSource      *drag_source,
                                                                            BtkTreePath            *path);
 
 /* private functions */
 static void        btk_tree_model_filter_build_level                      (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *parent_level,
-                                                                           gint                    parent_elt_index,
-                                                                           gboolean                emit_inserted);
+                                                                           bint                    parent_elt_index,
+                                                                           bboolean                emit_inserted);
 
 static void        btk_tree_model_filter_free_level                       (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *filter_level);
@@ -234,14 +234,14 @@ static BtkTreePath *btk_tree_model_filter_remove_root                     (BtkTr
 
 static void         btk_tree_model_filter_increment_stamp                 (BtkTreeModelFilter     *filter);
 
-static gboolean     btk_tree_model_filter_visible                         (BtkTreeModelFilter     *filter,
+static bboolean     btk_tree_model_filter_visible                         (BtkTreeModelFilter     *filter,
                                                                            BtkTreeIter            *child_iter);
 static void         btk_tree_model_filter_clear_cache_helper              (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *level);
 
 static void         btk_tree_model_filter_real_unref_node                 (BtkTreeModel           *model,
                                                                            BtkTreeIter            *iter,
-                                                                           gboolean                propagate_unref);
+                                                                           bboolean                propagate_unref);
 
 static void         btk_tree_model_filter_set_model                       (BtkTreeModelFilter     *filter,
                                                                            BtkTreeModel           *child_model);
@@ -254,13 +254,13 @@ static void         btk_tree_model_filter_set_root                        (BtkTr
 
 static BtkTreePath *btk_real_tree_model_filter_convert_child_path_to_path (BtkTreeModelFilter     *filter,
                                                                            BtkTreePath            *child_path,
-                                                                           gboolean                build_levels,
-                                                                           gboolean                fetch_children);
+                                                                           bboolean                build_levels,
+                                                                           bboolean                fetch_children);
 
 static FilterElt   *btk_tree_model_filter_get_nth                         (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *level,
                                                                            int                     n);
-static gboolean    btk_tree_model_filter_elt_is_visible_in_target         (FilterLevel            *level,
+static bboolean    btk_tree_model_filter_elt_is_visible_in_target         (FilterLevel            *level,
                                                                            FilterElt              *elt);
 static FilterElt   *btk_tree_model_filter_get_nth_visible                 (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *level,
@@ -268,16 +268,16 @@ static FilterElt   *btk_tree_model_filter_get_nth_visible                 (BtkTr
 
 static FilterElt   *btk_tree_model_filter_fetch_child                     (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *level,
-                                                                           gint                    offset,
-                                                                           gint                   *index);
+                                                                           bint                    offset,
+                                                                           bint                   *index);
 static void         btk_tree_model_filter_remove_node                     (BtkTreeModelFilter     *filter,
                                                                            BtkTreeIter            *iter);
 static void         btk_tree_model_filter_update_children                 (BtkTreeModelFilter     *filter,
                                                                            FilterLevel            *level,
                                                                            FilterElt              *elt);
 static FilterElt   *bsearch_elt_with_offset                               (GArray                 *array,
-                                                                           gint                   offset,
-                                                                           gint                  *index);
+                                                                           bint                   offset,
+                                                                           bint                  *index);
 
 
 G_DEFINE_TYPE_WITH_CODE (BtkTreeModelFilter, btk_tree_model_filter, B_TYPE_OBJECT,
@@ -394,7 +394,7 @@ btk_tree_model_filter_finalize (BObject *object)
 
 static void
 btk_tree_model_filter_set_property (BObject      *object,
-                                    guint         prop_id,
+                                    buint         prop_id,
                                     const BValue *value,
                                     BParamSpec   *pspec)
 {
@@ -416,7 +416,7 @@ btk_tree_model_filter_set_property (BObject      *object,
 
 static void
 btk_tree_model_filter_get_property (BObject    *object,
-                                    guint       prop_id,
+                                    buint       prop_id,
                                     BValue     *value,
                                     BParamSpec *pspec)
 {
@@ -441,16 +441,16 @@ btk_tree_model_filter_get_property (BObject    *object,
 static void
 btk_tree_model_filter_build_level (BtkTreeModelFilter *filter,
                                    FilterLevel        *parent_level,
-                                   gint                parent_elt_index,
-                                   gboolean            emit_inserted)
+                                   bint                parent_elt_index,
+                                   bboolean            emit_inserted)
 {
   BtkTreeIter iter;
   BtkTreeIter first_node;
   BtkTreeIter root;
   FilterElt *parent_elt = NULL;
   FilterLevel *new_level;
-  gint length = 0;
-  gint i;
+  bint length = 0;
+  bint i;
 
   g_assert (filter->priv->child_model != NULL);
 
@@ -613,7 +613,7 @@ static void
 btk_tree_model_filter_free_level (BtkTreeModelFilter *filter,
                                   FilterLevel        *filter_level)
 {
-  gint i;
+  bint i;
 
   g_assert (filter_level);
 
@@ -638,7 +638,7 @@ btk_tree_model_filter_free_level (BtkTreeModelFilter *filter,
   if (filter_level->ref_count == 0)
     {
       FilterLevel *parent_level = filter_level->parent_level;
-      gint parent_elt_index = filter_level->parent_elt_index;
+      bint parent_elt_index = filter_level->parent_elt_index;
 
       while (parent_level)
         {
@@ -706,7 +706,7 @@ btk_tree_model_filter_add_root (BtkTreePath *src,
                                 BtkTreePath *root)
 {
   BtkTreePath *retval;
-  gint i;
+  bint i;
 
   retval = btk_tree_path_copy (root);
 
@@ -721,9 +721,9 @@ btk_tree_model_filter_remove_root (BtkTreePath *src,
                                    BtkTreePath *root)
 {
   BtkTreePath *retval;
-  gint i;
-  gint depth;
-  gint *indices;
+  bint i;
+  bint depth;
+  bint *indices;
 
   if (btk_tree_path_get_depth (src) <= btk_tree_path_get_depth (root))
     return NULL;
@@ -755,7 +755,7 @@ btk_tree_model_filter_increment_stamp (BtkTreeModelFilter *filter)
   btk_tree_model_filter_clear_cache (filter);
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_visible (BtkTreeModelFilter *filter,
                                BtkTreeIter        *child_iter)
 {
@@ -791,7 +791,7 @@ static void
 btk_tree_model_filter_clear_cache_helper (BtkTreeModelFilter *filter,
                                           FilterLevel        *level)
 {
-  gint i;
+  bint i;
 
   g_assert (level);
 
@@ -819,11 +819,11 @@ btk_tree_model_filter_get_nth (BtkTreeModelFilter *filter,
   return &g_array_index (level->array, FilterElt, n);
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_elt_is_visible_in_target (FilterLevel *level,
                                                 FilterElt   *elt)
 {
-  gint elt_index;
+  bint elt_index;
 
   if (!elt->visible)
     return FALSE;
@@ -876,12 +876,12 @@ btk_tree_model_filter_get_nth_visible (BtkTreeModelFilter *filter,
 static FilterElt *
 btk_tree_model_filter_fetch_child (BtkTreeModelFilter *filter,
                                    FilterLevel        *level,
-                                   gint                offset,
-                                   gint               *index)
+                                   bint                offset,
+                                   bint               *index)
 {
-  gint i = 0;
-  gint start, middle, end;
-  gint len;
+  bint i = 0;
+  bint start, middle, end;
+  bint len;
   BtkTreePath *c_path = NULL;
   BtkTreeIter c_iter;
   BtkTreePath *c_parent_path = NULL;
@@ -991,9 +991,9 @@ btk_tree_model_filter_remove_node (BtkTreeModelFilter *filter,
 {
   FilterElt *elt, *parent;
   FilterLevel *level, *parent_level;
-  gint i, length, parent_elt_index;
+  bint i, length, parent_elt_index;
 
-  gboolean emit_child_toggled = FALSE;
+  bboolean emit_child_toggled = FALSE;
 
   level = FILTER_LEVEL (iter->user_data);
   elt = FILTER_ELT (iter->user_data2);
@@ -1160,10 +1160,10 @@ btk_tree_model_filter_update_children (BtkTreeModelFilter *filter,
 
 static FilterElt *
 bsearch_elt_with_offset (GArray *array,
-                         gint    offset,
-                         gint   *index)
+                         bint    offset,
+                         bint   *index)
 {
-  gint start, middle, end;
+  bint start, middle, end;
   FilterElt *elt;
 
   start = 0;
@@ -1214,7 +1214,7 @@ static void
 btk_tree_model_filter_row_changed (BtkTreeModel *c_model,
                                    BtkTreePath  *c_path,
                                    BtkTreeIter  *c_iter,
-                                   gpointer      data)
+                                   bpointer      data)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (data);
   BtkTreeIter iter;
@@ -1225,10 +1225,10 @@ btk_tree_model_filter_row_changed (BtkTreeModel *c_model,
   FilterElt *elt;
   FilterLevel *level;
 
-  gboolean requested_state;
-  gboolean current_state;
-  gboolean free_c_path = FALSE;
-  gboolean signals_emitted = FALSE;
+  bboolean requested_state;
+  bboolean current_state;
+  bboolean free_c_path = FALSE;
+  bboolean signals_emitted = FALSE;
 
   g_return_if_fail (c_path != NULL || c_iter != NULL);
 
@@ -1395,7 +1395,7 @@ static void
 btk_tree_model_filter_row_inserted (BtkTreeModel *c_model,
                                     BtkTreePath  *c_path,
                                     BtkTreeIter  *c_iter,
-                                    gpointer      data)
+                                    bpointer      data)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (data);
   BtkTreePath *path = NULL;
@@ -1408,9 +1408,9 @@ btk_tree_model_filter_row_inserted (BtkTreeModel *c_model,
   FilterLevel *level;
   FilterLevel *parent_level;
 
-  gint i = 0, offset;
+  bint i = 0, offset;
 
-  gboolean free_c_path = FALSE;
+  bboolean free_c_path = FALSE;
 
   g_return_if_fail (c_path != NULL || c_iter != NULL);
 
@@ -1433,9 +1433,9 @@ btk_tree_model_filter_row_inserted (BtkTreeModel *c_model,
       if (btk_tree_path_get_depth (filter->priv->virtual_root) >=
           btk_tree_path_get_depth (c_path))
         {
-          gint level;
-          gint *v_indices, *c_indices;
-          gboolean common_prefix = TRUE;
+          bint level;
+          bint *v_indices, *c_indices;
+          bboolean common_prefix = TRUE;
 
           level = btk_tree_path_get_depth (c_path) - 1;
           v_indices = btk_tree_path_get_indices (filter->priv->virtual_root);
@@ -1489,7 +1489,7 @@ btk_tree_model_filter_row_inserted (BtkTreeModel *c_model,
       /* find the parent level */
       while (i < btk_tree_path_get_depth (real_path) - 1)
         {
-          gint j;
+          bint j;
 
           if (!level)
             /* we don't cover this signal */
@@ -1630,14 +1630,14 @@ static void
 btk_tree_model_filter_row_has_child_toggled (BtkTreeModel *c_model,
                                              BtkTreePath  *c_path,
                                              BtkTreeIter  *c_iter,
-                                             gpointer      data)
+                                             bpointer      data)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (data);
   BtkTreePath *path;
   BtkTreeIter iter;
   FilterLevel *level;
   FilterElt *elt;
-  gboolean requested_state;
+  bboolean requested_state;
 
   g_return_if_fail (c_path != NULL && c_iter != NULL);
 
@@ -1728,18 +1728,18 @@ btk_tree_model_filter_row_has_child_toggled (BtkTreeModel *c_model,
 static void
 btk_tree_model_filter_row_deleted (BtkTreeModel *c_model,
                                    BtkTreePath  *c_path,
-                                   gpointer      data)
+                                   bpointer      data)
 {
   BtkTreeModelFilter *filter = BTK_TREE_MODEL_FILTER (data);
   BtkTreePath *path;
   BtkTreeIter iter;
   FilterElt *elt;
   FilterLevel *level, *parent_level = NULL;
-  gboolean emit_child_toggled = FALSE;
-  gboolean emit_row_deleted = FALSE;
-  gint offset;
-  gint i;
-  gint parent_elt_index = -1;
+  bboolean emit_child_toggled = FALSE;
+  bboolean emit_row_deleted = FALSE;
+  bint offset;
+  bint i;
+  bint parent_elt_index = -1;
 
   g_return_if_fail (c_path != NULL);
 
@@ -1748,7 +1748,7 @@ btk_tree_model_filter_row_deleted (BtkTreeModel *c_model,
       (btk_tree_path_is_ancestor (c_path, filter->priv->virtual_root) ||
        !btk_tree_path_compare (c_path, filter->priv->virtual_root)))
     {
-      gint i;
+      bint i;
       BtkTreePath *path2;
       FilterLevel *level2 = FILTER_LEVEL (filter->priv->root);
 
@@ -1783,9 +1783,9 @@ btk_tree_model_filter_row_deleted (BtkTreeModel *c_model,
       if (btk_tree_path_get_depth (filter->priv->virtual_root) >=
           btk_tree_path_get_depth (c_path))
         {
-          gint level2;
-          gint *v_indices, *c_indices;
-          gboolean common_prefix = TRUE;
+          bint level2;
+          bint *v_indices, *c_indices;
+          bboolean common_prefix = TRUE;
 
           level2 = btk_tree_path_get_depth (c_path) - 1;
           v_indices = btk_tree_path_get_indices (filter->priv->virtual_root);
@@ -1839,7 +1839,7 @@ btk_tree_model_filter_row_deleted (BtkTreeModel *c_model,
           /* find the level where the deletion occurred */
           while (i < btk_tree_path_get_depth (real_path) - 1)
             {
-              gint j;
+              bint j;
 
               if (!level)
                 {
@@ -1983,8 +1983,8 @@ static void
 btk_tree_model_filter_rows_reordered (BtkTreeModel *c_model,
                                       BtkTreePath  *c_path,
                                       BtkTreeIter  *c_iter,
-                                      gint         *new_order,
-                                      gpointer      data)
+                                      bint         *new_order,
+                                      bpointer      data)
 {
   FilterElt *elt;
   FilterLevel *level;
@@ -1993,9 +1993,9 @@ btk_tree_model_filter_rows_reordered (BtkTreeModel *c_model,
   BtkTreePath *path;
   BtkTreeIter iter;
 
-  gint *tmp_array;
-  gint i, j, elt_count;
-  gint length;
+  bint *tmp_array;
+  bint i, j, elt_count;
+  bint length;
 
   GArray *new_array;
 
@@ -2007,7 +2007,7 @@ btk_tree_model_filter_rows_reordered (BtkTreeModel *c_model,
 
       if (filter->priv->virtual_root)
         {
-          gint new_pos = -1;
+          bint new_pos = -1;
 
           /* reorder root level of path */
           for (i = 0; i < length; i++)
@@ -2032,9 +2032,9 @@ btk_tree_model_filter_rows_reordered (BtkTreeModel *c_model,
       if (filter->priv->virtual_root &&
 	  btk_tree_path_is_ancestor (c_path, filter->priv->virtual_root))
         {
-          gint new_pos = -1;
-          gint length;
-          gint level;
+          bint new_pos = -1;
+          bint length;
+          bint level;
           BtkTreeIter real_c_iter;
 
           level = btk_tree_path_get_depth (c_path);
@@ -2113,12 +2113,12 @@ btk_tree_model_filter_rows_reordered (BtkTreeModel *c_model,
   /* construct a new array */
   new_array = g_array_sized_new (FALSE, FALSE, sizeof (FilterElt),
                                  level->array->len);
-  tmp_array = g_new (gint, level->array->len);
+  tmp_array = g_new (bint, level->array->len);
 
   for (i = 0, elt_count = 0; i < length; i++)
     {
       FilterElt *e = NULL;
-      gint old_offset = -1;
+      bint old_offset = -1;
 
       for (j = 0; j < level->array->len; j++)
         if (g_array_index (level->array, FilterElt, j).offset == new_order[i])
@@ -2184,7 +2184,7 @@ btk_tree_model_filter_get_flags (BtkTreeModel *model)
   return 0;
 }
 
-static gint
+static bint
 btk_tree_model_filter_get_n_columns (BtkTreeModel *model)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
@@ -2206,7 +2206,7 @@ btk_tree_model_filter_get_n_columns (BtkTreeModel *model)
 
 static GType
 btk_tree_model_filter_get_column_type (BtkTreeModel *model,
-                                       gint          index)
+                                       bint          index)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
 
@@ -2230,16 +2230,16 @@ btk_tree_model_filter_get_column_type (BtkTreeModel *model,
  * are not visible.  These iters should ONLY be passed internally, never
  * pass those along with a signal emission.
  */
-static gboolean
+static bboolean
 btk_tree_model_filter_get_iter_full (BtkTreeModel *model,
                                      BtkTreeIter  *iter,
                                      BtkTreePath  *path)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
-  gint *indices;
+  bint *indices;
   FilterLevel *level;
   FilterElt *elt;
-  gint depth, i;
+  bint depth, i;
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (model), FALSE);
   g_return_val_if_fail (filter->priv->child_model != NULL, FALSE);
 
@@ -2287,16 +2287,16 @@ btk_tree_model_filter_get_iter_full (BtkTreeModel *model,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_get_iter (BtkTreeModel *model,
                                 BtkTreeIter  *iter,
                                 BtkTreePath  *path)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
-  gint *indices;
+  bint *indices;
   FilterLevel *level;
   FilterElt *elt;
-  gint depth, i;
+  bint depth, i;
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (model), FALSE);
   g_return_val_if_fail (filter->priv->child_model != NULL, FALSE);
 
@@ -2352,7 +2352,7 @@ btk_tree_model_filter_get_path (BtkTreeModel *model,
   BtkTreePath *retval;
   FilterLevel *level;
   FilterElt *elt;
-  gint elt_index;
+  bint elt_index;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (model), NULL);
   g_return_val_if_fail (BTK_TREE_MODEL_FILTER (model)->priv->child_model != NULL, NULL);
@@ -2391,7 +2391,7 @@ btk_tree_model_filter_get_path (BtkTreeModel *model,
 static void
 btk_tree_model_filter_get_value (BtkTreeModel *model,
                                  BtkTreeIter  *iter,
-                                 gint          column,
+                                 bint          column,
                                  BValue       *value)
 {
   BtkTreeIter child_iter;
@@ -2420,7 +2420,7 @@ btk_tree_model_filter_get_value (BtkTreeModel *model,
                             &child_iter, column, value);
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_iter_next (BtkTreeModel *model,
                                  BtkTreeIter  *iter)
 {
@@ -2455,7 +2455,7 @@ btk_tree_model_filter_iter_next (BtkTreeModel *model,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_iter_children (BtkTreeModel *model,
                                      BtkTreeIter  *iter,
                                      BtkTreeIter  *parent)
@@ -2545,7 +2545,7 @@ btk_tree_model_filter_iter_children (BtkTreeModel *model,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_iter_has_child (BtkTreeModel *model,
                                       BtkTreeIter  *iter)
 {
@@ -2580,7 +2580,7 @@ btk_tree_model_filter_iter_has_child (BtkTreeModel *model,
   return FALSE;
 }
 
-static gint
+static bint
 btk_tree_model_filter_iter_n_children (BtkTreeModel *model,
                                        BtkTreeIter  *iter)
 {
@@ -2624,11 +2624,11 @@ btk_tree_model_filter_iter_n_children (BtkTreeModel *model,
   return 0;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_iter_nth_child (BtkTreeModel *model,
                                       BtkTreeIter  *iter,
                                       BtkTreeIter  *parent,
-                                      gint          n)
+                                      bint          n)
 {
   FilterElt *elt;
   FilterLevel *level;
@@ -2664,7 +2664,7 @@ btk_tree_model_filter_iter_nth_child (BtkTreeModel *model,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_iter_parent (BtkTreeModel *model,
                                    BtkTreeIter  *iter,
                                    BtkTreeIter  *child)
@@ -2715,7 +2715,7 @@ btk_tree_model_filter_ref_node (BtkTreeModel *model,
   if (level->ref_count == 1)
     {
       FilterLevel *parent_level = level->parent_level;
-      gint parent_elt_index = level->parent_elt_index;
+      bint parent_elt_index = level->parent_elt_index;
 
       /* we were at zero -- time to decrease the zero_ref_count val */
       while (parent_level)
@@ -2741,7 +2741,7 @@ btk_tree_model_filter_unref_node (BtkTreeModel *model,
 static void
 btk_tree_model_filter_real_unref_node (BtkTreeModel *model,
                                        BtkTreeIter  *iter,
-                                       gboolean      propagate_unref)
+                                       bboolean      propagate_unref)
 {
   BtkTreeModelFilter *filter = (BtkTreeModelFilter *)model;
   FilterLevel *level;
@@ -2768,7 +2768,7 @@ btk_tree_model_filter_real_unref_node (BtkTreeModel *model,
   if (level->ref_count == 0)
     {
       FilterLevel *parent_level = level->parent_level;
-      gint parent_elt_index = level->parent_elt_index;
+      bint parent_elt_index = level->parent_elt_index;
 
       /* we are at zero -- time to increase the zero_ref_count val */
       while (parent_level)
@@ -2785,13 +2785,13 @@ btk_tree_model_filter_real_unref_node (BtkTreeModel *model,
 }
 
 /* TreeDragSource interface implementation */
-static gboolean
+static bboolean
 btk_tree_model_filter_row_draggable (BtkTreeDragSource *drag_source,
                                      BtkTreePath       *path)
 {
   BtkTreeModelFilter *tree_model_filter = (BtkTreeModelFilter *)drag_source;
   BtkTreePath *child_path;
-  gboolean draggable;
+  bboolean draggable;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (drag_source), FALSE);
   g_return_val_if_fail (path != NULL, FALSE);
@@ -2803,14 +2803,14 @@ btk_tree_model_filter_row_draggable (BtkTreeDragSource *drag_source,
   return draggable;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_drag_data_get (BtkTreeDragSource *drag_source,
                                      BtkTreePath       *path,
                                      BtkSelectionData  *selection_data)
 {
   BtkTreeModelFilter *tree_model_filter = (BtkTreeModelFilter *)drag_source;
   BtkTreePath *child_path;
-  gboolean gotten;
+  bboolean gotten;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (drag_source), FALSE);
   g_return_val_if_fail (path != NULL, FALSE);
@@ -2822,13 +2822,13 @@ btk_tree_model_filter_drag_data_get (BtkTreeDragSource *drag_source,
   return gotten;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_drag_data_delete (BtkTreeDragSource *drag_source,
                                         BtkTreePath       *path)
 {
   BtkTreeModelFilter *tree_model_filter = (BtkTreeModelFilter *)drag_source;
   BtkTreePath *child_path;
-  gboolean deleted;
+  bboolean deleted;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (drag_source), FALSE);
   g_return_val_if_fail (path != NULL, FALSE);
@@ -3033,14 +3033,14 @@ btk_tree_model_filter_get_model (BtkTreeModelFilter *filter)
  * rows, like in the example below.
  *
  * <informalexample><programlisting>
- * static gboolean
+ * static bboolean
  * visible_func (BtkTreeModel *model,
  *               BtkTreeIter  *iter,
- *               gpointer      data)
+ *               bpointer      data)
  * {
  *   /&ast; Visible if row is non-empty and first column is "HI" &ast;/
- *   gchar *str;
- *   gboolean visible = FALSE;
+ *   bchar *str;
+ *   bboolean visible = FALSE;
  *
  *   btk_tree_model_get (model, iter, 0, &str, -1);
  *   if (str && strcmp (str, "HI") == 0)
@@ -3056,7 +3056,7 @@ btk_tree_model_filter_get_model (BtkTreeModelFilter *filter)
 void
 btk_tree_model_filter_set_visible_func (BtkTreeModelFilter            *filter,
                                         BtkTreeModelFilterVisibleFunc  func,
-                                        gpointer                       data,
+                                        bpointer                       data,
                                         GDestroyNotify                 destroy)
 {
   g_return_if_fail (BTK_IS_TREE_MODEL_FILTER (filter));
@@ -3091,10 +3091,10 @@ btk_tree_model_filter_set_visible_func (BtkTreeModelFilter            *filter,
  */
 void
 btk_tree_model_filter_set_modify_func (BtkTreeModelFilter           *filter,
-                                       gint                          n_columns,
+                                       bint                          n_columns,
                                        GType                        *types,
                                        BtkTreeModelFilterModifyFunc  func,
-                                       gpointer                      data,
+                                       bpointer                      data,
                                        GDestroyNotify                destroy)
 {
   g_return_if_fail (BTK_IS_TREE_MODEL_FILTER (filter));
@@ -3122,7 +3122,7 @@ btk_tree_model_filter_set_modify_func (BtkTreeModelFilter           *filter,
 /**
  * btk_tree_model_filter_set_visible_column:
  * @filter: A #BtkTreeModelFilter.
- * @column: A #gint which is the column containing the visible information.
+ * @column: A #bint which is the column containing the visible information.
  *
  * Sets @column of the child_model to be the column where @filter should
  * look for visibility information. @columns should be a column of type
@@ -3133,7 +3133,7 @@ btk_tree_model_filter_set_modify_func (BtkTreeModelFilter           *filter,
  */
 void
 btk_tree_model_filter_set_visible_column (BtkTreeModelFilter *filter,
-                                          gint column)
+                                          bint column)
 {
   g_return_if_fail (BTK_IS_TREE_MODEL_FILTER (filter));
   g_return_if_fail (column >= 0);
@@ -3161,12 +3161,12 @@ btk_tree_model_filter_set_visible_column (BtkTreeModelFilter *filter,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_tree_model_filter_convert_child_iter_to_iter (BtkTreeModelFilter *filter,
                                                   BtkTreeIter        *filter_iter,
                                                   BtkTreeIter        *child_iter)
 {
-  gboolean ret;
+  bboolean ret;
   BtkTreePath *child_path, *path;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (filter), FALSE);
@@ -3235,15 +3235,15 @@ btk_tree_model_filter_convert_iter_to_child_iter (BtkTreeModelFilter *filter,
 static BtkTreePath *
 btk_real_tree_model_filter_convert_child_path_to_path (BtkTreeModelFilter *filter,
                                                        BtkTreePath        *child_path,
-                                                       gboolean            build_levels,
-                                                       gboolean            fetch_children)
+                                                       bboolean            build_levels,
+                                                       bboolean            fetch_children)
 {
-  gint *child_indices;
+  bint *child_indices;
   BtkTreePath *retval;
   BtkTreePath *real_path;
   FilterLevel *level;
   FilterElt *tmp;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (filter), NULL);
   g_return_val_if_fail (filter->priv->child_model != NULL, NULL);
@@ -3267,8 +3267,8 @@ btk_real_tree_model_filter_convert_child_path_to_path (BtkTreeModelFilter *filte
 
   for (i = 0; i < btk_tree_path_get_depth (real_path); i++)
     {
-      gint j;
-      gboolean found_child = FALSE;
+      bint j;
+      bboolean found_child = FALSE;
 
       if (!level)
         {
@@ -3387,10 +3387,10 @@ BtkTreePath *
 btk_tree_model_filter_convert_path_to_child_path (BtkTreeModelFilter *filter,
                                                   BtkTreePath        *filter_path)
 {
-  gint *filter_indices;
+  bint *filter_indices;
   BtkTreePath *retval;
   FilterLevel *level;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL_FILTER (filter), NULL);
   g_return_val_if_fail (filter->priv->child_model != NULL, NULL);
@@ -3447,11 +3447,11 @@ btk_tree_model_filter_convert_path_to_child_path (BtkTreeModelFilter *filter,
   return retval;
 }
 
-static gboolean
+static bboolean
 btk_tree_model_filter_refilter_helper (BtkTreeModel *model,
                                        BtkTreePath  *path,
                                        BtkTreeIter  *iter,
-                                       gpointer      data)
+                                       bpointer      data)
 {
   /* evil, don't try this at home, but certainly speeds things up */
   btk_tree_model_filter_row_changed (model, path, iter, data);

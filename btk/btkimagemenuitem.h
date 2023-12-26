@@ -65,19 +65,19 @@ struct _BtkImageMenuItemClass
 
 GType	   btk_image_menu_item_get_type          (void) B_GNUC_CONST;
 BtkWidget* btk_image_menu_item_new               (void);
-BtkWidget* btk_image_menu_item_new_with_label    (const gchar      *label);
-BtkWidget* btk_image_menu_item_new_with_mnemonic (const gchar      *label);
-BtkWidget* btk_image_menu_item_new_from_stock    (const gchar      *stock_id,
+BtkWidget* btk_image_menu_item_new_with_label    (const bchar      *label);
+BtkWidget* btk_image_menu_item_new_with_mnemonic (const bchar      *label);
+BtkWidget* btk_image_menu_item_new_from_stock    (const bchar      *stock_id,
                                                   BtkAccelGroup    *accel_group);
 void       btk_image_menu_item_set_always_show_image (BtkImageMenuItem *image_menu_item,
-                                                      gboolean          always_show);
-gboolean   btk_image_menu_item_get_always_show_image (BtkImageMenuItem *image_menu_item);
+                                                      bboolean          always_show);
+bboolean   btk_image_menu_item_get_always_show_image (BtkImageMenuItem *image_menu_item);
 void       btk_image_menu_item_set_image         (BtkImageMenuItem *image_menu_item,
                                                   BtkWidget        *image);
 BtkWidget* btk_image_menu_item_get_image         (BtkImageMenuItem *image_menu_item);
 void       btk_image_menu_item_set_use_stock     (BtkImageMenuItem *image_menu_item,
-						  gboolean          use_stock);
-gboolean   btk_image_menu_item_get_use_stock     (BtkImageMenuItem *image_menu_item);
+						  bboolean          use_stock);
+bboolean   btk_image_menu_item_get_use_stock     (BtkImageMenuItem *image_menu_item);
 void       btk_image_menu_item_set_accel_group   (BtkImageMenuItem *image_menu_item, 
 						  BtkAccelGroup    *accel_group);
 

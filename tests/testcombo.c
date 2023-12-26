@@ -35,7 +35,7 @@ create_color_pixbuf (const char *color)
 
         int x;
         int num;
-        guchar *pixels, *p;
+        buchar *pixels, *p;
 
         if (!bdk_color_parse (color, &col))
                 return NULL;
@@ -253,7 +253,7 @@ create_empty_list_blaat (void)
 }
 
 static void
-populate_list_blaat (gpointer data)
+populate_list_blaat (bpointer data)
 {
   BtkComboBox *combo_box = BTK_COMBO_BOX (data);
   BtkListStore *store;
@@ -816,19 +816,19 @@ capital_sensitive (BtkCellLayout   *cell_layout,
 		   BtkCellRenderer *cell,
 		   BtkTreeModel    *tree_model,
 		   BtkTreeIter     *iter,
-		   gpointer         data)
+		   bpointer         data)
 {
-  gboolean sensitive;
+  bboolean sensitive;
 
   sensitive = !btk_tree_model_iter_has_child (tree_model, iter);
 
   g_object_set (cell, "sensitive", sensitive, NULL);
 }
 
-static gboolean
-capital_animation (gpointer data)
+static bboolean
+capital_animation (bpointer data)
 {
-  static gint insert_count = 0;
+  static bint insert_count = 0;
   BtkTreeModel *model = BTK_TREE_MODEL (data);
   BtkTreePath *path;
   BtkTreeIter iter, parent;
@@ -968,11 +968,11 @@ set_sensitive (BtkCellLayout   *cell_layout,
 	       BtkCellRenderer *cell,
 	       BtkTreeModel    *tree_model,
 	       BtkTreeIter     *iter,
-	       gpointer         data)
+	       bpointer         data)
 {
   BtkTreePath *path;
-  gint *indices;
-  gboolean sensitive;
+  bint *indices;
+  bboolean sensitive;
 
   path = btk_tree_model_get_path (tree_model, iter);
   indices = btk_tree_path_get_indices (path);
@@ -982,13 +982,13 @@ set_sensitive (BtkCellLayout   *cell_layout,
   g_object_set (cell, "sensitive", sensitive, NULL);
 }
 
-static gboolean
+static bboolean
 is_separator (BtkTreeModel *model,
 	      BtkTreeIter  *iter,
-	      gpointer      data)
+	      bpointer      data)
 {
   BtkTreePath *path;
-  gboolean result;
+  bboolean result;
 
   path = btk_tree_model_get_path (model, iter);
   result = btk_tree_path_get_indices (path)[0] == 4;
@@ -1002,7 +1002,7 @@ static void
 displayed_row_changed (BtkComboBox *combo,
                        BtkCellView *cell)
 {
-  gint row;
+  bint row;
   BtkTreePath *path;
 
   row = btk_combo_box_get_active (combo);
@@ -1023,7 +1023,7 @@ main (int argc, char **argv)
 	BtkTreePath *path;
 	BtkTreeIter iter;
         BdkColor color;
-        gint i;
+        bint i;
 
         btk_init (&argc, &argv);
 
@@ -1339,7 +1339,7 @@ main (int argc, char **argv)
         combobox = btk_combo_box_text_new ();
         for (i = 0; i < 200; i++)
           {
-            gchar *text = g_strdup_printf ("Item %d", i);
+            bchar *text = g_strdup_printf ("Item %d", i);
             btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combobox), text);
             g_free (text);
           }

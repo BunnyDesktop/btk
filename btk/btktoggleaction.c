@@ -55,18 +55,18 @@ G_DEFINE_TYPE (BtkToggleAction, btk_toggle_action, BTK_TYPE_ACTION)
 
 static void btk_toggle_action_activate     (BtkAction       *action);
 static void set_property                   (BObject         *object,
-					    guint            prop_id,
+					    buint            prop_id,
 					    const BValue    *value,
 					    BParamSpec      *pspec);
 static void get_property                   (BObject         *object,
-					    guint            prop_id,
+					    buint            prop_id,
 					    BValue          *value,
 					    BParamSpec      *pspec);
 static BtkWidget *create_menu_item         (BtkAction       *action);
 
 
 static BObjectClass *parent_class = NULL;
-static guint         action_signals[LAST_SIGNAL] = { 0 };
+static buint         action_signals[LAST_SIGNAL] = { 0 };
 
 static void
 btk_toggle_action_class_init (BtkToggleActionClass *klass)
@@ -158,10 +158,10 @@ btk_toggle_action_init (BtkToggleAction *action)
  * Since: 2.4
  */
 BtkToggleAction *
-btk_toggle_action_new (const gchar *name,
-		       const gchar *label,
-		       const gchar *tooltip,
-		       const gchar *stock_id)
+btk_toggle_action_new (const bchar *name,
+		       const bchar *label,
+		       const bchar *tooltip,
+		       const bchar *stock_id)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
@@ -175,7 +175,7 @@ btk_toggle_action_new (const gchar *name,
 
 static void
 get_property (BObject     *object,
-	      guint        prop_id,
+	      buint        prop_id,
 	      BValue      *value,
 	      BParamSpec  *pspec)
 {
@@ -197,7 +197,7 @@ get_property (BObject     *object,
 
 static void
 set_property (BObject      *object,
-	      guint         prop_id,
+	      buint         prop_id,
 	      const BValue *value,
 	      BParamSpec   *pspec)
 {
@@ -260,7 +260,7 @@ btk_toggle_action_toggled (BtkToggleAction *action)
  */
 void
 btk_toggle_action_set_active (BtkToggleAction *action, 
-			      gboolean         is_active)
+			      bboolean         is_active)
 {
   g_return_if_fail (BTK_IS_TOGGLE_ACTION (action));
 
@@ -280,7 +280,7 @@ btk_toggle_action_set_active (BtkToggleAction *action,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_toggle_action_get_active (BtkToggleAction *action)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_ACTION (action), FALSE);
@@ -301,7 +301,7 @@ btk_toggle_action_get_active (BtkToggleAction *action)
  */
 void
 btk_toggle_action_set_draw_as_radio (BtkToggleAction *action, 
-				     gboolean         draw_as_radio)
+				     bboolean         draw_as_radio)
 {
   g_return_if_fail (BTK_IS_TOGGLE_ACTION (action));
 
@@ -325,7 +325,7 @@ btk_toggle_action_set_draw_as_radio (BtkToggleAction *action,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_toggle_action_get_draw_as_radio (BtkToggleAction *action)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_ACTION (action), FALSE);

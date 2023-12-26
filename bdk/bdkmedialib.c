@@ -50,7 +50,7 @@ typedef char *      (*ml_version)         (void);
 
 static ml_version                 medialib_version = mlib_version;
 
-gboolean 
+bboolean 
 _bdk_use_medialib (void)
 {
   char *mlib_version_string;

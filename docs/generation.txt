@@ -153,12 +153,12 @@ The possible types are:
  BOXED
  POINTER
  OBJECT
- FOREIGN    (gpointer data, BtkDestroyNotify notify)
- C_CALLBACK (BtkFunction func, gpointer func_data)
- SIGNAL     (BtkSignalFunc f, gpointer data)
- ARGS       (gint n_args, BtkArg *args)
+ FOREIGN    (bpointer data, BtkDestroyNotify notify)
+ C_CALLBACK (BtkFunction func, bpointer func_data)
+ SIGNAL     (BtkSignalFunc f, bpointer data)
+ ARGS       (bint n_args, BtkArg *args)
  CALLBACK   (BtkCallBackMarshal marshall,
-             gpointer data,
+             bpointer data,
 	     BtkDestroyNotify Notify)
 
 Some of these types map to multiple return values - these

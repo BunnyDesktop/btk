@@ -27,11 +27,11 @@
 #include "btkalias.h"
 
 static void btk_cell_renderer_pixbuf_get_property  (BObject                    *object,
-						    guint                       param_id,
+						    buint                       param_id,
 						    BValue                     *value,
 						    BParamSpec                 *pspec);
 static void btk_cell_renderer_pixbuf_set_property  (BObject                    *object,
-						    guint                       param_id,
+						    buint                       param_id,
 						    const BValue               *value,
 						    BParamSpec                 *pspec);
 static void btk_cell_renderer_pixbuf_finalize   (BObject                    *object);
@@ -40,10 +40,10 @@ static void btk_cell_renderer_pixbuf_create_stock_pixbuf (BtkCellRendererPixbuf 
 static void btk_cell_renderer_pixbuf_get_size   (BtkCellRenderer            *cell,
 						 BtkWidget                  *widget,
 						 BdkRectangle               *rectangle,
-						 gint                       *x_offset,
-						 gint                       *y_offset,
-						 gint                       *width,
-						 gint                       *height);
+						 bint                       *x_offset,
+						 bint                       *y_offset,
+						 bint                       *width,
+						 bint                       *height);
 static void btk_cell_renderer_pixbuf_render     (BtkCellRenderer            *cell,
 						 BdkDrawable                *window,
 						 BtkWidget                  *widget,
@@ -72,11 +72,11 @@ enum {
 typedef struct _BtkCellRendererPixbufPrivate BtkCellRendererPixbufPrivate;
 struct _BtkCellRendererPixbufPrivate
 {
-  gchar *stock_id;
+  bchar *stock_id;
   BtkIconSize stock_size;
-  gchar *stock_detail;
-  gboolean follow_state;
-  gchar *icon_name;
+  bchar *stock_detail;
+  bboolean follow_state;
+  bchar *icon_name;
   GIcon *gicon;
 };
 
@@ -143,7 +143,7 @@ btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
 						      P_("Size"),
 						      P_("The BtkIconSize value that specifies the size of the rendered icon"),
 						      0,
-						      G_MAXUINT,
+						      B_MAXUINT,
 						      BTK_ICON_SIZE_MENU,
 						      BTK_PARAM_READWRITE));
 
@@ -239,7 +239,7 @@ btk_cell_renderer_pixbuf_finalize (BObject *object)
 
 static void
 btk_cell_renderer_pixbuf_get_property (BObject        *object,
-				       guint           param_id,
+				       buint           param_id,
 				       BValue         *value,
 				       BParamSpec     *pspec)
 {
@@ -285,7 +285,7 @@ btk_cell_renderer_pixbuf_get_property (BObject        *object,
 
 static void
 btk_cell_renderer_pixbuf_set_property (BObject      *object,
-				       guint         param_id,
+				       buint         param_id,
 				       const BValue *value,
 				       BParamSpec   *pspec)
 {
@@ -496,7 +496,7 @@ btk_cell_renderer_pixbuf_create_themed_pixbuf (BtkCellRendererPixbuf *cellpixbuf
   BdkScreen *screen;
   BtkIconTheme *icon_theme;
   BtkSettings *settings;
-  gint width, height;
+  bint width, height;
 
   priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
 
@@ -546,13 +546,13 @@ static BdkPixbuf *
 create_colorized_pixbuf (BdkPixbuf *src, 
 			 BdkColor  *new_color)
 {
-  gint i, j;
-  gint width, height, has_alpha, src_row_stride, dst_row_stride;
-  gint red_value, green_value, blue_value;
-  guchar *target_pixels;
-  guchar *original_pixels;
-  guchar *pixsrc;
-  guchar *pixdest;
+  bint i, j;
+  bint width, height, has_alpha, src_row_stride, dst_row_stride;
+  bint red_value, green_value, blue_value;
+  buchar *target_pixels;
+  buchar *original_pixels;
+  buchar *pixsrc;
+  buchar *pixdest;
   BdkPixbuf *dest;
   
   red_value = new_color->red / 255.0;
@@ -593,17 +593,17 @@ static void
 btk_cell_renderer_pixbuf_get_size (BtkCellRenderer *cell,
 				   BtkWidget       *widget,
 				   BdkRectangle    *cell_area,
-				   gint            *x_offset,
-				   gint            *y_offset,
-				   gint            *width,
-				   gint            *height)
+				   bint            *x_offset,
+				   bint            *y_offset,
+				   bint            *width,
+				   bint            *height)
 {
   BtkCellRendererPixbuf *cellpixbuf = (BtkCellRendererPixbuf *) cell;
   BtkCellRendererPixbufPrivate *priv;
-  gint pixbuf_width  = 0;
-  gint pixbuf_height = 0;
-  gint calc_width;
-  gint calc_height;
+  bint pixbuf_width  = 0;
+  bint pixbuf_height = 0;
+  bint calc_width;
+  bint calc_height;
 
   priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
 
@@ -631,8 +631,8 @@ btk_cell_renderer_pixbuf_get_size (BtkCellRenderer *cell,
       pixbuf_height = MAX (pixbuf_height, bdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_closed));
     }
   
-  calc_width  = (gint) cell->xpad * 2 + pixbuf_width;
-  calc_height = (gint) cell->ypad * 2 + pixbuf_height;
+  calc_width  = (bint) cell->xpad * 2 + pixbuf_width;
+  calc_height = (bint) cell->ypad * 2 + pixbuf_height;
   
   if (cell_area && pixbuf_width > 0 && pixbuf_height > 0)
     {

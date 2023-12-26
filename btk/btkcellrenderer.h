@@ -59,22 +59,22 @@ struct _BtkCellRenderer
 {
   BtkObject parent;
 
-  gfloat GSEAL (xalign);
-  gfloat GSEAL (yalign);
+  bfloat GSEAL (xalign);
+  bfloat GSEAL (yalign);
 
-  gint GSEAL (width);
-  gint GSEAL (height);
+  bint GSEAL (width);
+  bint GSEAL (height);
 
-  guint16 GSEAL (xpad);
-  guint16 GSEAL (ypad);
+  buint16 GSEAL (xpad);
+  buint16 GSEAL (ypad);
 
-  guint GSEAL (mode) : 2;
-  guint GSEAL (visible) : 1;
-  guint GSEAL (is_expander) : 1;
-  guint GSEAL (is_expanded) : 1;
-  guint GSEAL (cell_background_set) : 1;
-  guint GSEAL (sensitive) : 1;
-  guint GSEAL (editing) : 1;
+  buint GSEAL (mode) : 2;
+  buint GSEAL (visible) : 1;
+  buint GSEAL (is_expander) : 1;
+  buint GSEAL (is_expanded) : 1;
+  buint GSEAL (cell_background_set) : 1;
+  buint GSEAL (sensitive) : 1;
+  buint GSEAL (editing) : 1;
 };
 
 struct _BtkCellRendererClass
@@ -85,10 +85,10 @@ struct _BtkCellRendererClass
   void             (* get_size)      (BtkCellRenderer      *cell,
 				      BtkWidget            *widget,
 				      BdkRectangle         *cell_area,
-				      gint                 *x_offset,
-				      gint                 *y_offset,
-				      gint                 *width,
-				      gint                 *height);
+				      bint                 *x_offset,
+				      bint                 *y_offset,
+				      bint                 *width,
+				      bint                 *height);
   void             (* render)        (BtkCellRenderer      *cell,
 				      BdkDrawable          *window,
 				      BtkWidget            *widget,
@@ -96,17 +96,17 @@ struct _BtkCellRendererClass
 				      BdkRectangle         *cell_area,
 				      BdkRectangle         *expose_area,
 				      BtkCellRendererState  flags);
-  gboolean         (* activate)      (BtkCellRenderer      *cell,
+  bboolean         (* activate)      (BtkCellRenderer      *cell,
 				      BdkEvent             *event,
 				      BtkWidget            *widget,
-				      const gchar          *path,
+				      const bchar          *path,
 				      BdkRectangle         *background_area,
 				      BdkRectangle         *cell_area,
 				      BtkCellRendererState  flags);
   BtkCellEditable *(* start_editing) (BtkCellRenderer      *cell,
 				      BdkEvent             *event,
 				      BtkWidget            *widget,
-				      const gchar          *path,
+				      const bchar          *path,
 				      BdkRectangle         *background_area,
 				      BdkRectangle         *cell_area,
 				      BtkCellRendererState  flags);
@@ -115,7 +115,7 @@ struct _BtkCellRendererClass
   void (* editing_canceled) (BtkCellRenderer *cell);
   void (* editing_started)  (BtkCellRenderer *cell,
 			     BtkCellEditable *editable,
-			     const gchar     *path);
+			     const bchar     *path);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -127,10 +127,10 @@ GType            btk_cell_renderer_get_type       (void) B_GNUC_CONST;
 void             btk_cell_renderer_get_size       (BtkCellRenderer      *cell,
 						   BtkWidget            *widget,
 						   const BdkRectangle   *cell_area,
-						   gint                 *x_offset,
-						   gint                 *y_offset,
-						   gint                 *width,
-						   gint                 *height);
+						   bint                 *x_offset,
+						   bint                 *y_offset,
+						   bint                 *width,
+						   bint                 *height);
 void             btk_cell_renderer_render         (BtkCellRenderer      *cell,
 						   BdkWindow            *window,
 						   BtkWidget            *widget,
@@ -138,56 +138,56 @@ void             btk_cell_renderer_render         (BtkCellRenderer      *cell,
 						   const BdkRectangle   *cell_area,
 						   const BdkRectangle   *expose_area,
 						   BtkCellRendererState  flags);
-gboolean         btk_cell_renderer_activate       (BtkCellRenderer      *cell,
+bboolean         btk_cell_renderer_activate       (BtkCellRenderer      *cell,
 						   BdkEvent             *event,
 						   BtkWidget            *widget,
-						   const gchar          *path,
+						   const bchar          *path,
 						   const BdkRectangle   *background_area,
 						   const BdkRectangle   *cell_area,
 						   BtkCellRendererState  flags);
 BtkCellEditable *btk_cell_renderer_start_editing  (BtkCellRenderer      *cell,
 						   BdkEvent             *event,
 						   BtkWidget            *widget,
-						   const gchar          *path,
+						   const bchar          *path,
 						   const BdkRectangle   *background_area,
 						   const BdkRectangle   *cell_area,
 						   BtkCellRendererState  flags);
 
 void             btk_cell_renderer_set_fixed_size (BtkCellRenderer      *cell,
-						   gint                  width,
-						   gint                  height);
+						   bint                  width,
+						   bint                  height);
 void             btk_cell_renderer_get_fixed_size (BtkCellRenderer      *cell,
-						   gint                 *width,
-						   gint                 *height);
+						   bint                 *width,
+						   bint                 *height);
 
 void             btk_cell_renderer_set_alignment  (BtkCellRenderer      *cell,
-                                                   gfloat                xalign,
-                                                   gfloat                yalign);
+                                                   bfloat                xalign,
+                                                   bfloat                yalign);
 void             btk_cell_renderer_get_alignment  (BtkCellRenderer      *cell,
-                                                   gfloat               *xalign,
-                                                   gfloat               *yalign);
+                                                   bfloat               *xalign,
+                                                   bfloat               *yalign);
 
 void             btk_cell_renderer_set_padding    (BtkCellRenderer      *cell,
-                                                   gint                  xpad,
-                                                   gint                  ypad);
+                                                   bint                  xpad,
+                                                   bint                  ypad);
 void             btk_cell_renderer_get_padding    (BtkCellRenderer      *cell,
-                                                   gint                 *xpad,
-                                                   gint                 *ypad);
+                                                   bint                 *xpad,
+                                                   bint                 *ypad);
 
 void             btk_cell_renderer_set_visible    (BtkCellRenderer      *cell,
-                                                   gboolean              visible);
-gboolean         btk_cell_renderer_get_visible    (BtkCellRenderer      *cell);
+                                                   bboolean              visible);
+bboolean         btk_cell_renderer_get_visible    (BtkCellRenderer      *cell);
 
 void             btk_cell_renderer_set_sensitive  (BtkCellRenderer      *cell,
-                                                   gboolean              sensitive);
-gboolean         btk_cell_renderer_get_sensitive  (BtkCellRenderer      *cell);
+                                                   bboolean              sensitive);
+bboolean         btk_cell_renderer_get_sensitive  (BtkCellRenderer      *cell);
 
 /* For use by cell renderer implementations only */
 #ifndef BTK_DISABLE_DEPRECATED
 void btk_cell_renderer_editing_canceled (BtkCellRenderer *cell);
 #endif
 void btk_cell_renderer_stop_editing     (BtkCellRenderer *cell,
-				         gboolean         canceled);
+				         bboolean         canceled);
 
 
 B_END_DECLS

@@ -33,7 +33,7 @@ static void      bail_check_menu_item_real_notify_btk   (BObject                
                                                          BParamSpec             *pspec);
 
 static void      bail_check_menu_item_real_initialize   (BatkObject              *obj,
-                                                         gpointer               data);
+                                                         bpointer               data);
 
 static BatkStateSet* bail_check_menu_item_ref_state_set  (BatkObject              *accessible);
 
@@ -78,7 +78,7 @@ bail_check_menu_item_new (BtkWidget *widget)
 
 static void
 bail_check_menu_item_real_initialize (BatkObject *obj,
-                                      gpointer  data)
+                                      bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_check_menu_item_parent_class)->initialize (obj, data);
 
@@ -136,8 +136,8 @@ bail_check_menu_item_real_notify_btk (BObject           *obj,
 {
   BtkCheckMenuItem *check_menu_item = BTK_CHECK_MENU_ITEM (obj);
   BatkObject *batk_obj;
-  gboolean sensitive;
-  gboolean inconsistent;
+  bboolean sensitive;
+  bboolean inconsistent;
 
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (check_menu_item));
   sensitive = btk_widget_get_sensitive (BTK_WIDGET (check_menu_item));

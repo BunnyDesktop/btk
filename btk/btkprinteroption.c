@@ -34,7 +34,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkPrinterOption, btk_printer_option, B_TYPE_OBJECT)
 
@@ -141,14 +141,14 @@ btk_printer_option_set (BtkPrinterOption *option,
 
 void
 btk_printer_option_set_boolean (BtkPrinterOption *option,
-				gboolean value)
+				bboolean value)
 {
   btk_printer_option_set (option, value ? "True" : "False");
 }
 
 void
 btk_printer_option_set_has_conflict  (BtkPrinterOption *option,
-				      gboolean  has_conflict)
+				      bboolean  has_conflict)
 {
   has_conflict = has_conflict != 0;
   
@@ -201,7 +201,7 @@ btk_printer_option_choices_from_array (BtkPrinterOption   *option,
     }
 }
 
-gboolean
+bboolean
 btk_printer_option_has_choice (BtkPrinterOption     *option,
 			       const char           *choice)
 {
@@ -218,14 +218,14 @@ btk_printer_option_has_choice (BtkPrinterOption     *option,
 
 void
 btk_printer_option_set_activates_default (BtkPrinterOption *option,
-					  gboolean          activates)
+					  bboolean          activates)
 {
   g_return_if_fail (BTK_IS_PRINTER_OPTION (option));
 
   option->activates_default = activates;
 }
 
-gboolean
+bboolean
 btk_printer_option_get_activates_default (BtkPrinterOption *option)
 {
   g_return_val_if_fail (BTK_IS_PRINTER_OPTION (option), FALSE);

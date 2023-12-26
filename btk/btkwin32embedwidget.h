@@ -50,7 +50,7 @@ struct _BtkWin32EmbedWidget
   BtkWindow window;
 
   BdkWindow *parent_window;
-  gpointer old_window_procedure;
+  bpointer old_window_procedure;
 };
 
 struct _BtkWin32EmbedWidgetClass

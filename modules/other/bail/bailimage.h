@@ -38,8 +38,8 @@ struct _BailImage
 {
   BailWidget parent;
 
-  gchar*     image_description;
-  gchar*     stock_name;
+  bchar*     image_description;
+  bchar*     stock_name;
 };
 
 GType bail_image_get_type (void);

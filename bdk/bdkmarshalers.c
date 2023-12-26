@@ -52,18 +52,18 @@
 void
 _bdk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
                                             BValue       *return_value B_GNUC_UNUSED,
-                                            guint         n_param_values,
+                                            buint         n_param_values,
                                             const BValue *param_values,
-                                            gpointer      invocation_hint B_GNUC_UNUSED,
-                                            gpointer      marshal_data)
+                                            bpointer      invocation_hint B_GNUC_UNUSED,
+                                            bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_POINTER) (gpointer data1,
-                                                              gpointer arg1,
-                                                              gpointer arg2,
-                                                              gpointer arg3,
-                                                              gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_POINTER) (bpointer data1,
+                                                              bpointer arg1,
+                                                              bpointer arg2,
+                                                              bpointer arg3,
+                                                              bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_POINTER_POINTER callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -91,15 +91,15 @@ _bdk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
 void
 _bdk_marshal_OBJECT__VOID (GClosure     *closure,
                            BValue       *return_value,
-                           guint         n_param_values,
+                           buint         n_param_values,
                            const BValue *param_values,
-                           gpointer      invocation_hint B_GNUC_UNUSED,
-                           gpointer      marshal_data)
+                           bpointer      invocation_hint B_GNUC_UNUSED,
+                           bpointer      marshal_data)
 {
-  typedef BObject* (*GMarshalFunc_OBJECT__VOID) (gpointer data1,
-                                                 gpointer data2);
+  typedef BObject* (*GMarshalFunc_OBJECT__VOID) (bpointer data1,
+                                                 bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_OBJECT__VOID callback;
   BObject* v_return;
 
@@ -128,17 +128,17 @@ _bdk_marshal_OBJECT__VOID (GClosure     *closure,
 void
 _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint B_GNUC_UNUSED,
-                                    gpointer      marshal_data)
+                                    bpointer      invocation_hint B_GNUC_UNUSED,
+                                    bpointer      marshal_data)
 {
-  typedef BObject* (*GMarshalFunc_OBJECT__DOUBLE_DOUBLE) (gpointer data1,
-                                                          gdouble arg1,
-                                                          gdouble arg2,
-                                                          gpointer data2);
+  typedef BObject* (*GMarshalFunc_OBJECT__DOUBLE_DOUBLE) (bpointer data1,
+                                                          bdouble arg1,
+                                                          bdouble arg2,
+                                                          bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_OBJECT__DOUBLE_DOUBLE callback;
   BObject* v_return;
 
@@ -169,19 +169,19 @@ _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
 void
 _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER (GClosure     *closure,
                                                   BValue       *return_value B_GNUC_UNUSED,
-                                                  guint         n_param_values,
+                                                  buint         n_param_values,
                                                   const BValue *param_values,
-                                                  gpointer      invocation_hint B_GNUC_UNUSED,
-                                                  gpointer      marshal_data)
+                                                  bpointer      invocation_hint B_GNUC_UNUSED,
+                                                  bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE_POINTER_POINTER) (gpointer data1,
-                                                                    gdouble arg1,
-                                                                    gdouble arg2,
-                                                                    gpointer arg3,
-                                                                    gpointer arg4,
-                                                                    gpointer data2);
+  typedef void (*GMarshalFunc_VOID__DOUBLE_DOUBLE_POINTER_POINTER) (bpointer data1,
+                                                                    bdouble arg1,
+                                                                    bdouble arg2,
+                                                                    bpointer arg3,
+                                                                    bpointer arg4,
+                                                                    bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__DOUBLE_DOUBLE_POINTER_POINTER callback;
 
   g_return_if_fail (n_param_values == 5);

@@ -61,7 +61,7 @@ test_type (gconstpointer data)
   BObjectClass *klass;
   BObject *instance;
   BParamSpec **pspecs;
-  guint n_pspecs, i;
+  buint n_pspecs, i;
   GType type;
 
   type = * (GType *) data;
@@ -349,7 +349,7 @@ int
 main (int argc, char **argv)
 {
   const GType *otypes;
-  guint i;
+  buint i;
 
   btk_test_init (&argc, &argv);
   pixbuf_init ();
@@ -358,7 +358,7 @@ main (int argc, char **argv)
   otypes = btk_test_list_all_types (NULL);
   for (i = 0; otypes[i]; i++)
     {
-      gchar *testname;
+      bchar *testname;
       
       testname = g_strdup_printf ("/Default Values/%s",
 				  g_type_name (otypes[i]));

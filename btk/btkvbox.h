@@ -60,8 +60,8 @@ struct _BtkVBoxClass
 
 
 GType       btk_vbox_get_type (void) B_GNUC_CONST;
-BtkWidget * btk_vbox_new      (gboolean homogeneous,
-                               gint     spacing);
+BtkWidget * btk_vbox_new      (bboolean homogeneous,
+                               bint     spacing);
 
 B_END_DECLS
 

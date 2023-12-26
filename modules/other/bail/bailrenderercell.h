@@ -46,12 +46,12 @@ GType bail_renderer_cell_get_type (void);
 struct _BailRendererCellClass
 {
   BailCellClass parent_class;
-  gchar **property_list;
-  gboolean (*update_cache)(BailRendererCell *cell, gboolean emit_change_signal);
+  bchar **property_list;
+  bboolean (*update_cache)(BailRendererCell *cell, bboolean emit_change_signal);
 };
 
-gboolean
-bail_renderer_cell_update_cache (BailRendererCell *cell, gboolean emit_change_signal);
+bboolean
+bail_renderer_cell_update_cache (BailRendererCell *cell, bboolean emit_change_signal);
 
 BatkObject *bail_renderer_cell_new (void);
 

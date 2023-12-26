@@ -56,8 +56,8 @@ struct _BtkCellViewClass
 
 GType             btk_cell_view_get_type               (void) B_GNUC_CONST;
 BtkWidget        *btk_cell_view_new                    (void);
-BtkWidget        *btk_cell_view_new_with_text          (const gchar     *text);
-BtkWidget        *btk_cell_view_new_with_markup        (const gchar     *markup);
+BtkWidget        *btk_cell_view_new_with_text          (const bchar     *text);
+BtkWidget        *btk_cell_view_new_with_markup        (const bchar     *markup);
 BtkWidget        *btk_cell_view_new_with_pixbuf        (BdkPixbuf       *pixbuf);
 
 void              btk_cell_view_set_model               (BtkCellView     *cell_view,
@@ -66,7 +66,7 @@ BtkTreeModel     *btk_cell_view_get_model               (BtkCellView     *cell_v
 void              btk_cell_view_set_displayed_row       (BtkCellView     *cell_view,
                                                          BtkTreePath     *path);
 BtkTreePath      *btk_cell_view_get_displayed_row       (BtkCellView     *cell_view);
-gboolean          btk_cell_view_get_size_of_row         (BtkCellView     *cell_view,
+bboolean          btk_cell_view_get_size_of_row         (BtkCellView     *cell_view,
                                                          BtkTreePath     *path,
                                                          BtkRequisition  *requisition);
 

@@ -63,9 +63,9 @@ struct _BtkSeparatorToolItemClass
 GType        btk_separator_tool_item_get_type (void) B_GNUC_CONST;
 BtkToolItem *btk_separator_tool_item_new      (void);
 
-gboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
+bboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
 void         btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
-					       gboolean              draw);
+					       bboolean              draw);
 
 B_END_DECLS
 

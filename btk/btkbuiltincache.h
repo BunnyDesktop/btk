@@ -2,9 +2,9 @@
 #pragma align 4 (builtin_icons)
 #endif
 #ifdef __GNUC__
-static const guint8 builtin_icons[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 builtin_icons[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 builtin_icons[] = 
+static const buint8 builtin_icons[] = 
 #endif
 {
   0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x06, 0x7b, 0x14, 

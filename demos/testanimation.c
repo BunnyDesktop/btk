@@ -30,15 +30,15 @@ typedef struct _LoadContext LoadContext;
 
 struct _LoadContext
 {
-  gchar *filename;
+  bchar *filename;
   BtkWidget *window;
   BdkPixbufLoader *pixbuf_loader;
-  guint load_timeout;
+  buint load_timeout;
   FILE* image_stream;
 };
 
 static void
-destroy_context (gpointer data)
+destroy_context (bpointer data)
 {
   LoadContext *lc = data;
 
@@ -81,7 +81,7 @@ get_load_context (BtkWidget *image)
 
 static void
 progressive_prepared_callback (BdkPixbufLoader* loader,
-                               gpointer         data)
+                               bpointer         data)
 {
   BdkPixbuf* pixbuf;
   BtkWidget* image;
@@ -104,8 +104,8 @@ progressive_prepared_callback (BdkPixbufLoader* loader,
 
 static void
 progressive_updated_callback (BdkPixbufLoader* loader,
-                              gint x, gint y, gint width, gint height,
-                              gpointer data)
+                              bint x, bint y, bint width, bint height,
+                              bpointer data)
 {
   BtkWidget* image;
   
@@ -127,8 +127,8 @@ progressive_updated_callback (BdkPixbufLoader* loader,
   btk_widget_queue_draw (image);
 }
 
-static gint
-progressive_timeout (gpointer data)
+static bint
+progressive_timeout (bpointer data)
 {
   BtkWidget *image;
   LoadContext *lc;
@@ -144,7 +144,7 @@ progressive_timeout (gpointer data)
   if (lc->image_stream)
     {
       size_t bytes_read;
-      guchar buf[256];
+      buchar buf[256];
       GError *error = NULL;
       
       bytes_read = fread (buf, 1, 256, lc->image_stream);
@@ -315,7 +315,7 @@ do_image (const char *filename)
   BtkWidget *label;
   BtkWidget *align;
   BtkWidget *window;
-  gchar *str, *escaped;
+  bchar *str, *escaped;
   LoadContext *lc;
   
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
@@ -369,7 +369,7 @@ do_image (const char *filename)
 }
 
 static void
-do_nonprogressive (const gchar *filename)
+do_nonprogressive (const bchar *filename)
 {
   BtkWidget *frame;
   BtkWidget *vbox;
@@ -377,7 +377,7 @@ do_nonprogressive (const gchar *filename)
   BtkWidget *label;
   BtkWidget *align;
   BtkWidget *window;
-  gchar *str, *escaped;
+  bchar *str, *escaped;
   
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   btk_window_set_title (BTK_WINDOW (window), "Animation");
@@ -424,7 +424,7 @@ int
 main (int    argc,
       char **argv)
 {
-  gint i;
+  bint i;
   
   btk_init (&argc, &argv);
 

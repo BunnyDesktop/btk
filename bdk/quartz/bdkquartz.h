@@ -58,7 +58,7 @@ typedef enum
   BDK_OSX_NEW = 99
 } BdkOSXVersion;
 
-gboolean  bdk_quartz_window_is_quartz                           (BdkWindow      *window);
+bboolean  bdk_quartz_window_is_quartz                           (BdkWindow      *window);
 NSWindow *bdk_quartz_window_get_nswindow                        (BdkWindow      *window);
 NSView   *bdk_quartz_window_get_nsview                          (BdkWindow      *window);
 NSImage  *bdk_quartz_pixbuf_to_ns_image_libbtk_only             (BdkPixbuf      *pixbuf);
@@ -67,7 +67,7 @@ NSEvent  *bdk_quartz_event_get_nsevent                          (BdkEvent       
 BdkOSXVersion bdk_quartz_osx_version                            (void);
 
 BdkAtom   bdk_quartz_pasteboard_type_to_atom_libbtk_only        (NSString       *type);
-NSString *bdk_quartz_target_to_pasteboard_type_libbtk_only      (const gchar    *target);
+NSString *bdk_quartz_target_to_pasteboard_type_libbtk_only      (const bchar    *target);
 NSString *bdk_quartz_atom_to_pasteboard_type_libbtk_only        (BdkAtom         atom);
 
 B_END_DECLS

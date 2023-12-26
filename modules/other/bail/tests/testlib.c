@@ -3,21 +3,21 @@
 #include <stdlib.h>
 #include "testlib.h" 
 
-static gint	_get_position_in_array		(gint		window,
-						gchar		*the_test_name);
-static gint	_get_position_in_parameters	(gint		window,
-						gchar		*label,
-						gint		position);
+static bint	_get_position_in_array		(bint		window,
+						bchar		*the_test_name);
+static bint	_get_position_in_parameters	(bint		window,
+						bchar		*label,
+						bint		position);
 static void	_create_output_window		(OutputWindow	**outwin);
-static gboolean	_create_select_tests_window	(BatkObject	*obj,
+static bboolean	_create_select_tests_window	(BatkObject	*obj,
                                                 TLruntest	runtest,
                                                 OutputWindow	**outwin);
 static void	_toggle_selectedcb		(BtkWidget	*widget,
-						gpointer	test);
+						bpointer	test);
 static void	_testselectioncb		(BtkWidget	*widget,
-						gpointer	data);
+						bpointer	data);
 static void	_destroy			(BtkWidget	*widget,
-						gpointer	data);
+						bpointer	data);
 
 /* General functions */
 
@@ -36,7 +36,7 @@ static void	_destroy			(BtkWidget	*widget,
 BatkObject*
 find_object_by_role (BatkObject *obj,
                      BatkRole   *roles,
-                     gint      num_roles)
+                     bint      num_roles)
 {
   /*
    * Find the first object which is a descendant of the specified object
@@ -45,8 +45,8 @@ find_object_by_role (BatkObject *obj,
    * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
-  gint i, j;
-  gint n_children;
+  bint i, j;
+  bint n_children;
   BatkObject *child;
 
   if (obj == NULL)
@@ -98,14 +98,14 @@ find_object_by_role (BatkObject *obj,
  **/
 BatkObject*
 find_object_by_name_and_role(BatkObject   *obj,
-                             const gchar *name,
+                             const bchar *name,
                              BatkRole	 *roles,
-                             gint        num_roles)
+                             bint        num_roles)
 {
   BatkObject *child;
   BtkWidget* widget;
-  gint i, j;
-  gint n_children;
+  bint i, j;
+  bint n_children;
 
   if (obj == NULL)
     return NULL;
@@ -169,14 +169,14 @@ find_object_by_name_and_role(BatkObject   *obj,
  */
 BatkObject*
 find_object_by_accessible_name_and_role (BatkObject   *obj,
-                                         const gchar *name,
+                                         const bchar *name,
                                          BatkRole     *roles,
-	                                 gint        num_roles)
+	                                 bint        num_roles)
 {
   BatkObject *child;
-  gint i, j;
-  gint n_children;
-  const gchar *accessible_name;
+  bint i, j;
+  bint n_children;
+  const bchar *accessible_name;
 
   if (obj == NULL)
     return NULL;
@@ -232,7 +232,7 @@ find_object_by_accessible_name_and_role (BatkObject   *obj,
  */
 BatkObject*
 find_object_by_type (BatkObject *obj, 
-                     gchar     *type)
+                     bchar     *type)
 {
   /*
    * Find the first object which is a descendant of the specified object
@@ -241,10 +241,10 @@ find_object_by_type (BatkObject *obj,
    * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
-  gint i;
-  gint n_children;
+  bint i;
+  bint n_children;
   BatkObject *child;
-  const gchar * typename = NULL;
+  const bchar * typename = NULL;
 
   if (obj == NULL)
     return NULL;
@@ -286,12 +286,12 @@ find_object_by_type (BatkObject *obj,
  * Returns: TRUE if @obj has been passed into this function before
  * and FALSE otherwise.
  */
-gboolean
+bboolean
 already_accessed_batk_object (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
-  gboolean found = FALSE;
-  gint i;
+  bboolean found = FALSE;
+  bint i;
 
   /*
    * We create a property handler for each object if one was not associated
@@ -327,8 +327,8 @@ already_accessed_batk_object (BatkObject *obj)
  **/
 void
 display_children (BatkObject *obj, 
-                  gint      depth, 
-                  gint      child_number)
+                  bint      depth, 
+                  bint      child_number)
 {
   display_children_to_depth(obj, -1, depth, child_number);
 }
@@ -345,14 +345,14 @@ display_children (BatkObject *obj,
  **/
 void
 display_children_to_depth (BatkObject *obj,
-                           gint      to_depth,
-                           gint      depth,
-                           gint      child_number)
+                           bint      to_depth,
+                           bint      depth,
+                           bint      child_number)
 {
   BatkRole role;
-  const gchar *rolename;
-  const gchar *typename;
-  gint n_children, parent_index, i;
+  const bchar *rolename;
+  const bchar *typename;
+  bint n_children, parent_index, i;
 
   if (to_depth >= 0 && depth > to_depth)
      return;
@@ -418,7 +418,7 @@ typedef struct
   BtkWidget     *label;
   BtkWidget     *textInsert;
   BtkWidget     *button;
-  gchar         *selecttestsTitle;
+  bchar         *selecttestsTitle;
 }MainDialog;
 
 /* Functionality information about each added test */
@@ -428,15 +428,15 @@ typedef struct
   BtkWidget     *hbox;
   BtkWidget     *parameterLabel[MAX_PARAMS];
   BtkWidget     *parameterInput[MAX_PARAMS];
-  gchar         *testName;
-  gint          numParameters;
+  bchar         *testName;
+  bint          numParameters;
 }TestList;
 
 typedef struct
 {
    TLruntest   runtest;
    BatkObject*  obj;
-   gint	       win_num;
+   bint	       win_num;
 }TestCB;
 
 static MainDialog      *md[MAX_WINDOWS];
@@ -446,14 +446,14 @@ static OutputWindow    *ow;
 static TestList        listoftests[MAX_WINDOWS][MAX_TESTS];
 
 /* A counter for the actual number of added tests */
-gint                   counter;
+bint                   counter;
 
 /* A global for keeping track of the window numbers */
-static gint 	       window_no = 0;
+static bint 	       window_no = 0;
 /* An array containing the names of the tests that are "on" */
-static gchar           *onTests[MAX_WINDOWS][MAX_TESTS]; 
-static gint            g_visibleDialog = 0;
-static gint	       testcount[MAX_WINDOWS];
+static bchar           *onTests[MAX_WINDOWS][MAX_TESTS]; 
+static bint            g_visibleDialog = 0;
+static bint	       testcount[MAX_WINDOWS];
 static TestCB          testcb[MAX_WINDOWS];
 
 /**
@@ -470,13 +470,13 @@ static TestCB          testcb[MAX_WINDOWS];
  *
  * Returns: The window number of the created window if successful, -1 otherwise.
  **/
-gint
+bint
 create_windows (BatkObject    *obj,
                 TLruntest    runtest,
                 OutputWindow **outwin)
 {
-  gboolean valid;  
-  gint tmp;
+  bboolean valid;  
+  bint tmp;
 
   g_visibleDialog = 1;
   _create_output_window(outwin); 
@@ -548,7 +548,7 @@ _create_output_window (OutputWindow **outwin)
  *
  * Returns: TRUE if successful, FALSE otherwise
  **/
-static gboolean
+static bboolean
 _create_select_tests_window (BatkObject    *obj,
                              TLruntest    runtest,
                              OutputWindow **outwin)
@@ -604,7 +604,7 @@ _create_select_tests_window (BatkObject    *obj,
       g_signal_connect (BTK_OBJECT (md[window_no]->button), 
                         "clicked",
                         G_CALLBACK (_testselectioncb),
-                        (gpointer)&testcb[window_no]);
+                        (bpointer)&testcb[window_no]);
      
       /* Show all */
       btk_widget_grab_focus (md[window_no]->button);
@@ -632,14 +632,14 @@ _create_select_tests_window (BatkObject    *obj,
  * MAX_PARAMS, otherwise returns TRUE 
  *
  **/
-gboolean
-add_test (gint   window, 
-          gchar  *name,
-          gint   num_params,
-          gchar* parameter_names[],
-          gchar* default_names[])
+bboolean
+add_test (bint   window, 
+          bchar  *name,
+          bint   num_params,
+          bchar* parameter_names[],
+          bchar* default_names[])
 {
-  gint i;
+  bint i;
 
   if (num_params > MAX_PARAMS)
     return FALSE;
@@ -677,7 +677,7 @@ add_test (gint   window,
       g_signal_connect (BTK_OBJECT (listoftests[window][testcount[window]].toggleButton),
                         "toggled",
                         G_CALLBACK (_toggle_selectedcb),
-                        (gpointer)&(listoftests[window][testcount[window]]));
+                        (bpointer)&(listoftests[window][testcount[window]]));
       btk_widget_show (listoftests[window][testcount[window]].toggleButton);
       btk_widget_show (md[window]->hbox);
       btk_widget_show (md[window]->vbox);
@@ -700,11 +700,11 @@ add_test (gint   window,
  * Returns: an array of strings corresponding to the tests that
  * are "on".
  **/
-gchar **tests_set(gint window, int *count)
+bchar **tests_set(bint window, int *count)
 {
-  gint        i =0, j = 0, num;
-  gboolean    nullparam;
-  gchar*      input;
+  bint        i =0, j = 0, num;
+  bboolean    nullparam;
+  bchar*      input;
 
   *count = 0;
   for (i = 0; i < MAX_TESTS; i++)
@@ -743,11 +743,11 @@ gchar **tests_set(gint window, int *count)
  *
  * Returns: the position in listoftests[] of @the_test_name
  **/
-static gint
-_get_position_in_array(gint  window,
-                       gchar *the_test_name)
+static bint
+_get_position_in_array(bint  window,
+                       bchar *the_test_name)
 {
-  gint        i;
+  bint        i;
   
   for (i = 0; i < testcount[window]; i++)
     {
@@ -768,13 +768,13 @@ _get_position_in_array(gint  window,
  * Returns: the position in parameterLabel[] (a member of
  * listoftests[]) of @label 
  **/
-static gint
-_get_position_in_parameters(gint  window,
-                            gchar *label,
-                            gint  position)
+static bint
+_get_position_in_parameters(bint  window,
+                            bchar *label,
+                            bint  position)
 {
-  gint                    i;
-  const gchar    *label_string;
+  bint                    i;
+  const bchar    *label_string;
   
   for (i = 0; i < MAX_PARAMS; i++)
     {
@@ -794,7 +794,7 @@ _get_position_in_parameters(gint  window,
  * Tidies up the output Window 
  **/
 void
-set_output_buffer(gchar *output)
+set_output_buffer(bchar *output)
 {
   btk_text_buffer_insert (BTK_TEXT_BUFFER (ow->outputBuffer),
                           &ow->outputIter, output, strlen(output));
@@ -809,7 +809,7 @@ set_output_buffer(gchar *output)
  *
  * Returns: TRUE if g_visibleDialog is set to 1, otherwise FALSE
  **/
-gboolean
+bboolean
 isVisibleDialog(void)
 {
  if (g_visibleDialog >= 1)
@@ -828,14 +828,14 @@ isVisibleDialog(void)
  *
  * Returns: the user input associated with the @function_name and @arg_label.
  **/
-gchar*
-get_arg_of_func (gint  window,
-                 gchar *function_name,
-                 gchar *arg_label)
+bchar*
+get_arg_of_func (bint  window,
+                 bchar *function_name,
+                 bchar *arg_label)
 {
-  const gchar       *argString;
-  gchar                      *retString;
-  gint                       position, paramPosition;
+  const bchar       *argString;
+  bchar                      *retString;
+  bint                       position, paramPosition;
 
   position =  _get_position_in_array(window, function_name);
 
@@ -903,12 +903,12 @@ string_to_int (const char *the_string)
  **/
 static void
 _toggle_selectedcb (BtkWidget *widget,
-                    gpointer  test)
+                    bpointer  test)
 {
   int i;
   TestList *testlist = (TestList *) test;
-  gboolean toggled;
-  gboolean sensitive;
+  bboolean toggled;
+  bboolean sensitive;
   toggled = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget));
   if (toggled)
     sensitive = TRUE;
@@ -933,7 +933,7 @@ _toggle_selectedcb (BtkWidget *widget,
  **/
 static void
 _testselectioncb (BtkWidget *widget,
-                  gpointer data)
+                  bpointer data)
 {
   TestCB* local_testcb = (TestCB *)data;
   local_testcb->runtest(local_testcb->obj, local_testcb->win_num);
@@ -948,7 +948,7 @@ _testselectioncb (BtkWidget *widget,
  **/
 static void
 _destroy (BtkWidget *widget,
-          gpointer  data)
+          bpointer  data)
 {
   btk_main_quit();
 }

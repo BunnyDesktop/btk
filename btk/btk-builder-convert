@@ -572,7 +572,7 @@ class BtkBuilderConverter(object):
         model.appendChild(columns)
 
         column = self._dom.createElement('column')
-        column.setAttribute('type', 'gchararray')
+        column.setAttribute('type', 'bchararray')
         columns.appendChild(column)
 
         data = self._dom.createElement('data')

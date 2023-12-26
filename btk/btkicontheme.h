@@ -120,51 +120,51 @@ void          btk_icon_theme_set_screen            (BtkIconTheme                
 						    BdkScreen                   *screen);
 
 void          btk_icon_theme_set_search_path       (BtkIconTheme                *icon_theme,
-						    const gchar                 *path[],
-						    gint                         n_elements);
+						    const bchar                 *path[],
+						    bint                         n_elements);
 void          btk_icon_theme_get_search_path       (BtkIconTheme                *icon_theme,
-						    gchar                      **path[],
-						    gint                        *n_elements);
+						    bchar                      **path[],
+						    bint                        *n_elements);
 void          btk_icon_theme_append_search_path    (BtkIconTheme                *icon_theme,
-						    const gchar                 *path);
+						    const bchar                 *path);
 void          btk_icon_theme_prepend_search_path   (BtkIconTheme                *icon_theme,
-						    const gchar                 *path);
+						    const bchar                 *path);
 
 void          btk_icon_theme_set_custom_theme      (BtkIconTheme                *icon_theme,
-						    const gchar                 *theme_name);
+						    const bchar                 *theme_name);
 
-gboolean      btk_icon_theme_has_icon              (BtkIconTheme                *icon_theme,
-						    const gchar                 *icon_name);
-gint         *btk_icon_theme_get_icon_sizes        (BtkIconTheme                *icon_theme,
-						    const gchar                 *icon_name);
+bboolean      btk_icon_theme_has_icon              (BtkIconTheme                *icon_theme,
+						    const bchar                 *icon_name);
+bint         *btk_icon_theme_get_icon_sizes        (BtkIconTheme                *icon_theme,
+						    const bchar                 *icon_name);
 BtkIconInfo * btk_icon_theme_lookup_icon           (BtkIconTheme                *icon_theme,
-						    const gchar                 *icon_name,
-						    gint                         size,
+						    const bchar                 *icon_name,
+						    bint                         size,
 						    BtkIconLookupFlags           flags);
 BtkIconInfo * btk_icon_theme_choose_icon           (BtkIconTheme                *icon_theme,
-						    const gchar                 *icon_names[],
-						    gint                         size,
+						    const bchar                 *icon_names[],
+						    bint                         size,
 						    BtkIconLookupFlags           flags);
 BdkPixbuf *   btk_icon_theme_load_icon             (BtkIconTheme                *icon_theme,
-						    const gchar                 *icon_name,
-						    gint                         size,
+						    const bchar                 *icon_name,
+						    bint                         size,
 						    BtkIconLookupFlags           flags,
 						    GError                     **error);
 
 BtkIconInfo * btk_icon_theme_lookup_by_gicon       (BtkIconTheme                *icon_theme,
                                                     GIcon                       *icon,
-                                                    gint                         size,
+                                                    bint                         size,
                                                     BtkIconLookupFlags           flags);
 
 GList *       btk_icon_theme_list_icons            (BtkIconTheme                *icon_theme,
-						    const gchar                 *context);
+						    const bchar                 *context);
 GList *       btk_icon_theme_list_contexts         (BtkIconTheme                *icon_theme);
 char *        btk_icon_theme_get_example_icon_name (BtkIconTheme                *icon_theme);
 
-gboolean      btk_icon_theme_rescan_if_needed      (BtkIconTheme                *icon_theme);
+bboolean      btk_icon_theme_rescan_if_needed      (BtkIconTheme                *icon_theme);
 
-void          btk_icon_theme_add_builtin_icon      (const gchar *icon_name,
-					            gint         size,
+void          btk_icon_theme_add_builtin_icon      (const bchar *icon_name,
+					            bint         size,
 					            BdkPixbuf   *pixbuf);
 
 GType                 btk_icon_info_get_type           (void) B_GNUC_CONST;
@@ -174,20 +174,20 @@ void                  btk_icon_info_free               (BtkIconInfo  *icon_info)
 BtkIconInfo *         btk_icon_info_new_for_pixbuf     (BtkIconTheme  *icon_theme,
                                                         BdkPixbuf     *pixbuf);
 
-gint                  btk_icon_info_get_base_size      (BtkIconInfo   *icon_info);
-const gchar *         btk_icon_info_get_filename       (BtkIconInfo   *icon_info);
+bint                  btk_icon_info_get_base_size      (BtkIconInfo   *icon_info);
+const bchar *         btk_icon_info_get_filename       (BtkIconInfo   *icon_info);
 BdkPixbuf *           btk_icon_info_get_builtin_pixbuf (BtkIconInfo   *icon_info);
 BdkPixbuf *           btk_icon_info_load_icon          (BtkIconInfo   *icon_info,
 							GError       **error);
 void                  btk_icon_info_set_raw_coordinates (BtkIconInfo  *icon_info,
-							 gboolean      raw_coordinates);
+							 bboolean      raw_coordinates);
 
-gboolean              btk_icon_info_get_embedded_rect (BtkIconInfo    *icon_info,
+bboolean              btk_icon_info_get_embedded_rect (BtkIconInfo    *icon_info,
 						       BdkRectangle   *rectangle);
-gboolean              btk_icon_info_get_attach_points (BtkIconInfo    *icon_info,
+bboolean              btk_icon_info_get_attach_points (BtkIconInfo    *icon_info,
 						       BdkPoint      **points,
-						       gint           *n_points);
-const gchar *         btk_icon_info_get_display_name  (BtkIconInfo    *icon_info);
+						       bint           *n_points);
+const bchar *         btk_icon_info_get_display_name  (BtkIconInfo    *icon_info);
 
 /* Non-public methods */
 void _btk_icon_theme_check_reload                     (BdkDisplay *display);

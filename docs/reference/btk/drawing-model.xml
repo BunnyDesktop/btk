@@ -503,7 +503,7 @@ my_widget_init (MyWidget *widget)
     </para>
 
     <programlisting>
-static gint
+static bint
 btk_window_expose (BtkWidget      *widget,
 		   BdkEventExpose *event)
 {

@@ -59,8 +59,8 @@ struct _BtkLayout
 
   GList *GSEAL (children);
 
-  guint GSEAL (width);
-  guint GSEAL (height);
+  buint GSEAL (width);
+  buint GSEAL (height);
 
   BtkAdjustment *GSEAL (hadjustment);
   BtkAdjustment *GSEAL (vadjustment);
@@ -70,10 +70,10 @@ struct _BtkLayout
 
   /*< private >*/
   BdkVisibilityState GSEAL (visibility);
-  gint GSEAL (scroll_x);
-  gint GSEAL (scroll_y);
+  bint GSEAL (scroll_x);
+  bint GSEAL (scroll_y);
 
-  guint GSEAL (freeze_count);
+  buint GSEAL (freeze_count);
 };
 
 struct _BtkLayoutClass
@@ -97,20 +97,20 @@ BtkWidget*     btk_layout_new             (BtkAdjustment *hadjustment,
 BdkWindow*     btk_layout_get_bin_window  (BtkLayout     *layout);
 void           btk_layout_put             (BtkLayout     *layout,
 		                           BtkWidget     *child_widget,
-		                           gint           x,
-		                           gint           y);
+		                           bint           x,
+		                           bint           y);
 
 void           btk_layout_move            (BtkLayout     *layout,
 		                           BtkWidget     *child_widget,
-		                           gint           x,
-		                           gint           y);
+		                           bint           x,
+		                           bint           y);
 
 void           btk_layout_set_size        (BtkLayout     *layout,
-			                   guint          width,
-			                   guint          height);
+			                   buint          width,
+			                   buint          height);
 void           btk_layout_get_size        (BtkLayout     *layout,
-					   guint         *width,
-					   guint         *height);
+					   buint         *width,
+					   buint         *height);
 
 BtkAdjustment* btk_layout_get_hadjustment (BtkLayout     *layout);
 BtkAdjustment* btk_layout_get_vadjustment (BtkLayout     *layout);

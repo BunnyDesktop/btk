@@ -8,12 +8,12 @@ static void _check_values (BatkObject *obj);
 static void _value_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 
-static guint id;
+static buint id;
 
 static void _value_change_handler (BatkObject   *obj,
                                    BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
    BValue *value_back, val;
 
   value_back = &val;
@@ -55,7 +55,7 @@ static void _value_change_handler (BatkObject   *obj,
 
 static void _traverse_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
 
   n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
@@ -72,8 +72,8 @@ static void _traverse_children (BatkObject *obj)
 static void _add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
-  gboolean found = FALSE;
-  gint i;
+  bboolean found = FALSE;
+  bint i;
 
   /*
    * We create a property handler for each object if one was not associated 
@@ -104,8 +104,8 @@ static void _add_handler (BatkObject *obj)
 static void _set_values (BatkObject *obj) {
 
   BValue *value_back, val;
-  static gint count = 0;
-  gdouble double_value;
+  static bint count = 0;
+  bdouble double_value;
 
   value_back = &val;
 
@@ -116,8 +116,8 @@ static void _set_values (BatkObject *obj) {
 
 	if(BATK_IS_TEXT(obj) && BATK_IS_EDITABLE_TEXT(obj)) {
 		if(count == 0) {	
-			gint x;
-			gchar* text;
+			bint x;
+			bchar* text;
 			count++;
 			x = batk_text_get_character_count (BATK_TEXT (obj));
   			text = batk_text_get_text (BATK_TEXT (obj), 0, x);
@@ -146,7 +146,7 @@ static void _set_values (BatkObject *obj) {
 
 static void _check_values (BatkObject *obj)
 {
-  static gint calls = 0;
+  static bint calls = 0;
   BatkRole role;
 
   g_print ("Start of _check_values\n");
@@ -183,7 +183,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testvalues Module loaded\n");
 

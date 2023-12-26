@@ -5061,7 +5061,7 @@ Tue Jan 29 23:41:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 Mon Jan 21 23:39:42 2002  Jonathan Blandford  <jrb@redhat.com>
 
-	* btk/tmpl/btkfixed.sgml: change guint16 to gint to reflect
+	* btk/tmpl/btkfixed.sgml: change buint16 to bint to reflect
 	changes in the code, found by Jody Goldberg <jody@bunny.org>
 
 2002-01-19  Havoc Pennington  <hp@pobox.com>
@@ -5628,7 +5628,7 @@ Mon Nov 12 23:06:38 2001  Tim Janik  <timj@btk.org>
 2001-10-28  Anders Carlsson  <andersca@gnu.org>
 
 	* btk/tmpl/btkadjustment.sgml: Update struct member docs
-	since they're gdouble now instead of gfloat. Fixes #55699.
+	since they're bdouble now instead of bfloat. Fixes #55699.
 
 2001-10-28  Matthias Clasen  <matthiasc@poet.de>
 

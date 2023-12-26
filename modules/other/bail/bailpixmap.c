@@ -28,23 +28,23 @@
 static void	 bail_pixmap_class_init		(BailPixmapClass *klass);
 static void      bail_pixmap_init               (BailPixmap      *pixmap);
 static void      bail_pixmap_initialize         (BatkObject       *accessible,
-                                                 gpointer         data);
+                                                 bpointer         data);
 
 /* BatkImage */
 static void  batk_image_interface_init   (BatkImageIface  *iface);
-static const gchar* bail_pixmap_get_image_description
+static const bchar* bail_pixmap_get_image_description
                                         (BatkImage       *obj);
 static void  bail_pixmap_get_image_position    
                                         (BatkImage       *obj,
-                                         gint           *x,
-                                         gint           *y,
+                                         bint           *x,
+                                         bint           *y,
                                          BatkCoordType   coord_type);
 static void  bail_pixmap_get_image_size (BatkImage       *obj,
-                                         gint           *width,
-                                         gint           *height);
-static gboolean bail_pixmap_set_image_description 
+                                         bint           *width,
+                                         bint           *height);
+static bboolean bail_pixmap_set_image_description 
                                         (BatkImage       *obj,
-                                        const gchar    *description);
+                                        const bchar    *description);
 static void  bail_pixmap_finalize       (BObject         *object);
 
 G_DEFINE_TYPE_WITH_CODE (BailPixmap, bail_pixmap, BAIL_TYPE_WIDGET,
@@ -69,7 +69,7 @@ bail_pixmap_init (BailPixmap *pixmap)
 
 static void
 bail_pixmap_initialize (BatkObject *accessible,
-                        gpointer  data)
+                        bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_pixmap_parent_class)->initialize (accessible, data);
 
@@ -85,7 +85,7 @@ batk_image_interface_init (BatkImageIface *iface)
   iface->set_image_description = bail_pixmap_set_image_description;
 }
 
-static const gchar*
+static const bchar*
 bail_pixmap_get_image_description (BatkImage       *obj)
 {
   BailPixmap* pixmap;
@@ -99,8 +99,8 @@ bail_pixmap_get_image_description (BatkImage       *obj)
 
 static void
 bail_pixmap_get_image_position (BatkImage       *obj,
-                                gint           *x,
-                                gint           *y,
+                                bint           *x,
+                                bint           *y,
                                 BatkCoordType   coord_type)
 {
   batk_component_get_position (BATK_COMPONENT (obj), x, y, coord_type);
@@ -108,8 +108,8 @@ bail_pixmap_get_image_position (BatkImage       *obj,
 
 static void  
 bail_pixmap_get_image_size (BatkImage       *obj,
-                            gint           *width,
-                            gint           *height)
+                            bint           *width,
+                            bint           *height)
 {
   BtkWidget *widget;
   BtkPixmap *pixmap;
@@ -132,9 +132,9 @@ bail_pixmap_get_image_size (BatkImage       *obj,
     bdk_pixmap_get_size (pixmap->pixmap, width, height);
 }
 
-static gboolean 
+static bboolean 
 bail_pixmap_set_image_description (BatkImage       *obj,
-                                   const gchar    *description)
+                                   const bchar    *description)
 { 
   BailPixmap* pixmap;
 

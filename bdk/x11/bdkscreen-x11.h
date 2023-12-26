@@ -52,7 +52,7 @@ struct _BdkScreenX11
   BdkDisplay *display;
   Display *xdisplay;
   Screen *xscreen;
-  gint screen_num;
+  bint screen_num;
   Window xroot_window;
   BdkWindow *root_window;
 
@@ -63,20 +63,20 @@ struct _BdkScreenX11
   /* TRUE if wmspec_check_window has changed since last
    * fetch of _NET_SUPPORTED
    */
-  guint need_refetch_net_supported : 1;
+  buint need_refetch_net_supported : 1;
   /* TRUE if wmspec_check_window has changed since last
    * fetch of window manager name
    */
-  guint need_refetch_wm_name : 1;
+  buint need_refetch_wm_name : 1;
   
   /* Visual Part */
   BdkVisualPrivate *system_visual;
   BdkVisualPrivate **visuals;
-  gint nvisuals;
-  gint available_depths[7];
-  gint navailable_depths;
+  bint nvisuals;
+  bint available_depths[7];
+  bint navailable_depths;
   BdkVisualType available_types[6];
-  gint navailable_types;
+  bint navailable_types;
   GHashTable *visual_hash;
   GHashTable *colormap_hash;
   BdkVisual *rgba_visual;
@@ -88,12 +88,12 @@ struct _BdkScreenX11
 
   /* X settings */
   XSettingsClient *xsettings_client;
-  guint xsettings_in_init : 1;
+  buint xsettings_in_init : 1;
   
   /* Xinerama/RandR 1.2 */
-  gint		 n_monitors;
+  bint		 n_monitors;
   BdkX11Monitor	*monitors;
-  gint           primary_monitor;
+  bint           primary_monitor;
 
   /* Bango renderer object singleton */
   BangoRenderer *renderer;
@@ -101,15 +101,15 @@ struct _BdkScreenX11
   /* Xft resources for the display, used for default values for
    * the Xft/ XSETTINGS
    */
-  gboolean xft_init;		/* Whether we've intialized these values yet */
-  gboolean xft_antialias;
-  gboolean xft_hinting;
-  gint xft_hintstyle;
-  gint xft_rgba;
-  gint xft_dpi;
+  bboolean xft_init;		/* Whether we've intialized these values yet */
+  bboolean xft_antialias;
+  bboolean xft_hinting;
+  bint xft_hintstyle;
+  bint xft_rgba;
+  bint xft_dpi;
 
   BdkAtom cm_selection_atom;
-  gboolean is_composited;
+  bboolean is_composited;
 };
   
 struct _BdkScreenX11Class
@@ -121,7 +121,7 @@ struct _BdkScreenX11Class
 
 GType       _bdk_screen_x11_get_type (void);
 BdkScreen * _bdk_x11_screen_new      (BdkDisplay *display,
-				      gint	  screen_number);
+				      bint	  screen_number);
 
 void _bdk_x11_screen_setup                  (BdkScreen *screen);
 void _bdk_x11_screen_window_manager_changed (BdkScreen *screen);

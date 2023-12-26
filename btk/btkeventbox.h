@@ -59,12 +59,12 @@ struct _BtkEventBoxClass
 
 GType	   btk_event_box_get_type           (void) B_GNUC_CONST;
 BtkWidget* btk_event_box_new                (void);
-gboolean   btk_event_box_get_visible_window (BtkEventBox *event_box);
+bboolean   btk_event_box_get_visible_window (BtkEventBox *event_box);
 void       btk_event_box_set_visible_window (BtkEventBox *event_box,
-					     gboolean     visible_window);
-gboolean   btk_event_box_get_above_child    (BtkEventBox *event_box);
+					     bboolean     visible_window);
+bboolean   btk_event_box_get_above_child    (BtkEventBox *event_box);
 void       btk_event_box_set_above_child    (BtkEventBox *event_box,
-					     gboolean     above_child);
+					     bboolean     above_child);
 
 B_END_DECLS
 

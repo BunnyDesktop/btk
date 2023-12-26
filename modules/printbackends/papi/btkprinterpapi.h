@@ -43,7 +43,7 @@ struct _BtkPrinterPapi
 {
   BtkPrinter parent_instance;
 
-  gchar *printer_name;
+  bchar *printer_name;
 };
 
 struct _BtkPrinterPapiClass

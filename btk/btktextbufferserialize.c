@@ -43,19 +43,19 @@ typedef struct
   GHashTable *tags;
   BtkTextIter start, end;
 
-  gint n_pixbufs;
+  bint n_pixbufs;
   GList *pixbufs;
-  gint tag_id;
+  bint tag_id;
   GHashTable *tag_id_tags;
 } SerializationContext;
 
-static gchar *
+static bchar *
 serialize_value (BValue *value)
 {
   if (b_value_type_transformable (value->g_type, B_TYPE_STRING))
     {
       BValue text_value = { 0 };
-      gchar *tmp;
+      bchar *tmp;
 
       b_value_init (&text_value, B_TYPE_STRING);
       b_value_transform (value, &text_value);
@@ -83,14 +83,14 @@ serialize_value (BValue *value)
   return NULL;
 }
 
-static gboolean
-deserialize_value (const gchar *str,
+static bboolean
+deserialize_value (const bchar *str,
                    BValue      *value)
 {
   if (b_value_type_transformable (B_TYPE_STRING, value->g_type))
     {
       BValue text_value = { 0 };
-      gboolean retval;
+      bboolean retval;
 
       b_value_init (&text_value, B_TYPE_STRING);
       b_value_set_static_string (&text_value, str);
@@ -102,7 +102,7 @@ deserialize_value (const gchar *str,
     }
   else if (value->g_type == B_TYPE_BOOLEAN)
     {
-      gboolean v;
+      bboolean v;
 
       v = strcmp (str, "TRUE") == 0;
 
@@ -112,7 +112,7 @@ deserialize_value (const gchar *str,
     }
   else if (value->g_type == B_TYPE_INT)
     {
-      gchar *tmp;
+      bchar *tmp;
       int v;
 
       v = strtol (str, &tmp, 10);
@@ -126,8 +126,8 @@ deserialize_value (const gchar *str,
     }
   else if (value->g_type == B_TYPE_DOUBLE)
     {
-      gchar *tmp;
-      gdouble v;
+      bchar *tmp;
+      bdouble v;
 
       v = g_ascii_strtod (str, &tmp);
 
@@ -141,8 +141,8 @@ deserialize_value (const gchar *str,
   else if (value->g_type == BDK_TYPE_COLOR)
     {
       BdkColor color;
-      const gchar *old;
-      gchar *tmp;
+      const bchar *old;
+      bchar *tmp;
 
       old = str;
       color.red = strtol (old, &tmp, 16);
@@ -195,7 +195,7 @@ deserialize_value (const gchar *str,
 }
 
 /* Checks if a param is set, or if it's the default value */
-static gboolean
+static bboolean
 is_param_set (BObject    *object,
               BParamSpec *pspec,
               BValue     *value)
@@ -203,7 +203,7 @@ is_param_set (BObject    *object,
   /* We need to special case some attributes here */
   if (strcmp (pspec->name, "background-bdk") == 0)
     {
-      gboolean is_set;
+      bboolean is_set;
 
       g_object_get (object, "background-set", &is_set, NULL);
 
@@ -220,7 +220,7 @@ is_param_set (BObject    *object,
     }
   else if (strcmp (pspec->name, "foreground-bdk") == 0)
     {
-      gboolean is_set;
+      bboolean is_set;
 
       g_object_get (object, "foreground-set", &is_set, NULL);
 
@@ -237,8 +237,8 @@ is_param_set (BObject    *object,
     }
   else
     {
-      gboolean is_set;
-      gchar *is_set_name;
+      bboolean is_set;
+      bchar *is_set_name;
 
       is_set_name = g_strdup_printf ("%s-set", pspec->name);
 
@@ -275,16 +275,16 @@ is_param_set (BObject    *object,
 }
 
 static void
-serialize_tag (gpointer key,
-               gpointer data,
-               gpointer user_data)
+serialize_tag (bpointer key,
+               bpointer data,
+               bpointer user_data)
 {
   SerializationContext *context = user_data;
   BtkTextTag *tag = data;
-  gchar *tag_name;
-  gint tag_id;
+  bchar *tag_name;
+  bint tag_id;
   BParamSpec **pspecs;
-  guint n_pspecs;
+  buint n_pspecs;
   int i;
 
   g_string_append (context->tag_table_str, "  <tag ");
@@ -298,7 +298,7 @@ serialize_tag (gpointer key,
     }
   else
     {
-      tag_id = GPOINTER_TO_INT (g_hash_table_lookup (context->tag_id_tags, tag));
+      tag_id = BPOINTER_TO_INT (g_hash_table_lookup (context->tag_id_tags, tag));
 
       g_string_append_printf (context->tag_table_str, "id=\"%d\"", tag_id);
     }
@@ -311,7 +311,7 @@ serialize_tag (gpointer key,
   for (i = 0; i < n_pspecs; i++)
     {
       BValue value = { 0 };
-      gchar *tmp, *tmp2;
+      bchar *tmp, *tmp2;
 
       if (!(pspecs[i]->flags & G_PARAM_READABLE) ||
 	  !(pspecs[i]->flags & G_PARAM_WRITABLE))
@@ -355,7 +355,7 @@ serialize_tags (SerializationContext *context)
 
 #if 0
 static void
-dump_tag_list (const gchar *str,
+dump_tag_list (const bchar *str,
                GList       *list)
 {
   g_print ("%s: ", str);
@@ -415,8 +415,8 @@ find_list_delta (GSList  *old_list,
 
 static void
 serialize_section_header (GString     *str,
-			  const gchar *name,
-			  gint         length)
+			  const bchar *name,
+			  bint         length)
 {
   g_return_if_fail (strlen (name) == 26);
 
@@ -447,7 +447,7 @@ serialize_text (BtkTextBuffer        *buffer,
     {
       GList *added, *removed;
       GList *tmp;
-      gchar *tmp_text, *escaped_text;
+      bchar *tmp_text, *escaped_text;
 
       new_tag_list = btk_text_iter_get_tags (&iter);
       find_list_delta (tag_list, new_tag_list, &added, &removed);
@@ -482,7 +482,7 @@ serialize_text (BtkTextBuffer        *buffer,
       for (tmp = added; tmp; tmp = tmp->next)
 	{
 	  BtkTextTag *tag = tmp->data;
-	  gchar *tag_name;
+	  bchar *tag_name;
 
 	  /* Add it to the tag hash table */
 	  g_hash_table_insert (context->tags, tag, tag);
@@ -496,18 +496,18 @@ serialize_text (BtkTextBuffer        *buffer,
 	    }
 	  else
 	    {
-	      gpointer tag_id;
+	      bpointer tag_id;
 
 	      /* We've got an anonymous tag, find out if it's been
 		 used before */
 	      if (!g_hash_table_lookup_extended (context->tag_id_tags, tag, NULL, &tag_id))
 		{
-		  tag_id = GINT_TO_POINTER (context->tag_id++);
+		  tag_id = BINT_TO_POINTER (context->tag_id++);
 
 		  g_hash_table_insert (context->tag_id_tags, tag, tag_id);
 		}
 
-	      g_string_append_printf (context->text_str, "<apply_tag id=\"%d\">", GPOINTER_TO_INT (tag_id));
+	      g_string_append_printf (context->text_str, "<apply_tag id=\"%d\">", BPOINTER_TO_INT (tag_id));
 	    }
 
 	  active_tags = b_slist_prepend (active_tags, tag);
@@ -593,25 +593,25 @@ serialize_pixbufs (SerializationContext *context,
     {
       BdkPixbuf *pixbuf = list->data;
       BdkPixdata pixdata;
-      guint8 *tmp;
-      guint len;
+      buint8 *tmp;
+      buint len;
 
       bdk_pixdata_from_pixbuf (&pixdata, pixbuf, FALSE);
       tmp = bdk_pixdata_serialize (&pixdata, &len);
 
       serialize_section_header (text, "BTKTEXTBUFFERPIXBDATA-0001", len);
-      g_string_append_len (text, (gchar *) tmp, len);
+      g_string_append_len (text, (bchar *) tmp, len);
       g_free (tmp);
     }
 }
 
-guint8 *
+buint8 *
 _btk_text_buffer_serialize_rich_text (BtkTextBuffer     *register_buffer,
                                       BtkTextBuffer     *content_buffer,
                                       const BtkTextIter *start,
                                       const BtkTextIter *end,
-                                      gsize             *length,
-                                      gpointer           user_data)
+                                      bsize             *length,
+                                      bpointer           user_data)
 {
   SerializationContext context;
   GString *text;
@@ -649,7 +649,7 @@ _btk_text_buffer_serialize_rich_text (BtkTextBuffer     *register_buffer,
 
   *length = text->len;
 
-  return (guint8 *) g_string_free (text, FALSE);
+  return (buint8 *) g_string_free (text, FALSE);
 }
 
 typedef enum
@@ -666,7 +666,7 @@ typedef enum
 
 typedef struct
 {
-  gchar *text;
+  bchar *text;
   BdkPixbuf *pixbuf;
   GSList *tags;
 } TextSpan;
@@ -674,7 +674,7 @@ typedef struct
 typedef struct
 {
   BtkTextTag *tag;
-  gint prio;
+  bint prio;
 } TextTagPrio;
 
 typedef struct
@@ -698,10 +698,10 @@ typedef struct
   BtkTextTag *current_tag;
 
   /* Priority of current tag */
-  gint current_tag_prio;
+  bint current_tag_prio;
 
   /* Id of current tag */
-  gint current_tag_id;
+  bint current_tag_id;
 
   /* Tags and their priorities */
   GList *tag_priorities;
@@ -710,10 +710,10 @@ typedef struct
 
   GList *spans;
 
-  gboolean create_tags;
+  bboolean create_tags;
 
-  gboolean parsed_text;
-  gboolean parsed_tags;
+  bboolean parsed_text;
+  bboolean parsed_tags;
 } ParseInfo;
 
 static void
@@ -745,7 +745,7 @@ static void
 push_state (ParseInfo  *info,
             ParseState  state)
 {
-  info->states = b_slist_prepend (info->states, GINT_TO_POINTER (state));
+  info->states = b_slist_prepend (info->states, BINT_TO_POINTER (state));
 }
 
 static void
@@ -761,23 +761,23 @@ peek_state (ParseInfo *info)
 {
   g_return_val_if_fail (info->states != NULL, STATE_START);
 
-  return GPOINTER_TO_INT (info->states->data);
+  return BPOINTER_TO_INT (info->states->data);
 }
 
 #define ELEMENT_IS(name) (strcmp (element_name, (name)) == 0)
 
 
-static gboolean
+static bboolean
 check_id_or_name (GMarkupParseContext  *context,
-		  const gchar          *element_name,
-		  const gchar         **attribute_names,
-		  const gchar         **attribute_values,
-		  gint                 *id,
-		  const gchar         **name,
+		  const bchar          *element_name,
+		  const bchar         **attribute_names,
+		  const bchar         **attribute_values,
+		  bint                 *id,
+		  const bchar         **name,
 		  GError              **error)
 {
-  gboolean has_id = FALSE;
-  gboolean has_name = FALSE;
+  bboolean has_id = FALSE;
+  bboolean has_name = FALSE;
   int i;
 
   *id = 0;
@@ -813,7 +813,7 @@ check_id_or_name (GMarkupParseContext  *context,
 	}
       else if (strcmp (attribute_names[i], "id") == 0)
 	{
-	  gchar *tmp;
+	  bchar *tmp;
 
 	  if (has_name)
 	    {
@@ -867,12 +867,12 @@ typedef struct
   const char **retloc;
 } LocateAttr;
 
-static gboolean
+static bboolean
 locate_attributes (GMarkupParseContext  *context,
                    const char           *element_name,
                    const char          **attribute_names,
                    const char          **attribute_values,
-		   gboolean              allow_unknown_attrs,
+		   bboolean              allow_unknown_attrs,
                    GError              **error,
                    const char           *first_attribute_name,
                    const char          **first_attribute_retloc,
@@ -884,7 +884,7 @@ locate_attributes (GMarkupParseContext  *context,
   int n_attrs;
 #define MAX_ATTRS 24
   LocateAttr attrs[MAX_ATTRS];
-  gboolean retval;
+  bboolean retval;
   int i;
 
   g_return_val_if_fail (first_attribute_name != NULL, FALSE);
@@ -926,7 +926,7 @@ locate_attributes (GMarkupParseContext  *context,
   while (attribute_names[i])
     {
       int j;
-      gboolean found;
+      bboolean found;
 
       found = FALSE;
       j = 0;
@@ -972,7 +972,7 @@ locate_attributes (GMarkupParseContext  *context,
   return retval;
 }
 
-static gboolean
+static bboolean
 check_no_attributes (GMarkupParseContext  *context,
                      const char           *element_name,
                      const char          **attribute_names,
@@ -994,19 +994,19 @@ check_no_attributes (GMarkupParseContext  *context,
 
 static BtkTextTag *
 tag_exists (GMarkupParseContext *context,
-	    const gchar         *name,
-	    gint                 id,
+	    const bchar         *name,
+	    bint                 id,
 	    ParseInfo           *info,
 	    GError             **error)
 {
-  const gchar *real_name;
+  const bchar *real_name;
 
   if (info->create_tags)
     {
       /* If we have an anonymous tag, just return it directly */
       if (!name)
 	return g_hash_table_lookup (info->anonymous_tags,
-				    GINT_TO_POINTER (id));
+				    BINT_TO_POINTER (id));
 
       /* First, try the substitutions */
       real_name = g_hash_table_lookup (info->substitutions, name);
@@ -1051,9 +1051,9 @@ tag_exists (GMarkupParseContext *context,
 
 typedef struct
 {
-  const gchar *id;
-  gint length;
-  const gchar *start;
+  const bchar *id;
+  bint length;
+  const bchar *start;
 } Header;
 
 static BdkPixbuf *
@@ -1071,7 +1071,7 @@ get_pixbuf_from_headers (GList   *headers,
     return NULL;
 
   if (!bdk_pixdata_deserialize (&pixdata, header->length,
-                                (const guint8 *) header->start, error))
+                                (const buint8 *) header->start, error))
     return NULL;
 
   pixbuf = bdk_pixbuf_from_pixdata (&pixdata, TRUE, error);
@@ -1081,14 +1081,14 @@ get_pixbuf_from_headers (GList   *headers,
 
 static void
 parse_apply_tag_element (GMarkupParseContext  *context,
-			 const gchar          *element_name,
-			 const gchar         **attribute_names,
-			 const gchar         **attribute_values,
+			 const bchar          *element_name,
+			 const bchar         **attribute_names,
+			 const bchar         **attribute_values,
 			 ParseInfo            *info,
 			 GError              **error)
 {
-  const gchar *name, *priority;
-  gint id;
+  const bchar *name, *priority;
+  bint id;
   BtkTextTag *tag;
 
   g_assert (peek_state (info) == STATE_TEXT ||
@@ -1119,7 +1119,7 @@ parse_apply_tag_element (GMarkupParseContext  *context,
       int int_id;
       BdkPixbuf *pixbuf;
       TextSpan *span;
-      const gchar *pixbuf_id;
+      const bchar *pixbuf_id;
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values, FALSE, error,
 			      "index", &pixbuf_id, NULL))
@@ -1148,13 +1148,13 @@ parse_apply_tag_element (GMarkupParseContext  *context,
 
 static void
 parse_attr_element (GMarkupParseContext  *context,
-		    const gchar          *element_name,
-		    const gchar         **attribute_names,
-		    const gchar         **attribute_values,
+		    const bchar          *element_name,
+		    const bchar         **attribute_names,
+		    const bchar         **attribute_values,
 		    ParseInfo            *info,
 		    GError              **error)
 {
-  const gchar *name, *type, *value;
+  const bchar *name, *type, *value;
   GType gtype;
   BValue gvalue = { 0 };
   BParamSpec *pspec;
@@ -1223,12 +1223,12 @@ parse_attr_element (GMarkupParseContext  *context,
 }
 
 
-static gchar *
+static bchar *
 get_tag_name (ParseInfo   *info,
-	      const gchar *tag_name)
+	      const bchar *tag_name)
 {
-  gchar *name;
-  gint i;
+  bchar *name;
+  bint i;
 
   name = g_strdup (tag_name);
 
@@ -1253,17 +1253,17 @@ get_tag_name (ParseInfo   *info,
 
 static void
 parse_tag_element (GMarkupParseContext  *context,
-		   const gchar          *element_name,
-		   const gchar         **attribute_names,
-		   const gchar         **attribute_values,
+		   const bchar          *element_name,
+		   const bchar         **attribute_names,
+		   const bchar         **attribute_values,
 		   ParseInfo            *info,
 		   GError              **error)
 {
-  const gchar *name, *priority;
-  gchar *tag_name;
-  gint id;
-  gint prio;
-  gchar *tmp;
+  const bchar *name, *priority;
+  bchar *tag_name;
+  bint id;
+  bint prio;
+  bchar *tmp;
 
   g_assert (peek_state (info) == STATE_TAGS);
 
@@ -1325,10 +1325,10 @@ parse_tag_element (GMarkupParseContext  *context,
 
 static void
 start_element_handler (GMarkupParseContext  *context,
-		       const gchar          *element_name,
-		       const gchar         **attribute_names,
-		       const gchar         **attribute_values,
-		       gpointer              user_data,
+		       const bchar          *element_name,
+		       const bchar         **attribute_names,
+		       const bchar         **attribute_values,
+		       bpointer              user_data,
 		       GError              **error)
 {
   ParseInfo *info = user_data;
@@ -1417,7 +1417,7 @@ start_element_handler (GMarkupParseContext  *context,
     }
 }
 
-static gint
+static bint
 sort_tag_prio (TextTagPrio *a,
 	       TextTagPrio *b)
 {
@@ -1431,12 +1431,12 @@ sort_tag_prio (TextTagPrio *a,
 
 static void
 end_element_handler (GMarkupParseContext  *context,
-		     const gchar          *element_name,
-		     gpointer              user_data,
+		     const bchar          *element_name,
+		     bpointer              user_data,
 		     GError              **error)
 {
   ParseInfo *info = user_data;
-  gchar *tmp;
+  bchar *tmp;
   GList *list;
 
   switch (peek_state (info))
@@ -1479,7 +1479,7 @@ end_element_handler (GMarkupParseContext  *context,
       else
 	{
 	  g_hash_table_insert (info->anonymous_tags,
-			       GINT_TO_POINTER (info->current_tag_id),
+			       BINT_TO_POINTER (info->current_tag_id),
 			       info->current_tag);
 	}
 
@@ -1533,7 +1533,7 @@ end_element_handler (GMarkupParseContext  *context,
     }
 }
 
-static gboolean
+static bboolean
 all_whitespace (const char *text,
                 int         text_len)
 {
@@ -1556,9 +1556,9 @@ all_whitespace (const char *text,
 
 static void
 text_handler (GMarkupParseContext  *context,
-	      const gchar          *text,
-	      gsize                 text_len,
-	      gpointer              user_data,
+	      const bchar          *text,
+	      bsize                 text_len,
+	      bpointer              user_data,
 	      GError              **error)
 {
   ParseInfo *info = user_data;
@@ -1594,10 +1594,10 @@ text_handler (GMarkupParseContext  *context,
 static void
 parse_info_init (ParseInfo     *info,
 		 BtkTextBuffer *buffer,
-		 gboolean       create_tags,
+		 bboolean       create_tags,
 		 GList         *headers)
 {
-  info->states = b_slist_prepend (NULL, GINT_TO_POINTER (STATE_START));
+  info->states = b_slist_prepend (NULL, BINT_TO_POINTER (STATE_START));
 
   info->create_tags = create_tags;
   info->headers = headers;
@@ -1712,7 +1712,7 @@ insert_text (ParseInfo   *info,
 
 
 static int
-read_int (const guchar *start)
+read_int (const buchar *start)
 {
   int result;
 
@@ -1725,16 +1725,16 @@ read_int (const guchar *start)
   return result;
 }
 
-static gboolean
+static bboolean
 header_is (Header      *header,
-           const gchar *id)
+           const bchar *id)
 {
   return (strncmp (header->id, id, strlen (id)) == 0);
 }
 
 static GList *
-read_headers (const gchar *start,
-	      gint         len,
+read_headers (const bchar *start,
+	      bint         len,
 	      GError     **error)
 {
   int i = 0;
@@ -1750,7 +1750,7 @@ read_headers (const gchar *start,
       if (strncmp (start + i, "BTKTEXTBUFFERCONTENTS-0001", 26) == 0 ||
 	  strncmp (start + i, "BTKTEXTBUFFERPIXBDATA-0001", 26) == 0)
 	{
-	  section_len = read_int ((const guchar *) start + i + 26);
+	  section_len = read_int ((const buchar *) start + i + 26);
 
 	  if (i + 30 + section_len > len)
 	    goto error;
@@ -1782,18 +1782,18 @@ read_headers (const gchar *start,
   return NULL;
 }
 
-static gboolean
+static bboolean
 deserialize_text (BtkTextBuffer *buffer,
 		  BtkTextIter   *iter,
-		  const gchar   *text,
-		  gint           len,
-		  gboolean       create_tags,
+		  const bchar   *text,
+		  bint           len,
+		  bboolean       create_tags,
 		  GError       **error,
 		  GList         *headers)
 {
   GMarkupParseContext *context;
   ParseInfo info;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   static const GMarkupParser rich_text_parser = {
     start_element_handler,
@@ -1830,21 +1830,21 @@ deserialize_text (BtkTextBuffer *buffer,
   return retval;
 }
 
-gboolean
+bboolean
 _btk_text_buffer_deserialize_rich_text (BtkTextBuffer *register_buffer,
                                         BtkTextBuffer *content_buffer,
                                         BtkTextIter   *iter,
-                                        const guint8  *text,
-                                        gsize          length,
-                                        gboolean       create_tags,
-                                        gpointer       user_data,
+                                        const buint8  *text,
+                                        bsize          length,
+                                        bboolean       create_tags,
+                                        bpointer       user_data,
                                         GError       **error)
 {
   GList *headers;
   Header *header;
-  gboolean retval;
+  bboolean retval;
 
-  headers = read_headers ((gchar *) text, length, error);
+  headers = read_headers ((bchar *) text, length, error);
 
   if (!headers)
     return FALSE;

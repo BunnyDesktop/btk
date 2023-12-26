@@ -190,10 +190,10 @@ draw (bairo_t *cr,
   bairo_surface_destroy (circles);
 }
 
-static gboolean
+static bboolean
 on_expose_event (BtkWidget      *widget,
 		 BdkEventExpose *event,
-		 gpointer        data)
+		 bpointer        data)
 {
   bairo_t *cr;
 

@@ -52,7 +52,7 @@ static BdkDeviceAxis bdk_input_core_axes[] =
 
 BdkDevice *_bdk_core_pointer      = NULL;
 GList     *_bdk_input_devices     = NULL;
-gboolean   _bdk_input_ignore_core = FALSE;
+bboolean   _bdk_input_ignore_core = FALSE;
 
 int _bdk_directfb_mouse_x = 0;
 int _bdk_directfb_mouse_y = 0;
@@ -158,7 +158,7 @@ bdk_display_list_devices (BdkDisplay *dpy)
  *
  * Since: 2.22
  **/
-const gchar *
+const bchar *
 bdk_device_get_name (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), NULL);
@@ -212,7 +212,7 @@ bdk_device_get_mode (BdkDevice *device)
  *
  * Since: 2.22
  **/
-gboolean
+bboolean
 bdk_device_get_has_cursor (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), FALSE);
@@ -242,8 +242,8 @@ bdk_device_set_source (BdkDevice      *device,
  **/
 void
 bdk_device_get_key (BdkDevice       *device,
-                    guint            index,
-                    guint           *keyval,
+                    buint            index,
+                    buint           *keyval,
                     BdkModifierType *modifiers)
 {
   g_return_if_fail (BDK_IS_DEVICE (device));
@@ -273,7 +273,7 @@ bdk_device_get_key (BdkDevice       *device,
  **/
 BdkAxisUse
 bdk_device_get_axis_use (BdkDevice *device,
-                         guint      index)
+                         buint      index)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), BDK_AXIS_IGNORE);
   g_return_val_if_fail (index < device->num_axes, BDK_AXIS_IGNORE);
@@ -281,7 +281,7 @@ bdk_device_get_axis_use (BdkDevice *device,
   return device->axes[index].use;
 }
 
-gint
+bint
 bdk_device_get_n_keys (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -299,7 +299,7 @@ bdk_device_get_n_keys (BdkDevice *device)
  *
  * Since: 2.22
  **/
-gint
+bint
 bdk_device_get_n_axes (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -309,7 +309,7 @@ bdk_device_get_n_axes (BdkDevice *device)
 
 void
 bdk_device_set_axis_use (BdkDevice   *device,
-                         guint        index,
+                         buint        index,
                          BdkAxisUse   use)
 {
   g_return_if_fail (device != NULL);
@@ -336,7 +336,7 @@ bdk_device_set_axis_use (BdkDevice   *device,
     }
 }
 
-gboolean
+bboolean
 bdk_device_set_mode (BdkDevice    *device,
                      BdkInputMode  mode)
 {
@@ -345,13 +345,13 @@ bdk_device_set_mode (BdkDevice    *device,
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_device_get_history  (BdkDevice      *device,
                          BdkWindow      *window,
-                         guint32         start,
-                         guint32         stop,
+                         buint32         start,
+                         buint32         stop,
                          BdkTimeCoord ***events,
-                         gint           *n_events)
+                         bint           *n_events)
 {
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
   g_return_val_if_fail (events != NULL, FALSE);
@@ -372,9 +372,9 @@ bdk_device_get_history  (BdkDevice      *device,
 
 void
 bdk_device_free_history (BdkTimeCoord **events,
-                         gint           n_events)
+                         bint           n_events)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < n_events; i++)
     g_free (events[i]);
@@ -385,7 +385,7 @@ bdk_device_free_history (BdkTimeCoord **events,
 void
 bdk_device_get_state (BdkDevice       *device,
                       BdkWindow       *window,
-                      gdouble         *axes,
+                      bdouble         *axes,
                       BdkModifierType *mask)
 {
   g_return_if_fail (device != NULL);
@@ -396,8 +396,8 @@ bdk_device_get_state (BdkDevice       *device,
 }
 
 void
-bdk_directfb_mouse_get_info (gint            *x,
-                             gint            *y,
+bdk_directfb_mouse_get_info (bint            *x,
+                             bint            *y,
                              BdkModifierType *mask)
 {
   if (x)
@@ -412,7 +412,7 @@ bdk_directfb_mouse_get_info (gint            *x,
 
 void
 bdk_input_set_extension_events (BdkWindow        *window,
-                                gint              mask,
+                                bint              mask,
                                 BdkExtensionMode  mode)
 {
   g_message ("unimplemented %s", B_STRFUNC);
@@ -420,8 +420,8 @@ bdk_input_set_extension_events (BdkWindow        *window,
 
 void
 bdk_device_set_key (BdkDevice       *device,
-                    guint            index,
-                    guint            keyval,
+                    buint            index,
+                    buint            keyval,
                     BdkModifierType  modifiers)
 {
   g_return_if_fail (device != NULL);
@@ -443,13 +443,13 @@ bdk_device_set_key (BdkDevice       *device,
  *
  * Return value: %TRUE if the given axis use was found, otherwise %FALSE
  **/
-gboolean
+bboolean
 bdk_device_get_axis (BdkDevice  *device,
-                     gdouble    *axes,
+                     bdouble    *axes,
                      BdkAxisUse  use,
-                     gdouble    *value)
+                     bdouble    *value)
 {
-  gint i;
+  bint i;
   g_return_val_if_fail (device != NULL, FALSE);
 
   if (axes == NULL)

@@ -41,16 +41,16 @@ enum
   LAST_SIGNAL
 };
 
-static void     btk_recent_chooser_class_init         (gpointer          g_iface);
-static gboolean recent_chooser_has_show_numbers       (BtkRecentChooser *chooser);
+static void     btk_recent_chooser_class_init         (bpointer          g_iface);
+static bboolean recent_chooser_has_show_numbers       (BtkRecentChooser *chooser);
 
 static GQuark      quark_btk_related_action               = 0;
 static GQuark      quark_btk_use_action_appearance        = 0;
-static const gchar btk_related_action_key[]               = "btk-related-action";
-static const gchar btk_use_action_appearance_key[]        = "btk-use-action-appearance";
+static const bchar btk_related_action_key[]               = "btk-related-action";
+static const bchar btk_use_action_appearance_key[]        = "btk-use-action-appearance";
 
 
-static guint chooser_signals[LAST_SIGNAL] = { 0, };
+static buint chooser_signals[LAST_SIGNAL] = { 0, };
 
 GType
 btk_recent_chooser_get_type (void)
@@ -72,7 +72,7 @@ btk_recent_chooser_get_type (void)
 }
 
 static void
-btk_recent_chooser_class_init (gpointer g_iface)
+btk_recent_chooser_class_init (bpointer g_iface)
 {
   GType iface_type = B_TYPE_FROM_INTERFACE (g_iface);
 
@@ -234,7 +234,7 @@ btk_recent_chooser_class_init (gpointer g_iface)
    							 P_("Limit"),
    							 P_("The maximum number of items to be displayed"),
    							 -1,
-   							 G_MAXINT,
+   							 B_MAXINT,
    							 -1,
    							 BTK_PARAM_READWRITE));
   /**
@@ -302,7 +302,7 @@ _btk_recent_chooser_get_recent_manager (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_show_private (BtkRecentChooser *chooser,
-				     gboolean          show_private)
+				     bboolean          show_private)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -321,10 +321,10 @@ btk_recent_chooser_set_show_private (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_show_private (BtkRecentChooser *chooser)
 {
-  gboolean show_private;
+  bboolean show_private;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
   
@@ -345,7 +345,7 @@ btk_recent_chooser_get_show_private (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_show_not_found (BtkRecentChooser *chooser,
-				       gboolean          show_not_found)
+				       bboolean          show_not_found)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -364,10 +364,10 @@ btk_recent_chooser_set_show_not_found (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_show_not_found (BtkRecentChooser *chooser)
 {
-  gboolean show_not_found;
+  bboolean show_not_found;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
   
@@ -388,7 +388,7 @@ btk_recent_chooser_get_show_not_found (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_show_icons (BtkRecentChooser *chooser,
-				   gboolean          show_icons)
+				   bboolean          show_icons)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -405,10 +405,10 @@ btk_recent_chooser_set_show_icons (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_show_icons (BtkRecentChooser *chooser)
 {
-  gboolean show_icons;
+  bboolean show_icons;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
   
@@ -428,7 +428,7 @@ btk_recent_chooser_get_show_icons (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_select_multiple (BtkRecentChooser *chooser,
-					gboolean          select_multiple)
+					bboolean          select_multiple)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -445,10 +445,10 @@ btk_recent_chooser_set_select_multiple (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_select_multiple (BtkRecentChooser *chooser)
 {
-  gboolean select_multiple;
+  bboolean select_multiple;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
   
@@ -471,7 +471,7 @@ btk_recent_chooser_get_select_multiple (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_local_only (BtkRecentChooser *chooser,
-				   gboolean          local_only)
+				   bboolean          local_only)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
 
@@ -489,10 +489,10 @@ btk_recent_chooser_set_local_only (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_local_only (BtkRecentChooser *chooser)
 {
-  gboolean local_only;
+  bboolean local_only;
 
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
 
@@ -513,7 +513,7 @@ btk_recent_chooser_get_local_only (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_limit (BtkRecentChooser *chooser,
-			      gint              limit)
+			      bint              limit)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -532,10 +532,10 @@ btk_recent_chooser_set_limit (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_recent_chooser_get_limit (BtkRecentChooser *chooser)
 {
-  gint limit;
+  bint limit;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), 10);
   
@@ -556,7 +556,7 @@ btk_recent_chooser_get_limit (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_show_tips (BtkRecentChooser *chooser,
-				  gboolean          show_tips)
+				  bboolean          show_tips)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -575,10 +575,10 @@ btk_recent_chooser_set_show_tips (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_show_tips (BtkRecentChooser *chooser)
 {
-  gboolean show_tips;
+  bboolean show_tips;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
   
@@ -587,7 +587,7 @@ btk_recent_chooser_get_show_tips (BtkRecentChooser *chooser)
   return show_tips;
 }
 
-static gboolean
+static bboolean
 recent_chooser_has_show_numbers (BtkRecentChooser *chooser)
 {
   BParamSpec *pspec;
@@ -619,7 +619,7 @@ recent_chooser_has_show_numbers (BtkRecentChooser *chooser)
  */
 void
 btk_recent_chooser_set_show_numbers (BtkRecentChooser *chooser,
-				     gboolean          show_numbers)
+				     bboolean          show_numbers)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
 
@@ -648,11 +648,11 @@ btk_recent_chooser_set_show_numbers (BtkRecentChooser *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_get_show_numbers (BtkRecentChooser *chooser)
 {
   BParamSpec *pspec;
-  gboolean show_numbers;
+  bboolean show_numbers;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
 
@@ -734,7 +734,7 @@ btk_recent_chooser_get_sort_type (BtkRecentChooser *chooser)
 void
 btk_recent_chooser_set_sort_func  (BtkRecentChooser  *chooser,
 				   BtkRecentSortFunc  sort_func,
-				   gpointer           sort_data,
+				   bpointer           sort_data,
 				   GDestroyNotify     data_destroy)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
@@ -757,9 +757,9 @@ btk_recent_chooser_set_sort_func  (BtkRecentChooser  *chooser,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_set_current_uri (BtkRecentChooser  *chooser,
-				    const gchar       *uri,
+				    const bchar       *uri,
 				    GError           **error)
 {
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
@@ -777,7 +777,7 @@ btk_recent_chooser_set_current_uri (BtkRecentChooser  *chooser,
  *
  * Since: 2.10
  */
-gchar *
+bchar *
 btk_recent_chooser_get_current_uri (BtkRecentChooser *chooser)
 {
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), NULL);
@@ -801,7 +801,7 @@ btk_recent_chooser_get_current_item (BtkRecentChooser *chooser)
 {
   BtkRecentManager *manager;
   BtkRecentInfo *retval;
-  gchar *uri;
+  bchar *uri;
   
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), NULL);
   
@@ -828,9 +828,9 @@ btk_recent_chooser_get_current_item (BtkRecentChooser *chooser)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_chooser_select_uri (BtkRecentChooser  *chooser,
-			       const gchar       *uri,
+			       const bchar       *uri,
 			       GError           **error)
 {
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), FALSE);
@@ -849,7 +849,7 @@ btk_recent_chooser_select_uri (BtkRecentChooser  *chooser,
  */
 void
 btk_recent_chooser_unselect_uri (BtkRecentChooser *chooser,
-				 const gchar      *uri)
+				 const bchar      *uri)
 {
   g_return_if_fail (BTK_IS_RECENT_CHOOSER (chooser));
   
@@ -931,23 +931,23 @@ btk_recent_chooser_get_items (BtkRecentChooser *chooser)
  *
  * Since: 2.10
  */
-gchar **
+bchar **
 btk_recent_chooser_get_uris (BtkRecentChooser *chooser,
-                             gsize            *length)
+                             bsize            *length)
 {
   GList *items, *l;
-  gchar **retval;
-  gsize n_items, i;
+  bchar **retval;
+  bsize n_items, i;
   
   items = btk_recent_chooser_get_items (chooser);
   
   n_items = g_list_length (items);
-  retval = g_new0 (gchar *, n_items + 1);
+  retval = g_new0 (bchar *, n_items + 1);
   
   for (l = items, i = 0; l != NULL; l = l->next)
     {
       BtkRecentInfo *info = (BtkRecentInfo *) l->data;
-      const gchar *uri;
+      const bchar *uri;
       
       g_assert (info != NULL);
       
@@ -1099,7 +1099,7 @@ _btk_recent_chooser_selection_changed (BtkRecentChooser *chooser)
 void
 _btk_recent_chooser_update (BtkActivatable *activatable,
 			    BtkAction      *action,
-			    const gchar    *property_name)
+			    const bchar    *property_name)
 {
   BtkRecentChooser *recent_chooser = BTK_RECENT_CHOOSER (activatable);
   BtkRecentChooser *action_chooser = BTK_RECENT_CHOOSER (action);
@@ -1176,27 +1176,27 @@ _btk_recent_chooser_get_related_action (BtkRecentChooser *recent_chooser)
  */
 void
 _btk_recent_chooser_set_use_action_appearance (BtkRecentChooser *recent_chooser, 
-					       gboolean          use_appearance)
+					       bboolean          use_appearance)
 {
   BtkAction *action;
-  gboolean   use_action_appearance;
+  bboolean   use_action_appearance;
 
   action                = g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_related_action);
-  use_action_appearance = !GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
+  use_action_appearance = !BPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
 
   if (use_action_appearance != use_appearance)
     {
 
-      g_object_set_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance, GINT_TO_POINTER (!use_appearance));
+      g_object_set_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance, BINT_TO_POINTER (!use_appearance));
  
       btk_activatable_sync_action_properties (BTK_ACTIVATABLE (recent_chooser), action);
     }
 }
 
-gboolean
+bboolean
 _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser *recent_chooser)
 {
-  return !GPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
+  return !BPOINTER_TO_INT (g_object_get_qdata (B_OBJECT (recent_chooser), quark_btk_use_action_appearance));
 }
 
 #define __BTK_RECENT_CHOOSER_C__

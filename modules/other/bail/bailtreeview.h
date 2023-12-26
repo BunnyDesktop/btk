@@ -42,7 +42,7 @@ struct _BailTreeView
 
   BatkObject*	caption;
   BatkObject*	summary;
-  gint          n_children_deleted;
+  bint          n_children_deleted;
   GArray*       col_data;
   GArray*	row_data;
   GList*        cell_data;
@@ -50,11 +50,11 @@ struct _BailTreeView
   BatkObject     *focus_cell;
   BtkAdjustment *old_hadj;
   BtkAdjustment *old_vadj;
-  guint         idle_expand_id;
-  guint         idle_garbage_collect_id;
-  guint         idle_cursor_changed_id;
+  buint         idle_expand_id;
+  buint         idle_garbage_collect_id;
+  buint         idle_cursor_changed_id;
   BtkTreePath   *idle_expand_path;
-  gboolean      garbage_collection_pending;
+  bboolean      garbage_collection_pending;
 };
 
 GType bail_tree_view_get_type (void);

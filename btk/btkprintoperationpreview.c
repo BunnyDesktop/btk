@@ -26,7 +26,7 @@
 #include "btkalias.h"
 
 
-static void btk_print_operation_preview_base_init (gpointer g_iface);
+static void btk_print_operation_preview_base_init (bpointer g_iface);
 
 GType
 btk_print_operation_preview_get_type (void)
@@ -59,9 +59,9 @@ btk_print_operation_preview_get_type (void)
 }
 
 static void
-btk_print_operation_preview_base_init (gpointer g_iface)
+btk_print_operation_preview_base_init (bpointer g_iface)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
 
   if (!initialized)
     {
@@ -130,7 +130,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
  */
 void    
 btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
-					 gint			   page_nr)
+					 bint			   page_nr)
 {
   g_return_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview));
 
@@ -168,9 +168,9 @@ btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
-					 gint                      page_nr)
+					 bint                      page_nr)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview), FALSE);
 

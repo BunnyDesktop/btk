@@ -21,7 +21,7 @@
 #include "bdkdnd.h"
 #include "bdkprivate-quartz.h"
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 static void
 bdk_drag_context_finalize (BObject *object)
@@ -120,15 +120,15 @@ bdk_drag_begin (BdkWindow     *window,
   return _bdk_quartz_drag_source_context;
 }
 
-gboolean        
+bboolean        
 bdk_drag_motion (BdkDragContext *context,
 		 BdkWindow      *dest_window,
 		 BdkDragProtocol protocol,
-		 gint            x_root, 
-		 gint            y_root,
+		 bint            x_root, 
+		 bint            y_root,
 		 BdkDragAction   suggested_action,
 		 BdkDragAction   possible_actions,
-		 guint32         time)
+		 buint32         time)
 {
   /* FIXME: Implement */
   return FALSE;
@@ -147,8 +147,8 @@ void
 bdk_drag_find_window_for_screen (BdkDragContext  *context,
 				 BdkWindow       *drag_window,
 				 BdkScreen       *screen,
-				 gint             x_root,
-				 gint             y_root,
+				 bint             x_root,
+				 bint             y_root,
 				 BdkWindow      **dest_window,
 				 BdkDragProtocol *protocol)
 {
@@ -157,14 +157,14 @@ bdk_drag_find_window_for_screen (BdkDragContext  *context,
 
 void
 bdk_drag_drop (BdkDragContext *context,
-	       guint32         time)
+	       buint32         time)
 {
   /* FIXME: Implement */
 }
 
 void
 bdk_drag_abort (BdkDragContext *context,
-		guint32         time)
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
   
@@ -174,15 +174,15 @@ bdk_drag_abort (BdkDragContext *context,
 void             
 bdk_drag_status (BdkDragContext   *context,
 		 BdkDragAction     action,
-		 guint32           time)
+		 buint32           time)
 {
   context->action = action;
 }
 
 void 
 bdk_drop_reply (BdkDragContext   *context,
-		gboolean          ok,
-		guint32           time)
+		bboolean          ok,
+		buint32           time)
 {
   g_return_if_fail (context != NULL);
 
@@ -191,8 +191,8 @@ bdk_drop_reply (BdkDragContext   *context,
 
 void             
 bdk_drop_finish (BdkDragContext   *context,
-		 gboolean          success,
-		 guint32           time)
+		 bboolean          success,
+		 buint32           time)
 {
   /* FIXME: Implement */
 }
@@ -210,7 +210,7 @@ bdk_drag_get_selection (BdkDragContext *context)
   return BDK_NONE;
 }
 
-gboolean 
+bboolean 
 bdk_drag_drop_succeeded (BdkDragContext *context)
 {
   /* FIXME: Implement */

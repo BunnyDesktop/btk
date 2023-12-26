@@ -2,12 +2,12 @@
 #include <btk/btk.h>
 
 /* Create a Button Box with the specified parameters */
-static BtkWidget *create_bbox( gint  horizontal,
+static BtkWidget *create_bbox( bint  horizontal,
                                char *title,
-                               gint  spacing,
-                               gint  child_w,
-                               gint  child_h,
-                               gint  layout )
+                               bint  spacing,
+                               bint  child_w,
+                               bint  child_h,
+                               bint  layout )
 {
   BtkWidget *frame;
   BtkWidget *bbox;

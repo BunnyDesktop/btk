@@ -40,9 +40,9 @@ typedef struct _BdkKeymapKey BdkKeymapKey;
 /* BdkKeymapKey is a hardware key that can be mapped to a keyval */
 struct _BdkKeymapKey
 {
-  guint keycode;
-  gint  group;
-  gint  level;
+  buint keycode;
+  bint  group;
+  bint  level;
 };
 
 /* A BdkKeymap defines the translation from keyboard state
@@ -86,47 +86,47 @@ BdkKeymap* bdk_keymap_get_default     (void);
 BdkKeymap* bdk_keymap_get_for_display (BdkDisplay *display);
 
 
-guint          bdk_keymap_lookup_key               (BdkKeymap           *keymap,
+buint          bdk_keymap_lookup_key               (BdkKeymap           *keymap,
 						    const BdkKeymapKey  *key);
-gboolean       bdk_keymap_translate_keyboard_state (BdkKeymap           *keymap,
-						    guint                hardware_keycode,
+bboolean       bdk_keymap_translate_keyboard_state (BdkKeymap           *keymap,
+						    buint                hardware_keycode,
 						    BdkModifierType      state,
-						    gint                 group,
-						    guint               *keyval,
-						    gint                *effective_group,
-						    gint                *level,
+						    bint                 group,
+						    buint               *keyval,
+						    bint                *effective_group,
+						    bint                *level,
 						    BdkModifierType     *consumed_modifiers);
-gboolean       bdk_keymap_get_entries_for_keyval   (BdkKeymap           *keymap,
-						    guint                keyval,
+bboolean       bdk_keymap_get_entries_for_keyval   (BdkKeymap           *keymap,
+						    buint                keyval,
 						    BdkKeymapKey       **keys,
-						    gint                *n_keys);
-gboolean       bdk_keymap_get_entries_for_keycode  (BdkKeymap           *keymap,
-						    guint                hardware_keycode,
+						    bint                *n_keys);
+bboolean       bdk_keymap_get_entries_for_keycode  (BdkKeymap           *keymap,
+						    buint                hardware_keycode,
 						    BdkKeymapKey       **keys,
-						    guint              **keyvals,
-						    gint                *n_entries);
+						    buint              **keyvals,
+						    bint                *n_entries);
 BangoDirection bdk_keymap_get_direction            (BdkKeymap           *keymap);
-gboolean       bdk_keymap_have_bidi_layouts        (BdkKeymap           *keymap);
-gboolean       bdk_keymap_get_caps_lock_state      (BdkKeymap           *keymap);
+bboolean       bdk_keymap_have_bidi_layouts        (BdkKeymap           *keymap);
+bboolean       bdk_keymap_get_caps_lock_state      (BdkKeymap           *keymap);
 void           bdk_keymap_add_virtual_modifiers    (BdkKeymap           *keymap,
                                                     BdkModifierType     *state);
-gboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
+bboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
                                                     BdkModifierType     *state);
 
 /* Key values
  */
-gchar*   bdk_keyval_name         (guint        keyval) B_GNUC_CONST;
-guint    bdk_keyval_from_name    (const gchar *keyval_name);
-void     bdk_keyval_convert_case (guint        symbol,
-				  guint       *lower,
-				  guint       *upper);
-guint    bdk_keyval_to_upper     (guint        keyval) B_GNUC_CONST;
-guint    bdk_keyval_to_lower     (guint        keyval) B_GNUC_CONST;
-gboolean bdk_keyval_is_upper     (guint        keyval) B_GNUC_CONST;
-gboolean bdk_keyval_is_lower     (guint        keyval) B_GNUC_CONST;
+bchar*   bdk_keyval_name         (buint        keyval) B_GNUC_CONST;
+buint    bdk_keyval_from_name    (const bchar *keyval_name);
+void     bdk_keyval_convert_case (buint        symbol,
+				  buint       *lower,
+				  buint       *upper);
+buint    bdk_keyval_to_upper     (buint        keyval) B_GNUC_CONST;
+buint    bdk_keyval_to_lower     (buint        keyval) B_GNUC_CONST;
+bboolean bdk_keyval_is_upper     (buint        keyval) B_GNUC_CONST;
+bboolean bdk_keyval_is_lower     (buint        keyval) B_GNUC_CONST;
 
-guint32  bdk_keyval_to_unicode   (guint        keyval) B_GNUC_CONST;
-guint    bdk_unicode_to_keyval   (guint32      wc) B_GNUC_CONST;
+buint32  bdk_keyval_to_unicode   (buint        keyval) B_GNUC_CONST;
+buint    bdk_unicode_to_keyval   (buint32      wc) B_GNUC_CONST;
 
 
 B_END_DECLS

@@ -76,19 +76,19 @@ bdk_test_render_sync (BdkWindow *window)
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 bdk_test_simulate_key (BdkWindow      *window,
-                       gint            x,
-                       gint            y,
-                       guint           keyval,
+                       bint            x,
+                       bint            y,
+                       buint           keyval,
                        BdkModifierType modifiers,
                        BdkEventType    key_pressrelease)
 {
   BdkScreen *screen;
   BdkKeymapKey *keys = NULL;
   BdkWindowObject *priv;
-  gboolean success;
-  gint n_keys = 0;
+  bboolean success;
+  bint n_keys = 0;
   XKeyEvent xev = {
     0,  /* type */
     0,  /* serial */
@@ -127,7 +127,7 @@ bdk_test_simulate_key (BdkWindow      *window,
   success &= n_keys > 0;
   if (success)
     {
-      gint i;
+      bint i;
       for (i = 0; i < n_keys; i++)
         if (keys[i].group == 0 && (keys[i].level == 0 || keys[i].level == 1))
           {
@@ -187,11 +187,11 @@ bdk_test_simulate_key (BdkWindow      *window,
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 bdk_test_simulate_button (BdkWindow      *window,
-                          gint            x,
-                          gint            y,
-                          guint           button, /*1..3*/
+                          bint            x,
+                          bint            y,
+                          buint           button, /*1..3*/
                           BdkModifierType modifiers,
                           BdkEventType    button_pressrelease)
 {
@@ -201,7 +201,7 @@ bdk_test_simulate_button (BdkWindow      *window,
     0,  /* serial */
     1,  /* send_event */
   };
-  gboolean success;
+  bboolean success;
   BdkWindowObject *priv;
 
   g_return_val_if_fail (button_pressrelease == BDK_BUTTON_PRESS || button_pressrelease == BDK_BUTTON_RELEASE, FALSE);

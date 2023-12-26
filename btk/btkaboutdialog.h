@@ -54,15 +54,15 @@ struct _BtkAboutDialog
   BtkDialog parent_instance;
 
   /*< private >*/
-  gpointer GSEAL (private_data);
+  bpointer GSEAL (private_data);
 };
 
 struct _BtkAboutDialogClass 
 {
   BtkDialogClass parent_class;
 
-  gboolean (*activate_link) (BtkAboutDialog *dialog,
-                             const gchar    *uri);
+  bboolean (*activate_link) (BtkAboutDialog *dialog,
+                             const bchar    *uri);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -73,58 +73,58 @@ struct _BtkAboutDialogClass
 GType                  btk_about_dialog_get_type               (void) B_GNUC_CONST;
 BtkWidget             *btk_about_dialog_new                    (void);
 void                   btk_show_about_dialog                   (BtkWindow       *parent,
-								const gchar     *first_property_name,
+								const bchar     *first_property_name,
 								...) B_GNUC_NULL_TERMINATED;
 
 #ifndef BTK_DISABLE_DEPRECATED
-const gchar *          btk_about_dialog_get_name               (BtkAboutDialog  *about);
+const bchar *          btk_about_dialog_get_name               (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_name               (BtkAboutDialog  *about,
-								const gchar     *name);
+								const bchar     *name);
 #endif /* BTK_DISABLE_DEPRECATED */
-const gchar *          btk_about_dialog_get_program_name       (BtkAboutDialog  *about);
+const bchar *          btk_about_dialog_get_program_name       (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_program_name       (BtkAboutDialog  *about,
-								const gchar     *name);
-const gchar *          btk_about_dialog_get_version            (BtkAboutDialog  *about);
+								const bchar     *name);
+const bchar *          btk_about_dialog_get_version            (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_version            (BtkAboutDialog  *about,
-								const gchar     *version);
-const gchar *          btk_about_dialog_get_copyright          (BtkAboutDialog  *about);
+								const bchar     *version);
+const bchar *          btk_about_dialog_get_copyright          (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_copyright          (BtkAboutDialog  *about,
-								const gchar     *copyright);
-const gchar *          btk_about_dialog_get_comments           (BtkAboutDialog  *about);
+								const bchar     *copyright);
+const bchar *          btk_about_dialog_get_comments           (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_comments           (BtkAboutDialog  *about,
-								const gchar     *comments);
-const gchar *          btk_about_dialog_get_license            (BtkAboutDialog  *about);
+								const bchar     *comments);
+const bchar *          btk_about_dialog_get_license            (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_license            (BtkAboutDialog  *about,
-								const gchar     *license);
+								const bchar     *license);
 
-gboolean               btk_about_dialog_get_wrap_license       (BtkAboutDialog  *about);
+bboolean               btk_about_dialog_get_wrap_license       (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_wrap_license       (BtkAboutDialog  *about,
-                                                                gboolean         wrap_license);
+                                                                bboolean         wrap_license);
 
-const gchar *          btk_about_dialog_get_website            (BtkAboutDialog  *about);
+const bchar *          btk_about_dialog_get_website            (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_website            (BtkAboutDialog  *about,
-								const gchar     *website);
-const gchar *          btk_about_dialog_get_website_label      (BtkAboutDialog  *about);
+								const bchar     *website);
+const bchar *          btk_about_dialog_get_website_label      (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_website_label      (BtkAboutDialog  *about,
-								const gchar     *website_label);
-const gchar* const *   btk_about_dialog_get_authors            (BtkAboutDialog  *about);
+								const bchar     *website_label);
+const bchar* const *   btk_about_dialog_get_authors            (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_authors            (BtkAboutDialog  *about,
-								const gchar    **authors);
-const gchar* const *   btk_about_dialog_get_documenters        (BtkAboutDialog  *about);
+								const bchar    **authors);
+const bchar* const *   btk_about_dialog_get_documenters        (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_documenters        (BtkAboutDialog  *about,
-								const gchar    **documenters);
-const gchar* const *   btk_about_dialog_get_artists            (BtkAboutDialog  *about);
+								const bchar    **documenters);
+const bchar* const *   btk_about_dialog_get_artists            (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_artists            (BtkAboutDialog  *about,
-								const gchar    **artists);
-const gchar *          btk_about_dialog_get_translator_credits (BtkAboutDialog  *about);
+								const bchar    **artists);
+const bchar *          btk_about_dialog_get_translator_credits (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_translator_credits (BtkAboutDialog  *about,
-								const gchar     *translator_credits);
+								const bchar     *translator_credits);
 BdkPixbuf             *btk_about_dialog_get_logo               (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_logo               (BtkAboutDialog  *about,
 								BdkPixbuf       *logo);
-const gchar *          btk_about_dialog_get_logo_icon_name     (BtkAboutDialog  *about);
+const bchar *          btk_about_dialog_get_logo_icon_name     (BtkAboutDialog  *about);
 void                   btk_about_dialog_set_logo_icon_name     (BtkAboutDialog  *about,
-								const gchar     *icon_name);
+								const bchar     *icon_name);
 
 /**
  * BtkAboutDialogActivateLinkFunc:
@@ -138,15 +138,15 @@ void                   btk_about_dialog_set_logo_icon_name     (BtkAboutDialog  
  * link is activated.
  */
 typedef void (* BtkAboutDialogActivateLinkFunc) (BtkAboutDialog *about,
-						 const gchar    *link_,
-						 gpointer        data);
+						 const bchar    *link_,
+						 bpointer        data);
 
 #ifndef BTK_DISABLE_DEPRECATED
 BtkAboutDialogActivateLinkFunc btk_about_dialog_set_email_hook (BtkAboutDialogActivateLinkFunc func,
-								gpointer                       data,
+								bpointer                       data,
 								GDestroyNotify                 destroy);
 BtkAboutDialogActivateLinkFunc btk_about_dialog_set_url_hook   (BtkAboutDialogActivateLinkFunc func,
-								gpointer                       data,
+								bpointer                       data,
 								GDestroyNotify                 destroy);
 #endif
 

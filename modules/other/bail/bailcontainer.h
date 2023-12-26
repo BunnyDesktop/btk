@@ -50,12 +50,12 @@ struct _BailContainerClass
 {
   BailWidgetClass parent_class;
 
-  gint (*add_btk) (BtkContainer *container,
+  bint (*add_btk) (BtkContainer *container,
                    BtkWidget    *widget,
-                   gpointer     data);
-  gint (*remove_btk) (BtkContainer *container,
+                   bpointer     data);
+  bint (*remove_btk) (BtkContainer *container,
                       BtkWidget    *widget,
-                      gpointer     data);
+                      bpointer     data);
 };
 
 B_END_DECLS

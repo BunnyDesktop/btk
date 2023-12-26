@@ -107,8 +107,8 @@
     <informalexample><programlisting>
     void 
     set_icon_data (BtkIconView *icon_view,
-                   gint         idx,
-                   gpointer     data)
+                   bint         idx,
+                   bpointer     data)
     {
        BtkTreeModel *model;
        BtkTreeIter iter;

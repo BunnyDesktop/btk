@@ -40,8 +40,8 @@ typedef struct _BtkHandleBoxPrivate BtkHandleBoxPrivate;
 
 struct _BtkHandleBoxPrivate
 {
-  gint orig_x;
-  gint orig_y;
+  bint orig_x;
+  bint orig_y;
 };
 
 enum {
@@ -106,11 +106,11 @@ enum {
  */
 
 static void     btk_handle_box_set_property  (BObject        *object,
-                                              guint           param_id,
+                                              buint           param_id,
                                               const BValue   *value,
                                               BParamSpec     *pspec);
 static void     btk_handle_box_get_property  (BObject        *object,
-                                              guint           param_id,
+                                              buint           param_id,
                                               BValue         *value,
                                               BParamSpec     *pspec);
 static void     btk_handle_box_map           (BtkWidget      *widget);
@@ -131,19 +131,19 @@ static void     btk_handle_box_draw_ghost    (BtkHandleBox   *hb);
 static void     btk_handle_box_paint         (BtkWidget      *widget,
                                               BdkEventExpose *event,
                                               BdkRectangle   *area);
-static gboolean btk_handle_box_expose        (BtkWidget      *widget,
+static bboolean btk_handle_box_expose        (BtkWidget      *widget,
                                               BdkEventExpose *event);
-static gboolean btk_handle_box_button_press  (BtkWidget      *widget,
+static bboolean btk_handle_box_button_press  (BtkWidget      *widget,
                                               BdkEventButton *event);
-static gboolean btk_handle_box_motion        (BtkWidget      *widget,
+static bboolean btk_handle_box_motion        (BtkWidget      *widget,
                                               BdkEventMotion *event);
-static gboolean btk_handle_box_delete_event  (BtkWidget      *widget,
+static bboolean btk_handle_box_delete_event  (BtkWidget      *widget,
                                               BdkEventAny    *event);
 static void     btk_handle_box_reattach      (BtkHandleBox   *hb);
 static void     btk_handle_box_end_drag      (BtkHandleBox   *hb,
-                                              guint32         time);
+                                              buint32         time);
 
-static guint handle_box_signals[SIGNAL_LAST] = { 0 };
+static buint handle_box_signals[SIGNAL_LAST] = { 0 };
 
 G_DEFINE_TYPE (BtkHandleBox, btk_handle_box, BTK_TYPE_BIN)
 
@@ -274,7 +274,7 @@ btk_handle_box_init (BtkHandleBox *handle_box)
 
 static void 
 btk_handle_box_set_property (BObject         *object,
-			     guint            prop_id,
+			     buint            prop_id,
 			     const BValue    *value,
 			     BParamSpec      *pspec)
 {
@@ -304,7 +304,7 @@ btk_handle_box_set_property (BObject         *object,
 
 static void 
 btk_handle_box_get_property (BObject         *object,
-			     guint            prop_id,
+			     buint            prop_id,
 			     BValue          *value,
 			     BParamSpec      *pspec)
 {
@@ -389,7 +389,7 @@ static void
 btk_handle_box_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   BtkHandleBox *hb;
 
   hb = BTK_HANDLE_BOX (widget);
@@ -520,7 +520,7 @@ btk_handle_box_size_request (BtkWidget      *widget,
   BtkBin *bin;
   BtkHandleBox *hb;
   BtkRequisition child_requisition;
-  gint handle_position;
+  bint handle_position;
 
   bin = BTK_BIN (widget);
   hb = BTK_HANDLE_BOX (widget);
@@ -595,7 +595,7 @@ btk_handle_box_size_allocate (BtkWidget     *widget,
   BtkBin *bin;
   BtkHandleBox *hb;
   BtkRequisition child_requisition;
-  gint handle_position;
+  bint handle_position;
   
   bin = BTK_BIN (widget);
   hb = BTK_HANDLE_BOX (widget);
@@ -623,7 +623,7 @@ btk_handle_box_size_allocate (BtkWidget     *widget,
   if (bin->child && btk_widget_get_visible (bin->child))
     {
       BtkAllocation child_allocation;
-      guint border_width;
+      buint border_width;
 
       border_width = BTK_CONTAINER (widget)->border_width;
 
@@ -636,8 +636,8 @@ btk_handle_box_size_allocate (BtkWidget     *widget,
 
       if (hb->child_detached)
 	{
-	  guint float_width;
-	  guint float_height;
+	  buint float_width;
+	  buint float_height;
 	  
 	  child_allocation.width = child_requisition.width;
 	  child_allocation.height = child_requisition.height;
@@ -665,8 +665,8 @@ btk_handle_box_size_allocate (BtkWidget     *widget,
 	}
       else
 	{
-	  child_allocation.width = MAX (1, (gint)widget->allocation.width - 2 * border_width);
-	  child_allocation.height = MAX (1, (gint)widget->allocation.height - 2 * border_width);
+	  child_allocation.width = MAX (1, (bint)widget->allocation.width - 2 * border_width);
+	  child_allocation.height = MAX (1, (bint)widget->allocation.height - 2 * border_width);
 
 	  if (handle_position == BTK_POS_LEFT ||
 	      handle_position == BTK_POS_RIGHT)
@@ -690,11 +690,11 @@ static void
 btk_handle_box_draw_ghost (BtkHandleBox *hb)
 {
   BtkWidget *widget;
-  guint x;
-  guint y;
-  guint width;
-  guint height;
-  gint handle_position;
+  buint x;
+  buint y;
+  buint width;
+  buint height;
+  bint handle_position;
 
   widget = BTK_WIDGET (hb);
   
@@ -859,7 +859,7 @@ btk_handle_box_get_snap_edge (BtkHandleBox *handle_box)
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_handle_box_get_child_detached (BtkHandleBox *handle_box)
 {
   g_return_val_if_fail (BTK_IS_HANDLE_BOX (handle_box), FALSE);
@@ -874,10 +874,10 @@ btk_handle_box_paint (BtkWidget      *widget,
 {
   BtkBin *bin;
   BtkHandleBox *hb;
-  gint width, height;
+  bint width, height;
   BdkRectangle rect;
   BdkRectangle dest;
-  gint handle_position;
+  bint handle_position;
   BtkOrientation handle_orientation;
 
   bin = BTK_BIN (widget);
@@ -956,7 +956,7 @@ btk_handle_box_paint (BtkWidget      *widget,
     BTK_WIDGET_CLASS (btk_handle_box_parent_class)->expose_event (widget, event);
 }
 
-static gboolean
+static bboolean
 btk_handle_box_expose (BtkWidget      *widget,
 		       BdkEventExpose *event)
 {
@@ -992,7 +992,7 @@ btk_handle_box_get_invisible (void)
   return handle_box_invisible;
 }
 
-static gboolean
+static bboolean
 btk_handle_box_grab_event (BtkWidget    *widget,
 			   BdkEvent     *event,
 			   BtkHandleBox *hb)
@@ -1018,14 +1018,14 @@ btk_handle_box_grab_event (BtkWidget    *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_handle_box_button_press (BtkWidget      *widget,
                              BdkEventButton *event)
 {
   BtkHandleBox *hb;
-  gboolean event_handled;
+  bboolean event_handled;
   BdkCursor *fleur;
-  gint handle_position;
+  bint handle_position;
 
   hb = BTK_HANDLE_BOX (widget);
 
@@ -1036,7 +1036,7 @@ btk_handle_box_button_press (BtkWidget      *widget,
       (event->type == BDK_BUTTON_PRESS || event->type == BDK_2BUTTON_PRESS))
     {
       BtkWidget *child;
-      gboolean in_handle;
+      bboolean in_handle;
       
       if (event->window != hb->bin_window)
 	return FALSE;
@@ -1076,9 +1076,9 @@ btk_handle_box_button_press (BtkWidget      *widget,
 	    {
 	      BtkHandleBoxPrivate *private = btk_handle_box_get_private (hb);
 	      BtkWidget *invisible = btk_handle_box_get_invisible ();
-	      gint desk_x, desk_y;
-	      gint root_x, root_y;
-	      gint width, height;
+	      bint desk_x, desk_y;
+	      bint root_x, root_y;
+	      bint width, height;
 
               btk_invisible_set_screen (BTK_INVISIBLE (invisible),
                                         btk_widget_get_screen (BTK_WIDGET (hb)));
@@ -1150,15 +1150,15 @@ btk_handle_box_button_press (BtkWidget      *widget,
   return event_handled;
 }
 
-static gboolean
+static bboolean
 btk_handle_box_motion (BtkWidget      *widget,
 		       BdkEventMotion *event)
 {
   BtkHandleBox *hb = BTK_HANDLE_BOX (widget);
-  gint new_x, new_y;
-  gint snap_edge;
-  gboolean is_snapped = FALSE;
-  gint handle_position;
+  bint new_x, new_y;
+  bint snap_edge;
+  bboolean is_snapped = FALSE;
+  bint handle_position;
   BdkGeometry geometry;
   BdkScreen *screen, *pointer_screen;
 
@@ -1213,15 +1213,15 @@ btk_handle_box_motion (BtkWidget      *widget,
       is_snapped = abs (hb->attach_allocation.y - new_y) < TOLERANCE;
       break;
     case BTK_POS_BOTTOM:
-      is_snapped = abs (hb->attach_allocation.y + (gint)hb->attach_allocation.height -
-			new_y - (gint)hb->float_allocation.height) < TOLERANCE;
+      is_snapped = abs (hb->attach_allocation.y + (bint)hb->attach_allocation.height -
+			new_y - (bint)hb->float_allocation.height) < TOLERANCE;
       break;
     case BTK_POS_LEFT:
       is_snapped = abs (hb->attach_allocation.x - new_x) < TOLERANCE;
       break;
     case BTK_POS_RIGHT:
-      is_snapped = abs (hb->attach_allocation.x + (gint)hb->attach_allocation.width -
-			new_x - (gint)hb->float_allocation.width) < TOLERANCE;
+      is_snapped = abs (hb->attach_allocation.x + (bint)hb->attach_allocation.width -
+			new_x - (bint)hb->float_allocation.width) < TOLERANCE;
       break;
     }
 
@@ -1230,10 +1230,10 @@ btk_handle_box_motion (BtkWidget      *widget,
    */
   if (is_snapped)
     {
-      gint float_pos1 = 0;	/* Initialize to suppress warnings */
-      gint float_pos2 = 0;
-      gint attach_pos1 = 0;
-      gint attach_pos2 = 0;
+      bint float_pos1 = 0;	/* Initialize to suppress warnings */
+      bint float_pos2 = 0;
+      bint attach_pos1 = 0;
+      bint attach_pos2 = 0;
       
       switch (snap_edge)
 	{
@@ -1277,7 +1277,7 @@ btk_handle_box_motion (BtkWidget      *widget,
     }
   else
     {
-      gint width, height;
+      bint width, height;
 
       width = bdk_window_get_width (hb->float_window);
       height = bdk_window_get_height (hb->float_window);
@@ -1287,18 +1287,18 @@ btk_handle_box_motion (BtkWidget      *widget,
       switch (handle_position)
 	{
 	case BTK_POS_LEFT:
-	  new_y += ((gint)hb->float_allocation.height - height) / 2;
+	  new_y += ((bint)hb->float_allocation.height - height) / 2;
 	  break;
 	case BTK_POS_RIGHT:
-	  new_x += (gint)hb->float_allocation.width - width;
-	  new_y += ((gint)hb->float_allocation.height - height) / 2;
+	  new_x += (bint)hb->float_allocation.width - width;
+	  new_y += ((bint)hb->float_allocation.height - height) / 2;
 	  break;
 	case BTK_POS_TOP:
-	  new_x += ((gint)hb->float_allocation.width - width) / 2;
+	  new_x += ((bint)hb->float_allocation.width - width) / 2;
 	  break;
 	case BTK_POS_BOTTOM:
-	  new_x += ((gint)hb->float_allocation.width - width) / 2;
-	  new_y += (gint)hb->float_allocation.height - height;
+	  new_x += ((bint)hb->float_allocation.width - width) / 2;
+	  new_y += (bint)hb->float_allocation.height - height;
 	  break;
 	}
 
@@ -1309,8 +1309,8 @@ btk_handle_box_motion (BtkWidget      *widget,
 	}
       else
 	{
-	  gint width;
-	  gint height;
+	  bint width;
+	  bint height;
 	  BtkRequisition child_requisition;
 
 	  hb->child_detached = TRUE;
@@ -1374,7 +1374,7 @@ btk_handle_box_remove (BtkContainer *container,
   btk_handle_box_reattach (BTK_HANDLE_BOX (container));
 }
 
-static gint
+static bint
 btk_handle_box_delete_event (BtkWidget *widget,
 			     BdkEventAny  *event)
 {
@@ -1420,7 +1420,7 @@ btk_handle_box_reattach (BtkHandleBox *hb)
 
 static void
 btk_handle_box_end_drag (BtkHandleBox *hb,
-			 guint32       time)
+			 buint32       time)
 {
   BtkWidget *invisible = btk_handle_box_get_invisible ();
 		

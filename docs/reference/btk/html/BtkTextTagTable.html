@@ -92,7 +92,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextTagTable.html#btk-text-tag-table-get-size" title="btk_text_tag_table_get_size ()">btk_text_tag_table_get_size</a> <span class="c_punctuation">()</span>
@@ -201,7 +201,7 @@ attribute of a &lt;child&gt; element.
 <a name="BtkTextTagTableForeach"></a><h3>BtkTextTagTableForeach ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkTextTagTableForeach<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a> *tag</code></em>,
-                           <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -286,7 +286,7 @@ up destroyed if you don't have a reference to it.</p>
 <a name="btk-text-tag-table-lookup"></a><h3>btk_text_tag_table_lookup ()</h3>
 <pre class="programlisting"><a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="returnvalue">BtkTextTag</span></a> *
 btk_text_tag_table_lookup (<em class="parameter"><code><a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *table</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <p>Look up a named tag.</p>
 <div class="refsect3">
 <a name="btk-text-tag-table-lookup.parameters"></a><h4>Parameters</h4>
@@ -322,7 +322,7 @@ btk_text_tag_table_lookup (<em class="parameter"><code><a class="link" href="Btk
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_tag_table_foreach (<em class="parameter"><code><a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *table</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTextTagTable.html#BtkTextTagTableForeach" title="BtkTextTagTableForeach ()"><span class="type">BtkTextTagTableForeach</span></a> func</code></em>,
-                            <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>Calls <em class="parameter"><code>func</code></em>
  on each tag in <em class="parameter"><code>table</code></em>
 , with user data <em class="parameter"><code>data</code></em>
@@ -360,7 +360,7 @@ over it (you can't add/remove tags).</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-tag-table-get-size"></a><h3>btk_text_tag_table_get_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_text_tag_table_get_size (<em class="parameter"><code><a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *table</code></em>);</pre>
 <p>Returns the size of the table (number of tags)</p>
 <div class="refsect3">
@@ -399,7 +399,7 @@ btk_text_tag_table_get_size (<em class="parameter"><code><a class="link" href="B
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *texttagtable,
                <a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a>      *arg1,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 <hr>
@@ -408,8 +408,8 @@ user_function (<a class="link" href="BtkTextTagTable.html" title="BtkTextTagTabl
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *texttagtable,
                <a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a>      *arg1,
-               <span class="type">gboolean</span>         arg2,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bboolean</span>         arg2,
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 <hr>
@@ -418,7 +418,7 @@ user_function (<a class="link" href="BtkTextTagTable.html" title="BtkTextTagTabl
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTextTagTable.html" title="BtkTextTagTable"><span class="type">BtkTextTagTable</span></a> *texttagtable,
                <a class="link" href="BtkTextTag.html" title="BtkTextTag"><span class="type">BtkTextTag</span></a>      *arg1,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 </div>

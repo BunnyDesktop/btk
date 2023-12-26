@@ -252,7 +252,7 @@ should be packed into the radio button.</p>
 <a name="btk-radio-button-new-with-label"></a><h3>btk_radio_button_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_button_new_with_label (<em class="parameter"><code><span class="type">GSList</span> *group</code></em>,
-                                 <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> with a text label.</p>
 <div class="refsect3">
 <a name="btk-radio-button-new-with-label.parameters"></a><h4>Parameters</h4>
@@ -288,7 +288,7 @@ creating a new group. </p></td>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_button_new_with_label_from_widget
                                (<em class="parameter"><code><a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> *radio_group_member</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> with a text label, adding it to
 the same group as <em class="parameter"><code>radio_group_member</code></em>
 .</p>
@@ -326,7 +326,7 @@ the same group as <em class="parameter"><code>radio_group_member</code></em>
 <a name="btk-radio-button-new-with-mnemonic"></a><h3>btk_radio_button_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_button_new_with_mnemonic (<em class="parameter"><code><span class="type">GSList</span> *group</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> containing a label, adding it to the same 
 group as <em class="parameter"><code>group</code></em>
 . The label will be created using 
@@ -367,7 +367,7 @@ mnemonic character</p></td>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_button_new_with_mnemonic_from_widget
                                (<em class="parameter"><code><a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> *radio_group_member</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> containing a label. The label
 will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
 in <em class="parameter"><code>label</code></em>
@@ -498,7 +498,7 @@ and must not be modified or freed. </p>
 <a name="BtkRadioButton-group-changed"></a><h3>The <code class="literal">“group-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkRadioButton.html" title="BtkRadioButton"><span class="type">BtkRadioButton</span></a> *style,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Emitted when the group of radio buttons that a radio button belongs
 to changes. This is emitted when a radio button switches from
 being alone to being part of a group of 2 or more buttons, or

@@ -52,10 +52,10 @@ struct _BtkCheckMenuItem
 {
   BtkMenuItem menu_item;
 
-  guint GSEAL (active) : 1;
-  guint GSEAL (always_show_toggle) : 1;
-  guint GSEAL (inconsistent) : 1;
-  guint GSEAL (draw_as_radio) : 1;
+  buint GSEAL (active) : 1;
+  buint GSEAL (always_show_toggle) : 1;
+  buint GSEAL (inconsistent) : 1;
+  buint GSEAL (draw_as_radio) : 1;
 };
 
 struct _BtkCheckMenuItemClass
@@ -77,23 +77,23 @@ struct _BtkCheckMenuItemClass
 GType	   btk_check_menu_item_get_type	         (void) B_GNUC_CONST;
 
 BtkWidget* btk_check_menu_item_new               (void);
-BtkWidget* btk_check_menu_item_new_with_label    (const gchar      *label);
-BtkWidget* btk_check_menu_item_new_with_mnemonic (const gchar      *label);
+BtkWidget* btk_check_menu_item_new_with_label    (const bchar      *label);
+BtkWidget* btk_check_menu_item_new_with_mnemonic (const bchar      *label);
 void       btk_check_menu_item_set_active        (BtkCheckMenuItem *check_menu_item,
-						  gboolean          is_active);
-gboolean   btk_check_menu_item_get_active        (BtkCheckMenuItem *check_menu_item);
+						  bboolean          is_active);
+bboolean   btk_check_menu_item_get_active        (BtkCheckMenuItem *check_menu_item);
 void       btk_check_menu_item_toggled           (BtkCheckMenuItem *check_menu_item);
 void       btk_check_menu_item_set_inconsistent  (BtkCheckMenuItem *check_menu_item,
-						  gboolean          setting);
-gboolean   btk_check_menu_item_get_inconsistent  (BtkCheckMenuItem *check_menu_item);
+						  bboolean          setting);
+bboolean   btk_check_menu_item_get_inconsistent  (BtkCheckMenuItem *check_menu_item);
 void       btk_check_menu_item_set_draw_as_radio (BtkCheckMenuItem *check_menu_item,
-						  gboolean          draw_as_radio);
-gboolean   btk_check_menu_item_get_draw_as_radio (BtkCheckMenuItem *check_menu_item);
+						  bboolean          draw_as_radio);
+bboolean   btk_check_menu_item_get_draw_as_radio (BtkCheckMenuItem *check_menu_item);
 
 
 #ifndef BTK_DISABLE_DEPRECATED
 void	   btk_check_menu_item_set_show_toggle (BtkCheckMenuItem *menu_item,
-						gboolean	  always);
+						bboolean	  always);
 #define	btk_check_menu_item_set_state		btk_check_menu_item_set_active
 #endif
 

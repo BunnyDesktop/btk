@@ -61,13 +61,13 @@ typedef enum
 
 #ifndef BDK_DISABLE_DEPRECATED
 typedef void (* BdkSpanFunc) (BdkSpan *span,
-                              gpointer data);
+                              bpointer data);
 #endif
 
 BdkRebunnyion    * bdk_rebunnyion_new             (void);
 #ifndef BDK_DISABLE_DEPRECATED
 BdkRebunnyion    * bdk_rebunnyion_polygon         (const BdkPoint     *points,
-                                           gint                n_points,
+                                           bint                n_points,
                                            BdkFillRule         fill_rule);
 #endif
 BdkRebunnyion    * bdk_rebunnyion_copy            (const BdkRebunnyion    *rebunnyion);
@@ -78,28 +78,28 @@ void	       bdk_rebunnyion_get_clipbox     (const BdkRebunnyion    *rebunnyion,
                                            BdkRectangle       *rectangle);
 void           bdk_rebunnyion_get_rectangles  (const BdkRebunnyion    *rebunnyion,
                                            BdkRectangle      **rectangles,
-                                           gint               *n_rectangles);
+                                           bint               *n_rectangles);
 
-gboolean       bdk_rebunnyion_empty           (const BdkRebunnyion    *rebunnyion);
-gboolean       bdk_rebunnyion_equal           (const BdkRebunnyion    *rebunnyion1,
+bboolean       bdk_rebunnyion_empty           (const BdkRebunnyion    *rebunnyion);
+bboolean       bdk_rebunnyion_equal           (const BdkRebunnyion    *rebunnyion1,
                                            const BdkRebunnyion    *rebunnyion2);
 #ifndef BDK_DISABLE_DEPRECATED
-gboolean       bdk_rebunnyion_rect_equal      (const BdkRebunnyion    *rebunnyion,
+bboolean       bdk_rebunnyion_rect_equal      (const BdkRebunnyion    *rebunnyion,
                                            const BdkRectangle *rectangle);
 #endif
-gboolean       bdk_rebunnyion_point_in        (const BdkRebunnyion    *rebunnyion,
+bboolean       bdk_rebunnyion_point_in        (const BdkRebunnyion    *rebunnyion,
                                            int                 x,
                                            int                 y);
 BdkOverlapType bdk_rebunnyion_rect_in         (const BdkRebunnyion    *rebunnyion,
                                            const BdkRectangle *rectangle);
 
 void           bdk_rebunnyion_offset          (BdkRebunnyion          *rebunnyion,
-                                           gint                dx,
-                                           gint                dy);
+                                           bint                dx,
+                                           bint                dy);
 #ifndef BDK_DISABLE_DEPRECATED
 void           bdk_rebunnyion_shrink          (BdkRebunnyion          *rebunnyion,
-                                           gint                dx,
-                                           gint                dy);
+                                           bint                dx,
+                                           bint                dy);
 #endif
 void           bdk_rebunnyion_union_with_rect (BdkRebunnyion          *rebunnyion,
                                            const BdkRectangle *rect);
@@ -116,9 +116,9 @@ void           bdk_rebunnyion_xor             (BdkRebunnyion          *source1,
 void   bdk_rebunnyion_spans_intersect_foreach (BdkRebunnyion          *rebunnyion,
                                            const BdkSpan      *spans,
                                            int                 n_spans,
-                                           gboolean            sorted,
+                                           bboolean            sorted,
                                            BdkSpanFunc         function,
-                                           gpointer            data);
+                                           bpointer            data);
 #endif
 
 B_END_DECLS

@@ -19,7 +19,7 @@ void text_toggle_word_wrap (BtkWidget *checkbutton,
 }
 
 void close_application( BtkWidget *widget,
-                        gpointer   data )
+                        bpointer   data )
 {
        btk_main_quit ();
 }

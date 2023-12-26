@@ -73,7 +73,7 @@ struct _BdkIOClosure
   BdkInputFunction function;
   BdkInputCondition condition;
   GDestroyNotify notify;
-  gpointer data;
+  bpointer data;
 };
 
 struct _BdkDisplaySource
@@ -86,35 +86,35 @@ struct _BdkDisplaySource
 
 struct _BdkEventTypeX11
 {
-  gint base;
-  gint n_events;
+  bint base;
+  bint n_events;
 };
 
 /* 
  * Private function declarations
  */
 
-static gint	 bdk_event_apply_filters (XEvent   *xevent,
+static bint	 bdk_event_apply_filters (XEvent   *xevent,
 					  BdkEvent *event,
 					  BdkWindow *window);
-static gboolean	 bdk_event_translate	 (BdkDisplay *display,
+static bboolean	 bdk_event_translate	 (BdkDisplay *display,
 					  BdkEvent   *event, 
 					  XEvent     *xevent,
-					  gboolean    return_exposes);
+					  bboolean    return_exposes);
 
-static gboolean bdk_event_prepare  (GSource     *source,
-				    gint        *timeout);
-static gboolean bdk_event_check    (GSource     *source);
-static gboolean bdk_event_dispatch (GSource     *source,
+static bboolean bdk_event_prepare  (GSource     *source,
+				    bint        *timeout);
+static bboolean bdk_event_check    (GSource     *source);
+static bboolean bdk_event_dispatch (GSource     *source,
 				    GSourceFunc  callback,
-				    gpointer     user_data);
+				    bpointer     user_data);
 
 static BdkFilterReturn bdk_wm_protocols_filter (BdkXEvent *xev,
 						BdkEvent  *event,
-						gpointer   data);
+						bpointer   data);
 
 static GSource *bdk_display_source_new (BdkDisplay *display);
-static gboolean bdk_check_xpending     (BdkDisplay *display);
+static bboolean bdk_check_xpending     (BdkDisplay *display);
 
 static Bool bdk_xsettings_watch_cb  (Window            window,
 				     Bool              is_start,
@@ -153,7 +153,7 @@ bdk_display_source_new (BdkDisplay *display)
   return source;
 }
 
-static gboolean
+static bboolean
 bdk_check_xpending (BdkDisplay *display)
 {
   return XPending (BDK_DISPLAY_XDISPLAY (display));
@@ -261,7 +261,7 @@ _bdk_events_uninit (BdkDisplay *display)
  * 
  * Return value:  %TRUE if any events are pending.
  **/
-gboolean
+bboolean
 bdk_events_pending (void)
 {
   GList *tmp_list;
@@ -338,7 +338,7 @@ bdk_event_get_graphics_expose (BdkWindow *window)
   return NULL;	
 }
 
-static gint
+static bint
 bdk_event_apply_filters (XEvent *xevent,
 			 BdkEvent *event,
 			 BdkWindow *window)
@@ -403,7 +403,7 @@ void
 bdk_display_add_client_message_filter (BdkDisplay   *display,
 				       BdkAtom       message_type,
 				       BdkFilterFunc func,
-				       gpointer      data)
+				       bpointer      data)
 {
   BdkClientFilter *filter;
   g_return_if_fail (BDK_IS_DISPLAY (display));
@@ -432,7 +432,7 @@ bdk_display_add_client_message_filter (BdkDisplay   *display,
 void 
 bdk_add_client_message_filter (BdkAtom       message_type,
 			       BdkFilterFunc func,
-			       gpointer      data)
+			       bpointer      data)
 {
   bdk_display_add_client_message_filter (bdk_display_get_default (),
 					 message_type, func, data);
@@ -524,25 +524,25 @@ bdk_check_wm_desktop_changed (BdkWindow *window)
   BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
 
   Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *data;
-  gulong *desktop;
+  bint format;
+  bulong nitems;
+  bulong bytes_after;
+  buchar *data;
+  bulong *desktop;
 
   type = None;
   bdk_error_trap_push ();
   XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), 
                       BDK_WINDOW_XID (window),
                       bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_DESKTOP"),
-                      0, G_MAXLONG, False, XA_CARDINAL, &type, 
+                      0, B_MAXLONG, False, XA_CARDINAL, &type, 
                       &format, &nitems,
                       &bytes_after, &data);
   bdk_error_trap_pop ();
 
   if (type != None)
     {
-      desktop = (gulong *)data;
+      desktop = (bulong *)data;
       toplevel->on_all_desktops = ((*desktop & 0xFFFFFFFF) == 0xFFFFFFFF);
       XFree (desktop);
     }
@@ -559,14 +559,14 @@ bdk_check_wm_state_changed (BdkWindow *window)
   BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
   
   Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *data;
+  bint format;
+  bulong nitems;
+  bulong bytes_after;
+  buchar *data;
   Atom *atoms = NULL;
-  gulong i;
+  bulong i;
 
-  gboolean had_sticky = toplevel->have_sticky;
+  bboolean had_sticky = toplevel->have_sticky;
 
   toplevel->have_sticky = FALSE;
   toplevel->have_maxvert = FALSE;
@@ -578,7 +578,7 @@ bdk_check_wm_state_changed (BdkWindow *window)
   bdk_error_trap_push ();
   XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), BDK_WINDOW_XID (window),
 		      bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE"),
-		      0, G_MAXLONG, False, XA_ATOM, &type, &format, &nitems,
+		      0, B_MAXLONG, False, XA_ATOM, &type, &format, &nitems,
 		      &bytes_after, &data);
   bdk_error_trap_pop ();
 
@@ -626,7 +626,7 @@ bdk_check_wm_state_changed (BdkWindow *window)
 
 static void
 generate_focus_event (BdkWindow *window,
-		      gboolean   in)
+		      bboolean   in)
 {
   BdkEvent event;
   
@@ -638,7 +638,7 @@ generate_focus_event (BdkWindow *window,
   bdk_event_put (&event);
 }
 
-static gboolean
+static bboolean
 set_screen_from_root (BdkDisplay *display,
 		      BdkEvent   *event,
 		      Window      xrootwin)
@@ -664,7 +664,7 @@ translate_key_event (BdkDisplay *display,
 {
   BdkKeymap *keymap = bdk_keymap_get_for_display (display);
   gunichar c = 0;
-  gchar buf[7];
+  bchar buf[7];
   BdkModifierType consumed, state;
 
   event->key.type = xevent->xany.type == KeyPress ? BDK_KEY_PRESS : BDK_KEY_RELEASE;
@@ -698,8 +698,8 @@ translate_key_event (BdkDisplay *display,
 
   if (c)
     {
-      gsize bytes_written;
-      gint len;
+      bsize bytes_written;
+      bint len;
 
       /* Apply the control key - Taken from Xlib
        */
@@ -786,8 +786,8 @@ translate_key_event (BdkDisplay *display,
  **/
 void
 bdk_x11_register_standard_event_type (BdkDisplay          *display,
-				      gint                 event_base,
-				      gint                 n_events)
+				      bint                 event_base,
+				      bint                 n_events)
 {
   BdkEventTypeX11 *event_type;
   BdkDisplayX11 *display_x11;
@@ -919,7 +919,7 @@ set_user_time (BdkWindow *window,
                                   bdk_event_get_time (event));
 }
 
-static gboolean
+static bboolean
 is_parent_of (BdkWindow *parent,
               BdkWindow *child)
 {
@@ -937,18 +937,18 @@ is_parent_of (BdkWindow *parent,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 bdk_event_translate (BdkDisplay *display,
 		     BdkEvent   *event,
 		     XEvent     *xevent,
-		     gboolean    return_exposes)
+		     bboolean    return_exposes)
 {
   
   BdkWindow *window;
   BdkWindowObject *window_private;
   BdkWindow *filter_window;
   BdkWindowImplX11 *window_impl = NULL;
-  gboolean return_val;
+  bboolean return_val;
   BdkScreen *screen = NULL;
   BdkScreenX11 *screen_x11 = NULL;
   BdkToplevelX11 *toplevel = NULL;
@@ -1208,8 +1208,8 @@ bdk_event_translate (BdkDisplay *display,
 	  event->scroll.time = xevent->xbutton.time;
 	  event->scroll.x = xevent->xbutton.x;
 	  event->scroll.y = xevent->xbutton.y;
-	  event->scroll.x_root = (gfloat)xevent->xbutton.x_root;
-	  event->scroll.y_root = (gfloat)xevent->xbutton.y_root;
+	  event->scroll.x_root = (bfloat)xevent->xbutton.x_root;
+	  event->scroll.y_root = (bfloat)xevent->xbutton.y_root;
 	  event->scroll.state = (BdkModifierType) xevent->xbutton.state;
 	  event->scroll.device = display->core_pointer;
 	  
@@ -1227,8 +1227,8 @@ bdk_event_translate (BdkDisplay *display,
 	  event->button.time = xevent->xbutton.time;
 	  event->button.x = xevent->xbutton.x;
 	  event->button.y = xevent->xbutton.y;
-	  event->button.x_root = (gfloat)xevent->xbutton.x_root;
-	  event->button.y_root = (gfloat)xevent->xbutton.y_root;
+	  event->button.x_root = (bfloat)xevent->xbutton.x_root;
+	  event->button.y_root = (bfloat)xevent->xbutton.y_root;
 	  event->button.axes = NULL;
 	  event->button.state = (BdkModifierType) xevent->xbutton.state;
 	  event->button.button = xevent->xbutton.button;
@@ -1272,8 +1272,8 @@ bdk_event_translate (BdkDisplay *display,
       event->button.time = xevent->xbutton.time;
       event->button.x = xevent->xbutton.x;
       event->button.y = xevent->xbutton.y;
-      event->button.x_root = (gfloat)xevent->xbutton.x_root;
-      event->button.y_root = (gfloat)xevent->xbutton.y_root;
+      event->button.x_root = (bfloat)xevent->xbutton.x_root;
+      event->button.y_root = (bfloat)xevent->xbutton.y_root;
       event->button.axes = NULL;
       event->button.state = (BdkModifierType) xevent->xbutton.state;
       event->button.button = xevent->xbutton.button;
@@ -1302,8 +1302,8 @@ bdk_event_translate (BdkDisplay *display,
       event->motion.time = xevent->xmotion.time;
       event->motion.x = xevent->xmotion.x;
       event->motion.y = xevent->xmotion.y;
-      event->motion.x_root = (gfloat)xevent->xmotion.x_root;
-      event->motion.y_root = (gfloat)xevent->xmotion.y_root;
+      event->motion.x_root = (bfloat)xevent->xmotion.x_root;
+      event->motion.y_root = (bfloat)xevent->xmotion.y_root;
       event->motion.axes = NULL;
       event->motion.state = (BdkModifierType) xevent->xmotion.state;
       event->motion.is_hint = xevent->xmotion.is_hint;
@@ -1344,7 +1344,7 @@ bdk_event_translate (BdkDisplay *display,
 
 	  if (xevent->xcrossing.focus && !toplevel->has_focus_window)
 	    {
-	      gboolean had_focus = HAS_FOCUS (toplevel);
+	      bboolean had_focus = HAS_FOCUS (toplevel);
 	      
 	      toplevel->has_pointer_focus = TRUE;
 	      
@@ -1441,7 +1441,7 @@ bdk_event_translate (BdkDisplay *display,
 
 	  if (xevent->xcrossing.focus && !toplevel->has_focus_window)
 	    {
-	      gboolean had_focus = HAS_FOCUS (toplevel);
+	      bboolean had_focus = HAS_FOCUS (toplevel);
 	      
 	      toplevel->has_pointer_focus = FALSE;
 	      
@@ -1523,7 +1523,7 @@ bdk_event_translate (BdkDisplay *display,
       
       if (toplevel)
 	{
-	  gboolean had_focus = HAS_FOCUS (toplevel);
+	  bboolean had_focus = HAS_FOCUS (toplevel);
 	  
 	  switch (xevent->xfocus.detail)
 	    {
@@ -1582,7 +1582,7 @@ bdk_event_translate (BdkDisplay *display,
       
       if (toplevel)
 	{
-	  gboolean had_focus = HAS_FOCUS (toplevel);
+	  bboolean had_focus = HAS_FOCUS (toplevel);
 	    
 	  switch (xevent->xfocus.detail)
 	    {
@@ -1919,8 +1919,8 @@ bdk_event_translate (BdkDisplay *display,
 	      !xevent->xconfigure.override_redirect &&
 	      !BDK_WINDOW_DESTROYED (window))
 	    {
-	      gint tx = 0;
-	      gint ty = 0;
+	      bint tx = 0;
+	      bint ty = 0;
 	      Window child_window = 0;
 
 	      bdk_error_trap_push ();
@@ -2244,7 +2244,7 @@ bdk_event_translate (BdkDisplay *display,
 static BdkFilterReturn
 bdk_wm_protocols_filter (BdkXEvent *xev,
 			 BdkEvent  *event,
-			 gpointer data)
+			 bpointer data)
 {
   XEvent *xevent = (XEvent *)xev;
   BdkWindow *win = event->any.window;
@@ -2369,12 +2369,12 @@ _bdk_events_queue (BdkDisplay *display)
     }
 }
 
-static gboolean  
+static bboolean  
 bdk_event_prepare (GSource  *source,
-		   gint     *timeout)
+		   bint     *timeout)
 {
   BdkDisplay *display = ((BdkDisplaySource*)source)->display;
-  gboolean retval;
+  bboolean retval;
   
   BDK_THREADS_ENTER ();
 
@@ -2387,11 +2387,11 @@ bdk_event_prepare (GSource  *source,
   return retval;
 }
 
-static gboolean  
+static bboolean  
 bdk_event_check (GSource *source) 
 {
   BdkDisplaySource *display_source = (BdkDisplaySource*)source;
-  gboolean retval;
+  bboolean retval;
 
   BDK_THREADS_ENTER ();
 
@@ -2406,10 +2406,10 @@ bdk_event_check (GSource *source)
   return retval;
 }
 
-static gboolean  
+static bboolean  
 bdk_event_dispatch (GSource    *source,
 		    GSourceFunc callback,
-		    gpointer    user_data)
+		    bpointer    user_data)
 {
   BdkDisplay *display = ((BdkDisplaySource*)source)->display;
   BdkEvent *event;
@@ -2450,7 +2450,7 @@ bdk_event_dispatch (GSource    *source,
  *
  * Since: 2.2
  */
-gboolean
+bboolean
 bdk_event_send_client_message_for_display (BdkDisplay     *display,
 					   BdkEvent       *event,
 					   BdkNativeWindow winid)
@@ -2473,11 +2473,11 @@ bdk_event_send_client_message_for_display (BdkDisplay     *display,
 
 
 /* Sends a ClientMessage to all toplevel client windows */
-static gboolean
+static bboolean
 bdk_event_send_client_message_to_all_recurse (BdkDisplay *display,
 					      XEvent     *xev, 
-					      guint32     xid,
-					      guint       level)
+					      buint32     xid,
+					      buint       level)
 {
   Atom type = None;
   int format;
@@ -2485,9 +2485,9 @@ bdk_event_send_client_message_to_all_recurse (BdkDisplay *display,
   unsigned char *data;
   Window *ret_children, ret_root, ret_parent;
   unsigned int ret_nchildren;
-  gboolean send = FALSE;
-  gboolean found = FALSE;
-  gboolean result = FALSE;
+  bboolean send = FALSE;
+  bboolean found = FALSE;
+  bboolean result = FALSE;
   int i;
   
   bdk_error_trap_push ();
@@ -2613,7 +2613,7 @@ timestamp_predicate (Display *display,
 		     XEvent  *xevent,
 		     XPointer arg)
 {
-  Window xwindow = GPOINTER_TO_UINT (arg);
+  Window xwindow = BPOINTER_TO_UINT (arg);
   BdkDisplay *bdk_display = bdk_x11_lookup_xdisplay (display);
 
   if (xevent->type == PropertyNotify &&
@@ -2635,12 +2635,12 @@ timestamp_predicate (Display *display,
  * 
  * Return value: the time stamp.
  **/
-guint32
+buint32
 bdk_x11_get_server_time (BdkWindow *window)
 {
   Display *xdisplay;
   Window   xwindow;
-  guchar c = 'a';
+  buchar c = 'a';
   XEvent xevent;
   Atom timestamp_prop_atom;
 
@@ -2658,7 +2658,7 @@ bdk_x11_get_server_time (BdkWindow *window)
 		   8, PropModeReplace, &c, 1);
 
   XIfEvent (xdisplay, &xevent,
-	    timestamp_predicate, GUINT_TO_POINTER(xwindow));
+	    timestamp_predicate, BUINT_TO_POINTER(xwindow));
 
   return xevent.xproperty.time;
 }
@@ -2669,13 +2669,13 @@ fetch_net_wm_check_window (BdkScreen *screen)
   BdkScreenX11 *screen_x11;
   BdkDisplay *display;
   Atom type;
-  gint format;
-  gulong n_items;
-  gulong bytes_after;
-  guchar *data;
+  bint format;
+  bulong n_items;
+  bulong bytes_after;
+  buchar *data;
   Window *xwindow;
   GTimeVal tv;
-  gint error;
+  bint error;
 
   screen_x11 = BDK_SCREEN_X11 (screen);
   display = screen_x11->display;
@@ -2692,7 +2692,7 @@ fetch_net_wm_check_window (BdkScreen *screen)
   data = NULL;
   XGetWindowProperty (screen_x11->xdisplay, screen_x11->xroot_window,
 		      bdk_x11_get_xatom_by_name_for_display (display, "_NET_SUPPORTING_WM_CHECK"),
-		      0, G_MAXLONG, False, XA_WINDOW, &type, &format,
+		      0, B_MAXLONG, False, XA_WINDOW, &type, &format,
 		      &n_items, &bytes_after, &data);
   
   if (type != XA_WINDOW)
@@ -2770,10 +2770,10 @@ bdk_x11_screen_get_window_manager_name (BdkScreen *screen)
       if (screen_x11->wmspec_check_window != None)
         {
           Atom type;
-          gint format;
-          gulong n_items;
-          gulong bytes_after;
-          gchar *name;
+          bint format;
+          bulong n_items;
+          bulong bytes_after;
+          bchar *name;
           
           name = NULL;
 
@@ -2783,12 +2783,12 @@ bdk_x11_screen_get_window_manager_name (BdkScreen *screen)
                               screen_x11->wmspec_check_window,
                               bdk_x11_get_xatom_by_name_for_display (screen_x11->display,
                                                                      "_NET_WM_NAME"),
-                              0, G_MAXLONG, False,
+                              0, B_MAXLONG, False,
                               bdk_x11_get_xatom_by_name_for_display (screen_x11->display,
                                                                      "UTF8_STRING"),
                               &type, &format, 
                               &n_items, &bytes_after,
-                              (guchar **)&name);
+                              (buchar **)&name);
           
           bdk_display_sync (screen_x11->display);
           
@@ -2811,11 +2811,11 @@ typedef struct _NetWmSupportedAtoms NetWmSupportedAtoms;
 struct _NetWmSupportedAtoms
 {
   Atom *atoms;
-  gulong n_atoms;
+  bulong n_atoms;
 };
 
 static void
-cleanup_atoms(gpointer data)
+cleanup_atoms(bpointer data)
 {
   NetWmSupportedAtoms *supported_atoms = data;
   if (supported_atoms->atoms)
@@ -2847,11 +2847,11 @@ cleanup_atoms(gpointer data)
  *
  * Since: 2.2
  **/
-gboolean
+bboolean
 bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
 				     BdkAtom    property)
 {
-  gulong i;
+  bulong i;
   BdkScreenX11 *screen_x11;
   NetWmSupportedAtoms *supported_atoms;
   BdkDisplay *display;
@@ -2882,8 +2882,8 @@ bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
        * refetch it.
        */
       Atom type;
-      gint format;
-      gulong bytes_after;
+      bint format;
+      bulong bytes_after;
 
       screen_x11->need_refetch_net_supported = FALSE;
       
@@ -2895,9 +2895,9 @@ bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
       
       XGetWindowProperty (BDK_DISPLAY_XDISPLAY (display), screen_x11->xroot_window,
                           bdk_x11_get_xatom_by_name_for_display (display, "_NET_SUPPORTED"),
-                          0, G_MAXLONG, False, XA_ATOM, &type, &format, 
+                          0, B_MAXLONG, False, XA_ATOM, &type, &format, 
                           &supported_atoms->n_atoms, &bytes_after,
-                          (guchar **)&supported_atoms->atoms);
+                          (buchar **)&supported_atoms->atoms);
       
       if (type != XA_ATOM)
         return FALSE;
@@ -2931,7 +2931,7 @@ bdk_x11_screen_supports_net_wm_hint (BdkScreen *screen,
  *
  * Deprecated:2.24: Use bdk_x11_screen_supports_net_wm_hint() instead
  **/
-gboolean
+bboolean
 bdk_net_wm_supports (BdkAtom property)
 {
   return bdk_x11_screen_supports_net_wm_hint (bdk_screen_get_default (), property);
@@ -2983,8 +2983,8 @@ bdk_xsettings_notify_cb (const char       *name,
   bdk_event_put (&new_event);
 }
 
-static gboolean
-check_transform (const gchar *xsettings_name,
+static bboolean
+check_transform (const bchar *xsettings_name,
 		 GType        src_type,
 		 GType        dest_type)
 {
@@ -3017,9 +3017,9 @@ check_transform (const gchar *xsettings_name,
  *
  * Since: 2.2
  **/
-gboolean
+bboolean
 bdk_screen_get_setting (BdkScreen   *screen,
-			const gchar *name,
+			const bchar *name,
 			BValue      *value)
 {
 
@@ -3027,8 +3027,8 @@ bdk_screen_get_setting (BdkScreen   *screen,
   XSettingsResult result;
   XSettingsSetting *setting = NULL;
   BdkScreenX11 *screen_x11;
-  gboolean success = FALSE;
-  gint i;
+  bboolean success = FALSE;
+  bint i;
   BValue tmp_val = { 0, };
   
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
@@ -3108,7 +3108,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
 static BdkFilterReturn 
 bdk_xsettings_client_event_filter (BdkXEvent *xevent,
 				   BdkEvent  *event,
-				   gpointer   data)
+				   bpointer   data)
 {
   BdkScreenX11 *screen = data;
   

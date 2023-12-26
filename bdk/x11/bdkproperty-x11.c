@@ -42,7 +42,7 @@
 static GPtrArray *virtual_atom_array;
 static GHashTable *virtual_atom_hash;
 
-static const gchar xatoms_string[] = 
+static const bchar xatoms_string[] = 
   /* These are all the standard predefined X atoms */
   "\0"  /* leave a space for None, even though it is not a predefined atom */
   "PRIMARY\0"
@@ -119,7 +119,7 @@ static const gchar xatoms_string[] =
   "CLIPBOARD\0"			/* = 69 */
 ;
 
-static const gint xatoms_offset[] = {
+static const bint xatoms_offset[] = {
     0,   1,   9,  19,  23,  28,  35,  44,  53,  60,  72,  84,
    96, 108, 120, 132, 144, 156, 165, 170, 178, 185, 189, 201,
   218, 232, 245, 258, 274, 287, 301, 313, 320, 329, 336, 347,
@@ -130,8 +130,8 @@ static const gint xatoms_offset[] = {
 
 #define N_CUSTOM_PREDEFINED 1
 
-#define ATOM_TO_INDEX(atom) (GPOINTER_TO_UINT(atom))
-#define INDEX_TO_ATOM(atom) ((BdkAtom)GUINT_TO_POINTER(atom))
+#define ATOM_TO_INDEX(atom) (BPOINTER_TO_UINT(atom))
+#define INDEX_TO_ATOM(atom) ((BdkAtom)BUINT_TO_POINTER(atom))
 
 static void
 insert_atom_pair (BdkDisplay *display,
@@ -148,9 +148,9 @@ insert_atom_pair (BdkDisplay *display,
   
   g_hash_table_insert (display_x11->atom_from_virtual, 
 		       BDK_ATOM_TO_POINTER (virtual_atom), 
-		       GUINT_TO_POINTER (xatom));
+		       BUINT_TO_POINTER (xatom));
   g_hash_table_insert (display_x11->atom_to_virtual,
-		       GUINT_TO_POINTER (xatom), 
+		       BUINT_TO_POINTER (xatom), 
 		       BDK_ATOM_TO_POINTER (virtual_atom));
 }
 
@@ -164,7 +164,7 @@ lookup_cached_xatom (BdkDisplay *display,
     return ATOM_TO_INDEX (atom);
   
   if (display_x11->atom_from_virtual)
-    return GPOINTER_TO_UINT (g_hash_table_lookup (display_x11->atom_from_virtual,
+    return BPOINTER_TO_UINT (g_hash_table_lookup (display_x11->atom_from_virtual,
 						  BDK_ATOM_TO_POINTER (atom)));
 
   return None;
@@ -216,17 +216,17 @@ bdk_x11_atom_to_xatom_for_display (BdkDisplay *display,
 
 void
 _bdk_x11_precache_atoms (BdkDisplay          *display,
-			 const gchar * const *atom_names,
-			 gint                 n_atoms)
+			 const bchar * const *atom_names,
+			 bint                 n_atoms)
 {
   Atom *xatoms;
   BdkAtom *atoms;
-  const gchar **xatom_names;
-  gint n_xatoms;
-  gint i;
+  const bchar **xatom_names;
+  bint n_xatoms;
+  bint i;
 
   xatoms = g_new (Atom, n_atoms);
-  xatom_names = g_new (const gchar *, n_atoms);
+  xatom_names = g_new (const bchar *, n_atoms);
   atoms = g_new (BdkAtom, n_atoms);
 
   n_xatoms = 0;
@@ -310,7 +310,7 @@ bdk_x11_xatom_to_atom_for_display (BdkDisplay *display,
   
   if (display_x11->atom_to_virtual)
     virtual_atom = BDK_POINTER_TO_ATOM (g_hash_table_lookup (display_x11->atom_to_virtual,
-							     GUINT_TO_POINTER (xatom)));
+							     BUINT_TO_POINTER (xatom)));
   
   if (!virtual_atom)
     {
@@ -356,23 +356,23 @@ virtual_atom_check_init (void)
 {
   if (!virtual_atom_hash)
     {
-      gint i;
+      bint i;
       
       virtual_atom_hash = g_hash_table_new (g_str_hash, g_str_equal);
       virtual_atom_array = g_ptr_array_new ();
       
       for (i = 0; i < G_N_ELEMENTS (xatoms_offset); i++)
 	{
-	  g_ptr_array_add (virtual_atom_array, (gchar *)(xatoms_string + xatoms_offset[i]));
-	  g_hash_table_insert (virtual_atom_hash, (gchar *)(xatoms_string + xatoms_offset[i]),
-			       GUINT_TO_POINTER (i));
+	  g_ptr_array_add (virtual_atom_array, (bchar *)(xatoms_string + xatoms_offset[i]));
+	  g_hash_table_insert (virtual_atom_hash, (bchar *)(xatoms_string + xatoms_offset[i]),
+			       BUINT_TO_POINTER (i));
 	}
     }
 }
 
 static BdkAtom
-intern_atom (const gchar *atom_name, 
-	     gboolean     dup)
+intern_atom (const bchar *atom_name, 
+	     bboolean     dup)
 {
   BdkAtom result;
 
@@ -383,7 +383,7 @@ intern_atom (const gchar *atom_name,
     {
       result = INDEX_TO_ATOM (virtual_atom_array->len);
       
-      g_ptr_array_add (virtual_atom_array, dup ? g_strdup (atom_name) : (gchar *)atom_name);
+      g_ptr_array_add (virtual_atom_array, dup ? g_strdup (atom_name) : (bchar *)atom_name);
       g_hash_table_insert (virtual_atom_hash, 
 			   g_ptr_array_index (virtual_atom_array,
 					      ATOM_TO_INDEX (result)),
@@ -394,8 +394,8 @@ intern_atom (const gchar *atom_name,
 }
 
 BdkAtom
-bdk_atom_intern (const gchar *atom_name, 
-		 gboolean     only_if_exists)
+bdk_atom_intern (const bchar *atom_name, 
+		 bboolean     only_if_exists)
 {
   return intern_atom (atom_name, TRUE);
 }
@@ -420,7 +420,7 @@ bdk_atom_intern (const gchar *atom_name,
  * Since: 2.10
  */
 BdkAtom
-bdk_atom_intern_static_string (const gchar *atom_name)
+bdk_atom_intern_static_string (const bchar *atom_name)
 {
   return intern_atom (atom_name, FALSE);
 }
@@ -436,7 +436,7 @@ get_atom_name (BdkAtom atom)
     return NULL;
 }
 
-gchar *
+bchar *
 bdk_atom_name (BdkAtom atom)
 {
   return g_strdup (get_atom_name (atom));
@@ -457,7 +457,7 @@ bdk_atom_name (BdkAtom atom)
  **/
 Atom
 bdk_x11_get_xatom_by_name_for_display (BdkDisplay  *display,
-				       const gchar *atom_name)
+				       const bchar *atom_name)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), None);
   return bdk_x11_atom_to_xatom_for_display (display,
@@ -475,7 +475,7 @@ bdk_x11_get_xatom_by_name_for_display (BdkDisplay  *display,
  * Return value: a X atom for BDK's default display.
  **/
 Atom
-bdk_x11_get_xatom_by_name (const gchar *atom_name)
+bdk_x11_get_xatom_by_name (const bchar *atom_name)
 {
   return bdk_x11_get_xatom_by_name_for_display (bdk_display_get_default (),
 						atom_name);
@@ -496,7 +496,7 @@ bdk_x11_get_xatom_by_name (const gchar *atom_name)
  *
  * Since: 2.2
  **/
-const gchar *
+const bchar *
 bdk_x11_get_xatom_name_for_display (BdkDisplay *display,
 				    Atom        xatom)
 {
@@ -518,32 +518,32 @@ bdk_x11_get_xatom_name_for_display (BdkDisplay *display,
  * Return value: name of the X atom; this string is owned by BTK+,
  *   so it shouldn't be modifed or freed. 
  **/
-const gchar *
+const bchar *
 bdk_x11_get_xatom_name (Atom xatom)
 {
   return get_atom_name (bdk_x11_xatom_to_atom (xatom));
 }
 
-gboolean
+bboolean
 bdk_property_get (BdkWindow   *window,
 		  BdkAtom      property,
 		  BdkAtom      type,
-		  gulong       offset,
-		  gulong       length,
-		  gint         pdelete,
+		  bulong       offset,
+		  bulong       length,
+		  bint         pdelete,
 		  BdkAtom     *actual_property_type,
-		  gint        *actual_format_type,
-		  gint        *actual_length,
-		  guchar     **data)
+		  bint        *actual_format_type,
+		  bint        *actual_length,
+		  buchar     **data)
 {
   BdkDisplay *display;
   Atom ret_prop_type;
-  gint ret_format;
-  gulong ret_nitems;
-  gulong ret_bytes_after;
-  gulong get_length;
-  gulong ret_length;
-  guchar *ret_data;
+  bint ret_format;
+  bulong ret_nitems;
+  bulong ret_bytes_after;
+  bulong get_length;
+  bulong ret_length;
+  buchar *ret_data;
   Atom xproperty;
   Atom xtype;
   int res;
@@ -574,15 +574,15 @@ bdk_property_get (BdkWindow   *window,
   
   /* 
    * Round up length to next 4 byte value.  Some code is in the (bad?)
-   * habit of passing G_MAXLONG as the length argument, causing an
+   * habit of passing B_MAXLONG as the length argument, causing an
    * overflow to negative on the add.  In this case, we clamp the
-   * value to G_MAXLONG.
+   * value to B_MAXLONG.
    */
   get_length = length + 3;
-  if (get_length > G_MAXLONG)
-    get_length = G_MAXLONG;
+  if (get_length > B_MAXLONG)
+    get_length = B_MAXLONG;
 
-  /* To fail, either the user passed 0 or G_MAXULONG */
+  /* To fail, either the user passed 0 or B_MAXULONG */
   get_length = get_length / 4;
   if (get_length == 0)
     {
@@ -627,11 +627,11 @@ bdk_property_get (BdkWindow   *window,
 	   * data is an array of X atom, we need to convert it
 	   * to an array of BDK Atoms
 	   */
-	  gint i;
+	  bint i;
 	  BdkAtom *ret_atoms = g_new (BdkAtom, ret_nitems);
 	  Atom *xatoms = (Atom *)ret_data;
 
-	  *data = (guchar *)ret_atoms;
+	  *data = (buchar *)ret_atoms;
 
 	  for (i = 0; i < ret_nitems; i++)
 	    ret_atoms[i] = bdk_x11_xatom_to_atom_for_display (display, xatoms[i]);
@@ -658,7 +658,7 @@ bdk_property_get (BdkWindow   *window,
 	      return FALSE;
 	    }
 	  
-	  *data = g_new (guchar, ret_length);
+	  *data = g_new (buchar, ret_length);
 	  memcpy (*data, ret_data, ret_length);
 	  if (actual_length)
 	    *actual_length = ret_length;
@@ -674,10 +674,10 @@ void
 bdk_property_change (BdkWindow    *window,
 		     BdkAtom       property,
 		     BdkAtom       type,
-		     gint          format,
+		     bint          format,
 		     BdkPropMode   mode,
-		     const guchar *data,
-		     gint          nelements)
+		     const buchar *data,
+		     bint          nelements)
 {
   BdkDisplay *display;
   Window xwindow;
@@ -715,7 +715,7 @@ bdk_property_change (BdkWindow    *window,
        * data is an array of BdkAtom, we need to convert it
        * to an array of X Atoms
        */
-      gint i;
+      bint i;
       BdkAtom *atoms = (BdkAtom*) data;
       Atom *xatoms;
 
@@ -725,12 +725,12 @@ bdk_property_change (BdkWindow    *window,
 
       XChangeProperty (BDK_DISPLAY_XDISPLAY (display), xwindow,
 		       xproperty, xtype,
-		       format, mode, (guchar *)xatoms, nelements);
+		       format, mode, (buchar *)xatoms, nelements);
       g_free (xatoms);
     }
   else
     XChangeProperty (BDK_DISPLAY_XDISPLAY (display), xwindow, xproperty, 
-		     xtype, format, mode, (guchar *)data, nelements);
+		     xtype, format, mode, (buchar *)data, nelements);
 }
 
 void

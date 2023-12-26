@@ -14,10 +14,10 @@ static BtkWidget *frame;
 
 /* Expose callback for the drawing area
  */
-static gboolean
+static bboolean
 expose_event_callback (BtkWidget      *widget, 
                        BdkEventExpose *event, 
-                       gpointer        data)
+                       bpointer        data)
 {
   BdkWindow *window = btk_widget_get_window (widget);
   
@@ -42,11 +42,11 @@ expose_event_callback (BtkWidget      *widget,
 
 static void
 change_color_callback (BtkWidget *button,
-		       gpointer	  data)
+		       bpointer	  data)
 {
   BtkWidget *dialog;
   BtkColorSelection *colorsel;
-  gint response;
+  bint response;
   
   dialog = btk_color_selection_dialog_new ("Changing color");
 

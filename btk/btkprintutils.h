@@ -29,8 +29,8 @@ B_BEGIN_DECLS
 #define MM_PER_INCH 25.4
 #define POINTS_PER_INCH 72
 
-gdouble _btk_print_convert_to_mm   (gdouble len, BtkUnit unit);
-gdouble _btk_print_convert_from_mm (gdouble len, BtkUnit unit);
+bdouble _btk_print_convert_to_mm   (bdouble len, BtkUnit unit);
+bdouble _btk_print_convert_from_mm (bdouble len, BtkUnit unit);
 
 B_END_DECLS
 

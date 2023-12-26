@@ -105,43 +105,43 @@ struct _BtkRangeLayout
 
   MouseLocation mouse_location;
   /* last mouse coords we got, or -1 if mouse is outside the range */
-  gint mouse_x;
-  gint mouse_y;
+  bint mouse_x;
+  bint mouse_y;
 
   /* "grabbed" mouse location, OUTSIDE for no grab */
   MouseLocation grab_location;
-  guint grab_button : 8; /* 0 if none */
+  buint grab_button : 8; /* 0 if none */
 
   /* Stepper sensitivity */
-  guint lower_sensitive : 1;
-  guint upper_sensitive : 1;
+  buint lower_sensitive : 1;
+  buint upper_sensitive : 1;
 
   /* Fill level */
-  guint show_fill_level : 1;
-  guint restrict_to_fill_level : 1;
+  buint show_fill_level : 1;
+  buint restrict_to_fill_level : 1;
 
   BtkSensitivityType lower_sensitivity;
   BtkSensitivityType upper_sensitivity;
-  guint repaint_id;
+  buint repaint_id;
 
-  gdouble fill_level;
+  bdouble fill_level;
 
   GQuark slider_detail_quark;
   GQuark stepper_detail_quark[4];
 
-  gdouble *marks;
-  gint *mark_pos;
-  gint n_marks;
-  gboolean recalc_marks;
+  bdouble *marks;
+  bint *mark_pos;
+  bint n_marks;
+  bboolean recalc_marks;
 };
 
 
 static void btk_range_set_property   (BObject          *object,
-                                      guint             prop_id,
+                                      buint             prop_id,
                                       const BValue     *value,
                                       BParamSpec       *pspec);
 static void btk_range_get_property   (BObject          *object,
-                                      guint             prop_id,
+                                      buint             prop_id,
                                       BValue           *value,
                                       BParamSpec       *pspec);
 static void btk_range_destroy        (BtkObject        *object);
@@ -153,31 +153,31 @@ static void btk_range_realize        (BtkWidget        *widget);
 static void btk_range_unrealize      (BtkWidget        *widget);
 static void btk_range_map            (BtkWidget        *widget);
 static void btk_range_unmap          (BtkWidget        *widget);
-static gboolean btk_range_expose         (BtkWidget        *widget,
+static bboolean btk_range_expose         (BtkWidget        *widget,
                                       BdkEventExpose   *event);
-static gboolean btk_range_button_press   (BtkWidget        *widget,
+static bboolean btk_range_button_press   (BtkWidget        *widget,
                                       BdkEventButton   *event);
-static gboolean btk_range_button_release (BtkWidget        *widget,
+static bboolean btk_range_button_release (BtkWidget        *widget,
                                       BdkEventButton   *event);
-static gboolean btk_range_motion_notify  (BtkWidget        *widget,
+static bboolean btk_range_motion_notify  (BtkWidget        *widget,
                                       BdkEventMotion   *event);
-static gboolean btk_range_enter_notify   (BtkWidget        *widget,
+static bboolean btk_range_enter_notify   (BtkWidget        *widget,
                                       BdkEventCrossing *event);
-static gboolean btk_range_leave_notify   (BtkWidget        *widget,
+static bboolean btk_range_leave_notify   (BtkWidget        *widget,
                                       BdkEventCrossing *event);
-static gboolean btk_range_grab_broken (BtkWidget          *widget,
+static bboolean btk_range_grab_broken (BtkWidget          *widget,
 				       BdkEventGrabBroken *event);
 static void btk_range_grab_notify    (BtkWidget          *widget,
-				      gboolean            was_grabbed);
+				      bboolean            was_grabbed);
 static void btk_range_state_changed  (BtkWidget          *widget,
 				      BtkStateType        previous_state);
-static gboolean btk_range_scroll_event   (BtkWidget        *widget,
+static bboolean btk_range_scroll_event   (BtkWidget        *widget,
                                       BdkEventScroll   *event);
 static void btk_range_style_set      (BtkWidget        *widget,
                                       BtkStyle         *previous_style);
 static void update_slider_position   (BtkRange	       *range,
-				      gint              mouse_x,
-				      gint              mouse_y);
+				      bint              mouse_x,
+				      bint              mouse_y);
 static void stop_scrolling           (BtkRange         *range);
 
 /* Range methods */
@@ -186,37 +186,37 @@ static void btk_range_move_slider              (BtkRange         *range,
                                                 BtkScrollType     scroll);
 
 /* Internals */
-static gboolean      btk_range_scroll                   (BtkRange      *range,
+static bboolean      btk_range_scroll                   (BtkRange      *range,
                                                          BtkScrollType  scroll);
-static gboolean      btk_range_update_mouse_location    (BtkRange      *range);
+static bboolean      btk_range_update_mouse_location    (BtkRange      *range);
 static void          btk_range_calc_layout              (BtkRange      *range,
-							 gdouble	adjustment_value);
+							 bdouble	adjustment_value);
 static void          btk_range_calc_marks               (BtkRange      *range);
 static void          btk_range_get_props                (BtkRange      *range,
-                                                         gint          *slider_width,
-                                                         gint          *stepper_size,
-                                                         gint          *focus_width,
-                                                         gint          *trough_border,
-                                                         gint          *stepper_spacing,
-                                                         gboolean      *trough_under_steppers,
-							 gint          *arrow_displacement_x,
-							 gint	       *arrow_displacement_y);
+                                                         bint          *slider_width,
+                                                         bint          *stepper_size,
+                                                         bint          *focus_width,
+                                                         bint          *trough_border,
+                                                         bint          *stepper_spacing,
+                                                         bboolean      *trough_under_steppers,
+							 bint          *arrow_displacement_x,
+							 bint	       *arrow_displacement_y);
 static void          btk_range_calc_request             (BtkRange      *range,
-                                                         gint           slider_width,
-                                                         gint           stepper_size,
-                                                         gint           focus_width,
-                                                         gint           trough_border,
-                                                         gint           stepper_spacing,
+                                                         bint           slider_width,
+                                                         bint           stepper_size,
+                                                         bint           focus_width,
+                                                         bint           trough_border,
+                                                         bint           stepper_spacing,
                                                          BdkRectangle  *range_rect,
                                                          BtkBorder     *border,
-                                                         gint          *n_steppers_p,
-                                                         gboolean      *has_steppers_ab,
-                                                         gboolean      *has_steppers_cd,
-                                                         gint          *slider_length_p);
+                                                         bint          *n_steppers_p,
+                                                         bboolean      *has_steppers_ab,
+                                                         bboolean      *has_steppers_cd,
+                                                         bint          *slider_length_p);
 static void          btk_range_adjustment_value_changed (BtkAdjustment *adjustment,
-                                                         gpointer       data);
+                                                         bpointer       data);
 static void          btk_range_adjustment_changed       (BtkAdjustment *adjustment,
-                                                         gpointer       data);
+                                                         bpointer       data);
 static void          btk_range_add_step_timer           (BtkRange      *range,
                                                          BtkScrollType  step);
 static void          btk_range_remove_step_timer        (BtkRange      *range);
@@ -224,11 +224,11 @@ static void          btk_range_reset_update_timer       (BtkRange      *range);
 static void          btk_range_remove_update_timer      (BtkRange      *range);
 static BdkRectangle* get_area                           (BtkRange      *range,
                                                          MouseLocation  location);
-static gboolean      btk_range_real_change_value        (BtkRange      *range,
+static bboolean      btk_range_real_change_value        (BtkRange      *range,
                                                          BtkScrollType  scroll,
-                                                         gdouble        value);
+                                                         bdouble        value);
 static void          btk_range_update_value             (BtkRange      *range);
-static gboolean      btk_range_key_press                (BtkWidget     *range,
+static bboolean      btk_range_key_press                (BtkWidget     *range,
 							 BdkEventKey   *event);
 
 
@@ -236,7 +236,7 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkRange, btk_range, BTK_TYPE_WIDGET,
                                   G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                          NULL))
 
-static guint signals[LAST_SIGNAL];
+static buint signals[LAST_SIGNAL];
 
 
 static void
@@ -453,9 +453,9 @@ btk_range_class_init (BtkRangeClass *class)
                                    g_param_spec_double ("fill-level",
 							P_("Fill Level"),
 							P_("The fill level."),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
-                                                        G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
+                                                        B_MAXDOUBLE,
                                                         BTK_PARAM_READWRITE));
 
   /**
@@ -472,7 +472,7 @@ btk_range_class_init (BtkRangeClass *class)
                                                      P_("Round Digits"),
                                                      P_("The number of digits to round the value to."),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -481,7 +481,7 @@ btk_range_class_init (BtkRangeClass *class)
 							     P_("Slider Width"),
 							     P_("Width of scrollbar or scale thumb"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     14,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
@@ -489,7 +489,7 @@ btk_range_class_init (BtkRangeClass *class)
                                                              P_("Trough Border"),
                                                              P_("Spacing between thumb/steppers and outer trough bevel"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              1,
                                                              BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
@@ -497,7 +497,7 @@ btk_range_class_init (BtkRangeClass *class)
 							     P_("Stepper Size"),
 							     P_("Length of step buttons at ends"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     14,
 							     BTK_PARAM_READABLE));
   /**
@@ -513,23 +513,23 @@ btk_range_class_init (BtkRangeClass *class)
 							     P_("Stepper Spacing"),
 							     P_("Spacing between step buttons and thumb"),
                                                              0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("arrow-displacement-x",
 							     P_("Arrow X Displacement"),
 							     P_("How far in the x direction to move the arrow when the button is depressed"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("arrow-displacement-y",
 							     P_("Arrow Y Displacement"),
 							     P_("How far in the y direction to move the arrow when the button is depressed"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
 
@@ -618,7 +618,7 @@ btk_range_class_init (BtkRangeClass *class)
 
 static void
 btk_range_set_property (BObject      *object,
-			guint         prop_id,
+			buint         prop_id,
 			const BValue *value,
 			BParamSpec   *pspec)
 {
@@ -672,7 +672,7 @@ btk_range_set_property (BObject      *object,
 
 static void
 btk_range_get_property (BObject      *object,
-			guint         prop_id,
+			buint         prop_id,
 			BValue       *value,
 			BParamSpec   *pspec)
 {
@@ -745,7 +745,7 @@ btk_range_init (BtkRange *range)
   range->layout->upper_sensitive = TRUE;
   range->layout->show_fill_level = FALSE;
   range->layout->restrict_to_fill_level = TRUE;
-  range->layout->fill_level = G_MAXDOUBLE;
+  range->layout->fill_level = B_MAXDOUBLE;
   range->timer = NULL;  
 }
 
@@ -884,7 +884,7 @@ btk_range_set_adjustment (BtkRange      *range,
  **/
 void
 btk_range_set_inverted (BtkRange *range,
-                        gboolean  setting)
+                        bboolean  setting)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
   
@@ -906,7 +906,7 @@ btk_range_set_inverted (BtkRange *range,
  * 
  * Return value: %TRUE if the range is inverted
  **/
-gboolean
+bboolean
 btk_range_get_inverted (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -928,7 +928,7 @@ btk_range_get_inverted (BtkRange *range)
  **/
 void
 btk_range_set_flippable (BtkRange *range,
-                         gboolean  flippable)
+                         bboolean  flippable)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -952,7 +952,7 @@ btk_range_set_flippable (BtkRange *range,
  *
  * Since: 2.18
  **/
-gboolean
+bboolean
 btk_range_get_flippable (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -974,7 +974,7 @@ btk_range_get_flippable (BtkRange *range)
  **/
 void
 btk_range_set_slider_size_fixed (BtkRange *range,
-                                 gboolean  size_fixed)
+                                 bboolean  size_fixed)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1000,7 +1000,7 @@ btk_range_set_slider_size_fixed (BtkRange *range,
  *
  * Since: 2.20
  **/
-gboolean
+bboolean
 btk_range_get_slider_size_fixed (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -1021,7 +1021,7 @@ btk_range_get_slider_size_fixed (BtkRange *range)
  **/
 void
 btk_range_set_min_slider_size (BtkRange *range,
-                               gboolean  min_size)
+                               bboolean  min_size)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (min_size > 0);
@@ -1048,7 +1048,7 @@ btk_range_set_min_slider_size (BtkRange *range,
  *
  * Since: 2.20
  **/
-gint
+bint
 btk_range_get_min_slider_size (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -1097,8 +1097,8 @@ btk_range_get_range_rect (BtkRange     *range,
  **/
 void
 btk_range_get_slider_range (BtkRange *range,
-                            gint     *slider_start,
-                            gint     *slider_end)
+                            bint     *slider_start,
+                            bint     *slider_end)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1218,8 +1218,8 @@ btk_range_get_upper_stepper_sensitivity (BtkRange *range)
  **/
 void
 btk_range_set_increments (BtkRange *range,
-                          gdouble   step,
-                          gdouble   page)
+                          bdouble   step,
+                          bdouble   page)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1241,10 +1241,10 @@ btk_range_set_increments (BtkRange *range,
  **/
 void
 btk_range_set_range (BtkRange *range,
-                     gdouble   min,
-                     gdouble   max)
+                     bdouble   min,
+                     bdouble   max)
 {
-  gdouble value;
+  bdouble value;
   
   g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (min < max);
@@ -1277,7 +1277,7 @@ btk_range_set_range (BtkRange *range,
  **/
 void
 btk_range_set_value (BtkRange *range,
-                     gdouble   value)
+                     bdouble   value)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1299,7 +1299,7 @@ btk_range_set_value (BtkRange *range,
  * 
  * Return value: current value of the range.
  **/
-gdouble
+bdouble
 btk_range_get_value (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), 0.0);
@@ -1320,7 +1320,7 @@ btk_range_get_value (BtkRange *range)
  **/
 void
 btk_range_set_show_fill_level (BtkRange *range,
-                               gboolean  show_fill_level)
+                               bboolean  show_fill_level)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1344,7 +1344,7 @@ btk_range_set_show_fill_level (BtkRange *range,
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_range_get_show_fill_level (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -1365,7 +1365,7 @@ btk_range_get_show_fill_level (BtkRange *range)
  **/
 void
 btk_range_set_restrict_to_fill_level (BtkRange *range,
-                                      gboolean  restrict_to_fill_level)
+                                      bboolean  restrict_to_fill_level)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1390,7 +1390,7 @@ btk_range_set_restrict_to_fill_level (BtkRange *range,
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_range_get_restrict_to_fill_level (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
@@ -1425,7 +1425,7 @@ btk_range_get_restrict_to_fill_level (BtkRange *range)
  **/
 void
 btk_range_set_fill_level (BtkRange *range,
-                          gdouble   fill_level)
+                          bdouble   fill_level)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
 
@@ -1452,7 +1452,7 @@ btk_range_set_fill_level (BtkRange *range,
  *
  * Since: 2.12
  **/
-gdouble
+bdouble
 btk_range_get_fill_level (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), 0.0);
@@ -1460,7 +1460,7 @@ btk_range_get_fill_level (BtkRange *range)
   return range->layout->fill_level;
 }
 
-static gboolean
+static bboolean
 should_invert (BtkRange *range)
 {  
   if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
@@ -1513,7 +1513,7 @@ btk_range_size_request (BtkWidget      *widget,
                         BtkRequisition *requisition)
 {
   BtkRange *range;
-  gint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
+  bint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
   BdkRectangle range_rect;
   BtkBorder border;
   
@@ -1562,7 +1562,7 @@ btk_range_realize (BtkWidget *widget)
 {
   BtkRange *range;
   BdkWindowAttr attributes;
-  gint attributes_mask;  
+  bint attributes_mask;  
 
   range = BTK_RANGE (widget);
 
@@ -1633,10 +1633,10 @@ btk_range_unmap (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_range_parent_class)->unmap (widget);
 }
 
-static const gchar *
+static const bchar *
 btk_range_get_slider_detail (BtkRange *range)
 {
-  const gchar *slider_detail;
+  const bchar *slider_detail;
 
   if (range->layout->slider_detail_quark)
     return g_quark_to_string (range->layout->slider_detail_quark);
@@ -1645,7 +1645,7 @@ btk_range_get_slider_detail (BtkRange *range)
 
   if (slider_detail && slider_detail[0] == 'X')
     {
-      gchar *detail = g_strdup (slider_detail);
+      bchar *detail = g_strdup (slider_detail);
 
       detail[0] = range->orientation == BTK_ORIENTATION_HORIZONTAL ? 'h' : 'v';
 
@@ -1659,13 +1659,13 @@ btk_range_get_slider_detail (BtkRange *range)
   return slider_detail;
 }
 
-static const gchar *
+static const bchar *
 btk_range_get_stepper_detail (BtkRange *range,
                               Stepper   stepper)
 {
-  const gchar *stepper_detail;
-  gboolean need_orientation;
-  gboolean need_position;
+  const bchar *stepper_detail;
+  bboolean need_orientation;
+  bboolean need_position;
 
   if (range->layout->stepper_detail_quark[stepper])
     return g_quark_to_string (range->layout->stepper_detail_quark[stepper]);
@@ -1680,8 +1680,8 @@ btk_range_get_stepper_detail (BtkRange *range,
 
   if (need_orientation || need_position)
     {
-      gchar *detail;
-      const gchar *position = NULL;
+      bchar *detail;
+      const bchar *position = NULL;
 
       if (need_position)
         {
@@ -1729,21 +1729,21 @@ static void
 draw_stepper (BtkRange     *range,
               Stepper       stepper,
               BtkArrowType  arrow_type,
-              gboolean      clicked,
-              gboolean      prelighted,
+              bboolean      clicked,
+              bboolean      prelighted,
               BdkRectangle *area)
 {
   BtkStateType state_type;
   BtkShadowType shadow_type;
   BdkRectangle intersection;
   BtkWidget *widget = BTK_WIDGET (range);
-  gfloat arrow_scaling;
+  bfloat arrow_scaling;
   BdkRectangle *rect;
-  gint arrow_x;
-  gint arrow_y;
-  gint arrow_width;
-  gint arrow_height;
-  gboolean arrow_sensitive = TRUE;
+  bint arrow_x;
+  bint arrow_y;
+  bint arrow_width;
+  bint arrow_height;
+  bboolean arrow_sensitive = TRUE;
 
   switch (stepper)
     {
@@ -1815,8 +1815,8 @@ draw_stepper (BtkRange     *range,
 
   if (clicked && arrow_sensitive)
     {
-      gint arrow_displacement_x;
-      gint arrow_displacement_y;
+      bint arrow_displacement_x;
+      bint arrow_displacement_y;
 
       btk_range_get_props (BTK_RANGE (widget),
                            NULL, NULL, NULL, NULL, NULL, NULL,
@@ -1836,19 +1836,19 @@ draw_stepper (BtkRange     *range,
 		   arrow_x, arrow_y, arrow_width, arrow_height);
 }
 
-static gboolean
+static bboolean
 btk_range_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
   BtkRange *range = BTK_RANGE (widget);
-  gboolean sensitive;
+  bboolean sensitive;
   BtkStateType state;
   BtkShadowType shadow_type;
   BdkRectangle expose_area;	/* Relative to widget->allocation */
   BdkRectangle area;
-  gint focus_line_width = 0;
-  gint focus_padding = 0;
-  gboolean touchscreen;
+  bint focus_line_width = 0;
+  bint focus_padding = 0;
+  bboolean touchscreen;
 
   g_object_get (btk_widget_get_settings (widget),
                 "btk-touchscreen-mode", &touchscreen,
@@ -1883,18 +1883,18 @@ btk_range_expose (BtkWidget      *widget,
   if (bdk_rectangle_intersect (&expose_area, &range->range_rect,
                                &area))
     {
-      gint     x      = (widget->allocation.x + range->range_rect.x +
+      bint     x      = (widget->allocation.x + range->range_rect.x +
                          focus_line_width + focus_padding);
-      gint     y      = (widget->allocation.y + range->range_rect.y +
+      bint     y      = (widget->allocation.y + range->range_rect.y +
                          focus_line_width + focus_padding);
-      gint     width  = (range->range_rect.width -
+      bint     width  = (range->range_rect.width -
                          2 * (focus_line_width + focus_padding));
-      gint     height = (range->range_rect.height -
+      bint     height = (range->range_rect.height -
                          2 * (focus_line_width + focus_padding));
-      gboolean trough_side_details;
-      gboolean trough_under_steppers;
-      gint     stepper_size;
-      gint     stepper_spacing;
+      bboolean trough_side_details;
+      bboolean trough_under_steppers;
+      bint     stepper_size;
+      bint     stepper_spacing;
 
       area.x += widget->allocation.x;
       area.y += widget->allocation.y;
@@ -1911,8 +1911,8 @@ btk_range_expose (BtkWidget      *widget,
 
       if (! trough_under_steppers)
         {
-          gint offset  = 0;
-          gint shorter = 0;
+          bint offset  = 0;
+          bint shorter = 0;
 
           if (range->has_stepper_a)
             offset += stepper_size;
@@ -1963,8 +1963,8 @@ btk_range_expose (BtkWidget      *widget,
         }
       else
         {
-	  gint trough_change_pos_x = width;
-	  gint trough_change_pos_y = height;
+	  bint trough_change_pos_x = width;
+	  bint trough_change_pos_y = height;
 
 	  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
 	    trough_change_pos_x = (range->layout->slider.x +
@@ -2004,12 +2004,12 @@ btk_range_expose (BtkWidget      *widget,
           range->adjustment->upper - range->adjustment->page_size -
           range->adjustment->lower != 0)
 	{
-          gdouble  fill_level  = range->layout->fill_level;
-	  gint     fill_x      = x;
-	  gint     fill_y      = y;
-	  gint     fill_width  = width;
-	  gint     fill_height = height;
-	  gchar   *fill_detail;
+          bdouble  fill_level  = range->layout->fill_level;
+	  bint     fill_x      = x;
+	  bint     fill_y      = y;
+	  bint     fill_width  = width;
+	  bint     fill_height = height;
+	  bchar   *fill_detail;
 
           fill_level = CLAMP (fill_level, range->adjustment->lower,
                               range->adjustment->upper -
@@ -2078,7 +2078,7 @@ btk_range_expose (BtkWidget      *widget,
 
   if (range->layout->grab_location == MOUSE_SLIDER)
     {
-      gboolean activate_slider;
+      bboolean activate_slider;
 
       btk_widget_style_get (widget, "activate-slider", &activate_slider, NULL);
 
@@ -2144,7 +2144,7 @@ btk_range_expose (BtkWidget      *widget,
 static void
 range_grab_add (BtkRange      *range,
                 MouseLocation  location,
-                gint           button)
+                bint           button)
 {
   /* we don't actually btk_grab, since a button is down */
 
@@ -2176,7 +2176,7 @@ range_grab_remove (BtkRange *range)
 static BtkScrollType
 range_get_scroll_for_grab (BtkRange      *range)
 { 
-  gboolean invert;
+  bboolean invert;
 
   invert = should_invert (range);
   switch (range->layout->grab_location)
@@ -2234,17 +2234,17 @@ range_get_scroll_for_grab (BtkRange      *range)
   return BTK_SCROLL_NONE;
 }
 
-static gdouble
+static bdouble
 coord_to_value (BtkRange *range,
-                gint      coord)
+                bint      coord)
 {
-  gdouble frac;
-  gdouble value;
-  gint    trough_length;
-  gint    trough_start;
-  gint    slider_length;
-  gint    trough_border;
-  gint    trough_under_steppers;
+  bdouble frac;
+  bdouble value;
+  bint    trough_length;
+  bint    trough_start;
+  bint    slider_length;
+  bint    trough_border;
+  bint    trough_under_steppers;
 
   if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
@@ -2272,7 +2272,7 @@ coord_to_value (BtkRange *range,
     frac = 1.0;
   else
     frac = (MAX (0, coord - trough_start) /
-            (gdouble) (trough_length - slider_length));
+            (bdouble) (trough_length - slider_length));
 
   if (should_invert (range))
     frac = 1.0 - frac;
@@ -2284,7 +2284,7 @@ coord_to_value (BtkRange *range,
   return value;
 }
 
-static gboolean
+static bboolean
 btk_range_key_press (BtkWidget   *widget,
 		     BdkEventKey *event)
 {
@@ -2305,13 +2305,13 @@ btk_range_key_press (BtkWidget   *widget,
   return BTK_WIDGET_CLASS (btk_range_parent_class)->key_press_event (widget, event);
 }
 
-static gint
+static bint
 btk_range_button_press (BtkWidget      *widget,
 			BdkEventButton *event)
 {
   BtkRange *range = BTK_RANGE (widget);
-  gboolean primary_warps;
-  gint page_increment_button, warp_button;
+  bboolean primary_warps;
+  bint page_increment_button, warp_button;
   
   if (!btk_widget_has_focus (widget))
     btk_widget_grab_focus (widget);
@@ -2345,7 +2345,7 @@ btk_range_button_press (BtkWidget      *widget,
       /* this button steps by page increment, as with button 2 on a stepper
        */
       BtkScrollType scroll;
-      gdouble click_value;
+      bdouble click_value;
       
       click_value = coord_to_value (range,
                                     range->orientation == BTK_ORIENTATION_VERTICAL ?
@@ -2388,8 +2388,8 @@ btk_range_button_press (BtkWidget      *widget,
             event->button == warp_button) ||
            range->layout->mouse_location == MOUSE_SLIDER)
     {
-      gboolean need_value_update = FALSE;
-      gboolean activate_slider;
+      bboolean need_value_update = FALSE;
+      bboolean activate_slider;
 
       /* Any button can be used to drag the slider, but you can start
        * dragging the slider with a trough click using the warp button;
@@ -2397,7 +2397,7 @@ btk_range_button_press (BtkWidget      *widget,
        */
       if (range->layout->mouse_location != MOUSE_SLIDER)
         {
-          gdouble slider_low_value, slider_high_value, new_value;
+          bdouble slider_low_value, slider_high_value, new_value;
           
           slider_high_value =
             coord_to_value (range,
@@ -2457,17 +2457,17 @@ btk_range_button_press (BtkWidget      *widget,
 /* During a slide, move the slider as required given new mouse position */
 static void
 update_slider_position (BtkRange *range,
-                        gint      mouse_x,
-                        gint      mouse_y)
+                        bint      mouse_x,
+                        bint      mouse_y)
 {
-  gint delta;
-  gint c;
-  gdouble new_value;
-  gboolean handled;
-  gdouble next_value;
-  gdouble mark_value;
-  gdouble mark_delta;
-  gint i;
+  bint delta;
+  bint c;
+  bdouble new_value;
+  bboolean handled;
+  bdouble next_value;
+  bdouble mark_value;
+  bdouble mark_delta;
+  bint i;
 
   if (range->orientation == BTK_ORIENTATION_VERTICAL)
     delta = mouse_y - range->slide_initial_coordinate;
@@ -2507,7 +2507,7 @@ stop_scrolling (BtkRange *range)
   btk_range_update_value (range);
 }
 
-static gboolean
+static bboolean
 btk_range_grab_broken (BtkWidget          *widget,
 		       BdkEventGrabBroken *event)
 {
@@ -2526,7 +2526,7 @@ btk_range_grab_broken (BtkWidget          *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_range_button_release (BtkWidget      *widget,
 			  BdkEventButton *event)
 {
@@ -2569,12 +2569,12 @@ btk_range_button_release (BtkWidget      *widget,
  * 
  * Since: 2.4
  **/
-gdouble
+bdouble
 _btk_range_get_wheel_delta (BtkRange           *range,
 			    BdkScrollDirection  direction)
 {
   BtkAdjustment *adj = range->adjustment;
-  gdouble delta;
+  bdouble delta;
 
   if (BTK_IS_SCROLLBAR (range))
     delta = pow (adj->page_size, 2.0 / 3.0);
@@ -2591,7 +2591,7 @@ _btk_range_get_wheel_delta (BtkRange           *range,
   return delta;
 }
       
-static gboolean
+static bboolean
 btk_range_scroll_event (BtkWidget      *widget,
 			BdkEventScroll *event)
 {
@@ -2600,8 +2600,8 @@ btk_range_scroll_event (BtkWidget      *widget,
   if (btk_widget_get_realized (widget))
     {
       BtkAdjustment *adj = BTK_RANGE (range)->adjustment;
-      gdouble delta;
-      gboolean handled;
+      bdouble delta;
+      bboolean handled;
 
       delta = _btk_range_get_wheel_delta (range, event->direction);
 
@@ -2620,7 +2620,7 @@ btk_range_scroll_event (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_range_motion_notify (BtkWidget      *widget,
 			 BdkEventMotion *event)
 {
@@ -2643,7 +2643,7 @@ btk_range_motion_notify (BtkWidget      *widget,
   return range->layout->mouse_location != MOUSE_OUTSIDE;
 }
 
-static gboolean
+static bboolean
 btk_range_enter_notify (BtkWidget        *widget,
 			BdkEventCrossing *event)
 {
@@ -2658,7 +2658,7 @@ btk_range_enter_notify (BtkWidget        *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_range_leave_notify (BtkWidget        *widget,
 			BdkEventCrossing *event)
 {
@@ -2675,7 +2675,7 @@ btk_range_leave_notify (BtkWidget        *widget,
 
 static void
 btk_range_grab_notify (BtkWidget *widget,
-		       gboolean   was_grabbed)
+		       bboolean   was_grabbed)
 {
   if (!was_grabbed)
     stop_scrolling (BTK_RANGE (widget));
@@ -2697,7 +2697,7 @@ btk_range_state_changed (BtkWidget    *widget,
     if (rectangle1.height != rectangle2.height) return TRUE; \
   }
 
-static gboolean
+static bboolean
 layout_changed (BtkRangeLayout *layout1, 
 		BtkRangeLayout *layout2)
 {
@@ -2716,7 +2716,7 @@ layout_changed (BtkRangeLayout *layout1,
 
 static void
 btk_range_adjustment_changed (BtkAdjustment *adjustment,
-			      gpointer       data)
+			      bpointer       data)
 {
   BtkRange *range = BTK_RANGE (data);
   /* create a copy of the layout */
@@ -2739,8 +2739,8 @@ btk_range_adjustment_changed (BtkAdjustment *adjustment,
    */
 }
 
-static gboolean
-force_repaint (gpointer data)
+static bboolean
+force_repaint (bpointer data)
 {
   BtkRange *range = BTK_RANGE (data);
 
@@ -2753,7 +2753,7 @@ force_repaint (gpointer data)
 
 static void
 btk_range_adjustment_value_changed (BtkAdjustment *adjustment,
-				    gpointer       data)
+				    bpointer       data)
 {
   BtkRange *range = BTK_RANGE (data);
   /* create a copy of the layout */
@@ -2796,11 +2796,11 @@ btk_range_style_set (BtkWidget *widget,
 
 static void
 apply_marks (BtkRange *range, 
-             gdouble   oldval,
-             gdouble  *newval)
+             bdouble   oldval,
+             bdouble  *newval)
 {
-  gint i;
-  gdouble mark;
+  bint i;
+  bdouble mark;
 
   for (i = 0; i < range->layout->n_marks; i++)
     {
@@ -2817,8 +2817,8 @@ apply_marks (BtkRange *range,
 static void
 step_back (BtkRange *range)
 {
-  gdouble newval;
-  gboolean handled;
+  bdouble newval;
+  bboolean handled;
   
   newval = range->adjustment->value - range->adjustment->step_increment;
   apply_marks (range, range->adjustment->value, &newval);
@@ -2829,8 +2829,8 @@ step_back (BtkRange *range)
 static void
 step_forward (BtkRange *range)
 {
-  gdouble newval;
-  gboolean handled;
+  bdouble newval;
+  bboolean handled;
 
   newval = range->adjustment->value + range->adjustment->step_increment;
   apply_marks (range, range->adjustment->value, &newval);
@@ -2842,8 +2842,8 @@ step_forward (BtkRange *range)
 static void
 page_back (BtkRange *range)
 {
-  gdouble newval;
-  gboolean handled;
+  bdouble newval;
+  bboolean handled;
 
   newval = range->adjustment->value - range->adjustment->page_increment;
   apply_marks (range, range->adjustment->value, &newval);
@@ -2854,8 +2854,8 @@ page_back (BtkRange *range)
 static void
 page_forward (BtkRange *range)
 {
-  gdouble newval;
-  gboolean handled;
+  bdouble newval;
+  bboolean handled;
 
   newval = range->adjustment->value + range->adjustment->page_increment;
   apply_marks (range, range->adjustment->value, &newval);
@@ -2866,7 +2866,7 @@ page_forward (BtkRange *range)
 static void
 scroll_begin (BtkRange *range)
 {
-  gboolean handled;
+  bboolean handled;
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
                  BTK_SCROLL_START, range->adjustment->lower,
                  &handled);
@@ -2875,19 +2875,19 @@ scroll_begin (BtkRange *range)
 static void
 scroll_end (BtkRange *range)
 {
-  gdouble newval;
-  gboolean handled;
+  bdouble newval;
+  bboolean handled;
 
   newval = range->adjustment->upper - range->adjustment->page_size;
   g_signal_emit (range, signals[CHANGE_VALUE], 0, BTK_SCROLL_END, newval,
                  &handled);
 }
 
-static gboolean
+static bboolean
 btk_range_scroll (BtkRange     *range,
                   BtkScrollType scroll)
 {
-  gdouble old_value = range->adjustment->value;
+  bdouble old_value = range->adjustment->value;
 
   switch (scroll)
     {
@@ -2986,7 +2986,7 @@ static void
 btk_range_move_slider (BtkRange     *range,
                        BtkScrollType scroll)
 {
-  gboolean cursor_only;
+  bboolean cursor_only;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (range)),
                 "btk-keynav-cursor-only", &cursor_only,
@@ -3035,19 +3035,19 @@ btk_range_move_slider (BtkRange     *range,
 
 static void
 btk_range_get_props (BtkRange  *range,
-                     gint      *slider_width,
-                     gint      *stepper_size,
-                     gint      *focus_width,
-                     gint      *trough_border,
-                     gint      *stepper_spacing,
-                     gboolean  *trough_under_steppers,
-		     gint      *arrow_displacement_x,
-		     gint      *arrow_displacement_y)
+                     bint      *slider_width,
+                     bint      *stepper_size,
+                     bint      *focus_width,
+                     bint      *trough_border,
+                     bint      *stepper_spacing,
+                     bboolean  *trough_under_steppers,
+		     bint      *arrow_displacement_x,
+		     bint      *arrow_displacement_y)
 {
   BtkWidget *widget =  BTK_WIDGET (range);
-  gint tmp_slider_width, tmp_stepper_size, tmp_focus_width, tmp_trough_border;
-  gint tmp_stepper_spacing, tmp_trough_under_steppers;
-  gint tmp_arrow_displacement_x, tmp_arrow_displacement_y;
+  bint tmp_slider_width, tmp_stepper_size, tmp_focus_width, tmp_trough_border;
+  bint tmp_stepper_spacing, tmp_trough_under_steppers;
+  bint tmp_arrow_displacement_x, tmp_arrow_displacement_y;
   
   btk_widget_style_get (widget,
                         "slider-width", &tmp_slider_width,
@@ -3064,8 +3064,8 @@ btk_range_get_props (BtkRange  *range,
 
   if (btk_widget_get_can_focus (BTK_WIDGET (range)))
     {
-      gint focus_line_width;
-      gint focus_padding;
+      bint focus_line_width;
+      bint focus_padding;
       
       btk_widget_style_get (BTK_WIDGET (range),
 			    "focus-line-width", &focus_line_width,
@@ -3111,10 +3111,10 @@ btk_range_get_props (BtkRange  *range,
   (ycoord) <  ((rect).y + (rect).height))
 
 /* Update mouse location, return TRUE if it changes */
-static gboolean
+static bboolean
 btk_range_update_mouse_location (BtkRange *range)
 {
-  gint x, y;
+  bint x, y;
   MouseLocation old;
   BtkWidget *widget;
 
@@ -3155,9 +3155,9 @@ static void
 clamp_dimensions (BtkWidget    *widget,
                   BdkRectangle *rect,
                   BtkBorder    *border,
-                  gboolean      border_expands_horizontally)
+                  bboolean      border_expands_horizontally)
 {
-  gint extra, shortage;
+  bint extra, shortage;
   
   g_return_if_fail (rect->x == 0);
   g_return_if_fail (rect->y == 0);  
@@ -3244,22 +3244,22 @@ clamp_dimensions (BtkWidget    *widget,
 
 static void
 btk_range_calc_request (BtkRange      *range,
-                        gint           slider_width,
-                        gint           stepper_size,
-                        gint           focus_width,
-                        gint           trough_border,
-                        gint           stepper_spacing,
+                        bint           slider_width,
+                        bint           stepper_size,
+                        bint           focus_width,
+                        bint           trough_border,
+                        bint           stepper_spacing,
                         BdkRectangle  *range_rect,
                         BtkBorder     *border,
-                        gint          *n_steppers_p,
-                        gboolean      *has_steppers_ab,
-                        gboolean      *has_steppers_cd,
-                        gint          *slider_length_p)
+                        bint          *n_steppers_p,
+                        bboolean      *has_steppers_ab,
+                        bboolean      *has_steppers_cd,
+                        bint          *slider_length_p)
 {
-  gint slider_length;
-  gint n_steppers;
-  gint n_steppers_ab;
-  gint n_steppers_cd;
+  bint slider_length;
+  bint n_steppers;
+  bint n_steppers_ab;
+  bint n_steppers_cd;
 
   border->left = 0;
   border->right = 0;
@@ -3329,15 +3329,15 @@ btk_range_calc_request (BtkRange      *range,
 
 static void
 btk_range_calc_layout (BtkRange *range,
-		       gdouble   adjustment_value)
+		       bdouble   adjustment_value)
 {
-  gint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
-  gint slider_length;
+  bint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
+  bint slider_length;
   BtkBorder border;
-  gint n_steppers;
-  gboolean has_steppers_ab;
-  gboolean has_steppers_cd;
-  gboolean trough_under_steppers;
+  bint n_steppers;
+  bboolean has_steppers_ab;
+  bboolean has_steppers_cd;
+  bboolean trough_under_steppers;
   BdkRectangle range_rect;
   BtkRangeLayout *layout;
   BtkWidget *widget;
@@ -3389,7 +3389,7 @@ btk_range_calc_layout (BtkRange *range,
   
   if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
-      gint stepper_width, stepper_height;
+      bint stepper_width, stepper_height;
 
       /* Steppers are the width of the range, and stepper_size in
        * height, or if we don't have enough height, divided equally
@@ -3488,7 +3488,7 @@ btk_range_calc_layout (BtkRange *range,
 
       /* Compute slider position/length */
       {
-        gint y, bottom, top, height;
+        bint y, bottom, top, height;
         
         top = layout->trough.y;
         bottom = layout->trough.y + layout->trough.height;
@@ -3536,7 +3536,7 @@ btk_range_calc_layout (BtkRange *range,
     }
   else
     {
-      gint stepper_width, stepper_height;
+      bint stepper_width, stepper_height;
 
       /* Steppers are the height of the range, and stepper_size in
        * width, or if we don't have enough width, divided equally
@@ -3637,7 +3637,7 @@ btk_range_calc_layout (BtkRange *range,
 
       /* Compute slider position/length */
       {
-        gint x, left, right, width;
+        bint x, left, right, width;
         
         left = layout->trough.x;
         right = layout->trough.x + layout->trough.width;
@@ -3750,7 +3750,7 @@ get_area (BtkRange     *range,
 static void
 btk_range_calc_marks (BtkRange *range)
 {
-  gint i;
+  bint i;
   
   if (!range->layout->recalc_marks)
     return;
@@ -3770,10 +3770,10 @@ btk_range_calc_marks (BtkRange *range)
   range->need_recalc = TRUE;
 }
 
-static gboolean
+static bboolean
 btk_range_real_change_value (BtkRange     *range,
                              BtkScrollType scroll,
-                             gdouble       value)
+                             bdouble       value)
 {
   /* potentially adjust the bounds _before we clamp */
   g_signal_emit (range, signals[ADJUST_BOUNDS], 0, value);
@@ -3787,8 +3787,8 @@ btk_range_real_change_value (BtkRange     *range,
 
   if (range->round_digits >= 0)
     {
-      gdouble power;
-      gint i;
+      bdouble power;
+      bint i;
 
       i = range->round_digits;
       power = 1;
@@ -3841,12 +3841,12 @@ btk_range_update_value (BtkRange *range)
 
 struct _BtkRangeStepTimer
 {
-  guint timeout_id;
+  buint timeout_id;
   BtkScrollType step;
 };
 
-static gboolean
-second_timeout (gpointer data)
+static bboolean
+second_timeout (bpointer data)
 {
   BtkRange *range;
 
@@ -3856,12 +3856,12 @@ second_timeout (gpointer data)
   return TRUE;
 }
 
-static gboolean
-initial_timeout (gpointer data)
+static bboolean
+initial_timeout (bpointer data)
 {
   BtkRange    *range;
   BtkSettings *settings;
-  guint        timeout;
+  buint        timeout;
 
   settings = btk_widget_get_settings (BTK_WIDGET (data));
   g_object_get (settings, "btk-timeout-repeat", &timeout, NULL);
@@ -3879,7 +3879,7 @@ btk_range_add_step_timer (BtkRange      *range,
                           BtkScrollType  step)
 {
   BtkSettings *settings;
-  guint        timeout;
+  buint        timeout;
 
   g_return_if_fail (range->timer == NULL);
   g_return_if_fail (step != BTK_SCROLL_NONE);
@@ -3911,8 +3911,8 @@ btk_range_remove_step_timer (BtkRange *range)
     }
 }
 
-static gboolean
-update_timeout (gpointer data)
+static bboolean
+update_timeout (bpointer data)
 {
   BtkRange *range;
 
@@ -3946,16 +3946,16 @@ btk_range_remove_update_timer (BtkRange *range)
 
 void
 _btk_range_set_stop_values (BtkRange *range,
-                            gdouble  *values,
-                            gint      n_values)
+                            bdouble  *values,
+                            bint      n_values)
 {
-  gint i;
+  bint i;
 
   g_free (range->layout->marks);
-  range->layout->marks = g_new (gdouble, n_values);
+  range->layout->marks = g_new (bdouble, n_values);
 
   g_free (range->layout->mark_pos);
-  range->layout->mark_pos = g_new (gint, n_values);
+  range->layout->mark_pos = g_new (bint, n_values);
 
   range->layout->n_marks = n_values;
 
@@ -3965,14 +3965,14 @@ _btk_range_set_stop_values (BtkRange *range,
   range->layout->recalc_marks = TRUE;
 }
 
-gint
+bint
 _btk_range_get_stop_positions (BtkRange  *range,
-                               gint     **values)
+                               bint     **values)
 {
   btk_range_calc_marks (range);
 
   if (values)
-    *values = g_memdup (range->layout->mark_pos, range->layout->n_marks * sizeof (gint));
+    *values = g_memdup (range->layout->mark_pos, range->layout->n_marks * sizeof (bint));
 
   return range->layout->n_marks;
 }
@@ -3989,7 +3989,7 @@ _btk_range_get_stop_positions (BtkRange  *range,
  */
 void
 btk_range_set_round_digits (BtkRange *range,
-                            gint      round_digits)
+                            bint      round_digits)
 {
   g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (round_digits >= -1);
@@ -4010,7 +4010,7 @@ btk_range_set_round_digits (BtkRange *range,
  *
  * Since: 2.24
  */
-gint
+bint
 btk_range_get_round_digits (BtkRange *range)
 {
   g_return_val_if_fail (BTK_IS_RANGE (range), -1);

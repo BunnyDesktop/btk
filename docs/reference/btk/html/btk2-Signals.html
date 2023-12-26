@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Signals.html#btk-signal-new" title="btk_signal_new ()">btk_signal_new</a> <span class="c_punctuation">()</span>
@@ -49,7 +49,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Signals.html#btk-signal-newv" title="btk_signal_newv ()">btk_signal_newv</a> <span class="c_punctuation">()</span>
@@ -139,7 +139,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gulong</span>
+<span class="returnvalue">bulong</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Signals.html#btk-signal-connect-full" title="btk_signal_connect_full ()">btk_signal_connect_full</a> <span class="c_punctuation">()</span>
@@ -265,28 +265,28 @@
 <a name="btk2-Signals.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="btk-signal-new"></a><h3>btk_signal_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-btk_signal_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+btk_signal_new (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Signals.html#BtkSignalRunType" title="enum BtkSignalRunType"><span class="type">BtkSignalRunType</span></a> signal_flags</code></em>,
                 <em class="parameter"><code><span class="type">GType</span> object_type</code></em>,
-                <em class="parameter"><code><span class="type">guint</span> function_offset</code></em>,
+                <em class="parameter"><code><span class="type">buint</span> function_offset</code></em>,
                 <em class="parameter"><code><span class="type">GSignalCMarshaller</span> marshaller</code></em>,
                 <em class="parameter"><code><span class="type">GType</span> return_val</code></em>,
-                <em class="parameter"><code><span class="type">guint</span> n_args</code></em>,
+                <em class="parameter"><code><span class="type">buint</span> n_args</code></em>,
                 <em class="parameter"><code>...</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_new</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-signal-newv"></a><h3>btk_signal_newv ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-btk_signal_newv (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+btk_signal_newv (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Signals.html#BtkSignalRunType" title="enum BtkSignalRunType"><span class="type">BtkSignalRunType</span></a> signal_flags</code></em>,
                  <em class="parameter"><code><span class="type">GType</span> object_type</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> function_offset</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> function_offset</code></em>,
                  <em class="parameter"><code><span class="type">GSignalCMarshaller</span> marshaller</code></em>,
                  <em class="parameter"><code><span class="type">GType</span> return_val</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> n_args</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> n_args</code></em>,
                  <em class="parameter"><code><span class="type">GType</span> *args</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_newv</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -307,7 +307,7 @@ btk_signal_newv (<em class="parameter"><code>const <span class="type">gchar</spa
 <a name="btk-signal-emit"></a><h3>btk_signal_emit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_emit (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> signal_id</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> signal_id</code></em>,
                  <em class="parameter"><code>...</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_emit</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -316,7 +316,7 @@ btk_signal_emit (<em class="parameter"><code><a class="link" href="BtkObject.htm
 <a name="btk-signal-emit-by-name"></a><h3>btk_signal_emit_by_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_emit_by_name (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                         <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                          <em class="parameter"><code>...</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_emit_by_name</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -325,7 +325,7 @@ btk_signal_emit_by_name (<em class="parameter"><code><a class="link" href="BtkOb
 <a name="btk-signal-emitv"></a><h3>btk_signal_emitv ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_emitv (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                  <em class="parameter"><code><span class="type">guint</span> signal_id</code></em>,
+                  <em class="parameter"><code><span class="type">buint</span> signal_id</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Types.html#BtkArg" title="struct BtkArg"><span class="type">BtkArg</span></a> *args</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_emitv</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -334,7 +334,7 @@ btk_signal_emitv (<em class="parameter"><code><a class="link" href="BtkObject.ht
 <a name="btk-signal-emitv-by-name"></a><h3>btk_signal_emitv_by_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_emitv_by_name (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                           <em class="parameter"><code><a class="link" href="btk2-Types.html#BtkArg" title="struct BtkArg"><span class="type">BtkArg</span></a> *args</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_emitv_by_name</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -349,7 +349,7 @@ btk_signal_emitv_by_name (<em class="parameter"><code><a class="link" href="BtkO
 <a name="btk-signal-emit-stop-by-name"></a><h3>btk_signal_emit_stop_by_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_emit_stop_by_name (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_emit_stop_by_name</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -379,15 +379,15 @@ btk_signal_emit_stop_by_name (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-signal-connect-full"></a><h3>btk_signal_connect_full ()</h3>
-<pre class="programlisting"><span class="returnvalue">gulong</span>
+<pre class="programlisting"><span class="returnvalue">bulong</span>
 btk_signal_connect_full (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                         <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                          <em class="parameter"><code><span class="type">GCallback</span> func</code></em>,
                          <em class="parameter"><code><a class="link" href="btk2-Types.html#BtkCallbackMarshal" title="BtkCallbackMarshal ()"><span class="type">BtkCallbackMarshal</span></a> unsupported</code></em>,
-                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                         <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                          <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy_func</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> object_signal</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> after</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bint</span> object_signal</code></em>,
+                         <em class="parameter"><code><span class="type">bint</span> after</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_connect_full</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -395,9 +395,9 @@ btk_signal_connect_full (<em class="parameter"><code><a class="link" href="BtkOb
 <a name="btk-signal-connect-while-alive"></a><h3>btk_signal_connect_while_alive ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_connect_while_alive (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                                 <em class="parameter"><code><span class="type">GCallback</span> func</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> func_data</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> func_data</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *alive_object</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_connect_while_alive</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -406,7 +406,7 @@ btk_signal_connect_while_alive (<em class="parameter"><code><a class="link" href
 <a name="btk-signal-connect-object-while-alive"></a><h3>btk_signal_connect_object_while_alive ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_signal_connect_object_while_alive (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                       <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                                        <em class="parameter"><code><span class="type">GCallback</span> func</code></em>,
                                        <em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *alive_object</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_signal_connect_object_while_alive</code> is deprecated and should not be used in newly-written code.</p></div>

@@ -64,10 +64,10 @@ enum {
 
 struct _BtkCellRendererSpinnerPrivate
 {
-  gboolean active;
-  guint pulse;
+  bboolean active;
+  buint pulse;
   BtkIconSize icon_size, old_icon_size;
-  gint size;
+  bint size;
 };
 
 #define BTK_CELL_RENDERER_SPINNER_GET_PRIVATE(object)        \
@@ -76,27 +76,27 @@ struct _BtkCellRendererSpinnerPrivate
                         BtkCellRendererSpinnerPrivate))
 
 static void btk_cell_renderer_spinner_get_property (BObject         *object,
-                                                    guint            param_id,
+                                                    buint            param_id,
                                                     BValue          *value,
                                                     BParamSpec      *pspec);
 static void btk_cell_renderer_spinner_set_property (BObject         *object,
-                                                    guint            param_id,
+                                                    buint            param_id,
                                                     const BValue    *value,
                                                     BParamSpec      *pspec);
 static void btk_cell_renderer_spinner_get_size     (BtkCellRenderer *cell,
                                                     BtkWidget       *widget,
                                                     BdkRectangle    *cell_area,
-                                                    gint            *x_offset,
-                                                    gint            *y_offset,
-                                                    gint            *width,
-                                                    gint            *height);
+                                                    bint            *x_offset,
+                                                    bint            *y_offset,
+                                                    bint            *width,
+                                                    bint            *height);
 static void btk_cell_renderer_spinner_render       (BtkCellRenderer *cell,
                                                     BdkWindow       *window,
                                                     BtkWidget       *widget,
                                                     BdkRectangle    *background_area,
                                                     BdkRectangle    *cell_area,
                                                     BdkRectangle    *expose_area,
-                                                    guint            flags);
+                                                    buint            flags);
 
 G_DEFINE_TYPE (BtkCellRendererSpinner, btk_cell_renderer_spinner, BTK_TYPE_CELL_RENDERER)
 
@@ -143,7 +143,7 @@ btk_cell_renderer_spinner_class_init (BtkCellRendererSpinnerClass *klass)
                                    g_param_spec_uint ("pulse",
                                                       P_("Pulse"),
                                                       P_("Pulse of the spinner"),
-                                                      0, G_MAXUINT, 0,
+                                                      0, B_MAXUINT, 0,
                                                       G_PARAM_READWRITE));
   /**
    * BtkCellRendererSpinner:size:
@@ -214,7 +214,7 @@ btk_cell_renderer_spinner_update_size (BtkCellRendererSpinner *cell,
 
 static void
 btk_cell_renderer_spinner_get_property (BObject    *object,
-                                        guint       param_id,
+                                        buint       param_id,
                                         BValue     *value,
                                         BParamSpec *pspec)
 {
@@ -239,7 +239,7 @@ btk_cell_renderer_spinner_get_property (BObject    *object,
 
 static void
 btk_cell_renderer_spinner_set_property (BObject      *object,
-                                        guint         param_id,
+                                        buint         param_id,
                                         const BValue *value,
                                         BParamSpec   *pspec)
 {
@@ -267,18 +267,18 @@ static void
 btk_cell_renderer_spinner_get_size (BtkCellRenderer *cellr,
                                     BtkWidget       *widget,
                                     BdkRectangle    *cell_area,
-                                    gint            *x_offset,
-                                    gint            *y_offset,
-                                    gint            *width,
-                                    gint            *height)
+                                    bint            *x_offset,
+                                    bint            *y_offset,
+                                    bint            *width,
+                                    bint            *height)
 {
   BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (cellr);
   BtkCellRendererSpinnerPrivate *priv = cell->priv;
-  gdouble align;
-  gint w, h;
-  gint xpad, ypad;
-  gfloat xalign, yalign;
-  gboolean rtl;
+  bdouble align;
+  bint w, h;
+  bint xpad, ypad;
+  bfloat xalign, yalign;
+  bboolean rtl;
 
   rtl = btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL;
 
@@ -328,14 +328,14 @@ btk_cell_renderer_spinner_render (BtkCellRenderer *cellr,
                                   BdkRectangle    *background_area,
                                   BdkRectangle    *cell_area,
                                   BdkRectangle    *expose_area,
-                                  guint            flags)
+                                  buint            flags)
 {
   BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (cellr);
   BtkCellRendererSpinnerPrivate *priv = cell->priv;
   BtkStateType state;
   BdkRectangle pix_rect;
   BdkRectangle draw_rect;
-  gint xpad, ypad;
+  bint xpad, ypad;
 
   if (!priv->active)
     return;

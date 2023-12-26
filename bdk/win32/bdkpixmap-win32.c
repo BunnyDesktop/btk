@@ -38,14 +38,14 @@
 #include <bairo-win32.h>
 
 static void bdk_pixmap_impl_win32_get_size   (BdkDrawable        *drawable,
-					      gint               *width,
-					      gint               *height);
+					      bint               *width,
+					      bint               *height);
 
 static void bdk_pixmap_impl_win32_init       (BdkPixmapImplWin32      *pixmap);
 static void bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass);
 static void bdk_pixmap_impl_win32_finalize   (BObject                 *object);
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 GType
 _bdk_pixmap_impl_win32_get_type (void)
@@ -142,8 +142,8 @@ bdk_pixmap_impl_win32_finalize (BObject *object)
 
 static void
 bdk_pixmap_impl_win32_get_size (BdkDrawable *drawable,
-				gint        *width,
-				gint        *height)
+				bint        *width,
+				bint        *height)
 {
   if (width)
     *width = BDK_PIXMAP_IMPL_WIN32 (drawable)->width;
@@ -153,9 +153,9 @@ bdk_pixmap_impl_win32_get_size (BdkDrawable *drawable,
 
 BdkPixmap*
 _bdk_pixmap_new (BdkDrawable *drawable,
-		gint         width,
-		gint         height,
-		gint         depth)
+		bint         width,
+		bint         height,
+		bint         depth)
 {
   HDC hdc;
   HBITMAP hbitmap;
@@ -163,10 +163,10 @@ _bdk_pixmap_new (BdkDrawable *drawable,
   BdkDrawableImplWin32 *drawable_impl;
   BdkPixmapImplWin32 *pixmap_impl;
   BdkColormap *cmap;
-  gint window_depth;
+  bint window_depth;
   bairo_surface_t *dib_surface, *image_surface;
   bairo_format_t format;
-  guchar *bits;
+  buchar *bits;
 
   g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail ((drawable != NULL) || (depth != -1), NULL);
@@ -381,14 +381,14 @@ static const unsigned char mirror[256] = {
 
 BdkPixmap *
 _bdk_bitmap_create_from_data (BdkDrawable *drawable,
-			     const gchar *data,
-			     gint         width,
-			     gint         height)
+			     const bchar *data,
+			     bint         width,
+			     bint         height)
 {
   BdkPixmap *pixmap;
   BdkPixmapImplWin32 *pixmap_impl;
-  gint i, j, data_bpl, pixmap_bpl;
-  guchar *bits;
+  bint i, j, data_bpl, pixmap_bpl;
+  buchar *bits;
 
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail ((width != 0) && (height != 0), NULL);
@@ -411,7 +411,7 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
   for (i = 0; i < height; i++)
     for (j = 0; j < data_bpl; j++)
-      bits[i*pixmap_bpl + j] = mirror[(guchar) data[i*data_bpl + j]];
+      bits[i*pixmap_bpl + j] = mirror[(buchar) data[i*data_bpl + j]];
 
   BDK_NOTE (PIXMAP, g_print ("bdk_bitmap_create_from_data: %dx%d=%p\n",
 			     width, height, BDK_PIXMAP_HBITMAP (pixmap)));
@@ -421,10 +421,10 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
 BdkPixmap*
 _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
-			     const gchar    *data,
-			     gint            width,
-			     gint            height,
-			     gint            depth,
+			     const bchar    *data,
+			     bint            width,
+			     bint            height,
+			     bint            depth,
 			     const BdkColor *fg,
 			     const BdkColor *bg)
 {
@@ -482,9 +482,9 @@ bdk_pixmap_foreign_new_for_display (BdkDisplay      *display,
 BdkPixmap *
 bdk_pixmap_foreign_new_for_screen (BdkScreen       *screen,
 				   BdkNativeWindow  anid,
-				   gint             width,
-				   gint             height,
-				   gint             depth)
+				   bint             width,
+				   bint             height,
+				   bint             depth)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 

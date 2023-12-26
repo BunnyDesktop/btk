@@ -36,14 +36,14 @@ struct _BtkRecentChooserWidgetPrivate
 #define BTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE(obj)	(BTK_RECENT_CHOOSER_WIDGET (obj)->priv)
 
 static BObject *btk_recent_chooser_widget_constructor  (GType                  type,
-						        guint                  n_params,
+						        buint                  n_params,
 						        BObjectConstructParam *params);
 static void     btk_recent_chooser_widget_set_property (BObject               *object,
-						        guint                  prop_id,
+						        buint                  prop_id,
 						        const BValue          *value,
 						        BParamSpec            *pspec);
 static void     btk_recent_chooser_widget_get_property (BObject               *object,
-						        guint                  prop_id,
+						        buint                  prop_id,
 						        BValue                *value,
 						        BParamSpec            *pspec);
 static void     btk_recent_chooser_widget_finalize     (BObject               *object);
@@ -80,7 +80,7 @@ btk_recent_chooser_widget_init (BtkRecentChooserWidget *widget)
 
 static BObject *
 btk_recent_chooser_widget_constructor (GType                  type,
-				       guint                  n_params,
+				       buint                  n_params,
 				       BObjectConstructParam *params)
 {
   BObject *object;
@@ -104,7 +104,7 @@ btk_recent_chooser_widget_constructor (GType                  type,
 
 static void
 btk_recent_chooser_widget_set_property (BObject      *object,
-				        guint         prop_id,
+				        buint         prop_id,
 				        const BValue *value,
 				        BParamSpec   *pspec)
 {
@@ -125,7 +125,7 @@ btk_recent_chooser_widget_set_property (BObject      *object,
 
 static void
 btk_recent_chooser_widget_get_property (BObject    *object,
-				        guint       prop_id,
+				        buint       prop_id,
 				        BValue     *value,
 				        BParamSpec *pspec)
 {

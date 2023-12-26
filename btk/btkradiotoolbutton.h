@@ -61,10 +61,10 @@ GType        btk_radio_tool_button_get_type       (void) B_GNUC_CONST;
 
 BtkToolItem *btk_radio_tool_button_new                        (GSList             *group);
 BtkToolItem *btk_radio_tool_button_new_from_stock             (GSList             *group,
-							       const gchar        *stock_id);
+							       const bchar        *stock_id);
 BtkToolItem *btk_radio_tool_button_new_from_widget            (BtkRadioToolButton *group);
 BtkToolItem *btk_radio_tool_button_new_with_stock_from_widget (BtkRadioToolButton *group,
-							       const gchar        *stock_id);
+							       const bchar        *stock_id);
 GSList *     btk_radio_tool_button_get_group                  (BtkRadioToolButton *button);
 void         btk_radio_tool_button_set_group                  (BtkRadioToolButton *button,
 							       GSList             *group);

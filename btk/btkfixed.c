@@ -45,19 +45,19 @@ static void btk_fixed_add           (BtkContainer     *container,
 static void btk_fixed_remove        (BtkContainer     *container,
 				     BtkWidget        *widget);
 static void btk_fixed_forall        (BtkContainer     *container,
-				     gboolean 	       include_internals,
+				     bboolean 	       include_internals,
 				     BtkCallback       callback,
-				     gpointer          callback_data);
+				     bpointer          callback_data);
 static GType btk_fixed_child_type   (BtkContainer     *container);
 
 static void btk_fixed_set_child_property (BtkContainer *container,
                                           BtkWidget    *child,
-                                          guint         property_id,
+                                          buint         property_id,
                                           const BValue *value,
                                           BParamSpec   *pspec);
 static void btk_fixed_get_child_property (BtkContainer *container,
                                           BtkWidget    *child,
-                                          guint         property_id,
+                                          buint         property_id,
                                           BValue       *value,
                                           BParamSpec   *pspec);
 
@@ -89,8 +89,8 @@ btk_fixed_class_init (BtkFixedClass *class)
 					      g_param_spec_int ("x",
                                                                 P_("X position"),
                                                                 P_("X position of child widget"),
-                                                                G_MININT,
-                                                                G_MAXINT,
+                                                                B_MININT,
+                                                                B_MAXINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE));
 
@@ -99,8 +99,8 @@ btk_fixed_class_init (BtkFixedClass *class)
 					      g_param_spec_int ("y",
                                                                 P_("Y position"),
                                                                 P_("Y position of child widget"),
-                                                                G_MININT,
-                                                                G_MAXINT,
+                                                                B_MININT,
+                                                                B_MAXINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE));
 }
@@ -149,8 +149,8 @@ get_child (BtkFixed  *fixed,
 void
 btk_fixed_put (BtkFixed       *fixed,
                BtkWidget      *widget,
-               gint            x,
-               gint            y)
+               bint            x,
+               bint            y)
 {
   BtkFixedChild *child_info;
 
@@ -171,10 +171,10 @@ btk_fixed_put (BtkFixed       *fixed,
 static void
 btk_fixed_move_internal (BtkFixed       *fixed,
                          BtkWidget      *widget,
-                         gboolean        change_x,
-                         gint            x,
-                         gboolean        change_y,
-                         gint            y)
+                         bboolean        change_x,
+                         bint            x,
+                         bboolean        change_y,
+                         bint            y)
 {
   BtkFixedChild *child;
   
@@ -210,8 +210,8 @@ btk_fixed_move_internal (BtkFixed       *fixed,
 void
 btk_fixed_move (BtkFixed       *fixed,
                 BtkWidget      *widget,
-                gint            x,
-                gint            y)
+                bint            x,
+                bint            y)
 {
   btk_fixed_move_internal (fixed, widget, TRUE, x, TRUE, y);
 }
@@ -219,7 +219,7 @@ btk_fixed_move (BtkFixed       *fixed,
 static void
 btk_fixed_set_child_property (BtkContainer    *container,
                               BtkWidget       *child,
-                              guint            property_id,
+                              buint            property_id,
                               const BValue    *value,
                               BParamSpec      *pspec)
 {
@@ -246,7 +246,7 @@ btk_fixed_set_child_property (BtkContainer    *container,
 static void
 btk_fixed_get_child_property (BtkContainer *container,
                               BtkWidget    *child,
-                              guint         property_id,
+                              buint         property_id,
                               BValue       *value,
                               BParamSpec   *pspec)
 {
@@ -272,7 +272,7 @@ static void
 btk_fixed_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   if (!btk_widget_get_has_window (widget))
     BTK_WIDGET_CLASS (btk_fixed_parent_class)->realize (widget);
@@ -347,7 +347,7 @@ btk_fixed_size_allocate (BtkWidget     *widget,
   BtkAllocation child_allocation;
   BtkRequisition child_requisition;
   GList *children;
-  guint16 border_width;
+  buint16 border_width;
 
   fixed = BTK_FIXED (widget);
 
@@ -416,7 +416,7 @@ btk_fixed_remove (BtkContainer *container,
 
       if (child->widget == widget)
 	{
-	  gboolean was_visible = btk_widget_get_visible (widget);
+	  bboolean was_visible = btk_widget_get_visible (widget);
 	  
 	  btk_widget_unparent (widget);
 
@@ -436,9 +436,9 @@ btk_fixed_remove (BtkContainer *container,
 
 static void
 btk_fixed_forall (BtkContainer *container,
-		  gboolean	include_internals,
+		  bboolean	include_internals,
 		  BtkCallback   callback,
-		  gpointer      callback_data)
+		  bpointer      callback_data)
 {
   BtkFixed *fixed = BTK_FIXED (container);
   BtkFixedChild *child;
@@ -472,7 +472,7 @@ btk_fixed_forall (BtkContainer *container,
  **/
 void
 btk_fixed_set_has_window (BtkFixed *fixed,
-			  gboolean  has_window)
+			  bboolean  has_window)
 {
   g_return_if_fail (BTK_IS_FIXED (fixed));
   g_return_if_fail (!btk_widget_get_realized (BTK_WIDGET (fixed)));
@@ -494,7 +494,7 @@ btk_fixed_set_has_window (BtkFixed *fixed,
  *
  * Deprecated: 2.20: Use btk_widget_get_has_window() instead.
  **/
-gboolean
+bboolean
 btk_fixed_get_has_window (BtkFixed *fixed)
 {
   g_return_val_if_fail (BTK_IS_FIXED (fixed), FALSE);

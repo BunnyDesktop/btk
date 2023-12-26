@@ -27,10 +27,10 @@ static void bail_menu_class_init (BailMenuClass *klass);
 static void bail_menu_init       (BailMenu      *accessible);
 
 static void	  bail_menu_real_initialize     (BatkObject *obj,
-                                                 gpointer  data);
+                                                 bpointer  data);
 
 static BatkObject* bail_menu_get_parent          (BatkObject *accessible);
-static gint       bail_menu_get_index_in_parent (BatkObject *accessible);
+static bint       bail_menu_get_index_in_parent (BatkObject *accessible);
 
 G_DEFINE_TYPE (BailMenu, bail_menu, BAIL_TYPE_MENU_SHELL)
 
@@ -51,14 +51,14 @@ bail_menu_init (BailMenu *accessible)
 
 static void
 bail_menu_real_initialize (BatkObject *obj,
-                           gpointer  data)
+                           bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_menu_parent_class)->initialize (obj, data);
 
   obj->role = BATK_ROLE_MENU;
 
   g_object_set_data (B_OBJECT (obj), "batk-component-layer",
-		     GINT_TO_POINTER (BATK_LAYER_POPUP));
+		     BINT_TO_POINTER (BATK_LAYER_POPUP));
 }
 
 static BatkObject*
@@ -104,7 +104,7 @@ bail_menu_get_parent (BatkObject *accessible)
   return parent;
 }
 
-static gint
+static bint
 bail_menu_get_index_in_parent (BatkObject *accessible)
 {
   BtkWidget *widget;

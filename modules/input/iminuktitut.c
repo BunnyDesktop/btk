@@ -71,7 +71,7 @@ inuktitut_register_type (GTypeModule *module)
   a, 'u', 0, 0, 0, b+2, \
   a, 'u','u',0, 0, b+3,
 
-static guint16 inuktitut_compose_seqs[] = {
+static buint16 inuktitut_compose_seqs[] = {
   'a', 0,   0,   0 ,  0,   0x140a,
   'a', 'a', 0,   0,   0,   0x140b,
 
@@ -156,7 +156,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "inuktitut") == 0)
     return g_object_new (type_inuktitut_translit, NULL);

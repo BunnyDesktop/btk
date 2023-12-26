@@ -31,7 +31,7 @@
 static void	 bail_progress_bar_class_init        (BailProgressBarClass *klass);
 static void	 bail_progress_bar_init              (BailProgressBar *bar);
 static void      bail_progress_bar_real_initialize   (BatkObject      *obj,
-                                                      gpointer       data);
+                                                      bpointer       data);
 static void      bail_progress_bar_finalize          (BObject        *object);
 
 
@@ -48,7 +48,7 @@ static void	 bail_progress_bar_get_maximum_value (BatkValue       *obj,
 static void	 bail_progress_bar_get_minimum_value (BatkValue       *obj,
                                            	      BValue         *value);
 static void      bail_progress_bar_value_changed     (BtkAdjustment  *adjustment,
-                                                      gpointer       data);
+                                                      bpointer       data);
 
 G_DEFINE_TYPE_WITH_CODE (BailProgressBar, bail_progress_bar, BAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
@@ -76,7 +76,7 @@ bail_progress_bar_init (BailProgressBar *bar)
 
 static void
 bail_progress_bar_real_initialize (BatkObject *obj,
-                                   gpointer  data)
+                                   bpointer  data)
 {
   BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (obj);
   BtkProgress *btk_progress;
@@ -213,7 +213,7 @@ bail_progress_bar_real_notify_btk (BObject           *obj,
 
 static void
 bail_progress_bar_value_changed (BtkAdjustment    *adjustment,
-                                 gpointer         data)
+                                 bpointer         data)
 {
   BailProgressBar *progress_bar;
 

@@ -58,7 +58,7 @@ struct _BtkPlug
   BtkWindowGroup *GSEAL (modality_group);
   GHashTable *GSEAL (grabbed_keys);
 
-  guint GSEAL (same_app) : 1;
+  buint GSEAL (same_app) : 1;
 };
 
 struct _BtkPlugClass
@@ -91,7 +91,7 @@ BtkWidget* btk_plug_new_for_display       (BdkDisplay      *display,
 
 BdkNativeWindow btk_plug_get_id (BtkPlug         *plug);
 
-gboolean  btk_plug_get_embedded (BtkPlug         *plug);
+bboolean  btk_plug_get_embedded (BtkPlug         *plug);
 
 BdkWindow *btk_plug_get_socket_window (BtkPlug   *plug);
 

@@ -47,9 +47,9 @@ static void btk_bin_add         (BtkContainer   *container,
 static void btk_bin_remove      (BtkContainer   *container,
 			         BtkWidget      *widget);
 static void btk_bin_forall      (BtkContainer   *container,
-				 gboolean	include_internals,
+				 bboolean	include_internals,
 				 BtkCallback     callback,
-				 gpointer        callback_data);
+				 bpointer        callback_data);
 static GType btk_bin_child_type (BtkContainer   *container);
 
 
@@ -113,7 +113,7 @@ btk_bin_remove (BtkContainer *container,
 		BtkWidget    *child)
 {
   BtkBin *bin = BTK_BIN (container);
-  gboolean widget_was_visible;
+  bboolean widget_was_visible;
 
   g_return_if_fail (bin->child == child);
 
@@ -131,9 +131,9 @@ btk_bin_remove (BtkContainer *container,
 
 static void
 btk_bin_forall (BtkContainer *container,
-		gboolean      include_internals,
+		bboolean      include_internals,
 		BtkCallback   callback,
-		gpointer      callback_data)
+		bpointer      callback_data)
 {
   BtkBin *bin = BTK_BIN (container);
 

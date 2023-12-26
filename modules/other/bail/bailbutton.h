@@ -42,18 +42,18 @@ struct _BailButton
   /*
    * Cache the widget state so we know the previous state when it changed
    */
-  gint8         state;
+  bint8         state;
 
-  gchar         *click_description;
-  gchar         *press_description;
-  gchar         *release_description;
-  gchar         *click_keybinding;
-  guint         action_idle_handler;
+  bchar         *click_description;
+  bchar         *press_description;
+  bchar         *release_description;
+  bchar         *click_keybinding;
+  buint         action_idle_handler;
   GQueue        *action_queue;
 
   BailTextUtil	 *textutil;
 
-  gboolean     default_is_press;
+  bboolean     default_is_press;
 };
 
 GType bail_button_get_type (void);

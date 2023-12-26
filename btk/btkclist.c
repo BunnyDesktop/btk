@@ -83,11 +83,11 @@
 
 /* returns the column index from a x pixel location in the 
  * context of the clist's hoffset */
-static inline gint
+static inline bint
 COLUMN_FROM_XPIXEL (BtkCList * clist,
-		    gint x)
+		    bint x)
 {
-  gint i, cx;
+  bint i, cx;
 
   for (i = 0; i < clist->columns; i++)
     if (clist->column[i].visible)
@@ -117,10 +117,10 @@ COLUMN_FROM_XPIXEL (BtkCList * clist,
 
 
 /* returns the total width of the list */
-static inline gint
+static inline bint
 LIST_WIDTH (BtkCList * clist) 
 {
-  gint last_column;
+  bint last_column;
 
   for (last_column = clist->columns - 1;
        last_column >= 0 && !clist->column[last_column].visible; last_column--);
@@ -188,7 +188,7 @@ enum {
 static void     btk_clist_class_init  (BtkCListClass         *klass);
 static void     btk_clist_init        (BtkCList              *clist);
 static BObject* btk_clist_constructor (GType                  type,
-				       guint                  n_construct_properties,
+				       buint                  n_construct_properties,
 				       BObjectConstructParam *construct_params);
 
 /* BtkObject Methods */
@@ -196,10 +196,10 @@ static void btk_clist_destroy  (BtkObject *object);
 static void btk_clist_finalize (BObject   *object);
 static void btk_clist_set_arg  (BtkObject *object,
 				BtkArg    *arg,
-				guint      arg_id);
+				buint      arg_id);
 static void btk_clist_get_arg  (BtkObject *object,
 				BtkArg    *arg,
-				guint      arg_id);
+				buint      arg_id);
 
 /* BtkWidget Methods */
 static void btk_clist_set_scroll_adjustments (BtkCList      *clist,
@@ -209,24 +209,24 @@ static void btk_clist_realize         (BtkWidget        *widget);
 static void btk_clist_unrealize       (BtkWidget        *widget);
 static void btk_clist_map             (BtkWidget        *widget);
 static void btk_clist_unmap           (BtkWidget        *widget);
-static gint btk_clist_expose          (BtkWidget        *widget,
+static bint btk_clist_expose          (BtkWidget        *widget,
 			               BdkEventExpose   *event);
-static gint btk_clist_button_press    (BtkWidget        *widget,
+static bint btk_clist_button_press    (BtkWidget        *widget,
 				       BdkEventButton   *event);
-static gint btk_clist_button_release  (BtkWidget        *widget,
+static bint btk_clist_button_release  (BtkWidget        *widget,
 				       BdkEventButton   *event);
-static gint btk_clist_motion          (BtkWidget        *widget, 
+static bint btk_clist_motion          (BtkWidget        *widget, 
 			               BdkEventMotion   *event);
 static void btk_clist_size_request    (BtkWidget        *widget,
 				       BtkRequisition   *requisition);
 static void btk_clist_size_allocate   (BtkWidget        *widget,
 				       BtkAllocation    *allocation);
 static void btk_clist_draw_focus      (BtkWidget        *widget);
-static gint btk_clist_focus_in        (BtkWidget        *widget,
+static bint btk_clist_focus_in        (BtkWidget        *widget,
 				       BdkEventFocus    *event);
-static gint btk_clist_focus_out       (BtkWidget        *widget,
+static bint btk_clist_focus_out       (BtkWidget        *widget,
 				       BdkEventFocus    *event);
-static gint btk_clist_focus           (BtkWidget        *widget,
+static bint btk_clist_focus           (BtkWidget        *widget,
 				       BtkDirectionType  direction);
 static void btk_clist_set_focus_child (BtkContainer     *container,
 				       BtkWidget        *child);
@@ -234,210 +234,210 @@ static void btk_clist_style_set       (BtkWidget        *widget,
 				       BtkStyle         *previous_style);
 static void btk_clist_drag_begin      (BtkWidget        *widget,
 				       BdkDragContext   *context);
-static gint btk_clist_drag_motion     (BtkWidget        *widget,
+static bint btk_clist_drag_motion     (BtkWidget        *widget,
 				       BdkDragContext   *context,
-				       gint              x,
-				       gint              y,
-				       guint             time);
+				       bint              x,
+				       bint              y,
+				       buint             time);
 static void btk_clist_drag_leave      (BtkWidget        *widget,
 				       BdkDragContext   *context,
-				       guint             time);
+				       buint             time);
 static void btk_clist_drag_end        (BtkWidget        *widget,
 				       BdkDragContext   *context);
-static gboolean btk_clist_drag_drop   (BtkWidget      *widget,
+static bboolean btk_clist_drag_drop   (BtkWidget      *widget,
 				       BdkDragContext *context,
-				       gint            x,
-				       gint            y,
-				       guint           time);
+				       bint            x,
+				       bint            y,
+				       buint           time);
 static void btk_clist_drag_data_get   (BtkWidget        *widget,
 				       BdkDragContext   *context,
 				       BtkSelectionData *selection_data,
-				       guint             info,
-				       guint             time);
+				       buint             info,
+				       buint             time);
 static void btk_clist_drag_data_received (BtkWidget        *widget,
 					  BdkDragContext   *context,
-					  gint              x,
-					  gint              y,
+					  bint              x,
+					  bint              y,
 					  BtkSelectionData *selection_data,
-					  guint             info,
-					  guint             time);
+					  buint             info,
+					  buint             time);
 
 /* BtkContainer Methods */
 static void btk_clist_forall          (BtkContainer  *container,
-			               gboolean       include_internals,
+			               bboolean       include_internals,
 			               BtkCallback    callback,
-			               gpointer       callback_data);
+			               bpointer       callback_data);
 
 /* Selection */
 static void toggle_row                (BtkCList      *clist,
-			               gint           row,
-			               gint           column,
+			               bint           row,
+			               bint           column,
 			               BdkEvent      *event);
 static void real_select_row           (BtkCList      *clist,
-			               gint           row,
-			               gint           column,
+			               bint           row,
+			               bint           column,
 			               BdkEvent      *event);
 static void real_unselect_row         (BtkCList      *clist,
-			               gint           row,
-			               gint           column,
+			               bint           row,
+			               bint           column,
 			               BdkEvent      *event);
 static void update_extended_selection (BtkCList      *clist,
-				       gint           row);
+				       bint           row);
 static GList *selection_find          (BtkCList      *clist,
-			               gint           row_number,
+			               bint           row_number,
 			               GList         *row_list_element);
 static void real_select_all           (BtkCList      *clist);
 static void real_unselect_all         (BtkCList      *clist);
 static void move_vertical             (BtkCList      *clist,
-			               gint           row,
-			               gfloat         align);
+			               bint           row,
+			               bfloat         align);
 static void move_horizontal           (BtkCList      *clist,
-			               gint           diff);
+			               bint           diff);
 static void real_undo_selection       (BtkCList      *clist);
 static void fake_unselect_all         (BtkCList      *clist,
-			               gint           row);
+			               bint           row);
 static void fake_toggle_row           (BtkCList      *clist,
-			               gint           row);
+			               bint           row);
 static void resync_selection          (BtkCList      *clist,
 			               BdkEvent      *event);
 static void sync_selection            (BtkCList      *clist,
-	                               gint           row,
-                                       gint           mode);
+	                               bint           row,
+                                       bint           mode);
 static void set_anchor                (BtkCList      *clist,
-			               gboolean       add_mode,
-			               gint           anchor,
-			               gint           undo_anchor);
+			               bboolean       add_mode,
+			               bint           anchor,
+			               bint           undo_anchor);
 static void start_selection           (BtkCList      *clist);
 static void end_selection             (BtkCList      *clist);
 static void toggle_add_mode           (BtkCList      *clist);
 static void toggle_focus_row          (BtkCList      *clist);
 static void extend_selection          (BtkCList      *clist,
 			               BtkScrollType  scroll_type,
-			               gfloat         position,
-			               gboolean       auto_start_selection);
-static gint get_selection_info        (BtkCList       *clist,
-				       gint            x,
-				       gint            y,
-				       gint           *row,
-				       gint           *column);
+			               bfloat         position,
+			               bboolean       auto_start_selection);
+static bint get_selection_info        (BtkCList       *clist,
+				       bint            x,
+				       bint            y,
+				       bint           *row,
+				       bint           *column);
 
 /* Scrolling */
 static void move_focus_row     (BtkCList      *clist,
 			        BtkScrollType  scroll_type,
-			        gfloat         position);
+			        bfloat         position);
 static void scroll_horizontal  (BtkCList      *clist,
 			        BtkScrollType  scroll_type,
-			        gfloat         position);
+			        bfloat         position);
 static void scroll_vertical    (BtkCList      *clist,
 			        BtkScrollType  scroll_type,
-			        gfloat         position);
+			        bfloat         position);
 static void move_horizontal    (BtkCList      *clist,
-				gint           diff);
+				bint           diff);
 static void move_vertical      (BtkCList      *clist,
-				gint           row,
-				gfloat         align);
-static gint horizontal_timeout (BtkCList      *clist);
-static gint vertical_timeout   (BtkCList      *clist);
+				bint           row,
+				bfloat         align);
+static bint horizontal_timeout (BtkCList      *clist);
+static bint vertical_timeout   (BtkCList      *clist);
 static void remove_grab        (BtkCList      *clist);
 
 
 /* Resize Columns */
 static void draw_xor_line             (BtkCList       *clist);
-static gint new_column_width          (BtkCList       *clist,
-			               gint            column,
-			               gint           *x);
+static bint new_column_width          (BtkCList       *clist,
+			               bint            column,
+			               bint           *x);
 static void column_auto_resize        (BtkCList       *clist,
 				       BtkCListRow    *clist_row,
-				       gint            column,
-				       gint            old_width);
+				       bint            column,
+				       bint            old_width);
 static void real_resize_column        (BtkCList       *clist,
-				       gint            column,
-				       gint            width);
+				       bint            column,
+				       bint            width);
 static void abort_column_resize       (BtkCList       *clist);
 static void cell_size_request         (BtkCList       *clist,
 			               BtkCListRow    *clist_row,
-			               gint            column,
+			               bint            column,
 				       BtkRequisition *requisition);
 
 /* Buttons */
 static void column_button_create      (BtkCList       *clist,
-				       gint            column);
+				       bint            column);
 static void column_button_clicked     (BtkWidget      *widget,
-				       gpointer        data);
+				       bpointer        data);
 
 /* Adjustments */
 static void adjust_adjustments        (BtkCList       *clist,
-				       gboolean        block_resize);
+				       bboolean        block_resize);
 static void vadjustment_changed       (BtkAdjustment  *adjustment,
-				       gpointer        data);
+				       bpointer        data);
 static void vadjustment_value_changed (BtkAdjustment  *adjustment,
-				       gpointer        data);
+				       bpointer        data);
 static void hadjustment_changed       (BtkAdjustment  *adjustment,
-				       gpointer        data);
+				       bpointer        data);
 static void hadjustment_value_changed (BtkAdjustment  *adjustment,
-				       gpointer        data);
+				       bpointer        data);
 
 /* Drawing */
 static void get_cell_style   (BtkCList      *clist,
 			      BtkCListRow   *clist_row,
-			      gint           state,
-			      gint           column,
+			      bint           state,
+			      bint           column,
 			      BtkStyle     **style,
 			      BdkGC        **fg_gc,
 			      BdkGC        **bg_gc);
-static gint draw_cell_pixmap (BdkWindow     *window,
+static bint draw_cell_pixmap (BdkWindow     *window,
 			      BdkRectangle  *clip_rectangle,
 			      BdkGC         *fg_gc,
 			      BdkPixmap     *pixmap,
 			      BdkBitmap     *mask,
-			      gint           x,
-			      gint           y,
-			      gint           width,
-			      gint           height);
+			      bint           x,
+			      bint           y,
+			      bint           width,
+			      bint           height);
 static void draw_row         (BtkCList      *clist,
 			      BdkRectangle  *area,
-			      gint           row,
+			      bint           row,
 			      BtkCListRow   *clist_row);
 static void draw_rows        (BtkCList      *clist,
 			      BdkRectangle  *area);
 static void clist_refresh    (BtkCList      *clist);
 static void draw_drag_highlight (BtkCList        *clist,
 				 BtkCListRow     *dest_row,
-				 gint             dest_row_number,
+				 bint             dest_row_number,
 				 BtkCListDragPos  drag_pos);
      
 /* Size Allocation / Requisition */
 static void size_allocate_title_buttons (BtkCList *clist);
 static void size_allocate_columns       (BtkCList *clist,
-					 gboolean  block_resize);
-static gint list_requisition_width      (BtkCList *clist);
+					 bboolean  block_resize);
+static bint list_requisition_width      (BtkCList *clist);
 
 /* Memory Allocation/Distruction Routines */
 static BtkCListColumn *columns_new (BtkCList      *clist);
 static void column_title_new       (BtkCList      *clist,
-			            gint           column,
-			            const gchar   *title);
+			            bint           column,
+			            const bchar   *title);
 static void columns_delete         (BtkCList      *clist);
 static BtkCListRow *row_new        (BtkCList      *clist);
 static void row_delete             (BtkCList      *clist,
 			            BtkCListRow   *clist_row);
 static void set_cell_contents      (BtkCList      *clist,
 			            BtkCListRow   *clist_row,
-				    gint           column,
+				    bint           column,
 				    BtkCellType    type,
-				    const gchar   *text,
-				    guint8         spacing,
+				    const bchar   *text,
+				    buint8         spacing,
 				    BdkPixmap     *pixmap,
 				    BdkBitmap     *mask);
-static gint real_insert_row        (BtkCList      *clist,
-				    gint           row,
-				    gchar         *text[]);
+static bint real_insert_row        (BtkCList      *clist,
+				    bint           row,
+				    bchar         *text[]);
 static void real_remove_row        (BtkCList      *clist,
-				    gint           row);
+				    bint           row);
 static void real_clear             (BtkCList      *clist);
 
 /* Sorting */
-static gint default_compare        (BtkCList      *clist,
+static bint default_compare        (BtkCList      *clist,
 			            gconstpointer  row1,
 			            gconstpointer  row2);
 static void real_sort_list         (BtkCList      *clist);
@@ -446,28 +446,28 @@ static GList *btk_clist_merge      (BtkCList      *clist,
 				    GList         *b);
 static GList *btk_clist_mergesort  (BtkCList      *clist,
 				    GList         *list,
-				    gint           num);
+				    bint           num);
 /* Misc */
-static gboolean title_focus_in   (BtkCList *clist,
-				  gint      dir);
-static gboolean title_focus_move (BtkCList *clist,
-				  gint      dir);
+static bboolean title_focus_in   (BtkCList *clist,
+				  bint      dir);
+static bboolean title_focus_move (BtkCList *clist,
+				  bint      dir);
 
 static void real_row_move             (BtkCList  *clist,
-			               gint       source_row,
-			               gint       dest_row);
-static gint column_title_passive_func (BtkWidget *widget, 
+			               bint       source_row,
+			               bint       dest_row);
+static bint column_title_passive_func (BtkWidget *widget, 
 				       BdkEvent  *event,
-				       gpointer   data);
+				       bpointer   data);
 static void drag_dest_cell            (BtkCList         *clist,
-				       gint              x,
-				       gint              y,
+				       bint              x,
+				       bint              y,
 				       BtkCListDestInfo *dest_info);
 
 
 
 static BtkContainerClass *parent_class = NULL;
-static guint clist_signals[LAST_SIGNAL] = {0};
+static buint clist_signals[LAST_SIGNAL] = {0};
 
 static const BtkTargetEntry clist_target_table = { "btk-clist-drag-reorder", 0, 0};
 
@@ -917,7 +917,7 @@ btk_clist_class_init (BtkCListClass *klass)
 static void
 btk_clist_set_arg (BtkObject      *object,
 		   BtkArg         *arg,
-		   guint           arg_id)
+		   buint           arg_id)
 {
   BtkCList *clist;
 
@@ -958,7 +958,7 @@ btk_clist_set_arg (BtkObject      *object,
 static void
 btk_clist_get_arg (BtkObject      *object,
 		   BtkArg         *arg,
-		   guint           arg_id)
+		   buint           arg_id)
 {
   BtkCList *clist;
 
@@ -966,7 +966,7 @@ btk_clist_get_arg (BtkObject      *object,
 
   switch (arg_id)
     {
-      guint i;
+      buint i;
 
     case ARG_N_COLUMNS:
       BTK_VALUE_UINT (*arg) = clist->columns;
@@ -1082,7 +1082,7 @@ btk_clist_init (BtkCList *clist)
 /* Constructor */
 static BObject*
 btk_clist_constructor (GType                  type,
-		       guint                  n_construct_properties,
+		       buint                  n_construct_properties,
 		       BObjectConstructParam *construct_properties)
 {
   BObject *object = B_OBJECT_CLASS (parent_class)->constructor (type,
@@ -1115,14 +1115,14 @@ btk_clist_constructor (GType                  type,
  *   btk_clist_thaw
  */
 BtkWidget*
-btk_clist_new (gint columns)
+btk_clist_new (bint columns)
 {
   return btk_clist_new_with_titles (columns, NULL);
 }
  
 BtkWidget*
-btk_clist_new_with_titles (gint   columns,
-			   gchar *titles[])
+btk_clist_new_with_titles (bint   columns,
+			   bchar *titles[])
 {
   BtkCList *clist;
 
@@ -1131,7 +1131,7 @@ btk_clist_new_with_titles (gint   columns,
 			NULL);
   if (titles)
     {
-      guint i;
+      buint i;
 
       for (i = 0; i < clist->columns; i++)
 	btk_clist_set_column_title (clist, i, titles[i]);
@@ -1172,10 +1172,10 @@ btk_clist_set_hadjustment (BtkCList      *clist,
 
       btk_signal_connect (BTK_OBJECT (clist->hadjustment), "changed",
 			  G_CALLBACK (hadjustment_changed),
-			  (gpointer) clist);
+			  (bpointer) clist);
       btk_signal_connect (BTK_OBJECT (clist->hadjustment), "value-changed",
 			  G_CALLBACK (hadjustment_value_changed),
-			  (gpointer) clist);
+			  (bpointer) clist);
     }
 
   if (!clist->hadjustment || !old_adjustment)
@@ -1219,10 +1219,10 @@ btk_clist_set_vadjustment (BtkCList      *clist,
 
       btk_signal_connect (BTK_OBJECT (clist->vadjustment), "changed",
 			  G_CALLBACK (vadjustment_changed),
-			  (gpointer) clist);
+			  (bpointer) clist);
       btk_signal_connect (BTK_OBJECT (clist->vadjustment), "value-changed",
 			  G_CALLBACK (vadjustment_value_changed),
-			  (gpointer) clist);
+			  (bpointer) clist);
     }
 
   if (!clist->vadjustment || !old_adjustment)
@@ -1364,7 +1364,7 @@ btk_clist_column_titles_hide (BtkCList *clist)
 
 void
 btk_clist_column_title_active (BtkCList *clist,
-			       gint      column)
+			       bint      column)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1386,7 +1386,7 @@ btk_clist_column_title_active (BtkCList *clist,
 
 void
 btk_clist_column_title_passive (BtkCList *clist,
-				gint      column)
+				bint      column)
 {
   BtkButton *button;
 
@@ -1418,7 +1418,7 @@ btk_clist_column_title_passive (BtkCList *clist,
 void
 btk_clist_column_titles_active (BtkCList *clist)
 {
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1429,7 +1429,7 @@ btk_clist_column_titles_active (BtkCList *clist)
 void
 btk_clist_column_titles_passive (BtkCList *clist)
 {
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1439,10 +1439,10 @@ btk_clist_column_titles_passive (BtkCList *clist)
 
 void
 btk_clist_set_column_title (BtkCList    *clist,
-			    gint         column,
-			    const gchar *title)
+			    bint         column,
+			    const bchar *title)
 {
-  gint new_button = 0;
+  bint new_button = 0;
   BtkWidget *old_widget;
   BtkWidget *alignment = NULL;
   BtkWidget *label;
@@ -1501,9 +1501,9 @@ btk_clist_set_column_title (BtkCList    *clist,
     size_allocate_title_buttons (clist);
 }
 
-gchar *
+bchar *
 btk_clist_get_column_title (BtkCList *clist,
-			    gint      column)
+			    bint      column)
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), NULL);
 
@@ -1515,10 +1515,10 @@ btk_clist_get_column_title (BtkCList *clist,
 
 void
 btk_clist_set_column_widget (BtkCList  *clist,
-			     gint       column,
+			     bint       column,
 			     BtkWidget *widget)
 {
-  gint new_button = 0;
+  bint new_button = 0;
   BtkWidget *old_widget;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
@@ -1557,7 +1557,7 @@ btk_clist_set_column_widget (BtkCList  *clist,
 
 BtkWidget *
 btk_clist_get_column_widget (BtkCList *clist,
-			     gint      column)
+			     bint      column)
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), NULL);
 
@@ -1572,7 +1572,7 @@ btk_clist_get_column_widget (BtkCList *clist,
 
 void
 btk_clist_set_column_justification (BtkCList         *clist,
-				    gint              column,
+				    bint              column,
 				    BtkJustification  justification)
 {
   BtkWidget *alignment;
@@ -1619,8 +1619,8 @@ btk_clist_set_column_justification (BtkCList         *clist,
 
 void
 btk_clist_set_column_visibility (BtkCList *clist,
-				 gint      column,
-				 gboolean  visible)
+				 bint      column,
+				 bboolean  visible)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1632,8 +1632,8 @@ btk_clist_set_column_visibility (BtkCList *clist,
   /* don't hide last visible column */
   if (!visible)
     {
-      gint i;
-      gint vis_columns = 0;
+      bint i;
+      bint vis_columns = 0;
 
       for (i = 0, vis_columns = 0; i < clist->columns && vis_columns < 2; i++)
 	if (clist->column[i].visible)
@@ -1658,8 +1658,8 @@ btk_clist_set_column_visibility (BtkCList *clist,
 
 void
 btk_clist_set_column_resizeable (BtkCList *clist,
-				 gint      column,
-				 gboolean  resizeable)
+				 bint      column,
+				 bboolean  resizeable)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1678,8 +1678,8 @@ btk_clist_set_column_resizeable (BtkCList *clist,
 
 void
 btk_clist_set_column_auto_resize (BtkCList *clist,
-				  gint      column,
-				  gboolean  auto_resize)
+				  bint      column,
+				  bboolean  auto_resize)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1694,7 +1694,7 @@ btk_clist_set_column_auto_resize (BtkCList *clist,
       clist->column[column].resizeable = FALSE;
       if (!BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
 	{
-	  gint width;
+	  bint width;
 
 	  width = btk_clist_optimal_column_width (clist, column);
 	  btk_clist_set_column_width (clist, column, width);
@@ -1705,11 +1705,11 @@ btk_clist_set_column_auto_resize (BtkCList *clist,
     size_allocate_title_buttons (clist);
 }
 
-gint
+bint
 btk_clist_columns_autosize (BtkCList *clist)
 {
-  gint i;
-  gint width;
+  bint i;
+  bint width;
 
   g_return_val_if_fail (BTK_IS_CLIST (clist), 0);
 
@@ -1727,13 +1727,13 @@ btk_clist_columns_autosize (BtkCList *clist)
   return width;
 }
 
-gint
+bint
 btk_clist_optimal_column_width (BtkCList *clist,
-				gint      column)
+				bint      column)
 {
   BtkRequisition requisition;
   GList *list;
-  gint width;
+  bint width;
 
   g_return_val_if_fail (BTK_CLIST (clist), 0);
 
@@ -1761,8 +1761,8 @@ btk_clist_optimal_column_width (BtkCList *clist,
 
 void
 btk_clist_set_column_width (BtkCList *clist,
-			    gint      column,
-			    gint      width)
+			    bint      column,
+			    bint      width)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1775,8 +1775,8 @@ btk_clist_set_column_width (BtkCList *clist,
 
 void
 btk_clist_set_column_min_width (BtkCList *clist,
-				gint      column,
-				gint      min_width)
+				bint      column,
+				bint      min_width)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1797,8 +1797,8 @@ btk_clist_set_column_min_width (BtkCList *clist,
 
 void
 btk_clist_set_column_max_width (BtkCList *clist,
-				gint      column,
-				gint      max_width)
+				bint      column,
+				bint      max_width)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1832,8 +1832,8 @@ btk_clist_set_column_max_width (BtkCList *clist,
 static void
 column_auto_resize (BtkCList    *clist,
 		    BtkCListRow *clist_row,
-		    gint         column,
-		    gint         old_width)
+		    bint         column,
+		    bint         old_width)
 {
   /* resize column if needed for auto_resize */
   BtkRequisition requisition;
@@ -1854,7 +1854,7 @@ column_auto_resize (BtkCList    *clist,
 	   old_width == clist->column[column].width)
     {
       GList *list;
-      gint new_width = 0;
+      bint new_width = 0;
 
       /* run a "btk_clist_optimal_column_width" but break, if
        * the column doesn't shrink */
@@ -1880,8 +1880,8 @@ column_auto_resize (BtkCList    *clist,
 
 static void
 real_resize_column (BtkCList *clist,
-		    gint      column,
-		    gint      width)
+		    bint      column,
+		    bint      width)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -1926,7 +1926,7 @@ abort_column_resize (BtkCList *clist)
 
   if (BTK_CLIST_ADD_MODE(clist))
     {
-      gint8 dashes[] = { 4, 4 };
+      bint8 dashes[] = { 4, 4 };
 
       bdk_gc_set_line_attributes (clist->xor_gc, 1, BDK_LINE_ON_OFF_DASH, 0,0);
       bdk_gc_set_dashes (clist->xor_gc, 0, dashes, G_N_ELEMENTS (dashes));
@@ -1937,9 +1937,9 @@ static void
 size_allocate_title_buttons (BtkCList *clist)
 {
   BtkAllocation button_allocation;
-  gint last_column;
-  gint last_button = 0;
-  gint i;
+  bint last_column;
+  bint last_button = 0;
+  bint i;
 
   if (!btk_widget_get_realized (BTK_WIDGET (clist)))
     return;
@@ -2011,11 +2011,11 @@ size_allocate_title_buttons (BtkCList *clist)
 
 static void
 size_allocate_columns (BtkCList *clist,
-		       gboolean  block_resize)
+		       bboolean  block_resize)
 {
-  gint xoffset = CELL_SPACING + COLUMN_INSET;
-  gint last_column;
-  gint i;
+  bint xoffset = CELL_SPACING + COLUMN_INSET;
+  bint last_column;
+  bint i;
 
   /* find last visible column and calculate correct column width */
   for (last_column = clist->columns - 1;
@@ -2034,7 +2034,7 @@ size_allocate_columns (BtkCList *clist,
 	  if (!block_resize && BTK_CLIST_SHOW_TITLES(clist) &&
 	      clist->column[i].auto_resize && clist->column[i].button)
 	    {
-	      gint width;
+	      bint width;
 
 	      width = (clist->column[i].button->requisition.width -
 		       (CELL_SPACING + (2 * COLUMN_INSET)));
@@ -2059,11 +2059,11 @@ size_allocate_columns (BtkCList *clist,
     + MAX (0, clist->clist_window_width + COLUMN_INSET - xoffset);
 }
 
-static gint
+static bint
 list_requisition_width (BtkCList *clist) 
 {
-  gint width = CELL_SPACING;
-  gint i;
+  bint width = CELL_SPACING;
+  bint i;
 
   for (i = clist->columns - 1; i >= 0; i--)
     {
@@ -2082,16 +2082,16 @@ list_requisition_width (BtkCList *clist)
 /* this function returns the new width of the column being resized given
  * the column and x position of the cursor; the x cursor position is passed
  * in as a pointer and automagicly corrected if it's beyond min/max limits */
-static gint
+static bint
 new_column_width (BtkCList *clist,
-		  gint      column,
-		  gint     *x)
+		  bint      column,
+		  bint     *x)
 {
-  gint xthickness = BTK_WIDGET (clist)->style->xthickness;
-  gint width;
-  gint cx;
-  gint dx;
-  gint last_column;
+  bint xthickness = BTK_WIDGET (clist)->style->xthickness;
+  bint width;
+  bint cx;
+  bint dx;
+  bint last_column;
 
   /* first translate the x position from widget->window
    * to clist->clist_window */
@@ -2128,7 +2128,7 @@ new_column_width (BtkCList *clist,
 
 static void
 column_button_create (BtkCList *clist,
-		      gint      column)
+		      bint      column)
 {
   BtkWidget *button;
 
@@ -2143,15 +2143,15 @@ column_button_create (BtkCList *clist,
 
   btk_signal_connect (BTK_OBJECT (button), "clicked",
 		      G_CALLBACK (column_button_clicked),
-		      (gpointer) clist);
+		      (bpointer) clist);
   btk_widget_show (button);
 }
 
 static void
 column_button_clicked (BtkWidget *widget,
-		       gpointer   data)
+		       bpointer   data)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
 
   g_return_if_fail (widget != NULL);
@@ -2167,10 +2167,10 @@ column_button_clicked (BtkWidget *widget,
   btk_signal_emit (BTK_OBJECT (clist), clist_signals[CLICK_COLUMN], i);
 }
 
-static gint
+static bint
 column_title_passive_func (BtkWidget *widget, 
 			   BdkEvent  *event,
-			   gpointer   data)
+			   bpointer   data)
 {
   g_return_val_if_fail (event != NULL, FALSE);
   
@@ -2203,8 +2203,8 @@ column_title_passive_func (BtkWidget *widget,
  */
 BtkCellType 
 btk_clist_get_cell_type (BtkCList *clist,
-			 gint      row,
-			 gint      column)
+			 bint      row,
+			 bint      column)
 {
   BtkCListRow *clist_row;
 
@@ -2222,9 +2222,9 @@ btk_clist_get_cell_type (BtkCList *clist,
 
 void
 btk_clist_set_text (BtkCList    *clist,
-		    gint         row,
-		    gint         column,
-		    const gchar *text)
+		    bint         row,
+		    bint         column,
+		    const bchar *text)
 {
   BtkCListRow *clist_row;
 
@@ -2249,11 +2249,11 @@ btk_clist_set_text (BtkCList    *clist,
     }
 }
 
-gint
+bint
 btk_clist_get_text (BtkCList  *clist,
-		    gint       row,
-		    gint       column,
-		    gchar    **text)
+		    bint       row,
+		    bint       column,
+		    bchar    **text)
 {
   BtkCListRow *clist_row;
 
@@ -2281,8 +2281,8 @@ btk_clist_get_text (BtkCList  *clist,
  */
 void
 btk_clist_set_pixmap (BtkCList  *clist,
-		      gint       row,
-		      gint       column,
+		      bint       row,
+		      bint       column,
 		      BdkPixmap *pixmap,
 		      BdkBitmap *mask)
 {
@@ -2312,10 +2312,10 @@ btk_clist_set_pixmap (BtkCList  *clist,
     }
 }
 
-gint
+bint
 btk_clist_get_pixmap (BtkCList   *clist,
-		      gint        row,
-		      gint        column,
+		      bint        row,
+		      bint        column,
 		      BdkPixmap **pixmap,
 		      BdkBitmap **mask)
 {
@@ -2345,10 +2345,10 @@ btk_clist_get_pixmap (BtkCList   *clist,
 
 void
 btk_clist_set_pixtext (BtkCList    *clist,
-		       gint         row,
-		       gint         column,
-		       const gchar *text,
-		       guint8       spacing,
+		       bint         row,
+		       bint         column,
+		       const bchar *text,
+		       buint8       spacing,
 		       BdkPixmap   *pixmap,
 		       BdkBitmap   *mask)
 {
@@ -2376,12 +2376,12 @@ btk_clist_set_pixtext (BtkCList    *clist,
     }
 }
 
-gint
+bint
 btk_clist_get_pixtext (BtkCList   *clist,
-		       gint        row,
-		       gint        column,
-		       gchar     **text,
-		       guint8     *spacing,
+		       bint        row,
+		       bint        column,
+		       bchar     **text,
+		       buint8     *spacing,
 		       BdkPixmap **pixmap,
 		       BdkBitmap **mask)
 {
@@ -2415,10 +2415,10 @@ btk_clist_get_pixtext (BtkCList   *clist,
 
 void
 btk_clist_set_shift (BtkCList *clist,
-		     gint      row,
-		     gint      column,
-		     gint      vertical,
-		     gint      horizontal)
+		     bint      row,
+		     bint      column,
+		     bint      vertical,
+		     bint      horizontal)
 {
   BtkRequisition requisition = { 0 };
   BtkCListRow *clist_row;
@@ -2453,15 +2453,15 @@ btk_clist_set_shift (BtkCList *clist,
 static void
 set_cell_contents (BtkCList    *clist,
 		   BtkCListRow *clist_row,
-		   gint         column,
+		   bint         column,
 		   BtkCellType  type,
-		   const gchar *text,
-		   guint8       spacing,
+		   const bchar *text,
+		   buint8       spacing,
 		   BdkPixmap   *pixmap,
 		   BdkBitmap   *mask)
 {
   BtkRequisition requisition;
-  gchar *old_text = NULL;
+  bchar *old_text = NULL;
   BdkPixmap *old_pixmap = NULL;
   BdkBitmap *old_mask = NULL;
   
@@ -2546,12 +2546,12 @@ set_cell_contents (BtkCList    *clist,
 BangoLayout *
 _btk_clist_create_cell_layout (BtkCList       *clist,
 			       BtkCListRow    *clist_row,
-			       gint            column)
+			       bint            column)
 {
   BangoLayout *layout;
   BtkStyle *style;
   BtkCell *cell;
-  gchar *text;
+  bchar *text;
   
   get_cell_style (clist, clist_row, BTK_STATE_NORMAL, column, &style,
 		  NULL, NULL);
@@ -2585,11 +2585,11 @@ _btk_clist_create_cell_layout (BtkCList       *clist,
 static void
 cell_size_request (BtkCList       *clist,
 		   BtkCListRow    *clist_row,
-		   gint            column,
+		   bint            column,
 		   BtkRequisition *requisition)
 {
-  gint width;
-  gint height;
+  bint width;
+  bint height;
   BangoLayout *layout;
   BangoRectangle logical_rect;
 
@@ -2645,9 +2645,9 @@ cell_size_request (BtkCList       *clist,
  *   btk_clist_remove
  *   btk_clist_clear
  */
-gint
+bint
 btk_clist_prepend (BtkCList    *clist,
-		   gchar       *text[])
+		   bchar       *text[])
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), -1);
   g_return_val_if_fail (text != NULL, -1);
@@ -2655,9 +2655,9 @@ btk_clist_prepend (BtkCList    *clist,
   return BTK_CLIST_GET_CLASS (clist)->insert_row (clist, 0, text);
 }
 
-gint
+bint
 btk_clist_append (BtkCList    *clist,
-		  gchar       *text[])
+		  bchar       *text[])
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), -1);
   g_return_val_if_fail (text != NULL, -1);
@@ -2665,10 +2665,10 @@ btk_clist_append (BtkCList    *clist,
   return BTK_CLIST_GET_CLASS (clist)->insert_row (clist, clist->rows, text);
 }
 
-gint
+bint
 btk_clist_insert (BtkCList    *clist,
-		  gint         row,
-		  gchar       *text[])
+		  bint         row,
+		  bchar       *text[])
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), -1);
   g_return_val_if_fail (text != NULL, -1);
@@ -2681,7 +2681,7 @@ btk_clist_insert (BtkCList    *clist,
 
 void
 btk_clist_remove (BtkCList *clist,
-		  gint      row)
+		  bint      row)
 {
   BTK_CLIST_GET_CLASS (clist)->remove_row (clist, row);
 }
@@ -2700,12 +2700,12 @@ btk_clist_clear (BtkCList *clist)
  *   real_clear
  *   real_row_move
  */
-static gint
+static bint
 real_insert_row (BtkCList *clist,
-		 gint      row,
-		 gchar    *text[])
+		 bint      row,
+		 bchar    *text[])
 {
-  gint i;
+  bint i;
   BtkCListRow *clist_row;
 
   g_return_val_if_fail (BTK_IS_CLIST (clist), -1);
@@ -2797,9 +2797,9 @@ real_insert_row (BtkCList *clist,
 
 static void
 real_remove_row (BtkCList *clist,
-		 gint      row)
+		 bint      row)
 {
-  gint was_visible;
+  bint was_visible;
   GList *list;
   BtkCListRow *clist_row;
 
@@ -2860,7 +2860,7 @@ real_clear (BtkCList *clist)
 {
   GList *list;
   GList *free_list;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -2912,13 +2912,13 @@ real_clear (BtkCList *clist)
 
 static void
 real_row_move (BtkCList *clist,
-	       gint      source_row,
-	       gint      dest_row)
+	       bint      source_row,
+	       bint      dest_row)
 {
   BtkCListRow *clist_row;
   GList *list;
-  gint first, last;
-  gint d;
+  bint first, last;
+  bint d;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -2961,11 +2961,11 @@ real_row_move (BtkCList *clist,
 
   for (list = clist->selection; list; list = list->next)
     {
-      if (list->data == GINT_TO_POINTER (source_row))
-	list->data = GINT_TO_POINTER (dest_row);
-      else if (first <= GPOINTER_TO_INT (list->data) &&
-	       last >= GPOINTER_TO_INT (list->data))
-	list->data = GINT_TO_POINTER (GPOINTER_TO_INT (list->data) + d);
+      if (list->data == BINT_TO_POINTER (source_row))
+	list->data = BINT_TO_POINTER (dest_row);
+      else if (first <= BPOINTER_TO_INT (list->data) &&
+	       last >= BPOINTER_TO_INT (list->data))
+	list->data = BINT_TO_POINTER (BPOINTER_TO_INT (list->data) + d);
     }
   
   if (clist->focus_row == source_row)
@@ -2991,10 +2991,10 @@ real_row_move (BtkCList *clist,
  */
 void
 btk_clist_moveto (BtkCList *clist,
-		  gint      row,
-		  gint      column,
-		  gfloat    row_align,
-		  gfloat    col_align)
+		  bint      row,
+		  bint      column,
+		  bfloat    row_align,
+		  bfloat    col_align)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3009,7 +3009,7 @@ btk_clist_moveto (BtkCList *clist,
   /* adjust horizontal scrollbar */
   if (clist->hadjustment && column >= 0)
     {
-      gint x;
+      bint x;
 
       x = (COLUMN_LEFT (clist, column) - CELL_SPACING - COLUMN_INSET -
 	   (col_align * (clist->clist_window_width - 2 * COLUMN_INSET -
@@ -3030,7 +3030,7 @@ btk_clist_moveto (BtkCList *clist,
 
 void
 btk_clist_set_row_height (BtkCList *clist,
-			  guint     height)
+			  buint     height)
 {
   BtkWidget *widget;
 
@@ -3073,16 +3073,16 @@ btk_clist_set_row_height (BtkCList *clist,
 
 void
 btk_clist_set_row_data (BtkCList *clist,
-			gint      row,
-			gpointer  data)
+			bint      row,
+			bpointer  data)
 {
   btk_clist_set_row_data_full (clist, row, data, NULL);
 }
 
 void
 btk_clist_set_row_data_full (BtkCList       *clist,
-			     gint            row,
-			     gpointer        data,
+			     bint            row,
+			     bpointer        data,
 			     GDestroyNotify  destroy)
 {
   BtkCListRow *clist_row;
@@ -3101,9 +3101,9 @@ btk_clist_set_row_data_full (BtkCList       *clist,
   clist_row->destroy = destroy;
 }
 
-gpointer
+bpointer
 btk_clist_get_row_data (BtkCList *clist,
-			gint      row)
+			bint      row)
 {
   BtkCListRow *clist_row;
 
@@ -3116,12 +3116,12 @@ btk_clist_get_row_data (BtkCList *clist,
   return clist_row->data;
 }
 
-gint
+bint
 btk_clist_find_row_from_data (BtkCList *clist,
-			      gpointer  data)
+			      bpointer  data)
 {
   GList *list;
-  gint n;
+  bint n;
 
   g_return_val_if_fail (BTK_IS_CLIST (clist), -1);
 
@@ -3134,10 +3134,10 @@ btk_clist_find_row_from_data (BtkCList *clist,
 
 void 
 btk_clist_swap_rows (BtkCList *clist,
-		     gint      row1, 
-		     gint      row2)
+		     bint      row1, 
+		     bint      row2)
 {
-  gint first, last;
+  bint first, last;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
   g_return_if_fail (row1 != row2);
@@ -3158,8 +3158,8 @@ btk_clist_swap_rows (BtkCList *clist,
 
 void
 btk_clist_row_move (BtkCList *clist,
-		    gint      source_row,
-		    gint      dest_row)
+		    bint      source_row,
+		    bint      dest_row)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3177,9 +3177,9 @@ btk_clist_row_move (BtkCList *clist,
 
 BtkVisibility
 btk_clist_row_is_visible (BtkCList *clist,
-			  gint      row)
+			  bint      row)
 {
-  gint top;
+  bint top;
 
   g_return_val_if_fail (BTK_IS_CLIST (clist), 0);
 
@@ -3206,7 +3206,7 @@ btk_clist_row_is_visible (BtkCList *clist,
 
 void
 btk_clist_set_foreground (BtkCList       *clist,
-			  gint            row,
+			  bint            row,
 			  const BdkColor *color)
 {
   BtkCListRow *clist_row;
@@ -3235,7 +3235,7 @@ btk_clist_set_foreground (BtkCList       *clist,
 
 void
 btk_clist_set_background (BtkCList       *clist,
-			  gint            row,
+			  bint            row,
 			  const BdkColor *color)
 {
   BtkCListRow *clist_row;
@@ -3271,8 +3271,8 @@ btk_clist_set_background (BtkCList       *clist,
  */
 void
 btk_clist_set_cell_style (BtkCList *clist,
-			  gint      row,
-			  gint      column,
+			  bint      row,
+			  bint      column,
 			  BtkStyle *style)
 {
   BtkRequisition requisition = { 0 };
@@ -3326,8 +3326,8 @@ btk_clist_set_cell_style (BtkCList *clist,
 
 BtkStyle *
 btk_clist_get_cell_style (BtkCList *clist,
-			  gint      row,
-			  gint      column)
+			  bint      row,
+			  bint      column)
 {
   BtkCListRow *clist_row;
 
@@ -3343,13 +3343,13 @@ btk_clist_get_cell_style (BtkCList *clist,
 
 void
 btk_clist_set_row_style (BtkCList *clist,
-			 gint      row,
+			 bint      row,
 			 BtkStyle *style)
 {
   BtkRequisition requisition;
   BtkCListRow *clist_row;
-  gint *old_width;
-  gint i;
+  bint *old_width;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3361,7 +3361,7 @@ btk_clist_set_row_style (BtkCList *clist,
   if (clist_row->style == style)
     return;
 
-  old_width = g_new (gint, clist->columns);
+  old_width = g_new (bint, clist->columns);
 
   if (!BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
     {
@@ -3408,7 +3408,7 @@ btk_clist_set_row_style (BtkCList *clist,
 
 BtkStyle *
 btk_clist_get_row_style (BtkCList *clist,
-			 gint      row)
+			 bint      row)
 {
   BtkCListRow *clist_row;
 
@@ -3433,8 +3433,8 @@ btk_clist_get_row_style (BtkCList *clist,
  */
 void
 btk_clist_set_selectable (BtkCList *clist,
-			  gint      row,
-			  gboolean  selectable)
+			  bint      row,
+			  bboolean  selectable)
 {
   BtkCListRow *clist_row;
 
@@ -3464,9 +3464,9 @@ btk_clist_set_selectable (BtkCList *clist,
     }      
 }
 
-gboolean
+bboolean
 btk_clist_get_selectable (BtkCList *clist,
-			  gint      row)
+			  bint      row)
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), FALSE);
 
@@ -3478,8 +3478,8 @@ btk_clist_get_selectable (BtkCList *clist,
 
 void
 btk_clist_select_row (BtkCList *clist,
-		      gint      row,
-		      gint      column)
+		      bint      row,
+		      bint      column)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3494,8 +3494,8 @@ btk_clist_select_row (BtkCList *clist,
 
 void
 btk_clist_unselect_row (BtkCList *clist,
-			gint      row,
-			gint      column)
+			bint      row,
+			bint      column)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3556,16 +3556,16 @@ btk_clist_undo_selection (BtkCList *clist)
  */
 static GList *
 selection_find (BtkCList *clist,
-		gint      row_number,
+		bint      row_number,
 		GList    *row_list_element)
 {
-  return g_list_find (clist->selection, GINT_TO_POINTER (row_number));
+  return g_list_find (clist->selection, BINT_TO_POINTER (row_number));
 }
 
 static void
 toggle_row (BtkCList *clist,
-	    gint      row,
-	    gint      column,
+	    bint      row,
+	    bint      column,
 	    BdkEvent *event)
 {
   BtkCListRow *clist_row;
@@ -3596,7 +3596,7 @@ toggle_row (BtkCList *clist,
 
 static void
 fake_toggle_row (BtkCList *clist,
-		 gint      row)
+		 bint      row)
 {
   GList *work;
 
@@ -3616,7 +3616,7 @@ fake_toggle_row (BtkCList *clist,
 					  BTK_CLIST_ROW (work));
 }
 
-static gboolean
+static bboolean
 clist_has_grab (BtkCList *clist)
 {
   return (BTK_WIDGET_HAS_GRAB (clist) &&
@@ -3673,7 +3673,7 @@ toggle_add_mode (BtkCList *clist)
   btk_clist_draw_focus (BTK_WIDGET (clist));
   if (!BTK_CLIST_ADD_MODE(clist))
     {
-      gint8 dashes[] = { 4, 4 };
+      bint8 dashes[] = { 4, 4 };
 
       BTK_CLIST_SET_FLAG (clist, CLIST_ADD_MODE);
       bdk_gc_set_line_attributes (clist->xor_gc, 1,
@@ -3691,14 +3691,14 @@ toggle_add_mode (BtkCList *clist)
 
 static void
 real_select_row (BtkCList *clist,
-		 gint      row,
-		 gint      column,
+		 bint      row,
+		 bint      column,
 		 BdkEvent *event)
 {
   BtkCListRow *clist_row;
   GList *list;
-  gint sel_row;
-  gboolean row_selected;
+  bint sel_row;
+  bboolean row_selected;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3715,7 +3715,7 @@ real_select_row (BtkCList *clist,
 
       while (list)
 	{
-	  sel_row = GPOINTER_TO_INT (list->data);
+	  sel_row = BPOINTER_TO_INT (list->data);
 	  list = list->next;
 
 	  if (row == sel_row)
@@ -3741,12 +3741,12 @@ real_select_row (BtkCList *clist,
   if (!clist->selection)
     {
       clist->selection = g_list_append (clist->selection,
-					GINT_TO_POINTER (row));
+					BINT_TO_POINTER (row));
       clist->selection_end = clist->selection;
     }
   else
     clist->selection_end = 
-      g_list_append (clist->selection_end, GINT_TO_POINTER (row))->next;
+      g_list_append (clist->selection_end, BINT_TO_POINTER (row))->next;
   
   if (CLIST_UNFROZEN (clist)
       && (btk_clist_row_is_visible (clist, row) != BTK_VISIBILITY_NONE))
@@ -3755,8 +3755,8 @@ real_select_row (BtkCList *clist,
 
 static void
 real_unselect_row (BtkCList *clist,
-		   gint      row,
-		   gint      column,
+		   bint      row,
+		   bint      column,
 		   BdkEvent *event)
 {
   BtkCListRow *clist_row;
@@ -3773,11 +3773,11 @@ real_unselect_row (BtkCList *clist,
       clist_row->state = BTK_STATE_NORMAL;
 
       if (clist->selection_end && 
-	  clist->selection_end->data == GINT_TO_POINTER (row))
+	  clist->selection_end->data == BINT_TO_POINTER (row))
 	clist->selection_end = clist->selection_end->prev;
 
       clist->selection = g_list_remove (clist->selection,
-					GINT_TO_POINTER (row));
+					BINT_TO_POINTER (row));
       
       if (CLIST_UNFROZEN (clist)
 	  && (btk_clist_row_is_visible (clist, row) != BTK_VISIBILITY_NONE))
@@ -3826,7 +3826,7 @@ static void
 real_unselect_all (BtkCList *clist)
 {
   GList *list;
-  gint i;
+  bint i;
  
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -3861,7 +3861,7 @@ real_unselect_all (BtkCList *clist)
   list = clist->selection;
   while (list)
     {
-      i = GPOINTER_TO_INT (list->data);
+      i = BPOINTER_TO_INT (list->data);
       list = list->next;
       btk_signal_emit (BTK_OBJECT (clist),
 		       clist_signals[UNSELECT_ROW], i, -1, NULL);
@@ -3870,11 +3870,11 @@ real_unselect_all (BtkCList *clist)
 
 static void
 fake_unselect_all (BtkCList *clist,
-		   gint      row)
+		   bint      row)
 {
   GList *list;
   GList *work;
-  gint i;
+  bint i;
 
   if (row >= 0 && (work = ROW_ELEMENT (clist, row)))
     {
@@ -3896,7 +3896,7 @@ fake_unselect_all (BtkCList *clist,
 
   for (list = clist->undo_selection; list; list = list->next)
     {
-      if ((i = GPOINTER_TO_INT (list->data)) == row ||
+      if ((i = BPOINTER_TO_INT (list->data)) == row ||
 	  !(work = g_list_nth (clist->row_list, i)))
 	continue;
 
@@ -3929,13 +3929,13 @@ real_undo_selection (BtkCList *clist)
 
   for (work = clist->undo_selection; work; work = work->next)
     btk_signal_emit (BTK_OBJECT (clist), clist_signals[SELECT_ROW],
-		     GPOINTER_TO_INT (work->data), -1, NULL);
+		     BPOINTER_TO_INT (work->data), -1, NULL);
 
   for (work = clist->undo_unselection; work; work = work->next)
     {
-      /* g_print ("unselect %d\n",GPOINTER_TO_INT (work->data)); */
+      /* g_print ("unselect %d\n",BPOINTER_TO_INT (work->data)); */
       btk_signal_emit (BTK_OBJECT (clist), clist_signals[UNSELECT_ROW], 
-		       GPOINTER_TO_INT (work->data), -1, NULL);
+		       BPOINTER_TO_INT (work->data), -1, NULL);
     }
 
   if (btk_widget_has_focus (BTK_WIDGET (clist)) && clist->focus_row != clist->undo_anchor)
@@ -3963,9 +3963,9 @@ real_undo_selection (BtkCList *clist)
 
 static void
 set_anchor (BtkCList *clist,
-	    gboolean  add_mode,
-	    gint      anchor,
-	    gint      undo_anchor)
+	    bboolean  add_mode,
+	    bint      anchor,
+	    bint      undo_anchor)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
   
@@ -3994,9 +3994,9 @@ static void
 resync_selection (BtkCList *clist,
 		  BdkEvent *event)
 {
-  gint i;
-  gint e;
-  gint row;
+  bint i;
+  bint e;
+  bint row;
   GList *list;
   BtkCListRow *clist_row;
 
@@ -4020,7 +4020,7 @@ resync_selection (BtkCList *clist,
       list = clist->selection;
       while (list)
 	{
-	  row = GPOINTER_TO_INT (list->data);
+	  row = BPOINTER_TO_INT (list->data);
 	  list = list->next;
 	  if (row < i || row > e)
 	    {
@@ -4032,7 +4032,7 @@ resync_selection (BtkCList *clist,
 				   clist_signals[UNSELECT_ROW],
 				   row, -1, event);
 		  clist->undo_selection = g_list_prepend
-		    (clist->undo_selection, GINT_TO_POINTER (row));
+		    (clist->undo_selection, BINT_TO_POINTER (row));
 		}
 	    }
 	}
@@ -4044,7 +4044,7 @@ resync_selection (BtkCList *clist,
 	   i++, list = list->next)
 	if (BTK_CLIST_ROW (list)->selectable)
 	  {
-	    if (g_list_find (clist->selection, GINT_TO_POINTER(i)))
+	    if (g_list_find (clist->selection, BINT_TO_POINTER(i)))
 	      {
 		if (BTK_CLIST_ROW (list)->state == BTK_STATE_NORMAL)
 		  {
@@ -4054,7 +4054,7 @@ resync_selection (BtkCList *clist,
 				     i, -1, event);
 		    clist->undo_selection =
 		      g_list_prepend (clist->undo_selection,
-				      GINT_TO_POINTER (i));
+				      BINT_TO_POINTER (i));
 		  }
 	      }
 	    else if (BTK_CLIST_ROW (list)->state == BTK_STATE_SELECTED)
@@ -4062,7 +4062,7 @@ resync_selection (BtkCList *clist,
 		BTK_CLIST_ROW (list)->state = BTK_STATE_NORMAL;
 		clist->undo_unselection =
 		  g_list_prepend (clist->undo_unselection,
-				  GINT_TO_POINTER (i));
+				  BINT_TO_POINTER (i));
 	      }
 	  }
     }
@@ -4072,7 +4072,7 @@ resync_selection (BtkCList *clist,
 	   e--, list = list->prev)
 	if (BTK_CLIST_ROW (list)->selectable)
 	  {
-	    if (g_list_find (clist->selection, GINT_TO_POINTER(e)))
+	    if (g_list_find (clist->selection, BINT_TO_POINTER(e)))
 	      {
 		if (BTK_CLIST_ROW (list)->state == BTK_STATE_NORMAL)
 		  {
@@ -4082,7 +4082,7 @@ resync_selection (BtkCList *clist,
 				     e, -1, event);
 		    clist->undo_selection =
 		      g_list_prepend (clist->undo_selection,
-				      GINT_TO_POINTER (e));
+				      BINT_TO_POINTER (e));
 		  }
 	      }
 	    else if (BTK_CLIST_ROW (list)->state == BTK_STATE_SELECTED)
@@ -4090,7 +4090,7 @@ resync_selection (BtkCList *clist,
 		BTK_CLIST_ROW (list)->state = BTK_STATE_NORMAL;
 		clist->undo_unselection =
 		  g_list_prepend (clist->undo_unselection,
-				  GINT_TO_POINTER (e));
+				  BINT_TO_POINTER (e));
 	      }
 	  }
     }
@@ -4098,7 +4098,7 @@ resync_selection (BtkCList *clist,
   clist->undo_unselection = g_list_reverse (clist->undo_unselection);
   for (list = clist->undo_unselection; list; list = list->next)
     btk_signal_emit (BTK_OBJECT (clist), clist_signals[SELECT_ROW],
-		     GPOINTER_TO_INT (list->data), -1, event);
+		     BPOINTER_TO_INT (list->data), -1, event);
 
   clist->anchor = -1;
   clist->drag_pos = -1;
@@ -4108,20 +4108,20 @@ resync_selection (BtkCList *clist,
 
 static void
 update_extended_selection (BtkCList *clist,
-			   gint      row)
+			   bint      row)
 {
-  gint i;
+  bint i;
   GList *list;
   BdkRectangle area;
-  gint s1 = -1;
-  gint s2 = -1;
-  gint e1 = -1;
-  gint e2 = -1;
-  gint y1 = clist->clist_window_height;
-  gint y2 = clist->clist_window_height;
-  gint h1 = 0;
-  gint h2 = 0;
-  gint top;
+  bint s1 = -1;
+  bint s2 = -1;
+  bint e1 = -1;
+  bint e2 = -1;
+  bint y1 = clist->clist_window_height;
+  bint y2 = clist->clist_window_height;
+  bint h1 = 0;
+  bint h2 = 0;
+  bint top;
 
   if (clist->selection_mode != BTK_SELECTION_MULTIPLE || clist->anchor == -1)
     return;
@@ -4289,8 +4289,8 @@ end_selection (BtkCList *clist)
 static void
 extend_selection (BtkCList      *clist,
 		  BtkScrollType  scroll_type,
-		  gfloat         position,
-		  gboolean       auto_start_selection)
+		  bfloat         position,
+		  bboolean       auto_start_selection)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -4317,11 +4317,11 @@ extend_selection (BtkCList      *clist,
 
 static void
 sync_selection (BtkCList *clist,
-		gint      row,
-		gint      mode)
+		bint      row,
+		bint      mode)
 {
   GList *list;
-  gint d;
+  bint d;
 
   if (mode == SYNC_INSERT)
     d = 1;
@@ -4355,8 +4355,8 @@ sync_selection (BtkCList *clist,
 
   while (list)
     {
-      if (GPOINTER_TO_INT (list->data) >= row)
-	list->data = ((gchar*) list->data) + d;
+      if (BPOINTER_TO_INT (list->data) >= row)
+	list->data = ((bchar*) list->data) + d;
       list = list->next;
     }
 }
@@ -4368,7 +4368,7 @@ sync_selection (BtkCList *clist,
 static void
 btk_clist_destroy (BtkObject *object)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
 
   g_return_if_fail (BTK_IS_CLIST (object));
@@ -4450,10 +4450,10 @@ btk_clist_realize (BtkWidget *widget)
   BdkGCValues values;
   BtkCListRow *clist_row;
   GList *list;
-  gint attributes_mask;
-  gint border_width;
-  gint i;
-  gint j;
+  bint attributes_mask;
+  bint border_width;
+  bint i;
+  bint j;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
 
@@ -4606,7 +4606,7 @@ btk_clist_realize (BtkWidget *widget)
 static void
 btk_clist_unrealize (BtkWidget *widget)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
@@ -4626,7 +4626,7 @@ btk_clist_unrealize (BtkWidget *widget)
     {
       BtkCListRow *clist_row;
       GList *list;
-      gint j;
+      bint j;
 
       list = clist->row_list;
       for (i = 0; i < clist->rows; i++)
@@ -4678,7 +4678,7 @@ btk_clist_unrealize (BtkWidget *widget)
 static void
 btk_clist_map (BtkWidget *widget)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
@@ -4717,7 +4717,7 @@ btk_clist_map (BtkWidget *widget)
 static void
 btk_clist_unmap (BtkWidget *widget)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
@@ -4740,7 +4740,7 @@ btk_clist_unmap (BtkWidget *widget)
 
 	  if (BTK_CLIST_IN_DRAG(clist))
 	    {
-	      gpointer drag_data;
+	      bpointer drag_data;
 
 	      BTK_CLIST_UNSET_FLAG (clist, CLIST_IN_DRAG);
 	      drag_data = btk_object_get_data (BTK_OBJECT (clist),
@@ -4770,7 +4770,7 @@ btk_clist_unmap (BtkWidget *widget)
     }
 }
 
-static gint
+static bint
 btk_clist_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
@@ -4807,7 +4807,7 @@ btk_clist_expose (BtkWidget      *widget,
 
       if (event->window == clist->title_window)
 	{
-	  gint i;
+	  bint i;
 	  
 	  for (i = 0; i < clist->columns; i++)
 	    {
@@ -4847,8 +4847,8 @@ btk_clist_style_set (BtkWidget *widget,
   /* Column widths */
   if (!BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
     {
-      gint width;
-      gint i;
+      bint width;
+      bint i;
 
       for (i = 0; i < clist->columns; i++)
 	if (clist->column[i].auto_resize)
@@ -4860,17 +4860,17 @@ btk_clist_style_set (BtkWidget *widget,
     }
 }
 
-static gint
+static bint
 btk_clist_button_press (BtkWidget      *widget,
 			BdkEventButton *event)
 {
-  gint i;
+  bint i;
   BtkCList *clist;
-  gint x;
-  gint y;
-  gint row;
-  gint column;
-  gint button_actions;
+  bint x;
+  bint y;
+  bint row;
+  bint column;
+  bint button_actions;
 
   g_return_val_if_fail (BTK_IS_CLIST (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -4890,7 +4890,7 @@ btk_clist_button_press (BtkWidget      *widget,
 
       if (get_selection_info (clist, x, y, &row, &column))
 	{
-	  gint old_row = clist->focus_row;
+	  bint old_row = clist->focus_row;
 
 	  if (clist->focus_row == -1)
 	    old_row = row;
@@ -5042,7 +5042,7 @@ btk_clist_button_press (BtkWidget      *widget,
     if (clist->column[i].resizeable && clist->column[i].window &&
 	event->window == clist->column[i].window)
       {
-	gpointer drag_data;
+	bpointer drag_data;
 
 	if (bdk_pointer_grab (clist->column[i].window, FALSE,
 			      BDK_POINTER_MOTION_HINT_MASK |
@@ -5076,12 +5076,12 @@ btk_clist_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_clist_button_release (BtkWidget      *widget,
 			  BdkEventButton *event)
 {
   BtkCList *clist;
-  gint button_actions;
+  bint button_actions;
 
   g_return_val_if_fail (BTK_IS_CLIST (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -5095,10 +5095,10 @@ btk_clist_button_release (BtkWidget      *widget,
   /* release on resize windows */
   if (BTK_CLIST_IN_DRAG(clist))
     {
-      gpointer drag_data;
-      gint width;
-      gint x;
-      gint i;
+      bpointer drag_data;
+      bint width;
+      bint x;
+      bint i;
 
       i = clist->drag_pos;
       clist->drag_pos = -1;
@@ -5118,7 +5118,7 @@ btk_clist_button_release (BtkWidget      *widget,
 
       if (BTK_CLIST_ADD_MODE(clist))
 	{
-	  gint8 dashes[] = { 4, 4 };
+	  bint8 dashes[] = { 4, 4 };
 
 	  bdk_gc_set_line_attributes (clist->xor_gc, 1,
 				      BDK_LINE_ON_OFF_DASH, 0, 0);
@@ -5133,8 +5133,8 @@ btk_clist_button_release (BtkWidget      *widget,
 
   if (clist->drag_button == event->button)
     {
-      gint row;
-      gint column;
+      bint row;
+      bint column;
 
       clist->drag_button = 0;
       clist->click_cell.row = -1;
@@ -5174,16 +5174,16 @@ btk_clist_button_release (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_clist_motion (BtkWidget      *widget,
 		  BdkEventMotion *event)
 {
   BtkCList *clist;
-  gint x;
-  gint y;
-  gint row;
-  gint new_width;
-  gint button_actions = 0;
+  bint x;
+  bint y;
+  bint row;
+  bint new_width;
+  bint button_actions = 0;
 
   g_return_val_if_fail (BTK_IS_CLIST (widget), FALSE);
 
@@ -5355,7 +5355,7 @@ btk_clist_size_request (BtkWidget      *widget,
 			BtkRequisition *requisition)
 {
   BtkCList *clist;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
   g_return_if_fail (requisition != NULL);
@@ -5398,7 +5398,7 @@ btk_clist_size_allocate (BtkWidget     *widget,
 {
   BtkCList *clist;
   BtkAllocation clist_allocation;
-  gint border_width;
+  bint border_width;
 
   g_return_if_fail (BTK_IS_CLIST (widget));
   g_return_if_fail (allocation != NULL);
@@ -5421,9 +5421,9 @@ btk_clist_size_allocate (BtkWidget     *widget,
    * border width */
   clist->internal_allocation.x = 0;
   clist->internal_allocation.y = 0;
-  clist->internal_allocation.width = MAX (1, (gint)allocation->width -
+  clist->internal_allocation.width = MAX (1, (bint)allocation->width -
 					  border_width * 2);
-  clist->internal_allocation.height = MAX (1, (gint)allocation->height -
+  clist->internal_allocation.height = MAX (1, (bint)allocation->height -
 					   border_width * 2);
 	
   /* allocate clist window assuming no scrollbars */
@@ -5432,11 +5432,11 @@ btk_clist_size_allocate (BtkWidget     *widget,
   clist_allocation.y = (clist->internal_allocation.y +
 			widget->style->ythickness +
 			clist->column_title_area.height);
-  clist_allocation.width = MAX (1, (gint)clist->internal_allocation.width - 
-				(2 * (gint)widget->style->xthickness));
-  clist_allocation.height = MAX (1, (gint)clist->internal_allocation.height -
-				 (2 * (gint)widget->style->ythickness) -
-				 (gint)clist->column_title_area.height);
+  clist_allocation.width = MAX (1, (bint)clist->internal_allocation.width - 
+				(2 * (bint)widget->style->xthickness));
+  clist_allocation.height = MAX (1, (bint)clist->internal_allocation.height -
+				 (2 * (bint)widget->style->ythickness) -
+				 (bint)clist->column_title_area.height);
   
   clist->clist_window_width = clist_allocation.width;
   clist->clist_window_height = clist_allocation.height;
@@ -5476,12 +5476,12 @@ btk_clist_size_allocate (BtkWidget     *widget,
  */
 static void
 btk_clist_forall (BtkContainer *container,
-		  gboolean      include_internals,
+		  bboolean      include_internals,
 		  BtkCallback   callback,
-		  gpointer      callback_data)
+		  bpointer      callback_data)
 {
   BtkCList *clist;
-  guint i;
+  buint i;
 
   g_return_if_fail (BTK_IS_CLIST (container));
   g_return_if_fail (callback != NULL);
@@ -5508,13 +5508,13 @@ btk_clist_forall (BtkContainer *container,
 static void
 get_cell_style (BtkCList     *clist,
 		BtkCListRow  *clist_row,
-		gint          state,
-		gint          column,
+		bint          state,
+		bint          column,
 		BtkStyle    **style,
 		BdkGC       **fg_gc,
 		BdkGC       **bg_gc)
 {
-  gint fg_state;
+  bint fg_state;
 
   if ((state == BTK_STATE_NORMAL) &&
       (BTK_WIDGET (clist)->state == BTK_STATE_INSENSITIVE))
@@ -5571,19 +5571,19 @@ get_cell_style (BtkCList     *clist,
     }
 }
 
-static gint
+static bint
 draw_cell_pixmap (BdkWindow    *window,
 		  BdkRectangle *clip_rectangle,
 		  BdkGC        *fg_gc,
 		  BdkPixmap    *pixmap,
 		  BdkBitmap    *mask,
-		  gint          x,
-		  gint          y,
-		  gint          width,
-		  gint          height)
+		  bint          x,
+		  bint          y,
+		  bint          width,
+		  bint          height)
 {
-  gint xsrc = 0;
-  gint ysrc = 0;
+  bint xsrc = 0;
+  bint ysrc = 0;
 
   if (mask)
     {
@@ -5620,7 +5620,7 @@ draw_cell_pixmap (BdkWindow    *window,
 static void
 draw_row (BtkCList     *clist,
 	  BdkRectangle *area,
-	  gint          row,
+	  bint          row,
 	  BtkCListRow  *clist_row)
 {
   BtkWidget *widget;
@@ -5629,9 +5629,9 @@ draw_row (BtkCList     *clist,
   BdkRectangle cell_rectangle;
   BdkRectangle clip_rectangle;
   BdkRectangle intersect_rectangle;
-  gint last_column;
-  gint state;
-  gint i;
+  bint last_column;
+  bint state;
+  bint i;
 
   g_return_if_fail (clist != NULL);
 
@@ -5748,10 +5748,10 @@ draw_row (BtkCList     *clist,
       BangoLayout *layout;
       BangoRectangle logical_rect;
 
-      gint width;
-      gint height;
-      gint pixmap_width;
-      gint offset = 0;
+      bint width;
+      bint height;
+      bint pixmap_width;
+      bint offset = 0;
 
       if (!clist->column[i].visible)
 	continue;
@@ -5850,7 +5850,7 @@ draw_row (BtkCList     *clist,
 	case BTK_CELL_TEXT:
 	  if (layout)
 	    {
-	      gint row_center_offset = (clist->row_height - logical_rect.height - 1) / 2;
+	      bint row_center_offset = (clist->row_height - logical_rect.height - 1) / 2;
 
 	      bdk_gc_set_clip_rectangle (fg_gc, &clip_rectangle);
 	      bdk_draw_layout (clist->clist_window, fg_gc,
@@ -5893,9 +5893,9 @@ draw_rows (BtkCList     *clist,
 {
   GList *list;
   BtkCListRow *clist_row;
-  gint i;
-  gint first_row;
-  gint last_row;
+  bint i;
+  bint first_row;
+  bint last_row;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -5979,14 +5979,14 @@ clist_refresh (BtkCList *clist)
  *   get_selection_info
  *   btk_clist_get_selection_info
  */
-static gint
+static bint
 get_selection_info (BtkCList *clist,
-		    gint      x,
-		    gint      y,
-		    gint     *row,
-		    gint     *column)
+		    bint      x,
+		    bint      y,
+		    bint     *row,
+		    bint     *column)
 {
-  gint trow, tcol;
+  bint trow, tcol;
 
   g_return_val_if_fail (BTK_IS_CLIST (clist), 0);
 
@@ -6009,12 +6009,12 @@ get_selection_info (BtkCList *clist,
   return 1;
 }
 
-gint
+bint
 btk_clist_get_selection_info (BtkCList *clist, 
-			      gint      x, 
-			      gint      y, 
-			      gint     *row, 
-			      gint     *column)
+			      bint      x, 
+			      bint      y, 
+			      bint     *row, 
+			      bint     *column)
 {
   g_return_val_if_fail (BTK_IS_CLIST (clist), 0);
   return get_selection_info (clist, x, y, row, column);
@@ -6030,7 +6030,7 @@ btk_clist_get_selection_info (BtkCList *clist,
  */
 static void
 adjust_adjustments (BtkCList *clist,
-		    gboolean  block_resize)
+		    bboolean  block_resize)
 {
   if (clist->vadjustment)
     {
@@ -6043,7 +6043,7 @@ adjust_adjustments (BtkCList *clist,
       clist->vadjustment->upper = LIST_HEIGHT (clist);
 
       if (clist->clist_window_height - clist->voffset > LIST_HEIGHT (clist) ||
-	  (clist->voffset + (gint)clist->vadjustment->value) != 0)
+	  (clist->voffset + (bint)clist->vadjustment->value) != 0)
 	{
 	  clist->vadjustment->value = MAX (0, (LIST_HEIGHT (clist) -
 					       clist->clist_window_height));
@@ -6064,7 +6064,7 @@ adjust_adjustments (BtkCList *clist,
       clist->hadjustment->upper = LIST_WIDTH (clist);
 
       if (clist->clist_window_width - clist->hoffset > LIST_WIDTH (clist) ||
-	  (clist->hoffset + (gint)clist->hadjustment->value) != 0)
+	  (clist->hoffset + (bint)clist->hadjustment->value) != 0)
 	{
 	  clist->hadjustment->value = MAX (0, (LIST_WIDTH (clist) -
 					       clist->clist_window_width));
@@ -6092,7 +6092,7 @@ adjust_adjustments (BtkCList *clist,
 
 static void
 vadjustment_changed (BtkAdjustment *adjustment,
-		     gpointer       data)
+		     bpointer       data)
 {
   BtkCList *clist;
 
@@ -6104,7 +6104,7 @@ vadjustment_changed (BtkAdjustment *adjustment,
 
 static void
 hadjustment_changed (BtkAdjustment *adjustment,
-		     gpointer       data)
+		     bpointer       data)
 {
   BtkCList *clist;
 
@@ -6116,10 +6116,10 @@ hadjustment_changed (BtkAdjustment *adjustment,
 
 static void
 vadjustment_value_changed (BtkAdjustment *adjustment,
-			   gpointer       data)
+			   bpointer       data)
 {
   BtkCList *clist;
-  gint dy, value;
+  bint dy, value;
 
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (BTK_IS_CLIST (data));
@@ -6145,7 +6145,7 @@ vadjustment_value_changed (BtkAdjustment *adjustment,
 typedef struct
 {
   BdkWindow *window;
-  gint dx;
+  bint dx;
 } ScrollData;
 
 /* The window to which widget->window is relative */
@@ -6156,7 +6156,7 @@ typedef struct
 
 static void
 adjust_allocation_recurse (BtkWidget *widget,
-			   gpointer   data)
+			   bpointer   data)
 {
   ScrollData *scroll_data = data;
   
@@ -6186,7 +6186,7 @@ adjust_allocation_recurse (BtkWidget *widget,
 
 static void
 adjust_allocation (BtkWidget *widget,
-		   gint       dx)
+		   bint       dx)
 {
   ScrollData scroll_data;
 
@@ -6202,15 +6202,15 @@ adjust_allocation (BtkWidget *widget,
 
 static void
 hadjustment_value_changed (BtkAdjustment *adjustment,
-			   gpointer       data)
+			   bpointer       data)
 {
   BtkCList *clist;
   BtkContainer *container;
   BdkRectangle area;
-  gint i;
-  gint y = 0;
-  gint value;
-  gint dx;
+  bint i;
+  bint y = 0;
+  bint value;
+  bint dx;
 
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (BTK_IS_CLIST (data));
@@ -6255,7 +6255,7 @@ hadjustment_value_changed (BtkAdjustment *adjustment,
         {
           if (BTK_CLIST_ADD_MODE(clist))
             {
-              gint focus_row;
+              bint focus_row;
 	  
               focus_row = clist->focus_row;
               clist->focus_row = -1;
@@ -6269,8 +6269,8 @@ hadjustment_value_changed (BtkAdjustment *adjustment,
             }
           else if (ABS(dx) < clist->clist_window_width - 1)
             {
-              gint x0;
-              gint x1;
+              bint x0;
+              bint x1;
 	  
               if (dx > 0)
                 {
@@ -6307,7 +6307,7 @@ static BtkCListColumn *
 columns_new (BtkCList *clist)
 {
   BtkCListColumn *column;
-  gint i;
+  bint i;
 
   column = g_new (BtkCListColumn, clist->columns);
 
@@ -6336,8 +6336,8 @@ columns_new (BtkCList *clist)
 
 static void
 column_title_new (BtkCList    *clist,
-		  gint         column,
-		  const gchar *title)
+		  bint         column,
+		  const bchar *title)
 {
   g_free (clist->column[column].title);
 
@@ -6347,7 +6347,7 @@ column_title_new (BtkCList    *clist,
 static void
 columns_delete (BtkCList *clist)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < clist->columns; i++)
     g_free (clist->column[i].title);
@@ -6387,7 +6387,7 @@ static void
 row_delete (BtkCList    *clist,
 	    BtkCListRow *clist_row)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < clist->columns; i++)
     {
@@ -6440,13 +6440,13 @@ btk_clist_focus_content_area (BtkCList *clist)
   btk_widget_grab_focus (BTK_WIDGET (clist));
 }
 
-static gboolean
+static bboolean
 btk_clist_focus (BtkWidget        *widget,
 		 BtkDirectionType  direction)
 {
   BtkCList *clist = BTK_CLIST (widget);
   BtkWidget *focus_child;
-  gboolean is_current_focus;
+  bboolean is_current_focus;
 
   if (!btk_widget_is_sensitive (widget))
     return FALSE;
@@ -6514,7 +6514,7 @@ btk_clist_set_focus_child (BtkContainer *container,
 			   BtkWidget    *child)
 {
   BtkCList *clist = BTK_CLIST (container);
-  gint i;
+  bint i;
 
   for (i = 0; i < clist->columns; i++)
     if (clist->column[i].button == child)
@@ -6541,7 +6541,7 @@ btk_clist_draw_focus (BtkWidget *widget)
 			clist->row_height - 1);
 }
 
-static gint
+static bint
 btk_clist_focus_in (BtkWidget     *widget,
 		    BdkEventFocus *event)
 {
@@ -6565,7 +6565,7 @@ btk_clist_focus_in (BtkWidget     *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_clist_focus_out (BtkWidget     *widget,
 		     BdkEventFocus *event)
 {
@@ -6578,8 +6578,8 @@ btk_clist_focus_out (BtkWidget     *widget,
   return FALSE;
 }
 
-static gboolean
-focus_column (BtkCList *clist, gint column, gint dir)
+static bboolean
+focus_column (BtkCList *clist, bint column, bint dir)
 {
   BtkWidget *child = clist->column[column].button;
   
@@ -6599,11 +6599,11 @@ focus_column (BtkCList *clist, gint column, gint dir)
 /* Focus moved onto the headers. Focus first focusable and visible child.
  * (FIXME: focus the last focused child if visible)
  */
-static gboolean
-title_focus_in (BtkCList *clist, gint dir)
+static bboolean
+title_focus_in (BtkCList *clist, bint dir)
 {
-  gint i;
-  gint left, right;
+  bint i;
+  bint left, right;
 
   if (!BTK_CLIST_SHOW_TITLES (clist))
     return FALSE;
@@ -6656,15 +6656,15 @@ title_focus_in (BtkCList *clist, gint dir)
 /* Move the focus right or left within the title buttons, scrolling
  * as necessary to keep the focused child visible.
  */
-static gboolean
+static bboolean
 title_focus_move (BtkCList *clist,
-		  gint      dir)
+		  bint      dir)
 {
   BtkWidget *focus_child;
-  gboolean return_val = FALSE;
-  gint d = 0;
-  gint i = -1;
-  gint j;
+  bboolean return_val = FALSE;
+  bint d = 0;
+  bint i = -1;
+  bint j;
 
   if (!BTK_CLIST_SHOW_TITLES(clist))
     return FALSE;
@@ -6735,7 +6735,7 @@ title_focus_move (BtkCList *clist,
       else if (COLUMN_LEFT_XPIXEL(clist, j) + clist->column[j].area.width >
 	       clist->clist_window_width)
 	{
-	  gint last_column;
+	  bint last_column;
 	  
 	  for (last_column = clist->columns - 1;
 	       last_column >= 0 && !clist->column[last_column].visible; last_column--);
@@ -6764,7 +6764,7 @@ title_focus_move (BtkCList *clist,
 static void
 move_focus_row (BtkCList      *clist,
 		BtkScrollType  scroll_type,
-		gfloat         position)
+		bfloat         position)
 {
   BtkWidget *widget;
 
@@ -6830,10 +6830,10 @@ move_focus_row (BtkCList      *clist,
 static void
 scroll_horizontal (BtkCList      *clist,
 		   BtkScrollType  scroll_type,
-		   gfloat         position)
+		   bfloat         position)
 {
-  gint column = 0;
-  gint last_column;
+  bint column = 0;
+  bint last_column;
 
   g_return_if_fail (clist != 0);
   g_return_if_fail (BTK_IS_CLIST (clist));
@@ -6869,8 +6869,8 @@ scroll_horizontal (BtkCList      *clist,
     case BTK_SCROLL_JUMP:
       if (position >= 0 && position <= 1)
 	{
-	  gint vis_columns = 0;
-	  gint i;
+	  bint vis_columns = 0;
+	  bint i;
 
 	  for (i = 0; i <= last_column; i++)
  	    if (clist->column[i].visible)
@@ -6906,9 +6906,9 @@ scroll_horizontal (BtkCList      *clist,
 static void
 scroll_vertical (BtkCList      *clist,
 		 BtkScrollType  scroll_type,
-		 gfloat         position)
+		 bfloat         position)
 {
-  gint old_focus_row;
+  bint old_focus_row;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -7006,9 +7006,9 @@ scroll_vertical (BtkCList      *clist,
 
 static void
 move_horizontal (BtkCList *clist,
-		 gint      diff)
+		 bint      diff)
 {
-  gdouble value;
+  bdouble value;
 
   if (!clist->hadjustment)
     return;
@@ -7020,10 +7020,10 @@ move_horizontal (BtkCList *clist,
 
 static void
 move_vertical (BtkCList *clist,
-	       gint      row,
-	       gfloat    align)
+	       bint      row,
+	       bfloat    align)
 {
-  gdouble value;
+  bdouble value;
 
   if (!clist->vadjustment)
     return;
@@ -7049,7 +7049,7 @@ do_fake_motion (BtkWidget *widget)
   bdk_event_free (event);
 }
 
-static gint
+static bint
 horizontal_timeout (BtkCList *clist)
 {
   clist->htimer = 0;
@@ -7058,7 +7058,7 @@ horizontal_timeout (BtkCList *clist)
   return FALSE;
 }
 
-static gint
+static bint
 vertical_timeout (BtkCList *clist)
 {
   clist->vtimer = 0;
@@ -7120,7 +7120,7 @@ btk_clist_set_compare_func (BtkCList            *clist,
 
 void       
 btk_clist_set_auto_sort (BtkCList *clist,
-			 gboolean  auto_sort)
+			 bboolean  auto_sort)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
   
@@ -7144,7 +7144,7 @@ btk_clist_set_sort_type (BtkCList    *clist,
 
 void
 btk_clist_set_sort_column (BtkCList *clist,
-			   gint      column)
+			   bint      column)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -7160,7 +7160,7 @@ btk_clist_set_sort_column (BtkCList *clist,
  *   btk_clist_merge
  *   btk_clist_mergesort
  */
-static gint
+static bint
 default_compare (BtkCList      *clist,
 		 gconstpointer  ptr1,
 		 gconstpointer  ptr2)
@@ -7209,7 +7209,7 @@ real_sort_list (BtkCList *clist)
 {
   GList *list;
   GList *work;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -7238,7 +7238,7 @@ real_sort_list (BtkCList *clist)
     {
       if (BTK_CLIST_ROW (list)->state == BTK_STATE_SELECTED)
 	{
-	  work->data = GINT_TO_POINTER (i);
+	  work->data = BINT_TO_POINTER (i);
 	  work = work->next;
 	}
       
@@ -7256,7 +7256,7 @@ btk_clist_merge (BtkCList *clist,
 {
   GList z = { 0 };                    /* auxiliary node */
   GList *c;
-  gint cmp;
+  bint cmp;
 
   c = &z;
 
@@ -7307,10 +7307,10 @@ btk_clist_merge (BtkCList *clist,
 static GList *
 btk_clist_mergesort (BtkCList *clist,
 		     GList    *list,         /* the list to sort */
-		     gint      num)          /* the list's length */
+		     bint      num)          /* the list's length */
 {
   GList *half;
-  gint i;
+  bint i;
 
   if (num <= 1)
     {
@@ -7337,7 +7337,7 @@ btk_clist_mergesort (BtkCList *clist,
 /************************/
 
 static void
-drag_source_info_destroy (gpointer data)
+drag_source_info_destroy (bpointer data)
 {
   BtkCListCellInfo *info = data;
 
@@ -7345,7 +7345,7 @@ drag_source_info_destroy (gpointer data)
 }
 
 static void
-drag_dest_info_destroy (gpointer data)
+drag_dest_info_destroy (bpointer data)
 {
   BtkCListDestInfo *info = data;
 
@@ -7354,8 +7354,8 @@ drag_dest_info_destroy (gpointer data)
 
 static void
 drag_dest_cell (BtkCList         *clist,
-		gint              x,
-		gint              y,
+		bint              x,
+		bint              y,
 		BtkCListDestInfo *dest_info)
 {
   BtkWidget *widget;
@@ -7383,8 +7383,8 @@ drag_dest_cell (BtkCList         *clist,
 
   if (dest_info->cell.row >= 0)
     {
-      gint y_delta;
-      gint h = 0;
+      bint y_delta;
+      bint h = 0;
 
       y_delta = y - ROW_TOP_YPIXEL (clist, dest_info->cell.row);
       
@@ -7477,7 +7477,7 @@ btk_clist_drag_end (BtkWidget	   *widget,
 static void
 btk_clist_drag_leave (BtkWidget      *widget,
 		      BdkDragContext *context,
-		      guint           time)
+		      buint           time)
 {
   BtkCList *clist;
   BtkCListDestInfo *dest_info;
@@ -7517,12 +7517,12 @@ btk_clist_drag_leave (BtkWidget      *widget,
     }
 }
 
-static gint
+static bint
 btk_clist_drag_motion (BtkWidget      *widget,
 		       BdkDragContext *context,
-		       gint            x,
-		       gint            y,
-		       guint           time)
+		       bint            x,
+		       bint            y,
+		       buint           time)
 {
   BtkCList *clist;
   BtkCListDestInfo new_info;
@@ -7613,12 +7613,12 @@ btk_clist_drag_motion (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_clist_drag_drop (BtkWidget      *widget,
 		     BdkDragContext *context,
-		     gint            x,
-		     gint            y,
-		     guint           time)
+		     bint            x,
+		     bint            y,
+		     buint           time)
 {
   g_return_val_if_fail (BTK_IS_CLIST (widget), FALSE);
   g_return_val_if_fail (context != NULL, FALSE);
@@ -7643,11 +7643,11 @@ btk_clist_drag_drop (BtkWidget      *widget,
 static void
 btk_clist_drag_data_received (BtkWidget        *widget,
 			      BdkDragContext   *context,
-			      gint              x,
-			      gint              y,
+			      bint              x,
+			      bint              y,
 			      BtkSelectionData *selection_data,
-			      guint             info,
-			      guint             time)
+			      buint             info,
+			      buint             time)
 {
   BtkCList *clist;
 
@@ -7689,8 +7689,8 @@ static void
 btk_clist_drag_data_get (BtkWidget        *widget,
 			 BdkDragContext   *context,
 			 BtkSelectionData *selection_data,
-			 guint             info,
-			 guint             time)
+			 buint             info,
+			 buint             time)
 {
   g_return_if_fail (BTK_IS_CLIST (widget));
   g_return_if_fail (context != NULL);
@@ -7710,7 +7710,7 @@ btk_clist_drag_data_get (BtkWidget        *widget,
 	  ret_info.column = info->column;
 
 	  btk_selection_data_set (selection_data, selection_data->target,
-				  8, (guchar *) &ret_info,
+				  8, (buchar *) &ret_info,
 				  sizeof (BtkCListCellInfo));
 	}
     }
@@ -7719,10 +7719,10 @@ btk_clist_drag_data_get (BtkWidget        *widget,
 static void
 draw_drag_highlight (BtkCList        *clist,
 		     BtkCListRow     *dest_row,
-		     gint             dest_row_number,
+		     bint             dest_row_number,
 		     BtkCListDragPos  drag_pos)
 {
-  gint y;
+  bint y;
 
   y = ROW_TOP_YPIXEL (clist, dest_row_number) - 1;
 
@@ -7745,7 +7745,7 @@ draw_drag_highlight (BtkCList        *clist,
 
 void
 btk_clist_set_reorderable (BtkCList *clist, 
-			   gboolean  reorderable)
+			   bboolean  reorderable)
 {
   BtkWidget *widget;
 
@@ -7772,7 +7772,7 @@ btk_clist_set_reorderable (BtkCList *clist,
 
 void
 btk_clist_set_use_drag_icons (BtkCList *clist,
-			      gboolean  use_icons)
+			      bboolean  use_icons)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
 
@@ -7784,8 +7784,8 @@ btk_clist_set_use_drag_icons (BtkCList *clist,
 
 void
 btk_clist_set_button_actions (BtkCList *clist,
-			      guint     button,
-			      guint8    button_actions)
+			      buint     button,
+			      buint8    button_actions)
 {
   g_return_if_fail (BTK_IS_CLIST (clist));
   

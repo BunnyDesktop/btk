@@ -69,7 +69,7 @@ struct _BtkToolShellIface
   BtkReliefStyle     (*get_relief_style)     (BtkToolShell *shell);
   void               (*rebuild_menu)         (BtkToolShell *shell);
   BtkOrientation     (*get_text_orientation) (BtkToolShell *shell);
-  gfloat             (*get_text_alignment)   (BtkToolShell *shell);
+  bfloat             (*get_text_alignment)   (BtkToolShell *shell);
   BangoEllipsizeMode (*get_ellipsize_mode)   (BtkToolShell *shell);
   BtkSizeGroup *     (*get_text_size_group)  (BtkToolShell *shell);
 };
@@ -82,7 +82,7 @@ BtkToolbarStyle    btk_tool_shell_get_style            (BtkToolShell *shell);
 BtkReliefStyle     btk_tool_shell_get_relief_style     (BtkToolShell *shell);
 void               btk_tool_shell_rebuild_menu         (BtkToolShell *shell);
 BtkOrientation     btk_tool_shell_get_text_orientation (BtkToolShell *shell);
-gfloat             btk_tool_shell_get_text_alignment   (BtkToolShell *shell);
+bfloat             btk_tool_shell_get_text_alignment   (BtkToolShell *shell);
 BangoEllipsizeMode btk_tool_shell_get_ellipsize_mode   (BtkToolShell *shell);
 BtkSizeGroup *     btk_tool_shell_get_text_size_group  (BtkToolShell *shell);
 

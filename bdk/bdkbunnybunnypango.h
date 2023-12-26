@@ -121,15 +121,15 @@ void          bdk_bango_context_set_colormap   (BangoContext *context,
  */
 
 BdkRebunnyion    *bdk_bango_layout_line_get_clip_rebunnyion (BangoLayoutLine *line,
-                                                     gint             x_origin,
-                                                     gint             y_origin,
-                                                     const gint      *index_ranges,
-                                                     gint             n_ranges);
+                                                     bint             x_origin,
+                                                     bint             y_origin,
+                                                     const bint      *index_ranges,
+                                                     bint             n_ranges);
 BdkRebunnyion    *bdk_bango_layout_get_clip_rebunnyion      (BangoLayout     *layout,
-                                                     gint             x_origin,
-                                                     gint             y_origin,
-                                                     const gint      *index_ranges,
-                                                     gint             n_ranges);
+                                                     bint             x_origin,
+                                                     bint             y_origin,
+                                                     const bint      *index_ranges,
+                                                     bint             n_ranges);
 
 
 
@@ -148,7 +148,7 @@ struct _BdkBangoAttrStipple
 struct _BdkBangoAttrEmbossed
 {
   BangoAttribute attr;
-  gboolean embossed;
+  bboolean embossed;
 };
 
 struct _BdkBangoAttrEmbossColor
@@ -158,7 +158,7 @@ struct _BdkBangoAttrEmbossColor
 };
 
 BangoAttribute *bdk_bango_attr_stipple_new  (BdkBitmap *stipple);
-BangoAttribute *bdk_bango_attr_embossed_new (gboolean embossed);
+BangoAttribute *bdk_bango_attr_embossed_new (bboolean embossed);
 BangoAttribute *bdk_bango_attr_emboss_color_new (const BdkColor *color);
 
 B_END_DECLS

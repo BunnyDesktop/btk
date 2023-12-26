@@ -24,8 +24,8 @@ _find_object (BatkObject *obj,
    * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
-  gint i;
-  gint n_children;
+  bint i;
+  bint n_children;
   BatkObject *child;
 
   n_children = batk_object_get_n_accessible_children (obj);
@@ -51,8 +51,8 @@ _find_object (BatkObject *obj,
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -100,7 +100,7 @@ static void
 _notify_handler (BObject *obj, BParamSpec *pspec)
 {
   BatkObject *batk_obj = BATK_OBJECT (obj);
-  const gchar *name;
+  const bchar *name;
 
   g_print ("_notify_handler: property: %s\n", pspec->name);
   if (strcmp (pspec->name, "accessible-name") == 0)
@@ -117,7 +117,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("teststatusbar Module loaded\n");
 

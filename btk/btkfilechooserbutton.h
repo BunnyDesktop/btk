@@ -67,25 +67,25 @@ struct _BtkFileChooserButtonClass
 
 
 GType                 btk_file_chooser_button_get_type         (void) B_GNUC_CONST;
-BtkWidget *           btk_file_chooser_button_new              (const gchar          *title,
+BtkWidget *           btk_file_chooser_button_new              (const bchar          *title,
 								BtkFileChooserAction  action);
 
 #ifndef BTK_DISABLE_DEPRECATED
-BtkWidget *           btk_file_chooser_button_new_with_backend (const gchar          *title,
+BtkWidget *           btk_file_chooser_button_new_with_backend (const bchar          *title,
 								BtkFileChooserAction  action,
-								const gchar          *backend);
+								const bchar          *backend);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 BtkWidget *           btk_file_chooser_button_new_with_dialog  (BtkWidget            *dialog);
-const gchar *         btk_file_chooser_button_get_title        (BtkFileChooserButton *button);
+const bchar *         btk_file_chooser_button_get_title        (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_title        (BtkFileChooserButton *button,
-								const gchar          *title);
-gint                  btk_file_chooser_button_get_width_chars  (BtkFileChooserButton *button);
+								const bchar          *title);
+bint                  btk_file_chooser_button_get_width_chars  (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_width_chars  (BtkFileChooserButton *button,
-								gint                  n_chars);
-gboolean              btk_file_chooser_button_get_focus_on_click (BtkFileChooserButton *button);
+								bint                  n_chars);
+bboolean              btk_file_chooser_button_get_focus_on_click (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_focus_on_click (BtkFileChooserButton *button,
-                                                                  gboolean              focus_on_click);
+                                                                  bboolean              focus_on_click);
 
 B_END_DECLS
 

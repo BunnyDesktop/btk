@@ -79,7 +79,7 @@ struct _BdkDragContext {
   
   BdkDragProtocol GSEAL (protocol);
 
-  gboolean GSEAL (is_source);
+  bboolean GSEAL (is_source);
   
   BdkWindow *GSEAL (source_window);
   BdkWindow *GSEAL (dest_window);
@@ -89,11 +89,11 @@ struct _BdkDragContext {
   BdkDragAction GSEAL (suggested_action);
   BdkDragAction GSEAL (action);
 
-  guint32 GSEAL (start_time);
+  buint32 GSEAL (start_time);
 
   /*< private >*/
   
-  gpointer GSEAL (windowing_data);
+  bpointer GSEAL (windowing_data);
 };
 
 struct _BdkDragContextClass {
@@ -127,13 +127,13 @@ void             bdk_drag_context_unref      (BdkDragContext *context);
 
 void             bdk_drag_status        (BdkDragContext   *context,
 				         BdkDragAction     action,
-					 guint32           time_);
+					 buint32           time_);
 void             bdk_drop_reply         (BdkDragContext   *context,
-					 gboolean          ok,
-					 guint32           time_);
+					 bboolean          ok,
+					 buint32           time_);
 void             bdk_drop_finish        (BdkDragContext   *context,
-					 gboolean          success,
-					 guint32           time_);
+					 bboolean          success,
+					 buint32           time_);
 BdkAtom          bdk_drag_get_selection (BdkDragContext   *context);
 
 /* Source side */
@@ -148,8 +148,8 @@ BdkNativeWindow bdk_drag_get_protocol_for_display (BdkDisplay       *display,
 void    bdk_drag_find_window_for_screen   (BdkDragContext   *context,
 					   BdkWindow        *drag_window,
 					   BdkScreen        *screen,
-					   gint              x_root,
-					   gint              y_root,
+					   bint              x_root,
+					   bint              y_root,
 					   BdkWindow       **dest_window,
 					   BdkDragProtocol  *protocol);
 
@@ -160,26 +160,26 @@ BdkNativeWindow bdk_drag_get_protocol (BdkNativeWindow   xid,
 
 void    bdk_drag_find_window  (BdkDragContext   *context,
 			       BdkWindow        *drag_window,
-			       gint              x_root,
-			       gint              y_root,
+			       bint              x_root,
+			       bint              y_root,
 			       BdkWindow       **dest_window,
 			       BdkDragProtocol  *protocol);
 #endif /* BDK_DISABLE_DEPRECATED */
 #endif /* BDK_MULTIHEAD_SAFE */
 
-gboolean        bdk_drag_motion      (BdkDragContext *context,
+bboolean        bdk_drag_motion      (BdkDragContext *context,
 				      BdkWindow      *dest_window,
 				      BdkDragProtocol protocol,
-				      gint            x_root, 
-				      gint            y_root,
+				      bint            x_root, 
+				      bint            y_root,
 				      BdkDragAction   suggested_action,
 				      BdkDragAction   possible_actions,
-				      guint32         time_);
+				      buint32         time_);
 void            bdk_drag_drop        (BdkDragContext *context,
-				      guint32         time_);
+				      buint32         time_);
 void            bdk_drag_abort       (BdkDragContext *context,
-				      guint32         time_);
-gboolean        bdk_drag_drop_succeeded (BdkDragContext *context);
+				      buint32         time_);
+bboolean        bdk_drag_drop_succeeded (BdkDragContext *context);
 
 B_END_DECLS
 

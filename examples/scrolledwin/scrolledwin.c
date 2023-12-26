@@ -3,7 +3,7 @@
 #include <btk/btk.h>
 
 static void destroy( BtkWidget *widget,
-                     gpointer   data )
+                     bpointer   data )
 {
     btk_main_quit ();
 }

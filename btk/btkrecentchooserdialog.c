@@ -43,15 +43,15 @@ static void btk_recent_chooser_dialog_init       (BtkRecentChooserDialog      *d
 static void btk_recent_chooser_dialog_finalize   (BObject                     *object);
 
 static BObject *btk_recent_chooser_dialog_constructor (GType                  type,
-						       guint                  n_construct_properties,
+						       buint                  n_construct_properties,
 						       BObjectConstructParam *construct_params);
 
 static void btk_recent_chooser_dialog_set_property (BObject      *object,
-						    guint         prop_id,
+						    buint         prop_id,
 						    const BValue *value,
 						    BParamSpec   *pspec);
 static void btk_recent_chooser_dialog_get_property (BObject      *object,
-						    guint         prop_id,
+						    buint         prop_id,
 						    BValue       *value,
 						    BParamSpec   *pspec);
 
@@ -105,7 +105,7 @@ btk_recent_chooser_dialog_init (BtkRecentChooserDialog *dialog)
  */
 static void
 btk_recent_chooser_item_activated_cb (BtkRecentChooser *chooser,
-				      gpointer          user_data)
+				      bpointer          user_data)
 {
   BtkRecentChooserDialog *dialog;
   GList *children, *l;
@@ -120,7 +120,7 @@ btk_recent_chooser_item_activated_cb (BtkRecentChooser *chooser,
   for (l = children; l; l = l->next)
     {
       BtkWidget *widget;
-      gint response_id;
+      bint response_id;
       
       widget = BTK_WIDGET (l->data);
       response_id = btk_dialog_get_response_for_widget (BTK_DIALOG (dialog), widget);
@@ -143,7 +143,7 @@ btk_recent_chooser_item_activated_cb (BtkRecentChooser *chooser,
 
 static BObject *
 btk_recent_chooser_dialog_constructor (GType                  type,
-				       guint                  n_construct_properties,
+				       buint                  n_construct_properties,
 				       BObjectConstructParam *construct_params)
 {
   BObject *object;
@@ -182,7 +182,7 @@ btk_recent_chooser_dialog_constructor (GType                  type,
 
 static void
 btk_recent_chooser_dialog_set_property (BObject      *object,
-					guint         prop_id,
+					buint         prop_id,
 					const BValue *value,
 					BParamSpec   *pspec)
 {
@@ -203,7 +203,7 @@ btk_recent_chooser_dialog_set_property (BObject      *object,
 
 static void
 btk_recent_chooser_dialog_get_property (BObject      *object,
-					guint         prop_id,
+					buint         prop_id,
 					BValue       *value,
 					BParamSpec   *pspec)
 {
@@ -248,15 +248,15 @@ btk_recent_chooser_dialog_unmap (BtkWidget *widget)
 }
 
 static BtkWidget *
-btk_recent_chooser_dialog_new_valist (const gchar      *title,
+btk_recent_chooser_dialog_new_valist (const bchar      *title,
 				      BtkWindow        *parent,
 				      BtkRecentManager *manager,
-				      const gchar      *first_button_text,
+				      const bchar      *first_button_text,
 				      va_list           varargs)
 {
   BtkWidget *result;
   const char *button_text = first_button_text;
-  gint response_id;
+  bint response_id;
   
   result = g_object_new (BTK_TYPE_RECENT_CHOOSER_DIALOG,
                          "title", title,
@@ -268,9 +268,9 @@ btk_recent_chooser_dialog_new_valist (const gchar      *title,
   
   while (button_text)
     {
-      response_id = va_arg (varargs, gint);
+      response_id = va_arg (varargs, bint);
       btk_dialog_add_button (BTK_DIALOG (result), button_text, response_id);
-      button_text = va_arg (varargs, const gchar *);
+      button_text = va_arg (varargs, const bchar *);
     }
   
   return result;
@@ -292,9 +292,9 @@ btk_recent_chooser_dialog_new_valist (const gchar      *title,
  * Since: 2.10
  */
 BtkWidget *
-btk_recent_chooser_dialog_new (const gchar *title,
+btk_recent_chooser_dialog_new (const bchar *title,
 			       BtkWindow   *parent,
-			       const gchar *first_button_text,
+			       const bchar *first_button_text,
 			       ...)
 {
   BtkWidget *result;
@@ -330,10 +330,10 @@ btk_recent_chooser_dialog_new (const gchar *title,
  * Since: 2.10
  */
 BtkWidget *
-btk_recent_chooser_dialog_new_for_manager (const gchar      *title,
+btk_recent_chooser_dialog_new_for_manager (const bchar      *title,
 			                   BtkWindow        *parent,
 			                   BtkRecentManager *manager,
-			                   const gchar      *first_button_text,
+			                   const bchar      *first_button_text,
 			                   ...)
 {
   BtkWidget *result;

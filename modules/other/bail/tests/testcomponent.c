@@ -6,8 +6,8 @@ static void _check_position (BatkObject *obj)
 {
   BatkObject *parent, *ret_object;
 
-  gint x, y, width, height;
-  gint x1, y1, width1, height1;
+  bint x, y, width, height;
+  bint x1, y1, width1, height1;
 
   x = y = width = height = 0;
   x1 = y1 = width1 = height1 = 0;
@@ -38,7 +38,7 @@ static void _check_position (BatkObject *obj)
 
   if (BATK_IS_COMPONENT (parent))
   {
-    gint px, py, pwidth, pheight;
+    bint px, py, pwidth, pheight;
     
     batk_component_get_extents (BATK_COMPONENT(parent),
                                &px, &py, &pwidth, &pheight, BATK_XY_SCREEN);
@@ -111,7 +111,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testcomponent Module loaded\n");
 

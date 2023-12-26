@@ -191,7 +191,7 @@ btk_tool_shell_get_text_orientation (BtkToolShell *shell)
  *
  * Since: 2.20
  **/
-gfloat
+bfloat
 btk_tool_shell_get_text_alignment (BtkToolShell *shell)
 {
   BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);

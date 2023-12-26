@@ -86,16 +86,16 @@ BtkWidget *btk_color_button_new_with_color (const BdkColor *color);
 void       btk_color_button_set_color      (BtkColorButton *color_button,
 					    const BdkColor *color);
 void       btk_color_button_set_alpha      (BtkColorButton *color_button,
-					    guint16         alpha);
+					    buint16         alpha);
 void       btk_color_button_get_color      (BtkColorButton *color_button,
 					    BdkColor       *color);
-guint16    btk_color_button_get_alpha      (BtkColorButton *color_button);
+buint16    btk_color_button_get_alpha      (BtkColorButton *color_button);
 void       btk_color_button_set_use_alpha  (BtkColorButton *color_button,
-					    gboolean        use_alpha);
-gboolean   btk_color_button_get_use_alpha  (BtkColorButton *color_button);
+					    bboolean        use_alpha);
+bboolean   btk_color_button_get_use_alpha  (BtkColorButton *color_button);
 void       btk_color_button_set_title      (BtkColorButton *color_button,
-					    const gchar    *title);
-const gchar *btk_color_button_get_title (BtkColorButton *color_button);
+					    const bchar    *title);
+const bchar *btk_color_button_get_title (BtkColorButton *color_button);
 
 
 B_END_DECLS

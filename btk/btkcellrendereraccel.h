@@ -51,9 +51,9 @@ struct _BtkCellRendererAccel
   BtkCellRendererText parent;
 
   /*< private >*/
-  guint GSEAL (accel_key);
+  buint GSEAL (accel_key);
   BdkModifierType GSEAL (accel_mods);
-  guint GSEAL (keycode);
+  buint GSEAL (keycode);
   BtkCellRendererAccelMode GSEAL (accel_mode);
 
   BtkWidget *GSEAL (edit_widget);
@@ -66,13 +66,13 @@ struct _BtkCellRendererAccelClass
   BtkCellRendererTextClass parent_class;
 
   void (* accel_edited)  (BtkCellRendererAccel *accel,
-		 	  const gchar          *path_string,
-			  guint                 accel_key,
+		 	  const bchar          *path_string,
+			  buint                 accel_key,
 			  BdkModifierType       accel_mods,
-			  guint                 hardware_keycode);
+			  buint                 hardware_keycode);
 
   void (* accel_cleared) (BtkCellRendererAccel *accel,
-			  const gchar          *path_string);
+			  const bchar          *path_string);
 
   /* Padding for future expansion */
   void (*_btk_reserved0) (void);

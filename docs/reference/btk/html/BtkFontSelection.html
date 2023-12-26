@@ -60,7 +60,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontSelection.html#btk-font-selection-get-font-name" title="btk_font_selection_get_font_name ()">btk_font_selection_get_font_name</a> <span class="c_punctuation">()</span>
@@ -68,14 +68,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontSelection.html#btk-font-selection-set-font-name" title="btk_font_selection_set_font_name ()">btk_font_selection_set_font_name</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontSelection.html#btk-font-selection-get-preview-text" title="btk_font_selection_get_preview_text ()">btk_font_selection_get_preview_text</a> <span class="c_punctuation">()</span>
@@ -115,7 +115,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontSelection.html#btk-font-selection-get-size" title="btk_font_selection_get_size ()">btk_font_selection_get_size</a> <span class="c_punctuation">()</span>
@@ -270,7 +270,7 @@ btk_font_selection_get_font (<em class="parameter"><code><a class="link" href="B
 <hr>
 <div class="refsect2">
 <a name="btk-font-selection-get-font-name"></a><h3>btk_font_selection_get_font_name ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 btk_font_selection_get_font_name (<em class="parameter"><code><a class="link" href="BtkFontSelection.html" title="BtkFontSelection"><span class="type">BtkFontSelection</span></a> *fontsel</code></em>);</pre>
 <p>Gets the currently-selected font name. </p>
 <p>Note that this can be a different string than what you set with 
@@ -303,9 +303,9 @@ no font is selected. You must free this string with <code class="function">g_fre
 <hr>
 <div class="refsect2">
 <a name="btk-font-selection-set-font-name"></a><h3>btk_font_selection_set_font_name ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_selection_set_font_name (<em class="parameter"><code><a class="link" href="BtkFontSelection.html" title="BtkFontSelection"><span class="type">BtkFontSelection</span></a> *fontsel</code></em>,
-                                  <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>);</pre>
+                                  <em class="parameter"><code>const <span class="type">bchar</span> *fontname</code></em>);</pre>
 <p>Sets the currently-selected font. </p>
 <p>Note that the <em class="parameter"><code>fontsel</code></em>
  needs to know the screen in which it will appear 
@@ -345,7 +345,7 @@ screen yet.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-font-selection-get-preview-text"></a><h3>btk_font_selection_get_preview_text ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_font_selection_get_preview_text (<em class="parameter"><code><a class="link" href="BtkFontSelection.html" title="BtkFontSelection"><span class="type">BtkFontSelection</span></a> *fontsel</code></em>);</pre>
 <p>Gets the text displayed in the preview area.</p>
 <div class="refsect3">
@@ -375,7 +375,7 @@ modified or freed </p>
 <a name="btk-font-selection-set-preview-text"></a><h3>btk_font_selection_set_preview_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_selection_set_preview_text (<em class="parameter"><code><a class="link" href="BtkFontSelection.html" title="BtkFontSelection"><span class="type">BtkFontSelection</span></a> *fontsel</code></em>,
-                                     <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                                     <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Sets the text displayed in the preview area.
 The <em class="parameter"><code>text</code></em>
  is used to show how the selected font looks.</p>
@@ -499,7 +499,7 @@ be modified or freed. </p>
 <hr>
 <div class="refsect2">
 <a name="btk-font-selection-get-size"></a><h3>btk_font_selection_get_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_font_selection_get_size (<em class="parameter"><code><a class="link" href="BtkFontSelection.html" title="BtkFontSelection"><span class="type">BtkFontSelection</span></a> *fontsel</code></em>);</pre>
 <p>The selected font size.</p>
 <div class="refsect3">

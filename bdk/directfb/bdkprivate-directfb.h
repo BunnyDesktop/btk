@@ -79,14 +79,14 @@ struct _BdkDrawableImplDirectFB
 
   BdkDrawable *wrapper;
 
-  gboolean buffered;
+  bboolean buffered;
 
   BdkRebunnyion paint_rebunnyion;
-  gint      paint_depth;
-  gint      width;
-  gint      height;
-  gint      abs_x;
-  gint      abs_y;
+  bint      paint_depth;
+  bint      width;
+  bint      height;
+  bint      abs_x;
+  bint      abs_y;
 
   BdkRebunnyion clip_rebunnyion;
 
@@ -135,10 +135,10 @@ GType bdk_pixmap_impl_directfb_get_type (void);
 
 typedef struct
 {
-  gulong   length;
+  bulong   length;
   BdkAtom  type;
-  gint     format;
-  guchar   data[1];
+  bint     format;
+  buchar   data[1];
 } BdkWindowProperty;
 
 
@@ -153,7 +153,7 @@ struct _BdkWindowImplDirectFB
   BdkCursor              *cursor;
   GHashTable             *properties;
 
-  guint8                  opacity;
+  buint8                  opacity;
 
   BdkWindowTypeHint       type_hint;
 
@@ -181,23 +181,23 @@ void        bdk_directfb_window_id_table_remove (DFBWindowID  dfb_id);
 BdkWindow * bdk_directfb_window_id_table_lookup (DFBWindowID  dfb_id);
 
 void        _bdk_directfb_window_get_offsets    (BdkWindow       *window,
-                                                 gint            *x_offset,
-                                                 gint            *y_offset);
+                                                 bint            *x_offset,
+                                                 bint            *y_offset);
 void        _bdk_directfb_window_scroll         (BdkWindow       *window,
-                                                 gint             dx,
-                                                 gint             dy);
+                                                 bint             dx,
+                                                 bint             dy);
 void        _bdk_directfb_window_move_rebunnyion    (BdkWindow       *window,
                                                  const BdkRebunnyion *rebunnyion,
-                                                 gint             dx,
-                                                 gint             dy);
+                                                 bint             dx,
+                                                 bint             dy);
 
 
 typedef struct
 {
   BdkCursor         cursor;
 
-  gint              hot_x;
-  gint              hot_y;
+  bint              hot_x;
+  bint              hot_y;
   IDirectFBSurface *shape;
 } BdkCursorDirectFB;
 
@@ -240,35 +240,35 @@ BdkGC    *_bdk_directfb_gc_new      (BdkDrawable     *drawable,
 
 BdkImage* _bdk_directfb_copy_to_image (BdkDrawable  *drawable,
                                        BdkImage     *image,
-                                       gint          src_x,
-                                       gint          src_y,
-                                       gint          dest_x,
-                                       gint          dest_y,
-                                       gint          width,
-                                       gint          height);
+                                       bint          src_x,
+                                       bint          src_y,
+                                       bint          dest_x,
+                                       bint          dest_y,
+                                       bint          width,
+                                       bint          height);
 
 void       bdk_directfb_event_windows_add    (BdkWindow *window);
 void       bdk_directfb_event_windows_remove (BdkWindow *window);
 
 BdkGrabStatus bdk_directfb_keyboard_grab  (BdkDisplay          *display,
                                            BdkWindow           *window,
-                                           gint                 owner_events,
-                                           guint32              time);
+                                           bint                 owner_events,
+                                           buint32              time);
 
 void          bdk_directfb_keyboard_ungrab(BdkDisplay          *display,
-                                           guint32              time);
+                                           buint32              time);
 
 BdkGrabStatus bdk_directfb_pointer_grab   (BdkWindow           *window,
-                                           gint                 owner_events,
+                                           bint                 owner_events,
                                            BdkEventMask         event_mask,
                                            BdkWindow           *confine_to,
                                            BdkCursor           *cursor,
-                                           guint32              time,
-                                           gboolean             implicit_grab);
-void          bdk_directfb_pointer_ungrab (guint32              time,
-                                           gboolean             implicit_grab);
+                                           buint32              time,
+                                           bboolean             implicit_grab);
+void          bdk_directfb_pointer_ungrab (buint32              time,
+                                           bboolean             implicit_grab);
 
-guint32       bdk_directfb_get_time       (void);
+buint32       bdk_directfb_get_time       (void);
 
 BdkWindow  *bdk_directfb_pointer_event_window  (BdkWindow    *window,
                                                 BdkEventType  type);
@@ -279,21 +279,21 @@ BdkWindow  *bdk_directfb_other_event_window    (BdkWindow    *window,
 void       _bdk_selection_window_destroyed    (BdkWindow       *window);
 
 void       _bdk_directfb_move_resize_child (BdkWindow *window,
-                                            gint       x,
-                                            gint       y,
-                                            gint       width,
-                                            gint       height);
+                                            bint       x,
+                                            bint       y,
+                                            bint       width,
+                                            bint       height);
 
 BdkWindow  *bdk_directfb_child_at          (BdkWindow *window,
-                                            gint      *x,
-                                            gint      *y);
+                                            bint      *x,
+                                            bint      *y);
 
 BdkWindow  *bdk_directfb_window_find_focus (void);
 
 void        bdk_directfb_change_focus      (BdkWindow *new_focus_window);
 
-void        bdk_directfb_mouse_get_info    (gint            *x,
-                                            gint            *y,
+void        bdk_directfb_mouse_get_info    (bint            *x,
+                                            bint            *y,
                                             BdkModifierType *mask);
 
 /**********************/
@@ -304,7 +304,7 @@ extern BdkDisplayDFB *_bdk_display;
 
 /* Pointer grab info */
 extern BdkWindow           * _bdk_directfb_pointer_grab_window;
-extern gboolean              _bdk_directfb_pointer_grab_owner_events;
+extern bboolean              _bdk_directfb_pointer_grab_owner_events;
 extern BdkWindow           * _bdk_directfb_pointer_grab_confine;
 extern BdkEventMask          _bdk_directfb_pointer_grab_events;
 extern BdkCursor           * _bdk_directfb_pointer_grab_cursor;
@@ -312,7 +312,7 @@ extern BdkCursor           * _bdk_directfb_pointer_grab_cursor;
 /* Keyboard grab info */
 extern BdkWindow           * _bdk_directfb_keyboard_grab_window;
 extern BdkEventMask          _bdk_directfb_keyboard_grab_events;
-extern gboolean              _bdk_directfb_keyboard_grab_owner_events;
+extern bboolean              _bdk_directfb_keyboard_grab_owner_events;
 
 extern BdkScreen  *  _bdk_screen;
 
@@ -324,21 +324,21 @@ IDirectFBPalette * bdk_directfb_colormap_get_palette (BdkColormap *colormap);
 
 /* these are Linux-FB specific functions used for window decorations */
 
-typedef gboolean (* BdkWindowChildChanged) (BdkWindow *window,
-                                            gint       x,
-                                            gint       y,
-                                            gint       width,
-                                            gint       height,
-                                            gpointer   user_data);
+typedef bboolean (* BdkWindowChildChanged) (BdkWindow *window,
+                                            bint       x,
+                                            bint       y,
+                                            bint       width,
+                                            bint       height,
+                                            bpointer   user_data);
 typedef void     (* BdkWindowChildGetPos)  (BdkWindow *window,
-                                            gint      *x,
-                                            gint      *y,
-                                            gpointer   user_data);
+                                            bint      *x,
+                                            bint      *y,
+                                            bpointer   user_data);
 
 void bdk_fb_window_set_child_handler (BdkWindow              *window,
                                       BdkWindowChildChanged  changed,
                                       BdkWindowChildGetPos   get_pos,
-                                      gpointer               user_data);
+                                      bpointer               user_data);
 
 void bdk_directfb_clip_rebunnyion (BdkDrawable  *drawable,
                                BdkGC        *gc,

@@ -49,21 +49,21 @@ struct _BtkSocket
 {
   BtkContainer container;
 
-  guint16 GSEAL (request_width);
-  guint16 GSEAL (request_height);
-  guint16 GSEAL (current_width);
-  guint16 GSEAL (current_height);
+  buint16 GSEAL (request_width);
+  buint16 GSEAL (request_height);
+  buint16 GSEAL (current_width);
+  buint16 GSEAL (current_height);
 
   BdkWindow *GSEAL (plug_window);
   BtkWidget *GSEAL (plug_widget);
 
-  gshort GSEAL (xembed_version); /* -1 == not xembed */
-  guint GSEAL (same_app) : 1;
-  guint GSEAL (focus_in) : 1;
-  guint GSEAL (have_size) : 1;
-  guint GSEAL (need_map) : 1;
-  guint GSEAL (is_mapped) : 1;
-  guint GSEAL (active) : 1;
+  bshort GSEAL (xembed_version); /* -1 == not xembed */
+  buint GSEAL (same_app) : 1;
+  buint GSEAL (focus_in) : 1;
+  buint GSEAL (have_size) : 1;
+  buint GSEAL (need_map) : 1;
+  buint GSEAL (is_mapped) : 1;
+  buint GSEAL (active) : 1;
 
   BtkAccelGroup *GSEAL (accel_group);
   BtkWidget *GSEAL (toplevel);
@@ -74,7 +74,7 @@ struct _BtkSocketClass
   BtkContainerClass parent_class;
 
   void     (*plug_added)   (BtkSocket *socket_);
-  gboolean (*plug_removed) (BtkSocket *socket_);
+  bboolean (*plug_removed) (BtkSocket *socket_);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);

@@ -47,11 +47,11 @@ typedef struct _BtkOptionMenuProps BtkOptionMenuProps;
 
 struct _BtkOptionMenuProps
 {
-  gboolean interior_focus;
+  bboolean interior_focus;
   BtkRequisition indicator_size;
   BtkBorder indicator_spacing;
-  gint focus_width;
-  gint focus_pad;
+  bint focus_width;
+  bint focus_pad;
 };
 
 static const BtkOptionMenuProps default_props = {
@@ -64,11 +64,11 @@ static const BtkOptionMenuProps default_props = {
 
 static void btk_option_menu_destroy         (BtkObject          *object);
 static void btk_option_menu_set_property    (BObject            *object,
-					     guint               prop_id,
+					     buint               prop_id,
 					     const BValue       *value,
 					     BParamSpec         *pspec);
 static void btk_option_menu_get_property    (BObject            *object,
-					     guint               prop_id,
+					     buint               prop_id,
 					     BValue             *value,
 					     BParamSpec         *pspec);
 static void btk_option_menu_size_request    (BtkWidget          *widget,
@@ -77,11 +77,11 @@ static void btk_option_menu_size_allocate   (BtkWidget          *widget,
 					     BtkAllocation      *allocation);
 static void btk_option_menu_paint           (BtkWidget          *widget,
 					     BdkRectangle       *area);
-static gint btk_option_menu_expose          (BtkWidget          *widget,
+static bint btk_option_menu_expose          (BtkWidget          *widget,
 					     BdkEventExpose     *event);
-static gint btk_option_menu_button_press    (BtkWidget          *widget,
+static bint btk_option_menu_button_press    (BtkWidget          *widget,
 					     BdkEventButton     *event);
-static gint btk_option_menu_key_press	    (BtkWidget          *widget,
+static bint btk_option_menu_key_press	    (BtkWidget          *widget,
 					     BdkEventKey        *event);
 static void btk_option_menu_selection_done  (BtkMenuShell       *menu_shell,
 					     BtkOptionMenu      *option_menu);
@@ -89,16 +89,16 @@ static void btk_option_menu_update_contents (BtkOptionMenu      *option_menu);
 static void btk_option_menu_remove_contents (BtkOptionMenu      *option_menu);
 static void btk_option_menu_calc_size       (BtkOptionMenu      *option_menu);
 static void btk_option_menu_position        (BtkMenu            *menu,
-					     gint               *x,
-					     gint               *y,
-					     gint               *scroll_offet,
-					     gpointer            user_data);
+					     bint               *x,
+					     bint               *y,
+					     bint               *scroll_offet,
+					     bpointer            user_data);
 static void btk_option_menu_show_all        (BtkWidget          *widget);
 static void btk_option_menu_hide_all        (BtkWidget          *widget);
-static gboolean btk_option_menu_mnemonic_activate (BtkWidget    *widget,
-						   gboolean      group_cycling);
+static bboolean btk_option_menu_mnemonic_activate (BtkWidget    *widget,
+						   bboolean      group_cycling);
 static GType btk_option_menu_child_type   (BtkContainer       *container);
-static gint btk_option_menu_scroll_event    (BtkWidget          *widget,
+static bint btk_option_menu_scroll_event    (BtkWidget          *widget,
 					     BdkEventScroll     *event);
 
 enum
@@ -113,7 +113,7 @@ enum
   PROP_MENU
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkOptionMenu, btk_option_menu, BTK_TYPE_BUTTON)
 
@@ -285,7 +285,7 @@ btk_option_menu_remove_menu (BtkOptionMenu *option_menu)
 
 void
 btk_option_menu_set_history (BtkOptionMenu *option_menu,
-			     guint          index)
+			     buint          index)
 {
   BtkWidget *menu_item;
 
@@ -311,7 +311,7 @@ btk_option_menu_set_history (BtkOptionMenu *option_menu,
  * Return value: index of the selected menu item, or -1 if there are no menu items
  * Deprecated: 2.4: Use #BtkComboBox instead.
  **/
-gint
+bint
 btk_option_menu_get_history (BtkOptionMenu *option_menu)
 {
   BtkWidget *active_widget;
@@ -334,7 +334,7 @@ btk_option_menu_get_history (BtkOptionMenu *option_menu)
 
 static void
 btk_option_menu_set_property (BObject            *object,
-			      guint               prop_id,
+			      buint               prop_id,
 			      const BValue       *value,
 			      BParamSpec         *pspec)
 {
@@ -354,7 +354,7 @@ btk_option_menu_set_property (BObject            *object,
 
 static void
 btk_option_menu_get_property (BObject            *object,
-			      guint               prop_id,
+			      buint               prop_id,
 			      BValue             *value,
 			      BParamSpec         *pspec)
 {
@@ -418,7 +418,7 @@ btk_option_menu_size_request (BtkWidget      *widget,
 {
   BtkOptionMenu *option_menu = BTK_OPTION_MENU (widget);
   BtkOptionMenuProps props;
-  gint tmp;
+  bint tmp;
   BtkRequisition child_requisition = { 0, 0 };
       
   btk_option_menu_get_props (option_menu, &props);
@@ -455,7 +455,7 @@ btk_option_menu_size_allocate (BtkWidget     *widget,
   BtkButton *button = BTK_BUTTON (widget);
   BtkAllocation child_allocation;
   BtkOptionMenuProps props;
-  gint border_width;
+  bint border_width;
     
   btk_option_menu_get_props (BTK_OPTION_MENU (widget), &props);
   border_width = BTK_CONTAINER (widget)->border_width;
@@ -469,8 +469,8 @@ btk_option_menu_size_allocate (BtkWidget     *widget,
   child = BTK_BIN (widget)->child;
   if (child && btk_widget_get_visible (child))
     {
-      gint xthickness = BTK_WIDGET (widget)->style->xthickness;
-      gint ythickness = BTK_WIDGET (widget)->style->ythickness;
+      bint xthickness = BTK_WIDGET (widget)->style->xthickness;
+      bint ythickness = BTK_WIDGET (widget)->style->ythickness;
       
       child_allocation.x = widget->allocation.x + border_width + xthickness + props.focus_width + props.focus_pad + CHILD_LEFT_SPACING;
       child_allocation.y = widget->allocation.y + border_width + ythickness + props.focus_width + props.focus_pad + CHILD_TOP_SPACING;
@@ -493,8 +493,8 @@ btk_option_menu_paint (BtkWidget    *widget,
 {
   BdkRectangle button_area;
   BtkOptionMenuProps props;
-  gint border_width;
-  gint tab_x;
+  bint border_width;
+  bint tab_x;
 
   g_return_if_fail (BTK_IS_OPTION_MENU (widget));
   g_return_if_fail (area != NULL);
@@ -572,7 +572,7 @@ btk_option_menu_paint (BtkWidget    *widget,
     }
 }
 
-static gint
+static bint
 btk_option_menu_expose (BtkWidget      *widget,
 			BdkEventExpose *event)
 {
@@ -628,7 +628,7 @@ btk_option_menu_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_option_menu_button_press (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -656,7 +656,7 @@ btk_option_menu_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_option_menu_key_press (BtkWidget   *widget,
 			   BdkEventKey *event)
 {
@@ -709,7 +709,7 @@ btk_option_menu_select_first_sensitive (BtkOptionMenu *option_menu)
   if (option_menu->menu)
     {
       GList *children = BTK_MENU_SHELL (option_menu->menu)->children;
-      gint index = 0;
+      bint index = 0;
 
       while (children)
 	{
@@ -833,8 +833,8 @@ btk_option_menu_calc_size (BtkOptionMenu *option_menu)
   BtkWidget *child;
   GList *children;
   BtkRequisition child_requisition;
-  gint old_width = option_menu->width;
-  gint old_height = option_menu->height;
+  bint old_width = option_menu->width;
+  bint old_height = option_menu->height;
 
   g_return_if_fail (BTK_IS_OPTION_MENU (option_menu));
 
@@ -870,10 +870,10 @@ btk_option_menu_calc_size (BtkOptionMenu *option_menu)
 
 static void
 btk_option_menu_position (BtkMenu  *menu,
-			  gint     *x,
-			  gint     *y,
-			  gboolean *push_in,
-			  gpointer  user_data)
+			  bint     *x,
+			  bint     *y,
+			  bboolean *push_in,
+			  bpointer  user_data)
 {
   BtkOptionMenu *option_menu;
   BtkWidget *active;
@@ -881,10 +881,10 @@ btk_option_menu_position (BtkMenu  *menu,
   BtkWidget *widget;
   BtkRequisition requisition;
   GList *children;
-  gint screen_width;
-  gint menu_xpos;
-  gint menu_ypos;
-  gint menu_width;
+  bint screen_width;
+  bint menu_xpos;
+  bint menu_ypos;
+  bint menu_width;
 
   g_return_if_fail (BTK_IS_OPTION_MENU (user_data));
 
@@ -975,22 +975,22 @@ btk_option_menu_hide_all (BtkWidget *widget)
   btk_container_foreach (container, (BtkCallback) btk_widget_hide_all, NULL);
 }
 
-static gboolean
+static bboolean
 btk_option_menu_mnemonic_activate (BtkWidget *widget,
-				   gboolean   group_cycling)
+				   bboolean   group_cycling)
 {
   btk_widget_grab_focus (widget);
   return TRUE;
 }
 
-static gint
+static bint
 btk_option_menu_scroll_event (BtkWidget          *widget,
 			      BdkEventScroll     *event)
 {
   BtkOptionMenu *option_menu = BTK_OPTION_MENU (widget);
-  gint index;
-  gint n_children;
-  gint index_dir;
+  bint index;
+  bint n_children;
+  bint index_dir;
   GList *l;
   BtkMenuItem *item;
     

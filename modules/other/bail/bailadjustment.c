@@ -28,7 +28,7 @@ static void	 bail_adjustment_class_init        (BailAdjustmentClass *klass);
 static void	 bail_adjustment_init              (BailAdjustment      *adjustment);
 
 static void	 bail_adjustment_real_initialize   (BatkObject	        *obj,
-                                                    gpointer            data);
+                                                    bpointer            data);
 
 static void	 batk_value_interface_init          (BatkValueIface       *iface);
 
@@ -40,7 +40,7 @@ static void	 bail_adjustment_get_minimum_value (BatkValue            *obj,
                                                     BValue              *value);
 static void	 bail_adjustment_get_minimum_increment (BatkValue        *obj,
                                                     BValue              *value);
-static gboolean	 bail_adjustment_set_current_value (BatkValue            *obj,
+static bboolean	 bail_adjustment_set_current_value (BatkValue            *obj,
                                                     const BValue        *value);
 
 static void      bail_adjustment_destroyed         (BtkAdjustment       *adjustment,
@@ -80,7 +80,7 @@ bail_adjustment_new (BtkAdjustment *adjustment)
 
 static void
 bail_adjustment_real_initialize (BatkObject *obj,
-                                 gpointer  data)
+                                 bpointer  data)
 {
   BtkAdjustment *adjustment;
 
@@ -112,7 +112,7 @@ bail_adjustment_get_current_value (BatkValue             *obj,
                                    BValue               *value)
 {
   BtkAdjustment* adjustment;
-  gdouble current_value;
+  bdouble current_value;
  
   adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
@@ -132,7 +132,7 @@ bail_adjustment_get_maximum_value (BatkValue             *obj,
                                    BValue               *value)
 {
   BtkAdjustment* adjustment;
-  gdouble maximum_value;
+  bdouble maximum_value;
  
   adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
@@ -152,7 +152,7 @@ bail_adjustment_get_minimum_value (BatkValue             *obj,
                                    BValue               *value)
 {
   BtkAdjustment* adjustment;
-  gdouble minimum_value;
+  bdouble minimum_value;
  
   adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
@@ -172,7 +172,7 @@ bail_adjustment_get_minimum_increment (BatkValue        *obj,
                                        BValue          *value)
 {
   BtkAdjustment* adjustment;
-  gdouble minimum_increment;
+  bdouble minimum_increment;
  
   adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
@@ -208,14 +208,14 @@ bail_adjustment_get_minimum_increment (BatkValue        *obj,
   b_value_set_double (value, minimum_increment);
 }
 
-static gboolean	 
+static bboolean	 
 bail_adjustment_set_current_value (BatkValue             *obj,
                                    const BValue         *value)
 {
   if (G_VALUE_HOLDS_DOUBLE (value))
   {
     BtkAdjustment* adjustment;
-    gdouble new_value;
+    bdouble new_value;
  
     adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
     if (adjustment == NULL)

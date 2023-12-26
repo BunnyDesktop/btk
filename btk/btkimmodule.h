@@ -28,29 +28,29 @@ typedef struct _BtkIMContextInfo BtkIMContextInfo;
 
 struct _BtkIMContextInfo
 {
-  const gchar *context_id;
-  const gchar *context_name;
-  const gchar *domain;
-  const gchar *domain_dirname;
-  const gchar *default_locales;
+  const bchar *context_id;
+  const bchar *context_name;
+  const bchar *domain;
+  const bchar *domain_dirname;
+  const bchar *default_locales;
 };
 
 /* Functions for use within BTK+
  */
 void           _btk_im_module_list                   (const BtkIMContextInfo ***contexts,
-						      guint                    *n_contexts);
-BtkIMContext * _btk_im_module_create                 (const gchar              *context_id);
-const gchar  * _btk_im_module_get_default_context_id (BdkWindow                *client_window);
+						      buint                    *n_contexts);
+BtkIMContext * _btk_im_module_create                 (const bchar              *context_id);
+const bchar  * _btk_im_module_get_default_context_id (BdkWindow                *client_window);
 
 /* The following entry points are exported by each input method module
  */
 
 /*
 void          im_module_list   (const BtkIMContextInfo ***contexts,
-				guint                    *n_contexts);
+				buint                    *n_contexts);
 void          im_module_init   (BtkModule                *module);
 void          im_module_exit   (void);
-BtkIMContext *im_module_create (const gchar              *context_id);
+BtkIMContext *im_module_create (const bchar              *context_id);
 */
 
 B_END_DECLS

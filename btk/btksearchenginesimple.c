@@ -45,15 +45,15 @@ typedef struct
 {
   BtkSearchEngineSimple *engine;
   
-  gchar *path;
-  gchar **words;
+  bchar *path;
+  bchar **words;
   GList *found_list;
   
-  gint n_processed_files;
+  bint n_processed_files;
   GList *uri_hits;
   
   /* accessed on both threads: */
-  volatile gboolean cancelled;
+  volatile bboolean cancelled;
 } SearchThreadData;
 
 
@@ -63,7 +63,7 @@ struct _BtkSearchEngineSimplePrivate
   
   SearchThreadData *active_search;
   
-  gboolean query_finished;
+  bboolean query_finished;
 };
 
 
@@ -130,8 +130,8 @@ search_thread_data_free (SearchThreadData *data)
   g_free (data);
 }
 
-static gboolean
-search_thread_done_idle (gpointer user_data)
+static bboolean
+search_thread_done_idle (bpointer user_data)
 {
   SearchThreadData *data;
 
@@ -153,8 +153,8 @@ typedef struct
 } SearchHits;
 
 
-static gboolean
-search_thread_add_hits_idle (gpointer user_data)
+static bboolean
+search_thread_add_hits_idle (bpointer user_data)
 {
   SearchHits *hits;
 
@@ -201,12 +201,12 @@ search_visit_func (const char        *fpath,
 		   struct FTW        *ftwbuf)
 {
   SearchThreadData *data;
-  gint i;
-  const gchar *name; 
-  gchar *lower_name;
-  gchar *uri;
-  gboolean hit;
-  gboolean is_hidden;
+  bint i;
+  const bchar *name; 
+  bchar *lower_name;
+  bchar *uri;
+  bboolean hit;
+  bboolean is_hidden;
   
   data = (SearchThreadData*)g_static_private_get (&search_thread_data);
 
@@ -265,8 +265,8 @@ search_visit_func (const char        *fpath,
 }
 #endif /* HAVE_FTW_H */
 
-static gpointer 
-search_thread_func (gpointer user_data)
+static bpointer 
+search_thread_func (bpointer user_data)
 {
 #ifdef HAVE_FTW_H
   SearchThreadData *data;
@@ -324,7 +324,7 @@ btk_search_engine_simple_stop (BtkSearchEngine *engine)
     }
 }
 
-static gboolean
+static bboolean
 btk_search_engine_simple_is_indexed (BtkSearchEngine *engine)
 {
   return FALSE;

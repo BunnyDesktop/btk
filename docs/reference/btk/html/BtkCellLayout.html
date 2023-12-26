@@ -179,7 +179,7 @@ BtkCellLayout is implemented by
                           <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *tree_model</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -187,7 +187,7 @@ BtkCellLayout is implemented by
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_cell_layout_pack_start (<em class="parameter"><code><a class="link" href="BtkCellLayout.html" title="BtkCellLayout"><span class="type">BtkCellLayout</span></a> *cell_layout</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
-                            <em class="parameter"><code><span class="type">gboolean</span> expand</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bboolean</span> expand</code></em>);</pre>
 <p>Packs the <em class="parameter"><code>cell</code></em>
  into the beginning of <em class="parameter"><code>cell_layout</code></em>
 . If <em class="parameter"><code>expand</code></em>
@@ -234,7 +234,7 @@ is to be given extra space allocated to <em class="parameter"><code>cell_layout<
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_cell_layout_pack_end (<em class="parameter"><code><a class="link" href="BtkCellLayout.html" title="BtkCellLayout"><span class="type">BtkCellLayout</span></a> *cell_layout</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
-                          <em class="parameter"><code><span class="type">gboolean</span> expand</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bboolean</span> expand</code></em>);</pre>
 <p>Adds the <em class="parameter"><code>cell</code></em>
  to the end of <em class="parameter"><code>cell_layout</code></em>
 . If <em class="parameter"><code>expand</code></em>
@@ -312,7 +312,7 @@ renderers has been newly allocated and should be freed with
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_cell_layout_reorder (<em class="parameter"><code><a class="link" href="BtkCellLayout.html" title="BtkCellLayout"><span class="type">BtkCellLayout</span></a> *cell_layout</code></em>,
                          <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Re-inserts <em class="parameter"><code>cell</code></em>
  at <em class="parameter"><code>position</code></em>
 . Note that <em class="parameter"><code>cell</code></em>
@@ -422,8 +422,8 @@ replaced with the new attributes.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_cell_layout_add_attribute (<em class="parameter"><code><a class="link" href="BtkCellLayout.html" title="BtkCellLayout"><span class="type">BtkCellLayout</span></a> *cell_layout</code></em>,
                                <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *attribute</code></em>,
-                               <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *attribute</code></em>,
+                               <em class="parameter"><code><span class="type">bint</span> column</code></em>);</pre>
 <p>Adds an attribute mapping to the list in <em class="parameter"><code>cell_layout</code></em>
 . The <em class="parameter"><code>column</code></em>
  is the
@@ -474,7 +474,7 @@ of the model contains strings, you could have the "text" attribute of a
 btk_cell_layout_set_cell_data_func (<em class="parameter"><code><a class="link" href="BtkCellLayout.html" title="BtkCellLayout"><span class="type">BtkCellLayout</span></a> *cell_layout</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer"><span class="type">BtkCellRenderer</span></a> *cell</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkCellLayout.html#BtkCellLayoutDataFunc" title="BtkCellLayoutDataFunc ()"><span class="type">BtkCellLayoutDataFunc</span></a> func</code></em>,
-                                    <em class="parameter"><code><span class="type">gpointer</span> func_data</code></em>,
+                                    <em class="parameter"><code><span class="type">bpointer</span> func_data</code></em>,
                                     <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Sets the <a class="link" href="BtkCellLayout.html#BtkCellLayoutDataFunc" title="BtkCellLayoutDataFunc ()"><span class="type">BtkCellLayoutDataFunc</span></a> to use for <em class="parameter"><code>cell_layout</code></em>
 . This function
@@ -572,25 +572,25 @@ btk_cell_layout_clear_attributes (<em class="parameter"><code><a class="link" hr
   /* Virtual Table */
   void (* pack_start)         (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* pack_end)           (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* clear)              (BtkCellLayout         *cell_layout);
   void (* add_attribute)      (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               const gchar           *attribute,
-                               gint                   column);
+                               const bchar           *attribute,
+                               bint                   column);
   void (* set_cell_data_func) (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
                                BtkCellLayoutDataFunc  func,
-                               gpointer               func_data,
+                               bpointer               func_data,
                                GDestroyNotify         destroy);
   void (* clear_attributes)   (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell);
   void (* reorder)            (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gint                   position);
+                               bint                   position);
   GList* (* get_cells)        (BtkCellLayout         *cell_layout);
 };
 </pre>

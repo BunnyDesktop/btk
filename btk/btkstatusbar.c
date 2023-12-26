@@ -40,9 +40,9 @@ typedef struct _BtkStatusbarMsg BtkStatusbarMsg;
 
 struct _BtkStatusbarMsg
 {
-  gchar *text;
-  guint context_id;
-  guint message_id;
+  bchar *text;
+  buint context_id;
+  buint message_id;
 };
 
 enum
@@ -61,20 +61,20 @@ enum
 static void     btk_statusbar_buildable_interface_init    (BtkBuildableIface *iface);
 static BObject *btk_statusbar_buildable_get_internal_child (BtkBuildable *buildable,
                                                             BtkBuilder   *builder,
-                                                            const gchar  *childname);
+                                                            const bchar  *childname);
 static void     btk_statusbar_destroy           (BtkObject         *object);
 static void     btk_statusbar_update            (BtkStatusbar      *statusbar,
-						 guint              context_id,
-						 const gchar       *text);
+						 buint              context_id,
+						 const bchar       *text);
 static void     btk_statusbar_size_allocate     (BtkWidget         *widget,
 						 BtkAllocation     *allocation);
 static void     btk_statusbar_realize           (BtkWidget         *widget);
 static void     btk_statusbar_unrealize         (BtkWidget         *widget);
 static void     btk_statusbar_map               (BtkWidget         *widget);
 static void     btk_statusbar_unmap             (BtkWidget         *widget);
-static gboolean btk_statusbar_button_press      (BtkWidget         *widget,
+static bboolean btk_statusbar_button_press      (BtkWidget         *widget,
 						 BdkEventButton    *event);
-static gboolean btk_statusbar_expose_event      (BtkWidget         *widget,
+static bboolean btk_statusbar_expose_event      (BtkWidget         *widget,
 						 BdkEventExpose    *event);
 static void     btk_statusbar_size_request      (BtkWidget         *widget,
 						 BtkRequisition    *requisition);
@@ -87,19 +87,19 @@ static void     btk_statusbar_state_changed     (BtkWidget        *widget,
 static void     btk_statusbar_create_window     (BtkStatusbar      *statusbar);
 static void     btk_statusbar_destroy_window    (BtkStatusbar      *statusbar);
 static void     btk_statusbar_get_property      (BObject           *object,
-						 guint              prop_id,
+						 buint              prop_id,
 						 BValue            *value,
 						 BParamSpec        *pspec);
 static void     btk_statusbar_set_property      (BObject           *object,
-						 guint              prop_id,
+						 buint              prop_id,
 						 const BValue      *value,
 						 BParamSpec        *pspec);
 static void     label_selectable_changed        (BtkWidget         *label,
                                                  BParamSpec        *pspec,
-						 gpointer           data);
+						 bpointer           data);
 
 
-static guint              statusbar_signals[SIGNAL_LAST] = { 0 };
+static buint              statusbar_signals[SIGNAL_LAST] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkStatusbar, btk_statusbar, BTK_TYPE_HBOX,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -251,7 +251,7 @@ btk_statusbar_buildable_interface_init (BtkBuildableIface *iface)
 static BObject *
 btk_statusbar_buildable_get_internal_child (BtkBuildable *buildable,
                                             BtkBuilder   *builder,
-                                            const gchar  *childname)
+                                            const bchar  *childname)
 {
     if (strcmp (childname, "message_area") == 0)
       return B_OBJECT (btk_bin_get_child (BTK_BIN (BTK_STATUSBAR (buildable)->frame)));
@@ -276,8 +276,8 @@ btk_statusbar_new (void)
 
 static void
 btk_statusbar_update (BtkStatusbar *statusbar,
-		      guint	    context_id,
-		      const gchar  *text)
+		      buint	    context_id,
+		      const bchar  *text)
 {
   g_return_if_fail (BTK_IS_STATUSBAR (statusbar));
 
@@ -299,12 +299,12 @@ btk_statusbar_update (BtkStatusbar *statusbar,
  *
  * Returns: an integer id
  */
-guint
+buint
 btk_statusbar_get_context_id (BtkStatusbar *statusbar,
-			      const gchar  *context_description)
+			      const bchar  *context_description)
 {
-  gchar *string;
-  guint id;
+  bchar *string;
+  buint id;
   
   g_return_val_if_fail (BTK_IS_STATUSBAR (statusbar), 0);
   g_return_val_if_fail (context_description != NULL, 0);
@@ -312,11 +312,11 @@ btk_statusbar_get_context_id (BtkStatusbar *statusbar,
   /* we need to preserve namespaces on object datas */
   string = g_strconcat ("btk-status-bar-context:", context_description, NULL);
 
-  id = GPOINTER_TO_UINT (g_object_get_data (B_OBJECT (statusbar), string));
+  id = BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (statusbar), string));
   if (id == 0)
     {
       id = statusbar->seq_context_id++;
-      g_object_set_data_full (B_OBJECT (statusbar), string, GUINT_TO_POINTER (id), NULL);
+      g_object_set_data_full (B_OBJECT (statusbar), string, BUINT_TO_POINTER (id), NULL);
       statusbar->keys = b_slist_prepend (statusbar->keys, string);
     }
   else
@@ -337,10 +337,10 @@ btk_statusbar_get_context_id (BtkStatusbar *statusbar,
  * Returns: a message id that can be used with 
  *          btk_statusbar_remove().
  */
-guint
+buint
 btk_statusbar_push (BtkStatusbar *statusbar,
-		    guint	  context_id,
-		    const gchar  *text)
+		    buint	  context_id,
+		    const bchar  *text)
 {
   BtkStatusbarMsg *msg;
 
@@ -377,7 +377,7 @@ btk_statusbar_push (BtkStatusbar *statusbar,
  */
 void
 btk_statusbar_pop (BtkStatusbar *statusbar,
-		   guint	 context_id)
+		   buint	 context_id)
 {
   BtkStatusbarMsg *msg;
 
@@ -408,7 +408,7 @@ btk_statusbar_pop (BtkStatusbar *statusbar,
   g_signal_emit (statusbar,
 		 statusbar_signals[SIGNAL_TEXT_POPPED],
 		 0,
-		 (guint) (msg ? msg->context_id : 0),
+		 (buint) (msg ? msg->context_id : 0),
 		 msg ? msg->text : NULL);
 }
 
@@ -423,8 +423,8 @@ btk_statusbar_pop (BtkStatusbar *statusbar,
  */
 void
 btk_statusbar_remove (BtkStatusbar *statusbar,
-		      guint	   context_id,
-		      guint        message_id)
+		      buint	   context_id,
+		      buint        message_id)
 {
   BtkStatusbarMsg *msg;
 
@@ -474,7 +474,7 @@ btk_statusbar_remove (BtkStatusbar *statusbar,
  */
 void
 btk_statusbar_remove_all (BtkStatusbar *statusbar,
-                          guint         context_id)
+                          buint         context_id)
 {
   BtkStatusbarMsg *msg;
   GSList *prev, *list;
@@ -541,7 +541,7 @@ btk_statusbar_remove_all (BtkStatusbar *statusbar,
  */
 void
 btk_statusbar_set_has_resize_grip (BtkStatusbar *statusbar,
-				   gboolean      setting)
+				   bboolean      setting)
 {
   g_return_if_fail (BTK_IS_STATUSBAR (statusbar));
 
@@ -577,7 +577,7 @@ btk_statusbar_set_has_resize_grip (BtkStatusbar *statusbar,
  *
  * Returns: %TRUE if the statusbar has a resize grip.
  */
-gboolean
+bboolean
 btk_statusbar_get_has_resize_grip (BtkStatusbar *statusbar)
 {
   g_return_val_if_fail (BTK_IS_STATUSBAR (statusbar), FALSE);
@@ -630,7 +630,7 @@ btk_statusbar_destroy (BtkObject *object)
 
 static void
 btk_statusbar_set_property (BObject      *object, 
-			    guint         prop_id, 
+			    buint         prop_id, 
 			    const BValue *value, 
 			    BParamSpec   *pspec)
 {
@@ -649,7 +649,7 @@ btk_statusbar_set_property (BObject      *object,
 
 static void
 btk_statusbar_get_property (BObject    *object, 
-			    guint       prop_id, 
+			    buint       prop_id, 
 			    BValue     *value, 
 			    BParamSpec *pspec)
 {
@@ -682,7 +682,7 @@ get_grip_rect (BtkStatusbar *statusbar,
                BdkRectangle *rect)
 {
   BtkWidget *widget;
-  gint w, h;
+  bint w, h;
   
   widget = BTK_WIDGET (statusbar);
 
@@ -737,7 +737,7 @@ btk_statusbar_create_window (BtkStatusbar *statusbar)
 {
   BtkWidget *widget;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   BdkRectangle rect;
 
   widget = BTK_WIDGET (statusbar);
@@ -846,7 +846,7 @@ btk_statusbar_unmap (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_statusbar_parent_class)->unmap (widget);
 }
 
-static gboolean
+static bboolean
 btk_statusbar_button_press (BtkWidget      *widget,
                             BdkEventButton *event)
 {
@@ -885,7 +885,7 @@ btk_statusbar_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_statusbar_expose_event (BtkWidget      *widget,
                             BdkEventExpose *event)
 {
@@ -940,7 +940,7 @@ btk_statusbar_size_request (BtkWidget      *widget,
 /* look for extra children between the frame containing
  * the label and where we want to draw the resize grip 
  */
-static gboolean
+static bboolean
 has_extra_children (BtkStatusbar *statusbar)
 {
   GList *l;
@@ -978,7 +978,7 @@ btk_statusbar_size_allocate  (BtkWidget     *widget,
                               BtkAllocation *allocation)
 {
   BtkStatusbar *statusbar = BTK_STATUSBAR (widget);
-  gboolean extra_children = FALSE;
+  bboolean extra_children = FALSE;
   BdkRectangle rect;
 
   if (statusbar->has_resize_grip)
@@ -1053,7 +1053,7 @@ btk_statusbar_size_allocate  (BtkWidget     *widget,
 static void
 label_selectable_changed (BtkWidget  *label,
 			  BParamSpec *pspec,
-			  gpointer    data)
+			  bpointer    data)
 {
   BtkStatusbar *statusbar = BTK_STATUSBAR (data);
 

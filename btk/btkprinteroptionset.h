@@ -68,7 +68,7 @@ struct _BtkPrinterOptionSetClass
 };
 
 typedef void (*BtkPrinterOptionSetFunc) (BtkPrinterOption  *option,
-					 gpointer           user_data);
+					 bpointer           user_data);
 
 
 GType   btk_printer_option_set_get_type       (void) B_GNUC_CONST;
@@ -82,13 +82,13 @@ BtkPrinterOption *   btk_printer_option_set_lookup           (BtkPrinterOptionSe
 							      const char              *name);
 void                 btk_printer_option_set_foreach          (BtkPrinterOptionSet     *set,
 							      BtkPrinterOptionSetFunc  func,
-							      gpointer                 user_data);
+							      bpointer                 user_data);
 void                 btk_printer_option_set_clear_conflicts  (BtkPrinterOptionSet     *set);
 GList *              btk_printer_option_set_get_groups       (BtkPrinterOptionSet     *set);
 void                 btk_printer_option_set_foreach_in_group (BtkPrinterOptionSet     *set,
 							      const char              *group,
 							      BtkPrinterOptionSetFunc  func,
-							      gpointer                 user_data);
+							      bpointer                 user_data);
 
 B_END_DECLS
 

@@ -30,52 +30,52 @@ static void      bail_text_cell_class_init		(BailTextCellClass *klass);
 static void      bail_text_cell_init			(BailTextCell	*text_cell);
 static void      bail_text_cell_finalize		(BObject	*object);
 
-static const gchar* bail_text_cell_get_name    (BatkObject      *batk_obj);
+static const bchar* bail_text_cell_get_name    (BatkObject      *batk_obj);
 
 static void      batk_text_interface_init		(BatkTextIface	*iface);
 
 /* batktext.h */
 
-static gchar*    bail_text_cell_get_text		(BatkText	*text,
-							gint		start_pos,
-							gint		end_pos);
+static bchar*    bail_text_cell_get_text		(BatkText	*text,
+							bint		start_pos,
+							bint		end_pos);
 static gunichar bail_text_cell_get_character_at_offset	(BatkText	*text,
-							 gint		offset);
-static gchar*	bail_text_cell_get_text_before_offset	(BatkText	*text,
-							 gint		offset,
+							 bint		offset);
+static bchar*	bail_text_cell_get_text_before_offset	(BatkText	*text,
+							 bint		offset,
 							 BatkTextBoundary boundary_type,
-							 gint		*start_offset,
-							 gint		*end_offset);
-static gchar*	bail_text_cell_get_text_at_offset	(BatkText	*text,
-							 gint		offset,
+							 bint		*start_offset,
+							 bint		*end_offset);
+static bchar*	bail_text_cell_get_text_at_offset	(BatkText	*text,
+							 bint		offset,
 							 BatkTextBoundary boundary_type,
-							 gint		*start_offset,
-							 gint		*end_offset);
-static gchar*	bail_text_cell_get_text_after_offset	(BatkText	*text,
-							 gint		offset,
+							 bint		*start_offset,
+							 bint		*end_offset);
+static bchar*	bail_text_cell_get_text_after_offset	(BatkText	*text,
+							 bint		offset,
 							 BatkTextBoundary boundary_type,
-							 gint		*start_offset,
-							 gint		*end_offset);
-static gint      bail_text_cell_get_character_count	(BatkText	*text);
-static gint      bail_text_cell_get_caret_offset	(BatkText	*text);
-static gboolean  bail_text_cell_set_caret_offset	(BatkText	*text,
-							 gint		offset);
+							 bint		*start_offset,
+							 bint		*end_offset);
+static bint      bail_text_cell_get_character_count	(BatkText	*text);
+static bint      bail_text_cell_get_caret_offset	(BatkText	*text);
+static bboolean  bail_text_cell_set_caret_offset	(BatkText	*text,
+							 bint		offset);
 static void      bail_text_cell_get_character_extents	(BatkText	*text,
-							 gint		offset,
-							 gint		*x,
-							 gint		*y,
-							 gint		*width,
-							 gint		*height,
+							 bint		offset,
+							 bint		*x,
+							 bint		*y,
+							 bint		*width,
+							 bint		*height,
 							 BatkCoordType	coords);
-static gint      bail_text_cell_get_offset_at_point	(BatkText	*text,
-							 gint		x,
-							 gint		y,
+static bint      bail_text_cell_get_offset_at_point	(BatkText	*text,
+							 bint		x,
+							 bint		y,
 							 BatkCoordType	coords);
 static BatkAttributeSet* bail_text_cell_get_run_attributes 
                                                         (BatkText	*text,
-							 gint		offset,
-							 gint		*start_offset,      
-							 gint		*end_offset); 
+							 bint		offset,
+							 bint		*start_offset,      
+							 bint		*end_offset); 
 static BatkAttributeSet* bail_text_cell_get_default_attributes 
                                                         (BatkText        *text);
 
@@ -86,10 +86,10 @@ static void             add_attr                        (BangoAttrList  *attr_li
 
 /* Misc */
 
-static gboolean bail_text_cell_update_cache		(BailRendererCell *cell,
-							 gboolean	emit_change_signal);
+static bboolean bail_text_cell_update_cache		(BailRendererCell *cell,
+							 bboolean	emit_change_signal);
 
-gchar *bail_text_cell_property_list[] = {
+bchar *bail_text_cell_property_list[] = {
   /* Set font_desc first since it resets other values if it is NULL */
   "font_desc",
 
@@ -190,7 +190,7 @@ bail_text_cell_finalize (BObject            *object)
   B_OBJECT_CLASS (bail_text_cell_parent_class)->finalize (object);
 }
 
-static const gchar*
+static const bchar*
 bail_text_cell_get_name (BatkObject *batk_obj)
 {
   if (batk_obj->name)
@@ -203,15 +203,15 @@ bail_text_cell_get_name (BatkObject *batk_obj)
     }
 }
 
-static gboolean
+static bboolean
 bail_text_cell_update_cache (BailRendererCell *cell,
-                             gboolean         emit_change_signal)
+                             bboolean         emit_change_signal)
 {
   BailTextCell *text_cell = BAIL_TEXT_CELL (cell);
   BatkObject *obj = BATK_OBJECT (cell);
-  gboolean rv = FALSE;
-  gint temp_length;
-  gchar *new_cache;
+  bboolean rv = FALSE;
+  bint temp_length;
+  bchar *new_cache;
 
   g_object_get (B_OBJECT (cell->renderer), "text", &new_cache, NULL);
 
@@ -289,10 +289,10 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_offset_at_point = bail_text_cell_get_offset_at_point;
 }
 
-static gchar* 
+static bchar* 
 bail_text_cell_get_text (BatkText *text, 
-                         gint    start_pos,
-                         gint    end_pos)
+                         bint    start_pos,
+                         bint    end_pos)
 {
   if (BAIL_TEXT_CELL (text)->cell_text)
     return bail_text_util_get_substring (BAIL_TEXT_CELL (text)->textutil,
@@ -301,42 +301,42 @@ bail_text_cell_get_text (BatkText *text,
     return g_strdup ("");
 }
 
-static gchar* 
+static bchar* 
 bail_text_cell_get_text_before_offset (BatkText         *text,
-                                       gint            offset,
+                                       bint            offset,
                                        BatkTextBoundary boundary_type,
-                                       gint            *start_offset,
-                                       gint            *end_offset)
+                                       bint            *start_offset,
+                                       bint            *end_offset)
 {
   return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
         NULL, BAIL_BEFORE_OFFSET, boundary_type, offset, start_offset,
         end_offset);
 }
 
-static gchar* 
+static bchar* 
 bail_text_cell_get_text_at_offset (BatkText         *text,
-                                   gint            offset,
+                                   bint            offset,
                                    BatkTextBoundary boundary_type,
-                                   gint            *start_offset,
-                                   gint            *end_offset)
+                                   bint            *start_offset,
+                                   bint            *end_offset)
 {
   return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
         NULL, BAIL_AT_OFFSET, boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar* 
+static bchar* 
 bail_text_cell_get_text_after_offset (BatkText         *text,
-                                      gint            offset,
+                                      bint            offset,
                                       BatkTextBoundary boundary_type,
-                                      gint            *start_offset,
-                                      gint            *end_offset)
+                                      bint            *start_offset,
+                                      bint            *end_offset)
 {
   return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
         NULL, BAIL_AFTER_OFFSET, boundary_type, offset, start_offset,
         end_offset);
 }
 
-static gint 
+static bint 
 bail_text_cell_get_character_count (BatkText *text)
 {
   if (BAIL_TEXT_CELL (text)->cell_text != NULL)
@@ -345,15 +345,15 @@ bail_text_cell_get_character_count (BatkText *text)
     return 0;
 }
 
-static gint 
+static bint 
 bail_text_cell_get_caret_offset (BatkText *text)
 {
   return BAIL_TEXT_CELL (text)->caret_pos;
 }
 
-static gboolean 
+static bboolean 
 bail_text_cell_set_caret_offset (BatkText *text,
-                                 gint    offset)
+                                 bint    offset)
 {
   BailTextCell *text_cell = BAIL_TEXT_CELL (text);
 
@@ -380,9 +380,9 @@ bail_text_cell_set_caret_offset (BatkText *text,
 
 static BatkAttributeSet*
 bail_text_cell_get_run_attributes (BatkText *text,
-                                  gint     offset,
-                                  gint     *start_offset,
-                                  gint     *end_offset) 
+                                  bint     offset,
+                                  bint     *start_offset,
+                                  bint     *end_offset) 
 {
   BailRendererCell *bail_renderer; 
   BtkCellRendererText *btk_renderer;
@@ -521,17 +521,17 @@ add_attr (BangoAttrList  *attr_list,
          BangoAttribute *attr)
 {
   attr->start_index = 0;
-  attr->end_index = G_MAXINT;
+  attr->end_index = B_MAXINT;
   bango_attr_list_insert (attr_list, attr);
 }
 
 static void      
 bail_text_cell_get_character_extents (BatkText          *text,
-                                      gint             offset,
-                                      gint             *x,
-                                      gint             *y,
-                                      gint             *width,
-                                      gint             *height,
+                                      bint             offset,
+                                      bint             *x,
+                                      bint             *y,
+                                      bint             *width,
+                                      bint             *height,
                                       BatkCoordType     coords)
 {
   BailRendererCell *bail_renderer; 
@@ -541,7 +541,7 @@ bail_text_cell_get_character_extents (BatkText          *text,
   BatkObject *parent;
   BangoRectangle char_rect;
   BangoLayout *layout;
-  gint x_offset, y_offset, index, cell_height, cell_width;
+  bint x_offset, y_offset, index, cell_height, cell_width;
 
   if (!BAIL_TEXT_CELL (text)->cell_text)
     {
@@ -585,10 +585,10 @@ bail_text_cell_get_character_extents (BatkText          *text,
   return;
 } 
 
-static gint      
+static bint      
 bail_text_cell_get_offset_at_point (BatkText          *text,
-                                    gint             x,
-                                    gint             y,
+                                    bint             x,
+                                    bint             y,
                                     BatkCoordType     coords)
 {
   BatkObject *parent;
@@ -597,7 +597,7 @@ bail_text_cell_get_offset_at_point (BatkText          *text,
   BtkWidget *widget;
   BdkRectangle rendered_rect;
   BangoLayout *layout;
-  gint x_offset, y_offset, index;
+  bint x_offset, y_offset, index;
  
   if (!BAIL_TEXT_CELL (text)->cell_text)
     return -1;
@@ -639,10 +639,10 @@ bail_text_cell_get_offset_at_point (BatkText          *text,
 
 static gunichar 
 bail_text_cell_get_character_at_offset (BatkText       *text,
-                                        gint          offset)
+                                        bint          offset)
 {
-  gchar *index;
-  gchar *string;
+  bchar *index;
+  bchar *string;
 
   string = BAIL_TEXT_CELL(text)->cell_text;
 

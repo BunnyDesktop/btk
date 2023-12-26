@@ -27,8 +27,8 @@
 
 #include <btk/btk.h>
 
-static gint repeats = 2;
-static gint max_size = 8;
+static bint repeats = 2;
+static bint max_size = 8;
 
 static GOptionEntry entries[] = {
   { "repeats", 'r', 0, G_OPTION_ARG_INT, &repeats, "Average over N repetitions", "N" },
@@ -39,17 +39,17 @@ static GOptionEntry entries[] = {
 
 typedef void (ClearFunc)(BtkTreeModel *model);
 typedef void (InsertFunc)(BtkTreeModel *model,
-			  gint          items,
-			  gint          i);
+			  bint          items,
+			  bint          i);
 
 static void
 list_store_append (BtkTreeModel *model,
-		   gint          items,
-		   gint          i)
+		   bint          items,
+		   bint          i)
 {
   BtkListStore *store = BTK_LIST_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
+  bchar *text;
 
   text = g_strdup_printf ("row %d", i);
   btk_list_store_append (store, &iter);
@@ -59,12 +59,12 @@ list_store_append (BtkTreeModel *model,
 
 static void
 list_store_prepend (BtkTreeModel *model,
-		    gint          items,
-		    gint          i)
+		    bint          items,
+		    bint          i)
 {
   BtkListStore *store = BTK_LIST_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
+  bchar *text;
 
   text = g_strdup_printf ("row %d", i);
   btk_list_store_prepend (store, &iter);
@@ -74,13 +74,13 @@ list_store_prepend (BtkTreeModel *model,
 
 static void
 list_store_insert (BtkTreeModel *model,
-		   gint          items,
-		   gint          i)
+		   bint          items,
+		   bint          i)
 {
   BtkListStore *store = BTK_LIST_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
-  gint n;
+  bchar *text;
+  bint n;
 
   text = g_strdup_printf ("row %d", i);
   n = g_random_int_range (0, i + 1);
@@ -89,14 +89,14 @@ list_store_insert (BtkTreeModel *model,
   g_free (text);
 }
 
-static gint
+static bint
 compare (BtkTreeModel *model,
 	 BtkTreeIter  *a,
 	 BtkTreeIter  *b,
-	 gpointer      data)
+	 bpointer      data)
 {
-  gchar *str_a, *str_b;
-  gint result;
+  bchar *str_a, *str_b;
+  bint result;
 
   btk_tree_model_get (model, a, 1, &str_a, -1);
   btk_tree_model_get (model, b, 1, &str_b, -1);
@@ -111,12 +111,12 @@ compare (BtkTreeModel *model,
 
 static void
 tree_store_append (BtkTreeModel *model,
-		   gint          items,
-		   gint          i)
+		   bint          items,
+		   bint          i)
 {
   BtkTreeStore *store = BTK_TREE_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
+  bchar *text;
 
   text = g_strdup_printf ("row %d", i);
   btk_tree_store_append (store, &iter, NULL);
@@ -126,12 +126,12 @@ tree_store_append (BtkTreeModel *model,
 
 static void
 tree_store_prepend (BtkTreeModel *model,
-		    gint          items,
-		    gint          i)
+		    bint          items,
+		    bint          i)
 {
   BtkTreeStore *store = BTK_TREE_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
+  bchar *text;
 
   text = g_strdup_printf ("row %d", i);
   btk_tree_store_prepend (store, &iter, NULL);
@@ -141,13 +141,13 @@ tree_store_prepend (BtkTreeModel *model,
 
 static void
 tree_store_insert_flat (BtkTreeModel *model,
-			gint          items,
-			gint          i)
+			bint          items,
+			bint          i)
 {
   BtkTreeStore *store = BTK_TREE_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
-  gint n;
+  bchar *text;
+  bint n;
 
   text = g_strdup_printf ("row %d", i);
   n = g_random_int_range (0, i + 1);
@@ -157,17 +157,17 @@ tree_store_insert_flat (BtkTreeModel *model,
 }
 
 typedef struct {
-  gint i;
-  gint n;
-  gboolean found;
+  bint i;
+  bint n;
+  bboolean found;
   BtkTreeIter iter;
 } FindData;
 
-static gboolean
+static bboolean
 find_nth (BtkTreeModel *model,
 	  BtkTreePath  *path,
 	  BtkTreeIter  *iter,
-	  gpointer      data)
+	  bpointer      data)
 {
   FindData *fdata = (FindData *)data; 
 
@@ -185,12 +185,12 @@ find_nth (BtkTreeModel *model,
 
 static void
 tree_store_insert_deep (BtkTreeModel *model,
-			gint          items,
-			gint          i)
+			bint          items,
+			bint          i)
 {
   BtkTreeStore *store = BTK_TREE_STORE (model);
   BtkTreeIter iter;
-  gchar *text;
+  bchar *text;
   FindData data;
 
   text = g_strdup_printf ("row %d", i);
@@ -206,14 +206,14 @@ tree_store_insert_deep (BtkTreeModel *model,
 
 
 static void
-test_run (gchar        *title,
+test_run (bchar        *title,
 	  BtkTreeModel *store,
 	  ClearFunc    *clear,
 	  InsertFunc   *insert)
 {
-  gint i, k, d, items;
+  bint i, k, d, items;
   GTimer *timer;
-  gdouble elapsed;
+  bdouble elapsed;
   int uordblks_before = 0, memused;
 
   g_print ("%s (average over %d runs, time in milliseconds)\n"

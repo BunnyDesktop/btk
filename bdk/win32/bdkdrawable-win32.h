@@ -52,7 +52,7 @@ struct _BdkDrawableImplWin32
   BdkColormap *colormap;
   HANDLE handle;
 
-  guint hdc_count;
+  buint hdc_count;
   HDC hdc;
   HBITMAP saved_dc_bitmap;	/* Original bitmap for dc */
   bairo_surface_t *bairo_surface;

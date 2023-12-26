@@ -43,7 +43,7 @@
 
 
 static struct {
-  const guchar *bits;
+  const buchar *bits;
   int width, height, hotx, hoty;
   BdkCursor *cursor;
 } stock_cursors[] = {
@@ -248,13 +248,13 @@ bdk_cursor_new_for_display (BdkDisplay *display, BdkCursorType cursor_type)
             }
           else
             {
-              gint x, y;
-              gint mx, my;
-              gint  p = ((stock_cursors[cursor_type].width + 7) / 8) * 8;
-              gint mp = ((stock_cursors[cursor_type + 1].width + 7) / 8) * 8;
+              bint x, y;
+              bint mx, my;
+              bint  p = ((stock_cursors[cursor_type].width + 7) / 8) * 8;
+              bint mp = ((stock_cursors[cursor_type + 1].width + 7) / 8) * 8;
 
-              const guchar *src;
-              const guchar *mask;
+              const buchar *src;
+              const buchar *mask;
 
               pitch >>= 2;
 
@@ -268,8 +268,8 @@ bdk_cursor_new_for_display (BdkDisplay *display, BdkCursorType cursor_type)
                 {
                   for (x = 0; x < width; x++)
                     {
-                      gint  bit = x-mx + (y-my) * p;
-                      gint mbit =    x +     y  * mp;
+                      bint  bit = x-mx + (y-my) * p;
+                      bint mbit =    x +     y  * mp;
 
                       u32 color = ((x - mx) < 0  || (y - my) < 0  ||
                                    (x - mx) >= stock_cursors[cursor_type].width  ||
@@ -342,8 +342,8 @@ bdk_cursor_new_from_pixmap (BdkPixmap      *source,
                             BdkPixmap      *mask,
                             const BdkColor *fg,
                             const BdkColor *bg,
-                            gint            x,
-                            gint            y)
+                            bint            x,
+                            bint            y)
 {
   BdkCursor               *cursor;
   BdkCursorDirectFB       *private;
@@ -404,12 +404,12 @@ bdk_cursor_new_from_pixmap (BdkPixmap      *source,
 BdkCursor *
 bdk_cursor_new_from_pixbuf (BdkDisplay *display,
                             BdkPixbuf  *pixbuf,
-                            gint        x,
-                            gint        y)
+                            bint        x,
+                            bint        y)
 {
   BdkPixmap  *pixmap, *mask;
   BdkCursor  *cursor;
-  gint        width, height, depth = 8;
+  bint        width, height, depth = 8;
   BdkVisual*  visual;
 
   /* FIXME: this is not the right way to set colours */
@@ -446,7 +446,7 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
 
 BdkCursor*
 bdk_cursor_new_from_name (BdkDisplay  *display,
-                          const gchar *name)
+                          const bchar *name)
 {
   BdkCursor *cursor;
   BdkPixbuf *pixbuf;
@@ -496,7 +496,7 @@ bdk_cursor_get_display (BdkCursor *cursor)
   return bdk_display_get_default ();
 }
 
-guint
+buint
 bdk_display_get_default_cursor_size (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -516,8 +516,8 @@ bdk_display_get_default_cursor_size (BdkDisplay *display)
  */
 void
 bdk_display_get_maximal_cursor_size (BdkDisplay *display,
-                                     guint       *width,
-                                     guint       *height)
+                                     buint       *width,
+                                     buint       *height)
 {
   g_return_if_fail (BDK_IS_DISPLAY (display));
 
@@ -539,14 +539,14 @@ bdk_display_get_maximal_cursor_size (BdkDisplay *display,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 bdk_display_supports_cursor_alpha (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
   return TRUE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_cursor_color (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);

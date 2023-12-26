@@ -128,7 +128,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Testing.html#btk-test-spin-button-click" title="btk_test_spin_button_click ()">btk_test_spin_button_click</a> <span class="c_punctuation">()</span>
@@ -136,7 +136,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Testing.html#btk-test-text-get" title="btk_test_text_get ()">btk_test_text_get</a> <span class="c_punctuation">()</span>
@@ -152,7 +152,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Testing.html#btk-test-widget-click" title="btk_test_widget_click ()">btk_test_widget_click</a> <span class="c_punctuation">()</span>
@@ -160,7 +160,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Testing.html#btk-test-widget-send-key" title="btk_test_widget_send_key ()">btk_test_widget_send_key</a> <span class="c_punctuation">()</span>
@@ -182,8 +182,8 @@
 <div class="refsect2">
 <a name="btk-test-create-simple-window"></a><h3>btk_test_create_simple_window ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_test_create_simple_window (<em class="parameter"><code>const <span class="type">gchar</span> *window_title</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *dialog_text</code></em>);</pre>
+btk_test_create_simple_window (<em class="parameter"><code>const <span class="type">bchar</span> *window_title</code></em>,
+                               <em class="parameter"><code>const <span class="type">bchar</span> *dialog_text</code></em>);</pre>
 <p>Create a simple window with window title <em class="parameter"><code>window_title</code></em>
  and
 text contents <em class="parameter"><code>dialog_text</code></em>
@@ -224,7 +224,7 @@ will automatically be destroyed upon test function teardown.</p>
 <a name="btk-test-create-widget"></a><h3>btk_test_create_widget ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_test_create_widget (<em class="parameter"><code><span class="type">GType</span> widget_type</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *first_property_name</code></em>,
+                        <em class="parameter"><code>const <span class="type">bchar</span> *first_property_name</code></em>,
                         <em class="parameter"><code>...</code></em>);</pre>
 <p>This function wraps <code class="function">g_object_new()</code> for widget types.
 It'll automatically show all created non window widgets, also
@@ -268,8 +268,8 @@ name-value pairs, terminated by <code class="literal">NULL</code></p></td>
 <div class="refsect2">
 <a name="btk-test-display-button-window"></a><h3>btk_test_display_button_window ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_test_display_button_window (<em class="parameter"><code>const <span class="type">gchar</span> *window_title</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *dialog_text</code></em>,
+btk_test_display_button_window (<em class="parameter"><code>const <span class="type">bchar</span> *window_title</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *dialog_text</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <p>Create a window with window title <em class="parameter"><code>window_title</code></em>
 , text contents <em class="parameter"><code>dialog_text</code></em>
@@ -323,7 +323,7 @@ will automatically be destroyed upon test function teardown.</p>
 <a name="btk-test-find-label"></a><h3>btk_test_find_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_test_find_label (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                     <em class="parameter"><code>const <span class="type">gchar</span> *label_pattern</code></em>);</pre>
+                     <em class="parameter"><code>const <span class="type">bchar</span> *label_pattern</code></em>);</pre>
 <p>This function will search <em class="parameter"><code>widget</code></em>
  and all its descendants for a BtkLabel
 widget with a text string matching <em class="parameter"><code>label_pattern</code></em>
@@ -414,7 +414,7 @@ if any is found. </p>
 <a name="btk-test-find-widget"></a><h3>btk_test_find_widget ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_test_find_widget (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *label_pattern</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *label_pattern</code></em>,
                       <em class="parameter"><code><span class="type">GType</span> widget_type</code></em>);</pre>
 <p>This function will search the descendants of <em class="parameter"><code>widget</code></em>
  for a widget
@@ -516,7 +516,7 @@ stripped before return. </p>
 <div class="refsect2">
 <a name="btk-test-list-all-types"></a><h3>btk_test_list_all_types ()</h3>
 <pre class="programlisting">const <span class="returnvalue">GType</span> *
-btk_test_list_all_types (<em class="parameter"><code><span class="type">guint</span> *n_types</code></em>);</pre>
+btk_test_list_all_types (<em class="parameter"><code><span class="type">buint</span> *n_types</code></em>);</pre>
 <p>Return the type ids that have been registered after
 calling <a class="link" href="btk2-Testing.html#btk-test-register-all-types" title="btk_test_register_all_types ()"><code class="function">btk_test_register_all_types()</code></a>.</p>
 <div class="refsect3">
@@ -625,10 +625,10 @@ a value between the lower and upper limits, according to the
 <hr>
 <div class="refsect2">
 <a name="btk-test-spin-button-click"></a><h3>btk_test_spin_button_click ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_test_spin_button_click (<em class="parameter"><code><a class="link" href="BtkSpinButton.html" title="BtkSpinButton"><span class="type">BtkSpinButton</span></a> *spinner</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> button</code></em>,
-                            <em class="parameter"><code><span class="type">gboolean</span> upwards</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">buint</span> button</code></em>,
+                            <em class="parameter"><code><span class="type">bboolean</span> upwards</code></em>);</pre>
 <p>This function will generate a <em class="parameter"><code>button</code></em>
  click in the upwards or downwards
 spin button arrow areas, usually leading to an increase or decrease of
@@ -669,7 +669,7 @@ spin button's value.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-test-text-get"></a><h3>btk_test_text_get ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 btk_test_text_get (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
 <p>Retrive the text string of <em class="parameter"><code>widget</code></em>
  if it is a BtkLabel,
@@ -700,7 +700,7 @@ BtkEditable (entry and text widgets) or BtkTextView.</p>
 <a name="btk-test-text-set"></a><h3>btk_test_text_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_test_text_set (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                   <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+                   <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>);</pre>
 <p>Set the text string of <em class="parameter"><code>widget</code></em>
  to <em class="parameter"><code>string</code></em>
  if it is a BtkLabel,
@@ -732,9 +732,9 @@ BtkEditable (entry and text widgets) or BtkTextView.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-test-widget-click"></a><h3>btk_test_widget_click ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_test_widget_click (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> button</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> button</code></em>,
                        <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <p>This function will generate a <em class="parameter"><code>button</code></em>
  click (button press and button
@@ -782,9 +782,9 @@ location, see <a href="../html/bdk2-Testing.html#bdk-test-simulate-button"><code
 <hr>
 <div class="refsect2">
 <a name="btk-test-widget-send-key"></a><h3>btk_test_widget_send_key ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_test_widget_send_key (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                          <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <p>This function will generate keyboard press and release events in
 the middle of the first BdkWindow found that belongs to <em class="parameter"><code>widget</code></em>

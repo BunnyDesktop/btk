@@ -69,7 +69,7 @@ typedef enum
   N_FORMATS
 } OutputFormat;
 
-static const gchar* formats[N_FORMATS] =
+static const bchar* formats[N_FORMATS] =
 {
   "pdf",
   "ps"
@@ -94,12 +94,12 @@ static void                 btk_print_backend_test_print_stream    (BtkPrintBack
 								    BtkPrintJob             *job,
 								    BUNNYIOChannel              *data_io,
 								    BtkPrintJobCompleteFunc  callback,
-								    gpointer                 user_data,
+								    bpointer                 user_data,
 								    GDestroyNotify           dnotify);
 static bairo_surface_t *    test_printer_create_bairo_surface      (BtkPrinter              *printer,
 								    BtkPrintSettings        *settings,
-								    gdouble                  width,
-								    gdouble                  height,
+								    bdouble                  width,
+								    bdouble                  height,
 								    BUNNYIOChannel              *cache_io);
 
 static void                 test_printer_request_details           (BtkPrinter              *printer);
@@ -187,8 +187,8 @@ btk_print_backend_test_class_init (BtkPrintBackendTestClass *class)
 static OutputFormat
 format_from_settings (BtkPrintSettings *settings)
 {
-  const gchar *value;
-  gint i;
+  const bchar *value;
+  bint i;
 
   if (settings == NULL)
     return N_FORMATS;
@@ -206,19 +206,19 @@ format_from_settings (BtkPrintSettings *settings)
   return (OutputFormat) i;
 }
 
-static gchar *
+static bchar *
 output_test_from_settings (BtkPrintSettings *settings,
-			   const gchar      *default_format)
+			   const bchar      *default_format)
 {
-  gchar *uri = NULL;
+  bchar *uri = NULL;
   
   if (settings)
     uri = g_strdup (btk_print_settings_get (settings, BTK_PRINT_SETTINGS_OUTPUT_URI));
 
   if (uri == NULL)
     { 
-      const gchar *extension;
-      gchar *name, *locale_name, *path;
+      const bchar *extension;
+      bchar *name, *locale_name, *path;
 
       if (default_format)
         extension = default_format;
@@ -237,7 +237,7 @@ output_test_from_settings (BtkPrintSettings *settings,
 
       if (locale_name != NULL)
         {
-	  gchar *current_dir = g_get_current_dir ();
+	  bchar *current_dir = g_get_current_dir ();
           path = g_build_filename (current_dir, locale_name, NULL);
           g_free (locale_name);
 
@@ -256,7 +256,7 @@ _bairo_write (void                *closure,
               unsigned int         length)
 {
   BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
-  gsize written;
+  bsize written;
   GError *error;
 
   error = NULL;
@@ -266,7 +266,7 @@ _bairo_write (void                *closure,
 
   while (length > 0) 
     {
-      g_io_channel_write_chars (io, (const gchar *) data, length, &written, &error);
+      g_io_channel_write_chars (io, (const bchar *) data, length, &written, &error);
 
       if (error != NULL)
 	{
@@ -291,8 +291,8 @@ _bairo_write (void                *closure,
 static bairo_surface_t *
 test_printer_create_bairo_surface (BtkPrinter       *printer,
 				   BtkPrintSettings *settings,
-				   gdouble           width, 
-				   gdouble           height,
+				   bdouble           width, 
+				   bdouble           height,
 				   BUNNYIOChannel       *cache_io)
 {
   bairo_surface_t *surface;
@@ -317,14 +317,14 @@ typedef struct {
   BtkPrintJobCompleteFunc callback;
   BtkPrintJob *job;
   BUNNYIOChannel *target_io;
-  gpointer user_data;
+  bpointer user_data;
   GDestroyNotify dnotify;
 } _PrintStreamData;
 
 static void
 test_print_cb (BtkPrintBackendTest *print_backend,
                GError              *error,
-               gpointer            user_data)
+               bpointer            user_data)
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
@@ -346,13 +346,13 @@ test_print_cb (BtkPrintBackendTest *print_backend,
   g_free (ps);
 }
 
-static gboolean
+static bboolean
 test_write (BUNNYIOChannel   *source,
             BUNNYIOCondition  con,
-            gpointer      user_data)
+            bpointer      user_data)
 {
-  gchar buf[_STREAM_MAX_CHUNK_SIZE];
-  gsize bytes_read;
+  bchar buf[_STREAM_MAX_CHUNK_SIZE];
+  bsize bytes_read;
   GError *error;
   BUNNYIOStatus read_status;
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
@@ -368,7 +368,7 @@ test_write (BUNNYIOChannel   *source,
 
   if (read_status != G_IO_STATUS_ERROR)
     {
-      gsize bytes_written;
+      bsize bytes_written;
 
       g_io_channel_write_chars (ps->target_io, 
                                 buf, 
@@ -403,14 +403,14 @@ btk_print_backend_test_print_stream (BtkPrintBackend        *print_backend,
 				     BtkPrintJob            *job,
 				     BUNNYIOChannel             *data_io,
 				     BtkPrintJobCompleteFunc callback,
-				     gpointer                user_data,
+				     bpointer                user_data,
 				     GDestroyNotify          dnotify)
 {
   GError *internal_error = NULL;
   BtkPrinter *printer;
   _PrintStreamData *ps;
   BtkPrintSettings *settings;
-  gchar *uri, *testname;
+  bchar *uri, *testname;
 
   printer = btk_print_job_get_printer (job);
   settings = btk_print_job_get_settings (job);
@@ -493,7 +493,7 @@ test_printer_get_options (BtkPrinter           *printer,
 {
   BtkPrinterOptionSet *set;
   BtkPrinterOption *option;
-  const gchar *n_up[] = { "1" };
+  const bchar *n_up[] = { "1" };
   OutputFormat format;
 
   format = format_from_settings (settings);
@@ -523,7 +523,7 @@ test_printer_prepare_for_print (BtkPrinter       *printer,
 				BtkPrintSettings *settings,
 				BtkPageSetup     *page_setup)
 {
-  gdouble scale;
+  bdouble scale;
 
   print_job->print_pages = btk_print_settings_get_print_pages (settings);
   print_job->page_ranges = NULL;
@@ -546,11 +546,11 @@ test_printer_prepare_for_print (BtkPrinter       *printer,
   print_job->rotate_to_orientation = TRUE;
 }
 
-static gboolean
+static bboolean
 test_printer_details_aquired_cb (BtkPrinter *printer)
 {
-  gboolean success;
-  gint weight;
+  bboolean success;
+  bint weight;
 
   /* weight towards success */
   weight = g_random_int_range (0, 100);
@@ -569,8 +569,8 @@ test_printer_details_aquired_cb (BtkPrinter *printer)
 static void
 test_printer_request_details (BtkPrinter *printer)
 {
-  gint weight;
-  gint time;
+  bint weight;
+  bint time;
   /* set the timer to succeed or fail at a random time interval */
   /* weight towards the shorter end */
   weight = g_random_int_range (0, 100);

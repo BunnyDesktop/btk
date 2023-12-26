@@ -12,7 +12,7 @@ static void update_store (void);
 
 static BtkWidget *main_window;
 
-static gboolean
+static bboolean
 window_has_impl (BdkWindow *window)
 {
   BdkWindowObject *w;
@@ -26,7 +26,7 @@ create_window (BdkWindow *parent,
 	       BdkColor *color)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   BdkWindow *window;
   BdkColor *bg;
 
@@ -72,7 +72,7 @@ static void
 add_window_cb (BtkTreeModel      *model,
 	       BtkTreePath       *path,
 	       BtkTreeIter       *iter,
-	       gpointer           data)
+	       bpointer           data)
 {
   GList **selected = data;
   BdkWindow *window;
@@ -99,7 +99,7 @@ get_selected_windows (void)
   return selected;
 }
 
-static gboolean
+static bboolean
 find_window_helper (BtkTreeModel *model,
 		    BdkWindow *window,
 		    BtkTreeIter *iter,
@@ -131,7 +131,7 @@ find_window_helper (BtkTreeModel *model,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 find_window (BdkWindow *window,
 	     BtkTreeIter *window_iter)
 {
@@ -207,7 +207,7 @@ select_windows (GList *windows)
 
 static void
 add_window_clicked (BtkWidget *button, 
-		    gpointer data)
+		    bpointer data)
 {
   BdkWindow *parent;
   GList *l;
@@ -226,7 +226,7 @@ add_window_clicked (BtkWidget *button,
 
 static void
 draw_drawable_clicked (BtkWidget *button, 
-		       gpointer data)
+		       bpointer data)
 {
   BdkGC *gc;
   gc = bdk_gc_new (darea->window);
@@ -242,7 +242,7 @@ draw_drawable_clicked (BtkWidget *button,
 
 static void
 remove_window_clicked (BtkWidget *button, 
-		       gpointer data)
+		       bpointer data)
 {
   GList *l, *selected;
 
@@ -262,7 +262,7 @@ static void
 save_window (GString *s,
 	     BdkWindow *window)
 {
-  gint x, y, w, h;
+  bint x, y, w, h;
   BdkColor *color;
 
   bdk_window_get_position (window, &x, &y);
@@ -299,7 +299,7 @@ save_children (GString *s,
 
 static void
 save_clicked (BtkWidget *button, 
-	      gpointer data)
+	      bpointer data)
 {
   GString *s;
   BtkWidget *dialog;
@@ -404,14 +404,14 @@ load_file (GFile *file)
 
 static void
 move_window_clicked (BtkWidget *button, 
-		     gpointer data)
+		     bpointer data)
 {
   BdkWindow *window;
   BtkDirectionType direction;
   GList *selected, *l;
-  gint x, y;
+  bint x, y;
 
-  direction = GPOINTER_TO_INT (data);
+  direction = BPOINTER_TO_INT (data);
     
   selected = get_selected_windows ();
 
@@ -446,7 +446,7 @@ move_window_clicked (BtkWidget *button,
 
 static void
 manual_clicked (BtkWidget *button, 
-		gpointer data)
+		bpointer data)
 {
   BdkWindow *window;
   GList *selected, *l;
@@ -497,25 +497,25 @@ manual_clicked (BtkWidget *button,
 			     0, 1,
 			     3, 4);
 
-  xspin = btk_spin_button_new_with_range (G_MININT, G_MAXINT, 1);
+  xspin = btk_spin_button_new_with_range (B_MININT, B_MAXINT, 1);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (xspin), x);
   btk_table_attach_defaults (BTK_TABLE (table),
 			     xspin,
 			     1, 2,
 			     0, 1);
-  yspin = btk_spin_button_new_with_range (G_MININT, G_MAXINT, 1);
+  yspin = btk_spin_button_new_with_range (B_MININT, B_MAXINT, 1);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (yspin), y);
   btk_table_attach_defaults (BTK_TABLE (table),
 			     yspin,
 			     1, 2,
 			     1, 2);
-  wspin = btk_spin_button_new_with_range (G_MININT, G_MAXINT, 1);
+  wspin = btk_spin_button_new_with_range (B_MININT, B_MAXINT, 1);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (wspin), w);
   btk_table_attach_defaults (BTK_TABLE (table),
 			     wspin,
 			     1, 2,
 			     2, 3);
-  hspin = btk_spin_button_new_with_range (G_MININT, G_MAXINT, 1);
+  hspin = btk_spin_button_new_with_range (B_MININT, B_MAXINT, 1);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (hspin), h);
   btk_table_attach_defaults (BTK_TABLE (table),
 			     hspin,
@@ -545,7 +545,7 @@ manual_clicked (BtkWidget *button,
 
 static void
 restack_clicked (BtkWidget *button,
-		 gpointer data)
+		 bpointer data)
 {
   GList *selected;
 
@@ -558,7 +558,7 @@ restack_clicked (BtkWidget *button,
 
   bdk_window_restack (selected->data,
 		      selected->next->data,
-		      GPOINTER_TO_INT (data));
+		      BPOINTER_TO_INT (data));
 
   g_list_free (selected);
 
@@ -567,14 +567,14 @@ restack_clicked (BtkWidget *button,
 
 static void
 scroll_window_clicked (BtkWidget *button, 
-		       gpointer data)
+		       bpointer data)
 {
   BdkWindow *window;
   BtkDirectionType direction;
   GList *selected, *l;
-  gint dx, dy;
+  bint dx, dy;
 
-  direction = GPOINTER_TO_INT (data);
+  direction = BPOINTER_TO_INT (data);
     
   selected = get_selected_windows ();
 
@@ -609,7 +609,7 @@ scroll_window_clicked (BtkWidget *button,
 
 static void
 raise_window_clicked (BtkWidget *button, 
-		      gpointer data)
+		      bpointer data)
 {
   GList *selected, *l;
   BdkWindow *window;
@@ -630,7 +630,7 @@ raise_window_clicked (BtkWidget *button,
 
 static void
 lower_window_clicked (BtkWidget *button, 
-		      gpointer data)
+		      bpointer data)
 {
   GList *selected, *l;
   BdkWindow *window;
@@ -652,7 +652,7 @@ lower_window_clicked (BtkWidget *button,
 
 static void
 smaller_window_clicked (BtkWidget *button, 
-			gpointer data)
+			bpointer data)
 {
   GList *selected, *l;
   BdkWindow *window;
@@ -681,7 +681,7 @@ smaller_window_clicked (BtkWidget *button,
 
 static void
 larger_window_clicked (BtkWidget *button, 
-			gpointer data)
+			bpointer data)
 {
   GList *selected, *l;
   BdkWindow *window;
@@ -706,7 +706,7 @@ larger_window_clicked (BtkWidget *button,
 
 static void
 native_window_clicked (BtkWidget *button, 
-			gpointer data)
+			bpointer data)
 {
   GList *selected, *l;
   BdkWindow *window;
@@ -725,7 +725,7 @@ native_window_clicked (BtkWidget *button,
   update_store ();
 }
 
-static gboolean
+static bboolean
 darea_button_release_event (BtkWidget *widget,
 			    BdkEventButton *event)
 {
@@ -747,7 +747,7 @@ render_window_cell (BtkTreeViewColumn *tree_column,
 		    BtkCellRenderer   *cell,
 		    BtkTreeModel      *tree_model,
 		    BtkTreeIter       *iter,
-		    gpointer           data)
+		    bpointer           data)
 {
   BdkWindow *window;
   char *name;
@@ -896,7 +896,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (move_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_LEFT));
+		    BINT_TO_POINTER (BTK_DIR_LEFT));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     0, 1,
@@ -909,7 +909,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (move_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_UP));
+		    BINT_TO_POINTER (BTK_DIR_UP));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     1, 2,
@@ -922,7 +922,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (move_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_RIGHT));
+		    BINT_TO_POINTER (BTK_DIR_RIGHT));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     2, 3,
@@ -935,7 +935,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (move_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_DOWN));
+		    BINT_TO_POINTER (BTK_DIR_DOWN));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     1, 2,
@@ -1001,7 +1001,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (scroll_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_UP));
+		    BINT_TO_POINTER (BTK_DIR_UP));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     3, 4,
@@ -1014,7 +1014,7 @@ main (int argc, char **argv)
 						  BTK_ICON_SIZE_BUTTON));
   g_signal_connect (button, "clicked", 
 		    G_CALLBACK (scroll_window_clicked), 
-		    GINT_TO_POINTER (BTK_DIR_DOWN));
+		    BINT_TO_POINTER (BTK_DIR_DOWN));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     3, 4,
@@ -1034,7 +1034,7 @@ main (int argc, char **argv)
   button = btk_button_new_with_label ("Restack above");
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (restack_clicked),
-		    GINT_TO_POINTER (1));
+		    BINT_TO_POINTER (1));
   btk_table_attach_defaults (BTK_TABLE (table),
 			     button,
 			     2, 3,

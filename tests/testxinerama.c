@@ -22,16 +22,16 @@
 #include <stdlib.h>
 #include <btk/btk.h>
 
-static gint num_monitors;
-static gint primary_monitor;
+static bint num_monitors;
+static bint primary_monitor;
 
 static void
 request (BtkWidget      *widget,
-	 gpointer        user_data)
+	 bpointer        user_data)
 {
-  gchar *str;
+  bchar *str;
   BdkScreen *screen = btk_widget_get_screen (widget);
-  gint i = bdk_screen_get_monitor_at_window (screen,
+  bint i = bdk_screen_get_monitor_at_window (screen,
 					     widget->window);
 
   if (i < 0)
@@ -61,7 +61,7 @@ request (BtkWidget      *widget,
 
 static void
 monitors_changed_cb (BdkScreen *screen,
-                     gpointer   data)
+                     bpointer   data)
 {
   BtkWidget *label = (BtkWidget *)data;
 
@@ -73,7 +73,7 @@ main (int argc, char *argv[])
 {
   BtkWidget *window, *label, *vbox, *button;
   BdkScreen *screen;
-  gint i;
+  bint i;
 
   btk_init (&argc, &argv);
 
@@ -88,7 +88,7 @@ main (int argc, char *argv[])
   for (i = 0; i < num_monitors; i++)
     {
       BdkRectangle monitor; 
-      gchar *str;
+      bchar *str;
       
       window = btk_window_new (BTK_WINDOW_TOPLEVEL);
       

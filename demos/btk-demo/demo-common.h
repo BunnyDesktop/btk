@@ -3,7 +3,7 @@
 
 B_BEGIN_DECLS
 
-gchar *demo_find_file (const gchar  *base,
+bchar *demo_find_file (const bchar  *base,
 		       GError      **err);
 
 B_END_DECLS

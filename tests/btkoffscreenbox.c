@@ -15,9 +15,9 @@ static void        btk_offscreen_box_size_request  (BtkWidget       *widget,
                                                     BtkRequisition  *requisition);
 static void        btk_offscreen_box_size_allocate (BtkWidget       *widget,
                                                     BtkAllocation   *allocation);
-static gboolean    btk_offscreen_box_damage        (BtkWidget       *widget,
+static bboolean    btk_offscreen_box_damage        (BtkWidget       *widget,
                                                     BdkEventExpose  *event);
-static gboolean    btk_offscreen_box_expose        (BtkWidget       *widget,
+static bboolean    btk_offscreen_box_expose        (BtkWidget       *widget,
                                                     BdkEventExpose  *offscreen);
 
 static void        btk_offscreen_box_add           (BtkContainer    *container,
@@ -25,9 +25,9 @@ static void        btk_offscreen_box_add           (BtkContainer    *container,
 static void        btk_offscreen_box_remove        (BtkContainer    *container,
                                                     BtkWidget       *widget);
 static void        btk_offscreen_box_forall        (BtkContainer    *container,
-                                                    gboolean         include_internals,
+                                                    bboolean         include_internals,
                                                     BtkCallback      callback,
-                                                    gpointer         callback_data);
+                                                    bpointer         callback_data);
 static GType       btk_offscreen_box_child_type    (BtkContainer    *container);
 
 #define CHILD1_SIZE_SCALE 1.0
@@ -233,8 +233,8 @@ btk_offscreen_box_realize (BtkWidget *widget)
 {
   BtkOffscreenBox *offscreen_box = BTK_OFFSCREEN_BOX (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BtkRequisition child_requisition;
   int start_y = 0;
 
@@ -399,7 +399,7 @@ btk_offscreen_box_remove (BtkContainer *container,
 			  BtkWidget    *widget)
 {
   BtkOffscreenBox *offscreen_box = BTK_OFFSCREEN_BOX (container);
-  gboolean was_visible;
+  bboolean was_visible;
 
   was_visible = btk_widget_get_visible (widget);
 
@@ -425,9 +425,9 @@ btk_offscreen_box_remove (BtkContainer *container,
 
 static void
 btk_offscreen_box_forall (BtkContainer *container,
-			  gboolean      include_internals,
+			  bboolean      include_internals,
 			  BtkCallback   callback,
-			  gpointer      callback_data)
+			  bpointer      callback_data)
 {
   BtkOffscreenBox *offscreen_box = BTK_OFFSCREEN_BOX (container);
 
@@ -441,7 +441,7 @@ btk_offscreen_box_forall (BtkContainer *container,
 
 void
 btk_offscreen_box_set_angle (BtkOffscreenBox  *offscreen_box,
-			     gdouble           angle)
+			     bdouble           angle)
 {
   g_return_if_fail (BTK_IS_OFFSCREEN_BOX (offscreen_box));
 
@@ -491,8 +491,8 @@ btk_offscreen_box_size_allocate (BtkWidget     *widget,
 				 BtkAllocation *allocation)
 {
   BtkOffscreenBox *offscreen_box;
-  gint border_width;
-  gint start_y;
+  bint border_width;
+  bint start_y;
 
   widget->allocation = *allocation;
   offscreen_box = BTK_OFFSCREEN_BOX (widget);
@@ -516,7 +516,7 @@ btk_offscreen_box_size_allocate (BtkWidget     *widget,
       btk_widget_get_child_requisition (offscreen_box->child1, &child_requisition);
       child_allocation.x = child_requisition.width * (CHILD1_SIZE_SCALE - 1.0) / 2;
       child_allocation.y = start_y + child_requisition.height * (CHILD1_SIZE_SCALE - 1.0) / 2;
-      child_allocation.width = MAX (1, (gint) widget->allocation.width - 2 * border_width);
+      child_allocation.width = MAX (1, (bint) widget->allocation.width - 2 * border_width);
       child_allocation.height = child_requisition.height;
 
       start_y += CHILD1_SIZE_SCALE * child_requisition.height;
@@ -540,7 +540,7 @@ btk_offscreen_box_size_allocate (BtkWidget     *widget,
       btk_widget_get_child_requisition (offscreen_box->child2, &child_requisition);
       child_allocation.x = child_requisition.width * (CHILD2_SIZE_SCALE - 1.0) / 2;
       child_allocation.y = start_y + child_requisition.height * (CHILD2_SIZE_SCALE - 1.0) / 2;
-      child_allocation.width = MAX (1, (gint) widget->allocation.width - 2 * border_width);
+      child_allocation.width = MAX (1, (bint) widget->allocation.width - 2 * border_width);
       child_allocation.height = child_requisition.height;
 
       start_y += CHILD2_SIZE_SCALE * child_requisition.height;
@@ -557,7 +557,7 @@ btk_offscreen_box_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_offscreen_box_damage (BtkWidget      *widget,
                           BdkEventExpose *event)
 {
@@ -566,7 +566,7 @@ btk_offscreen_box_damage (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_offscreen_box_expose (BtkWidget      *widget,
 			  BdkEventExpose *event)
 {

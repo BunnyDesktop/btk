@@ -39,9 +39,9 @@ static void     btk_mirror_bin_size_request  (BtkWidget       *widget,
                                                BtkRequisition  *requisition);
 static void     btk_mirror_bin_size_allocate (BtkWidget       *widget,
                                                BtkAllocation   *allocation);
-static gboolean btk_mirror_bin_damage        (BtkWidget       *widget,
+static bboolean btk_mirror_bin_damage        (BtkWidget       *widget,
                                                BdkEventExpose  *event);
-static gboolean btk_mirror_bin_expose        (BtkWidget       *widget,
+static bboolean btk_mirror_bin_expose        (BtkWidget       *widget,
                                                BdkEventExpose  *offscreen);
 
 static void     btk_mirror_bin_add           (BtkContainer    *container,
@@ -49,9 +49,9 @@ static void     btk_mirror_bin_add           (BtkContainer    *container,
 static void     btk_mirror_bin_remove        (BtkContainer    *container,
                                                BtkWidget       *widget);
 static void     btk_mirror_bin_forall        (BtkContainer    *container,
-                                               gboolean         include_internals,
+                                               bboolean         include_internals,
                                                BtkCallback      callback,
-                                               gpointer         callback_data);
+                                               bpointer         callback_data);
 static GType    btk_mirror_bin_child_type    (BtkContainer    *container);
 
 G_DEFINE_TYPE (BtkMirrorBin, btk_mirror_bin, BTK_TYPE_CONTAINER);
@@ -164,8 +164,8 @@ btk_mirror_bin_realize (BtkWidget *widget)
   BtkMirrorBin *bin = BTK_MIRROR_BIN (widget);
   BdkWindowAttr attributes;
   BdkWindow *bdk_window;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BtkRequisition child_requisition;
   BtkAllocation widget_allocation, bin_child_allocation;
   BtkStyle *style;
@@ -273,7 +273,7 @@ btk_mirror_bin_remove (BtkContainer *container,
                         BtkWidget    *widget)
 {
   BtkMirrorBin *bin = BTK_MIRROR_BIN (container);
-  gboolean was_visible;
+  bboolean was_visible;
 
   was_visible = btk_widget_get_visible (widget);
 
@@ -290,9 +290,9 @@ btk_mirror_bin_remove (BtkContainer *container,
 
 static void
 btk_mirror_bin_forall (BtkContainer *container,
-                        gboolean      include_internals,
+                        bboolean      include_internals,
                         BtkCallback   callback,
-                        gpointer      callback_data)
+                        bpointer      callback_data)
 {
   BtkMirrorBin *bin = BTK_MIRROR_BIN (container);
 
@@ -308,7 +308,7 @@ btk_mirror_bin_size_request (BtkWidget      *widget,
 {
   BtkMirrorBin *bin = BTK_MIRROR_BIN (widget);
   BtkRequisition child_requisition;
-  gint border_width;
+  bint border_width;
   
   border_width = btk_container_get_border_width (BTK_CONTAINER (widget));
 
@@ -327,8 +327,8 @@ btk_mirror_bin_size_allocate (BtkWidget     *widget,
                                BtkAllocation *allocation)
 {
   BtkMirrorBin *bin = BTK_MIRROR_BIN (widget);
-  gint border_width;
-  gint w, h;
+  bint border_width;
+  bint w, h;
   
   btk_widget_set_allocation (widget, allocation);
 
@@ -363,7 +363,7 @@ btk_mirror_bin_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_mirror_bin_damage (BtkWidget      *widget,
                         BdkEventExpose *event)
 {
@@ -372,12 +372,12 @@ btk_mirror_bin_damage (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_mirror_bin_expose (BtkWidget      *widget,
                         BdkEventExpose *event)
 {
   BtkMirrorBin *bin = BTK_MIRROR_BIN (widget);
-  gint width, height;
+  bint width, height;
 
   if (btk_widget_is_drawable (widget))
     {

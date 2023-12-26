@@ -31,8 +31,8 @@ test_click_expander (void)
   BtkWidget *window = btk_test_create_simple_window ("Test Window", "Test click on expander");
   BtkWidget *expander = btk_expander_new ("Test Expander");
   BtkWidget *label = btk_label_new ("Test Label");
-  gboolean expanded;
-  gboolean simsuccess;
+  bboolean expanded;
+  bboolean simsuccess;
   btk_container_add (BTK_CONTAINER (expander), label);
   btk_container_add (BTK_CONTAINER (BTK_BIN (window)->child), expander);
   btk_widget_show (expander);
@@ -63,8 +63,8 @@ test_click_content_widget (void)
   BtkWidget *window = btk_test_create_simple_window ("Test Window", "Test click on content widget");
   BtkWidget *expander = btk_expander_new ("Test Expander");
   BtkWidget *entry = btk_entry_new ();
-  gboolean expanded;
-  gboolean simsuccess;
+  bboolean expanded;
+  bboolean simsuccess;
   btk_container_add (BTK_CONTAINER (expander), entry);
   btk_container_add (BTK_CONTAINER (BTK_BIN (window)->child), expander);
   btk_expander_set_expanded (BTK_EXPANDER (expander), TRUE);

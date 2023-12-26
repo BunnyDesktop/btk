@@ -36,7 +36,7 @@
 #include "bdki18n.h"
 #include "bdkwin32.h"
 
-gchar*
+bchar*
 bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL, ""))
@@ -45,25 +45,25 @@ bdk_set_locale (void)
   return g_win32_getlocale ();
 }
 
-gchar *
+bchar *
 bdk_wcstombs (const BdkWChar *src)
 {
-  const gchar *charset;
+  const bchar *charset;
 
   g_get_charset (&charset);
   return g_convert ((char *) src, -1, charset, "UCS-4LE", NULL, NULL, NULL);
 }
 
-gint
+bint
 bdk_mbstowcs (BdkWChar    *dest,
-	      const gchar *src,
-	      gint         dest_max)
+	      const bchar *src,
+	      bint         dest_max)
 {
-  gint retval;
-  gsize nwritten;
-  gint n_ucs4;
+  bint retval;
+  bsize nwritten;
+  bint n_ucs4;
   gunichar *ucs4;
-  const gchar *charset;
+  const bchar *charset;
 
   g_get_charset (&charset);
   ucs4 = (gunichar *) g_convert (src, -1, "UCS-4LE", charset, NULL, &nwritten, NULL);

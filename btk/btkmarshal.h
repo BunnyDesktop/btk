@@ -11,10 +11,10 @@ B_BEGIN_DECLS
 extern
 void btk_marshal_BOOLEAN__VOID (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 #define btk_marshal_BOOL__NONE	btk_marshal_BOOLEAN__VOID
 
@@ -22,10 +22,10 @@ void btk_marshal_BOOLEAN__VOID (GClosure     *closure,
 extern
 void btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 #define btk_marshal_BOOL__POINTER	btk_marshal_BOOLEAN__POINTER
 
@@ -33,10 +33,10 @@ void btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
 extern
 void btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
                                                    BValue       *return_value,
-                                                   guint         n_param_values,
+                                                   buint         n_param_values,
                                                    const BValue *param_values,
-                                                   gpointer      invocation_hint,
-                                                   gpointer      marshal_data);
+                                                   bpointer      invocation_hint,
+                                                   bpointer      marshal_data);
 
 #define btk_marshal_BOOL__POINTER_POINTER_INT_INT	btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT
 
@@ -44,10 +44,10 @@ void btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
 extern
 void btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 #define btk_marshal_BOOL__POINTER_INT_INT	btk_marshal_BOOLEAN__POINTER_INT_INT
 
@@ -55,10 +55,10 @@ void btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
 extern
 void btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
                                                 BValue       *return_value,
-                                                guint         n_param_values,
+                                                buint         n_param_values,
                                                 const BValue *param_values,
-                                                gpointer      invocation_hint,
-                                                gpointer      marshal_data);
+                                                bpointer      invocation_hint,
+                                                bpointer      marshal_data);
 
 #define btk_marshal_BOOL__POINTER_INT_INT_UINT	btk_marshal_BOOLEAN__POINTER_INT_INT_UINT
 
@@ -66,10 +66,10 @@ void btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
 extern
 void btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
                                                          BValue       *return_value,
-                                                         guint         n_param_values,
+                                                         buint         n_param_values,
                                                          const BValue *param_values,
-                                                         gpointer      invocation_hint,
-                                                         gpointer      marshal_data);
+                                                         bpointer      invocation_hint,
+                                                         bpointer      marshal_data);
 
 #define btk_marshal_BOOL__POINTER_STRING_STRING_POINTER	btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER
 
@@ -77,28 +77,28 @@ void btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
 extern
 void btk_marshal_ENUM__ENUM (GClosure     *closure,
                              BValue       *return_value,
-                             guint         n_param_values,
+                             buint         n_param_values,
                              const BValue *param_values,
-                             gpointer      invocation_hint,
-                             gpointer      marshal_data);
+                             bpointer      invocation_hint,
+                             bpointer      marshal_data);
 
 /* INT:POINTER (./btkmarshal.list:8) */
 extern
 void btk_marshal_INT__POINTER (GClosure     *closure,
                                BValue       *return_value,
-                               guint         n_param_values,
+                               buint         n_param_values,
                                const BValue *param_values,
-                               gpointer      invocation_hint,
-                               gpointer      marshal_data);
+                               bpointer      invocation_hint,
+                               bpointer      marshal_data);
 
 /* INT:POINTER,CHAR,CHAR (./btkmarshal.list:9) */
 extern
 void btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
                                          BValue       *return_value,
-                                         guint         n_param_values,
+                                         buint         n_param_values,
                                          const BValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* NONE:BOOL (./btkmarshal.list:10) */
 #define btk_marshal_VOID__BOOLEAN	g_cclosure_marshal_VOID__BOOLEAN
@@ -119,10 +119,10 @@ void btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
 extern
 void btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 #define btk_marshal_NONE__ENUM_FLOAT	btk_marshal_VOID__ENUM_FLOAT
 
@@ -130,10 +130,10 @@ void btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
 extern
 void btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 #define btk_marshal_NONE__ENUM_FLOAT_BOOL	btk_marshal_VOID__ENUM_FLOAT_BOOLEAN
 
@@ -146,10 +146,10 @@ void btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
 extern
 void btk_marshal_VOID__INT_INT (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 #define btk_marshal_NONE__INT_INT	btk_marshal_VOID__INT_INT
 
@@ -157,10 +157,10 @@ void btk_marshal_VOID__INT_INT (GClosure     *closure,
 extern
 void btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 #define btk_marshal_NONE__INT_INT_POINTER	btk_marshal_VOID__INT_INT_POINTER
 
@@ -183,10 +183,10 @@ void btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_INT (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_INT	btk_marshal_VOID__POINTER_INT
 
@@ -194,10 +194,10 @@ void btk_marshal_VOID__POINTER_INT (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_POINTER	btk_marshal_VOID__POINTER_POINTER
 
@@ -205,10 +205,10 @@ void btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
                                                 BValue       *return_value,
-                                                guint         n_param_values,
+                                                buint         n_param_values,
                                                 const BValue *param_values,
-                                                gpointer      invocation_hint,
-                                                gpointer      marshal_data);
+                                                bpointer      invocation_hint,
+                                                bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_POINTER_POINTER	btk_marshal_VOID__POINTER_POINTER_POINTER
 
@@ -216,10 +216,10 @@ void btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
                                               BValue       *return_value,
-                                              guint         n_param_values,
+                                              buint         n_param_values,
                                               const BValue *param_values,
-                                              gpointer      invocation_hint,
-                                              gpointer      marshal_data);
+                                              bpointer      invocation_hint,
+                                              bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_STRING_STRING	btk_marshal_VOID__POINTER_STRING_STRING
 
@@ -227,10 +227,10 @@ void btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_UINT	btk_marshal_VOID__POINTER_UINT
 
@@ -238,10 +238,10 @@ void btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_UINT_ENUM	btk_marshal_VOID__POINTER_UINT_ENUM
 
@@ -249,10 +249,10 @@ void btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
                                                   BValue       *return_value,
-                                                  guint         n_param_values,
+                                                  buint         n_param_values,
                                                   const BValue *param_values,
-                                                  gpointer      invocation_hint,
-                                                  gpointer      marshal_data);
+                                                  bpointer      invocation_hint,
+                                                  bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_POINTER_UINT_UINT	btk_marshal_VOID__POINTER_POINTER_UINT_UINT
 
@@ -260,10 +260,10 @@ void btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
                                                           BValue       *return_value,
-                                                          guint         n_param_values,
+                                                          buint         n_param_values,
                                                           const BValue *param_values,
-                                                          gpointer      invocation_hint,
-                                                          gpointer      marshal_data);
+                                                          bpointer      invocation_hint,
+                                                          bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_INT_INT_POINTER_UINT_UINT	btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT
 
@@ -271,10 +271,10 @@ void btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
 extern
 void btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 #define btk_marshal_NONE__POINTER_UINT_UINT	btk_marshal_VOID__POINTER_UINT_UINT
 
@@ -287,10 +287,10 @@ void btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
 extern
 void btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 #define btk_marshal_NONE__STRING_INT_POINTER	btk_marshal_VOID__STRING_INT_POINTER
 
@@ -303,10 +303,10 @@ void btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
 extern
 void btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
                                                             BValue       *return_value,
-                                                            guint         n_param_values,
+                                                            buint         n_param_values,
                                                             const BValue *param_values,
-                                                            gpointer      invocation_hint,
-                                                            gpointer      marshal_data);
+                                                            bpointer      invocation_hint,
+                                                            bpointer      marshal_data);
 
 #define btk_marshal_NONE__UINT_POINTER_UINT_ENUM_ENUM_POINTER	btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER
 
@@ -314,10 +314,10 @@ void btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closur
 extern
 void btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
                                                     BValue       *return_value,
-                                                    guint         n_param_values,
+                                                    buint         n_param_values,
                                                     const BValue *param_values,
-                                                    gpointer      invocation_hint,
-                                                    gpointer      marshal_data);
+                                                    bpointer      invocation_hint,
+                                                    bpointer      marshal_data);
 
 #define btk_marshal_NONE__UINT_POINTER_UINT_UINT_ENUM	btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM
 
@@ -325,10 +325,10 @@ void btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
 extern
 void btk_marshal_VOID__UINT_STRING (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 #define btk_marshal_NONE__UINT_STRING	btk_marshal_VOID__UINT_STRING
 

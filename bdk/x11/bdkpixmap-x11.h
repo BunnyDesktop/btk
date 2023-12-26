@@ -49,10 +49,10 @@ struct _BdkPixmapImplX11
 {
   BdkDrawableImplX11 parent_instance;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
-  guint is_foreign : 1;
+  buint is_foreign : 1;
 };
  
 struct _BdkPixmapImplX11Class 

@@ -7,10 +7,10 @@
  */
 
 typedef struct {
-  const gchar *name;
-  const gchar *size;
-  const gchar *display_name;
-  const gchar *ppd_name;
+  const bchar *name;
+  const bchar *size;
+  const bchar *display_name;
+  const bchar *ppd_name;
 } PaperInfo;
 
 static const PaperInfo standard_names[] = {

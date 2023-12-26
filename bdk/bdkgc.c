@@ -43,7 +43,7 @@ struct _BdkGCPrivate
 {
   BdkRebunnyion *clip_rebunnyion;
 
-  guint32 rebunnyion_tag_applied;
+  buint32 rebunnyion_tag_applied;
   int rebunnyion_tag_offset_x;
   int rebunnyion_tag_offset_y;
 
@@ -55,12 +55,12 @@ struct _BdkGCPrivate
 
   BdkPixmap *clip_mask;
 
-  guint32 fg_pixel;
-  guint32 bg_pixel;
+  buint32 fg_pixel;
+  buint32 bg_pixel;
 
-  guint subwindow_mode : 1;
-  guint fill : 2;
-  guint exposures : 2;
+  buint subwindow_mode : 1;
+  buint fill : 2;
+  buint exposures : 2;
 };
 
 #define BDK_GC_GET_PRIVATE(o) (B_TYPE_INSTANCE_GET_PRIVATE ((o), BDK_TYPE_GC, BdkGCPrivate))
@@ -566,8 +566,8 @@ bdk_gc_set_stipple (BdkGC     *gc,
  **/
 void
 bdk_gc_set_ts_origin (BdkGC *gc,
-		      gint   x,
-		      gint   y)
+		      bint   x,
+		      bint   y)
 {
   BdkGCValues values;
 
@@ -595,8 +595,8 @@ bdk_gc_set_ts_origin (BdkGC *gc,
  **/
 void
 bdk_gc_set_clip_origin (BdkGC *gc,
-			gint   x,
-			gint   y)
+			bint   x,
+			bint   y)
 {
   BdkGCValues values;
 
@@ -636,7 +636,7 @@ bdk_gc_set_clip_mask (BdkGC	*gc,
 static void
 _bdk_gc_set_clip_rebunnyion_real (BdkGC     *gc,
 			      BdkRebunnyion *rebunnyion,
-			      gboolean reset_origin)
+			      bboolean reset_origin)
 {
   BdkGCPrivate *priv = BDK_GC_GET_PRIVATE (gc);
 
@@ -658,7 +658,7 @@ _bdk_gc_set_clip_rebunnyion_real (BdkGC     *gc,
 void
 _bdk_gc_set_clip_rebunnyion_internal (BdkGC     *gc,
 				  BdkRebunnyion *rebunnyion,
-				  gboolean reset_origin)
+				  bboolean reset_origin)
 {
   _bdk_gc_remove_drawable_clip (gc);
   _bdk_gc_set_clip_rebunnyion_real (gc, rebunnyion, reset_origin);
@@ -667,7 +667,7 @@ _bdk_gc_set_clip_rebunnyion_internal (BdkGC     *gc,
 
 void
 _bdk_gc_add_drawable_clip (BdkGC     *gc,
-			   guint32    rebunnyion_tag,
+			   buint32    rebunnyion_tag,
 			   BdkRebunnyion *rebunnyion,
 			   int        offset_x,
 			   int        offset_y)
@@ -898,7 +898,7 @@ _bdk_gc_get_fill (BdkGC *gc)
   return BDK_GC_GET_PRIVATE (gc)->fill;
 }
 
-gboolean
+bboolean
 _bdk_gc_get_exposures (BdkGC *gc)
 {
   g_return_val_if_fail (BDK_IS_GC (gc), FALSE);
@@ -950,7 +950,7 @@ _bdk_gc_get_stipple (BdkGC *gc)
  * 
  * Return value: the foreground pixel value of the GC
  **/
-guint32
+buint32
 _bdk_gc_get_fg_pixel (BdkGC *gc)
 {
   g_return_val_if_fail (BDK_IS_GC (gc), 0);
@@ -968,7 +968,7 @@ _bdk_gc_get_fg_pixel (BdkGC *gc)
  * 
  * Return value: the foreground pixel value of the GC
  **/
-guint32
+buint32
 _bdk_gc_get_bg_pixel (BdkGC *gc)
 {
   g_return_val_if_fail (BDK_IS_GC (gc), 0);
@@ -1032,7 +1032,7 @@ _bdk_gc_get_subwindow (BdkGC *gc)
  **/
 void
 bdk_gc_set_exposures (BdkGC     *gc,
-		      gboolean   exposures)
+		      bboolean   exposures)
 {
   BdkGCValues values;
 
@@ -1062,7 +1062,7 @@ bdk_gc_set_exposures (BdkGC     *gc,
  **/
 void
 bdk_gc_set_line_attributes (BdkGC	*gc,
-			    gint	 line_width,
+			    bint	 line_width,
 			    BdkLineStyle line_style,
 			    BdkCapStyle	 cap_style,
 			    BdkJoinStyle join_style)
@@ -1103,9 +1103,9 @@ bdk_gc_set_line_attributes (BdkGC	*gc,
  **/
 void
 bdk_gc_set_dashes (BdkGC *gc,
-		   gint	  dash_offset,
-		   gint8  dash_list[],
-		   gint   n)
+		   bint	  dash_offset,
+		   bint8  dash_list[],
+		   bint   n)
 {
   g_return_if_fail (BDK_IS_GC (gc));
   g_return_if_fail (dash_list != NULL);
@@ -1129,8 +1129,8 @@ bdk_gc_set_dashes (BdkGC *gc,
  **/
 void
 bdk_gc_offset (BdkGC *gc,
-	       gint   x_offset,
-	       gint   y_offset)
+	       bint   x_offset,
+	       bint   y_offset)
 {
   if (x_offset != 0 || y_offset != 0)
     {
@@ -1380,7 +1380,7 @@ make_stipple_tile_surface (bairo_t   *cr,
   bairo_t *tmp_cr;
   bairo_surface_t *surface; 
   bairo_surface_t *alpha_surface;
-  gint width, height;
+  bint width, height;
 
   bdk_drawable_get_size (stipple,
 			 &width, &height);
@@ -1465,7 +1465,7 @@ _bdk_gc_update_context (BdkGC          *gc,
                         bairo_t        *cr,
                         const BdkColor *override_foreground,
                         BdkBitmap      *override_stipple,
-                        gboolean        gc_changed,
+                        bboolean        gc_changed,
 			BdkDrawable    *target_drawable)
 {
   BdkGCPrivate *priv;

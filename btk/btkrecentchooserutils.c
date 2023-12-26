@@ -32,35 +32,35 @@
 /* Methods */
 static void      delegate_set_sort_func              (BtkRecentChooser  *chooser,
 						      BtkRecentSortFunc  sort_func,
-						      gpointer           sort_data,
+						      bpointer           sort_data,
 						      GDestroyNotify     data_destroy);
 static void      delegate_add_filter                 (BtkRecentChooser  *chooser,
 						      BtkRecentFilter   *filter);
 static void      delegate_remove_filter              (BtkRecentChooser  *chooser,
 						      BtkRecentFilter   *filter);
 static GSList   *delegate_list_filters               (BtkRecentChooser  *chooser);
-static gboolean  delegate_select_uri                 (BtkRecentChooser  *chooser,
-						      const gchar       *uri,
+static bboolean  delegate_select_uri                 (BtkRecentChooser  *chooser,
+						      const bchar       *uri,
 						      GError           **error);
 static void      delegate_unselect_uri               (BtkRecentChooser  *chooser,
-						      const gchar       *uri);
+						      const bchar       *uri);
 static GList    *delegate_get_items                  (BtkRecentChooser  *chooser);
 static BtkRecentManager *delegate_get_recent_manager (BtkRecentChooser  *chooser);
 static void      delegate_select_all                 (BtkRecentChooser  *chooser);
 static void      delegate_unselect_all               (BtkRecentChooser  *chooser);
-static gboolean  delegate_set_current_uri            (BtkRecentChooser  *chooser,
-						      const gchar       *uri,
+static bboolean  delegate_set_current_uri            (BtkRecentChooser  *chooser,
+						      const bchar       *uri,
 						      GError           **error);
-static gchar *   delegate_get_current_uri            (BtkRecentChooser  *chooser);
+static bchar *   delegate_get_current_uri            (BtkRecentChooser  *chooser);
 
 /* Signals */
 static void      delegate_notify            (BObject          *object,
 					     BParamSpec       *pspec,
-					     gpointer          user_data);
+					     bpointer          user_data);
 static void      delegate_selection_changed (BtkRecentChooser *receiver,
-					     gpointer          user_data);
+					     bpointer          user_data);
 static void      delegate_item_activated    (BtkRecentChooser *receiver,
-					     gpointer          user_data);
+					     bpointer          user_data);
 
 /**
  * _btk_recent_chooser_install_properties:
@@ -186,7 +186,7 @@ get_delegate (BtkRecentChooser *receiver)
 static void
 delegate_set_sort_func (BtkRecentChooser  *chooser,
 			BtkRecentSortFunc  sort_func,
-			gpointer           sort_data,
+			bpointer           sort_data,
 			GDestroyNotify     data_destroy)
 {
   btk_recent_chooser_set_sort_func (get_delegate (chooser),
@@ -215,9 +215,9 @@ delegate_list_filters (BtkRecentChooser *chooser)
   return btk_recent_chooser_list_filters (get_delegate (chooser));
 }
 
-static gboolean
+static bboolean
 delegate_select_uri (BtkRecentChooser  *chooser,
-		     const gchar       *uri,
+		     const bchar       *uri,
 		     GError           **error)
 {
   return btk_recent_chooser_select_uri (get_delegate (chooser), uri, error);
@@ -225,7 +225,7 @@ delegate_select_uri (BtkRecentChooser  *chooser,
 
 static void
 delegate_unselect_uri (BtkRecentChooser *chooser,
-		       const gchar      *uri)
+		       const bchar      *uri)
 {
  btk_recent_chooser_unselect_uri (get_delegate (chooser), uri);
 }
@@ -254,15 +254,15 @@ delegate_unselect_all (BtkRecentChooser *chooser)
   btk_recent_chooser_unselect_all (get_delegate (chooser));
 }
 
-static gboolean
+static bboolean
 delegate_set_current_uri (BtkRecentChooser  *chooser,
-			  const gchar       *uri,
+			  const bchar       *uri,
 			  GError           **error)
 {
   return btk_recent_chooser_set_current_uri (get_delegate (chooser), uri, error);
 }
 
-static gchar *
+static bchar *
 delegate_get_current_uri (BtkRecentChooser *chooser)
 {
   return btk_recent_chooser_get_current_uri (get_delegate (chooser));
@@ -271,9 +271,9 @@ delegate_get_current_uri (BtkRecentChooser *chooser)
 static void
 delegate_notify (BObject    *object,
 		 BParamSpec *pspec,
-		 gpointer    user_data)
+		 bpointer    user_data)
 {
-  gpointer iface;
+  bpointer iface;
 
   iface = g_type_interface_peek (g_type_class_peek (B_OBJECT_TYPE (object)),
 				 btk_recent_chooser_get_type ());
@@ -283,32 +283,32 @@ delegate_notify (BObject    *object,
 
 static void
 delegate_selection_changed (BtkRecentChooser *receiver,
-			    gpointer          user_data)
+			    bpointer          user_data)
 {
   _btk_recent_chooser_selection_changed (BTK_RECENT_CHOOSER (user_data));
 }
 
 static void
 delegate_item_activated (BtkRecentChooser *receiver,
-			 gpointer          user_data)
+			 bpointer          user_data)
 {
   _btk_recent_chooser_item_activated (BTK_RECENT_CHOOSER (user_data));
 }
 
-static gint
+static bint
 sort_recent_items_mru (BtkRecentInfo *a,
 		       BtkRecentInfo *b,
-		       gpointer       unused)
+		       bpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
   
   return btk_recent_info_get_modified (b) - btk_recent_info_get_modified (a);
 }
 
-static gint
+static bint
 sort_recent_items_lru (BtkRecentInfo *a,
 		       BtkRecentInfo *b,
-		       gpointer       unused)
+		       bpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
   
@@ -318,14 +318,14 @@ sort_recent_items_lru (BtkRecentInfo *a,
 typedef struct
 {
   BtkRecentSortFunc func;
-  gpointer data;
+  bpointer data;
 } SortRecentData;
 
 /* our proxy sorting function */
-static gint
-sort_recent_items_proxy (gpointer *a,
-                         gpointer *b,
-                         gpointer  user_data)
+static bint
+sort_recent_items_proxy (bpointer *a,
+                         bpointer *b,
+                         bpointer  user_data)
 {
   BtkRecentInfo *info_a = (BtkRecentInfo *) a;
   BtkRecentInfo *info_b = (BtkRecentInfo *) b;
@@ -338,13 +338,13 @@ sort_recent_items_proxy (gpointer *a,
   return 0;
 }
 
-static gboolean
+static bboolean
 get_is_recent_filtered (BtkRecentFilter *filter,
 			BtkRecentInfo   *info)
 {
   BtkRecentFilterInfo filter_info;
   BtkRecentFilterFlags needed;
-  gboolean retval;
+  bboolean retval;
 
   g_assert (info != NULL);
   
@@ -365,7 +365,7 @@ get_is_recent_filtered (BtkRecentFilter *filter,
   
   if (needed & BTK_RECENT_FILTER_APPLICATION)
     {
-      filter_info.applications = (const gchar **) btk_recent_info_get_applications (info, NULL);
+      filter_info.applications = (const bchar **) btk_recent_info_get_applications (info, NULL);
       filter_info.contains |= BTK_RECENT_FILTER_APPLICATION;
     }
   else
@@ -373,7 +373,7 @@ get_is_recent_filtered (BtkRecentFilter *filter,
 
   if (needed & BTK_RECENT_FILTER_GROUP)
     {
-      filter_info.groups = (const gchar **) btk_recent_info_get_groups (info, NULL);
+      filter_info.groups = (const bchar **) btk_recent_info_get_groups (info, NULL);
       filter_info.contains |= BTK_RECENT_FILTER_GROUP;
     }
   else
@@ -391,9 +391,9 @@ get_is_recent_filtered (BtkRecentFilter *filter,
   
   /* these we own */
   if (filter_info.applications)
-    g_strfreev ((gchar **) filter_info.applications);
+    g_strfreev ((bchar **) filter_info.applications);
   if (filter_info.groups)
-    g_strfreev ((gchar **) filter_info.groups);
+    g_strfreev ((bchar **) filter_info.groups);
   
   return !retval;
 }
@@ -417,14 +417,14 @@ GList *
 _btk_recent_chooser_get_items (BtkRecentChooser  *chooser,
                                BtkRecentFilter   *filter,
                                BtkRecentSortFunc  sort_func,
-                               gpointer           sort_data)
+                               bpointer           sort_data)
 {
   BtkRecentManager *manager;
-  gint limit;
+  bint limit;
   BtkRecentSortType sort_type;
   GList *items;
   GCompareDataFunc compare_func;
-  gint length;
+  bint length;
 
   g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), NULL);
 
@@ -443,9 +443,9 @@ _btk_recent_chooser_get_items (BtkRecentChooser  *chooser,
   if (filter)
     {
       GList *filter_items, *l;
-      gboolean local_only = FALSE;
-      gboolean show_private = FALSE;
-      gboolean show_not_found = FALSE;
+      bboolean local_only = FALSE;
+      bboolean show_private = FALSE;
+      bboolean show_not_found = FALSE;
 
       g_object_get (B_OBJECT (chooser),
                     "local-only", &local_only,
@@ -457,7 +457,7 @@ _btk_recent_chooser_get_items (BtkRecentChooser  *chooser,
       for (l = items; l != NULL; l = l->next)
         {
           BtkRecentInfo *info = l->data;
-          gboolean remove_item = FALSE;
+          bboolean remove_item = FALSE;
 
           if (get_is_recent_filtered (filter, info))
             remove_item = TRUE;

@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-events-pending" title="bdk_events_pending ()">bdk_events_pending</a> <span class="c_punctuation">()</span>
@@ -105,7 +105,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint32</span>
+<span class="returnvalue">buint32</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-get-time" title="bdk_event_get_time ()">bdk_event_get_time</a> <span class="c_punctuation">()</span>
@@ -113,7 +113,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-get-state" title="bdk_event_get_state ()">bdk_event_get_state</a> <span class="c_punctuation">()</span>
@@ -121,7 +121,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-get-axis" title="bdk_event_get_axis ()">bdk_event_get_axis</a> <span class="c_punctuation">()</span>
@@ -129,7 +129,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-get-coords" title="bdk_event_get_coords ()">bdk_event_get_coords</a> <span class="c_punctuation">()</span>
@@ -137,7 +137,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-get-root-coords" title="bdk_event_get_root_coords ()">bdk_event_get_root_coords</a> <span class="c_punctuation">()</span>
@@ -169,7 +169,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-send-client-message" title="bdk_event_send_client_message ()">bdk_event_send_client_message</a> <span class="c_punctuation">()</span>
@@ -177,7 +177,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-event-send-client-message-for-display" title="bdk_event_send_client_message_for_display ()">bdk_event_send_client_message_for_display</a> <span class="c_punctuation">()</span>
@@ -201,7 +201,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-get-show-events" title="bdk_get_show_events ()">bdk_get_show_events</a> <span class="c_punctuation">()</span>
@@ -233,7 +233,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Events.html#bdk-setting-get" title="bdk_setting_get ()">bdk_setting_get</a> <span class="c_punctuation">()</span>
@@ -285,7 +285,7 @@
 <a name="bdk2-Events.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="bdk-events-pending"></a><h3>bdk_events_pending ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_events_pending (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Checks if any events are ready to be processed for any display.</p>
 <div class="refsect3">
@@ -460,7 +460,7 @@ functions such as <a class="link" href="bdk2-Events.html#bdk-event-peek" title="
 <hr>
 <div class="refsect2">
 <a name="bdk-event-get-time"></a><h3>bdk_event_get_time ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint32</span>
+<pre class="programlisting"><span class="returnvalue">buint32</span>
 bdk_event_get_time (<em class="parameter"><code>const <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>);</pre>
 <p>Returns the time stamp from <em class="parameter"><code>event</code></em>
 , if there is one; otherwise
@@ -490,7 +490,7 @@ returns <a class="link" href="bdk2-Events.html#BDK-CURRENT-TIME:CAPS" title="BDK
 <hr>
 <div class="refsect2">
 <a name="bdk-event-get-state"></a><h3>bdk_event_get_state ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_get_state (<em class="parameter"><code>const <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkModifierType" title="enum BdkModifierType"><span class="type">BdkModifierType</span></a> *state</code></em>);</pre>
 <p>If the event contains a "state" field, puts that field in <em class="parameter"><code>state</code></em>
@@ -529,10 +529,10 @@ as if the event had no state field.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-event-get-axis"></a><h3>bdk_event_get_axis ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_get_axis (<em class="parameter"><code>const <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkAxisUse" title="enum BdkAxisUse"><span class="type">BdkAxisUse</span></a> axis_use</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> *value</code></em>);</pre>
+                    <em class="parameter"><code><span class="type">bdouble</span> *value</code></em>);</pre>
 <p>Extract the axis value for a particular axis use from
 an event structure.</p>
 <div class="refsect3">
@@ -570,10 +570,10 @@ an event structure.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-event-get-coords"></a><h3>bdk_event_get_coords ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_get_coords (<em class="parameter"><code>const <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> *x_win</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> *y_win</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bdouble</span> *x_win</code></em>,
+                      <em class="parameter"><code><span class="type">bdouble</span> *y_win</code></em>);</pre>
 <p>Extract the event window relative x/y coordinates from an event.</p>
 <div class="refsect3">
 <a name="bdk-event-get-coords.parameters"></a><h4>Parameters</h4>
@@ -610,10 +610,10 @@ bdk_event_get_coords (<em class="parameter"><code>const <a class="link" href="bd
 <hr>
 <div class="refsect2">
 <a name="bdk-event-get-root-coords"></a><h3>bdk_event_get_root_coords ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_get_root_coords (<em class="parameter"><code>const <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> *x_root</code></em>,
-                           <em class="parameter"><code><span class="type">gdouble</span> *y_root</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bdouble</span> *x_root</code></em>,
+                           <em class="parameter"><code><span class="type">bdouble</span> *y_root</code></em>);</pre>
 <p>Extract the root window relative x/y coordinates from an event.</p>
 <div class="refsect3">
 <a name="bdk-event-get-root-coords.parameters"></a><h4>Parameters</h4>
@@ -705,7 +705,7 @@ motion events from a <a class="link" href="bdk2-Events.html#BDK-MOTION-NOTIFY:CA
 <a name="bdk-event-handler-set"></a><h3>bdk_event_handler_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_event_handler_set (<em class="parameter"><code><a class="link" href="bdk2-Events.html#BdkEventFunc" title="BdkEventFunc ()"><span class="type">BdkEventFunc</span></a> func</code></em>,
-                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                       <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                        <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>Sets the function to call to handle all events from BDK.</p>
 <p>Note that BTK+ uses this to install its own event handler, so it is
@@ -746,12 +746,12 @@ events to BTK+.)</p>
 <a name="BdkEventFunc"></a><h3>BdkEventFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BdkEventFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
-                 <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-event-send-client-message"></a><h3>bdk_event_send_client_message ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_send_client_message (<em class="parameter"><code><a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
                                <em class="parameter"><code><a class="link" href="bdk2-Event-Structures.html#BdkNativeWindow" title="BdkNativeWindow"><span class="type">BdkNativeWindow</span></a> winid</code></em>);</pre>
 <p>Sends an X ClientMessage event to a given window (which must be
@@ -788,7 +788,7 @@ though the amount of data is limited to 20 bytes.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-event-send-client-message-for-display"></a><h3>bdk_event_send_client_message_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_event_send_client_message_for_display
                                (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                                 <em class="parameter"><code><a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>,
@@ -865,7 +865,7 @@ to all children of the root window.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_add_client_message_filter (<em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> message_type</code></em>,
                                <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkFilterFunc" title="BdkFilterFunc ()"><span class="type">BdkFilterFunc</span></a> func</code></em>,
-                               <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>Adds a filter to the default display to be called when X ClientMessage events
 are received. See <a class="link" href="BdkDisplay.html#bdk-display-add-client-message-filter" title="bdk_display_add_client_message_filter ()"><code class="function">bdk_display_add_client_message_filter()</code></a>.</p>
 <div class="refsect3">
@@ -902,7 +902,7 @@ XClientMessage event struct.</p></td>
 <hr>
 <div class="refsect2">
 <a name="bdk-get-show-events"></a><h3>bdk_get_show_events ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_get_show_events (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets whether event debugging output is enabled.</p>
 <div class="refsect3">
@@ -914,7 +914,7 @@ bdk_get_show_events (<em class="parameter"><code><span class="type">void</span><
 <div class="refsect2">
 <a name="bdk-set-show-events"></a><h3>bdk_set_show_events ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_set_show_events (<em class="parameter"><code><span class="type">gboolean</span> show_events</code></em>);</pre>
+bdk_set_show_events (<em class="parameter"><code><span class="type">bboolean</span> show_events</code></em>);</pre>
 <p>Sets whether a trace of received events is output.
 Note that BTK+ must be compiled with debugging (that is,
 configured using the <code class="option">--enable-debug</code> option)
@@ -1006,8 +1006,8 @@ to which <code class="literal">event-&gt;motion.x_root</code> and
 <hr>
 <div class="refsect2">
 <a name="bdk-setting-get"></a><h3>bdk_setting_get ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-bdk_setting_get (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
+bdk_setting_get (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
                  <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Obtains a desktop-wide setting, such as the double-click time,
 for the default screen. See <a class="link" href="BdkScreen.html#bdk-screen-get-setting" title="bdk_screen_get_setting ()"><code class="function">bdk_screen_get_setting()</code></a>.</p>

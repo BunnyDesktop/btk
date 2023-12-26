@@ -49,12 +49,12 @@ struct _BtkIMContextSimple
 
   GSList *GSEAL (tables);
 
-  guint GSEAL (compose_buffer[BTK_MAX_COMPOSE_LEN + 1]);
+  buint GSEAL (compose_buffer[BTK_MAX_COMPOSE_LEN + 1]);
   gunichar GSEAL (tentative_match);
-  gint GSEAL (tentative_match_len);
+  bint GSEAL (tentative_match_len);
 
-  guint GSEAL (in_hex_sequence) : 1;
-  guint GSEAL (modifiers_dropped) : 1;
+  buint GSEAL (in_hex_sequence) : 1;
+  buint GSEAL (modifiers_dropped) : 1;
 };
 
 struct _BtkIMContextSimpleClass
@@ -66,9 +66,9 @@ GType         btk_im_context_simple_get_type  (void) B_GNUC_CONST;
 BtkIMContext *btk_im_context_simple_new       (void);
 
 void          btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
-					       guint16            *data,
-					       gint                max_seq_len,
-					       gint                n_seqs);
+					       buint16            *data,
+					       bint                max_seq_len,
+					       bint                n_seqs);
 
 
 B_END_DECLS

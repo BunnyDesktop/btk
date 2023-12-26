@@ -40,9 +40,9 @@ struct _BailTextCell
 {
   BailRendererCell parent;
   BailTextUtil *textutil;
-  gchar *cell_text;
-  gint caret_pos;
-  gint cell_length;
+  bchar *cell_text;
+  bint caret_pos;
+  bint cell_length;
 };
 
 GType bail_text_cell_get_type (void);

@@ -73,7 +73,7 @@ static void                 btk_print_backend_papi_init            (BtkPrintBack
 static void                 btk_print_backend_papi_finalize        (BObject                  *object);
 static void                 btk_print_backend_papi_dispose         (BObject                  *object);
 static void                 papi_request_printer_list              (BtkPrintBackend          *print_backend);
-static gboolean 	    papi_get_printer_list 		   (BtkPrintBackendPapi      *papi_backend);
+static bboolean 	    papi_get_printer_list 		   (BtkPrintBackendPapi      *papi_backend);
 static void                 papi_printer_request_details           (BtkPrinter               *printer);
 static BtkPrintCapabilities papi_printer_get_capabilities          (BtkPrinter               *printer);
 static void                 papi_printer_get_settings_from_options (BtkPrinter               *printer,
@@ -89,18 +89,18 @@ static void                 papi_printer_prepare_for_print         (BtkPrinter  
 								   BtkPageSetup              *page_setup);
 static bairo_surface_t *    papi_printer_create_bairo_surface      (BtkPrinter               *printer,
 								   BtkPrintSettings          *settings,
-								   gdouble                   width,
-								   gdouble                   height,
+								   bdouble                   width,
+								   bdouble                   height,
 								   BUNNYIOChannel                *cache_io);
 static void                 btk_print_backend_papi_print_stream    (BtkPrintBackend          *print_backend,
 								   BtkPrintJob               *job,
 								   BUNNYIOChannel                *data_io,
 								   BtkPrintJobCompleteFunc   callback,
-								   gpointer                  user_data,
+								   bpointer                  user_data,
 								   GDestroyNotify            dnotify);
 
-static gboolean             papi_display_printer_status            (gpointer user_data);
-static void                 papi_display_printer_status_done       (gpointer user_data);
+static bboolean             papi_display_printer_status            (bpointer user_data);
+static void                 papi_display_printer_status_done       (bpointer user_data);
 
 static void
 btk_print_backend_papi_register_type (GTypeModule *module)
@@ -194,7 +194,7 @@ _bairo_write (void                *closure,
               unsigned int         length)
 {
   BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
-  gsize written;
+  bsize written;
   GError *error = NULL;
 
   BTK_NOTE (PRINTING,
@@ -226,8 +226,8 @@ _bairo_write (void                *closure,
 static bairo_surface_t *
 papi_printer_create_bairo_surface (BtkPrinter       *printer,
 				  BtkPrintSettings *settings,
-				  gdouble           width, 
-				  gdouble           height,
+				  bdouble           width, 
+				  bdouble           height,
 				  BUNNYIOChannel       *cache_io)
 {
   bairo_surface_t *surface;
@@ -245,7 +245,7 @@ typedef struct {
   BtkPrintBackend *backend;
   BtkPrintJobCompleteFunc callback;
   BtkPrintJob *job;
-  gpointer user_data;
+  bpointer user_data;
   GDestroyNotify dnotify;
 
   papi_service_t service;
@@ -255,7 +255,7 @@ typedef struct {
 static void
 papi_print_cb (BtkPrintBackendPapi *print_backend,
               GError             *error,
-              gpointer            user_data)
+              bpointer            user_data)
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
@@ -275,13 +275,13 @@ papi_print_cb (BtkPrintBackendPapi *print_backend,
   g_free (ps);
 }
 
-static gboolean
+static bboolean
 papi_write (BUNNYIOChannel   *source,
            BUNNYIOCondition  con,
-           gpointer      user_data)
+           bpointer      user_data)
 {
-  gchar buf[_PAPI_MAX_CHUNK_SIZE];
-  gsize bytes_read;
+  bchar buf[_PAPI_MAX_CHUNK_SIZE];
+  bsize bytes_read;
   GError *error;
   BUNNYIOStatus status;
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
@@ -339,17 +339,17 @@ btk_print_backend_papi_print_stream (BtkPrintBackend        *print_backend,
 				    BtkPrintJob            *job,
 				    BUNNYIOChannel             *data_io,
 				    BtkPrintJobCompleteFunc callback,
-				    gpointer                user_data,
+				    bpointer                user_data,
 				    GDestroyNotify          dnotify)
 {
   GError *print_error = NULL;
   BtkPrinterPapi *printer;
   _PrintStreamData *ps;
   BtkPrintSettings *settings;
-  gint argc;  
-  gint in_fd;
-  gchar **argv = NULL; 
-  const gchar *title;
+  bint argc;  
+  bint in_fd;
+  bchar **argv = NULL; 
+  const bchar *title;
   char *prtnm = NULL;
   BtkPrintDuplex val;
   papi_status_t pstatus = NULL;
@@ -542,7 +542,7 @@ papi_request_printer_list (BtkPrintBackend *backend)
   papi_get_printer_list (papi_backend); 
 }
 
-static gboolean
+static bboolean
 papi_get_printer_list (BtkPrintBackendPapi *papi_backend)
 {
   int i;
@@ -644,7 +644,7 @@ update_printer_status (BtkPrinter *printer)
 {
   BtkPrintBackend *backend;
   BtkPrinterPapi *papi_printer;
-  gboolean status_changed = FALSE;
+  bboolean status_changed = FALSE;
 
   backend = btk_printer_get_backend (printer);
   papi_printer = BTK_PRINTER_PAPI (printer);
@@ -757,8 +757,8 @@ papi_printer_prepare_for_print (BtkPrinter       *printer,
 
 }
 
-gboolean
-is_local_printer (gchar *printer_uri)
+bboolean
+is_local_printer (bchar *printer_uri)
 {
   if (strncmp (printer_uri, "lpsched:", 8) == 0)
     return TRUE;
@@ -767,14 +767,14 @@ is_local_printer (gchar *printer_uri)
 }
 
 void
-merge_ppd_data (papi_attribute_t ***attributes, gchar *ppdfile)
+merge_ppd_data (papi_attribute_t ***attributes, bchar *ppdfile)
 {
   get_ppd_attrs (attributes, ppdfile);
 }
 
 
 static void
-papi_display_printer_status_done (gpointer user_data)
+papi_display_printer_status_done (bpointer user_data)
 {
   BtkPrinter *printer = (BtkPrinter *) user_data;
   BtkPrinterPapi *papi_printer;
@@ -787,12 +787,12 @@ papi_display_printer_status_done (gpointer user_data)
 #define IDLE 3
 #define PROCESSING 4
 #define STOPPED 5
-static gboolean
-papi_display_printer_status (gpointer user_data)
+static bboolean
+papi_display_printer_status (bpointer user_data)
 {
   BtkPrinter *printer = (BtkPrinter *) user_data;
   BtkPrinterPapi *papi_printer;
-  gchar *loc, *printer_uri, *ppdfile;
+  bchar *loc, *printer_uri, *ppdfile;
   int state;
   papi_service_t service;
   papi_attribute_t **attrs = NULL;

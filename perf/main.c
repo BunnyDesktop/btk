@@ -6,13 +6,13 @@
 #define ITERS 100000
 
 static BtkWidget *
-create_widget_cb (BtkWidgetProfiler *profiler, gpointer data)
+create_widget_cb (BtkWidgetProfiler *profiler, bpointer data)
 {
   return appwindow_new ();
 }
 
 static void
-report_cb (BtkWidgetProfiler *profiler, BtkWidgetProfilerReport report, BtkWidget *widget, gdouble elapsed, gpointer data)
+report_cb (BtkWidgetProfiler *profiler, BtkWidgetProfilerReport report, BtkWidget *widget, bdouble elapsed, bpointer data)
 {
   const char *type;
 

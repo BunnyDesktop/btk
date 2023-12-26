@@ -21,7 +21,7 @@
 #include "config.h"
 #include <btk/btk.h>
 
-gchar *screen2_name = NULL;
+bchar *screen2_name = NULL;
 
 typedef struct
 {
@@ -32,7 +32,7 @@ MyDoubleBtkEntry;
 
 void
 get_screen_response (BtkDialog *dialog,
-		     gint       response_id,
+		     bint       response_id,
 		     BtkEntry  *entry)
 {
   if (response_id == BTK_RESPONSE_DELETE_EVENT)
@@ -43,7 +43,7 @@ get_screen_response (BtkDialog *dialog,
 
 void
 entry_dialog_response (BtkDialog        *dialog,
-		       gint              response_id,
+		       bint              response_id,
 		       MyDoubleBtkEntry *de)
 {
   if (response_id == BTK_RESPONSE_APPLY)
@@ -102,7 +102,7 @@ main (int argc, char *argv[])
   BtkWidget *entry, *entry2;
   BdkDisplay *dpy2;
   BdkScreen *scr2 = NULL;	/* Quiet GCC */
-  gboolean correct_second_display = FALSE;
+  bboolean correct_second_display = FALSE;
 
   btk_init (&argc, &argv);
 

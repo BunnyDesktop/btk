@@ -6,20 +6,20 @@
 BtkWidget *status_bar;
 
 static void push_item( BtkWidget *widget,
-                       gpointer   data )
+                       bpointer   data )
 {
   static int count = 1;
-  gchar *buff;
+  bchar *buff;
 
   buff = g_strdup_printf ("Item %d", count++);
-  btk_statusbar_push (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data), buff);
+  btk_statusbar_push (BTK_STATUSBAR (status_bar), BPOINTER_TO_INT (data), buff);
   g_free (buff);
 }
 
 static void pop_item( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
-  btk_statusbar_pop (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data));
+  btk_statusbar_pop (BTK_STATUSBAR (status_bar), BPOINTER_TO_INT (data));
 }
 
 int main( int   argc,
@@ -30,7 +30,7 @@ int main( int   argc,
     BtkWidget *vbox;
     BtkWidget *button;
 
-    gint context_id;
+    bint context_id;
 
     btk_init (&argc, &argv);
 
@@ -54,13 +54,13 @@ int main( int   argc,
 
     button = btk_button_new_with_label ("push item");
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (push_item), GINT_TO_POINTER (context_id));
+                      G_CALLBACK (push_item), BINT_TO_POINTER (context_id));
     btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
     btk_widget_show (button);
 
     button = btk_button_new_with_label ("pop last item");
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (pop_item), GINT_TO_POINTER (context_id));
+                      G_CALLBACK (pop_item), BINT_TO_POINTER (context_id));
     btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
     btk_widget_show (button);
 

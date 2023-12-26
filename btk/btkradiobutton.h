@@ -74,13 +74,13 @@ GType	   btk_radio_button_get_type	     (void) B_GNUC_CONST;
 BtkWidget* btk_radio_button_new                           (GSList         *group);
 BtkWidget* btk_radio_button_new_from_widget               (BtkRadioButton *radio_group_member);
 BtkWidget* btk_radio_button_new_with_label                (GSList         *group,
-                                                           const gchar    *label);
+                                                           const bchar    *label);
 BtkWidget* btk_radio_button_new_with_label_from_widget    (BtkRadioButton *radio_group_member,
-                                                           const gchar    *label);
+                                                           const bchar    *label);
 BtkWidget* btk_radio_button_new_with_mnemonic             (GSList         *group,
-                                                           const gchar    *label);
+                                                           const bchar    *label);
 BtkWidget* btk_radio_button_new_with_mnemonic_from_widget (BtkRadioButton *radio_group_member,
-                                                           const gchar    *label);
+                                                           const bchar    *label);
 GSList*    btk_radio_button_get_group                     (BtkRadioButton *radio_button);
 void       btk_radio_button_set_group                     (BtkRadioButton *radio_button,
                                                            GSList         *group);

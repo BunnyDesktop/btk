@@ -143,28 +143,28 @@ struct _BtkToolbarPrivate
   BtkSettings *	settings;
   int		idle_id;
   BtkToolItem *	highlight_tool_item;
-  gint		max_homogeneous_pixels;
+  bint		max_homogeneous_pixels;
   
   GTimer *	timer;
 
-  gulong        settings_connection;
+  bulong        settings_connection;
 
-  guint         show_arrow : 1;
-  guint         need_sync : 1;
-  guint         is_sliding : 1;
-  guint         need_rebuild : 1;  /* whether the overflow menu should be regenerated */
-  guint         animation : 1;
+  buint         show_arrow : 1;
+  buint         need_sync : 1;
+  buint         is_sliding : 1;
+  buint         need_rebuild : 1;  /* whether the overflow menu should be regenerated */
+  buint         animation : 1;
 };
 
 static void       btk_toolbar_set_property         (BObject             *object,
-						    guint                prop_id,
+						    buint                prop_id,
 						    const BValue        *value,
 						    BParamSpec          *pspec);
 static void       btk_toolbar_get_property         (BObject             *object,
-						    guint                prop_id,
+						    buint                prop_id,
 						    BValue              *value,
 						    BParamSpec          *pspec);
-static gint       btk_toolbar_expose               (BtkWidget           *widget,
+static bint       btk_toolbar_expose               (BtkWidget           *widget,
 						    BdkEventExpose      *event);
 static void       btk_toolbar_realize              (BtkWidget           *widget);
 static void       btk_toolbar_unrealize            (BtkWidget           *widget);
@@ -174,7 +174,7 @@ static void       btk_toolbar_size_allocate        (BtkWidget           *widget,
 						    BtkAllocation       *allocation);
 static void       btk_toolbar_style_set            (BtkWidget           *widget,
 						    BtkStyle            *prev_style);
-static gboolean   btk_toolbar_focus                (BtkWidget           *widget,
+static bboolean   btk_toolbar_focus                (BtkWidget           *widget,
 						    BtkDirectionType     dir);
 static void       btk_toolbar_move_focus           (BtkWidget           *widget,
 						    BtkDirectionType     dir);
@@ -184,12 +184,12 @@ static void       btk_toolbar_map                  (BtkWidget           *widget)
 static void       btk_toolbar_unmap                (BtkWidget           *widget);
 static void       btk_toolbar_set_child_property   (BtkContainer        *container,
 						    BtkWidget           *child,
-						    guint                property_id,
+						    buint                property_id,
 						    const BValue        *value,
 						    BParamSpec          *pspec);
 static void       btk_toolbar_get_child_property   (BtkContainer        *container,
 						    BtkWidget           *child,
-						    guint                property_id,
+						    buint                property_id,
 						    BValue              *value,
 						    BParamSpec          *pspec);
 static void       btk_toolbar_dispose              (BObject             *object);
@@ -201,25 +201,25 @@ static void       btk_toolbar_add                  (BtkContainer        *contain
 static void       btk_toolbar_remove               (BtkContainer        *container,
 						    BtkWidget           *widget);
 static void       btk_toolbar_forall               (BtkContainer        *container,
-						    gboolean             include_internals,
+						    bboolean             include_internals,
 						    BtkCallback          callback,
-						    gpointer             callback_data);
+						    bpointer             callback_data);
 static GType      btk_toolbar_child_type           (BtkContainer        *container);
 static void       btk_toolbar_orientation_changed  (BtkToolbar          *toolbar,
 						    BtkOrientation       orientation);
 static void       btk_toolbar_real_style_changed   (BtkToolbar          *toolbar,
 						    BtkToolbarStyle      style);
-static gboolean   btk_toolbar_focus_home_or_end    (BtkToolbar          *toolbar,
-						    gboolean             focus_home);
-static gboolean   btk_toolbar_button_press         (BtkWidget           *toolbar,
+static bboolean   btk_toolbar_focus_home_or_end    (BtkToolbar          *toolbar,
+						    bboolean             focus_home);
+static bboolean   btk_toolbar_button_press         (BtkWidget           *toolbar,
 						    BdkEventButton      *event);
-static gboolean   btk_toolbar_arrow_button_press   (BtkWidget           *button,
+static bboolean   btk_toolbar_arrow_button_press   (BtkWidget           *button,
 						    BdkEventButton      *event,
 						    BtkToolbar          *toolbar);
 static void       btk_toolbar_arrow_button_clicked (BtkWidget           *button,
 						    BtkToolbar          *toolbar);
 static void       btk_toolbar_update_button_relief (BtkToolbar          *toolbar);
-static gboolean   btk_toolbar_popup_menu           (BtkWidget           *toolbar);
+static bboolean   btk_toolbar_popup_menu           (BtkWidget           *toolbar);
 static BtkWidget *internal_insert_element          (BtkToolbar          *toolbar,
 						    BtkToolbarChildType  type,
 						    BtkWidget           *widget,
@@ -228,48 +228,48 @@ static BtkWidget *internal_insert_element          (BtkToolbar          *toolbar
 						    const char          *tooltip_private_text,
 						    BtkWidget           *icon,
 						    GCallback            callback,
-						    gpointer             user_data,
-						    gint                 position,
-						    gboolean             use_stock);
+						    bpointer             user_data,
+						    bint                 position,
+						    bboolean             use_stock);
 static void       btk_toolbar_reconfigured         (BtkToolbar          *toolbar);
-static gboolean   btk_toolbar_check_new_api        (BtkToolbar          *toolbar);
-static gboolean   btk_toolbar_check_old_api        (BtkToolbar          *toolbar);
+static bboolean   btk_toolbar_check_new_api        (BtkToolbar          *toolbar);
+static bboolean   btk_toolbar_check_old_api        (BtkToolbar          *toolbar);
 
 static BtkReliefStyle       get_button_relief    (BtkToolbar *toolbar);
-static gint                 get_internal_padding (BtkToolbar *toolbar);
-static gint                 get_max_child_expand (BtkToolbar *toolbar);
+static bint                 get_internal_padding (BtkToolbar *toolbar);
+static bint                 get_max_child_expand (BtkToolbar *toolbar);
 static BtkShadowType        get_shadow_type      (BtkToolbar *toolbar);
-static gint                 get_space_size       (BtkToolbar *toolbar);
+static bint                 get_space_size       (BtkToolbar *toolbar);
 static BtkToolbarSpaceStyle get_space_style      (BtkToolbar *toolbar);
 
 /* methods on ToolbarContent 'class' */
 static ToolbarContent *toolbar_content_new_tool_item        (BtkToolbar          *toolbar,
 							     BtkToolItem         *item,
-							     gboolean             is_placeholder,
-							     gint                 pos);
+							     bboolean             is_placeholder,
+							     bint                 pos);
 static ToolbarContent *toolbar_content_new_compatibility    (BtkToolbar          *toolbar,
 							     BtkToolbarChildType  type,
 							     BtkWidget           *widget,
 							     BtkWidget           *icon,
 							     BtkWidget           *label,
-							     gint                 pos);
+							     bint                 pos);
 static void            toolbar_content_remove               (ToolbarContent      *content,
 							     BtkToolbar          *toolbar);
 static void            toolbar_content_free                 (ToolbarContent      *content);
 static void            toolbar_content_expose               (ToolbarContent      *content,
 							     BtkContainer        *container,
 							     BdkEventExpose      *expose);
-static gboolean        toolbar_content_visible              (ToolbarContent      *content,
+static bboolean        toolbar_content_visible              (ToolbarContent      *content,
 							     BtkToolbar          *toolbar);
 static void            toolbar_content_size_request         (ToolbarContent      *content,
 							     BtkToolbar          *toolbar,
 							     BtkRequisition      *requisition);
-static gboolean        toolbar_content_is_homogeneous       (ToolbarContent      *content,
+static bboolean        toolbar_content_is_homogeneous       (ToolbarContent      *content,
 							     BtkToolbar          *toolbar);
-static gboolean        toolbar_content_is_placeholder       (ToolbarContent      *content);
-static gboolean        toolbar_content_disappearing         (ToolbarContent      *content);
+static bboolean        toolbar_content_is_placeholder       (ToolbarContent      *content);
+static bboolean        toolbar_content_disappearing         (ToolbarContent      *content);
 static ItemState       toolbar_content_get_state            (ToolbarContent      *content);
-static gboolean        toolbar_content_child_visible        (ToolbarContent      *content);
+static bboolean        toolbar_content_child_visible        (ToolbarContent      *content);
 static void            toolbar_content_get_goal_allocation  (ToolbarContent      *content,
 							     BtkAllocation       *allocation);
 static void            toolbar_content_get_allocation       (ToolbarContent      *content,
@@ -278,31 +278,31 @@ static void            toolbar_content_set_start_allocation (ToolbarContent     
 							     BtkAllocation       *new_start_allocation);
 static void            toolbar_content_get_start_allocation (ToolbarContent      *content,
 							     BtkAllocation       *start_allocation);
-static gboolean        toolbar_content_get_expand           (ToolbarContent      *content);
+static bboolean        toolbar_content_get_expand           (ToolbarContent      *content);
 static void            toolbar_content_set_goal_allocation  (ToolbarContent      *content,
 							     BtkAllocation       *allocation);
 static void            toolbar_content_set_child_visible    (ToolbarContent      *content,
 							     BtkToolbar          *toolbar,
-							     gboolean             visible);
+							     bboolean             visible);
 static void            toolbar_content_size_allocate        (ToolbarContent      *content,
 							     BtkAllocation       *allocation);
 static void            toolbar_content_set_state            (ToolbarContent      *content,
 							     ItemState            new_state);
 static BtkWidget *     toolbar_content_get_widget           (ToolbarContent      *content);
 static void            toolbar_content_set_disappearing     (ToolbarContent      *content,
-							     gboolean             disappearing);
+							     bboolean             disappearing);
 static void            toolbar_content_set_size_request     (ToolbarContent      *content,
-							     gint                 width,
-							     gint                 height);
+							     bint                 width,
+							     bint                 height);
 static void            toolbar_content_toolbar_reconfigured (ToolbarContent      *content,
 							     BtkToolbar          *toolbar);
 static BtkWidget *     toolbar_content_retrieve_menu_item   (ToolbarContent      *content);
-static gboolean        toolbar_content_has_proxy_menu_item  (ToolbarContent	 *content);
-static gboolean        toolbar_content_is_separator         (ToolbarContent      *content);
+static bboolean        toolbar_content_has_proxy_menu_item  (ToolbarContent	 *content);
+static bboolean        toolbar_content_is_separator         (ToolbarContent      *content);
 static void            toolbar_content_show_all             (ToolbarContent      *content);
 static void            toolbar_content_hide_all             (ToolbarContent      *content);
 static void	       toolbar_content_set_expand	    (ToolbarContent      *content,
-							     gboolean		  expand);
+							     bboolean		  expand);
 
 static void            toolbar_tool_shell_iface_init        (BtkToolShellIface   *iface);
 static BtkIconSize     toolbar_get_icon_size                (BtkToolShell        *shell);
@@ -321,15 +321,15 @@ G_DEFINE_TYPE_WITH_CODE (BtkToolbar, btk_toolbar, BTK_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                 NULL))
 
-static guint toolbar_signals[LAST_SIGNAL] = { 0 };
+static buint toolbar_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
 add_arrow_bindings (BtkBindingSet   *binding_set,
-		    guint            keysym,
+		    buint            keysym,
 		    BtkDirectionType dir)
 {
-  guint keypad_keysym = keysym - BDK_Left + BDK_KP_Left;
+  buint keypad_keysym = keysym - BDK_Left + BDK_KP_Left;
   
   btk_binding_entry_add_signal (binding_set, keysym, 0,
                                 "move-focus", 1,
@@ -541,7 +541,7 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
 				   g_param_spec_int ("icon-size",
 						     P_("Icon size"),
 						     P_("Size of icons in this toolbar"),
-						     0, G_MAXINT,
+						     0, B_MAXINT,
 						     DEFAULT_ICON_SIZE,
 						     BTK_PARAM_READWRITE));  
 
@@ -583,7 +583,7 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
 							     P_("Spacer size"),
 							     P_("Size of spacers"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_SPACE_SIZE,
 							     BTK_PARAM_READABLE));
   
@@ -592,7 +592,7 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
 							     P_("Internal padding"),
 							     P_("Amount of border space between the toolbar shadow and the buttons"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_IPADDING,
                                                              BTK_PARAM_READABLE));
 
@@ -601,8 +601,8 @@ btk_toolbar_class_init (BtkToolbarClass *klass)
                                                              P_("Maximum child expand"),
                                                              P_("Maximum amount of space an expandable item will be given"),
                                                              0,
-                                                             G_MAXINT,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
+                                                             B_MAXINT,
                                                              BTK_PARAM_READABLE));
 
   btk_widget_class_install_style_property (widget_class,
@@ -712,7 +712,7 @@ btk_toolbar_init (BtkToolbar *toolbar)
 
 static void
 btk_toolbar_set_property (BObject      *object,
-			  guint         prop_id,
+			  buint         prop_id,
 			  const BValue *value,
 			  BParamSpec   *pspec)
 {
@@ -750,7 +750,7 @@ btk_toolbar_set_property (BObject      *object,
 
 static void
 btk_toolbar_get_property (BObject    *object,
-			  guint       prop_id,
+			  buint       prop_id,
 			  BValue     *value,
 			  BParamSpec *pspec)
 {
@@ -812,8 +812,8 @@ btk_toolbar_realize (BtkWidget *widget)
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   
   btk_widget_set_realized (widget, TRUE);
   
@@ -857,7 +857,7 @@ btk_toolbar_unrealize (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_toolbar_parent_class)->unrealize (widget);
 }
 
-static gint
+static bint
 btk_toolbar_expose (BtkWidget      *widget,
 		    BdkEventExpose *event)
 {
@@ -865,7 +865,7 @@ btk_toolbar_expose (BtkWidget      *widget,
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   
   GList *list;
-  gint border_width;
+  bint border_width;
   
   border_width = BTK_CONTAINER (widget)->border_width;
   
@@ -903,14 +903,14 @@ btk_toolbar_size_request (BtkWidget      *widget,
   BtkToolbar *toolbar = BTK_TOOLBAR (widget);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *list;
-  gint max_child_height;
-  gint max_child_width;
-  gint max_homogeneous_child_width;
-  gint max_homogeneous_child_height;
-  gint homogeneous_size;
-  gint long_req;
-  gint pack_front_size;
-  gint ipadding;
+  bint max_child_height;
+  bint max_child_width;
+  bint max_homogeneous_child_width;
+  bint max_homogeneous_child_height;
+  bint homogeneous_size;
+  bint long_req;
+  bint pack_front_size;
+  bint ipadding;
   BtkRequisition arrow_requisition;
   
   max_homogeneous_child_width = 0;
@@ -946,7 +946,7 @@ btk_toolbar_size_request (BtkWidget      *widget,
   for (list = priv->content; list != NULL; list = list->next)
     {
       ToolbarContent *content = list->data;
-      guint size;
+      buint size;
       
       if (!toolbar_content_visible (content, toolbar))
 	continue;
@@ -1019,13 +1019,13 @@ btk_toolbar_size_request (BtkWidget      *widget,
   toolbar->button_maxh = max_homogeneous_child_height;
 }
 
-static gint
+static bint
 position (BtkToolbar *toolbar,
-          gint        from,
-          gint        to,
-          gdouble     elapsed)
+          bint        from,
+          bint        to,
+          bdouble     elapsed)
 {
-  gint n_pixels;
+  bint n_pixels;
 
   if (! BTK_TOOLBAR_GET_PRIVATE (toolbar)->animation)
     return to;
@@ -1058,7 +1058,7 @@ compute_intermediate_allocation (BtkToolbar          *toolbar,
 				 BtkAllocation       *intermediate)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
-  gdouble elapsed = g_timer_elapsed (priv->timer, NULL);
+  bdouble elapsed = g_timer_elapsed (priv->timer, NULL);
 
   intermediate->x      = position (toolbar, start->x, goal->x, elapsed);
   intermediate->y      = position (toolbar, start->y, goal->y, elapsed);
@@ -1071,7 +1071,7 @@ compute_intermediate_allocation (BtkToolbar          *toolbar,
 }
 
 static void
-fixup_allocation_for_rtl (gint           total_size,
+fixup_allocation_for_rtl (bint           total_size,
 			  BtkAllocation *allocation)
 {
   allocation->x += (total_size - (2 * allocation->x + allocation->width));
@@ -1080,7 +1080,7 @@ fixup_allocation_for_rtl (gint           total_size,
 static void
 fixup_allocation_for_vertical (BtkAllocation *allocation)
 {
-  gint tmp;
+  bint tmp;
   
   tmp = allocation->x;
   allocation->x = allocation->y;
@@ -1091,7 +1091,7 @@ fixup_allocation_for_vertical (BtkAllocation *allocation)
   allocation->height = tmp;
 }
 
-static gint
+static bint
 get_item_size (BtkToolbar     *toolbar,
 	       ToolbarContent *content)
 {
@@ -1115,8 +1115,8 @@ get_item_size (BtkToolbar     *toolbar,
     }
 }
 
-static gboolean
-slide_idle_handler (gpointer data)
+static bboolean
+slide_idle_handler (bpointer data)
 {
   BtkToolbar *toolbar = data;
   BtkToolbarPrivate *priv;
@@ -1136,7 +1136,7 @@ slide_idle_handler (gpointer data)
       ItemState state;
       BtkAllocation goal_allocation;
       BtkAllocation allocation;
-      gboolean cont;
+      bboolean cont;
 
       state = toolbar_content_get_state (content);
       toolbar_content_get_goal_allocation (content, &goal_allocation);
@@ -1201,7 +1201,7 @@ slide_idle_handler (gpointer data)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 rect_within (BtkAllocation *a1,
 	     BtkAllocation *a2)
 {
@@ -1217,11 +1217,11 @@ btk_toolbar_begin_sliding (BtkToolbar *toolbar)
   BtkWidget *widget = BTK_WIDGET (toolbar);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *list;
-  gint cur_x;
-  gint cur_y;
-  gint border_width;
-  gboolean rtl;
-  gboolean vertical;
+  bint cur_x;
+  bint cur_y;
+  bint border_width;
+  bboolean rtl;
+  bboolean vertical;
   
   /* Start the sliding. This function copies the allocation of every
    * item into content->start_allocation. For items that haven't
@@ -1344,7 +1344,7 @@ btk_toolbar_stop_sliding (BtkToolbar *toolbar)
 
 static void
 remove_item (BtkWidget *menu_item,
-	     gpointer   data)
+	     bpointer   data)
 {
   btk_container_remove (BTK_CONTAINER (menu_item->parent), menu_item);
 }
@@ -1439,20 +1439,20 @@ btk_toolbar_size_allocate (BtkWidget     *widget,
   BtkAllocation *allocations;
   ItemState *new_states;
   BtkAllocation arrow_allocation;
-  gint arrow_size;
-  gint size, pos, short_size;
+  bint arrow_size;
+  bint size, pos, short_size;
   GList *list;
-  gint i;
-  gboolean need_arrow;
-  gint n_expand_items;
-  gint border_width;
-  gint available_size;
-  gint n_items;
-  gint needed_size;
+  bint i;
+  bboolean need_arrow;
+  bint n_expand_items;
+  bint border_width;
+  bint available_size;
+  bint n_items;
+  bint needed_size;
   BtkRequisition arrow_requisition;
-  gboolean overflowing;
-  gboolean size_changed;
-  gdouble elapsed;
+  bboolean overflowing;
+  bboolean size_changed;
+  bdouble elapsed;
   BtkAllocation item_area;
   BtkShadowType shadow_type;
   
@@ -1554,7 +1554,7 @@ btk_toolbar_size_allocate (BtkWidget     *widget,
   for (list = priv->content, i = 0; list != NULL; list = list->next, ++i)
     {
       ToolbarContent *content = list->data;
-      gint item_size;
+      bint item_size;
       
       if (!toolbar_content_visible (content, toolbar))
 	{
@@ -1592,7 +1592,7 @@ btk_toolbar_size_allocate (BtkWidget     *widget,
    */
   if (!overflowing)
     {
-      gint max_child_expand;
+      bint max_child_expand;
       n_expand_items = 0;
       
       for (i = 0, list = priv->content; list != NULL; list = list->next, ++i)
@@ -1610,7 +1610,7 @@ btk_toolbar_size_allocate (BtkWidget     *widget,
 	  
 	  if (toolbar_content_get_expand (content) && new_states[i] == NORMAL)
 	    {
-	      gint extra = size / n_expand_items;
+	      bint extra = size / n_expand_items;
 	      if (size % n_expand_items != 0)
 		extra++;
 
@@ -1850,7 +1850,7 @@ btk_toolbar_list_children_in_focus_order (BtkToolbar       *toolbar,
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *result = NULL;
   GList *list;
-  gboolean rtl;
+  bboolean rtl;
   
   /* generate list of children in reverse logical order */
   
@@ -1887,9 +1887,9 @@ btk_toolbar_list_children_in_focus_order (BtkToolbar       *toolbar,
   return result;
 }
 
-static gboolean
+static bboolean
 btk_toolbar_focus_home_or_end (BtkToolbar *toolbar,
-			       gboolean    focus_home)
+			       bboolean    focus_home)
 {
   GList *children, *list;
   BtkDirectionType dir = focus_home? BTK_DIR_RIGHT : BTK_DIR_LEFT;
@@ -1929,7 +1929,7 @@ btk_toolbar_move_focus (BtkWidget        *widget,
   BtkToolbar *toolbar = BTK_TOOLBAR (widget);
   BtkContainer *container = BTK_CONTAINER (toolbar);
   GList *list;
-  gboolean try_focus = FALSE;
+  bboolean try_focus = FALSE;
   GList *children;
 
   if (container->focus_child &&
@@ -1957,13 +1957,13 @@ btk_toolbar_move_focus (BtkWidget        *widget,
 /* The focus handler for the toolbar. It called when the user presses
  * TAB or otherwise tries to focus the toolbar.
  */
-static gboolean
+static bboolean
 btk_toolbar_focus (BtkWidget        *widget,
 		   BtkDirectionType  dir)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (widget);
   GList *children, *list;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   /* if focus is already somewhere inside the toolbar then return FALSE.
    * The only way focus can stay inside the toolbar is when the user presses
@@ -2025,7 +2025,7 @@ animation_change_notify (BtkToolbar *toolbar)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   BtkSettings *settings = toolbar_get_settings (toolbar);
-  gboolean animation;
+  bboolean animation;
 
   if (settings)
     g_object_get (settings,
@@ -2093,18 +2093,18 @@ btk_toolbar_screen_changed (BtkWidget *widget,
 
 static int
 find_drop_index (BtkToolbar *toolbar,
-		 gint        x,
-		 gint        y)
+		 bint        x,
+		 bint        y)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *interesting_content;
   GList *list;
   BtkOrientation orientation;
   BtkTextDirection direction;
-  gint best_distance = G_MAXINT;
-  gint distance;
-  gint cursor;
-  gint pos;
+  bint best_distance = B_MAXINT;
+  bint distance;
+  bint cursor;
+  bint pos;
   ToolbarContent *best_content;
   BtkAllocation allocation;
   
@@ -2197,9 +2197,9 @@ reset_all_placeholders (BtkToolbar *toolbar)
     }
 }
 
-static gint
+static bint
 physical_to_logical (BtkToolbar *toolbar,
-		     gint        physical)
+		     bint        physical)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *list;
@@ -2222,13 +2222,13 @@ physical_to_logical (BtkToolbar *toolbar,
   return logical;
 }
 
-static gint
+static bint
 logical_to_physical (BtkToolbar *toolbar,
-		     gint        logical)
+		     bint        logical)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   GList *list;
-  gint physical;
+  bint physical;
   
   g_assert (logical >= 0);
   
@@ -2273,14 +2273,14 @@ logical_to_physical (BtkToolbar *toolbar,
 void
 btk_toolbar_set_drop_highlight_item (BtkToolbar  *toolbar,
 				     BtkToolItem *tool_item,
-				     gint         index_)
+				     bint         index_)
 {
   ToolbarContent *content;
   BtkToolbarPrivate *priv;
-  gint n_items;
+  bint n_items;
   BtkRequisition requisition;
   BtkRequisition old_requisition;
-  gboolean restart_sliding;
+  bboolean restart_sliding;
   
   g_return_if_fail (BTK_IS_TOOLBAR (toolbar));
   g_return_if_fail (tool_item == NULL || BTK_IS_TOOL_ITEM (tool_item));
@@ -2385,7 +2385,7 @@ btk_toolbar_set_drop_highlight_item (BtkToolbar  *toolbar,
 static void
 btk_toolbar_get_child_property (BtkContainer *container,
 				BtkWidget    *child,
-				guint         property_id,
+				buint         property_id,
 				BValue       *value,
 				BParamSpec   *pspec)
 {
@@ -2410,7 +2410,7 @@ btk_toolbar_get_child_property (BtkContainer *container,
 static void
 btk_toolbar_set_child_property (BtkContainer *container,
 				BtkWidget    *child,
-				guint         property_id,
+				buint         property_id,
 				const BValue *value,
 				BParamSpec   *pspec)
 {
@@ -2505,9 +2505,9 @@ btk_toolbar_remove (BtkContainer *container,
 
 static void
 btk_toolbar_forall (BtkContainer *container,
-		    gboolean	  include_internals,
+		    bboolean	  include_internals,
 		    BtkCallback   callback,
-		    gpointer      callback_data)
+		    bpointer      callback_data)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (container);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -2598,17 +2598,17 @@ btk_toolbar_real_style_changed (BtkToolbar     *toolbar,
 
 static void
 menu_position_func (BtkMenu  *menu,
-		    gint     *x,
-		    gint     *y,
-		    gboolean *push_in,
-		    gpointer  user_data)
+		    bint     *x,
+		    bint     *y,
+		    bboolean *push_in,
+		    bpointer  user_data)
 {
   BtkToolbar *toolbar = BTK_TOOLBAR (user_data);
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   BtkRequisition req;
   BtkRequisition menu_req;
   BdkRectangle monitor;
-  gint monitor_num;
+  bint monitor_num;
   BdkScreen *screen;
   
   btk_widget_size_request (priv->arrow_button, &req);
@@ -2686,7 +2686,7 @@ btk_toolbar_arrow_button_clicked (BtkWidget  *button,
     }
 }
 
-static gboolean
+static bboolean
 btk_toolbar_arrow_button_press (BtkWidget      *button,
 				BdkEventButton *event,
 				BtkToolbar     *toolbar)
@@ -2697,13 +2697,13 @@ btk_toolbar_arrow_button_press (BtkWidget      *button,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_toolbar_button_press (BtkWidget      *toolbar,
     			  BdkEventButton *event)
 {
   if (_btk_button_event_triggers_context_menu (event))
     {
-      gboolean return_value;
+      bboolean return_value;
       
       g_signal_emit (toolbar, toolbar_signals[POPUP_CONTEXT_MENU], 0,
 		     (int)event->x_root, (int)event->y_root, event->button,
@@ -2715,10 +2715,10 @@ btk_toolbar_button_press (BtkWidget      *toolbar,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_toolbar_popup_menu (BtkWidget *toolbar)
 {
-  gboolean return_value;
+  bboolean return_value;
   /* This function is the handler for the "popup menu" keybinding,
    * ie., it is called when the user presses Shift F10
    */
@@ -2760,7 +2760,7 @@ btk_toolbar_new (void)
 void
 btk_toolbar_insert (BtkToolbar  *toolbar,
 		    BtkToolItem *item,
-		    gint         pos)
+		    bint         pos)
 {
   g_return_if_fail (BTK_IS_TOOLBAR (toolbar));
   g_return_if_fail (BTK_IS_TOOL_ITEM (item));
@@ -2786,7 +2786,7 @@ btk_toolbar_insert (BtkToolbar  *toolbar,
  * 
  * Since: 2.4
  **/
-gint
+bint
 btk_toolbar_get_item_index (BtkToolbar  *toolbar,
 			    BtkToolItem *item)
 {
@@ -2935,7 +2935,7 @@ btk_toolbar_unset_style (BtkToolbar *toolbar)
  **/
 void
 btk_toolbar_set_tooltips (BtkToolbar *toolbar,
-			  gboolean    enable)
+			  bboolean    enable)
 {
   g_return_if_fail (BTK_IS_TOOLBAR (toolbar));
   
@@ -2959,7 +2959,7 @@ btk_toolbar_set_tooltips (BtkToolbar *toolbar,
  * Deprecated: 2.14: The toolkit-wide #BtkSettings:btk-enable-tooltips property
  * is now used instead.
  **/
-gboolean
+bboolean
 btk_toolbar_get_tooltips (BtkToolbar *toolbar)
 {
   g_return_val_if_fail (BTK_IS_TOOLBAR (toolbar), FALSE);
@@ -2977,7 +2977,7 @@ btk_toolbar_get_tooltips (BtkToolbar *toolbar)
  * 
  * Since: 2.4
  **/
-gint
+bint
 btk_toolbar_get_n_items (BtkToolbar *toolbar)
 {
   BtkToolbarPrivate *priv;
@@ -3007,11 +3007,11 @@ btk_toolbar_get_n_items (BtkToolbar *toolbar)
  **/
 BtkToolItem *
 btk_toolbar_get_nth_item (BtkToolbar *toolbar,
-			  gint        n)
+			  bint        n)
 {
   BtkToolbarPrivate *priv;
   ToolbarContent *content;
-  gint n_items;
+  bint n_items;
   
   g_return_val_if_fail (BTK_IS_TOOLBAR (toolbar), NULL);
   
@@ -3085,7 +3085,7 @@ btk_toolbar_get_relief_style (BtkToolbar *toolbar)
  **/
 void
 btk_toolbar_set_show_arrow (BtkToolbar *toolbar,
-			    gboolean    show_arrow)
+			    bboolean    show_arrow)
 {
   BtkToolbarPrivate *priv;
   
@@ -3117,7 +3117,7 @@ btk_toolbar_set_show_arrow (BtkToolbar *toolbar,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_toolbar_get_show_arrow (BtkToolbar *toolbar)
 {
   BtkToolbarPrivate *priv;
@@ -3149,10 +3149,10 @@ btk_toolbar_get_show_arrow (BtkToolbar *toolbar)
  * 
  * Since: 2.4
  **/
-gint
+bint
 btk_toolbar_get_drop_index (BtkToolbar *toolbar,
-			    gint        x,
-			    gint        y)
+			    bint        x,
+			    bint        y)
 {
   g_return_val_if_fail (BTK_IS_TOOLBAR (toolbar), -1);
   
@@ -3302,7 +3302,7 @@ btk_toolbar_unset_icon_size (BtkToolbar *toolbar)
  * Inserts a new item into the toolbar. You must specify the position
  * in the toolbar where it will be inserted.
  *
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar item as a #BtkWidget.
@@ -3316,7 +3316,7 @@ btk_toolbar_append_item (BtkToolbar    *toolbar,
 			 const char    *tooltip_private_text,
 			 BtkWidget     *icon,
 			 GCallback      callback,
-			 gpointer       user_data)
+			 bpointer       user_data)
 {
   return btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_BUTTON,
 				     NULL, text,
@@ -3337,7 +3337,7 @@ btk_toolbar_append_item (BtkToolbar    *toolbar,
  *
  * Adds a new button to the beginning (top or left edges) of the given toolbar.
  *
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar item as a #BtkWidget.
@@ -3351,7 +3351,7 @@ btk_toolbar_prepend_item (BtkToolbar    *toolbar,
 			  const char    *tooltip_private_text,
 			  BtkWidget     *icon,
 			  GCallback      callback,
-			  gpointer       user_data)
+			  bpointer       user_data)
 {
   return btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_BUTTON,
 				     NULL, text,
@@ -3374,7 +3374,7 @@ btk_toolbar_prepend_item (BtkToolbar    *toolbar,
  * Inserts a new item into the toolbar. You must specify the position in the
  * toolbar where it will be inserted.
  *
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar item as a #BtkWidget.
@@ -3388,8 +3388,8 @@ btk_toolbar_insert_item (BtkToolbar    *toolbar,
 			 const char    *tooltip_private_text,
 			 BtkWidget     *icon,
 			 GCallback      callback,
-			 gpointer       user_data,
-			 gint           position)
+			 bpointer       user_data,
+			 bint           position)
 {
   return btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_BUTTON,
 				     NULL, text,
@@ -3413,7 +3413,7 @@ btk_toolbar_insert_item (BtkToolbar    *toolbar,
  * @stock_id is not a known stock item ID, it's inserted verbatim,
  * except that underscores used to mark mnemonics are removed.
  *
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Returns: the inserted widget
@@ -3422,12 +3422,12 @@ btk_toolbar_insert_item (BtkToolbar    *toolbar,
  */
 BtkWidget*
 btk_toolbar_insert_stock (BtkToolbar      *toolbar,
-			  const gchar     *stock_id,
+			  const bchar     *stock_id,
 			  const char      *tooltip_text,
 			  const char      *tooltip_private_text,
 			  GCallback        callback,
-			  gpointer         user_data,
-			  gint             position)
+			  bpointer         user_data,
+			  bint             position)
 {
   return internal_insert_element (toolbar, BTK_TOOLBAR_CHILD_BUTTON,
 				  NULL, stock_id,
@@ -3483,7 +3483,7 @@ btk_toolbar_prepend_space (BtkToolbar *toolbar)
  **/
 void
 btk_toolbar_insert_space (BtkToolbar *toolbar,
-			  gint        position)
+			  bint        position)
 {
   btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_SPACE,
 			      NULL, NULL,
@@ -3503,7 +3503,7 @@ btk_toolbar_insert_space (BtkToolbar *toolbar,
  **/
 void
 btk_toolbar_remove_space (BtkToolbar *toolbar,
-			  gint        position)
+			  bint        position)
 {
   BtkToolbarPrivate *priv;
   ToolbarContent *content;
@@ -3547,8 +3547,8 @@ btk_toolbar_remove_space (BtkToolbar *toolbar,
 void
 btk_toolbar_append_widget (BtkToolbar  *toolbar,
 			   BtkWidget   *widget,
-			   const gchar *tooltip_text,
-			   const gchar *tooltip_private_text)
+			   const bchar *tooltip_text,
+			   const bchar *tooltip_private_text)
 {
   btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_WIDGET,
 			      widget, NULL,
@@ -3571,8 +3571,8 @@ btk_toolbar_append_widget (BtkToolbar  *toolbar,
 void
 btk_toolbar_prepend_widget (BtkToolbar  *toolbar,
 			    BtkWidget   *widget,
-			    const gchar *tooltip_text,
-			    const gchar *tooltip_private_text)
+			    const bchar *tooltip_text,
+			    const bchar *tooltip_private_text)
 {
   btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_WIDGET,
 			      widget, NULL,
@@ -3598,7 +3598,7 @@ btk_toolbar_insert_widget (BtkToolbar *toolbar,
 			   BtkWidget  *widget,
 			   const char *tooltip_text,
 			   const char *tooltip_private_text,
-			   gint        position)
+			   bint        position)
 {
   btk_toolbar_insert_element (toolbar, BTK_TOOLBAR_CHILD_WIDGET,
 			      widget, NULL,
@@ -3626,7 +3626,7 @@ btk_toolbar_insert_widget (BtkToolbar *toolbar,
  * the radio group for the new element. In all other cases, @widget must
  * be %NULL.
  * 
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar element as a #BtkWidget.
@@ -3642,7 +3642,7 @@ btk_toolbar_append_element (BtkToolbar          *toolbar,
 			    const char          *tooltip_private_text,
 			    BtkWidget           *icon,
 			    GCallback            callback,
-			    gpointer             user_data)
+			    bpointer             user_data)
 {
   return btk_toolbar_insert_element (toolbar, type, widget, text,
 				     tooltip_text, tooltip_private_text,
@@ -3669,7 +3669,7 @@ btk_toolbar_append_element (BtkToolbar          *toolbar,
  * the radio group for the new element. In all other cases, @widget must
  * be %NULL.
  * 
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar element as a #BtkWidget.
@@ -3685,7 +3685,7 @@ btk_toolbar_prepend_element (BtkToolbar          *toolbar,
 			     const char          *tooltip_private_text,
 			     BtkWidget           *icon,
 			     GCallback            callback,
-			     gpointer             user_data)
+			     bpointer             user_data)
 {
   return btk_toolbar_insert_element (toolbar, type, widget, text,
 				     tooltip_text, tooltip_private_text,
@@ -3713,7 +3713,7 @@ btk_toolbar_prepend_element (BtkToolbar          *toolbar,
  * the radio group for the new element. In all other cases, @widget must
  * be %NULL.
  *
- * @callback must be a pointer to a function taking a #BtkWidget and a gpointer as
+ * @callback must be a pointer to a function taking a #BtkWidget and a bpointer as
  * arguments. Use G_CALLBACK() to cast the function to #GCallback.
  *
  * Return value: the new toolbar element as a #BtkWidget.
@@ -3729,8 +3729,8 @@ btk_toolbar_insert_element (BtkToolbar          *toolbar,
 			    const char          *tooltip_private_text,
 			    BtkWidget           *icon,
 			    GCallback            callback,
-			    gpointer             user_data,
-			    gint                 position)
+			    bpointer             user_data,
+			    bint                 position)
 {
   return internal_insert_element (toolbar, type, widget, text,
 				  tooltip_text, tooltip_private_text,
@@ -3742,7 +3742,7 @@ set_child_packing_and_visibility(BtkToolbar      *toolbar,
                                  BtkToolbarChild *child)
 {
   BtkWidget *box;
-  gboolean   expand;
+  bboolean   expand;
 
   box = btk_bin_get_child (BTK_BIN (child->widget));
   
@@ -3784,9 +3784,9 @@ internal_insert_element (BtkToolbar          *toolbar,
 			 const char          *tooltip_private_text,
 			 BtkWidget           *icon,
 			 GCallback            callback,
-			 gpointer             user_data,
-			 gint                 position,
-			 gboolean             use_stock)
+			 bpointer             user_data,
+			 bint                 position,
+			 bboolean             use_stock)
 {
   BtkWidget *box;
   ToolbarContent *content;
@@ -3928,16 +3928,16 @@ struct _ToolbarContent
       BtkToolItem *	item;
       BtkAllocation	start_allocation;
       BtkAllocation	goal_allocation;
-      guint		is_placeholder : 1;
-      guint		disappearing : 1;
-      guint		has_menu : 2;
+      buint		is_placeholder : 1;
+      buint		disappearing : 1;
+      buint		has_menu : 2;
     } tool_item;
     
     struct
     {
       BtkToolbarChild	child;
       BtkAllocation	space_allocation;
-      guint		space_visible : 1;
+      buint		space_visible : 1;
     } compatibility;
   } u;
 };
@@ -3945,8 +3945,8 @@ struct _ToolbarContent
 static ToolbarContent *
 toolbar_content_new_tool_item (BtkToolbar  *toolbar,
 			       BtkToolItem *item,
-			       gboolean     is_placeholder,
-			       gint	    pos)
+			       bboolean     is_placeholder,
+			       bint	    pos)
 {
   ToolbarContent *content;
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -3981,7 +3981,7 @@ toolbar_content_new_compatibility (BtkToolbar          *toolbar,
 				   BtkWidget		*widget,
 				   BtkWidget		*icon,
 				   BtkWidget		*label,
-				   gint			 pos)
+				   bint			 pos)
 {
   ToolbarContent *content;
   BtkToolbarChild *child;
@@ -4068,12 +4068,12 @@ toolbar_content_free (ToolbarContent *content)
   g_slice_free (ToolbarContent, content);
 }
 
-static gint
+static bint
 calculate_max_homogeneous_pixels (BtkWidget *widget)
 {
   BangoContext *context;
   BangoFontMetrics *metrics;
-  gint char_width;
+  bint char_width;
   
   context = btk_widget_get_bango_context (widget);
   metrics = bango_context_get_metrics (context,
@@ -4122,7 +4122,7 @@ toolbar_content_expose (ToolbarContent *content,
     btk_container_propagate_expose (container, widget, expose);
 }
 
-static gboolean
+static bboolean
 toolbar_content_visible (ToolbarContent *content,
 			 BtkToolbar     *toolbar)
 {
@@ -4164,7 +4164,7 @@ toolbar_content_size_request (ToolbarContent *content,
 			      BtkToolbar     *toolbar,
 			      BtkRequisition *requisition)
 {
-  gint space_size;
+  bint space_size;
   
   switch (content->type)
     {
@@ -4205,11 +4205,11 @@ toolbar_content_size_request (ToolbarContent *content,
     }
 }
 
-static gboolean
+static bboolean
 toolbar_content_is_homogeneous (ToolbarContent *content,
 				BtkToolbar     *toolbar)
 {
-  gboolean result = FALSE;	/* quiet gcc */
+  bboolean result = FALSE;	/* quiet gcc */
   BtkRequisition requisition;
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
   
@@ -4255,7 +4255,7 @@ toolbar_content_is_homogeneous (ToolbarContent *content,
   return result;
 }
 
-static gboolean
+static bboolean
 toolbar_content_is_placeholder (ToolbarContent *content)
 {
   if (content->type == TOOL_ITEM && content->u.tool_item.is_placeholder)
@@ -4264,7 +4264,7 @@ toolbar_content_is_placeholder (ToolbarContent *content)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 toolbar_content_disappearing (ToolbarContent *content)
 {
   if (content->type == TOOL_ITEM && content->u.tool_item.disappearing)
@@ -4279,7 +4279,7 @@ toolbar_content_get_state (ToolbarContent *content)
   return content->state;
 }
 
-static gboolean
+static bboolean
 toolbar_content_child_visible (ToolbarContent *content)
 {
   switch (content->type)
@@ -4370,7 +4370,7 @@ toolbar_content_set_start_allocation (ToolbarContent *content,
     }
 }
 
-static gboolean
+static bboolean
 toolbar_content_get_expand (ToolbarContent *content)
 {
   if (content->type == TOOL_ITEM &&
@@ -4403,7 +4403,7 @@ toolbar_content_set_goal_allocation (ToolbarContent *content,
 static void
 toolbar_content_set_child_visible (ToolbarContent *content,
 				   BtkToolbar     *toolbar,
-				   gboolean        visible)
+				   bboolean        visible)
 {
   BtkToolbarChild *child;
   
@@ -4507,7 +4507,7 @@ toolbar_content_get_widget (ToolbarContent *content)
 
 static void
 toolbar_content_set_disappearing (ToolbarContent *content,
-				  gboolean        disappearing)
+				  bboolean        disappearing)
 {
   switch (content->type)
     {
@@ -4524,8 +4524,8 @@ toolbar_content_set_disappearing (ToolbarContent *content,
 
 static void
 toolbar_content_set_size_request (ToolbarContent *content,
-				  gint            width,
-				  gint            height)
+				  bint            width,
+				  bint            height)
 {
   switch (content->type)
     {
@@ -4552,7 +4552,7 @@ toolbar_child_reconfigure (BtkToolbar      *toolbar,
   BtkToolbarStyle style;
   BtkIconSize icon_size;
   BtkReliefStyle relief;
-  gchar *stock_id;
+  bchar *stock_id;
   
   style = btk_toolbar_get_style (toolbar);
   icon_size = btk_toolbar_get_icon_size (toolbar);
@@ -4655,7 +4655,7 @@ toolbar_content_retrieve_menu_item (ToolbarContent *content)
   return NULL; 
 }
 
-static gboolean
+static bboolean
 toolbar_content_has_proxy_menu_item (ToolbarContent *content)
 {
   if (content->type == TOOL_ITEM)
@@ -4686,7 +4686,7 @@ toolbar_content_set_unknown_menu_status (ToolbarContent *content)
     content->u.tool_item.has_menu = UNKNOWN;
 }
 
-static gboolean
+static bboolean
 toolbar_content_is_separator (ToolbarContent *content)
 {
   BtkToolbarChild *child;
@@ -4708,13 +4708,13 @@ toolbar_content_is_separator (ToolbarContent *content)
 
 static void
 toolbar_content_set_expand (ToolbarContent *content,
-			    gboolean        expand)
+			    bboolean        expand)
 {
   if (content->type == TOOL_ITEM)
     btk_tool_item_set_expand (content->u.tool_item.item, expand);
 }
 
-static gboolean
+static bboolean
 ignore_show_and_hide_all (ToolbarContent *content)
 {
   if (content->type == COMPATIBILITY)
@@ -4761,10 +4761,10 @@ toolbar_content_hide_all (ToolbarContent  *content)
 /*
  * Getters
  */
-static gint
+static bint
 get_space_size (BtkToolbar *toolbar)
 {
-  gint space_size = DEFAULT_SPACE_SIZE;
+  bint space_size = DEFAULT_SPACE_SIZE;
   
   if (toolbar)
     {
@@ -4805,10 +4805,10 @@ get_button_relief (BtkToolbar *toolbar)
   return button_relief;
 }
 
-static gint
+static bint
 get_internal_padding (BtkToolbar *toolbar)
 {
-  gint ipadding = 0;
+  bint ipadding = 0;
   
   btk_widget_style_get (BTK_WIDGET (toolbar),
 			"internal-padding", &ipadding,
@@ -4817,10 +4817,10 @@ get_internal_padding (BtkToolbar *toolbar)
   return ipadding;
 }
 
-static gint
+static bint
 get_max_child_expand (BtkToolbar *toolbar)
 {
-  gint mexpand = G_MAXINT;
+  bint mexpand = B_MAXINT;
 
   btk_widget_style_get (BTK_WIDGET (toolbar),
                         "max-child-expand", &mexpand,
@@ -4843,7 +4843,7 @@ get_shadow_type (BtkToolbar *toolbar)
 /*
  * API checks
  */
-static gboolean
+static bboolean
 btk_toolbar_check_old_api (BtkToolbar *toolbar)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -4858,7 +4858,7 @@ btk_toolbar_check_old_api (BtkToolbar *toolbar)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_toolbar_check_new_api (BtkToolbar *toolbar)
 {
   BtkToolbarPrivate *priv = BTK_TOOLBAR_GET_PRIVATE (toolbar);
@@ -4875,7 +4875,7 @@ btk_toolbar_check_new_api (BtkToolbar *toolbar)
 
 /* BTK+ internal methods */
 
-gint
+bint
 _btk_toolbar_get_default_space_size (void)
 {
   return DEFAULT_SPACE_SIZE;
@@ -4898,8 +4898,8 @@ _btk_toolbar_paint_space_line (BtkWidget           *widget,
 
   if (orientation == BTK_ORIENTATION_HORIZONTAL)
     {
-      gboolean wide_separators;
-      gint     separator_width;
+      bboolean wide_separators;
+      bint     separator_width;
 
       btk_widget_style_get (widget,
                             "wide-separators", &wide_separators,
@@ -4924,8 +4924,8 @@ _btk_toolbar_paint_space_line (BtkWidget           *widget,
     }
   else
     {
-      gboolean wide_separators;
-      gint     separator_height;
+      bboolean wide_separators;
+      bint     separator_height;
 
       btk_widget_style_get (widget,
                             "wide-separators",  &wide_separators,
@@ -4950,13 +4950,13 @@ _btk_toolbar_paint_space_line (BtkWidget           *widget,
     }
 }
 
-gchar *
-_btk_toolbar_elide_underscores (const gchar *original)
+bchar *
+_btk_toolbar_elide_underscores (const bchar *original)
 {
-  gchar *q, *result;
-  const gchar *p, *end;
-  gsize len;
-  gboolean last_underscore;
+  bchar *q, *result;
+  const bchar *p, *end;
+  bsize len;
+  bboolean last_underscore;
   
   if (!original)
     return NULL;

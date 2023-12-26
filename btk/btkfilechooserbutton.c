@@ -142,32 +142,32 @@ struct _BtkFileChooserButtonPrivate
   GFile *selection_while_inactive;
   GFile *current_folder_while_inactive;
 
-  gulong combo_box_changed_id;
-  gulong fs_volumes_changed_id;
-  gulong fs_bookmarks_changed_id;
+  bulong combo_box_changed_id;
+  bulong fs_volumes_changed_id;
+  bulong fs_bookmarks_changed_id;
 
   GCancellable *dnd_select_folder_cancellable;
   GCancellable *update_button_cancellable;
   GSList *change_icon_theme_cancellables;
 
-  gint icon_size;
+  bint icon_size;
 
-  guint8 n_special;
-  guint8 n_volumes;
-  guint8 n_shortcuts;
-  guint8 n_bookmarks;
-  guint  has_bookmark_separator       : 1;
-  guint  has_current_folder_separator : 1;
-  guint  has_current_folder           : 1;
-  guint  has_other_separator          : 1;
+  buint8 n_special;
+  buint8 n_volumes;
+  buint8 n_shortcuts;
+  buint8 n_bookmarks;
+  buint  has_bookmark_separator       : 1;
+  buint  has_current_folder_separator : 1;
+  buint  has_current_folder           : 1;
+  buint  has_other_separator          : 1;
 
   /* Used for hiding/showing the dialog when the button is hidden */
-  guint  active                       : 1;
+  buint  active                       : 1;
 
-  guint  focus_on_click               : 1;
+  buint  focus_on_click               : 1;
 
   /* Whether the next async callback from BUNNYIO should emit the "selection-changed" signal */
-  guint  is_changing_selection        : 1;
+  buint  is_changing_selection        : 1;
 };
 
 
@@ -188,34 +188,34 @@ enum
 
 /* BtkFileChooserIface Functions */
 static void     btk_file_chooser_button_file_chooser_iface_init (BtkFileChooserIface *iface);
-static gboolean btk_file_chooser_button_set_current_folder (BtkFileChooser    *chooser,
+static bboolean btk_file_chooser_button_set_current_folder (BtkFileChooser    *chooser,
 							    GFile             *file,
 							    GError           **error);
 static GFile *btk_file_chooser_button_get_current_folder (BtkFileChooser    *chooser);
-static gboolean btk_file_chooser_button_select_file (BtkFileChooser *chooser,
+static bboolean btk_file_chooser_button_select_file (BtkFileChooser *chooser,
 						     GFile          *file,
 						     GError        **error);
 static void btk_file_chooser_button_unselect_file (BtkFileChooser *chooser,
 						   GFile          *file);
 static void btk_file_chooser_button_unselect_all (BtkFileChooser *chooser);
 static GSList *btk_file_chooser_button_get_files (BtkFileChooser *chooser);
-static gboolean btk_file_chooser_button_add_shortcut_folder     (BtkFileChooser      *chooser,
+static bboolean btk_file_chooser_button_add_shortcut_folder     (BtkFileChooser      *chooser,
 								 GFile               *file,
 								 GError             **error);
-static gboolean btk_file_chooser_button_remove_shortcut_folder  (BtkFileChooser      *chooser,
+static bboolean btk_file_chooser_button_remove_shortcut_folder  (BtkFileChooser      *chooser,
 								 GFile               *file,
 								 GError             **error);
 
 /* BObject Functions */
 static BObject *btk_file_chooser_button_constructor        (GType             type,
-							    guint             n_params,
+							    buint             n_params,
 							    BObjectConstructParam *params);
 static void     btk_file_chooser_button_set_property       (BObject          *object,
-							    guint             param_id,
+							    buint             param_id,
 							    const BValue     *value,
 							    BParamSpec       *pspec);
 static void     btk_file_chooser_button_get_property       (BObject          *object,
-							    guint             param_id,
+							    buint             param_id,
 							    BValue           *value,
 							    BParamSpec       *pspec);
 static void     btk_file_chooser_button_finalize           (BObject          *object);
@@ -226,18 +226,18 @@ static void     btk_file_chooser_button_destroy            (BtkObject        *ob
 /* BtkWidget Functions */
 static void     btk_file_chooser_button_drag_data_received (BtkWidget        *widget,
 							    BdkDragContext   *context,
-							    gint              x,
-							    gint              y,
+							    bint              x,
+							    bint              y,
 							    BtkSelectionData *data,
-							    guint             type,
-							    guint             drag_time);
+							    buint             type,
+							    buint             drag_time);
 static void     btk_file_chooser_button_show_all           (BtkWidget        *widget);
 static void     btk_file_chooser_button_hide_all           (BtkWidget        *widget);
 static void     btk_file_chooser_button_show               (BtkWidget        *widget);
 static void     btk_file_chooser_button_hide               (BtkWidget        *widget);
 static void     btk_file_chooser_button_map                (BtkWidget        *widget);
-static gboolean btk_file_chooser_button_mnemonic_activate  (BtkWidget        *widget,
-							    gboolean          group_cycling);
+static bboolean btk_file_chooser_button_mnemonic_activate  (BtkWidget        *widget,
+							    bboolean          group_cycling);
 static void     btk_file_chooser_button_style_set          (BtkWidget        *widget,
 							    BtkStyle         *old_style);
 static void     btk_file_chooser_button_screen_changed     (BtkWidget        *widget,
@@ -249,7 +249,7 @@ static void          set_info_for_file_at_iter         (BtkFileChooserButton *fs
 							GFile                *file,
 							BtkTreeIter          *iter);
 
-static gint          model_get_type_position      (BtkFileChooserButton *button,
+static bint          model_get_type_position      (BtkFileChooserButton *button,
 						   RowType               row_type);
 static void          model_free_row_data          (BtkFileChooserButton *button,
 						   BtkTreeIter          *iter);
@@ -263,53 +263,53 @@ static void          model_add_bookmarks          (BtkFileChooserButton *button,
 static void          model_update_current_folder  (BtkFileChooserButton *button,
 						   GFile                *file);
 static void          model_remove_rows            (BtkFileChooserButton *button,
-						   gint                  pos,
-						   gint                  n_rows);
+						   bint                  pos,
+						   bint                  n_rows);
 
-static gboolean      filter_model_visible_func    (BtkTreeModel         *model,
+static bboolean      filter_model_visible_func    (BtkTreeModel         *model,
 						   BtkTreeIter          *iter,
-						   gpointer              user_data);
+						   bpointer              user_data);
 
-static gboolean      combo_box_row_separator_func (BtkTreeModel         *model,
+static bboolean      combo_box_row_separator_func (BtkTreeModel         *model,
 						   BtkTreeIter          *iter,
-						   gpointer              user_data);
+						   bpointer              user_data);
 static void          name_cell_data_func          (BtkCellLayout        *layout,
 						   BtkCellRenderer      *cell,
 						   BtkTreeModel         *model,
 						   BtkTreeIter          *iter,
-						   gpointer              user_data);
+						   bpointer              user_data);
 static void          open_dialog                  (BtkFileChooserButton *button);
 static void          update_combo_box             (BtkFileChooserButton *button);
 static void          update_label_and_image       (BtkFileChooserButton *button);
 
 /* Child Object Callbacks */
 static void     fs_volumes_changed_cb            (BtkFileSystem  *fs,
-						  gpointer        user_data);
+						  bpointer        user_data);
 static void     fs_bookmarks_changed_cb          (BtkFileSystem  *fs,
-						  gpointer        user_data);
+						  bpointer        user_data);
 
 static void     combo_box_changed_cb             (BtkComboBox    *combo_box,
-						  gpointer        user_data);
+						  bpointer        user_data);
 static void     combo_box_notify_popup_shown_cb  (BObject        *object,
 						  BParamSpec     *pspec,
-						  gpointer        user_data);
+						  bpointer        user_data);
 
 static void     button_clicked_cb                (BtkButton      *real_button,
-						  gpointer        user_data);
+						  bpointer        user_data);
 
 static void     dialog_update_preview_cb         (BtkFileChooser *dialog,
-						  gpointer        user_data);
+						  bpointer        user_data);
 static void     dialog_notify_cb                 (BObject        *dialog,
 						  BParamSpec     *pspec,
-						  gpointer        user_data);
-static gboolean dialog_delete_event_cb           (BtkWidget      *dialog,
+						  bpointer        user_data);
+static bboolean dialog_delete_event_cb           (BtkWidget      *dialog,
 						  BdkEvent       *event,
-						  gpointer        user_data);
+						  bpointer        user_data);
 static void     dialog_response_cb               (BtkDialog      *dialog,
-						  gint            response,
-						  gpointer        user_data);
+						  bint            response,
+						  bpointer        user_data);
 
-static guint file_chooser_button_signals[LAST_SIGNAL] = { 0 };
+static buint file_chooser_button_signals[LAST_SIGNAL] = { 0 };
 
 /* ******************* *
  *  GType Declaration  *
@@ -428,7 +428,7 @@ btk_file_chooser_button_class_init (BtkFileChooserButtonClass * class)
 				   g_param_spec_int ("width-chars",
 						     P_("Width In Characters"),
 						     P_("The desired width of the button widget, in characters."),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
 
   _btk_file_chooser_install_properties (bobject_class);
@@ -561,7 +561,7 @@ emit_selection_changed_if_changing_selection (BtkFileChooserButton *button)
     }
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_button_set_current_folder (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error)
@@ -596,7 +596,7 @@ btk_file_chooser_button_get_current_folder (BtkFileChooser *chooser)
     return NULL;
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_button_select_file (BtkFileChooser *chooser,
 				     GFile          *file,
 				     GError        **error)
@@ -701,13 +701,13 @@ btk_file_chooser_button_get_files (BtkFileChooser *chooser)
     return NULL;
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_button_add_shortcut_folder (BtkFileChooser  *chooser,
 					     GFile           *file,
 					     GError         **error)
 {
   BtkFileChooser *delegate;
-  gboolean retval;
+  bboolean retval;
 
   delegate = g_object_get_qdata (B_OBJECT (chooser),
 				 BTK_FILE_CHOOSER_DELEGATE_QUARK);
@@ -718,7 +718,7 @@ btk_file_chooser_button_add_shortcut_folder (BtkFileChooser  *chooser,
       BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (chooser);
       BtkFileChooserButtonPrivate *priv = button->priv;
       BtkTreeIter iter;
-      gint pos;
+      bint pos;
 
       pos = model_get_type_position (button, ROW_TYPE_SHORTCUT);
       pos += priv->n_shortcuts;
@@ -740,13 +740,13 @@ btk_file_chooser_button_add_shortcut_folder (BtkFileChooser  *chooser,
   return retval;
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_button_remove_shortcut_folder (BtkFileChooser  *chooser,
 						GFile           *file,
 						GError         **error)
 {
   BtkFileChooser *delegate;
-  gboolean retval;
+  bboolean retval;
 
   delegate = g_object_get_qdata (B_OBJECT (chooser),
 				 BTK_FILE_CHOOSER_DELEGATE_QUARK);
@@ -758,15 +758,15 @@ btk_file_chooser_button_remove_shortcut_folder (BtkFileChooser  *chooser,
       BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (chooser);
       BtkFileChooserButtonPrivate *priv = button->priv;
       BtkTreeIter iter;
-      gint pos;
-      gchar type;
+      bint pos;
+      bchar type;
 
       pos = model_get_type_position (button, ROW_TYPE_SHORTCUT);
       btk_tree_model_iter_nth_child (priv->model, &iter, NULL, pos);
 
       do
 	{
-	  gpointer data;
+	  bpointer data;
 
 	  btk_tree_model_get (priv->model, &iter,
 			      TYPE_COLUMN, &type,
@@ -798,7 +798,7 @@ btk_file_chooser_button_remove_shortcut_folder (BtkFileChooser  *chooser,
 
 static BObject *
 btk_file_chooser_button_constructor (GType                  type,
-				     guint                  n_params,
+				     buint                  n_params,
 				     BObjectConstructParam *params)
 {
   BObject *object;
@@ -850,7 +850,7 @@ btk_file_chooser_button_constructor (GType                  type,
   g_signal_connect (priv->dialog, "notify",
 		    G_CALLBACK (dialog_notify_cb), object);
   g_object_add_weak_pointer (B_OBJECT (priv->dialog),
-			     (gpointer) (&priv->dialog));
+			     (bpointer) (&priv->dialog));
 
   priv->fs =
     g_object_ref (_btk_file_chooser_get_file_system (BTK_FILE_CHOOSER (priv->dialog)));
@@ -902,7 +902,7 @@ btk_file_chooser_button_constructor (GType                  type,
 
 static void
 btk_file_chooser_button_set_property (BObject      *object,
-				      guint         param_id,
+				      buint         param_id,
 				      const BValue *value,
 				      BParamSpec   *pspec)
 {
@@ -995,7 +995,7 @@ btk_file_chooser_button_set_property (BObject      *object,
 
 static void
 btk_file_chooser_button_get_property (BObject    *object,
-				      guint       param_id,
+				      buint       param_id,
 				      BValue     *value,
 				      BParamSpec *pspec)
 {
@@ -1131,18 +1131,18 @@ struct DndSelectFolderData
   BtkFileChooserButton *button;
   BtkFileChooserAction action;
   GFile *file;
-  gchar **uris;
-  guint i;
-  gboolean selected;
+  bchar **uris;
+  buint i;
+  bboolean selected;
 };
 
 static void
 dnd_select_folder_get_info_cb (GCancellable *cancellable,
 			       GFileInfo    *info,
 			       const GError *error,
-			       gpointer      user_data)
+			       bpointer      user_data)
 {
-  gboolean cancelled = g_cancellable_is_cancelled (cancellable);
+  bboolean cancelled = g_cancellable_is_cancelled (cancellable);
   struct DndSelectFolderData *data = user_data;
 
   if (cancellable != data->button->priv->dnd_select_folder_cancellable)
@@ -1160,7 +1160,7 @@ dnd_select_folder_get_info_cb (GCancellable *cancellable,
 
   if (!cancelled && !error && info != NULL)
     {
-      gboolean is_folder;
+      bboolean is_folder;
 
       is_folder = _btk_file_info_consider_as_directory (info);
 
@@ -1202,16 +1202,16 @@ dnd_select_folder_get_info_cb (GCancellable *cancellable,
 static void
 btk_file_chooser_button_drag_data_received (BtkWidget	     *widget,
 					    BdkDragContext   *context,
-					    gint	      x,
-					    gint	      y,
+					    bint	      x,
+					    bint	      y,
 					    BtkSelectionData *data,
-					    guint	      type,
-					    guint	      drag_time)
+					    buint	      type,
+					    buint	      drag_time)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (widget);
   BtkFileChooserButtonPrivate *priv = button->priv;
   GFile *file;
-  gchar *text;
+  bchar *text;
 
   if (BTK_WIDGET_CLASS (btk_file_chooser_button_parent_class)->drag_data_received != NULL)
     BTK_WIDGET_CLASS (btk_file_chooser_button_parent_class)->drag_data_received (widget,
@@ -1227,7 +1227,7 @@ btk_file_chooser_button_drag_data_received (BtkWidget	     *widget,
     {
     case TEXT_URI_LIST:
       {
-	gchar **uris;
+	bchar **uris;
 	struct DndSelectFolderData *info;
 
 	uris = btk_selection_data_get_uris (data);
@@ -1315,9 +1315,9 @@ btk_file_chooser_button_map (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_file_chooser_button_parent_class)->map (widget);
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_button_mnemonic_activate (BtkWidget *widget,
-					   gboolean   group_cycling)
+					   bboolean   group_cycling)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (widget);
   BtkFileChooserButtonPrivate *priv = button->priv;
@@ -1349,9 +1349,9 @@ static void
 change_icon_theme_get_info_cb (GCancellable *cancellable,
 			       GFileInfo    *info,
 			       const GError *error,
-			       gpointer      user_data)
+			       bpointer      user_data)
 {
-  gboolean cancelled = g_cancellable_is_cancelled (cancellable);
+  bboolean cancelled = g_cancellable_is_cancelled (cancellable);
   BdkPixbuf *pixbuf;
   struct ChangeIconThemeData *data = user_data;
 
@@ -1368,7 +1368,7 @@ change_icon_theme_get_info_cb (GCancellable *cancellable,
 
   if (pixbuf)
     {
-      gint width = 0;
+      bint width = 0;
       BtkTreeIter iter;
       BtkTreePath *path;
 
@@ -1407,7 +1407,7 @@ change_icon_theme (BtkFileChooserButton *button)
   BtkIconTheme *theme;
   BtkTreeIter iter;
   GSList *l;
-  gint width = 0, height = 0;
+  bint width = 0, height = 0;
 
   for (l = button->priv->change_icon_theme_cancellables; l; l = l->next)
     {
@@ -1434,8 +1434,8 @@ change_icon_theme (BtkFileChooserButton *button)
   do
     {
       BdkPixbuf *pixbuf;
-      gchar type;
-      gpointer data;
+      bchar type;
+      bpointer data;
 
       type = ROW_TYPE_INVALID;
       btk_tree_model_get (priv->model, &iter,
@@ -1566,15 +1566,15 @@ static void
 set_info_get_info_cb (GCancellable *cancellable,
 		      GFileInfo    *info,
 		      const GError *error,
-		      gpointer      callback_data)
+		      bpointer      callback_data)
 {
-  gboolean cancelled = g_cancellable_is_cancelled (cancellable);
+  bboolean cancelled = g_cancellable_is_cancelled (cancellable);
   BdkPixbuf *pixbuf;
   BtkTreePath *path;
   BtkTreeIter iter;
   GCancellable *model_cancellable;
   struct SetDisplayNameData *data = callback_data;
-  gboolean is_folder;
+  bboolean is_folder;
 
   if (!data->button->priv->model)
     /* button got destroyed */
@@ -1655,11 +1655,11 @@ set_info_for_file_at_iter (BtkFileChooserButton *button,
 }
 
 /* Shortcuts Model */
-static gint
+static bint
 model_get_type_position (BtkFileChooserButton *button,
 			 RowType               row_type)
 {
-  gint retval = 0;
+  bint retval = 0;
 
   if (row_type == ROW_TYPE_SPECIAL)
     return retval;
@@ -1717,8 +1717,8 @@ static void
 model_free_row_data (BtkFileChooserButton *button,
 		     BtkTreeIter          *iter)
 {
-  gchar type;
-  gpointer data;
+  bchar type;
+  bpointer data;
   GCancellable *cancellable;
 
   btk_tree_model_get (button->priv->model, iter,
@@ -1750,15 +1750,15 @@ static void
 model_add_special_get_info_cb (GCancellable *cancellable,
 			       GFileInfo    *info,
 			       const GError *error,
-			       gpointer      user_data)
+			       bpointer      user_data)
 {
-  gboolean cancelled = g_cancellable_is_cancelled (cancellable);
+  bboolean cancelled = g_cancellable_is_cancelled (cancellable);
   BtkTreeIter iter;
   BtkTreePath *path;
   BdkPixbuf *pixbuf;
   GCancellable *model_cancellable;
   struct ChangeIconThemeData *data = user_data;
-  gchar *name;
+  bchar *name;
 
   if (!data->button->priv->model)
     /* button got destroyed */
@@ -1815,12 +1815,12 @@ out:
 static void
 model_add_special (BtkFileChooserButton *button)
 {
-  const gchar *homedir;
-  const gchar *desktopdir;
+  const bchar *homedir;
+  const bchar *desktopdir;
   BtkListStore *store;
   BtkTreeIter iter;
   GFile *file;
-  gint pos;
+  bint pos;
 
   store = BTK_LIST_STORE (button->priv->model);
   pos = model_get_type_position (button, ROW_TYPE_SPECIAL);
@@ -1904,8 +1904,8 @@ model_add_volumes (BtkFileChooserButton *button,
 		   GSList               *volumes)
 {
   BtkListStore *store;
-  gint pos;
-  gboolean local_only;
+  bint pos;
+  bboolean local_only;
   GSList *l;
   
   if (!volumes)
@@ -1920,7 +1920,7 @@ model_add_volumes (BtkFileChooserButton *button,
       BtkFileSystemVolume *volume;
       BtkTreeIter iter;
       BdkPixbuf *pixbuf;
-      gchar *display_name;
+      bchar *display_name;
 
       volume = l->data;
 
@@ -1968,7 +1968,7 @@ model_add_volumes (BtkFileChooserButton *button,
     }
 }
 
-extern gchar * _btk_file_chooser_label_for_file (GFile *file);
+extern bchar * _btk_file_chooser_label_for_file (GFile *file);
 
 static void
 model_add_bookmarks (BtkFileChooserButton *button,
@@ -1976,8 +1976,8 @@ model_add_bookmarks (BtkFileChooserButton *button,
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint pos;
-  gboolean local_only;
+  bint pos;
+  bboolean local_only;
   GSList *l;
 
   if (!bookmarks)
@@ -2007,7 +2007,7 @@ model_add_bookmarks (BtkFileChooserButton *button,
 	}
       else
 	{
-	  gchar *label;
+	  bchar *label;
 	  BtkIconTheme *icon_theme;
 	  BdkPixbuf *pixbuf;
 
@@ -2067,7 +2067,7 @@ model_update_current_folder (BtkFileChooserButton *button,
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint pos;
+  bint pos;
 
   if (!file)
     return;
@@ -2113,7 +2113,7 @@ model_update_current_folder (BtkFileChooserButton *button,
     }
   else
     {
-      gchar *label;
+      bchar *label;
       BtkIconTheme *icon_theme;
       BdkPixbuf *pixbuf;
 
@@ -2153,7 +2153,7 @@ model_add_other (BtkFileChooserButton *button)
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint pos;
+  bint pos;
 
   store = BTK_LIST_STORE (button->priv->model);
   pos = model_get_type_position (button, ROW_TYPE_OTHER_SEPARATOR);
@@ -2184,7 +2184,7 @@ model_add_empty_selection (BtkFileChooserButton *button)
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint pos;
+  bint pos;
 
   store = BTK_LIST_STORE (button->priv->model);
   pos = model_get_type_position (button, ROW_TYPE_EMPTY_SELECTION);
@@ -2201,8 +2201,8 @@ model_add_empty_selection (BtkFileChooserButton *button)
 
 static void
 model_remove_rows (BtkFileChooserButton *button,
-		   gint                  pos,
-		   gint                  n_rows)
+		   bint                  pos,
+		   bint                  n_rows)
 {
   BtkListStore *store;
 
@@ -2226,11 +2226,11 @@ model_remove_rows (BtkFileChooserButton *button,
 }
 
 /* Filter Model */
-static gboolean
+static bboolean
 test_if_file_is_visible (BtkFileSystem *fs,
 			 GFile         *file,
-			 gboolean       local_only,
-			 gboolean       is_folder)
+			 bboolean       local_only,
+			 bboolean       is_folder)
 {
   if (!file)
     return FALSE;
@@ -2244,16 +2244,16 @@ test_if_file_is_visible (BtkFileSystem *fs,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 filter_model_visible_func (BtkTreeModel *model,
 			   BtkTreeIter  *iter,
-			   gpointer      user_data)
+			   bpointer      user_data)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
   BtkFileChooserButtonPrivate *priv = button->priv;
-  gchar type;
-  gpointer data;
-  gboolean local_only, retval, is_folder;
+  bchar type;
+  bpointer data;
+  bboolean local_only, retval, is_folder;
 
   type = ROW_TYPE_INVALID;
   data = NULL;
@@ -2300,7 +2300,7 @@ filter_model_visible_func (BtkTreeModel *model,
       break;
     case ROW_TYPE_EMPTY_SELECTION:
       {
-	gboolean popup_shown;
+	bboolean popup_shown;
 
 	g_object_get (priv->combo_box,
 		      "popup-shown", &popup_shown,
@@ -2340,9 +2340,9 @@ name_cell_data_func (BtkCellLayout   *layout,
 		     BtkCellRenderer *cell,
 		     BtkTreeModel    *model,
 		     BtkTreeIter     *iter,
-		     gpointer         user_data)
+		     bpointer         user_data)
 {
-  gchar type;
+  bchar type;
 
   type = 0;
   btk_tree_model_get (model, iter,
@@ -2355,12 +2355,12 @@ name_cell_data_func (BtkCellLayout   *layout,
     g_object_set (cell, "ellipsize", BANGO_ELLIPSIZE_NONE, NULL);
 }
 
-static gboolean
+static bboolean
 combo_box_row_separator_func (BtkTreeModel *model,
 			      BtkTreeIter  *iter,
-			      gpointer      user_data)
+			      bpointer      user_data)
 {
-  gchar type = ROW_TYPE_INVALID;
+  bchar type = ROW_TYPE_INVALID;
 
   btk_tree_model_get (model, iter, TYPE_COLUMN, &type, -1);
 
@@ -2390,7 +2390,7 @@ update_combo_box (BtkFileChooserButton *button)
   BtkFileChooserButtonPrivate *priv = button->priv;
   GFile *file;
   BtkTreeIter iter;
-  gboolean row_found;
+  bboolean row_found;
 
   file = get_selected_file (button);
 
@@ -2400,8 +2400,8 @@ update_combo_box (BtkFileChooserButton *button)
 
   do
     {
-      gchar type;
-      gpointer data;
+      bchar type;
+      bpointer data;
 
       type = ROW_TYPE_INVALID;
       data = NULL;
@@ -2449,7 +2449,7 @@ update_combo_box (BtkFileChooserButton *button)
 
   if (!row_found)
     {
-      gint pos;
+      bint pos;
 
       /* If it hasn't been found already, update & select the current-folder row. */
       if (file)
@@ -2478,9 +2478,9 @@ static void
 update_label_get_info_cb (GCancellable *cancellable,
 			  GFileInfo    *info,
 			  const GError *error,
-			  gpointer      data)
+			  bpointer      data)
 {
-  gboolean cancelled = g_cancellable_is_cancelled (cancellable);
+  bboolean cancelled = g_cancellable_is_cancelled (cancellable);
   BdkPixbuf *pixbuf;
   BtkFileChooserButton *button = data;
   BtkFileChooserButtonPrivate *priv = button->priv;
@@ -2517,9 +2517,9 @@ static void
 update_label_and_image (BtkFileChooserButton *button)
 {
   BtkFileChooserButtonPrivate *priv = button->priv;
-  gchar *label_text;
+  bchar *label_text;
   GFile *file;
-  gboolean done_changing_selection;
+  bboolean done_changing_selection;
 
   file = get_selected_file (button);
 
@@ -2625,7 +2625,7 @@ out:
 /* File System */
 static void
 fs_volumes_changed_cb (BtkFileSystem *fs,
-		       gpointer       user_data)
+		       bpointer       user_data)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
   BtkFileChooserButtonPrivate *priv = button->priv;
@@ -2649,7 +2649,7 @@ fs_volumes_changed_cb (BtkFileSystem *fs,
 
 static void
 fs_bookmarks_changed_cb (BtkFileSystem *fs,
-			 gpointer       user_data)
+			 bpointer       user_data)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
   BtkFileChooserButtonPrivate *priv = button->priv;
@@ -2739,7 +2739,7 @@ open_dialog (BtkFileChooserButton *button)
 /* Combo Box */
 static void
 combo_box_changed_cb (BtkComboBox *combo_box,
-		      gpointer     user_data)
+		      bpointer     user_data)
 {
   BtkTreeIter iter;
 
@@ -2747,8 +2747,8 @@ combo_box_changed_cb (BtkComboBox *combo_box,
     {
       BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
       BtkFileChooserButtonPrivate *priv = button->priv;
-      gchar type;
-      gpointer data;
+      bchar type;
+      bpointer data;
 
       type = ROW_TYPE_INVALID;
       data = NULL;
@@ -2802,11 +2802,11 @@ combo_box_changed_cb (BtkComboBox *combo_box,
 static void
 combo_box_notify_popup_shown_cb (BObject    *object,
 				 BParamSpec *pspec,
-				 gpointer    user_data)
+				 bpointer    user_data)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
   BtkFileChooserButtonPrivate *priv = button->priv;
-  gboolean popup_shown;
+  bboolean popup_shown;
 
   g_object_get (priv->combo_box,
 		"popup-shown", &popup_shown,
@@ -2835,7 +2835,7 @@ combo_box_notify_popup_shown_cb (BObject    *object,
 /* Button */
 static void
 button_clicked_cb (BtkButton *real_button,
-		   gpointer   user_data)
+		   bpointer   user_data)
 {
   open_dialog (user_data);
 }
@@ -2844,7 +2844,7 @@ button_clicked_cb (BtkButton *real_button,
 
 static void
 dialog_update_preview_cb (BtkFileChooser *dialog,
-			  gpointer        user_data)
+			  bpointer        user_data)
 {
   g_signal_emit_by_name (user_data, "update-preview");
 }
@@ -2852,9 +2852,9 @@ dialog_update_preview_cb (BtkFileChooser *dialog,
 static void
 dialog_notify_cb (BObject    *dialog,
 		  BParamSpec *pspec,
-		  gpointer    user_data)
+		  bpointer    user_data)
 {
-  gpointer iface;
+  bpointer iface;
 
   iface = g_type_interface_peek (g_type_class_peek (B_OBJECT_TYPE (dialog)),
 				 BTK_TYPE_FILE_CHOOSER);
@@ -2869,8 +2869,8 @@ dialog_notify_cb (BObject    *dialog,
       if (priv->has_current_folder)
 	{
 	  BtkTreeIter iter;
-	  gint pos;
-	  gpointer data;
+	  bint pos;
+	  bpointer data;
 
 	  pos = model_get_type_position (user_data,
 					 ROW_TYPE_CURRENT_FOLDER);
@@ -2894,10 +2894,10 @@ dialog_notify_cb (BObject    *dialog,
     }
 }
 
-static gboolean
+static bboolean
 dialog_delete_event_cb (BtkWidget *dialog,
 			BdkEvent  *event,
-		        gpointer   user_data)
+		        bpointer   user_data)
 {
   g_signal_emit_by_name (dialog, "response", BTK_RESPONSE_DELETE_EVENT);
 
@@ -2906,8 +2906,8 @@ dialog_delete_event_cb (BtkWidget *dialog,
 
 static void
 dialog_response_cb (BtkDialog *dialog,
-		    gint       response,
-		    gpointer   user_data)
+		    bint       response,
+		    bpointer   user_data)
 {
   BtkFileChooserButton *button = BTK_FILE_CHOOSER_BUTTON (user_data);
   BtkFileChooserButtonPrivate *priv = button->priv;
@@ -2956,7 +2956,7 @@ dialog_response_cb (BtkDialog *dialog,
  * Since: 2.6
  **/
 BtkWidget *
-btk_file_chooser_button_new (const gchar          *title,
+btk_file_chooser_button_new (const bchar          *title,
 			     BtkFileChooserAction  action)
 {
   g_return_val_if_fail (action == BTK_FILE_CHOOSER_ACTION_OPEN ||
@@ -2982,9 +2982,9 @@ btk_file_chooser_button_new (const gchar          *title,
  * Deprecated: 2.14: Use btk_file_chooser_button_new() instead.
  **/
 BtkWidget *
-btk_file_chooser_button_new_with_backend (const gchar          *title,
+btk_file_chooser_button_new_with_backend (const bchar          *title,
 					  BtkFileChooserAction  action,
-					  const gchar          *backend)
+					  const bchar          *backend)
 {
   g_return_val_if_fail (action == BTK_FILE_CHOOSER_ACTION_OPEN ||
 			action == BTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, NULL);
@@ -3035,7 +3035,7 @@ btk_file_chooser_button_new_with_dialog (BtkWidget *dialog)
  **/
 void
 btk_file_chooser_button_set_title (BtkFileChooserButton *button,
-				   const gchar          *title)
+				   const bchar          *title)
 {
   g_return_if_fail (BTK_IS_FILE_CHOOSER_BUTTON (button));
 
@@ -3054,7 +3054,7 @@ btk_file_chooser_button_set_title (BtkFileChooserButton *button,
  *
  * Since: 2.6
  **/
-const gchar *
+const bchar *
 btk_file_chooser_button_get_title (BtkFileChooserButton *button)
 {
   g_return_val_if_fail (BTK_IS_FILE_CHOOSER_BUTTON (button), NULL);
@@ -3072,7 +3072,7 @@ btk_file_chooser_button_get_title (BtkFileChooserButton *button)
  *
  * Since: 2.6
  **/
-gint
+bint
 btk_file_chooser_button_get_width_chars (BtkFileChooserButton *button)
 {
   g_return_val_if_fail (BTK_IS_FILE_CHOOSER_BUTTON (button), -1);
@@ -3091,7 +3091,7 @@ btk_file_chooser_button_get_width_chars (BtkFileChooserButton *button)
  **/
 void
 btk_file_chooser_button_set_width_chars (BtkFileChooserButton *button,
-					 gint                  n_chars)
+					 bint                  n_chars)
 {
   g_return_if_fail (BTK_IS_FILE_CHOOSER_BUTTON (button));
 
@@ -3113,7 +3113,7 @@ btk_file_chooser_button_set_width_chars (BtkFileChooserButton *button,
  **/
 void
 btk_file_chooser_button_set_focus_on_click (BtkFileChooserButton *button,
-					    gboolean              focus_on_click)
+					    bboolean              focus_on_click)
 {
   BtkFileChooserButtonPrivate *priv;
 
@@ -3145,7 +3145,7 @@ btk_file_chooser_button_set_focus_on_click (BtkFileChooserButton *button,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_file_chooser_button_get_focus_on_click (BtkFileChooserButton *button)
 {
   g_return_val_if_fail (BTK_IS_FILE_CHOOSER_BUTTON (button), FALSE);

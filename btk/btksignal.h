@@ -91,58 +91,58 @@ B_BEGIN_DECLS
 
 
 /* --- compat functions --- */
-guint	btk_signal_newv				(const gchar	    *name,
+buint	btk_signal_newv				(const bchar	    *name,
 						 BtkSignalRunType    signal_flags,
 						 GType               object_type,
-						 guint		     function_offset,
+						 buint		     function_offset,
 						 GSignalCMarshaller  marshaller,
 						 GType               return_val,
-						 guint		     n_args,
+						 buint		     n_args,
 						 GType              *args);
-guint	btk_signal_new				(const gchar	    *name,
+buint	btk_signal_new				(const bchar	    *name,
 						 BtkSignalRunType    signal_flags,
 						 GType               object_type,
-						 guint		     function_offset,
+						 buint		     function_offset,
 						 GSignalCMarshaller  marshaller,
 						 GType               return_val,
-						 guint		     n_args,
+						 buint		     n_args,
 						 ...);
 void	btk_signal_emit_stop_by_name		(BtkObject	    *object,
-						 const gchar	    *name);
+						 const bchar	    *name);
 void	btk_signal_connect_object_while_alive	(BtkObject	    *object,
-						 const gchar        *name,
+						 const bchar        *name,
 						 GCallback	     func,
 						 BtkObject	    *alive_object);
 void	btk_signal_connect_while_alive		(BtkObject	    *object,
-						 const gchar        *name,
+						 const bchar        *name,
 						 GCallback	     func,
-						 gpointer	     func_data,
+						 bpointer	     func_data,
 						 BtkObject	    *alive_object);
-gulong	btk_signal_connect_full			(BtkObject	    *object,
-						 const gchar	    *name,
+bulong	btk_signal_connect_full			(BtkObject	    *object,
+						 const bchar	    *name,
 						 GCallback	     func,
 						 BtkCallbackMarshal  unsupported,
-						 gpointer	     data,
+						 bpointer	     data,
 						 GDestroyNotify      destroy_func,
-						 gint		     object_signal,
-						 gint		     after);
+						 bint		     object_signal,
+						 bint		     after);
 void	btk_signal_emitv			(BtkObject	    *object,
-						 guint		     signal_id,
+						 buint		     signal_id,
 						 BtkArg		    *args);
 void	btk_signal_emit				(BtkObject	    *object,
-						 guint		     signal_id,
+						 buint		     signal_id,
 						 ...);
 void	btk_signal_emit_by_name			(BtkObject	    *object,
-						 const gchar	    *name,
+						 const bchar	    *name,
 						 ...);
 void	btk_signal_emitv_by_name		(BtkObject	    *object,
-						 const gchar	    *name,
+						 const bchar	    *name,
 						 BtkArg		    *args);
 void	btk_signal_compat_matched		(BtkObject	    *object,
 						 GCallback 	     func,
-						 gpointer      	     data,
+						 bpointer      	     data,
 						 GSignalMatchType    match,
-						 guint               action);
+						 buint               action);
 
 B_END_DECLS
 

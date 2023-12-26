@@ -51,15 +51,15 @@ struct _BailCellParentIface
   GTypeInterface parent;
   void                  ( *get_cell_extents)      (BailCellParent        *parent,
                                                    BailCell              *cell,
-                                                   gint                  *x,
-                                                   gint                  *y,
-                                                   gint                  *width,
-                                                   gint                  *height,
+                                                   bint                  *x,
+                                                   bint                  *y,
+                                                   bint                  *width,
+                                                   bint                  *height,
                                                    BatkCoordType          coord_type);
   void                  ( *get_cell_area)         (BailCellParent        *parent,
                                                    BailCell              *cell,
                                                    BdkRectangle          *cell_rect);
-  gboolean              ( *grab_focus)            (BailCellParent        *parent,
+  bboolean              ( *grab_focus)            (BailCellParent        *parent,
                                                    BailCell              *cell);
 };
 
@@ -67,16 +67,16 @@ GType  bail_cell_parent_get_type               (void);
 
 void   bail_cell_parent_get_cell_extents       (BailCellParent        *parent,
                                                 BailCell              *cell,
-                                                gint                  *x,
-                                                gint                  *y,
-                                                gint                  *width,
-                                                gint                  *height,
+                                                bint                  *x,
+                                                bint                  *y,
+                                                bint                  *width,
+                                                bint                  *height,
                                                 BatkCoordType          coord_type
 );
 void  bail_cell_parent_get_cell_area           (BailCellParent        *parent,
                                                 BailCell              *cell,
                                                 BdkRectangle          *cell_rect);
-gboolean bail_cell_parent_grab_focus           (BailCellParent        *parent,
+bboolean bail_cell_parent_grab_focus           (BailCellParent        *parent,
                                                 BailCell              *cell);
 
 B_END_DECLS

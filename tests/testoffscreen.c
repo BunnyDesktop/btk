@@ -11,17 +11,17 @@
 
 static void
 combo_changed_cb (BtkWidget *combo,
-		  gpointer   data)
+		  bpointer   data)
 {
   BtkWidget *label = BTK_WIDGET (data);
-  gint active;
+  bint active;
 
   active = btk_combo_box_get_active (BTK_COMBO_BOX (combo));
 
   btk_label_set_ellipsize (BTK_LABEL (label), (BangoEllipsizeMode)active);
 }
 
-static gboolean
+static bboolean
 layout_expose_handler (BtkWidget      *widget,
                        BdkEventExpose *event)
 {
@@ -29,8 +29,8 @@ layout_expose_handler (BtkWidget      *widget,
   BdkWindow *bin_window = btk_layout_get_bin_window (layout);
   bairo_t *cr;
 
-  gint i,j;
-  gint imin, imax, jmin, jmax;
+  bint i,j;
+  bint imin, imax, jmin, jmax;
 
   if (event->window != bin_window)
     return FALSE;
@@ -57,8 +57,8 @@ layout_expose_handler (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-scroll_layout (gpointer data)
+static bboolean
+scroll_layout (bpointer data)
 {
   BtkWidget *layout = data;
   BtkAdjustment *adj;
@@ -69,7 +69,7 @@ scroll_layout (gpointer data)
   return TRUE;
 }
 
-static guint layout_timeout;
+static buint layout_timeout;
 
 static void
 create_layout (BtkWidget *vbox)
@@ -77,8 +77,8 @@ create_layout (BtkWidget *vbox)
   BtkWidget *layout;
   BtkWidget *scrolledwindow;
   BtkWidget *button;
-  gchar buf[16];
-  gint i, j;
+  bchar buf[16];
+  bint i, j;
 
   scrolledwindow = btk_scrolled_window_new (NULL, NULL);
   btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (scrolledwindow),
@@ -170,7 +170,7 @@ create_treeview (BtkWidget *vbox)
 
   for (list = stock_ids; list; list = b_slist_next (list))
     {
-      const gchar *stock_id = list->data;
+      const bchar *stock_id = list->data;
       BtkStockItem item;
 
       if (btk_stock_lookup (stock_id, &item))
@@ -290,7 +290,7 @@ main (int   argc,
 {
   BtkWidget *window, *widget, *vbox, *button;
   BtkWidget *offscreen = NULL;
-  gboolean use_offscreen;
+  bboolean use_offscreen;
 
   btk_init (&argc, &argv);
 

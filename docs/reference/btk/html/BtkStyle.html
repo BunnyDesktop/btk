@@ -119,7 +119,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkStyle.html#btk-style-lookup-color" title="btk_style_lookup_color ()">btk_style_lookup_color</a> <span class="c_punctuation">()</span>
@@ -559,7 +559,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()">*BtkRcPropertyParser</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -861,13 +861,13 @@ specified by <em class="parameter"><code>style</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_style_apply_default_background (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                                     <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                                    <em class="parameter"><code><span class="type">gboolean</span> set_bg</code></em>,
+                                    <em class="parameter"><code><span class="type">bboolean</span> set_bg</code></em>,
                                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                                     <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="refsect3">
 <a name="btk-style-apply-default-background.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -894,9 +894,9 @@ btk_style_apply_default_background (<em class="parameter"><code><a class="link" 
 <hr>
 <div class="refsect2">
 <a name="btk-style-lookup-color"></a><h3>btk_style_lookup_color ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_style_lookup_color (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *color_name</code></em>,
+                        <em class="parameter"><code>const <span class="type">bchar</span> *color_name</code></em>,
                         <em class="parameter"><code><a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *color</code></em>);</pre>
 <p>Looks up <em class="parameter"><code>color_name</code></em>
  in the style's logical color mappings,
@@ -943,7 +943,7 @@ switch occurs.</p>
 <a name="btk-style-lookup-icon-set"></a><h3>btk_style_lookup_icon_set ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Themeable-Stock-Images.html#BtkIconSet"><span class="returnvalue">BtkIconSet</span></a> *
 btk_style_lookup_icon_set (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Looks up <em class="parameter"><code>stock_id</code></em>
  in the icon factories associated with <em class="parameter"><code>style</code></em>
 
@@ -988,7 +988,7 @@ btk_style_render_icon (<em class="parameter"><code><a class="link" href="BtkStyl
                        <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state</code></em>,
                        <em class="parameter"><code><a class="link" href="btk2-Themeable-Stock-Images.html#BtkIconSize" title="enum BtkIconSize"><span class="type">BtkIconSize</span></a> size</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>);</pre>
 <p>Renders the icon specified by <em class="parameter"><code>source</code></em>
  at the given <em class="parameter"><code>size</code></em>
 
@@ -1125,7 +1125,7 @@ to style-&gt;font_desc. </p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_style_get_style_property (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                               <em class="parameter"><code><span class="type">GType</span> widget_type</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *property_name</code></em>,
+                              <em class="parameter"><code>const <span class="type">bchar</span> *property_name</code></em>,
                               <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Queries the value of a style property corresponding to a
 widget class is in the given style.</p>
@@ -1170,7 +1170,7 @@ queried will be stored</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_style_get_valist (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                       <em class="parameter"><code><span class="type">GType</span> widget_type</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *first_property_name</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *first_property_name</code></em>,
                       <em class="parameter"><code><span class="type">va_list</span> var_args</code></em>);</pre>
 <p>Non-vararg variant of <a class="link" href="BtkStyle.html#btk-style-get" title="btk_style_get ()"><code class="function">btk_style_get()</code></a>.
 Used primarily by language bindings.</p>
@@ -1217,7 +1217,7 @@ location for <em class="parameter"><code>first_property_name</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_style_get (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                <em class="parameter"><code><span class="type">GType</span> widget_type</code></em>,
-               <em class="parameter"><code>const <span class="type">gchar</span> *first_property_name</code></em>,
+               <em class="parameter"><code>const <span class="type">bchar</span> *first_property_name</code></em>,
                <em class="parameter"><code>...</code></em>);</pre>
 <p>Gets the values of a multiple style properties for <em class="parameter"><code>widget_type</code></em>
 
@@ -1267,9 +1267,9 @@ return the property values, starting with the location for
 btk_draw_hline (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                 <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x1</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x2</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> x1</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> x2</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_hline</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-hline" title="btk_paint_hline ()"><code class="function">btk_paint_hline()</code></a> instead.</p>
@@ -1331,9 +1331,9 @@ using the given style and state.</p>
 btk_draw_vline (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                 <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y1_</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y2_</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> y1_</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y2_</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_vline</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-vline" title="btk_paint_vline ()"><code class="function">btk_paint_vline()</code></a> instead.</p>
@@ -1396,10 +1396,10 @@ btk_draw_shadow (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_shadow</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-shadow" title="btk_paint_shadow ()"><code class="function">btk_paint_shadow()</code></a> instead.</p>
@@ -1469,8 +1469,8 @@ btk_draw_polygon (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                   <em class="parameter"><code><a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> npoints</code></em>,
-                  <em class="parameter"><code><span class="type">gboolean</span> fill</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> npoints</code></em>,
+                  <em class="parameter"><code><span class="type">bboolean</span> fill</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_polygon</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-polygon" title="btk_paint_polygon ()"><code class="function">btk_paint_polygon()</code></a> instead.</p>
@@ -1535,11 +1535,11 @@ btk_draw_arrow (<em class="parameter"><code><a class="link" href="BtkStyle.html"
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkArrowType" title="enum BtkArrowType"><span class="type">BtkArrowType</span></a> arrow_type</code></em>,
-                <em class="parameter"><code><span class="type">gboolean</span> fill</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bboolean</span> fill</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_arrow</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-arrow" title="btk_paint_arrow ()"><code class="function">btk_paint_arrow()</code></a> instead.</p>
@@ -1619,10 +1619,10 @@ btk_draw_diamond (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_diamond</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-diamond" title="btk_paint_diamond ()"><code class="function">btk_paint_diamond()</code></a> instead.</p>
@@ -1690,9 +1690,9 @@ parameters.</p>
 btk_draw_string (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_string</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-layout" title="btk_paint_layout ()"><code class="function">btk_paint_layout()</code></a> instead.</p>
@@ -1750,10 +1750,10 @@ btk_draw_box (<em class="parameter"><code><a class="link" href="BtkStyle.html" t
               <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
               <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
               <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+              <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_box</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-box" title="btk_paint_box ()"><code class="function">btk_paint_box()</code></a> instead.</p>
@@ -1821,13 +1821,13 @@ btk_draw_box_gap (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> gap_x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> gap_width</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> gap_x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> gap_width</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_box_gap</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-box-gap" title="btk_paint_box_gap ()"><code class="function">btk_paint_box_gap()</code></a> instead.</p>
@@ -1911,10 +1911,10 @@ btk_draw_check (<em class="parameter"><code><a class="link" href="BtkStyle.html"
                 <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_check</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-check" title="btk_paint_check ()"><code class="function">btk_paint_check()</code></a> instead.</p>
@@ -1983,10 +1983,10 @@ btk_draw_extension (<em class="parameter"><code><a class="link" href="BtkStyle.h
                     <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_extension</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
@@ -2059,10 +2059,10 @@ btk_draw_flat_box (<em class="parameter"><code><a class="link" href="BtkStyle.ht
                    <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_flat_box</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-flat-box" title="btk_paint_flat_box ()"><code class="function">btk_paint_flat_box()</code></a> instead.</p>
@@ -2128,10 +2128,10 @@ btk_draw_flat_box (<em class="parameter"><code><a class="link" href="BtkStyle.ht
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_draw_focus (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                 <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_focus</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-focus" title="btk_paint_focus ()"><code class="function">btk_paint_focus()</code></a> instead.</p>
@@ -2190,10 +2190,10 @@ btk_draw_handle (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkOrientation" title="enum BtkOrientation"><span class="type">BtkOrientation</span></a> orientation</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_handle</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
@@ -2266,10 +2266,10 @@ btk_draw_option (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_option</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-option" title="btk_paint_option ()"><code class="function">btk_paint_option()</code></a> instead.</p>
@@ -2338,13 +2338,13 @@ btk_draw_shadow_gap (<em class="parameter"><code><a class="link" href="BtkStyle.
                      <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                      <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                      <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                      <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> gap_x</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> gap_width</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bint</span> gap_x</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> gap_width</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_shadow_gap</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-shadow-gap" title="btk_paint_shadow_gap ()"><code class="function">btk_paint_shadow_gap()</code></a> instead.</p>
@@ -2429,10 +2429,10 @@ btk_draw_slider (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkOrientation" title="enum BtkOrientation"><span class="type">BtkOrientation</span></a> orientation</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_draw_slider</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Draws a slider in the given rectangle on <em class="parameter"><code>window</code></em>
@@ -2504,10 +2504,10 @@ btk_draw_tab (<em class="parameter"><code><a class="link" href="BtkStyle.html" t
               <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
               <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
               <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+              <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_tab</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-tab" title="btk_paint_tab ()"><code class="function">btk_paint_tab()</code></a> instead.</p>
@@ -2575,8 +2575,8 @@ in the given rectangle on <em class="parameter"><code>window</code></em>
 btk_draw_expander (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                    <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkExpanderStyle" title="enum BtkExpanderStyle"><span class="type">BtkExpanderStyle</span></a> expander_style</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_expander</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
@@ -2633,9 +2633,9 @@ btk_draw_expander (<em class="parameter"><code><a class="link" href="BtkStyle.ht
 btk_draw_layout (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> use_text</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bboolean</span> use_text</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_draw_layout</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Draws a layout on <em class="parameter"><code>window</code></em>
@@ -2698,10 +2698,10 @@ btk_draw_resize_grip (<em class="parameter"><code><a class="link" href="BtkStyle
                       <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                       <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                       <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindowEdge"><span class="type">BdkWindowEdge</span></a> edge</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_draw_resize_grip</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-resize-grip" title="btk_paint_resize_grip ()"><code class="function">btk_paint_resize_grip()</code></a> instead.</p>
@@ -2772,13 +2772,13 @@ btk_paint_arrow (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
+                 <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkArrowType" title="enum BtkArrowType"><span class="type">BtkArrowType</span></a> arrow_type</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> fill</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bboolean</span> fill</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws an arrow in the given rectangle on <em class="parameter"><code>window</code></em>
  using the given 
 parameters. <em class="parameter"><code>arrow_type</code></em>
@@ -2872,11 +2872,11 @@ btk_paint_box (<em class="parameter"><code><a class="link" href="BtkStyle.html" 
                <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-               <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+               <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a box on <em class="parameter"><code>window</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -2958,14 +2958,14 @@ btk_paint_box_gap (<em class="parameter"><code><a class="link" href="BtkStyle.ht
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                    <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                    <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                   <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                   <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> gap_x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> gap_width</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> gap_x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> gap_width</code></em>);</pre>
 <p>Draws a box in <em class="parameter"><code>window</code></em>
  using the given style and state and shadow type, 
 leaving a gap in one side.</p>
@@ -3063,11 +3063,11 @@ btk_paint_check (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a check button indicator in the given rectangle on <em class="parameter"><code>window</code></em>
  with 
 the given parameters.</p>
@@ -3150,11 +3150,11 @@ btk_paint_diamond (<em class="parameter"><code><a class="link" href="BtkStyle.ht
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                    <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                    <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                   <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                   <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a diamond in the given rectangle on <em class="parameter"><code>window</code></em>
  using the given
 parameters.</p>
@@ -3237,11 +3237,11 @@ btk_paint_extension (<em class="parameter"><code><a class="link" href="BtkStyle.
                      <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                      <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                      <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                     <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                     <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                      <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>);</pre>
 <p>Draws an extension, i.e. a notebook tab.</p>
 <div class="refsect3">
@@ -3328,11 +3328,11 @@ btk_paint_flat_box (<em class="parameter"><code><a class="link" href="BtkStyle.h
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                     <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                     <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                    <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                    <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a flat box on <em class="parameter"><code>window</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -3413,11 +3413,11 @@ btk_paint_focus (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a focus indicator around the given rectangle on <em class="parameter"><code>window</code></em>
  using the
 given style.</p>
@@ -3495,11 +3495,11 @@ btk_paint_handle (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkOrientation" title="enum BtkOrientation"><span class="type">BtkOrientation</span></a> orientation</code></em>);</pre>
 <p>Draws a handle as used in <a class="link" href="BtkHandleBox.html" title="BtkHandleBox"><span class="type">BtkHandleBox</span></a> and <a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a>.</p>
 <div class="refsect3">
@@ -3585,10 +3585,10 @@ btk_paint_hline (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x1</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x2</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                 <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x1</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x2</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Draws a horizontal line from (<em class="parameter"><code>x1</code></em>
 , <em class="parameter"><code>y</code></em>
 ) to (<em class="parameter"><code>x2</code></em>
@@ -3665,11 +3665,11 @@ btk_paint_option (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a radio button indicator in the given rectangle on <em class="parameter"><code>window</code></em>
  with 
 the given parameters.</p>
@@ -3752,10 +3752,10 @@ btk_paint_polygon (<em class="parameter"><code><a class="link" href="BtkStyle.ht
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                    <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                    <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                   <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
+                   <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
                    <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> n_points</code></em>,
-                   <em class="parameter"><code><span class="type">gboolean</span> fill</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> n_points</code></em>,
+                   <em class="parameter"><code><span class="type">bboolean</span> fill</code></em>);</pre>
 <p>Draws a polygon on <em class="parameter"><code>window</code></em>
  with the given parameters.</p>
 <div class="refsect3">
@@ -3833,11 +3833,11 @@ btk_paint_shadow (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a shadow around the given rectangle in <em class="parameter"><code>window</code></em>
  
 using the given style and state and shadow type.</p>
@@ -3920,14 +3920,14 @@ btk_paint_shadow_gap (<em class="parameter"><code><a class="link" href="BtkStyle
                       <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                       <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                       <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                       <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> gap_side</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> gap_x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> gap_width</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> gap_x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> gap_width</code></em>);</pre>
 <p>Draws a shadow around the given rectangle in <em class="parameter"><code>window</code></em>
  
 using the given style and state and shadow type, leaving a 
@@ -4026,11 +4026,11 @@ btk_paint_slider (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkOrientation" title="enum BtkOrientation"><span class="type">BtkOrientation</span></a> orientation</code></em>);</pre>
 <p>Draws a slider in the given rectangle on <em class="parameter"><code>window</code></em>
  using the
@@ -4118,12 +4118,12 @@ btk_paint_spinner (<em class="parameter"><code><a class="link" href="BtkStyle.ht
                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                    <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                    <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                   <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                   <em class="parameter"><code><span class="type">guint</span> step</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                   <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                   <em class="parameter"><code><span class="type">buint</span> step</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a spinner on <em class="parameter"><code>window</code></em>
  using the given parameters.</p>
 <div class="refsect3">
@@ -4205,10 +4205,10 @@ btk_paint_string (<em class="parameter"><code><a class="link" href="BtkStyle.htm
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                  <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_paint_string</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkStyle.html#btk-paint-layout" title="btk_paint_layout ()"><code class="function">btk_paint_layout()</code></a> instead.</p>
@@ -4284,11 +4284,11 @@ btk_paint_tab (<em class="parameter"><code><a class="link" href="BtkStyle.html" 
                <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> shadow_type</code></em>,
                <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-               <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+               <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws an option menu tab (i.e. the up and down pointing arrows)
 in the given rectangle on <em class="parameter"><code>window</code></em>
  using the given parameters.</p>
@@ -4370,10 +4370,10 @@ btk_paint_vline (<em class="parameter"><code><a class="link" href="BtkStyle.html
                  <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y1_</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y2_</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>);</pre>
+                 <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y1_</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y2_</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>);</pre>
 <p>Draws a vertical line from (<em class="parameter"><code>x</code></em>
 , <em class="parameter"><code>y1_</code></em>
 ) to (<em class="parameter"><code>x</code></em>
@@ -4449,9 +4449,9 @@ btk_paint_expander (<em class="parameter"><code><a class="link" href="BtkStyle.h
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                     <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                     <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                    <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                    <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkExpanderStyle" title="enum BtkExpanderStyle"><span class="type">BtkExpanderStyle</span></a> expander_style</code></em>);</pre>
 <p>Draws an expander as used in <a class="link" href="BtkTreeView.html" title="BtkTreeView"><span class="type">BtkTreeView</span></a>. <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
@@ -4533,12 +4533,12 @@ intermediate state.</p></td>
 btk_paint_layout (<em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>,
                   <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                   <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
-                  <em class="parameter"><code><span class="type">gboolean</span> use_text</code></em>,
+                  <em class="parameter"><code><span class="type">bboolean</span> use_text</code></em>,
                   <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                   <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                  <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                  <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                   <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>);</pre>
 <p>Draws a layout on <em class="parameter"><code>window</code></em>
  using the given parameters.</p>
@@ -4617,12 +4617,12 @@ btk_paint_resize_grip (<em class="parameter"><code><a class="link" href="BtkStyl
                        <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkStateType" title="enum BtkStateType"><span class="type">BtkStateType</span></a> state_type</code></em>,
                        <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *detail</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *detail</code></em>,
                        <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindowEdge"><span class="type">BdkWindowEdge</span></a> edge</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <p>Draws a resize grip in the given rectangle on <em class="parameter"><code>window</code></em>
  using the given
 parameters.</p>
@@ -4703,9 +4703,9 @@ btk_draw_insertion_cursor (<em class="parameter"><code><a class="link" href="Btk
                            <em class="parameter"><code><a href="../html/bdk2-Drawing-Primitives.html#BdkDrawable-struct"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                            <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *area</code></em>,
                            <em class="parameter"><code>const <a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *location</code></em>,
-                           <em class="parameter"><code><span class="type">gboolean</span> is_primary</code></em>,
+                           <em class="parameter"><code><span class="type">bboolean</span> is_primary</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkWidget.html#BtkTextDirection" title="enum BtkTextDirection"><span class="type">BtkTextDirection</span></a> direction</code></em>,
-                           <em class="parameter"><code><span class="type">gboolean</span> draw_arrow</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bboolean</span> draw_arrow</code></em>);</pre>
 <p>Draws a text caret on <em class="parameter"><code>drawable</code></em>
  at <em class="parameter"><code>location</code></em>
 . This is not a style function
@@ -4831,7 +4831,7 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
 <hr>
 <div class="refsect2">
 <a name="BtkRcPropertyParser"></a><h3>BtkRcPropertyParser ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 <span class="c_punctuation">(</span>*BtkRcPropertyParser<span class="c_punctuation">)</span> (<em class="parameter"><code>const <span class="type">BParamSpec</span> *pspec</code></em>,
                         <em class="parameter"><code>const <span class="type">GString</span> *rc_string</code></em>,
                         <em class="parameter"><code><span class="type">BValue</span> *property_value</code></em>);</pre>
@@ -4855,8 +4855,8 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
   BdkColor white;
   BangoFontDescription *font_desc;
 
-  gint xthickness;
-  gint ythickness;
+  bint xthickness;
+  bint ythickness;
 
   BdkGC *fg_gc[5];
   BdkGC *bg_gc[5];
@@ -4877,10 +4877,10 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
 <div class="refsect2">
 <a name="BtkBorder-struct"></a><h3>struct BtkBorder</h3>
 <pre class="programlisting">struct BtkBorder {
-  gint left;
-  gint right;
-  gint top;
-  gint bottom;
+  bint left;
+  bint right;
+  bint top;
+  bint bottom;
 };
 </pre>
 </div>
@@ -4893,7 +4893,7 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
   GQuark property_name;
 
   /* fields similar to BtkSettingsValue */
-  gchar *origin;
+  bchar *origin;
   BValue value;
 } BtkRcProperty;
 </pre>
@@ -4905,7 +4905,7 @@ btk_border_free (<em class="parameter"><code><a class="link" href="BtkStyle.html
 <a name="BtkStyle-realize"></a><h3>The <code class="literal">“realize”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>Emitted when the style has been initialized for a particular
 colormap and depth. Connecting to this signal is probably seldom
 useful since most of the time applications and widgets only
@@ -4940,7 +4940,7 @@ deal with styles that have been already realized.</p>
 <a name="BtkStyle-unrealize"></a><h3>The <code class="literal">“unrealize”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>Emitted when the aspects of the style specific to a particular colormap
 and depth are being cleaned up. A connection to this signal can be useful
 if a widget wants to cache objects like a <a href="../html/bdk2-Graphics-Contexts.html#BdkGC-struct"><span class="type">BdkGC</span></a> as object data on <a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a>.

@@ -53,64 +53,64 @@ struct _BtkEditableClass
 
   /* signals */
   void (* insert_text)              (BtkEditable    *editable,
-				     const gchar    *text,
-				     gint            length,
-				     gint           *position);
+				     const bchar    *text,
+				     bint            length,
+				     bint           *position);
   void (* delete_text)              (BtkEditable    *editable,
-				     gint            start_pos,
-				     gint            end_pos);
+				     bint            start_pos,
+				     bint            end_pos);
   void (* changed)                  (BtkEditable    *editable);
 
   /* vtable */
   void (* do_insert_text)           (BtkEditable    *editable,
-				     const gchar    *text,
-				     gint            length,
-				     gint           *position);
+				     const bchar    *text,
+				     bint            length,
+				     bint           *position);
   void (* do_delete_text)           (BtkEditable    *editable,
-				     gint            start_pos,
-				     gint            end_pos);
+				     bint            start_pos,
+				     bint            end_pos);
 
-  gchar* (* get_chars)              (BtkEditable    *editable,
-				     gint            start_pos,
-				     gint            end_pos);
+  bchar* (* get_chars)              (BtkEditable    *editable,
+				     bint            start_pos,
+				     bint            end_pos);
   void (* set_selection_bounds)     (BtkEditable    *editable,
-				     gint            start_pos,
-				     gint            end_pos);
-  gboolean (* get_selection_bounds) (BtkEditable    *editable,
-				     gint           *start_pos,
-				     gint           *end_pos);
+				     bint            start_pos,
+				     bint            end_pos);
+  bboolean (* get_selection_bounds) (BtkEditable    *editable,
+				     bint           *start_pos,
+				     bint           *end_pos);
   void (* set_position)             (BtkEditable    *editable,
-				     gint            position);
-  gint (* get_position)             (BtkEditable    *editable);
+				     bint            position);
+  bint (* get_position)             (BtkEditable    *editable);
 };
 
 GType    btk_editable_get_type             (void) B_GNUC_CONST;
 void     btk_editable_select_rebunnyion        (BtkEditable *editable,
-					    gint         start_pos,
-					    gint         end_pos);
-gboolean btk_editable_get_selection_bounds (BtkEditable *editable,
-					    gint        *start_pos,
-					    gint        *end_pos);
+					    bint         start_pos,
+					    bint         end_pos);
+bboolean btk_editable_get_selection_bounds (BtkEditable *editable,
+					    bint        *start_pos,
+					    bint        *end_pos);
 void     btk_editable_insert_text          (BtkEditable *editable,
-					    const gchar *new_text,
-					    gint         new_text_length,
-					    gint        *position);
+					    const bchar *new_text,
+					    bint         new_text_length,
+					    bint        *position);
 void     btk_editable_delete_text          (BtkEditable *editable,
-					    gint         start_pos,
-					    gint         end_pos);
-gchar*   btk_editable_get_chars            (BtkEditable *editable,
-					    gint         start_pos,
-					    gint         end_pos);
+					    bint         start_pos,
+					    bint         end_pos);
+bchar*   btk_editable_get_chars            (BtkEditable *editable,
+					    bint         start_pos,
+					    bint         end_pos);
 void     btk_editable_cut_clipboard        (BtkEditable *editable);
 void     btk_editable_copy_clipboard       (BtkEditable *editable);
 void     btk_editable_paste_clipboard      (BtkEditable *editable);
 void     btk_editable_delete_selection     (BtkEditable *editable);
 void     btk_editable_set_position         (BtkEditable *editable,
-					    gint         position);
-gint     btk_editable_get_position         (BtkEditable *editable);
+					    bint         position);
+bint     btk_editable_get_position         (BtkEditable *editable);
 void     btk_editable_set_editable         (BtkEditable *editable,
-					    gboolean     is_editable);
-gboolean btk_editable_get_editable         (BtkEditable *editable);
+					    bboolean     is_editable);
+bboolean btk_editable_get_editable         (BtkEditable *editable);
 
 B_END_DECLS
 

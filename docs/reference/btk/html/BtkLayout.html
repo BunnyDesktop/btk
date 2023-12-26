@@ -159,7 +159,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkLayout.html#BtkLayout--height" title="The “height” property">height</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -170,7 +170,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkLayout.html#BtkLayout--width" title="The “width” property">width</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -296,8 +296,8 @@ you'd like the layout to use for scrolling, pass <code class="literal">NULL</cod
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_layout_put (<em class="parameter"><code><a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a> *layout</code></em>,
                 <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child_widget</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Adds <em class="parameter"><code>child_widget</code></em>
  to <em class="parameter"><code>layout</code></em>
 , at position (<em class="parameter"><code>x</code></em>
@@ -345,8 +345,8 @@ btk_layout_put (<em class="parameter"><code><a class="link" href="BtkLayout.html
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_layout_move (<em class="parameter"><code><a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a> *layout</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child_widget</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Moves a current child of <em class="parameter"><code>layout</code></em>
  to a new position.</p>
 <div class="refsect3">
@@ -388,8 +388,8 @@ btk_layout_move (<em class="parameter"><code><a class="link" href="BtkLayout.htm
 <a name="btk-layout-set-size"></a><h3>btk_layout_set_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_layout_set_size (<em class="parameter"><code><a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a> *layout</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> width</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> height</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">buint</span> width</code></em>,
+                     <em class="parameter"><code><span class="type">buint</span> height</code></em>);</pre>
 <p>Sets the size of the scrollable area of the layout.</p>
 <div class="refsect3">
 <a name="btk-layout-set-size.parameters"></a><h4>Parameters</h4>
@@ -424,8 +424,8 @@ btk_layout_set_size (<em class="parameter"><code><a class="link" href="BtkLayout
 <a name="btk-layout-get-size"></a><h3>btk_layout_get_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_layout_get_size (<em class="parameter"><code><a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a> *layout</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> *width</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> *height</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">buint</span> *width</code></em>,
+                     <em class="parameter"><code><span class="type">buint</span> *height</code></em>);</pre>
 <p>Gets the size that has been set on the layout, and that determines
 the total extents of the layout's scrollbar area. See
 <a class="link" href="BtkLayout.html#btk-layout-set-size" title="btk_layout_set_size ()"><code class="function">btk_layout_set_size()</code></a>.</p>
@@ -684,11 +684,11 @@ btk_layout_get_bin_window (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="BtkLayout--height"></a><h3>The <code class="literal">“height”</code> property</h3>
-<pre class="programlisting">  “height”                   <span class="type">guint</span></pre>
+<pre class="programlisting">  “height”                   <span class="type">buint</span></pre>
 <p>The height of the layout.</p>
 <p>Owner: BtkLayout</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 100</p>
 </div>
 <hr>
@@ -702,11 +702,11 @@ btk_layout_get_bin_window (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="BtkLayout--width"></a><h3>The <code class="literal">“width”</code> property</h3>
-<pre class="programlisting">  “width”                    <span class="type">guint</span></pre>
+<pre class="programlisting">  “width”                    <span class="type">buint</span></pre>
 <p>The width of the layout.</p>
 <p>Owner: BtkLayout</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 100</p>
 </div>
 </div>
@@ -738,7 +738,7 @@ btk_layout_get_bin_window (<em class="parameter"><code><a class="link" href="Btk
 user_function (<a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a>     *horizontal,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *vertical,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg2,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Set the scroll adjustments for the layout. Usually scrolled containers
 like <a class="link" href="BtkScrolledWindow.html" title="BtkScrolledWindow"><span class="type">BtkScrolledWindow</span></a> will emit this signal to connect two instances
 of <a class="link" href="BtkScrollbar.html" title="BtkScrollbar"><span class="type">BtkScrollbar</span></a> to the scroll directions of the <a class="link" href="BtkLayout.html" title="BtkLayout"><span class="type">BtkLayout</span></a>.</p>

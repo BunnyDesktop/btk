@@ -39,74 +39,74 @@ static void bail_widget_connect_widget_destroyed (BtkAccessible    *accessible);
 static void bail_widget_destroyed                (BtkWidget        *widget,
                                                   BtkAccessible    *accessible);
 
-static const gchar* bail_widget_get_description (BatkObject *accessible);
+static const bchar* bail_widget_get_description (BatkObject *accessible);
 static BatkObject* bail_widget_get_parent (BatkObject *accessible);
 static BatkStateSet* bail_widget_ref_state_set (BatkObject *accessible);
 static BatkRelationSet* bail_widget_ref_relation_set (BatkObject *accessible);
-static gint bail_widget_get_index_in_parent (BatkObject *accessible);
+static bint bail_widget_get_index_in_parent (BatkObject *accessible);
 
 static void batk_component_interface_init (BatkComponentIface *iface);
 
-static guint    bail_widget_add_focus_handler
+static buint    bail_widget_add_focus_handler
                                            (BatkComponent    *component,
                                             BatkFocusHandler handler);
 
 static void     bail_widget_get_extents    (BatkComponent    *component,
-                                            gint            *x,
-                                            gint            *y,
-                                            gint            *width,
-                                            gint            *height,
+                                            bint            *x,
+                                            bint            *y,
+                                            bint            *width,
+                                            bint            *height,
                                             BatkCoordType    coord_type);
 
 static void     bail_widget_get_size       (BatkComponent    *component,
-                                            gint            *width,
-                                            gint            *height);
+                                            bint            *width,
+                                            bint            *height);
 
 static BatkLayer bail_widget_get_layer      (BatkComponent *component);
 
-static gboolean bail_widget_grab_focus     (BatkComponent    *component);
+static bboolean bail_widget_grab_focus     (BatkComponent    *component);
 
 
 static void     bail_widget_remove_focus_handler 
                                            (BatkComponent    *component,
-                                            guint           handler_id);
+                                            buint           handler_id);
 
-static gboolean bail_widget_set_extents    (BatkComponent    *component,
-                                            gint            x,
-                                            gint            y,
-                                            gint            width,
-                                            gint            height,
+static bboolean bail_widget_set_extents    (BatkComponent    *component,
+                                            bint            x,
+                                            bint            y,
+                                            bint            width,
+                                            bint            height,
                                             BatkCoordType    coord_type);
 
-static gboolean bail_widget_set_position   (BatkComponent    *component,
-                                            gint            x,
-                                            gint            y,
+static bboolean bail_widget_set_position   (BatkComponent    *component,
+                                            bint            x,
+                                            bint            y,
                                             BatkCoordType    coord_type);
 
-static gboolean bail_widget_set_size       (BatkComponent    *component,
-                                            gint            width,
-                                            gint            height);
+static bboolean bail_widget_set_size       (BatkComponent    *component,
+                                            bint            width,
+                                            bint            height);
 
-static gint       bail_widget_map_btk            (BtkWidget     *widget);
+static bint       bail_widget_map_btk            (BtkWidget     *widget);
 static void       bail_widget_real_notify_btk    (BObject       *obj,
                                                   BParamSpec    *pspec);
 static void       bail_widget_notify_btk         (BObject       *obj,
                                                   BParamSpec    *pspec);
-static gboolean   bail_widget_focus_btk          (BtkWidget     *widget,
+static bboolean   bail_widget_focus_btk          (BtkWidget     *widget,
                                                   BdkEventFocus *event);
-static gboolean   bail_widget_real_focus_btk     (BtkWidget     *widget,
+static bboolean   bail_widget_real_focus_btk     (BtkWidget     *widget,
                                                   BdkEventFocus *event);
 static void       bail_widget_size_allocate_btk  (BtkWidget     *widget,
                                                   BtkAllocation *allocation);
 
 static void       bail_widget_focus_event        (BatkObject     *obj,
-                                                  gboolean      focus_in);
+                                                  bboolean      focus_in);
 
 static void       bail_widget_real_initialize    (BatkObject     *obj,
-                                                  gpointer      data);
+                                                  bpointer      data);
 static BtkWidget* bail_widget_find_viewport      (BtkWidget     *widget);
-static gboolean   bail_widget_on_screen          (BtkWidget     *widget);
-static gboolean   bail_widget_all_parents_visible(BtkWidget     *widget);
+static bboolean   bail_widget_on_screen          (BtkWidget     *widget);
+static bboolean   bail_widget_all_parents_visible(BtkWidget     *widget);
 
 G_DEFINE_TYPE_WITH_CODE (BailWidget, bail_widget, BTK_TYPE_ACCESSIBLE,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_COMPONENT, batk_component_interface_init))
@@ -141,7 +141,7 @@ bail_widget_init (BailWidget *accessible)
  **/
 static void 
 bail_widget_real_initialize (BatkObject *obj,
-                             gpointer  data)
+                             bpointer  data)
 {
   BtkAccessible *accessible;
   BtkWidget *widget;
@@ -183,7 +183,7 @@ bail_widget_real_initialize (BatkObject *obj,
                     G_CALLBACK (bail_widget_map_btk),
                     NULL);
   g_object_set_data (B_OBJECT (obj), "batk-component-layer",
-		     GINT_TO_POINTER (BATK_LAYER_WIDGET));
+		     BINT_TO_POINTER (BATK_LAYER_WIDGET));
 
   obj->role = BATK_ROLE_UNKNOWN;
 }
@@ -234,7 +234,7 @@ bail_widget_destroyed (BtkWidget     *widget,
                                   TRUE);
 }
 
-static const gchar*
+static const bchar*
 bail_widget_get_description (BatkObject *accessible)
 {
   if (accessible->description)
@@ -290,7 +290,7 @@ bail_widget_get_parent (BatkObject *accessible)
        */
       if (BTK_IS_NOTEBOOK (parent_widget))
         {
-          gint page_num;
+          bint page_num;
           BtkWidget *child;
           BtkNotebook *notebook;
 
@@ -537,12 +537,12 @@ bail_widget_ref_state_set (BatkObject *accessible)
   return state_set;
 }
 
-static gint
+static bint
 bail_widget_get_index_in_parent (BatkObject *accessible)
 {
   BtkWidget *widget;
   BtkWidget *parent_widget;
-  gint index;
+  bint index;
   GList *children;
   GType type;
 
@@ -566,8 +566,8 @@ bail_widget_get_index_in_parent (BatkObject *accessible)
         return 0;
       else
         {
-          gint n_children, i;
-          gboolean found = FALSE;
+          bint n_children, i;
+          bboolean found = FALSE;
 
           n_children = batk_object_get_n_accessible_children (parent);
           for (i = 0; i < n_children; i++)
@@ -615,19 +615,19 @@ batk_component_interface_init (BatkComponentIface *iface)
   iface->set_size = bail_widget_set_size;
 }
 
-static guint 
+static buint 
 bail_widget_add_focus_handler (BatkComponent    *component,
                                BatkFocusHandler handler)
 {
   GSignalMatchType match_type;
-  gulong ret;
-  guint signal_id;
+  bulong ret;
+  buint signal_id;
 
   match_type = G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC;
   signal_id = g_signal_lookup ("focus-event", BATK_TYPE_OBJECT);
 
   ret = g_signal_handler_find (component, match_type, signal_id, 0, NULL,
-                               (gpointer) handler, NULL);
+                               (bpointer) handler, NULL);
   if (!ret)
     {
       return g_signal_connect_closure_by_id (component, 
@@ -645,15 +645,15 @@ bail_widget_add_focus_handler (BatkComponent    *component,
 
 static void 
 bail_widget_get_extents (BatkComponent   *component,
-                         gint           *x,
-                         gint           *y,
-                         gint           *width,
-                         gint           *height,
+                         bint           *x,
+                         bint           *y,
+                         bint           *width,
+                         bint           *height,
                          BatkCoordType   coord_type)
 {
   BdkWindow *window;
-  gint x_window, y_window;
-  gint x_toplevel, y_toplevel;
+  bint x_window, y_window;
+  bint x_toplevel, y_toplevel;
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
@@ -668,8 +668,8 @@ bail_widget_get_extents (BatkComponent   *component,
   *height = widget->allocation.height;
   if (!bail_widget_on_screen (widget) || (!btk_widget_is_drawable (widget)))
     {
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
       return;
     }
 
@@ -702,8 +702,8 @@ bail_widget_get_extents (BatkComponent   *component,
 
 static void 
 bail_widget_get_size (BatkComponent   *component,
-                      gint           *width,
-                      gint           *height)
+                      bint           *width,
+                      bint           *height)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
@@ -722,13 +722,13 @@ bail_widget_get_size (BatkComponent   *component,
 static BatkLayer
 bail_widget_get_layer (BatkComponent *component)
 {
-  gint layer;
-  layer = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (component), "batk-component-layer"));
+  bint layer;
+  layer = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (component), "batk-component-layer"));
 
   return (BatkLayer) layer;
 }
 
-static gboolean 
+static bboolean 
 bail_widget_grab_focus (BatkComponent   *component)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
@@ -755,17 +755,17 @@ bail_widget_grab_focus (BatkComponent   *component)
 
 static void 
 bail_widget_remove_focus_handler (BatkComponent   *component,
-                                  guint          handler_id)
+                                  buint          handler_id)
 {
   g_signal_handler_disconnect (component, handler_id);
 }
 
-static gboolean 
+static bboolean 
 bail_widget_set_extents (BatkComponent   *component,
-                         gint           x,
-                         gint           y,
-                         gint           width,
-                         gint           height,
+                         bint           x,
+                         bint           y,
+                         bint           width,
+                         bint           height,
                          BatkCoordType   coord_type)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
@@ -781,7 +781,7 @@ bail_widget_set_extents (BatkComponent   *component,
     {
       if (coord_type == BATK_XY_WINDOW)
         {
-          gint x_current, y_current;
+          bint x_current, y_current;
           BdkWindow *window = widget->window;
 
           bdk_window_get_origin (window, &x_current, &y_current);
@@ -806,10 +806,10 @@ bail_widget_set_extents (BatkComponent   *component,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_widget_set_position (BatkComponent   *component,
-                          gint           x,
-                          gint           y,
+                          bint           x,
+                          bint           y,
                           BatkCoordType   coord_type)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
@@ -825,7 +825,7 @@ bail_widget_set_position (BatkComponent   *component,
     {
       if (coord_type == BATK_XY_WINDOW)
         {
-          gint x_current, y_current;
+          bint x_current, y_current;
           BdkWindow *window = widget->window;
 
           bdk_window_get_origin (window, &x_current, &y_current);
@@ -848,10 +848,10 @@ bail_widget_set_position (BatkComponent   *component,
   return FALSE;
 }
 
-static gboolean 
+static bboolean 
 bail_widget_set_size (BatkComponent   *component,
-                      gint           width,
-                      gint           height)
+                      bint           width,
+                      bint           height)
 {
   BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
@@ -875,7 +875,7 @@ bail_widget_set_size (BatkComponent   *component,
  * This function is a signal handler for notify_in_event and focus_out_event
  * signal which gets emitted on a BtkWidget.
  */
-static gboolean
+static bboolean
 bail_widget_focus_btk (BtkWidget     *widget,
                        BdkEventFocus *event)
 {
@@ -896,12 +896,12 @@ bail_widget_focus_btk (BtkWidget     *widget,
  *
  * It emits a focus-event signal on the BailWidget.
  */
-static gboolean
+static bboolean
 bail_widget_real_focus_btk (BtkWidget     *widget,
                             BdkEventFocus *event)
 {
   BatkObject* accessible;
-  gboolean return_val;
+  bboolean return_val;
   return_val = FALSE;
 
   accessible = btk_widget_get_accessible (widget);
@@ -930,7 +930,7 @@ bail_widget_size_allocate_btk (BtkWidget     *widget,
 /*
  * This function is the signal handler defined for map and unmap signals.
  */
-static gint
+static bint
 bail_widget_map_btk (BtkWidget     *widget)
 {
   BatkObject* accessible;
@@ -975,7 +975,7 @@ bail_widget_real_notify_btk (BObject     *obj,
   BtkWidget* widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);
   BatkState state;
-  gboolean value;
+  bboolean value;
 
   if (strcmp (pspec->name, "has-focus") == 0)
     /*
@@ -1010,7 +1010,7 @@ bail_widget_real_notify_btk (BObject     *obj,
 
 static void 
 bail_widget_focus_event (BatkObject   *obj,
-                         gboolean    focus_in)
+                         bboolean    focus_in)
 {
   BatkObject *focus_obj;
 
@@ -1043,10 +1043,10 @@ bail_widget_find_viewport (BtkWidget *widget)
  * a BtkViewport and, if so, whether any part of the widget intersects
  * the visible rectangle of the BtkViewport.
  */ 
-static gboolean bail_widget_on_screen (BtkWidget *widget)
+static bboolean bail_widget_on_screen (BtkWidget *widget)
 {
   BtkWidget *viewport;
-  gboolean return_value;
+  bboolean return_value;
 
   viewport = bail_widget_find_viewport (widget);
   if (viewport)
@@ -1094,10 +1094,10 @@ static gboolean bail_widget_on_screen (BtkWidget *widget)
  *
  * Return value: TRUE if all the parent hierarchy is visible, FALSE otherwise
  **/
-static gboolean bail_widget_all_parents_visible (BtkWidget *widget)
+static bboolean bail_widget_all_parents_visible (BtkWidget *widget)
 {
   BtkWidget *iter_parent = NULL;
-  gboolean result = TRUE;
+  bboolean result = TRUE;
 
   for (iter_parent = btk_widget_get_parent (widget); iter_parent;
        iter_parent = btk_widget_get_parent (iter_parent))

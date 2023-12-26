@@ -23,7 +23,7 @@
 static void
 drag_begin (BtkWidget      *widget,
 	    BdkDragContext *context,
-	    gpointer        data)
+	    bpointer        data)
 {
   BtkWidget *image = BTK_WIDGET (data);
 
@@ -36,9 +36,9 @@ void
 drag_data_get  (BtkWidget        *widget,
 		BdkDragContext   *context,
 		BtkSelectionData *selection_data,
-		guint             info,
-		guint             time,
-		gpointer          data)
+		buint             info,
+		buint             time,
+		bpointer          data)
 {
   BtkWidget *image = BTK_WIDGET (data);
 
@@ -50,12 +50,12 @@ drag_data_get  (BtkWidget        *widget,
 static void
 drag_data_received (BtkWidget        *widget,
 		    BdkDragContext   *context,
-		    gint              x,
-		    gint              y,
+		    bint              x,
+		    bint              y,
 		    BtkSelectionData *selection_data,
-		    guint             info,
-		    guint32           time,
-		    gpointer          data)
+		    buint             info,
+		    buint32           time,
+		    bpointer          data)
 {
   BtkWidget *image = BTK_WIDGET (data);
 
@@ -69,18 +69,18 @@ drag_data_received (BtkWidget        *widget,
   btk_image_set_from_pixbuf (BTK_IMAGE (image), pixbuf);
 }
 
-static gboolean
-idle_func (gpointer data)
+static bboolean
+idle_func (bpointer data)
 {
   g_print ("keep me busy\n");
 
   return TRUE;
 }
 
-static gboolean
+static bboolean
 anim_image_expose (BtkWidget      *widget,
                    BdkEventExpose *eevent,
-                   gpointer        data)
+                   bpointer        data)
 {
   g_print ("start busyness\n");
 
@@ -102,8 +102,8 @@ main (int argc, char **argv)
   BdkPixbuf *pixbuf;
   BtkIconSet *iconset;
   BtkIconSource *iconsource;
-  gchar *icon_name = "bunny-terminal";
-  gchar *anim_filename = NULL;
+  bchar *icon_name = "bunny-terminal";
+  bchar *anim_filename = NULL;
   GIcon *icon;
   GFile *file;
 

@@ -63,22 +63,22 @@ enum {
 };
 
 static BtkDrawingAreaClass *parent_class = NULL;
-static guint curve_type_changed_signal = 0;
+static buint curve_type_changed_signal = 0;
 
 
 /* forward declarations: */
 static void btk_curve_class_init   (BtkCurveClass *class);
 static void btk_curve_init         (BtkCurve      *curve);
 static void btk_curve_get_property  (BObject              *object,
-				     guint                 param_id,
+				     buint                 param_id,
 				     BValue               *value,
 				     BParamSpec           *pspec);
 static void btk_curve_set_property  (BObject              *object,
-				     guint                 param_id,
+				     buint                 param_id,
 				     const BValue         *value,
 				     BParamSpec           *pspec);
 static void btk_curve_finalize     (BObject       *object);
-static gint btk_curve_graph_events (BtkWidget     *widget, 
+static bint btk_curve_graph_events (BtkWidget     *widget, 
 				    BdkEvent      *event, 
 				    BtkCurve      *c);
 static void btk_curve_size_graph   (BtkCurve      *curve);
@@ -134,8 +134,8 @@ btk_curve_class_init (BtkCurveClass *class)
 				   g_param_spec_float ("min-x",
 						       P_("Minimum X"),
 						       P_("Minimum possible value for X"),
-						       -G_MAXFLOAT,
-						       G_MAXFLOAT,
+						       -B_MAXFLOAT,
+						       B_MAXFLOAT,
 						       0.0,
 						       BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
@@ -143,8 +143,8 @@ btk_curve_class_init (BtkCurveClass *class)
 				   g_param_spec_float ("max-x",
 						       P_("Maximum X"),
 						       P_("Maximum possible X value"),
-						       -G_MAXFLOAT,
-						       G_MAXFLOAT,
+						       -B_MAXFLOAT,
+						       B_MAXFLOAT,
                                                        1.0,
 						       BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
@@ -152,8 +152,8 @@ btk_curve_class_init (BtkCurveClass *class)
 				   g_param_spec_float ("min-y",
 						       P_("Minimum Y"),
 						       P_("Minimum possible value for Y"),
-                                                       -G_MAXFLOAT,
-						       G_MAXFLOAT,
+                                                       -B_MAXFLOAT,
+						       B_MAXFLOAT,
 						       0.0,
 						       BTK_PARAM_READWRITE));  
   g_object_class_install_property (bobject_class,
@@ -161,8 +161,8 @@ btk_curve_class_init (BtkCurveClass *class)
 				   g_param_spec_float ("max-y",
 						       P_("Maximum Y"),
 						       P_("Maximum possible value for Y"),
-						       -G_MAXFLOAT,
-						       G_MAXFLOAT,
+						       -B_MAXFLOAT,
+						       B_MAXFLOAT,
 						       1.0,
 						       BTK_PARAM_READWRITE));
 
@@ -179,7 +179,7 @@ btk_curve_class_init (BtkCurveClass *class)
 static void
 btk_curve_init (BtkCurve *curve)
 {
-  gint old_mask;
+  bint old_mask;
 
   curve->cursor_type = BDK_TOP_LEFT_ARROW;
   curve->pixmap = NULL;
@@ -207,7 +207,7 @@ btk_curve_init (BtkCurve *curve)
 
 static void
 btk_curve_set_property (BObject              *object,
-			guint                 prop_id,
+			buint                 prop_id,
 			const BValue         *value,
 			BParamSpec           *pspec)
 {
@@ -242,7 +242,7 @@ btk_curve_set_property (BObject              *object,
 
 static void
 btk_curve_get_property (BObject              *object,
-			guint                 prop_id,
+			buint                 prop_id,
 			BValue               *value,
 			BParamSpec           *pspec)
 {
@@ -272,25 +272,25 @@ btk_curve_get_property (BObject              *object,
 }
 
 static int
-project (gfloat value, gfloat min, gfloat max, int norm)
+project (bfloat value, bfloat min, bfloat max, int norm)
 {
   return (norm - 1) * ((value - min) / (max - min)) + 0.5;
 }
 
-static gfloat
-unproject (gint value, gfloat min, gfloat max, int norm)
+static bfloat
+unproject (bint value, bfloat min, bfloat max, int norm)
 {
-  return value / (gfloat) (norm - 1) * (max - min) + min;
+  return value / (bfloat) (norm - 1) * (max - min) + min;
 }
 
 /* Solve the tridiagonal equation system that determines the second
    derivatives for the interpolation points.  (Based on Numerical
    Recipies 2nd Edition.) */
 static void
-spline_solve (int n, gfloat x[], gfloat y[], gfloat y2[])
+spline_solve (int n, bfloat x[], bfloat y[], bfloat y2[])
 {
-  gfloat p, sig, *u;
-  gint i, k;
+  bfloat p, sig, *u;
+  bint i, k;
 
   u = g_malloc ((n - 1) * sizeof (u[0]));
 
@@ -313,11 +313,11 @@ spline_solve (int n, gfloat x[], gfloat y[], gfloat y2[])
   g_free (u);
 }
 
-static gfloat
-spline_eval (int n, gfloat x[], gfloat y[], gfloat y2[], gfloat val)
+static bfloat
+spline_eval (int n, bfloat x[], bfloat y[], bfloat y2[], bfloat val)
 {
-  gint k_lo, k_hi, k;
-  gfloat h, b, a;
+  bint k_lo, k_hi, k;
+  bfloat h, b, a;
 
   /* do a binary search for the right interval: */
   k_lo = 0; k_hi = n - 1;
@@ -340,9 +340,9 @@ spline_eval (int n, gfloat x[], gfloat y[], gfloat y2[], gfloat val)
 }
 
 static void
-btk_curve_interpolate (BtkCurve *c, gint width, gint height)
+btk_curve_interpolate (BtkCurve *c, bint width, bint height)
 {
-  gfloat *vector;
+  bfloat *vector;
   int i;
 
   vector = g_malloc (width * sizeof (vector[0]));
@@ -368,11 +368,11 @@ btk_curve_interpolate (BtkCurve *c, gint width, gint height)
 }
 
 static void
-btk_curve_draw (BtkCurve *c, gint width, gint height)
+btk_curve_draw (BtkCurve *c, bint width, bint height)
 {
   BtkStateType state;
   BtkStyle *style;
-  gint i;
+  bint i;
 
   if (!c->pixmap)
     return;
@@ -405,7 +405,7 @@ btk_curve_draw (BtkCurve *c, gint width, gint height)
   if (c->curve_type != BTK_CURVE_TYPE_FREE)
     for (i = 0; i < c->num_ctlpoints; ++i)
       {
-	gint x, y;
+	bint x, y;
 
 	if (c->ctlpoint[i][0] < c->min_x)
 	  continue;
@@ -424,20 +424,20 @@ btk_curve_draw (BtkCurve *c, gint width, gint height)
 		     0, 0, 0, 0, width + RADIUS * 2, height + RADIUS * 2);
 }
 
-static gint
+static bint
 btk_curve_graph_events (BtkWidget *widget, BdkEvent *event, BtkCurve *c)
 {
   BdkCursorType new_type = c->cursor_type;
-  gint i, src, dst, leftbound, rightbound;
+  bint i, src, dst, leftbound, rightbound;
   BdkEventMotion *mevent;
   BtkWidget *w;
-  gint tx, ty;
-  gint cx, x, y, width, height;
-  gint closest_point = 0;
-  gfloat rx, ry, min_x;
-  guint distance;
-  gint x1, x2, y1, y2;
-  gint retval = FALSE;
+  bint tx, ty;
+  bint cx, x, y, width, height;
+  bint closest_point = 0;
+  bfloat rx, ry, min_x;
+  buint distance;
+  bint x1, x2, y1, y2;
+  bint retval = FALSE;
 
   w = BTK_WIDGET (c);
   width = w->allocation.width - RADIUS * 2;
@@ -457,7 +457,7 @@ btk_curve_graph_events (BtkWidget *widget, BdkEvent *event, BtkCurve *c)
   for (i = 0; i < c->num_ctlpoints; ++i)
     {
       cx = project (c->ctlpoint[i][0], min_x, c->max_x, width);
-      if ((guint) abs (x - cx) < distance)
+      if ((buint) abs (x - cx) < distance)
 	{
 	  distance = abs (x - cx);
 	  closest_point = i;
@@ -672,12 +672,12 @@ btk_curve_graph_events (BtkWidget *widget, BdkEvent *event, BtkCurve *c)
 void
 btk_curve_set_curve_type (BtkCurve *c, BtkCurveType new_type)
 {
-  gfloat rx, dx;
-  gint x, i;
+  bfloat rx, dx;
+  bint x, i;
 
   if (new_type != c->curve_type)
     {
-      gint width, height;
+      bint width, height;
 
       width  = BTK_WIDGET (c)->allocation.width - RADIUS * 2;
       height = BTK_WIDGET (c)->allocation.height - RADIUS * 2;
@@ -694,7 +694,7 @@ btk_curve_set_curve_type (BtkCurve *c, BtkCurveType new_type)
 	  c->ctlpoint = g_malloc (c->num_ctlpoints * sizeof (*c->ctlpoint));
 
 	  rx = 0.0;
-	  dx = (width - 1) / (gfloat) (c->num_ctlpoints - 1);
+	  dx = (width - 1) / (bfloat) (c->num_ctlpoints - 1);
 
 	  for (i = 0; i < c->num_ctlpoints; ++i, rx += dx)
 	    {
@@ -722,13 +722,13 @@ btk_curve_set_curve_type (BtkCurve *c, BtkCurveType new_type)
 static void
 btk_curve_size_graph (BtkCurve *curve)
 {
-  gint width, height;
-  gfloat aspect;
+  bint width, height;
+  bfloat aspect;
   BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (curve)); 
 
   width  = (curve->max_x - curve->min_x) + 1;
   height = (curve->max_y - curve->min_y) + 1;
-  aspect = width / (gfloat) height;
+  aspect = width / (bfloat) height;
   if (width > bdk_screen_get_width (screen) / 4)
     width  = bdk_screen_get_width (screen) / 4;
   if (height > bdk_screen_get_height (screen) / 4)
@@ -758,7 +758,7 @@ btk_curve_reset_vector (BtkCurve *curve)
 
   if (curve->pixmap)
     {
-      gint width, height;
+      bint width, height;
 
       width = BTK_WIDGET (curve)->allocation.width - RADIUS * 2;
       height = BTK_WIDGET (curve)->allocation.height - RADIUS * 2;
@@ -792,11 +792,11 @@ btk_curve_reset (BtkCurve *c)
 }
 
 void
-btk_curve_set_gamma (BtkCurve *c, gfloat gamma)
+btk_curve_set_gamma (BtkCurve *c, bfloat gamma)
 {
-  gfloat x, one_over_gamma, height;
+  bfloat x, one_over_gamma, height;
   BtkCurveType old_type;
-  gint i;
+  bint i;
 
   if (c->num_points < 2)
     return;
@@ -811,7 +811,7 @@ btk_curve_set_gamma (BtkCurve *c, gfloat gamma)
   height = c->height;
   for (i = 0; i < c->num_points; ++i)
     {
-      x = (gfloat) i / (c->num_points - 1);
+      x = (bfloat) i / (c->num_points - 1);
       c->point[i].x = RADIUS + i;
       c->point[i].y =
 	RADIUS + (height * (1.0 - pow (x, one_over_gamma)) + 0.5);
@@ -825,10 +825,10 @@ btk_curve_set_gamma (BtkCurve *c, gfloat gamma)
 
 void
 btk_curve_set_range (BtkCurve *curve,
-		     gfloat    min_x,
-                     gfloat    max_x,
-                     gfloat    min_y,
-                     gfloat    max_y)
+		     bfloat    min_x,
+                     bfloat    max_x,
+                     bfloat    min_y,
+                     bfloat    max_y)
 {
   g_object_freeze_notify (B_OBJECT (curve));
   if (curve->min_x != min_x) {
@@ -854,11 +854,11 @@ btk_curve_set_range (BtkCurve *curve,
 }
 
 void
-btk_curve_set_vector (BtkCurve *c, int veclen, gfloat vector[])
+btk_curve_set_vector (BtkCurve *c, int veclen, bfloat vector[])
 {
   BtkCurveType old_type;
-  gfloat rx, dx, ry;
-  gint i, height;
+  bfloat rx, dx, ry;
+  bint i, height;
   BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (c));
 
   old_type = c->curve_type;
@@ -898,10 +898,10 @@ btk_curve_set_vector (BtkCurve *c, int veclen, gfloat vector[])
 }
 
 void
-btk_curve_get_vector (BtkCurve *c, int veclen, gfloat vector[])
+btk_curve_get_vector (BtkCurve *c, int veclen, bfloat vector[])
 {
-  gfloat rx, ry, dx, dy, min_x, delta_x, *mem, *xv, *yv, *y2v, prev;
-  gint dst, i, x, next, num_active_ctlpoints = 0, first_active = -1;
+  bfloat rx, ry, dx, dy, min_x, delta_x, *mem, *xv, *yv, *y2v, prev;
+  bint dst, i, x, next, num_active_ctlpoints = 0, first_active = -1;
 
   min_x = c->min_x;
 
@@ -936,7 +936,7 @@ btk_curve_get_vector (BtkCurve *c, int veclen, gfloat vector[])
   switch (c->curve_type)
     {
     case BTK_CURVE_TYPE_SPLINE:
-      mem = g_malloc (3 * num_active_ctlpoints * sizeof (gfloat));
+      mem = g_malloc (3 * num_active_ctlpoints * sizeof (bfloat));
       xv  = mem;
       yv  = mem + num_active_ctlpoints;
       y2v = mem + 2*num_active_ctlpoints;

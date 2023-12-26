@@ -41,11 +41,11 @@ typedef struct _BtkAccelMap      BtkAccelMap;
 typedef struct _BtkAccelMapClass BtkAccelMapClass;
 
 /* --- notifier --- */
-typedef void (*BtkAccelMapForeach)		(gpointer	 data,
-						 const gchar	*accel_path,
-						 guint           accel_key,
+typedef void (*BtkAccelMapForeach)		(bpointer	 data,
+						 const bchar	*accel_path,
+						 buint           accel_key,
 						 BdkModifierType accel_mods,
-						 gboolean	 changed);
+						 bboolean	 changed);
 
 
 /* --- public API --- */
@@ -56,29 +56,29 @@ typedef void (*BtkAccelMapForeach)		(gpointer	 data,
 #define btk_accel_map_save btk_accel_map_save_utf8
 #endif
 
-void	   btk_accel_map_add_entry	(const gchar		*accel_path,
-					 guint			 accel_key,
+void	   btk_accel_map_add_entry	(const bchar		*accel_path,
+					 buint			 accel_key,
 					 BdkModifierType         accel_mods);
-gboolean   btk_accel_map_lookup_entry	(const gchar		*accel_path,
+bboolean   btk_accel_map_lookup_entry	(const bchar		*accel_path,
 					 BtkAccelKey		*key);
-gboolean   btk_accel_map_change_entry	(const gchar		*accel_path,
-					 guint			 accel_key,
+bboolean   btk_accel_map_change_entry	(const bchar		*accel_path,
+					 buint			 accel_key,
 					 BdkModifierType	 accel_mods,
-					 gboolean		 replace);
-void	   btk_accel_map_load		(const gchar		*file_name);
-void	   btk_accel_map_save		(const gchar		*file_name);
-void	   btk_accel_map_foreach	(gpointer		 data,
+					 bboolean		 replace);
+void	   btk_accel_map_load		(const bchar		*file_name);
+void	   btk_accel_map_save		(const bchar		*file_name);
+void	   btk_accel_map_foreach	(bpointer		 data,
 					 BtkAccelMapForeach	 foreach_func);
-void	   btk_accel_map_load_fd	(gint			 fd);
+void	   btk_accel_map_load_fd	(bint			 fd);
 void	   btk_accel_map_load_scanner	(GScanner		*scanner);
-void	   btk_accel_map_save_fd	(gint			 fd);
+void	   btk_accel_map_save_fd	(bint			 fd);
 
-void       btk_accel_map_lock_path      (const gchar            *accel_path);
-void       btk_accel_map_unlock_path    (const gchar            *accel_path);
+void       btk_accel_map_lock_path      (const bchar            *accel_path);
+void       btk_accel_map_unlock_path    (const bchar            *accel_path);
 
 /* --- filter functions --- */
-void	btk_accel_map_add_filter	 (const gchar		*filter_pattern);
-void	btk_accel_map_foreach_unfiltered (gpointer		 data,
+void	btk_accel_map_add_filter	 (const bchar		*filter_pattern);
+void	btk_accel_map_foreach_unfiltered (bpointer		 data,
 					  BtkAccelMapForeach	 foreach_func);
 
 /* --- notification --- */
@@ -89,11 +89,11 @@ BtkAccelMap *btk_accel_map_get      (void);
 /* --- internal API --- */
 void		_btk_accel_map_init		(void);
 
-void            _btk_accel_map_add_group	 (const gchar   *accel_path,
+void            _btk_accel_map_add_group	 (const bchar   *accel_path,
 						  BtkAccelGroup *accel_group);
-void            _btk_accel_map_remove_group 	 (const gchar   *accel_path,
+void            _btk_accel_map_remove_group 	 (const bchar   *accel_path,
 						  BtkAccelGroup *accel_group);
-gboolean	_btk_accel_path_is_valid	 (const gchar	*accel_path);
+bboolean	_btk_accel_path_is_valid	 (const bchar	*accel_path);
 
 
 B_END_DECLS

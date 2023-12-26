@@ -26,7 +26,7 @@
 #include <btk/btk.h>
 
 static BtkWidget*
-get_test_page (const gchar *text)
+get_test_page (const bchar *text)
 {
   return btk_label_new (text);
 }
@@ -38,10 +38,10 @@ typedef struct {
 
 static void
 complete_cb (BtkWidget *check, 
-	     gpointer   data)
+	     bpointer   data)
 {
   PageData *pdata = data;
-  gboolean complete;
+  bboolean complete;
 
   complete = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (check));
 
@@ -52,9 +52,9 @@ complete_cb (BtkWidget *check,
 	     
 static BtkWidget *
 add_completion_test_page (BtkWidget   *assistant,
-			  const gchar *text, 
-			  gboolean     visible,
-			  gboolean     complete)
+			  const bchar *text, 
+			  bboolean     visible,
+			  bboolean     complete)
 {
   BtkWidget *page;
   BtkWidget *check;
@@ -107,12 +107,12 @@ apply_callback (BtkWidget *widget)
   g_print ("apply\n");
 }
 
-static gboolean
+static bboolean
 progress_timeout (BtkWidget *assistant)
 {
   BtkWidget *page, *progress;
-  gint current_page;
-  gdouble value;
+  bint current_page;
+  bdouble value;
 
   current_page = btk_assistant_get_current_page (BTK_ASSISTANT (assistant));
   page = btk_assistant_get_nth_page (BTK_ASSISTANT (assistant), current_page);
@@ -195,10 +195,10 @@ create_simple_assistant (BtkWidget *widget)
 
 static void
 visible_cb (BtkWidget *check, 
-	    gpointer   data)
+	    bpointer   data)
 {
   BtkWidget *page = data;
-  gboolean visible;
+  bboolean visible;
 
   visible = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (check));
 
@@ -286,16 +286,16 @@ create_generous_assistant (BtkWidget *widget)
     }
 }
 
-static gchar selected_branch = 'A';
+static bchar selected_branch = 'A';
 
 static void
-select_branch (BtkWidget *widget, gchar branch)
+select_branch (BtkWidget *widget, bchar branch)
 {
   selected_branch = branch;
 }
 
-static gint
-nonlinear_assistant_forward_page (gint current_page, gpointer data)
+static bint
+nonlinear_assistant_forward_page (bint current_page, bpointer data)
 {
   switch (current_page)
     {
@@ -341,13 +341,13 @@ create_nonlinear_assistant (BtkWidget *widget)
 
       button = btk_radio_button_new_with_label (NULL, "branch A");
       btk_box_pack_start (BTK_BOX (page), button, FALSE, FALSE, 0);
-      g_signal_connect (B_OBJECT (button), "toggled", G_CALLBACK (select_branch), GINT_TO_POINTER ('A'));
+      g_signal_connect (B_OBJECT (button), "toggled", G_CALLBACK (select_branch), BINT_TO_POINTER ('A'));
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (button), TRUE);
       
       button = btk_radio_button_new_with_label (btk_radio_button_get_group (BTK_RADIO_BUTTON (button)),
 						"branch B");
       btk_box_pack_start (BTK_BOX (page), button, FALSE, FALSE, 0);
-      g_signal_connect (B_OBJECT (button), "toggled", G_CALLBACK (select_branch), GINT_TO_POINTER ('B'));
+      g_signal_connect (B_OBJECT (button), "toggled", G_CALLBACK (select_branch), BINT_TO_POINTER ('B'));
 
       btk_widget_show_all (page);
       btk_assistant_append_page (BTK_ASSISTANT (assistant), page);
@@ -383,8 +383,8 @@ create_nonlinear_assistant (BtkWidget *widget)
     }
 }
 
-static gint
-looping_assistant_forward_page (gint current_page, gpointer data)
+static bint
+looping_assistant_forward_page (bint current_page, bpointer data)
 {
   switch (current_page)
     {
@@ -545,7 +545,7 @@ create_full_featured_assistant (BtkWidget *widget)
 }
 
 struct {
-  gchar *text;
+  bchar *text;
   void  (*func) (BtkWidget *widget);
 } buttons[] =
   {
@@ -557,10 +557,10 @@ struct {
   };
 
 int
-main (int argc, gchar *argv[])
+main (int argc, bchar *argv[])
 {
   BtkWidget *window, *box, *button;
-  gint i;
+  bint i;
 
   btk_init (&argc, &argv);
 

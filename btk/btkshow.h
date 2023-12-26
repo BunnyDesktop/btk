@@ -29,9 +29,9 @@
 
 B_BEGIN_DECLS
 
-gboolean btk_show_uri  (BdkScreen   *screen,
-                        const gchar *uri,
-                        guint32      timestamp,
+bboolean btk_show_uri  (BdkScreen   *screen,
+                        const bchar *uri,
+                        buint32      timestamp,
                         GError     **error);
 
 B_END_DECLS

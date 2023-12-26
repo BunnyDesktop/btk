@@ -203,7 +203,7 @@ btk_tree_view_append_column (BTK_TREE_VIEW (tree), column);
       </para>
       <informalexample><programlisting><![CDATA[
 /* Prototype for selection handler callback */
-static void tree_selection_changed_cb (BtkTreeSelection *selection, gpointer data);
+static void tree_selection_changed_cb (BtkTreeSelection *selection, bpointer data);
 
 /* Setup the selection handler */
 BtkTreeSelection *select;
@@ -219,11 +219,11 @@ g_signal_connect (B_OBJECT (select), "changed",
         </para>
         <informalexample><programlisting><![CDATA[
 static void
-tree_selection_changed_cb (BtkTreeSelection *selection, gpointer data)
+tree_selection_changed_cb (BtkTreeSelection *selection, bpointer data)
 {
         BtkTreeIter iter;
         BtkTreeModel *model;
-        gchar *author;
+        bchar *author;
 
         if (btk_tree_selection_get_selected (selection, &model, &iter))
         {

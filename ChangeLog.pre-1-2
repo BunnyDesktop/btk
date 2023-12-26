@@ -6,7 +6,7 @@ Wed Feb 24 05:27:44 CST 1999 Shawn T. Amundson <amundson@btk.org>
 	
 Wed Feb 24 05:26:20 CST 1999 Shawn T. Amundson <amundson@btk.org>
 
-	* btk/btkitemfactory.h: added a dummy gpointer to 
+	* btk/btkitemfactory.h: added a dummy bpointer to 
 	  BtkItemFactoryClass for Tim Janik.
 
 Mon Feb 22 21:22:11 1999  Owen Taylor  <otaylor@redhat.com>
@@ -1150,7 +1150,7 @@ Wed Jan 20 19:57:14 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkhbox.[ch] (btk_hbox_new),
 	  btk/btkvbox.[ch] (btk_vbox_new):
-	Change 'homogenous' arg from gint to gboolean.
+	Change 'homogenous' arg from bint to bboolean.
 
 	* btk/btktogglebutton.[ch]:
 	New function btk_toggle_button_get_active().
@@ -1429,7 +1429,7 @@ Thu Jan 14 17:47:37 1999  Owen Taylor  <otaylor@redhat.com>
 	highlighted selection.
 
 	* bdk/bdkrgb.c (bdk_rgb_init): Add in a cast to
-	gpointer to make IRIX cc happy.
+	bpointer to make IRIX cc happy.
 
 Thu Jan 14 12:29:50 1999  Owen Taylor  <otaylor@redhat.com>
 
@@ -2677,7 +2677,7 @@ Thu Dec 10 20:48:19 PST 1998 Manish Singh <yosh@gimp.org>
 	* btk/btkvscale.c
 	* btk/btkvscrollbar.c: removed trailing , from enums
 
-	* btk/btksignal.c: can't use enums as a bitfield type, use guint
+	* btk/btksignal.c: can't use enums as a bitfield type, use buint
 
 	* btk/testbtk.c: removed C++ comment added by owenpoo
 
@@ -2780,7 +2780,7 @@ Mon Dec  7 10:18:18 1998  Owen Taylor  <otaylor@redhat.com>
 		Some changes according to the change of type of entry->text.
 	* btk/btktext.h, btk/btktext.c
 		Changed the internal representation of text. We use BdkWchar
-		if a fontset is supplied. If not, we use guchar to save
+		if a fontset is supplied. If not, we use buchar to save
 		memory.
 	
 Tue Dec  1 15:20:39 1998  Owen Taylor  <otaylor@redhat.com>
@@ -2968,7 +2968,7 @@ Mon Dec  7 01:32:18 1998  Tim Janik  <timj@btk.org>
 	Tab key on the entry. the focus shouldn't get lost even if completion
 	is attempted from an empty entry, since an empty entry string does
 	indeed have a valid completion meaning (complete all).
-	(btk_file_selection_init): cast the gchar array parameter in calls to
+	(btk_file_selection_init): cast the bchar array parameter in calls to
 	btk_clist_new_with_titles() to quit compiler warnings.
 	(check_dir): the no_stat_dirs struct must not be const, since we do
 	indeed modify its contents.
@@ -3098,7 +3098,7 @@ Wed Dec  2 01:39:02 1998  Tim Janik  <timj@btk.org>
  	dependant on GLib 1.1.6.
 
 	* btk/btkwidget.h (struct _BtkRequisition): changed width and height
- 	from guint16 to gint16, since sizes bigger than 32767 are not supported
+ 	from buint16 to bint16, since sizes bigger than 32767 are not supported
  	anyways, and aritmethics with intermediate negative values are possible
  	now.
 
@@ -3219,7 +3219,7 @@ Mon Nov 30 06:20:36 1998  Tim Janik  <timj@btk.org>
 1998-11-26  Michael Krause  <m.krause@tu-harburg.de>
 
         * btk/btknotebook.c (btk_notebook_switch_page): made 'page_num'
-        argument a gint: switch_page signal delivers valid page numbers
+        argument a bint: switch_page signal delivers valid page numbers
         again.
 
 Sun Nov 29 06:12:01 1998  Tim Janik  <timj@btk.org>
@@ -3641,7 +3641,7 @@ Fri Nov 20 08:00:30 1998  Tim Janik  <timj@btk.org>
 
 	* btk/btkwidget.h: 
 	* btk/btkwidget.c: changed btk_widget_activate() to return a
-	gboolean, indicating whether this widget supports activation.
+	bboolean, indicating whether this widget supports activation.
 	added btk_widget_scroll_adjustements() to set the scrolling
 	adjustments of a widget.
 
@@ -3771,7 +3771,7 @@ Mon Nov 16 19:19:00 CST 1998 Shawn T. Amundson <amundson@btk.org>
 Tue Nov 17 00:06:29 1998  Lars Hamann  <lars@btk.org>
 
 	* btk/btknotebook.h (struct _BtkNotebook): new flags : homogeneous;
-	new guints : tab_hborder, tab_vborder; marked tab_border deprecated
+	new buints : tab_hborder, tab_vborder; marked tab_border deprecated
 	(struct _BtkNotebookPage): new flags : expand, fill, pack
 
 	* btk/btknotebook.h/c
@@ -3829,7 +3829,7 @@ Mon Nov 16 00:59:26 PST 1998 Manish Singh <yosh@gimp.org>
 	configurability for menubars
 
 	* btk/btkviewport.h: use BtkShadowType enum instead of generic
-	guint
+	buint
 
 Mon Nov 16 00:17:53 1998  Tim Janik  <timj@btk.org>
 
@@ -4474,7 +4474,7 @@ Tue Jul 28 20:30:56 1998  Owen Taylor  <otaylor@redhat.com>
 	   colors have been set.
 	 - RC Styles are "transparent", and the final style for
 	   a widget is the composition of all matching styles
-	 - Added pointer to BtkThemeEngine, and gpointer engine_data
+	 - Added pointer to BtkThemeEngine, and bpointer engine_data
 	   to RC style and style.
 	 - Parse "engine" keyword, load the appropriate theme engine
 	   and call the engine's parser.
@@ -4557,7 +4557,7 @@ Thu Nov  5 16:00:32 1998  Lars Hamann  <lars@btk.org>
  	generate a new adjustment if needed
 
 	* btk/btkscrolledwindow.h ((struct _BtkScrolledWindow):
-  	use a guint bitfield for h/vscrollbar_policy and h/vscrollbar_visible
+  	use a buint bitfield for h/vscrollbar_policy and h/vscrollbar_visible
 	
 	* btk/btkscrolledwindow.c (btk_scrolled_window_adjustment_changed):
   	queue_resize if visibility of scrollbars changes
@@ -5039,7 +5039,7 @@ Wed Oct  7 00:59:46 1998  Lars Hamann  <lars@btk.org>
 	(real_resize_column): class function for resize_column signal
 	(btk_clist_motion): fixed autoscrolling for column resizes
 	(btk_clist_set_column_visibility): don't hide last visible column,
-	changed visible arg to gboolean
+	changed visible arg to bboolean
 	(btk_clist_set_column_min_width)(btk_clist_set_column_max_width):
 	new functions : set min/max width of a column
 	(btk_clist_set_column_resizeable): new function : enable/disable
@@ -5062,7 +5062,7 @@ Tue Oct  6 14:05:00 1998  Tim Janik  <timj@btk.org>
 Mon Oct  5 15:26:30 1998  Raph Levien  <raph@gimp.org>
 
 	* bdk/bdkrgb.c (bdk_rgb_convert_0888_br): Fixed a few long's that
-	should have been guint32. Thanks to Tristan Colgate for finding it.
+	should have been buint32. Thanks to Tristan Colgate for finding it.
 
 Sun Oct  4 22:47:22 CDT 1998 Shawn T. Amundson <amundson@btk.org>
 
@@ -5084,7 +5084,7 @@ Sun Oct  4 17:55:52 CDT 1998 Shawn T. Amundson <amundson@btk.org>
 	  - Draw relief around entire widget like originally planned
 	  - Show header and day names by default 
 	  - Move data private to the widget out of BtkCalendar struct
-	    and only point to it with a gpointer
+	    and only point to it with a bpointer
 	  - Remove some old unused variables from BtkCalendar struct
 
 Sun Oct  4 17:45:43 BST 1998  Tony Gale  <gale@btk.org>
@@ -5167,8 +5167,8 @@ Thu Oct  1 10:40:20 1998  Tim Janik  <timj@btk.org>
 	(btk_calendar_select_day):
 	(btk_calendar_mark_day):
 	(btk_calendar_unmark_day):
-	(btk_calendar_get_date): signedness corrections, use guints
- 	rather than gints.
+	(btk_calendar_get_date): signedness corrections, use buints
+ 	rather than bints.
 	(btk_calendar_size_request): removed unused variables.
 
 Wed Sep 30 13:11:09 1998  Tim Janik  <timj@btk.org>
@@ -5205,7 +5205,7 @@ Sat Sep 26 04:46:22 1998  Tim Janik  <timj@btk.org>
 	btk_spin_button_configure. btk_spin_button_construct is still defined
 	as an alias for btk_spin_button_configure for source compatibility,
  	but actuall use is deprecated.
-	typeness corrections, i.e. gint->gboolean and gint->guint.
+	typeness corrections, i.e. bint->bboolean and bint->buint.
 	added object arguments: BtkSpinButton::value, BtkSpinButton::wrap,
 	BtkSpinButton::shadow_type, BtkSpinButton::update_policy,
 	BtkSpinButton::numeric, BtkSpinButton::snap_to_ticks,
@@ -5297,7 +5297,7 @@ Fri Sep 18 18:54:59 1998  Jay Cox  (jaycox@earthlink.net)
 
 Fri Sep 18 19:58:24 1998  Tim Janik  <timj@btk.org>
 
-	* btk/btkobject.h (struct _BtkObject): changed gpointer object_data; to
+	* btk/btkobject.h (struct _BtkObject): changed bpointer object_data; to
 	GData*object_data to cure compiler warnings.
 
 Thu Sep 17 19:06:47 PDT 1998 Manish Singh <yosh@gimp.org>
@@ -6223,7 +6223,7 @@ Wed Aug  5 21:12:37 1998  Stefan Jeske  <stefan@btk.org>
 	(btk_clist_append): This is just a wrapper for btk_clist_insert now.
 	
 	(btk_clist_insert): Modified to handle btk_clist_append and the
-	auto sort flag. Changed the return value from void to gint to
+	auto sort flag. Changed the return value from void to bint to
 	return the row number where the element was actually inserted.
 
 	(btk_clist_swap_rows): Return immediately if auto sort flag is set.
@@ -6247,7 +6247,7 @@ Wed Aug  5 02:57:20 1998  Lars Hamann  <lars@btk.org>
 
 	* btk/btkctree.h:
 	* btk/btkctree.c:
- 	(btk_ctree_find): changed to return a gboolean
+ 	(btk_ctree_find): changed to return a bboolean
 	(btk_ctree_insert_gnode): new function for recursive insertion of a
 	GNode tree.
 	(btk_ctree_real_select_recursive): fix for extended selection
@@ -6685,7 +6685,7 @@ Thu Jul 16 01:27:15 1998  Tim Janik  <timj@btk.org>
 	* btk/btkwidget.c (btk_widget_set_usize): handle negative values
 	similar to btk_widget_set_uposition(). that is: -1=unspecified,
 	-2=leave untouched. changed the width/height field of BtkWidgetAuxInfo
-	to be gint16s rather than guint16s, since that's what the code expected
+	to be bint16s rather than buint16s, since that's what the code expected
 	(for a long time actually).
 
 	* btk/btkviewport.c:
@@ -6901,12 +6901,12 @@ Thu Jul  9 07:03:04 1998  Tim Janik  <timj@btk.org>
 
 	* btk/btktypeutils.c (btk_type_init_builtin_types): changed the internal
  	fundamental type name so as to have a valid prefix, e.g. "bool"->
-	"gboolean", "string"->"BtkString" and somesuch, left "void" as is,
+	"bboolean", "string"->"BtkString" and somesuch, left "void" as is,
 	though that should probably be something like BtkNone since the
 	type itself is called BTK_TYPE_NONE.
 	even the internal type names need to avoid name clashes and must live
 	in their own namespace, several code portions rely on that.
-	we should relly have typedefs such as typedef gchar* BtkString; so the
+	we should relly have typedefs such as typedef bchar* BtkString; so the
 	fundamental type names can be used for code dumpers just like with all
 	the Btk/Bdk types.
 
@@ -7611,13 +7611,13 @@ Sun Jun 14 16:30:02 1998  Tim Janik  <timj@btk.org>
  	BtkContainerClass.n_child_args, similar to the BtkObjectClass members.
 	this should really be done through class cretion hooks some day.
 
-	* btk/btkcontainer.c: changed type of border_width from gint16 to
- 	guint : 16.
+	* btk/btkcontainer.c: changed type of border_width from bint16 to
+ 	buint : 16.
 
 	* btk/btkpacker.h:
 	* btk/btkpacker.c: renamed all PadX and PadY to pad_x and pad_y to
  	follow the btk convention for lower case variable names (important
-	for language wrappers and widget arguments), and made them guint : 16.
+	for language wrappers and widget arguments), and made them buint : 16.
 
 	* examples/packer/pack.c: adaptions for the case converted BtkPacker
  	fields.
@@ -7839,7 +7839,7 @@ Mon May 25 12:08:14 1998  Owen Taylor  <otaylor@btk.org>
 	  the user might have specified the path to the X libraries
 	  themself before running configure.
 
-	* examples/**.c: Changed all gpointer * to gpointer
+	* examples/**.c: Changed all bpointer * to bpointer
 	
 1998-06-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
@@ -8103,7 +8103,7 @@ Sun May 24 12:11:38 BST 1998  Tony Gale  <gale@btk.org>
 
         * docs/btk_tut.sgml:
            - BtkTooltips, update to current API
-           - change all 'gpointer *data' to 'gpointer data'
+           - change all 'bpointer *data' to 'bpointer data'
            - other minor changes
 
 Sat May 23 21:54:05 1998  Owen Taylor  <otaylor@btk.org>
@@ -8262,7 +8262,7 @@ Thu May 14 03:04:43 1998  Tim Janik  <timj@btk.org>
 Wed May 13 00:53:52 1998  Owen Taylor  <otaylor@btk.org>
 
 	* btk/btktypeutils.c btk/btksignal.c bdk/bdkdnd.c: A few more 
-	  GPOINTER_TO_UINT fixes.
+	  BPOINTER_TO_UINT fixes.
 
 	* btk/btksignal.c: Include <string.h> for memset.
 
@@ -8282,10 +8282,10 @@ Tue May 12 19:19:29 1998  Owen Taylor  <otaylor@btk.org>
 
 	* btk/btkinputdialog.c btk/btkgamma.c btk/btkrc.c
 	  btk/btkcolorsel.c btk/btkclist.c btk/testbtk.c: Use
-	GPOINTER_TO_INT/GINT_TO_POINTER macros where appropriate.
+	BPOINTER_TO_INT/BINT_TO_POINTER macros where appropriate.
 
 	* bdk/bdk.c: Print sizeof() results
-	as g_print("%ld", (glong)sizeof(foo)), to deal with
+	as g_print("%ld", (blong)sizeof(foo)), to deal with
 	sizeof() being long on Alpha's.
 
 	* btk/testbtk.c: include <string.h> for strlen
@@ -8405,7 +8405,7 @@ Mon May 11 02:31:19 1998  Tim Janik  <timj@btk.org>
 1998-05-10  Stefan Jeske  <stefan@btk.org>
 
 	* btk/btkctree.c (btk_ctree_is_visible): Changed return value
-	to gboolean.
+	to bboolean.
 
 	* docs/btk.texi (BtkCTree): Started documentation of BtkCTree.
 
@@ -8546,7 +8546,7 @@ Tue May  5 19:49:27 1998  Owen Taylor  <otaylor@btk.org>
 	
 Tue May  5 17:04:14 1998  Owen Taylor  <otaylor@btk.org>
 
-	* bdk/bdk.c (bdk_event_translate): A guint * was
+	* bdk/bdk.c (bdk_event_translate): A buint * was
 	being passed where X expected a Keysym *, and
 	keysyms are long's on Alpha Linux. This was causing
 	segfaults in Xlib, apparently because of alignment.
@@ -8623,7 +8623,7 @@ Mon May  4 00:30:11 1998  Tim Janik  <timj@btk.org>
 	since its derivation changed 4 month ago ;(. showed up with the unique
 	type name checking code in btk_type_unique().
 
-	* random guint->BtkType and macro fixups.
+	* random buint->BtkType and macro fixups.
 
 Sat May  2 23:14:34 1998  Owen Taylor  <otaylor@btk.org>
 
@@ -9028,7 +9028,7 @@ Wed Apr 29 15:46:13 1998  Owen Taylor  <otaylor@btk.org>
 Fri Apr 24 01:29:04 1998  Tim Janik  <timj@btk.org>
 
 	* btk/btkaccelerator.h (struct _BtkAcceleratorTable): changed ref_count
-	field to be of type guint.
+	field to be of type buint.
 	* btk/btkaccelerator.c (btk_accelerator_table_unref): added check for
 	ref_count>0;
 	(btk_accelerator_table_install): keep a per object list of accelerator

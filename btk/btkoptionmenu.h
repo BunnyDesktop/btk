@@ -52,8 +52,8 @@ struct _BtkOptionMenu
   BtkWidget *menu;
   BtkWidget *menu_item;
   
-  guint16 width;
-  guint16 height;
+  buint16 width;
+  buint16 height;
 };
 
 struct _BtkOptionMenuClass
@@ -76,9 +76,9 @@ BtkWidget* btk_option_menu_get_menu    (BtkOptionMenu *option_menu);
 void       btk_option_menu_set_menu    (BtkOptionMenu *option_menu,
 					BtkWidget     *menu);
 void       btk_option_menu_remove_menu (BtkOptionMenu *option_menu);
-gint       btk_option_menu_get_history (BtkOptionMenu *option_menu);
+bint       btk_option_menu_get_history (BtkOptionMenu *option_menu);
 void       btk_option_menu_set_history (BtkOptionMenu *option_menu,
-					guint          index_);
+					buint          index_);
 
 
 B_END_DECLS

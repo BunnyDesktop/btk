@@ -53,10 +53,10 @@
 #include <bdkscreen-x11.h>
 #include <bdkx.h>
 
-static gint
+static bint
 parse_boolean (char *v)
 {
-  gchar c0, c1;
+  bchar c0, c1;
   
   c0 = *v;
   if (g_ascii_isupper ((int)c0))
@@ -79,13 +79,13 @@ parse_boolean (char *v)
   return -1;
 }
 
-static gboolean
+static bboolean
 get_boolean_default (Display *dpy,
-		     gchar   *option,
-		     gboolean *value)
+		     bchar   *option,
+		     bboolean *value)
 {
-  gchar *v;
-  gint i;
+  bchar *v;
+  bint i;
   
   v = XGetDefault (dpy, "Xft", option);
   if (v)
@@ -101,12 +101,12 @@ get_boolean_default (Display *dpy,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 get_double_default (Display *dpy,
-		    gchar   *option,
-		    gdouble *value)
+		    bchar   *option,
+		    bdouble *value)
 {
-  gchar    *v, *e;
+  bchar    *v, *e;
   
   v = XGetDefault (dpy, "Xft", option);
   if (v)
@@ -124,12 +124,12 @@ get_double_default (Display *dpy,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 get_integer_default (Display *dpy,
-		     gchar   *option,
-		     gint    *value)
+		     bchar   *option,
+		     bint    *value)
 {
-  gchar *v, *e;
+  bchar *v, *e;
   
   v = XGetDefault (dpy, "Xft", option);
   if (v)
@@ -212,9 +212,9 @@ init_xft_settings (BdkScreen *screen)
   screen_x11->xft_dpi = (int)(0.5 + BANGO_SCALE * dpi_double);
 }
 
-gboolean
+bboolean
 _bdk_x11_get_xft_setting (BdkScreen   *screen,
-			  const gchar *name,
+			  const bchar *name,
 			  BValue      *value)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);

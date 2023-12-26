@@ -21,7 +21,7 @@
 #include <math.h>
 
 static void
-spin_ythickness_cb (BtkSpinButton *spin, gpointer user_data)
+spin_ythickness_cb (BtkSpinButton *spin, bpointer user_data)
 {
   BtkWidget *frame = user_data;
   BtkRcStyle *rcstyle;
@@ -35,7 +35,7 @@ spin_ythickness_cb (BtkSpinButton *spin, gpointer user_data)
 }
 
 static void
-spin_xthickness_cb (BtkSpinButton *spin, gpointer user_data)
+spin_xthickness_cb (BtkSpinButton *spin, bpointer user_data)
 {
   BtkWidget *frame = user_data;
   BtkRcStyle *rcstyle;
@@ -53,8 +53,8 @@ spin_xthickness_cb (BtkSpinButton *spin, gpointer user_data)
 
 #define EPSILON 1e-10
 
-static gdouble
-double_normalize (gdouble n)
+static bdouble
+double_normalize (bdouble n)
 {
   if (fabs (1.0 - n) < EPSILON)
     n = 1.0;
@@ -67,14 +67,14 @@ double_normalize (gdouble n)
 static void
 spin_xalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble xalign = double_normalize (btk_spin_button_get_value (spin));
+  bdouble xalign = double_normalize (btk_spin_button_get_value (spin));
   btk_frame_set_label_align (frame, xalign, frame->label_yalign);
 }
 
 static void
 spin_yalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble yalign = double_normalize (btk_spin_button_get_value (spin));
+  bdouble yalign = double_normalize (btk_spin_button_get_value (spin));
   btk_frame_set_label_align (frame, frame->label_xalign, yalign);
 }
 

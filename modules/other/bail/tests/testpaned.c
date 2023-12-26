@@ -3,20 +3,20 @@
 #include <btk/btk.h>
 #include <testlib.h>
 
-static gint _test_paned (gpointer data);
+static bint _test_paned (bpointer data);
 static void _check_paned (BatkObject *obj);
 
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 
 #define NUM_VALID_ROLES 1
-static gint last_position;
+static bint last_position;
 
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -48,12 +48,12 @@ static void _property_change_handler (BatkObject   *obj,
   }
 }
  
-static gint _test_paned (gpointer data)
+static bint _test_paned (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
   BatkRole role = batk_object_get_role (obj);
   BtkWidget *widget;
-  static gint times = 0;
+  static bint times = 0;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
 
@@ -82,7 +82,7 @@ static gint _test_paned (gpointer data)
 
 static void _check_paned (BatkObject *obj)
 {
-  static gboolean done_paned = FALSE;
+  static bboolean done_paned = FALSE;
   BatkRole role;
 
   role = batk_object_get_role (obj);
@@ -123,7 +123,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testpaned Module loaded\n");
 

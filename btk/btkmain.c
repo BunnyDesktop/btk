@@ -92,14 +92,14 @@ DllMain (HINSTANCE hinstDLL,
  * BTK_LIBDIR and BTK_LOCALEDIR definitions are seen. Yeah, this is a
  * bit sucky.
  */
-const gchar *
+const bchar *
 _btk_get_libdir (void)
 {
   static char *btk_libdir = NULL;
   if (btk_libdir == NULL)
     {
-      gchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
-      gchar *slash = root ? strrchr (root, '\\') : NULL;
+      bchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
+      bchar *slash = root ? strrchr (root, '\\') : NULL;
       if (slash != NULL &&
           g_ascii_strcasecmp (slash + 1, ".libs") == 0)
 	btk_libdir = BTK_LIBDIR;
@@ -111,14 +111,14 @@ _btk_get_libdir (void)
   return btk_libdir;
 }
 
-const gchar *
+const bchar *
 _btk_get_localedir (void)
 {
   static char *btk_localedir = NULL;
   if (btk_localedir == NULL)
     {
-      const gchar *p;
-      gchar *root, *temp;
+      const bchar *p;
+      bchar *root, *temp;
       
       /* BTK_LOCALEDIR ends in either /lib/locale or
        * /share/locale. Scan for that slash.
@@ -156,62 +156,62 @@ typedef struct _BtkKeySnooperData	 BtkKeySnooperData;
 struct _BtkInitFunction
 {
   BtkFunction function;
-  gpointer data;
+  bpointer data;
 };
 
 struct _BtkQuitFunction
 {
-  guint id;
-  guint main_level;
+  buint id;
+  buint main_level;
   BtkCallbackMarshal marshal;
   BtkFunction function;
-  gpointer data;
+  bpointer data;
   GDestroyNotify destroy;
 };
 
 struct _BtkClosure
 {
   BtkCallbackMarshal marshal;
-  gpointer data;
+  bpointer data;
   GDestroyNotify destroy;
 };
 
 struct _BtkKeySnooperData
 {
   BtkKeySnoopFunc func;
-  gpointer func_data;
-  guint id;
+  bpointer func_data;
+  buint id;
 };
 
-static gint  btk_quit_invoke_function	 (BtkQuitFunction    *quitf);
+static bint  btk_quit_invoke_function	 (BtkQuitFunction    *quitf);
 static void  btk_quit_destroy		 (BtkQuitFunction    *quitf);
-static gint  btk_invoke_key_snoopers	 (BtkWidget	     *grab_widget,
+static bint  btk_invoke_key_snoopers	 (BtkWidget	     *grab_widget,
 					  BdkEvent	     *event);
 
-static void     btk_destroy_closure      (gpointer            data);
-static gboolean btk_invoke_idle_timeout  (gpointer            data);
-static void     btk_invoke_input         (gpointer            data,
-					  gint                source,
+static void     btk_destroy_closure      (bpointer            data);
+static bboolean btk_invoke_idle_timeout  (bpointer            data);
+static void     btk_invoke_input         (bpointer            data,
+					  bint                source,
 					  BdkInputCondition   condition);
 
 #if 0
-static void  btk_error			 (gchar		     *str);
-static void  btk_warning		 (gchar		     *str);
-static void  btk_message		 (gchar		     *str);
-static void  btk_print			 (gchar		     *str);
+static void  btk_error			 (bchar		     *str);
+static void  btk_warning		 (bchar		     *str);
+static void  btk_message		 (bchar		     *str);
+static void  btk_print			 (bchar		     *str);
 #endif
 
 static BtkWindowGroup *btk_main_get_window_group (BtkWidget   *widget);
 
-const guint btk_major_version = BTK_MAJOR_VERSION;
-const guint btk_minor_version = BTK_MINOR_VERSION;
-const guint btk_micro_version = BTK_MICRO_VERSION;
-const guint btk_binary_age = BTK_BINARY_AGE;
-const guint btk_interface_age = BTK_INTERFACE_AGE;
+const buint btk_major_version = BTK_MAJOR_VERSION;
+const buint btk_minor_version = BTK_MINOR_VERSION;
+const buint btk_micro_version = BTK_MICRO_VERSION;
+const buint btk_binary_age = BTK_BINARY_AGE;
+const buint btk_interface_age = BTK_INTERFACE_AGE;
 
-static guint btk_main_loop_level = 0;
-static gint pre_initialized = FALSE;
-static gint btk_initialized = FALSE;
+static buint btk_main_loop_level = 0;
+static bint pre_initialized = FALSE;
+static bint btk_initialized = FALSE;
 static GList *current_events = NULL;
 
 static GSList *main_loops = NULL;      /* stack of currently executing main loops */
@@ -222,7 +222,7 @@ static GList *quit_functions = NULL;	   /* A list of quit functions.
 					    */
 static GSList *key_snoopers = NULL;
 
-guint btk_debug_flags = 0;		   /* Global BTK debug flag */
+buint btk_debug_flags = 0;		   /* Global BTK debug flag */
 
 #ifdef G_ENABLE_DEBUG
 static const GDebugKey btk_debug_keys[] = {
@@ -275,13 +275,13 @@ static const GDebugKey btk_debug_keys[] = {
  *   The returned string is owned by BTK+ and should not be modified
  *   or freed.
  **/
-const gchar*
-btk_check_version (guint required_major,
-		   guint required_minor,
-		   guint required_micro)
+const bchar*
+btk_check_version (buint required_major,
+		   buint required_minor,
+		   buint required_micro)
 {
-  gint btk_effective_micro = 100 * BTK_MINOR_VERSION + BTK_MICRO_VERSION;
-  gint required_effective_micro = 100 * required_minor + required_micro;
+  bint btk_effective_micro = 100 * BTK_MINOR_VERSION + BTK_MICRO_VERSION;
+  bint required_effective_micro = 100 * required_minor + required_micro;
 
   if (required_major > BTK_MAJOR_VERSION)
     return "Btk+ version too old (major mismatch)";
@@ -301,7 +301,7 @@ btk_check_version (guint required_major,
  * they could be doing something wrong. For this reason, we
  * don't use issetugid() on BSD or prctl (PR_GET_DUMPABLE).
  */
-static gboolean
+static bboolean
 check_setugid (void)
 {
 /* this isn't at all relevant on MS Windows and doesn't compile ... --hb */
@@ -341,13 +341,13 @@ check_setugid (void)
 
 #ifdef G_OS_WIN32
 
-const gchar *
+const bchar *
 _btk_get_datadir (void)
 {
   static char *btk_datadir = NULL;
   if (btk_datadir == NULL)
     {
-      gchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
+      bchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
       btk_datadir = g_build_filename (root, "share", NULL);
       g_free (root);
     }
@@ -355,13 +355,13 @@ _btk_get_datadir (void)
   return btk_datadir;
 }
 
-const gchar *
+const bchar *
 _btk_get_sysconfdir (void)
 {
   static char *btk_sysconfdir = NULL;
   if (btk_sysconfdir == NULL)
     {
-      gchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
+      bchar *root = g_win32_get_package_installation_directory_of_module (btk_dll);
       btk_sysconfdir = g_build_filename (root, "etc", NULL);
       g_free (root);
     }
@@ -369,7 +369,7 @@ _btk_get_sysconfdir (void)
   return btk_sysconfdir;
 }
 
-const gchar *
+const bchar *
 _btk_get_data_prefix (void)
 {
   static char *btk_data_prefix = NULL;
@@ -381,7 +381,7 @@ _btk_get_data_prefix (void)
 
 #endif /* G_OS_WIN32 */
 
-static gboolean do_setlocale = TRUE;
+static bboolean do_setlocale = TRUE;
 
 /**
  * btk_disable_setlocale:
@@ -409,11 +409,11 @@ btk_disable_setlocale (void)
 #endif
 
 static GString *btk_modules_string = NULL;
-static gboolean g_fatal_warnings = FALSE;
+static bboolean g_fatal_warnings = FALSE;
 
 #ifdef G_ENABLE_DEBUG
-static gboolean
-btk_arg_debug_cb (const char *key, const char *value, gpointer user_data)
+static bboolean
+btk_arg_debug_cb (const char *key, const char *value, bpointer user_data)
 {
   btk_debug_flags |= g_parse_debug_string (value,
 					   btk_debug_keys,
@@ -422,8 +422,8 @@ btk_arg_debug_cb (const char *key, const char *value, gpointer user_data)
   return TRUE;
 }
 
-static gboolean
-btk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data)
+static bboolean
+btk_arg_no_debug_cb (const char *key, const char *value, bpointer user_data)
 {
   btk_debug_flags &= ~g_parse_debug_string (value,
 					    btk_debug_keys,
@@ -433,8 +433,8 @@ btk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data)
 }
 #endif /* G_ENABLE_DEBUG */
 
-static gboolean
-btk_arg_module_cb (const char *key, const char *value, gpointer user_data)
+static bboolean
+btk_arg_module_cb (const char *key, const char *value, bpointer user_data)
 {
   if (value && *value)
     {
@@ -471,7 +471,7 @@ static const GOptionEntry btk_args[] = {
 static char *iso639_to_check = NULL;
 static char *iso3166_to_check = NULL;
 static char *script_to_check = NULL;
-static gboolean setlocale_called = FALSE;
+static bboolean setlocale_called = FALSE;
 
 static BOOL CALLBACK
 enum_locale_proc (LPTSTR locale)
@@ -558,7 +558,7 @@ enum_locale_proc (LPTSTR locale)
 static void
 setlocale_initialization (void)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
 
   if (initialized)
     return;
@@ -632,12 +632,12 @@ setlocale_initialization (void)
 /* Return TRUE if module_to_check causes version conflicts.
  * If module_to_check is NULL, check the main module.
  */
-gboolean
+bboolean
 _btk_module_has_mixed_deps (GModule *module_to_check)
 {
   GModule *module;
-  gpointer func;
-  gboolean result;
+  bpointer func;
+  bboolean result;
 
   if (!module_to_check)
     module = g_module_open (NULL, 0);
@@ -659,7 +659,7 @@ static void
 do_pre_parse_initialization (int    *argc,
 			     char ***argv)
 {
-  const gchar *env_string;
+  const bchar *env_string;
   
 #if	0
   g_set_error_handler (btk_error);
@@ -784,13 +784,13 @@ do_post_parse_initialization (int    *argc,
 
 typedef struct
 {
-  gboolean open_default_display;
+  bboolean open_default_display;
 } OptionGroupInfo;
 
-static gboolean
+static bboolean
 pre_parse_hook (GOptionContext *context,
 		GOptionGroup   *group,
-		gpointer	data,
+		bpointer	data,
 		GError        **error)
 {
   do_pre_parse_initialization (NULL, NULL);
@@ -798,10 +798,10 @@ pre_parse_hook (GOptionContext *context,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 post_parse_hook (GOptionContext *context,
 		 GOptionGroup   *group,
-		 gpointer	data,
+		 bpointer	data,
 		 GError        **error)
 {
   OptionGroupInfo *info = data;
@@ -844,7 +844,7 @@ post_parse_hook (GOptionContext *context,
  * Since: 2.6
  */
 GOptionGroup *
-btk_get_option_group (gboolean open_default_display)
+btk_get_option_group (bboolean open_default_display)
 {
   GOptionGroup *group;
   OptionGroupInfo *info;
@@ -890,7 +890,7 @@ btk_get_option_group (gboolean open_default_display)
  * 
  * Since: 2.6
  */
-gboolean
+bboolean
 btk_init_with_args (int            *argc,
 		    char         ***argv,
 		    const char     *parameter_string,
@@ -900,7 +900,7 @@ btk_init_with_args (int            *argc,
 {
   GOptionContext *context;
   GOptionGroup *btk_group;
-  gboolean retval;
+  bboolean retval;
 
   if (btk_initialized)
     return bdk_display_open_default_libbtk_only () != NULL;
@@ -945,7 +945,7 @@ btk_init_with_args (int            *argc,
  *
  * Return value: %TRUE if initialization succeeded, otherwise %FALSE.
  **/
-gboolean
+bboolean
 btk_parse_args (int    *argc,
 		char ***argv)
 {
@@ -998,7 +998,7 @@ btk_parse_args (int    *argc,
  * Return value: %TRUE if the GUI has been successfully initialized, 
  *               %FALSE otherwise.
  **/
-gboolean
+bboolean
 btk_init_check (int	 *argc,
 		char   ***argv)
 {
@@ -1106,7 +1106,7 @@ btk_init_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_BtkWi
   btk_init (argc, argv);
 }
 
-gboolean
+bboolean
 btk_init_check_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof_BtkWindow, size_t sizeof_BtkBox)
 {
   check_sizeof_BtkWindow (sizeof_BtkWindow);
@@ -1118,7 +1118,7 @@ btk_init_check_abi_check (int *argc, char ***argv, int num_checks, size_t sizeof
 #endif
 
 void
-btk_exit (gint errorcode)
+btk_exit (bint errorcode)
 {
   exit (errorcode);
 }
@@ -1151,7 +1151,7 @@ btk_exit (gint errorcode)
  *
  * Deprecated: 2.24: Use setlocale() directly
  **/
-gchar *
+bchar *
 btk_set_locale (void)
 {
   return bdk_set_locale ();
@@ -1183,7 +1183,7 @@ btk_set_locale (void)
  * Return value: a dynamically allocated string, free with g_free().
  */
 
-gchar *
+bchar *
 _btk_get_lc_ctype (void)
 {
 #ifdef G_OS_WIN32
@@ -1197,7 +1197,7 @@ _btk_get_lc_ctype (void)
    * don't have to clickety-click in the Control Panel, you can simply
    * start the program with LC_ALL=something on the command line.)
    */
-  gchar *p;
+  bchar *p;
 
   p = getenv ("LC_ALL");
   if (p != NULL)
@@ -1325,7 +1325,7 @@ btk_main (void)
     }
 }
 
-guint
+buint
 btk_main_level (void)
 {
   return btk_main_loop_level;
@@ -1339,10 +1339,10 @@ btk_main_quit (void)
   g_main_loop_quit (main_loops->data);
 }
 
-gboolean
+bboolean
 btk_events_pending (void)
 {
-  gboolean result;
+  bboolean result;
   
   BDK_THREADS_LEAVE ();  
   result = g_main_context_pending (NULL);
@@ -1351,7 +1351,7 @@ btk_events_pending (void)
   return result;
 }
 
-gboolean
+bboolean
 btk_main_iteration (void)
 {
   BDK_THREADS_LEAVE ();
@@ -1364,8 +1364,8 @@ btk_main_iteration (void)
     return TRUE;
 }
 
-gboolean
-btk_main_iteration_do (gboolean blocking)
+bboolean
+btk_main_iteration_do (bboolean blocking)
 {
   BDK_THREADS_LEAVE ();
   g_main_context_iteration (NULL, blocking);
@@ -1379,21 +1379,21 @@ btk_main_iteration_do (gboolean blocking)
 
 /* private libbtk to libbdk interfaces
  */
-gboolean bdk_pointer_grab_info_libbtk_only  (BdkDisplay *display,
+bboolean bdk_pointer_grab_info_libbtk_only  (BdkDisplay *display,
 					     BdkWindow **grab_window,
-					     gboolean   *owner_events);
-gboolean bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
+					     bboolean   *owner_events);
+bboolean bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
 					     BdkWindow **grab_window,
-					     gboolean   *owner_events);
+					     bboolean   *owner_events);
 
 static void
 rewrite_events_translate (BdkWindow *old_window,
 			  BdkWindow *new_window,
-			  gdouble   *x,
-			  gdouble   *y)
+			  bdouble   *x,
+			  bdouble   *y)
 {
-  gint old_origin_x, old_origin_y;
-  gint new_origin_x, new_origin_y;
+  bint old_origin_x, old_origin_y;
+  bint new_origin_x, new_origin_y;
 
   bdk_window_get_origin	(old_window, &old_origin_x, &old_origin_y);
   bdk_window_get_origin	(new_window, &new_origin_x, &new_origin_y);
@@ -1456,8 +1456,8 @@ rewrite_event_for_grabs (BdkEvent *event)
 {
   BdkWindow *grab_window;
   BtkWidget *event_widget, *grab_widget;
-  gpointer grab_widget_ptr;
-  gboolean owner_events;
+  bpointer grab_widget_ptr;
+  bboolean owner_events;
   BdkDisplay *display;
 
   switch (event->type)
@@ -1672,14 +1672,14 @@ btk_main_do_event (BdkEvent *event)
       if ((event->key.keyval == BDK_Alt_L || event->key.keyval == BDK_Alt_R) &&
           !BTK_IS_MENU_SHELL (grab_widget))
         {
-          gboolean auto_mnemonics;
+          bboolean auto_mnemonics;
 
           g_object_get (btk_widget_get_settings (grab_widget),
                         "btk-auto-mnemonics", &auto_mnemonics, NULL);
 
           if (auto_mnemonics)
             {
-              gboolean mnemonics_visible;
+              bboolean mnemonics_visible;
               BtkWidget *window;
 
               mnemonics_visible = (event->type == BDK_KEY_PRESS);
@@ -1748,13 +1748,13 @@ btk_main_do_event (BdkEvent *event)
     bdk_event_free (rewritten_event);
 }
 
-gboolean
+bboolean
 btk_true (void)
 {
   return TRUE;
 }
 
-gboolean
+bboolean
 btk_false (void)
 {
   return FALSE;
@@ -1778,19 +1778,19 @@ typedef struct
 {
   BtkWidget *old_grab_widget;
   BtkWidget *new_grab_widget;
-  gboolean   was_grabbed;
-  gboolean   is_grabbed;
-  gboolean   from_grab;
+  bboolean   was_grabbed;
+  bboolean   is_grabbed;
+  bboolean   from_grab;
 } GrabNotifyInfo;
 
 static void
 btk_grab_notify_foreach (BtkWidget *child,
-			 gpointer   data)
+			 bpointer   data)
                         
 {
   GrabNotifyInfo *info = data;
  
-  gboolean was_grabbed, is_grabbed, was_shadowed, is_shadowed;
+  bboolean was_grabbed, is_grabbed, was_shadowed, is_shadowed;
 
   was_grabbed = info->was_grabbed;
   is_grabbed = info->is_grabbed;
@@ -1837,7 +1837,7 @@ static void
 btk_grab_notify (BtkWindowGroup *group,
 		 BtkWidget      *old_grab_widget,
 		 BtkWidget      *new_grab_widget,
-		 gboolean        from_grab)
+		 bboolean        from_grab)
 {
   GList *toplevels;
   GrabNotifyInfo info;
@@ -1944,7 +1944,7 @@ btk_grab_remove (BtkWidget *widget)
 
 void
 btk_init_add (BtkFunction function,
-	      gpointer	  data)
+	      bpointer	  data)
 {
   BtkInitFunction *init;
   
@@ -1955,12 +1955,12 @@ btk_init_add (BtkFunction function,
   init_functions = g_list_prepend (init_functions, init);
 }
 
-guint
+buint
 btk_key_snooper_install (BtkKeySnoopFunc snooper,
-			 gpointer	 func_data)
+			 bpointer	 func_data)
 {
   BtkKeySnooperData *data;
-  static guint snooper_id = 1;
+  static buint snooper_id = 1;
 
   g_return_val_if_fail (snooper != NULL, 0);
 
@@ -1974,7 +1974,7 @@ btk_key_snooper_install (BtkKeySnoopFunc snooper,
 }
 
 void
-btk_key_snooper_remove (guint snooper_id)
+btk_key_snooper_remove (buint snooper_id)
 {
   BtkKeySnooperData *data = NULL;
   GSList *slist;
@@ -1996,12 +1996,12 @@ btk_key_snooper_remove (guint snooper_id)
     }
 }
 
-static gint
+static bint
 btk_invoke_key_snoopers (BtkWidget *grab_widget,
 			 BdkEvent  *event)
 {
   GSList *slist;
-  gint return_val = FALSE;
+  bint return_val = FALSE;
 
   slist = key_snoopers;
   while (slist && !return_val)
@@ -2016,14 +2016,14 @@ btk_invoke_key_snoopers (BtkWidget *grab_widget,
   return return_val;
 }
 
-guint
-btk_quit_add_full (guint		main_level,
+buint
+btk_quit_add_full (buint		main_level,
 		   BtkFunction		function,
 		   BtkCallbackMarshal	marshal,
-		   gpointer		data,
+		   bpointer		data,
 		   GDestroyNotify	destroy)
 {
-  static guint quit_id = 1;
+  static buint quit_id = 1;
   BtkQuitFunction *quitf;
   
   g_return_val_if_fail ((function != NULL) || (marshal != NULL), 0);
@@ -2050,7 +2050,7 @@ btk_quit_destroy (BtkQuitFunction *quitf)
   g_slice_free (BtkQuitFunction, quitf);
 }
 
-static gint
+static bint
 btk_quit_destructor (BtkObject **object_p)
 {
   if (*object_p)
@@ -2061,7 +2061,7 @@ btk_quit_destructor (BtkObject **object_p)
 }
 
 void
-btk_quit_add_destroy (guint              main_level,
+btk_quit_add_destroy (buint              main_level,
 		      BtkObject         *object)
 {
   BtkObject **object_p;
@@ -2078,16 +2078,16 @@ btk_quit_add_destroy (guint              main_level,
   btk_quit_add (main_level, (BtkFunction) btk_quit_destructor, object_p);
 }
 
-guint
-btk_quit_add (guint	  main_level,
+buint
+btk_quit_add (buint	  main_level,
 	      BtkFunction function,
-	      gpointer	  data)
+	      bpointer	  data)
 {
   return btk_quit_add_full (main_level, function, NULL, data, NULL);
 }
 
 void
-btk_quit_remove (guint id)
+btk_quit_remove (buint id)
 {
   BtkQuitFunction *quitf;
   GList *tmp_list;
@@ -2111,7 +2111,7 @@ btk_quit_remove (guint id)
 }
 
 void
-btk_quit_remove_by_data (gpointer data)
+btk_quit_remove_by_data (bpointer data)
 {
   BtkQuitFunction *quitf;
   GList *tmp_list;
@@ -2134,11 +2134,11 @@ btk_quit_remove_by_data (gpointer data)
     }
 }
 
-guint
-btk_timeout_add_full (guint32		 interval,
+buint
+btk_timeout_add_full (buint32		 interval,
 		      BtkFunction	 function,
 		      BtkCallbackMarshal marshal,
-		      gpointer		 data,
+		      bpointer		 data,
 		      GDestroyNotify	 destroy)
 {
   if (marshal)
@@ -2159,25 +2159,25 @@ btk_timeout_add_full (guint32		 interval,
     return g_timeout_add_full (0, interval, function, data, destroy);
 }
 
-guint
-btk_timeout_add (guint32     interval,
+buint
+btk_timeout_add (buint32     interval,
 		 BtkFunction function,
-		 gpointer    data)
+		 bpointer    data)
 {
   return g_timeout_add_full (0, interval, function, data, NULL);
 }
 
 void
-btk_timeout_remove (guint tag)
+btk_timeout_remove (buint tag)
 {
   g_source_remove (tag);
 }
 
-guint
-btk_idle_add_full (gint			priority,
+buint
+btk_idle_add_full (bint			priority,
 		   BtkFunction		function,
 		   BtkCallbackMarshal	marshal,
-		   gpointer		data,
+		   bpointer		data,
 		   GDestroyNotify	destroy)
 {
   if (marshal)
@@ -2198,40 +2198,40 @@ btk_idle_add_full (gint			priority,
     return g_idle_add_full (priority, function, data, destroy);
 }
 
-guint
+buint
 btk_idle_add (BtkFunction function,
-	      gpointer	  data)
+	      bpointer	  data)
 {
   return g_idle_add_full (G_PRIORITY_DEFAULT_IDLE, function, data, NULL);
 }
 
-guint	    
-btk_idle_add_priority (gint        priority,
+buint	    
+btk_idle_add_priority (bint        priority,
 		       BtkFunction function,
-		       gpointer	   data)
+		       bpointer	   data)
 {
   return g_idle_add_full (priority, function, data, NULL);
 }
 
 void
-btk_idle_remove (guint tag)
+btk_idle_remove (buint tag)
 {
   g_source_remove (tag);
 }
 
 void
-btk_idle_remove_by_data (gpointer data)
+btk_idle_remove_by_data (bpointer data)
 {
   if (!g_idle_remove_by_data (data))
     g_warning ("btk_idle_remove_by_data(%p): no such idle", data);
 }
 
-guint
-btk_input_add_full (gint		source,
+buint
+btk_input_add_full (bint		source,
 		    BdkInputCondition	condition,
 		    BdkInputFunction	function,
 		    BtkCallbackMarshal	marshal,
-		    gpointer		data,
+		    bpointer		data,
 		    GDestroyNotify	destroy)
 {
   if (marshal)
@@ -2254,13 +2254,13 @@ btk_input_add_full (gint		source,
 }
 
 void
-btk_input_remove (guint tag)
+btk_input_remove (buint tag)
 {
   g_source_remove (tag);
 }
 
 static void
-btk_destroy_closure (gpointer data)
+btk_destroy_closure (bpointer data)
 {
   BtkClosure *closure = data;
 
@@ -2269,13 +2269,13 @@ btk_destroy_closure (gpointer data)
   g_free (closure);
 }
 
-static gboolean
-btk_invoke_idle_timeout (gpointer data)
+static bboolean
+btk_invoke_idle_timeout (bpointer data)
 {
   BtkClosure *closure = data;
 
   BtkArg args[1];
-  gint ret_val = FALSE;
+  bint ret_val = FALSE;
   args[0].name = NULL;
   args[0].type = B_TYPE_BOOLEAN;
   args[0].d.pointer_data = &ret_val;
@@ -2284,8 +2284,8 @@ btk_invoke_idle_timeout (gpointer data)
 }
 
 static void
-btk_invoke_input (gpointer	    data,
-		  gint		    source,
+btk_invoke_input (bpointer	    data,
+		  bint		    source,
 		  BdkInputCondition condition)
 {
   BtkClosure *closure = data;
@@ -2332,7 +2332,7 @@ btk_get_current_event (void)
  * 
  * Return value: the timestamp from the current event, or %BDK_CURRENT_TIME.
  **/
-guint32
+buint32
 btk_get_current_event_time (void)
 {
   if (current_events)
@@ -2351,7 +2351,7 @@ btk_get_current_event_time (void)
  * 
  * Return value: %TRUE if there was a current event and it had a state field
  **/
-gboolean
+bboolean
 btk_get_current_event_state (BdkModifierType *state)
 {
   g_return_val_if_fail (state != NULL, FALSE);
@@ -2380,7 +2380,7 @@ BtkWidget*
 btk_get_event_widget (BdkEvent *event)
 {
   BtkWidget *widget;
-  gpointer widget_ptr;
+  bpointer widget_ptr;
 
   widget = NULL;
   if (event && event->any.window && 
@@ -2393,7 +2393,7 @@ btk_get_event_widget (BdkEvent *event)
   return widget;
 }
 
-static gint
+static bint
 btk_quit_invoke_function (BtkQuitFunction *quitf)
 {
   if (!quitf->marshal)
@@ -2401,7 +2401,7 @@ btk_quit_invoke_function (BtkQuitFunction *quitf)
   else
     {
       BtkArg args[1];
-      gint ret_val = FALSE;
+      bint ret_val = FALSE;
 
       args[0].name = NULL;
       args[0].type = B_TYPE_BOOLEAN;
@@ -2440,7 +2440,7 @@ void
 btk_propagate_event (BtkWidget *widget,
 		     BdkEvent  *event)
 {
-  gint handled_event;
+  bint handled_event;
   
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (event != NULL);
@@ -2519,25 +2519,25 @@ btk_propagate_event (BtkWidget *widget,
 
 #if 0
 static void
-btk_error (gchar *str)
+btk_error (bchar *str)
 {
   btk_print (str);
 }
 
 static void
-btk_warning (gchar *str)
+btk_warning (bchar *str)
 {
   btk_print (str);
 }
 
 static void
-btk_message (gchar *str)
+btk_message (bchar *str)
 {
   btk_print (str);
 }
 
 static void
-btk_print (gchar *str)
+btk_print (bchar *str)
 {
   static BtkWidget *window = NULL;
   static BtkWidget *text;
@@ -2630,14 +2630,14 @@ btk_print (gchar *str)
 }
 #endif
 
-gboolean
+bboolean
 _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 				  BValue                *return_accu,
 				  const BValue          *handler_return,
-				  gpointer               dummy)
+				  bpointer               dummy)
 {
-  gboolean continue_emission;
-  gboolean signal_handled;
+  bboolean continue_emission;
+  bboolean signal_handled;
   
   signal_handled = b_value_get_boolean (handler_return);
   b_value_set_boolean (return_accu, signal_handled);
@@ -2646,7 +2646,7 @@ _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
   return continue_emission;
 }
 
-gboolean
+bboolean
 _btk_button_event_triggers_context_menu (BdkEventButton *event)
 {
   if (event->type == BDK_BUTTON_PRESS)
@@ -2666,19 +2666,19 @@ _btk_button_event_triggers_context_menu (BdkEventButton *event)
   return FALSE;
 }
 
-gboolean
+bboolean
 _btk_translate_keyboard_accel_state (BdkKeymap       *keymap,
-                                     guint            hardware_keycode,
+                                     buint            hardware_keycode,
                                      BdkModifierType  state,
                                      BdkModifierType  accel_mask,
-                                     gint             group,
-                                     guint           *keyval,
-                                     gint            *effective_group,
-                                     gint            *level,
+                                     bint             group,
+                                     buint           *keyval,
+                                     bint            *effective_group,
+                                     bint            *level,
                                      BdkModifierType *consumed_modifiers)
 {
-  gboolean group_mask_disabled = FALSE;
-  gboolean retval;
+  bboolean group_mask_disabled = FALSE;
+  bboolean retval;
 
   /* if the group-toggling modifier is part of the accel mod mask, and
    * it is active, disable it for matching

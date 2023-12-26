@@ -37,7 +37,7 @@
 
 static void btk_tearoff_menu_item_size_request (BtkWidget             *widget,
 				                BtkRequisition        *requisition);
-static gint btk_tearoff_menu_item_expose     (BtkWidget             *widget,
+static bint btk_tearoff_menu_item_expose     (BtkWidget             *widget,
 					      BdkEventExpose        *event);
 static void btk_tearoff_menu_item_activate   (BtkMenuItem           *menu_item);
 static void btk_tearoff_menu_item_parent_set (BtkWidget             *widget,
@@ -99,9 +99,9 @@ btk_tearoff_menu_item_paint (BtkWidget   *widget,
 {
   BtkMenuItem *menu_item;
   BtkShadowType shadow_type;
-  gint width, height;
-  gint x, y;
-  gint right_max;
+  bint width, height;
+  bint x, y;
+  bint right_max;
   BtkArrowType arrow_type;
   BtkTextDirection direction;
   
@@ -119,7 +119,7 @@ btk_tearoff_menu_item_paint (BtkWidget   *widget,
 
       if (widget->state == BTK_STATE_PRELIGHT)
 	{
-	  gint selected_shadow_type;
+	  bint selected_shadow_type;
 	  
 	  btk_widget_style_get (widget,
 				"selected-shadow-type", &selected_shadow_type,
@@ -136,7 +136,7 @@ btk_tearoff_menu_item_paint (BtkWidget   *widget,
 
       if (BTK_IS_MENU (widget->parent) && BTK_MENU (widget->parent)->torn_off)
 	{
-	  gint arrow_x;
+	  bint arrow_x;
 
 	  if (widget->state == BTK_STATE_PRELIGHT)
 	    shadow_type = BTK_SHADOW_IN;
@@ -179,7 +179,7 @@ btk_tearoff_menu_item_paint (BtkWidget   *widget,
 
       while (x < right_max)
 	{
-	  gint x1, x2;
+	  bint x1, x2;
 
 	  if (direction == BTK_TEXT_DIR_LTR) {
 	    x1 = x;
@@ -198,7 +198,7 @@ btk_tearoff_menu_item_paint (BtkWidget   *widget,
     }
 }
 
-static gint
+static bint
 btk_tearoff_menu_item_expose (BtkWidget      *widget,
 			    BdkEventExpose *event)
 {
@@ -223,7 +223,7 @@ btk_tearoff_menu_item_activate (BtkMenuItem *menu_item)
 static void
 tearoff_state_changed (BtkMenu            *menu,
 		       BParamSpec         *pspec,
-		       gpointer            data)
+		       bpointer            data)
 {
   BtkTearoffMenuItem *tearoff_menu_item = BTK_TEAROFF_MENU_ITEM (data);
 

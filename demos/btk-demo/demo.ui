@@ -2,10 +2,10 @@
 <interface domain="btk20">
     <object class="BtkListStore" id="liststore1">
       <columns>
-        <column type="gchararray"/>
-        <column type="gchararray"/>
-        <column type="gint"/>
-        <column type="gchararray"/>
+        <column type="bchararray"/>
+        <column type="bchararray"/>
+        <column type="bint"/>
+        <column type="bchararray"/>
       </columns>
       <data>
         <row>

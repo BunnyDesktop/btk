@@ -72,7 +72,7 @@ struct _BtkTextMark
 {
   BObject parent_instance;
 
-  gpointer GSEAL (segment);
+  bpointer GSEAL (segment);
 };
 
 struct _BtkTextMarkClass
@@ -89,15 +89,15 @@ struct _BtkTextMarkClass
 GType        btk_text_mark_get_type   (void) B_GNUC_CONST;
 
 void           btk_text_mark_set_visible (BtkTextMark *mark,
-                                          gboolean     setting);
-gboolean       btk_text_mark_get_visible (BtkTextMark *mark);
+                                          bboolean     setting);
+bboolean       btk_text_mark_get_visible (BtkTextMark *mark);
 
-BtkTextMark          *btk_text_mark_new              (const gchar *name,
-						      gboolean     left_gravity);
-const gchar *         btk_text_mark_get_name         (BtkTextMark *mark);
-gboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
+BtkTextMark          *btk_text_mark_new              (const bchar *name,
+						      bboolean     left_gravity);
+const bchar *         btk_text_mark_get_name         (BtkTextMark *mark);
+bboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
 BtkTextBuffer*        btk_text_mark_get_buffer       (BtkTextMark *mark);
-gboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
+bboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
 
 B_END_DECLS
 

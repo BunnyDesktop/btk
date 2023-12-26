@@ -64,24 +64,24 @@ typedef enum
 
 struct _BtkWindowDecoration
 {
-  gint n_rebunnyions;
+  bint n_rebunnyions;
   BtkWindowRebunnyion *rebunnyions;
 
-  gint last_x, last_y;
-  gint last_w, last_h;
+  bint last_x, last_y;
+  bint last_w, last_h;
   
   BangoLayout *title_layout;
 
   BtkWindowResizeType resize;
   
-  guint moving : 1;
-  guint closing : 1;
-  guint maximizing : 1;
-  guint maximized : 1;
-  guint maximizable : 1;
-  guint decorated : 1;
-  guint real_inner_move : 1;
-  guint focused : 1;
+  buint moving : 1;
+  buint closing : 1;
+  buint maximizing : 1;
+  buint maximized : 1;
+  buint maximizable : 1;
+  buint decorated : 1;
+  buint real_inner_move : 1;
+  buint focused : 1;
 };
 
 #define DECORATION_BORDER_TOP 15
@@ -96,21 +96,21 @@ struct _BtkWindowDecoration
 
 static void btk_decorated_window_recalculate_rebunnyions      (BtkWindow      *window);
 static BtkWindowRebunnyionType btk_decorated_window_rebunnyion_type    (BtkWindow      *window,
-						 gint            x,
-						 gint            y);
-static gint btk_decorated_window_frame_event    (BtkWindow *window,
+						 bint            x,
+						 bint            y);
+static bint btk_decorated_window_frame_event    (BtkWindow *window,
 						 BdkEvent *event);
-static gint btk_decorated_window_button_press   (BtkWidget      *widget,
+static bint btk_decorated_window_button_press   (BtkWidget      *widget,
 						 BdkEventButton *event);
-static gint btk_decorated_window_button_release (BtkWidget      *widget,
+static bint btk_decorated_window_button_release (BtkWidget      *widget,
 						 BdkEventButton *event);
-static gint btk_decorated_window_motion_notify  (BtkWidget      *widget,
+static bint btk_decorated_window_motion_notify  (BtkWidget      *widget,
 						 BdkEventMotion *event);
-static gint btk_decorated_window_window_state   (BtkWidget           *widget,
+static bint btk_decorated_window_window_state   (BtkWidget           *widget,
 						 BdkEventWindowState *event);
 static void btk_decorated_window_paint          (BtkWidget      *widget,
 						 BdkRectangle   *area);
-static gint btk_decorated_window_focus_change   (BtkWidget         *widget,
+static bint btk_decorated_window_focus_change   (BtkWidget         *widget,
 						 BdkEventFocus     *event);
 static void btk_decorated_window_realize        (BtkWindow   *window);
 static void btk_decorated_window_unrealize      (BtkWindow   *window);
@@ -179,7 +179,7 @@ get_decoration (BtkWindow *window)
 
 void
 btk_decorated_window_set_title (BtkWindow   *window,
-				const gchar *title)
+				const bchar *title)
 {
   BtkWindowDecoration *deco = get_decoration (window);
   
@@ -225,11 +225,11 @@ btk_decorated_window_calculate_frame_size (BtkWindow *window)
   btk_decorated_window_recalculate_rebunnyions (window);
 }
 
-static gboolean
+static bboolean
 btk_decorated_window_inner_change (BdkWindow *win,
-				   gint x, gint y,
-				   gint width, gint height,
-				   gpointer user_data)
+				   bint x, bint y,
+				   bint width, bint height,
+				   bpointer user_data)
 {
   BtkWindow *window = (BtkWindow *)user_data;
   BtkWidget *widget = BTK_WIDGET (window);
@@ -255,8 +255,8 @@ btk_decorated_window_inner_change (BdkWindow *win,
 
 static void
 btk_decorated_window_inner_get_pos (BdkWindow *win,
-				    gint *x, gint *y,
-				    gpointer user_data)
+				    bint *x, bint *y,
+				    bpointer user_data)
 {
   BtkWindow *window = (BtkWindow *)user_data;
 
@@ -308,7 +308,7 @@ btk_decorated_window_unrealize (BtkWindow   *window)
     }
 }
 
-static gint
+static bint
 btk_decorated_window_frame_event (BtkWindow *window, BdkEvent *event)
 {
   BtkWindowDecoration *deco = get_decoration (window);
@@ -342,7 +342,7 @@ btk_decorated_window_frame_event (BtkWindow *window, BdkEvent *event)
   return FALSE;
 }
 
-static gint
+static bint
 btk_decorated_window_focus_change (BtkWidget         *widget,
 				   BdkEventFocus     *event)
 {
@@ -353,7 +353,7 @@ btk_decorated_window_focus_change (BtkWidget         *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_decorated_window_motion_notify (BtkWidget       *widget,
 				    BdkEventMotion  *event)
 {
@@ -361,8 +361,8 @@ btk_decorated_window_motion_notify (BtkWidget       *widget,
   BtkWindowDecoration *deco;
   BdkModifierType mask;
   BdkWindow *win;
-  gint x, y;
-  gint win_x, win_y, win_w, win_h;
+  bint x, y;
+  bint win_x, win_y, win_w, win_h;
   
   window = BTK_WINDOW (widget);
   deco = get_decoration (window);
@@ -429,7 +429,7 @@ btk_decorated_window_motion_notify (BtkWidget       *widget,
 }
 
 static BtkWindowRebunnyionType
-btk_decorated_window_rebunnyion_type (BtkWindow *window, gint x, gint y)
+btk_decorated_window_rebunnyion_type (BtkWindow *window, bint x, bint y)
 {
   BtkWindowDecoration *deco = get_decoration (window);
   int i;
@@ -445,14 +445,14 @@ btk_decorated_window_rebunnyion_type (BtkWindow *window, gint x, gint y)
   return -1;
 }
 
-static gint
+static bint
 btk_decorated_window_button_press (BtkWidget       *widget,
 				   BdkEventButton  *event)
 {
   BtkWindow *window;
   BtkWindowRebunnyionType type;
   BtkWindowDecoration *deco;
-  gint x, y; 
+  bint x, y; 
 
   window = BTK_WINDOW (widget);
   deco = get_decoration (window);
@@ -499,7 +499,7 @@ btk_decorated_window_button_press (BtkWidget       *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_decorated_window_button_release (BtkWidget	    *widget,
 				     BdkEventButton *event)
 {
@@ -544,7 +544,7 @@ btk_decorated_window_button_release (BtkWidget	    *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_decorated_window_window_state (BtkWidget	       *widget,
 				   BdkEventWindowState *event)
 {
@@ -592,13 +592,13 @@ btk_decorated_window_paint (BtkWidget    *widget,
 {
   BtkWindow *window = BTK_WINDOW (widget);
   BtkWindowDecoration *deco = get_decoration (window);
-  gint x1, y1, x2, y2;
+  bint x1, y1, x2, y2;
   BtkStateType border_state;
 
   if (deco->decorated)
     {
       BdkWindow *frame;
-      gint width, height;
+      bint width, height;
 
       frame = window->frame;
       bdk_drawable_get_size (frame, &width, &height);
@@ -714,8 +714,8 @@ btk_decorated_window_paint (BtkWidget    *widget,
 static void
 btk_decorated_window_recalculate_rebunnyions (BtkWindow *window)
 {
-  gint n_rebunnyions;
-  gint width, height;
+  bint n_rebunnyions;
+  bint width, height;
   BtkWindowRebunnyion *rebunnyion;
   BtkWindowDecoration *deco = get_decoration (window);
       
@@ -789,10 +789,10 @@ btk_decorated_window_recalculate_rebunnyions (BtkWindow *window)
 
 void
 btk_decorated_window_move_resize_window (BtkWindow   *window,
-					 gint         x,
-					 gint         y,
-					 gint         width,
-					 gint         height)
+					 bint         x,
+					 bint         y,
+					 bint         width,
+					 bint         height)
 {
   BtkWidget *widget = BTK_WIDGET (window);
   BtkWindowDecoration *deco = get_decoration (window);
@@ -815,16 +815,16 @@ btk_decorated_window_calculate_frame_size (BtkWindow *window)
 
 void
 btk_decorated_window_set_title (BtkWindow   *window,
-				const gchar *title)
+				const bchar *title)
 {
 }
 
 void
 btk_decorated_window_move_resize_window (BtkWindow   *window,
-					 gint         x,
-					 gint         y,
-					 gint         width,
-					 gint         height)
+					 bint         x,
+					 bint         y,
+					 bint         width,
+					 bint         height)
 {
   bdk_window_move_resize (BTK_WIDGET (window)->window,
 			  x, y, width, height);

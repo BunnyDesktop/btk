@@ -4,9 +4,9 @@
 #pragma align 4 (dnd_cursor_ask)
 #endif
 #ifdef __GNUC__
-static const guint8 dnd_cursor_ask[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 dnd_cursor_ask[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 dnd_cursor_ask[] = 
+static const buint8 dnd_cursor_ask[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -74,9 +74,9 @@ static const guint8 dnd_cursor_ask[] =
 #pragma align 4 (dnd_cursor_move)
 #endif
 #ifdef __GNUC__
-static const guint8 dnd_cursor_move[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 dnd_cursor_move[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 dnd_cursor_move[] = 
+static const buint8 dnd_cursor_move[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -144,9 +144,9 @@ static const guint8 dnd_cursor_move[] =
 #pragma align 4 (dnd_cursor_link)
 #endif
 #ifdef __GNUC__
-static const guint8 dnd_cursor_link[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 dnd_cursor_link[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 dnd_cursor_link[] = 
+static const buint8 dnd_cursor_link[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -216,9 +216,9 @@ static const guint8 dnd_cursor_link[] =
 #pragma align 4 (dnd_cursor_copy)
 #endif
 #ifdef __GNUC__
-static const guint8 dnd_cursor_copy[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 dnd_cursor_copy[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 dnd_cursor_copy[] = 
+static const buint8 dnd_cursor_copy[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -286,9 +286,9 @@ static const guint8 dnd_cursor_copy[] =
 #pragma align 4 (dnd_cursor_none)
 #endif
 #ifdef __GNUC__
-static const guint8 dnd_cursor_none[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 dnd_cursor_none[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 dnd_cursor_none[] = 
+static const buint8 dnd_cursor_none[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */

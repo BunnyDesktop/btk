@@ -35,19 +35,19 @@
 
 static void btk_print_backend_dispose      (BObject      *object);
 static void btk_print_backend_set_property (BObject      *object,
-                                            guint         prop_id,
+                                            buint         prop_id,
                                             const BValue *value,
                                             BParamSpec   *pspec);
 static void btk_print_backend_get_property (BObject      *object,
-                                            guint         prop_id,
+                                            buint         prop_id,
                                             BValue       *value,
                                             BParamSpec   *pspec);
 
 struct _BtkPrintBackendPrivate
 {
   GHashTable *printers;
-  guint printer_list_requested : 1;
-  guint printer_list_done : 1;
+  buint printer_list_requested : 1;
+  buint printer_list_done : 1;
   BtkPrintBackendStatus status;
   char **auth_info_required;
   char **auth_info;
@@ -63,7 +63,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 enum 
 { 
@@ -99,7 +99,7 @@ struct _BtkPrintBackendModule
   void             (*exit)     (void);
   BtkPrintBackend* (*create)   (void);
 
-  gchar *path;
+  bchar *path;
 };
 
 struct _BtkPrintBackendModuleClass
@@ -113,11 +113,11 @@ G_DEFINE_TYPE (BtkPrintBackendModule, _btk_print_backend_module, B_TYPE_TYPE_MOD
 
 static GSList *loaded_backends;
 
-static gboolean
+static bboolean
 btk_print_backend_module_load (GTypeModule *module)
 {
   BtkPrintBackendModule *pb_module = BTK_PRINT_BACKEND_MODULE (module); 
-  gpointer initp, exitp, createp;
+  bpointer initp, exitp, createp;
  
   pb_module->library = g_module_open (pb_module->path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
   if (!pb_module->library)
@@ -193,7 +193,7 @@ _btk_print_backend_module_class_init (BtkPrintBackendModuleClass *class)
 
 static void 
 btk_print_backend_set_property (BObject      *object,
-                                guint         prop_id,
+                                buint         prop_id,
                                 const BValue *value,
                                 BParamSpec   *pspec)
 {
@@ -215,7 +215,7 @@ btk_print_backend_set_property (BObject      *object,
 
 static void 
 btk_print_backend_get_property (BObject    *object,
-                                guint       prop_id,
+                                buint       prop_id,
                                 BValue     *value,
                                 BParamSpec *pspec)
 {
@@ -255,11 +255,11 @@ _btk_print_backend_module_create (BtkPrintBackendModule *pb_module)
 }
 
 static BtkPrintBackend *
-_btk_print_backend_create (const gchar *backend_name)
+_btk_print_backend_create (const bchar *backend_name)
 {
   GSList *l;
-  gchar *module_path;
-  gchar *full_name;
+  bchar *module_path;
+  bchar *full_name;
   BtkPrintBackendModule *pb_module;
   BtkPrintBackend *pb;
 
@@ -313,9 +313,9 @@ btk_print_backend_load_modules (void)
 {
   GList *result;
   BtkPrintBackend *backend;
-  gchar *setting;
-  gchar **backends;
-  gint i;
+  bchar *setting;
+  bchar **backends;
+  bint i;
   BtkSettings *settings;
 
   result = NULL;
@@ -351,22 +351,22 @@ btk_print_backend_load_modules (void)
 G_DEFINE_TYPE (BtkPrintBackend, btk_print_backend, B_TYPE_OBJECT)
 
 static void                 fallback_printer_request_details       (BtkPrinter          *printer);
-static gboolean             fallback_printer_mark_conflicts        (BtkPrinter          *printer,
+static bboolean             fallback_printer_mark_conflicts        (BtkPrinter          *printer,
 								    BtkPrinterOptionSet *options);
-static gboolean             fallback_printer_get_hard_margins      (BtkPrinter          *printer,
-                                                                    gdouble             *top,
-                                                                    gdouble             *bottom,
-                                                                    gdouble             *left,
-                                                                    gdouble             *right);
+static bboolean             fallback_printer_get_hard_margins      (BtkPrinter          *printer,
+                                                                    bdouble             *top,
+                                                                    bdouble             *bottom,
+                                                                    bdouble             *left,
+                                                                    bdouble             *right);
 static GList *              fallback_printer_list_papers           (BtkPrinter          *printer);
 static BtkPageSetup *       fallback_printer_get_default_page_size (BtkPrinter          *printer);
 static BtkPrintCapabilities fallback_printer_get_capabilities      (BtkPrinter          *printer);
 static void                 request_password                       (BtkPrintBackend     *backend,
-                                                                    gpointer             auth_info_required,
-                                                                    gpointer             auth_info_default,
-                                                                    gpointer             auth_info_display,
-                                                                    gpointer             auth_info_visible,
-                                                                    const gchar         *prompt);
+                                                                    bpointer             auth_info_required,
+                                                                    bpointer             auth_info_default,
+                                                                    bpointer             auth_info_display,
+                                                                    bpointer             auth_info_visible,
+                                                                    const bchar         *prompt);
   
 static void
 btk_print_backend_class_init (BtkPrintBackendClass *class)
@@ -491,19 +491,19 @@ fallback_printer_request_details (BtkPrinter *printer)
 {
 }
 
-static gboolean
+static bboolean
 fallback_printer_mark_conflicts (BtkPrinter          *printer,
 				 BtkPrinterOptionSet *options)
 {
   return FALSE;
 }
 
-static gboolean
+static bboolean
 fallback_printer_get_hard_margins (BtkPrinter *printer,
-				   gdouble    *top,
-				   gdouble    *bottom,
-				   gdouble    *left,
-				   gdouble    *right)
+				   bdouble    *top,
+				   bdouble    *bottom,
+				   bdouble    *left,
+				   bdouble    *right)
 {
   return FALSE;
 }
@@ -528,8 +528,8 @@ fallback_printer_get_capabilities (BtkPrinter *printer)
 
 
 static void
-printer_hash_to_sorted_active_list (const gchar  *key,
-                                    gpointer      value,
+printer_hash_to_sorted_active_list (const bchar  *key,
+                                    bpointer      value,
                                     GList       **out_list)
 {
   BtkPrinter *printer;
@@ -622,7 +622,7 @@ btk_print_backend_get_printer_list (BtkPrintBackend *backend)
   return result;
 }
 
-gboolean
+bboolean
 btk_print_backend_printer_list_is_done (BtkPrintBackend *print_backend)
 {
   g_return_val_if_fail (BTK_IS_PRINT_BACKEND (print_backend), TRUE);
@@ -632,7 +632,7 @@ btk_print_backend_printer_list_is_done (BtkPrintBackend *print_backend)
 
 BtkPrinter *
 btk_print_backend_find_printer (BtkPrintBackend *backend,
-                                const gchar     *printer_name)
+                                const bchar     *printer_name)
 {
   BtkPrintBackendPrivate *priv;
   BtkPrinter *printer;
@@ -654,7 +654,7 @@ btk_print_backend_print_stream (BtkPrintBackend        *backend,
                                 BtkPrintJob            *job,
                                 BUNNYIOChannel             *data_io,
                                 BtkPrintJobCompleteFunc callback,
-                                gpointer                user_data,
+                                bpointer                user_data,
 				GDestroyNotify          dnotify)
 {
   g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
@@ -669,8 +669,8 @@ btk_print_backend_print_stream (BtkPrintBackend        *backend,
 
 void 
 btk_print_backend_set_password (BtkPrintBackend  *backend,
-                                gchar           **auth_info_required,
-                                gchar           **auth_info)
+                                bchar           **auth_info_required,
+                                bchar           **auth_info)
 {
   g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
 
@@ -680,9 +680,9 @@ btk_print_backend_set_password (BtkPrintBackend  *backend,
 
 static void
 store_entry (BtkEntry  *entry,
-             gpointer   user_data)
+             bpointer   user_data)
 {
-  gchar **data = (gchar **) user_data;
+  bchar **data = (bchar **) user_data;
 
   if (*data != NULL)
     {
@@ -695,11 +695,11 @@ store_entry (BtkEntry  *entry,
 
 static void
 password_dialog_response (BtkWidget       *dialog,
-                          gint             response_id,
+                          bint             response_id,
                           BtkPrintBackend *backend)
 {
   BtkPrintBackendPrivate *priv = backend->priv;
-  gint i;
+  bint i;
 
   if (response_id == BTK_RESPONSE_OK)
     btk_print_backend_set_password (backend, priv->auth_info_required, priv->auth_info);
@@ -725,26 +725,26 @@ password_dialog_response (BtkWidget       *dialog,
 
 static void
 request_password (BtkPrintBackend  *backend,
-                  gpointer          auth_info_required,
-                  gpointer          auth_info_default,
-                  gpointer          auth_info_display,
-                  gpointer          auth_info_visible,
-                  const gchar      *prompt)
+                  bpointer          auth_info_required,
+                  bpointer          auth_info_default,
+                  bpointer          auth_info_display,
+                  bpointer          auth_info_visible,
+                  const bchar      *prompt)
 {
   BtkPrintBackendPrivate *priv = backend->priv;
   BtkWidget *dialog, *box, *main_box, *label, *icon, *vbox, *entry;
   BtkWidget *focus = NULL;
-  gchar     *markup;
-  gint       length;
-  gint       i;
-  gchar    **ai_required = (gchar **) auth_info_required;
-  gchar    **ai_default = (gchar **) auth_info_default;
-  gchar    **ai_display = (gchar **) auth_info_display;
-  gboolean  *ai_visible = (gboolean *) auth_info_visible;
+  bchar     *markup;
+  bint       length;
+  bint       i;
+  bchar    **ai_required = (bchar **) auth_info_required;
+  bchar    **ai_default = (bchar **) auth_info_default;
+  bchar    **ai_display = (bchar **) auth_info_display;
+  bboolean  *ai_visible = (bboolean *) auth_info_visible;
 
   priv->auth_info_required = g_strdupv (ai_required);
   length = g_strv_length (ai_required);
-  priv->auth_info = g_new0 (gchar *, length + 1);
+  priv->auth_info = g_new0 (bchar *, length + 1);
 
   dialog = btk_dialog_new_with_buttons ( _("Authentication"), NULL, BTK_DIALOG_MODAL, 
                                          BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL,

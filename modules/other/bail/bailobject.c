@@ -27,7 +27,7 @@ static void       bail_object_class_init               (BailObjectClass *klass);
 static void       bail_object_init                     (BailObject *object);
 
 static void       bail_object_real_initialize          (BatkObject       *obj,
-                                                        gpointer        data);
+                                                        bpointer        data);
 
 G_DEFINE_TYPE (BailObject, bail_object, BATK_TYPE_BOBJECT_ACCESSIBLE)
 
@@ -46,7 +46,7 @@ bail_object_init (BailObject *object)
 
 static void
 bail_object_real_initialize (BatkObject *obj,
-                             gpointer  data)
+                             bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_object_parent_class)->initialize (obj, data);
 

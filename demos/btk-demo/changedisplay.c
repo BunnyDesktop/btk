@@ -82,7 +82,7 @@ find_toplevel_at_pointer (BdkDisplay *display)
    */
   if (pointer_window)
     {
-      gpointer widget_ptr;
+      bpointer widget_ptr;
       bdk_window_get_user_data (pointer_window, &widget_ptr);
       widget = widget_ptr;
     }
@@ -90,10 +90,10 @@ find_toplevel_at_pointer (BdkDisplay *display)
   return widget ? btk_widget_get_toplevel (widget) : NULL;
 }
 
-static gboolean
+static bboolean
 button_release_event_cb (BtkWidget       *widget,
 			 BdkEventButton  *event,
-			 gboolean        *clicked)
+			 bboolean        *clicked)
 {
   *clicked = TRUE;
   return TRUE;
@@ -134,7 +134,7 @@ query_for_toplevel (BdkScreen  *screen,
 			cursor,
 			BDK_CURRENT_TIME) == BDK_GRAB_SUCCESS)
     {
-      gboolean clicked = FALSE;
+      bboolean clicked = FALSE;
 
       g_signal_connect (popup, "button-release-event",
 			G_CALLBACK (button_release_event_cb), &clicked);
@@ -186,8 +186,8 @@ fill_screens (ChangeDisplayInfo *info)
 
   if (info->current_display)
     {
-      gint n_screens = bdk_display_get_n_screens (info->current_display);
-      gint i;
+      bint n_screens = bdk_display_get_n_screens (info->current_display);
+      bint i;
 
       for (i = 0; i < n_screens; i++)
 	{
@@ -212,7 +212,7 @@ fill_screens (ChangeDisplayInfo *info)
  */
 static void
 response_cb (BtkDialog         *dialog,
-	     gint               response_id,
+	     bint               response_id,
 	     ChangeDisplayInfo *info)
 {
   if (response_id == BTK_RESPONSE_OK)
@@ -233,7 +233,7 @@ open_display_cb (BtkWidget         *button,
   BtkWidget *display_entry;
   BtkWidget *dialog_label;
   BtkWidget *content_area;
-  gchar *new_screen_name = NULL;
+  bchar *new_screen_name = NULL;
   BdkDisplay *result = NULL;
 
   dialog = btk_dialog_new_with_buttons ("Open Display",
@@ -259,7 +259,7 @@ open_display_cb (BtkWidget         *button,
 
   while (!result)
     {
-      gint response_id = btk_dialog_run (BTK_DIALOG (dialog));
+      bint response_id = btk_dialog_run (BTK_DIALOG (dialog));
       if (response_id != BTK_RESPONSE_OK)
 	break;
 
@@ -271,7 +271,7 @@ open_display_cb (BtkWidget         *button,
 	  result = bdk_display_open (new_screen_name);
 	  if (!result)
 	    {
-	      gchar *error_msg =
+	      bchar *error_msg =
 		g_strdup_printf  ("Can't open display :\n\t%s\nplease try another one\n",
 				  new_screen_name);
 	      btk_label_set_text (BTK_LABEL (dialog_label), error_msg);
@@ -476,11 +476,11 @@ create_screen_frame (ChangeDisplayInfo *info)
  */
 static void
 display_closed_cb (BdkDisplay        *display,
-		   gboolean           is_error,
+		   bboolean           is_error,
 		   ChangeDisplayInfo *info)
 {
   BtkTreeIter iter;
-  gboolean valid;
+  bboolean valid;
 
   for (valid = btk_tree_model_get_iter_first (info->display_model, &iter);
        valid;
@@ -507,7 +507,7 @@ static void
 add_display (ChangeDisplayInfo *info,
 	     BdkDisplay        *display)
 {
-  const gchar *name = bdk_display_get_name (display);
+  const bchar *name = bdk_display_get_name (display);
   BtkTreeIter iter;
 
   btk_list_store_append (BTK_LIST_STORE (info->display_model), &iter);

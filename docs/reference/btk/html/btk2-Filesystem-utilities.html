@@ -51,7 +51,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Filesystem-utilities.html#btk-mount-operation-is-showing" title="btk_mount_operation_is_showing ()">btk_mount_operation_is_showing</a> <span class="c_punctuation">()</span>
@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Filesystem-utilities.html#btk-show-uri" title="btk_show_uri ()">btk_show_uri</a> <span class="c_punctuation">()</span>
@@ -110,7 +110,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="btk2-Filesystem-utilities.html#BtkMountOperation--is-showing" title="The “is-showing” property">is-showing</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -201,7 +201,7 @@ btk_mount_operation_new (<em class="parameter"><code><a class="link" href="BtkWi
 <hr>
 <div class="refsect2">
 <a name="btk-mount-operation-is-showing"></a><h3>btk_mount_operation_is_showing ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_mount_operation_is_showing (<em class="parameter"><code><a class="link" href="btk2-Filesystem-utilities.html#BtkMountOperation"><span class="type">BtkMountOperation</span></a> *op</code></em>);</pre>
 <p>Returns whether the <a class="link" href="btk2-Filesystem-utilities.html#BtkMountOperation"><span class="type">BtkMountOperation</span></a> is currently displaying
 a window.</p>
@@ -352,10 +352,10 @@ are shown. </p>
 <hr>
 <div class="refsect2">
 <a name="btk-show-uri"></a><h3>btk_show_uri ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_show_uri (<em class="parameter"><code><a href="../html/BdkScreen.html#BdkScreen-struct"><span class="type">BdkScreen</span></a> *screen</code></em>,
-              <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
-              <em class="parameter"><code><span class="type">guint32</span> timestamp</code></em>,
+              <em class="parameter"><code>const <span class="type">bchar</span> *uri</code></em>,
+              <em class="parameter"><code><span class="type">buint32</span> timestamp</code></em>,
               <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>This is a convenience function for launching the default application
 to show the uri. The uri must be of a form understood by BUNNYIO (i.e. you
@@ -423,7 +423,7 @@ and <code class="function">bunny_url_show()</code>.</p>
 <a name="btk2-Filesystem-utilities.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkMountOperation--is-showing"></a><h3>The <code class="literal">“is-showing”</code> property</h3>
-<pre class="programlisting">  “is-showing”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “is-showing”               <span class="type">bboolean</span></pre>
 <p>Are we showing a dialog.</p>
 <p>Owner: BtkMountOperation</p>
 <p>Flags: Read</p>

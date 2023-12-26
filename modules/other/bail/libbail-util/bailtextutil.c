@@ -47,9 +47,9 @@ static void get_bango_text_offsets         (BangoLayout         *layout,
                                             BtkTextBuffer       *buffer,
                                             BailOffsetType      function,
                                             BatkTextBoundary     boundary_type,
-                                            gint                offset,
-                                            gint                *start_offset,
-                                            gint                *end_offset,
+                                            bint                offset,
+                                            bint                *start_offset,
+                                            bint                *end_offset,
                                             BtkTextIter         *start_iter,
                                             BtkTextIter         *end_iter);
 static BObjectClass *parent_class = NULL;
@@ -123,13 +123,13 @@ bail_text_util_finalize (BObject *object)
 /**
  * bail_text_util_text_setup:
  * @textutil: The #BailTextUtil to be initialized.
- * @text: A gchar* which points to the text to be stored in the BailTextUtil
+ * @text: A bchar* which points to the text to be stored in the BailTextUtil
  *
  * This function initializes the BailTextUtil with the specified character string,
  **/
 void
 bail_text_util_text_setup (BailTextUtil *textutil,
-                           const gchar  *text)
+                           const bchar  *text)
 {
   g_return_if_fail (BAIL_IS_TEXT_UTIL (textutil));
 
@@ -169,7 +169,7 @@ bail_text_util_buffer_setup  (BailTextUtil  *textutil,
 /**
  * bail_text_util_get_text:
  * @textutil: A #BailTextUtil
- * @layout: A gpointer which is a BangoLayout, a BtkTreeView of NULL
+ * @layout: A bpointer which is a BangoLayout, a BtkTreeView of NULL
  * @function: An enumeration specifying whether to return the text before, at, or
  *   after the offset.
  * @boundary_type: The boundary type.
@@ -184,17 +184,17 @@ bail_text_util_buffer_setup  (BailTextUtil  *textutil,
  *
  * Returns: the substring requested
  **/
-gchar*
+bchar*
 bail_text_util_get_text (BailTextUtil    *textutil,
-                         gpointer        layout,
+                         bpointer        layout,
                          BailOffsetType  function,
                          BatkTextBoundary boundary_type,
-                         gint            offset,
-                         gint            *start_offset,
-                         gint            *end_offset)
+                         bint            offset,
+                         bint            *start_offset,
+                         bint            *end_offset)
 {
   BtkTextIter start, end;
-  gint line_number;
+  bint line_number;
   BtkTextBuffer *buffer;
 
   g_return_val_if_fail (BAIL_IS_TEXT_UTIL (textutil), NULL);
@@ -639,10 +639,10 @@ bail_text_util_get_text (BailTextUtil    *textutil,
  *
  * Returns: the substring indicated by @start_pos and @end_pos
  **/
-gchar*
+bchar*
 bail_text_util_get_substring (BailTextUtil *textutil,
-                              gint         start_pos, 
-                              gint         end_pos)
+                              bint         start_pos, 
+                              bint         end_pos)
 {
   BtkTextIter start, end;
   BtkTextBuffer *buffer;
@@ -667,17 +667,17 @@ get_bango_text_offsets (BangoLayout         *layout,
                         BtkTextBuffer       *buffer,
                         BailOffsetType      function,
                         BatkTextBoundary     boundary_type,
-                        gint                offset,
-                        gint                *start_offset,
-                        gint                *end_offset,
+                        bint                offset,
+                        bint                *start_offset,
+                        bint                *end_offset,
                         BtkTextIter         *start_iter,
                         BtkTextIter         *end_iter)
 {
   BangoLayoutIter *iter;
   BangoLayoutLine *line, *prev_line = NULL, *prev_prev_line = NULL;
-  gint index, start_index, end_index;
-  const gchar *text;
-  gboolean found = FALSE;
+  bint index, start_index, end_index;
+  const bchar *text;
+  bboolean found = FALSE;
 
   text = bango_layout_get_text (layout);
   index = g_utf8_offset_to_pointer (text, offset) - text;

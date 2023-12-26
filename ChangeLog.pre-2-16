@@ -604,7 +604,7 @@
 	Bug 571873 - Compile error with bdk/win32/bdkselection-win32.c
 
 	* bdk/win32/bdkselection-win32.c (bdk_selection_convert): Cast
-	gpointer to char * before pointer arithmetic to avoid compilation
+	bpointer to char * before pointer arithmetic to avoid compilation
 	error with MSVC.
 
 	(_bdk_selection_property_delete): Remove unused variable.
@@ -1576,9 +1576,9 @@
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
 
 	Bug 567655 – btk_status_icon_set_tooltip_text and 
-	btk_status_icon_set_tooltip_markup should use gchar*
+	btk_status_icon_set_tooltip_markup should use bchar*
 
-	* btk/btkstatusicon.h: Use "const gchar*" in new tooltip api.
+	* btk/btkstatusicon.h: Use "const bchar*" in new tooltip api.
 	Pointed out by Torsten Schoenfeld.
 
 2009-01-18  Matthias Clasen  <mclasen@redhat.com>
@@ -1750,7 +1750,7 @@
 2009-01-12  Tor Lillqvist  <tml@iki.fi>
 
 	* bdk/bdk.c (bdk_arg_debug_cb) (bdk_arg_no_debug_cb): A
-	GOptionArgFunc should return gboolean and take also a GError
+	GOptionArgFunc should return bboolean and take also a GError
 	pointer parameter, so make these two functions do that. Return
 	FALSE (and set the GError) if the parsing of the debug string
 	failed completely. Note that g_parse_debug_string() doesn't really
@@ -2348,7 +2348,7 @@
 	semicolon.
 
 	* btk/btkcontainer.c (attributes_text_element): "value" is a
-	gchar*, not const gchar*.
+	bchar*, not const bchar*.
 
 2008-12-07  Matthias Clasen  <mclasen@redhat.com>
 
@@ -3276,7 +3276,7 @@
 	Bug 555578 – BtkTable propertiy maxima are wrong
 
 	* btk/btktable.c (btk_table_class_init), (btk_table_resize):
-        Always use 65535 instead of G_MAXUINT since that is
+        Always use 65535 instead of B_MAXUINT since that is
         the actually supported maximum number of columns and rows
 
 2008-10-09  Richard Hult  <richard@imendio.com>
@@ -3769,7 +3769,7 @@
 
 2008-09-24  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btkeventbox.c: events return gboolean not gint, reindented
+	* btk/btkeventbox.c: events return bboolean not bint, reindented
 	static prototypes.
 
 2008-09-24  Johan Dahlin  <johan@bunny.org>

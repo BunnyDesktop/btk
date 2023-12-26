@@ -15,19 +15,19 @@
 
 typedef struct
 {
-  gchar *filename;
-  gdouble font_size;
+  bchar *filename;
+  bdouble font_size;
 
-  gint lines_per_page;
-  gchar **lines;
-  gint num_lines;
-  gint num_pages;
+  bint lines_per_page;
+  bchar **lines;
+  bint num_lines;
+  bint num_pages;
 } PrintData;
 
 static void
 begin_print (BtkPrintOperation *operation,
 	     BtkPrintContext   *context,
-	     gpointer           user_data)
+	     bpointer           user_data)
 {
   PrintData *data = (PrintData *)user_data;
   char *contents;
@@ -56,17 +56,17 @@ begin_print (BtkPrintOperation *operation,
 static void
 draw_page (BtkPrintOperation *operation,
 	   BtkPrintContext   *context,
-	   gint               page_nr,
-	   gpointer           user_data)
+	   bint               page_nr,
+	   bpointer           user_data)
 {
   PrintData *data = (PrintData *)user_data;
   bairo_t *cr;
   BangoLayout *layout;
-  gint text_width, text_height;
-  gdouble width;
-  gint line, i;
+  bint text_width, text_height;
+  bdouble width;
+  bint line, i;
   BangoFontDescription *desc;
-  gchar *page_str;
+  bchar *page_str;
 
   cr = btk_print_context_get_bairo_context (context);
   width = btk_print_context_get_width (context);
@@ -133,7 +133,7 @@ draw_page (BtkPrintOperation *operation,
 static void
 end_print (BtkPrintOperation *operation,
 	   BtkPrintContext   *context,
-	   gpointer           user_data)
+	   bpointer           user_data)
 {
   PrintData *data = (PrintData *)user_data;
 
@@ -149,8 +149,8 @@ do_printing (BtkWidget *do_widget)
   BtkPrintOperation *operation;
   BtkPrintSettings *settings;
   PrintData *data;
-  gchar *uri, *ext;
-  const gchar *dir;
+  bchar *uri, *ext;
+  const bchar *dir;
   GError *error = NULL;
 
   operation = btk_print_operation_new ();

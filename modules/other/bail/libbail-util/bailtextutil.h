@@ -68,19 +68,19 @@ GType         bail_text_util_get_type      (void);
 BailTextUtil* bail_text_util_new           (void);
 
 void          bail_text_util_text_setup    (BailTextUtil    *textutil,
-                                            const gchar     *text);
+                                            const bchar     *text);
 void          bail_text_util_buffer_setup  (BailTextUtil    *textutil,
                                             BtkTextBuffer   *buffer);
-gchar*        bail_text_util_get_text      (BailTextUtil    *textutil,
-                                             gpointer        layout,
+bchar*        bail_text_util_get_text      (BailTextUtil    *textutil,
+                                             bpointer        layout,
                                             BailOffsetType  function,
                                             BatkTextBoundary boundary_type,
-                                            gint            offset,
-                                            gint            *start_offset,
-                                            gint            *end_offset);
-gchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
-                                            gint            start_pos,
-                                            gint            end_pos);
+                                            bint            offset,
+                                            bint            *start_offset,
+                                            bint            *end_offset);
+bchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
+                                            bint            start_pos,
+                                            bint            end_pos);
 
 B_END_DECLS
 

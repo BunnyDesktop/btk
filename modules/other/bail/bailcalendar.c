@@ -25,7 +25,7 @@
 static void         bail_calendar_class_init          (BailCalendarClass *klass);
 static void         bail_calendar_init                (BailCalendar      *calendar);
 static void         bail_calendar_initialize          (BatkObject         *accessible,
-                                                       gpointer           data);
+                                                       bpointer           data);
 
 G_DEFINE_TYPE (BailCalendar, bail_calendar, BAIL_TYPE_WIDGET)
 
@@ -44,7 +44,7 @@ bail_calendar_init (BailCalendar *calendar)
 
 static void
 bail_calendar_initialize (BatkObject *accessible,
-                          gpointer  data)
+                          bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_calendar_parent_class)->initialize (accessible, data);
 

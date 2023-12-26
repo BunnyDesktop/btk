@@ -94,29 +94,29 @@
 
 struct _BtkActionPrivate 
 {
-  const gchar *name; /* interned */
-  gchar *label;
-  gchar *short_label;
-  gchar *tooltip;
-  gchar *stock_id; /* stock icon */
-  gchar *icon_name; /* themed icon */
+  const bchar *name; /* interned */
+  bchar *label;
+  bchar *short_label;
+  bchar *tooltip;
+  bchar *stock_id; /* stock icon */
+  bchar *icon_name; /* themed icon */
   GIcon *gicon;
 
-  guint sensitive          : 1;
-  guint visible            : 1;
-  guint label_set          : 1; /* these two used so we can set label */
-  guint short_label_set    : 1; /* based on stock id */
-  guint visible_horizontal : 1;
-  guint visible_vertical   : 1;
-  guint is_important       : 1;
-  guint hide_if_empty      : 1;
-  guint visible_overflown  : 1;
-  guint always_show_image  : 1;
-  guint recursion_guard    : 1;
-  guint activate_blocked   : 1;
+  buint sensitive          : 1;
+  buint visible            : 1;
+  buint label_set          : 1; /* these two used so we can set label */
+  buint short_label_set    : 1; /* based on stock id */
+  buint visible_horizontal : 1;
+  buint visible_vertical   : 1;
+  buint is_important       : 1;
+  buint hide_if_empty      : 1;
+  buint visible_overflown  : 1;
+  buint always_show_image  : 1;
+  buint recursion_guard    : 1;
+  buint activate_blocked   : 1;
 
   /* accelerator */
-  guint          accel_count;
+  buint          accel_count;
   BtkAccelGroup *accel_group;
   GClosure      *accel_closure;
   GQuark         accel_quark;
@@ -157,8 +157,8 @@ enum
 /* BtkBuildable */
 static void btk_action_buildable_init             (BtkBuildableIface *iface);
 static void btk_action_buildable_set_name         (BtkBuildable *buildable,
-						   const gchar  *name);
-static const gchar* btk_action_buildable_get_name (BtkBuildable *buildable);
+						   const bchar  *name);
+static const bchar* btk_action_buildable_get_name (BtkBuildable *buildable);
 
 G_DEFINE_TYPE_WITH_CODE (BtkAction, btk_action, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -166,11 +166,11 @@ G_DEFINE_TYPE_WITH_CODE (BtkAction, btk_action, B_TYPE_OBJECT,
 
 static void btk_action_finalize     (BObject *object);
 static void btk_action_set_property (BObject         *object,
-				     guint            prop_id,
+				     buint            prop_id,
 				     const BValue    *value,
 				     BParamSpec      *pspec);
 static void btk_action_get_property (BObject         *object,
-				     guint            prop_id,
+				     buint            prop_id,
 				     BValue          *value,
 				     BParamSpec      *pspec);
 static void btk_action_set_action_group (BtkAction	*action,
@@ -185,12 +185,12 @@ static void       disconnect_proxy    (BtkAction *action,
  
 static void       closure_accel_activate (GClosure     *closure,
 					  BValue       *return_value,
-					  guint         n_param_values,
+					  buint         n_param_values,
 					  const BValue *param_values,
-					  gpointer      invocation_hint,
-					  gpointer      marshal_data);
+					  bpointer      invocation_hint,
+					  bpointer      marshal_data);
 
-static guint         action_signals[LAST_SIGNAL] = { 0 };
+static buint         action_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
@@ -484,14 +484,14 @@ btk_action_buildable_init (BtkBuildableIface *iface)
 
 static void
 btk_action_buildable_set_name (BtkBuildable *buildable,
-			       const gchar  *name)
+			       const bchar  *name)
 {
   BtkAction *action = BTK_ACTION (buildable);
 
   action->private_data->name = g_intern_string (name);
 }
 
-static const gchar *
+static const bchar *
 btk_action_buildable_get_name (BtkBuildable *buildable)
 {
   BtkAction *action = BTK_ACTION (buildable);
@@ -518,10 +518,10 @@ btk_action_buildable_get_name (BtkBuildable *buildable)
  * Since: 2.4
  */
 BtkAction *
-btk_action_new (const gchar *name,
-		const gchar *label,
-		const gchar *tooltip,
-		const gchar *stock_id)
+btk_action_new (const bchar *name,
+		const bchar *label,
+		const bchar *tooltip,
+		const bchar *stock_id)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
@@ -557,7 +557,7 @@ btk_action_finalize (BObject *object)
 
 static void
 btk_action_set_property (BObject         *object,
-			 guint            prop_id,
+			 buint            prop_id,
 			 const BValue    *value,
 			 BParamSpec      *pspec)
 {
@@ -623,7 +623,7 @@ btk_action_set_property (BObject         *object,
 
 static void
 btk_action_get_property (BObject    *object,
-			 guint       prop_id,
+			 buint       prop_id,
 			 BValue     *value,
 			 BParamSpec *pspec)
 {
@@ -756,10 +756,10 @@ disconnect_proxy (BtkAction *action,
 void
 _btk_action_sync_menu_visible (BtkAction *action,
 			       BtkWidget *proxy,
-			       gboolean   empty)
+			       bboolean   empty)
 {
-  gboolean visible = TRUE;
-  gboolean hide_if_empty = TRUE;
+  bboolean visible = TRUE;
+  bboolean hide_if_empty = TRUE;
 
   g_return_if_fail (BTK_IS_MENU_ITEM (proxy));
   g_return_if_fail (action == NULL || BTK_IS_ACTION (action));
@@ -1070,7 +1070,7 @@ btk_widget_get_action (BtkWidget *widget)
  *
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_action_get_name (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1089,7 +1089,7 @@ btk_action_get_name (BtkAction *action)
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_action_is_sensitive (BtkAction *action)
 {
   BtkActionPrivate *priv;
@@ -1113,7 +1113,7 @@ btk_action_is_sensitive (BtkAction *action)
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_action_get_sensitive (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1135,7 +1135,7 @@ btk_action_get_sensitive (BtkAction *action)
  **/
 void
 btk_action_set_sensitive (BtkAction *action,
-			  gboolean   sensitive)
+			  bboolean   sensitive)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1160,7 +1160,7 @@ btk_action_set_sensitive (BtkAction *action,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_action_is_visible (BtkAction *action)
 {
   BtkActionPrivate *priv;
@@ -1184,7 +1184,7 @@ btk_action_is_visible (BtkAction *action)
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_action_get_visible (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1206,7 +1206,7 @@ btk_action_get_visible (BtkAction *action)
  **/
 void
 btk_action_set_visible (BtkAction *action,
-			gboolean   visible)
+			bboolean   visible)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1232,7 +1232,7 @@ btk_action_set_visible (BtkAction *action,
  */
 void 
 btk_action_set_is_important (BtkAction *action,
-			     gboolean   is_important)
+			     bboolean   is_important)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1256,7 +1256,7 @@ btk_action_set_is_important (BtkAction *action,
  *
  * Since: 2.16
  */
-gboolean 
+bboolean 
 btk_action_get_is_important (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1279,7 +1279,7 @@ btk_action_get_is_important (BtkAction *action)
  */
 void
 btk_action_set_always_show_image (BtkAction *action,
-                                  gboolean   always_show)
+                                  bboolean   always_show)
 {
   BtkActionPrivate *priv;
 
@@ -1309,7 +1309,7 @@ btk_action_set_always_show_image (BtkAction *action,
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_action_get_always_show_image  (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1328,9 +1328,9 @@ btk_action_get_always_show_image  (BtkAction *action)
  */
 void 
 btk_action_set_label (BtkAction	  *action,
-		      const gchar *label)
+		      const bchar *label)
 {
-  gchar *tmp;
+  bchar *tmp;
   
   g_return_if_fail (BTK_IS_ACTION (action));
   
@@ -1367,7 +1367,7 @@ btk_action_set_label (BtkAction	  *action,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_action_get_label (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1386,9 +1386,9 @@ btk_action_get_label (BtkAction *action)
  */
 void 
 btk_action_set_short_label (BtkAction   *action,
-			    const gchar *short_label)
+			    const bchar *short_label)
 {
-  gchar *tmp;
+  bchar *tmp;
 
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1413,7 +1413,7 @@ btk_action_set_short_label (BtkAction   *action,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_action_get_short_label (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1432,7 +1432,7 @@ btk_action_get_short_label (BtkAction *action)
  */
 void
 btk_action_set_visible_horizontal (BtkAction *action,
-				   gboolean   visible_horizontal)
+				   bboolean   visible_horizontal)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1458,7 +1458,7 @@ btk_action_set_visible_horizontal (BtkAction *action,
  *
  * Since: 2.16
  */
-gboolean 
+bboolean 
 btk_action_get_visible_horizontal (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1477,7 +1477,7 @@ btk_action_get_visible_horizontal (BtkAction *action)
  */
 void 
 btk_action_set_visible_vertical (BtkAction *action,
-				 gboolean   visible_vertical)
+				 bboolean   visible_vertical)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1503,7 +1503,7 @@ btk_action_set_visible_vertical (BtkAction *action,
  *
  * Since: 2.16
  */
-gboolean 
+bboolean 
 btk_action_get_visible_vertical (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
@@ -1522,9 +1522,9 @@ btk_action_get_visible_vertical (BtkAction *action)
  */
 void 
 btk_action_set_tooltip (BtkAction   *action,
-			const gchar *tooltip)
+			const bchar *tooltip)
 {
-  gchar *tmp;
+  bchar *tmp;
 
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1545,7 +1545,7 @@ btk_action_set_tooltip (BtkAction   *action,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_action_get_tooltip (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1564,9 +1564,9 @@ btk_action_get_tooltip (BtkAction *action)
  */
 void 
 btk_action_set_stock_id (BtkAction   *action,
-			 const gchar *stock_id)
+			 const bchar *stock_id)
 {
-  gchar *tmp;
+  bchar *tmp;
 
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1603,7 +1603,7 @@ btk_action_set_stock_id (BtkAction   *action,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_action_get_stock_id (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1622,9 +1622,9 @@ btk_action_get_stock_id (BtkAction *action)
  */
 void 
 btk_action_set_icon_name (BtkAction   *action,
-			  const gchar *icon_name)
+			  const bchar *icon_name)
 {
-  gchar *tmp;
+  bchar *tmp;
 
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1645,7 +1645,7 @@ btk_action_set_icon_name (BtkAction   *action,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_action_get_icon_name (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1756,10 +1756,10 @@ btk_action_unblock_activate_from (BtkAction *action,
 static void
 closure_accel_activate (GClosure     *closure,
                         BValue       *return_value,
-                        guint         n_param_values,
+                        buint         n_param_values,
                         const BValue *param_values,
-                        gpointer      invocation_hint,
-                        gpointer      marshal_data)
+                        bpointer      invocation_hint,
+                        bpointer      marshal_data)
 {
   if (btk_action_is_sensitive (BTK_ACTION (closure->data)))
     {
@@ -1799,7 +1799,7 @@ btk_action_set_action_group (BtkAction	    *action,
  */
 void
 btk_action_set_accel_path (BtkAction   *action, 
-			   const gchar *accel_path)
+			   const bchar *accel_path)
 {
   g_return_if_fail (BTK_IS_ACTION (action));
 
@@ -1818,7 +1818,7 @@ btk_action_set_accel_path (BtkAction   *action,
  *   if none is set. The returned string is owned by BTK+ 
  *   and must not be freed or modified.
  */
-const gchar *
+const bchar *
 btk_action_get_accel_path (BtkAction *action)
 {
   g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
@@ -1901,7 +1901,7 @@ btk_action_connect_accelerator (BtkAction *action)
 
   if (action->private_data->accel_count == 0)
     {
-      const gchar *accel_path = 
+      const bchar *accel_path = 
 	g_quark_to_string (action->private_data->accel_quark);
       
       btk_accel_group_connect_by_path (action->private_data->accel_group,

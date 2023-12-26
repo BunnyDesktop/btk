@@ -66,7 +66,7 @@ _bdk_init_input_core (BdkDisplay *display)
 static void bdk_device_class_init (BdkDeviceClass *klass);
 static void bdk_device_dispose    (BObject        *object);
 
-static gpointer bdk_device_parent_class = NULL;
+static bpointer bdk_device_parent_class = NULL;
 
 GType
 bdk_device_get_type (void)
@@ -180,7 +180,7 @@ bdk_display_list_devices (BdkDisplay *display)
  *
  * Since: 2.22
  **/
-const gchar *
+const bchar *
 bdk_device_get_name (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), NULL);
@@ -234,7 +234,7 @@ bdk_device_get_mode (BdkDevice *device)
  *
  * Since: 2.22
  **/
-gboolean
+bboolean
 bdk_device_get_has_cursor (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), FALSE);
@@ -265,8 +265,8 @@ bdk_device_set_source (BdkDevice      *device,
  **/
 void
 bdk_device_get_key (BdkDevice       *device,
-                    guint            index,
-                    guint           *keyval,
+                    buint            index,
+                    buint           *keyval,
                     BdkModifierType *modifiers)
 {
   g_return_if_fail (BDK_IS_DEVICE (device));
@@ -285,8 +285,8 @@ bdk_device_get_key (BdkDevice       *device,
 
 void
 bdk_device_set_key (BdkDevice      *device,
-		    guint           index,
-		    guint           keyval,
+		    buint           index,
+		    buint           keyval,
 		    BdkModifierType modifiers)
 {
   g_return_if_fail (device != NULL);
@@ -309,7 +309,7 @@ bdk_device_set_key (BdkDevice      *device,
  **/
 BdkAxisUse
 bdk_device_get_axis_use (BdkDevice *device,
-                         guint      index)
+                         buint      index)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), BDK_AXIS_IGNORE);
   g_return_val_if_fail (index < device->num_axes, BDK_AXIS_IGNORE);
@@ -327,7 +327,7 @@ bdk_device_get_axis_use (BdkDevice *device,
  *
  * Since: 2.24
  **/
-gint
+bint
 bdk_device_get_n_keys (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -345,7 +345,7 @@ bdk_device_get_n_keys (BdkDevice *device)
  *
  * Since: 2.22
  **/
-gint
+bint
 bdk_device_get_n_axes (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -355,7 +355,7 @@ bdk_device_get_n_axes (BdkDevice *device)
 
 void
 bdk_device_set_axis_use (BdkDevice   *device,
-			 guint        index,
+			 buint        index,
 			 BdkAxisUse   use)
 {
   g_return_if_fail (device != NULL);
@@ -382,7 +382,7 @@ bdk_device_set_axis_use (BdkDevice   *device,
     }
 }
 
-static gboolean
+static bboolean
 impl_coord_in_window (BdkWindow *window,
 		      int impl_x,
 		      int impl_y)
@@ -417,17 +417,17 @@ impl_coord_in_window (BdkWindow *window,
  * Return value: %TRUE if the windowing system supports motion history and
  *  at least one event was found.
  **/
-gboolean
+bboolean
 bdk_device_get_history  (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   BdkTimeCoord **coords = NULL;
   BdkWindow *impl_window;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
   int tmp_n_events = 0;
 
   g_return_val_if_fail (BDK_WINDOW_IS_X11 (window), FALSE);
@@ -500,10 +500,10 @@ bdk_device_get_history  (BdkDevice         *device,
 
 BdkTimeCoord **
 _bdk_device_allocate_history (BdkDevice *device,
-			      gint       n_events)
+			      bint       n_events)
 {
   BdkTimeCoord **result = g_new (BdkTimeCoord *, n_events);
-  gint i;
+  bint i;
 
   for (i=0; i<n_events; i++)
     result[i] = g_malloc (sizeof (BdkTimeCoord) -
@@ -521,9 +521,9 @@ _bdk_device_allocate_history (BdkDevice *device,
  */
 void
 bdk_device_free_history (BdkTimeCoord **events,
-			 gint           n_events)
+			 bint           n_events)
 {
-  gint i;
+  bint i;
 
   for (i=0; i<n_events; i++)
     g_free (events[i]);
@@ -563,7 +563,7 @@ unset_extension_events (BdkWindow *window)
 }
 
 void
-bdk_input_set_extension_events (BdkWindow *window, gint mask,
+bdk_input_set_extension_events (BdkWindow *window, bint mask,
 				BdkExtensionMode mode)
 {
   BdkWindowObject *window_private;
@@ -651,13 +651,13 @@ _bdk_input_window_destroy (BdkWindow *window)
  *
  * Return value: %TRUE if the given axis use was found, otherwise %FALSE
  **/
-gboolean
+bboolean
 bdk_device_get_axis (BdkDevice  *device,
-		     gdouble    *axes,
+		     bdouble    *axes,
 		     BdkAxisUse  use,
-		     gdouble    *value)
+		     bdouble    *value)
 {
-  gint i;
+  bint i;
 
   g_return_val_if_fail (device != NULL, FALSE);
 

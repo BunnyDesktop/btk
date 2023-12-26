@@ -38,13 +38,13 @@ struct _BailComboBox
 {
   BailContainer parent;
 
-  gchar         *press_keybinding;
-  gchar         *press_description;
-  guint         action_idle_handler;
+  bchar         *press_keybinding;
+  bchar         *press_description;
+  buint         action_idle_handler;
 
-  gchar         *name;
-  gint          old_selection;
-  gboolean      popup_set;
+  bchar         *name;
+  bint          old_selection;
+  bboolean      popup_set;
 };
 
 GType bail_combo_box_get_type (void);

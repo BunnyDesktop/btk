@@ -63,7 +63,7 @@ send_random (void)
 static BdkFilterReturn
 filter_func (BdkXEvent *xevent,
 	     BdkEvent  *event,
-	     gpointer   data)
+	     bpointer   data)
 {
   g_print ("Got matching client message!\n");
   return BDK_FILTER_REMOVE;

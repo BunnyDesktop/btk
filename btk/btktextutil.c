@@ -54,7 +54,7 @@ struct _BtkUnicodeMenuEntry {
 struct _BtkTextUtilCallbackInfo
 {
   BtkTextUtilCharChosenFunc func;
-  gpointer data;
+  bpointer data;
 };
 
 static const BtkUnicodeMenuEntry bidi_menu_entries[] = {
@@ -72,7 +72,7 @@ static const BtkUnicodeMenuEntry bidi_menu_entries[] = {
 
 static BtkTextUtilCallbackInfo *
 callback_info_new (BtkTextUtilCharChosenFunc  func,
-                   gpointer                   data)
+                   bpointer                   data)
 {
   BtkTextUtilCallbackInfo *info;
 
@@ -92,7 +92,7 @@ callback_info_free (BtkTextUtilCallbackInfo *info)
 
 static void
 activate_cb (BtkWidget *menu_item,
-             gpointer   data)
+             bpointer   data)
 {
   BtkUnicodeMenuEntry *entry;
   BtkTextUtilCallbackInfo *info = data;
@@ -123,7 +123,7 @@ activate_cb (BtkWidget *menu_item,
 void
 _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushell,
                                               BtkTextUtilCharChosenFunc  func,
-                                              gpointer                   data)
+                                              bpointer                   data)
 {
   int i;
 
@@ -136,7 +136,7 @@ _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushe
 
       menuitem = btk_menu_item_new_with_mnemonic (_(bidi_menu_entries[i].label));
       g_object_set_data (B_OBJECT (menuitem), I_("btk-unicode-menu-entry"),
-                         (gpointer)&bidi_menu_entries[i]);
+                         (bpointer)&bidi_menu_entries[i]);
 
       g_signal_connect_data (menuitem, "activate",
                              G_CALLBACK (activate_cb),
@@ -148,10 +148,10 @@ _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushe
 }
 
 static void
-append_n_lines (GString *str, const gchar *text, GSList *lines, gint n_lines)
+append_n_lines (GString *str, const bchar *text, GSList *lines, bint n_lines)
 {
   BangoLayoutLine *line;
-  gint i;
+  bint i;
 
   for (i = 0; i < n_lines; i++)
     {
@@ -164,10 +164,10 @@ append_n_lines (GString *str, const gchar *text, GSList *lines, gint n_lines)
 static void
 limit_layout_lines (BangoLayout *layout)
 {
-  const gchar *text;
+  const bchar *text;
   GString     *str;
   GSList      *lines, *elem;
-  gint         n_lines;
+  bint         n_lines;
 
   n_lines = bango_layout_get_line_count (layout);
   
@@ -197,7 +197,7 @@ limit_layout_lines (BangoLayout *layout)
 /*
  * _btk_text_util_create_drag_icon
  * @widget: #BtkWidget to extract the bango context
- * @text: a #gchar to render the icon
+ * @text: a #bchar to render the icon
  * @len: length of @text, or -1 for NUL-terminated text
  *
  * Creates a drag and drop icon from @text.
@@ -206,15 +206,15 @@ limit_layout_lines (BangoLayout *layout)
  */
 BdkPixmap *
 _btk_text_util_create_drag_icon (BtkWidget *widget, 
-                                 gchar     *text,
-                                 gsize      len)
+                                 bchar     *text,
+                                 bsize      len)
 {
   BdkDrawable  *drawable = NULL;
   BangoContext *context;
   BangoLayout  *layout;
   bairo_t      *cr;
-  gint          pixmap_height, pixmap_width;
-  gint          layout_width, layout_height;
+  bint          pixmap_height, pixmap_width;
+  bint          layout_width, layout_height;
 
   g_return_val_if_fail (widget != NULL, NULL);
   g_return_val_if_fail (text != NULL, NULL);
@@ -282,8 +282,8 @@ _btk_text_util_create_rich_drag_icon (BtkWidget     *widget,
                                       BtkTextIter   *end)
 {
   BdkDrawable       *drawable = NULL;
-  gint               pixmap_height, pixmap_width;
-  gint               layout_width, layout_height;
+  bint               pixmap_height, pixmap_width;
+  bint               layout_width, layout_height;
   BtkTextBuffer     *new_buffer;
   BtkTextLayout     *layout;
   BtkTextAttributes *style;
@@ -377,10 +377,10 @@ _btk_text_util_create_rich_drag_icon (BtkWidget     *widget,
 }
 
 
-static gint
+static bint
 layout_get_char_width (BangoLayout *layout)
 {
-  gint width;
+  bint width;
   BangoFontMetrics *metrics;
   const BangoFontDescription *font_desc;
   BangoContext *context = bango_layout_get_context (layout);
@@ -407,17 +407,17 @@ layout_get_char_width (BangoLayout *layout)
  * Returns: whether cursor should actually be drawn as a rectangle.
  *     It may not be the case if character at index is invisible.
  */
-gboolean
+bboolean
 _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
-					  gint            index,
+					  bint            index,
 					  BangoRectangle *pos,
-					  gboolean       *at_line_end)
+					  bboolean       *at_line_end)
 {
   BangoRectangle strong_pos, weak_pos;
   BangoLayoutLine *layout_line;
-  gboolean rtl;
-  gint line_no;
-  const gchar *text;
+  bboolean rtl;
+  bint line_no;
+  const bchar *text;
 
   g_return_val_if_fail (layout != NULL, FALSE);
   g_return_val_if_fail (index >= 0, FALSE);
@@ -479,9 +479,9 @@ _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
 	{
 	  BangoLayoutIter *iter;
 	  BangoRectangle line_rect;
-	  gint i;
-	  gint left, right;
-	  const gchar *p;
+	  bint i;
+	  bint left, right;
+	  const bchar *p;
 
 	  p = g_utf8_prev_char (text + index);
 

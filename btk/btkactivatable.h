@@ -60,7 +60,7 @@ struct _BtkActivatableIface
   /* virtual table */
   void   (* update)                   (BtkActivatable *activatable,
 		                       BtkAction      *action,
-		                       const gchar    *property_name);
+		                       const bchar    *property_name);
   void   (* sync_action_properties)   (BtkActivatable *activatable,
 		                       BtkAction      *action);
 };
@@ -76,8 +76,8 @@ void       btk_activatable_set_related_action         (BtkActivatable *activatab
 BtkAction *btk_activatable_get_related_action         (BtkActivatable *activatable);
 
 void       btk_activatable_set_use_action_appearance  (BtkActivatable *activatable,
-						       gboolean        use_appearance);
-gboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatable);
+						       bboolean        use_appearance);
+bboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatable);
 
 /* For use in activatable implementations */
 void       btk_activatable_do_set_related_action      (BtkActivatable *activatable,

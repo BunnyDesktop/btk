@@ -35,15 +35,15 @@
 
 #include "prop-editor.h"
 
-static gchar *backend = "btk+";
-static gboolean rtl = FALSE;
+static bchar *backend = "btk+";
+static bboolean rtl = FALSE;
 static GOptionEntry entries[] = {
   { "backend", 'b', 0, G_OPTION_ARG_STRING, &backend, "The filesystem backend to use.", "btk+" },
   { "right-to-left", 'r', 0, G_OPTION_ARG_NONE, &rtl, "Force right-to-left layout.", NULL },
   { NULL }
 };
 
-static gchar *btk_src_dir = NULL;
+static bchar *btk_src_dir = NULL;
 
 
 static void
@@ -55,10 +55,10 @@ win_style_set_cb (BtkWidget *win)
   btk_box_set_spacing (BTK_BOX (BTK_DIALOG (win)->action_area), 6);
 }
 
-static gboolean
+static bboolean
 delete_event_cb (BtkWidget *editor,
-		 gint       response,
-		 gpointer   user_data)
+		 bint       response,
+		 bpointer   user_data)
 {
   btk_widget_hide (editor);
 
@@ -90,9 +90,9 @@ properties_button_clicked_cb (BtkWidget *button,
 
 static void
 print_selected_path_clicked_cb (BtkWidget *button,
-				gpointer   user_data)
+				bpointer   user_data)
 {
-  gchar *folder, *filename;
+  bchar *folder, *filename;
 
   folder = btk_file_chooser_get_current_folder (user_data);
   filename = btk_file_chooser_get_filename (user_data);
@@ -104,7 +104,7 @@ print_selected_path_clicked_cb (BtkWidget *button,
 
 static void
 add_pwds_parent_as_shortcut_clicked_cb (BtkWidget *button,
-					gpointer   user_data)
+					bpointer   user_data)
 {
   GError *err = NULL;
 
@@ -122,7 +122,7 @@ add_pwds_parent_as_shortcut_clicked_cb (BtkWidget *button,
 
 static void
 del_pwds_parent_as_shortcut_clicked_cb (BtkWidget *button,
-					gpointer   user_data)
+					bpointer   user_data)
 {
   GError *err = NULL;
 
@@ -140,14 +140,14 @@ del_pwds_parent_as_shortcut_clicked_cb (BtkWidget *button,
 
 static void
 unselect_all_clicked_cb (BtkWidget *button,
-                         gpointer   user_data)
+                         bpointer   user_data)
 {
   btk_file_chooser_unselect_all (user_data);
 }
 
 static void
 tests_button_clicked_cb (BtkButton *real_button,
-			 gpointer   user_data)
+			 bpointer   user_data)
 {
   BtkWidget *tests;
 
@@ -201,9 +201,9 @@ tests_button_clicked_cb (BtkButton *real_button,
 
 static void
 chooser_current_folder_changed_cb (BtkFileChooser *chooser,
-				   gpointer        user_data)
+				   bpointer        user_data)
 {
-  gchar *folder, *filename;
+  bchar *folder, *filename;
 
   folder = btk_file_chooser_get_current_folder_uri (chooser);
   filename = btk_file_chooser_get_uri (chooser);
@@ -215,9 +215,9 @@ chooser_current_folder_changed_cb (BtkFileChooser *chooser,
 
 static void
 chooser_selection_changed_cb (BtkFileChooser *chooser,
-			      gpointer        user_data)
+			      bpointer        user_data)
 {
-  gchar *filename;
+  bchar *filename;
 
   filename = btk_file_chooser_get_uri (chooser);
   g_message ("%s::selection-changed\n\tSelection:`%s'\nDone.\n",
@@ -227,9 +227,9 @@ chooser_selection_changed_cb (BtkFileChooser *chooser,
 
 static void
 chooser_file_activated_cb (BtkFileChooser *chooser,
-			   gpointer        user_data)
+			   bpointer        user_data)
 {
-  gchar *folder, *filename;
+  bchar *folder, *filename;
 
   folder = btk_file_chooser_get_current_folder_uri (chooser);
   filename = btk_file_chooser_get_uri (chooser);
@@ -241,9 +241,9 @@ chooser_file_activated_cb (BtkFileChooser *chooser,
 
 static void
 chooser_update_preview_cb (BtkFileChooser *chooser,
-			   gpointer        user_data)
+			   bpointer        user_data)
 {
-  gchar *filename;
+  bchar *filename;
 
   filename = btk_file_chooser_get_preview_uri (chooser);
   if (filename != NULL)
@@ -263,7 +263,7 @@ main (int   argc,
   BtkWidget *hbox, *label, *chooser, *button;
   BtkSizeGroup *label_group;
   GOptionContext *context;
-  gchar *cwd;
+  bchar *cwd;
 
   context = g_option_context_new ("- test BtkFileChooserButton widget");
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);

@@ -3,12 +3,12 @@
 #include <btk/btk.h>
 
 /* User clicked the "Add List" button. */
-void button_add_clicked( gpointer data )
+void button_add_clicked( bpointer data )
 {
     int indx;
  
     /* Something silly to add to the list. 4 rows of 2 columns each */
-    gchar *drink[4][2] = { { "Milk",    "3 Oz" },
+    bchar *drink[4][2] = { { "Milk",    "3 Oz" },
                            { "Water",   "6 l" },
                            { "Carrots", "2" },
                            { "Snakes",  "55" } };
@@ -23,7 +23,7 @@ void button_add_clicked( gpointer data )
 }
 
 /* User clicked the "Clear List" button. */
-void button_clear_clicked( gpointer data )
+void button_clear_clicked( bpointer data )
 {
     /* Clear the list using btk_clist_clear. This is much faster than
      * calling btk_clist_remove once for each row.
@@ -34,7 +34,7 @@ void button_clear_clicked( gpointer data )
 }
 
 /* The user clicked the "Hide/Show titles" button. */
-void button_hide_show_clicked( gpointer data )
+void button_hide_show_clicked( bpointer data )
 {
     /* Just a flag to remember the status. 0 = currently visible */
     static short int flag = 0;
@@ -57,12 +57,12 @@ void button_hide_show_clicked( gpointer data )
 
 /* If we come here, then the user has selected a row in the list. */
 void selection_made( BtkWidget      *clist,
-                     gint            row,
-                     gint            column,
+                     bint            row,
+                     bint            column,
 		     BdkEventButton *event,
-                     gpointer        data )
+                     bpointer        data )
 {
-    gchar *text;
+    bchar *text;
 
     /* Get the text that is stored in the selected row and column
      * which was clicked in. We will receive it as a pointer in the
@@ -79,13 +79,13 @@ void selection_made( BtkWidget      *clist,
 }
 
 int main( int    argc,
-          gchar *argv[] )
+          bchar *argv[] )
 {                                  
     BtkWidget *window;
     BtkWidget *vbox, *hbox;
     BtkWidget *scrolled_window, *clist;
     BtkWidget *button_add, *button_clear, *button_hide_show;    
-    gchar *titles[2] = { "Ingredients", "Amount" };
+    bchar *titles[2] = { "Ingredients", "Amount" };
 
     btk_init(&argc, &argv);
     

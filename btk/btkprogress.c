@@ -50,17 +50,17 @@ enum {
 
 
 static void btk_progress_set_property    (BObject          *object,
-					  guint             prop_id,
+					  buint             prop_id,
 					  const BValue     *value,
 					  BParamSpec       *pspec);
 static void btk_progress_get_property    (BObject          *object,
-					  guint             prop_id,
+					  buint             prop_id,
 					  BValue           *value,
 					  BParamSpec       *pspec);
 static void btk_progress_destroy         (BtkObject        *object);
 static void btk_progress_finalize        (BObject          *object);
 static void btk_progress_realize         (BtkWidget        *widget);
-static gboolean btk_progress_expose      (BtkWidget        *widget,
+static bboolean btk_progress_expose      (BtkWidget        *widget,
 				 	  BdkEventExpose   *event);
 static void btk_progress_size_allocate   (BtkWidget        *widget,
 				 	  BtkAllocation    *allocation);
@@ -131,7 +131,7 @@ btk_progress_class_init (BtkProgressClass *class)
 
 static void
 btk_progress_set_property (BObject      *object,
-			   guint         prop_id,
+			   buint         prop_id,
 			   const BValue *value,
 			   BParamSpec   *pspec)
 {
@@ -165,7 +165,7 @@ btk_progress_set_property (BObject      *object,
 
 static void
 btk_progress_get_property (BObject      *object,
-			   guint         prop_id,
+			   buint         prop_id,
 			   BValue       *value,
 			   BParamSpec   *pspec)
 {
@@ -211,7 +211,7 @@ btk_progress_realize (BtkWidget *widget)
 {
   BtkProgress *progress = BTK_PROGRESS (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -271,7 +271,7 @@ btk_progress_finalize (BObject *object)
   B_OBJECT_CLASS (btk_progress_parent_class)->finalize (object);
 }
 
-static gboolean
+static bboolean
 btk_progress_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {
@@ -352,16 +352,16 @@ btk_progress_value_changed (BtkAdjustment *adjustment,
   BTK_PROGRESS_GET_CLASS (progress)->update (progress);
 }
 
-static gchar *
+static bchar *
 btk_progress_build_string (BtkProgress *progress,
-			   gdouble      value,
-			   gdouble      percentage)
+			   bdouble      value,
+			   bdouble      percentage)
 {
-  gchar buf[256] = { 0 };
-  gchar tmp[256] = { 0 };
-  gchar *src;
-  gchar *dest;
-  gchar fmt[10];
+  bchar buf[256] = { 0 };
+  bchar tmp[256] = { 0 };
+  bchar *src;
+  bchar *dest;
+  bchar fmt[10];
 
   src = progress->format;
 
@@ -382,17 +382,17 @@ btk_progress_build_string (BtkProgress *progress,
 	}
       else
 	{
-	  gchar c;
-	  gint digits;
+	  bchar c;
+	  bint digits;
 
-	  c = *(src + sizeof(gchar));
+	  c = *(src + sizeof(bchar));
 	  digits = 0;
 
 	  if (c >= '0' && c <= '2')
 	    {
-	      digits = (gint) (c - '0');
+	      digits = (bint) (c - '0');
 	      src++;
-	      c = *(src + sizeof(gchar));
+	      c = *(src + sizeof(bchar));
 	    }
 
 	  switch (c)
@@ -506,12 +506,12 @@ btk_progress_set_adjustment (BtkProgress   *progress,
 
 void
 btk_progress_configure (BtkProgress *progress,
-			gdouble      value,
-			gdouble      min,
-			gdouble      max)
+			bdouble      value,
+			bdouble      min,
+			bdouble      max)
 {
   BtkAdjustment *adj;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
 
   g_return_if_fail (BTK_IS_PROGRESS (progress));
   g_return_if_fail (min <= max);
@@ -535,7 +535,7 @@ btk_progress_configure (BtkProgress *progress,
 
 void
 btk_progress_set_percentage (BtkProgress *progress,
-			     gdouble      percentage)
+			     bdouble      percentage)
 {
   g_return_if_fail (BTK_IS_PROGRESS (progress));
   g_return_if_fail (percentage >= 0 && percentage <= 1.0);
@@ -546,7 +546,7 @@ btk_progress_set_percentage (BtkProgress *progress,
 		 (progress->adjustment->upper - progress->adjustment->lower));
 }
 
-gdouble
+bdouble
 btk_progress_get_current_percentage (BtkProgress *progress)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS (progress), 0);
@@ -557,9 +557,9 @@ btk_progress_get_current_percentage (BtkProgress *progress)
   return btk_progress_get_percentage_from_value (progress, progress->adjustment->value);
 }
 
-gdouble
+bdouble
 btk_progress_get_percentage_from_value (BtkProgress *progress,
-					gdouble      value)
+					bdouble      value)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS (progress), 0);
 
@@ -577,7 +577,7 @@ btk_progress_get_percentage_from_value (BtkProgress *progress,
 
 void
 btk_progress_set_value (BtkProgress *progress,
-			gdouble      value)
+			bdouble      value)
 {
   g_return_if_fail (BTK_IS_PROGRESS (progress));
 
@@ -588,7 +588,7 @@ btk_progress_set_value (BtkProgress *progress,
     btk_adjustment_set_value (progress->adjustment, value);
 }
 
-gdouble
+bdouble
 btk_progress_get_value (BtkProgress *progress)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS (progress), 0);
@@ -598,7 +598,7 @@ btk_progress_get_value (BtkProgress *progress)
 
 void
 btk_progress_set_show_text (BtkProgress *progress,
-			    gboolean     show_text)
+			    bboolean     show_text)
 {
   g_return_if_fail (BTK_IS_PROGRESS (progress));
 
@@ -614,8 +614,8 @@ btk_progress_set_show_text (BtkProgress *progress,
 
 void
 btk_progress_set_text_alignment (BtkProgress *progress,
-				 gfloat       x_align,
-				 gfloat       y_align)
+				 bfloat       x_align,
+				 bfloat       y_align)
 {
   g_return_if_fail (BTK_IS_PROGRESS (progress));
   g_return_if_fail (x_align >= 0.0 && x_align <= 1.0);
@@ -644,9 +644,9 @@ btk_progress_set_text_alignment (BtkProgress *progress,
 
 void
 btk_progress_set_format_string (BtkProgress *progress,
-				const gchar *format)
+				const bchar *format)
 {
-  gchar *old_format;
+  bchar *old_format;
   
   g_return_if_fail (BTK_IS_PROGRESS (progress));
 
@@ -666,7 +666,7 @@ btk_progress_set_format_string (BtkProgress *progress,
   btk_widget_queue_resize (BTK_WIDGET (progress));
 }
 
-gchar *
+bchar *
 btk_progress_get_current_text (BtkProgress *progress)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS (progress), NULL);
@@ -678,9 +678,9 @@ btk_progress_get_current_text (BtkProgress *progress)
 				    btk_progress_get_current_percentage (progress));
 }
 
-gchar *
+bchar *
 btk_progress_get_text_from_value (BtkProgress *progress,
-				  gdouble      value)
+				  bdouble      value)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS (progress), NULL);
 
@@ -693,7 +693,7 @@ btk_progress_get_text_from_value (BtkProgress *progress,
 
 void
 btk_progress_set_activity_mode (BtkProgress *progress,
-				gboolean     activity_mode)
+				bboolean     activity_mode)
 {
   g_return_if_fail (BTK_IS_PROGRESS (progress));
 

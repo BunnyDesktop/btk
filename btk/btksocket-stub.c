@@ -53,25 +53,25 @@ _btk_socket_windowing_size_request (BtkSocket *socket)
 void
 _btk_socket_windowing_send_key_event (BtkSocket *socket,
 				      BdkEvent  *bdk_event,
-				      gboolean   mask_key_presses)
+				      bboolean   mask_key_presses)
 {
 }
 
 void
 _btk_socket_windowing_focus_change (BtkSocket *socket,
-				    gboolean   focus_in)
+				    bboolean   focus_in)
 {
 }
 
 void
 _btk_socket_windowing_update_active (BtkSocket *socket,
-				     gboolean   active)
+				     bboolean   active)
 {
 }
 
 void
 _btk_socket_windowing_update_modality (BtkSocket *socket,
-				       gboolean   modality)
+				       bboolean   modality)
 {
 }
 
@@ -101,7 +101,7 @@ _btk_socket_windowing_embed_notify (BtkSocket *socket)
 {
 }
 
-gboolean
+bboolean
 _btk_socket_windowing_embed_get_focus_wrapped (void)
 {
   return FALSE;
@@ -115,7 +115,7 @@ _btk_socket_windowing_embed_set_focus_wrapped (void)
 BdkFilterReturn
 _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 				   BdkEvent  *event,
-				   gpointer   data)
+				   bpointer   data)
 {
   return BDK_FILTER_CONTINUE;
 }

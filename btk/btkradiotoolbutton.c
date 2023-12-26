@@ -33,7 +33,7 @@ enum {
 };
 
 static void btk_radio_tool_button_set_property (BObject         *object,
-						guint            prop_id,
+						buint            prop_id,
 						const BValue    *value,
 						BParamSpec      *pspec);
 
@@ -78,7 +78,7 @@ btk_radio_tool_button_init (BtkRadioToolButton *button)
 
 static void
 btk_radio_tool_button_set_property (BObject         *object,
-				    guint            prop_id,
+				    buint            prop_id,
 				    const BValue    *value,
 				    BParamSpec      *pspec)
 {
@@ -145,7 +145,7 @@ btk_radio_tool_button_new (GSList *group)
  **/
 BtkToolItem *
 btk_radio_tool_button_new_from_stock (GSList      *group,
-				      const gchar *stock_id)
+				      const bchar *stock_id)
 {
   BtkRadioToolButton *button;
 
@@ -199,7 +199,7 @@ btk_radio_tool_button_new_from_widget (BtkRadioToolButton *group)
  **/
 BtkToolItem *
 btk_radio_tool_button_new_with_stock_from_widget (BtkRadioToolButton *group,
-						  const gchar        *stock_id)
+						  const bchar        *stock_id)
 {
   GSList *list = NULL;
   

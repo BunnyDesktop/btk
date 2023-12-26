@@ -31,7 +31,7 @@ BtkPrinterOptionSet *_btk_printer_get_options               (BtkPrinter         
 							     BtkPrintSettings    *settings,
 							     BtkPageSetup        *page_setup,
 							     BtkPrintCapabilities capabilities);
-gboolean             _btk_printer_mark_conflicts            (BtkPrinter          *printer,
+bboolean             _btk_printer_mark_conflicts            (BtkPrinter          *printer,
 							     BtkPrinterOptionSet *options);
 void                 _btk_printer_get_settings_from_options (BtkPrinter          *printer,
 							     BtkPrinterOptionSet *options,
@@ -42,8 +42,8 @@ void                 _btk_printer_prepare_for_print         (BtkPrinter         
 							     BtkPageSetup        *page_setup);
 bairo_surface_t *    _btk_printer_create_bairo_surface      (BtkPrinter          *printer,
 							     BtkPrintSettings    *settings,
-							     gdouble              width,
-							     gdouble              height,
+							     bdouble              width,
+							     bdouble              height,
 							     BUNNYIOChannel          *cache_io);
 GHashTable *         _btk_printer_get_custom_widgets        (BtkPrinter          *printer);
 

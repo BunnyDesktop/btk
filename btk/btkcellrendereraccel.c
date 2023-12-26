@@ -31,32 +31,32 @@
 
 
 static void btk_cell_renderer_accel_get_property (BObject         *object,
-                                                  guint            param_id,
+                                                  buint            param_id,
                                                   BValue          *value,
                                                   BParamSpec      *pspec);
 static void btk_cell_renderer_accel_set_property (BObject         *object,
-                                                  guint            param_id,
+                                                  buint            param_id,
                                                   const BValue    *value,
                                                   BParamSpec      *pspec);
 static void btk_cell_renderer_accel_get_size     (BtkCellRenderer *cell,
                                                   BtkWidget       *widget,
                                                   BdkRectangle    *cell_area,
-                                                  gint            *x_offset,
-                                                  gint            *y_offset,
-                                                  gint            *width,
-                                                  gint            *height);
+                                                  bint            *x_offset,
+                                                  bint            *y_offset,
+                                                  bint            *width,
+                                                  bint            *height);
 static BtkCellEditable *
            btk_cell_renderer_accel_start_editing (BtkCellRenderer *cell,
                                                   BdkEvent        *event,
                                                   BtkWidget       *widget,
-                                                  const gchar     *path,
+                                                  const bchar     *path,
                                                   BdkRectangle    *background_area,
                                                   BdkRectangle    *cell_area,
                                                   BtkCellRendererState flags);
-static gchar *convert_keysym_state_to_string     (BtkCellRendererAccel *accel,
-                                                  guint                 keysym,
+static bchar *convert_keysym_state_to_string     (BtkCellRendererAccel *accel,
+                                                  buint                 keysym,
                                                   BdkModifierType       mask,
-                                                  guint                 keycode);
+                                                  buint                 keycode);
 
 enum {
   ACCEL_EDITED,
@@ -72,14 +72,14 @@ enum {
   PROP_ACCEL_MODE
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkCellRendererAccel, btk_cell_renderer_accel, BTK_TYPE_CELL_RENDERER_TEXT)
 
 static void
 btk_cell_renderer_accel_init (BtkCellRendererAccel *cell_accel)
 {
-  gchar *text;
+  bchar *text;
 
   text = convert_keysym_state_to_string (cell_accel, 0, 0, 0);
   g_object_set (cell_accel, "text", text, NULL);
@@ -114,7 +114,7 @@ btk_cell_renderer_accel_class_init (BtkCellRendererAccelClass *cell_accel_class)
                                                      P_("Accelerator key"),
                                                      P_("The keyval of the accelerator"),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
   
@@ -149,7 +149,7 @@ btk_cell_renderer_accel_class_init (BtkCellRendererAccelClass *cell_accel_class)
                                                       P_("Accelerator keycode"),
                                                       P_("The hardware keycode of the accelerator"),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -231,11 +231,11 @@ btk_cell_renderer_accel_new (void)
   return g_object_new (BTK_TYPE_CELL_RENDERER_ACCEL, NULL);
 }
 
-static gchar *
+static bchar *
 convert_keysym_state_to_string (BtkCellRendererAccel *accel,
-                                guint                 keysym,
+                                buint                 keysym,
                                 BdkModifierType       mask,
-                                guint                 keycode)
+                                buint                 keycode)
 {
   if (keysym == 0 && keycode == 0)
     /* This label is displayed in a treeview cell displaying
@@ -257,7 +257,7 @@ convert_keysym_state_to_string (BtkCellRendererAccel *accel,
         }
       else 
         {
-          gchar *name;
+          bchar *name;
 
           name = btk_accelerator_get_label (keysym, mask);
           if (name == NULL)
@@ -265,7 +265,7 @@ convert_keysym_state_to_string (BtkCellRendererAccel *accel,
 
           if (keysym == 0)
             {
-              gchar *tmp;
+              bchar *tmp;
 
               tmp = name;
               name = g_strdup_printf ("%s0x%02x", tmp, keycode);
@@ -279,7 +279,7 @@ convert_keysym_state_to_string (BtkCellRendererAccel *accel,
 
 static void
 btk_cell_renderer_accel_get_property  (BObject    *object,
-                                       guint       param_id,
+                                       buint       param_id,
                                        BValue     *value,
                                        BParamSpec *pspec)
 {
@@ -310,18 +310,18 @@ btk_cell_renderer_accel_get_property  (BObject    *object,
 
 static void
 btk_cell_renderer_accel_set_property  (BObject      *object,
-                                       guint         param_id,
+                                       buint         param_id,
                                        const BValue *value,
                                        BParamSpec   *pspec)
 {
   BtkCellRendererAccel *accel = BTK_CELL_RENDERER_ACCEL (object);
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
 
   switch (param_id)
     {
     case PROP_ACCEL_KEY:
       {
-        guint accel_key = b_value_get_uint (value);
+        buint accel_key = b_value_get_uint (value);
 
         if (accel->accel_key != accel_key)
           {
@@ -333,7 +333,7 @@ btk_cell_renderer_accel_set_property  (BObject      *object,
 
     case PROP_ACCEL_MODS:
       {
-        guint accel_mods = b_value_get_flags (value);
+        buint accel_mods = b_value_get_flags (value);
 
         if (accel->accel_mods != accel_mods)
           {
@@ -344,7 +344,7 @@ btk_cell_renderer_accel_set_property  (BObject      *object,
       break;
     case PROP_KEYCODE:
       {
-        guint keycode = b_value_get_uint (value);
+        buint keycode = b_value_get_uint (value);
 
         if (accel->keycode != keycode)
           {
@@ -364,7 +364,7 @@ btk_cell_renderer_accel_set_property  (BObject      *object,
 
   if (changed)
     {
-      gchar *text;
+      bchar *text;
 
       text = convert_keysym_state_to_string (accel, accel->accel_key, accel->accel_mods, accel->keycode);
       g_object_set (accel, "text", text, NULL);
@@ -376,10 +376,10 @@ static void
 btk_cell_renderer_accel_get_size (BtkCellRenderer *cell,
                                   BtkWidget       *widget,
                                   BdkRectangle    *cell_area,
-                                  gint            *x_offset,
-                                  gint            *y_offset,
-                                  gint            *width,
-                                  gint            *height)
+                                  bint            *x_offset,
+                                  bint            *y_offset,
+                                  bint            *width,
+                                  bint            *height)
 
 {
   BtkCellRendererAccel *accel = (BtkCellRendererAccel *) cell;
@@ -400,17 +400,17 @@ btk_cell_renderer_accel_get_size (BtkCellRenderer *cell,
     *height = MAX (*height, requisition.height);
 }
 
-static gboolean
+static bboolean
 grab_key_callback (BtkWidget            *widget,
                    BdkEventKey          *event,
                    BtkCellRendererAccel *accel)
 {
   BdkModifierType accel_mods = 0;
-  guint accel_key;
-  guint keyval;
-  gchar *path;
-  gboolean edited;
-  gboolean cleared;
+  buint accel_key;
+  buint keyval;
+  bchar *path;
+  bboolean edited;
+  bboolean cleared;
   BdkModifierType consumed_modifiers;
   BdkDisplay *display;
 
@@ -531,7 +531,7 @@ typedef         BtkEventBoxClass        BtkCellEditableEventBoxClass;
 struct _BtkCellEditableEventBox
 {
   BtkEventBox box;
-  gboolean editing_canceled;
+  bboolean editing_canceled;
 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkCellEditableEventBox, _btk_cell_editable_event_box, BTK_TYPE_EVENT_BOX, { \
@@ -545,7 +545,7 @@ enum {
 
 static void
 btk_cell_editable_event_box_set_property (BObject      *object,
-                                          guint         prop_id,
+                                          buint         prop_id,
                                           const BValue *value,
                                           BParamSpec   *pspec)
 {
@@ -564,7 +564,7 @@ btk_cell_editable_event_box_set_property (BObject      *object,
 
 static void
 btk_cell_editable_event_box_get_property (BObject    *object,
-                                          guint       prop_id,
+                                          buint       prop_id,
                                           BValue     *value,
                                           BParamSpec *pspec)
 {
@@ -603,7 +603,7 @@ static BtkCellEditable *
 btk_cell_renderer_accel_start_editing (BtkCellRenderer      *cell,
                                        BdkEvent             *event,
                                        BtkWidget            *widget,
-                                       const gchar          *path,
+                                       const bchar          *path,
                                        BdkRectangle         *background_area,
                                        BdkRectangle         *cell_area,
                                        BtkCellRendererState  flags)
@@ -645,7 +645,7 @@ btk_cell_renderer_accel_start_editing (BtkCellRenderer      *cell,
   eventbox = g_object_new (_btk_cell_editable_event_box_get_type (), NULL);
   accel->edit_widget = eventbox;
   g_object_add_weak_pointer (B_OBJECT (accel->edit_widget),
-                             (gpointer) &accel->edit_widget);
+                             (bpointer) &accel->edit_widget);
   
   label = btk_label_new (NULL);
   btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);

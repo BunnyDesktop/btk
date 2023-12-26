@@ -83,7 +83,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkFrame.html#btk-frame-get-label" title="btk_frame_get_label ()">btk_frame_get_label</a> <span class="c_punctuation">()</span>
@@ -204,7 +204,7 @@ BtkFrame implements
 <div class="refsect2">
 <a name="btk-frame-new"></a><h3>btk_frame_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_frame_new (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_frame_new (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkFrame.html" title="BtkFrame"><span class="type">BtkFrame</span></a>, with optional label <em class="parameter"><code>label</code></em>
 .
 If <em class="parameter"><code>label</code></em>
@@ -234,7 +234,7 @@ If <em class="parameter"><code>label</code></em>
 <a name="btk-frame-set-label"></a><h3>btk_frame_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_frame_set_label (<em class="parameter"><code><a class="link" href="BtkFrame.html" title="BtkFrame"><span class="type">BtkFrame</span></a> *frame</code></em>,
-                     <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                     <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets the text of the label. If <em class="parameter"><code>label</code></em>
  is <code class="literal">NULL</code>,
 the current label is removed.</p>
@@ -298,8 +298,8 @@ title.</p>
 <a name="btk-frame-set-label-align"></a><h3>btk_frame_set_label_align ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_frame_set_label_align (<em class="parameter"><code><a class="link" href="BtkFrame.html" title="BtkFrame"><span class="type">BtkFrame</span></a> *frame</code></em>,
-                           <em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                           <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                           <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>);</pre>
 <p>Sets the alignment of the frame widget's label. The
 default values for a newly created frame are 0.0 and 0.5.</p>
 <div class="refsect3">
@@ -369,7 +369,7 @@ btk_frame_set_shadow_type (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-frame-get-label"></a><h3>btk_frame_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_frame_get_label (<em class="parameter"><code><a class="link" href="BtkFrame.html" title="BtkFrame"><span class="type">BtkFrame</span></a> *frame</code></em>);</pre>
 <p>If the frame's label widget is a <a class="link" href="BtkLabel.html" title="BtkLabel"><span class="type">BtkLabel</span></a>, returns the
 text in the label widget. (The frame will have a <a class="link" href="BtkLabel.html" title="BtkLabel"><span class="type">BtkLabel</span></a>
@@ -403,8 +403,8 @@ must not be modified or freed.</p>
 <a name="btk-frame-get-label-align"></a><h3>btk_frame_get_label_align ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_frame_get_label_align (<em class="parameter"><code><a class="link" href="BtkFrame.html" title="BtkFrame"><span class="type">BtkFrame</span></a> *frame</code></em>,
-                           <em class="parameter"><code><span class="type">gfloat</span> *xalign</code></em>,
-                           <em class="parameter"><code><span class="type">gfloat</span> *yalign</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bfloat</span> *xalign</code></em>,
+                           <em class="parameter"><code><span class="type">bfloat</span> *yalign</code></em>);</pre>
 <p>Retrieves the X and Y alignment of the frame's label. See
 <a class="link" href="BtkFrame.html#btk-frame-set-label-align" title="btk_frame_set_label_align ()"><code class="function">btk_frame_set_label_align()</code></a>.</p>
 <div class="refsect3">

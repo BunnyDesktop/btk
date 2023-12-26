@@ -61,14 +61,14 @@ enum {
 
 
 static void     btk_arrow_set_property (BObject        *object,
-                                        guint           prop_id,
+                                        buint           prop_id,
                                         const BValue   *value,
                                         BParamSpec     *pspec);
 static void     btk_arrow_get_property (BObject        *object,
-                                        guint           prop_id,
+                                        buint           prop_id,
                                         BValue         *value,
                                         BParamSpec     *pspec);
-static gboolean btk_arrow_expose       (BtkWidget      *widget,
+static bboolean btk_arrow_expose       (BtkWidget      *widget,
                                         BdkEventExpose *event);
 
 
@@ -117,7 +117,7 @@ btk_arrow_class_init (BtkArrowClass *class)
 
 static void
 btk_arrow_set_property (BObject         *object,
-			guint            prop_id,
+			buint            prop_id,
 			const BValue    *value,
 			BParamSpec      *pspec)
 {
@@ -143,7 +143,7 @@ btk_arrow_set_property (BObject         *object,
 
 static void
 btk_arrow_get_property (BObject         *object,
-			guint            prop_id,
+			buint            prop_id,
 			BValue          *value,
 			BParamSpec      *pspec)
 {
@@ -241,7 +241,7 @@ btk_arrow_set (BtkArrow      *arrow,
 }
 
 
-static gboolean
+static bboolean
 btk_arrow_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
@@ -250,12 +250,12 @@ btk_arrow_expose (BtkWidget      *widget,
       BtkArrow *arrow = BTK_ARROW (widget);
       BtkMisc *misc = BTK_MISC (widget);
       BtkShadowType shadow_type;
-      gint width, height;
-      gint x, y;
-      gint extent;
-      gfloat xalign;
+      bint width, height;
+      bint x, y;
+      bint extent;
+      bfloat xalign;
       BtkArrowType effective_arrow_type;
-      gfloat arrow_scaling;
+      bfloat arrow_scaling;
 
       btk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
 

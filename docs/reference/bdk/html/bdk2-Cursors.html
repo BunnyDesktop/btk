@@ -190,8 +190,8 @@ bdk_cursor_new_from_pixmap (<em class="parameter"><code><a class="link" href="bd
                             <em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *mask</code></em>,
                             <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *fg</code></em>,
                             <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *bg</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Creates a new cursor from a given pixmap and mask. Both the pixmap and mask
 must have a depth of 1 (i.e. each pixel has only 2 values - on or off).
 The standard cursor size is 16 by 16 pixels. You can create a bitmap 
@@ -327,8 +327,8 @@ The color does not have to be allocated first.</p></td>
 <pre class="programlisting"><a class="link" href="bdk2-Cursors.html#BdkCursor" title="BdkCursor"><span class="returnvalue">BdkCursor</span></a> *
 bdk_cursor_new_from_pixbuf (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                             <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Creates a new cursor from a pixbuf. </p>
 <p>Not all BDK backends support RGBA cursors. If they are not 
 supported, a monochrome approximation will be displayed. 
@@ -389,7 +389,7 @@ sufficently new version of the X Render extension.</p>
 <a name="bdk-cursor-new-from-name"></a><h3>bdk_cursor_new_from_name ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Cursors.html#BdkCursor" title="BdkCursor"><span class="returnvalue">BdkCursor</span></a> *
 bdk_cursor_new_from_name (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+                          <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <p>Creates a new cursor by looking up <em class="parameter"><code>name</code></em>
  in the current cursor
 theme.</p>

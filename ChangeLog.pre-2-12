@@ -2703,7 +2703,7 @@ Fri Jun 22 00:34:34 2007  Tim Janik  <timj@btk.org>
 
 	* btk/btkbuilder.c (btk_builder_add_from_file): 
 	(btk_builder_value_from_string_type): 
-	Use gsize instead of unsigned and gulong instead of long,
+	Use bsize instead of unsigned and bulong instead of long,
 	fixes complation on OSX, fixes #447987
 
 2007-06-15  Matthias Clasen  <mclasen@redhat.com>
@@ -4512,7 +4512,7 @@ Wed May  2 11:35:45 2007  Tim Janik  <timj@imendio.com>
 2007-05-02  Christian Persch  <chpe@bunny.org>
 
 	* btk/btkstatusbar.c: (btk_statusbar_get_context_id),
-	(btk_statusbar_expose_event): No need to allocate a guint; just stuff
+	(btk_statusbar_expose_event): No need to allocate a buint; just stuff
 	the ID into the pointer directly. Bug #434865.
 
 2007-05-01  Matthias Clasen  <mclasen@redhat.com>
@@ -5025,7 +5025,7 @@ Wed May  2 11:35:45 2007  Tim Janik  <timj@imendio.com>
 	submenu when moving the focus away from it via keyboard-navigation.
 
 	* btk/btkmenuitem.[ch] (_btk_menu_item_popup_submenu): added
-	parameter "gboolean with_delay" so BtkMenuShell can control this
+	parameter "bboolean with_delay" so BtkMenuShell can control this
 	for the different scenarios of submenu showing.
 
 	(_btk_menu_item_popdown_submenu): new function. also needed by
@@ -6268,7 +6268,7 @@ Tue Feb  6 15:53:59 2007  Tim Janik  <timj@imendio.com>
 2007-02-05  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btktextbuffer.h (enum BtkTextBufferTargetInfo): changed
-	values from G_MAXUINT-0, -1, -2 to -1, -2, -3 so we stay within
+	values from B_MAXUINT-0, -1, -2 to -1, -2, -3 so we stay within
 	ansi C enum value limits. Fixes bug #46757.
 
 2007-02-03  Soren Sandmann <sandmann@daimi.au.dk>
@@ -8209,7 +8209,7 @@ Tue Oct 10 16:38:23 2006  Tim Janik  <timj@imendio.com>
 	rid of a key binding (in fact, it only lets it appear unbound).
 
 	* btk/btkbindings.[ch] (struct BtkBindingEntry): added
-	"guint marks_unbound : 1"
+	"buint marks_unbound : 1"
 
 	(btk_binding_entry_skip): new API which marks the entry as unbound.
 
@@ -8728,7 +8728,7 @@ Mon Sep 11 14:22:39 2006  Tim Janik  <timj@imendio.com>
 	* btk/btksettings.c (btk_settings_class_init): Add a 
 	btk-cursor-blink-timeout setting, which specifies the number
 	of seconds that the cursor should blink after a user interaction.
-	The default value is G_MAXINT to preserve the current behaviour.
+	The default value is B_MAXINT to preserve the current behaviour.
 
 	* btk/btkentry.c (blink_cb): Stop blinking after blink-timeout
 	seconds.

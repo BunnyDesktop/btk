@@ -66,11 +66,11 @@ struct _BtkToggleToolButtonClass
 
 GType        btk_toggle_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem *btk_toggle_tool_button_new            (void);
-BtkToolItem *btk_toggle_tool_button_new_from_stock (const gchar *stock_id);
+BtkToolItem *btk_toggle_tool_button_new_from_stock (const bchar *stock_id);
 
 void         btk_toggle_tool_button_set_active     (BtkToggleToolButton *button,
-						    gboolean             is_active);
-gboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
+						    bboolean             is_active);
+bboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
 
 B_END_DECLS
 

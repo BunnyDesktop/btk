@@ -42,10 +42,10 @@ struct _BtkIMContextIME
 
   BdkWindow *client_window;
   BdkWindow *toplevel;
-  guint use_preedit : 1;
-  guint preediting : 1;
-  guint opened : 1;
-  guint focus : 1;
+  buint use_preedit : 1;
+  buint preediting : 1;
+  buint opened : 1;
+  buint focus : 1;
   BdkRectangle cursor_location;
 
   BtkIMContextIMEPrivate *priv;

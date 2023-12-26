@@ -37,39 +37,39 @@
 #include "bdkalias.h"
 
 static BdkImage*    bdk_drawable_real_get_image (BdkDrawable     *drawable,
-						 gint             x,
-						 gint             y,
-						 gint             width,
-						 gint             height);
+						 bint             x,
+						 bint             y,
+						 bint             width,
+						 bint             height);
 static BdkDrawable* bdk_drawable_real_get_composite_drawable (BdkDrawable  *drawable,
-							      gint          x,
-							      gint          y,
-							      gint          width,
-							      gint          height,
-							      gint         *composite_x_offset,
-							      gint         *composite_y_offset);
+							      bint          x,
+							      bint          y,
+							      bint          width,
+							      bint          height,
+							      bint         *composite_x_offset,
+							      bint         *composite_y_offset);
 static BdkRebunnyion *  bdk_drawable_real_get_visible_rebunnyion     (BdkDrawable  *drawable);
 static void         bdk_drawable_real_draw_pixbuf            (BdkDrawable  *drawable,
 							      BdkGC        *gc,
 							      BdkPixbuf    *pixbuf,
-							      gint          src_x,
-							      gint          src_y,
-							      gint          dest_x,
-							      gint          dest_y,
-							      gint          width,
-							      gint          height,
+							      bint          src_x,
+							      bint          src_y,
+							      bint          dest_x,
+							      bint          dest_y,
+							      bint          width,
+							      bint          height,
 							      BdkRgbDither  dither,
-							      gint          x_dither,
-							      gint          y_dither);
+							      bint          x_dither,
+							      bint          y_dither);
 static void         bdk_drawable_real_draw_drawable          (BdkDrawable  *drawable,
 							      BdkGC	   *gc,
 							      BdkDrawable  *src,
-							      gint          xsrc,
-							      gint	    ysrc,
-							      gint	    xdest,
-							      gint	    ydest,
-							      gint	    width,
-							      gint	    height);
+							      bint          xsrc,
+							      bint	    ysrc,
+							      bint	    xdest,
+							      bint	    ydest,
+							      bint	    width,
+							      bint	    height);
      
 
 G_DEFINE_ABSTRACT_TYPE (BdkDrawable, bdk_drawable, B_TYPE_OBJECT)
@@ -107,8 +107,8 @@ bdk_drawable_init (BdkDrawable *drawable)
  **/
 void          
 bdk_drawable_set_data (BdkDrawable   *drawable,
-		       const gchar   *key,
-		       gpointer	      data,
+		       const bchar   *key,
+		       bpointer	      data,
 		       GDestroyNotify destroy_func)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
@@ -129,9 +129,9 @@ bdk_drawable_set_data (BdkDrawable   *drawable,
  * 
  * Return value: the data stored at @key
  **/
-gpointer
+bpointer
 bdk_drawable_get_data (BdkDrawable   *drawable,
-		       const gchar   *key)
+		       const bchar   *key)
 {
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
   
@@ -157,8 +157,8 @@ bdk_drawable_get_data (BdkDrawable   *drawable,
  */
 void
 bdk_drawable_get_size (BdkDrawable *drawable,
-		       gint        *width,
-		       gint        *height)
+		       bint        *width,
+		       bint        *height)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
@@ -193,7 +193,7 @@ bdk_drawable_get_visual (BdkDrawable *drawable)
  * 
  * Return value: number of bits per pixel
  **/
-gint
+bint
 bdk_drawable_get_depth (BdkDrawable *drawable)
 {
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), 0);
@@ -335,8 +335,8 @@ bdk_drawable_unref (BdkDrawable *drawable)
 void
 bdk_draw_point (BdkDrawable *drawable,
                 BdkGC       *gc,
-                gint         x,
-                gint         y)
+                bint         x,
+                bint         y)
 {
   BdkPoint point;
 
@@ -376,10 +376,10 @@ bdk_draw_point (BdkDrawable *drawable,
 void
 bdk_draw_line (BdkDrawable *drawable,
 	       BdkGC       *gc,
-	       gint         x1,
-	       gint         y1,
-	       gint         x2,
-	       gint         y2)
+	       bint         x1,
+	       bint         y1,
+	       bint         x2,
+	       bint         y2)
 {
   BdkSegment segment;
 
@@ -421,19 +421,19 @@ bdk_draw_line (BdkDrawable *drawable,
 void
 bdk_draw_rectangle (BdkDrawable *drawable,
 		    BdkGC       *gc,
-		    gboolean     filled,
-		    gint         x,
-		    gint         y,
-		    gint         width,
-		    gint         height)
+		    bboolean     filled,
+		    bint         x,
+		    bint         y,
+		    bint         width,
+		    bint         height)
 {  
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (BDK_IS_GC (gc));
 
   if (width < 0 || height < 0)
     {
-      gint real_width;
-      gint real_height;
+      bint real_width;
+      bint real_height;
       
       bdk_drawable_get_size (drawable, &real_width, &real_height);
 
@@ -472,21 +472,21 @@ bdk_draw_rectangle (BdkDrawable *drawable,
 void
 bdk_draw_arc (BdkDrawable *drawable,
 	      BdkGC       *gc,
-	      gboolean     filled,
-	      gint         x,
-	      gint         y,
-	      gint         width,
-	      gint         height,
-	      gint         angle1,
-	      gint         angle2)
+	      bboolean     filled,
+	      bint         x,
+	      bint         y,
+	      bint         width,
+	      bint         height,
+	      bint         angle1,
+	      bint         angle2)
 {  
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (BDK_IS_GC (gc));
 
   if (width < 0 || height < 0)
     {
-      gint real_width;
-      gint real_height;
+      bint real_width;
+      bint real_height;
       
       bdk_drawable_get_size (drawable, &real_width, &real_height);
 
@@ -519,9 +519,9 @@ bdk_draw_arc (BdkDrawable *drawable,
 void
 bdk_draw_polygon (BdkDrawable    *drawable,
 		  BdkGC          *gc,
-		  gboolean        filled,
+		  bboolean        filled,
 		  const BdkPoint *points,
-		  gint            n_points)
+		  bint            n_points)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (BDK_IS_GC (gc));
@@ -554,9 +554,9 @@ void
 bdk_draw_string (BdkDrawable *drawable,
 		 BdkFont     *font,
 		 BdkGC       *gc,
-		 gint         x,
-		 gint         y,
-		 const gchar *string)
+		 bint         x,
+		 bint         y,
+		 const bchar *string)
 {
   bdk_draw_text (drawable, font, gc, x, y, string, _bdk_font_strlen (font, string));
 }
@@ -585,10 +585,10 @@ void
 bdk_draw_text (BdkDrawable *drawable,
 	       BdkFont     *font,
 	       BdkGC       *gc,
-	       gint         x,
-	       gint         y,
-	       const gchar *text,
-	       gint         text_length)
+	       bint         x,
+	       bint         y,
+	       const bchar *text,
+	       bint         text_length)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (font != NULL);
@@ -618,10 +618,10 @@ void
 bdk_draw_text_wc (BdkDrawable	 *drawable,
 		  BdkFont	 *font,
 		  BdkGC		 *gc,
-		  gint		  x,
-		  gint		  y,
+		  bint		  x,
+		  bint		  y,
 		  const BdkWChar *text,
-		  gint		  text_length)
+		  bint		  text_length)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (font != NULL);
@@ -667,16 +667,16 @@ void
 bdk_draw_drawable (BdkDrawable *drawable,
 		   BdkGC       *gc,
 		   BdkDrawable *src,
-		   gint         xsrc,
-		   gint         ysrc,
-		   gint         xdest,
-		   gint         ydest,
-		   gint         width,
-		   gint         height)
+		   bint         xsrc,
+		   bint         ysrc,
+		   bint         xdest,
+		   bint         ydest,
+		   bint         width,
+		   bint         height)
 {
   BdkDrawable *composite;
-  gint composite_x_offset = 0;
-  gint composite_y_offset = 0;
+  bint composite_x_offset = 0;
+  bint composite_y_offset = 0;
 
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (BDK_IS_DRAWABLE (src));
@@ -684,8 +684,8 @@ bdk_draw_drawable (BdkDrawable *drawable,
 
   if (width < 0 || height < 0)
     {
-      gint real_width;
-      gint real_height;
+      bint real_width;
+      bint real_height;
       
       bdk_drawable_get_size (src, &real_width, &real_height);
 
@@ -750,12 +750,12 @@ void
 bdk_draw_image (BdkDrawable *drawable,
 		BdkGC       *gc,
 		BdkImage    *image,
-		gint         xsrc,
-		gint         ysrc,
-		gint         xdest,
-		gint         ydest,
-		gint         width,
-		gint         height)
+		bint         xsrc,
+		bint         ysrc,
+		bint         xdest,
+		bint         ydest,
+		bint         width,
+		bint         height)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (BDK_IS_IMAGE (image));
@@ -809,15 +809,15 @@ void
 bdk_draw_pixbuf (BdkDrawable     *drawable,
                  BdkGC           *gc,
                  const BdkPixbuf *pixbuf,
-                 gint             src_x,
-                 gint             src_y,
-                 gint             dest_x,
-                 gint             dest_y,
-                 gint             width,
-                 gint             height,
+                 bint             src_x,
+                 bint             src_y,
+                 bint             dest_x,
+                 bint             dest_y,
+                 bint             width,
+                 bint             height,
                  BdkRgbDither     dither,
-                 gint             x_dither,
-                 gint             y_dither)
+                 bint             x_dither,
+                 bint             y_dither)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (gc == NULL || BDK_IS_GC (gc));
@@ -855,7 +855,7 @@ void
 bdk_draw_points (BdkDrawable    *drawable,
 		 BdkGC          *gc,
 		 const BdkPoint *points,
-		 gint            n_points)
+		 bint            n_points)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail ((points != NULL) && (n_points > 0));
@@ -888,7 +888,7 @@ void
 bdk_draw_segments (BdkDrawable      *drawable,
 		   BdkGC            *gc,
 		   const BdkSegment *segs,
-		   gint              n_segs)
+		   bint              n_segs)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
@@ -922,7 +922,7 @@ void
 bdk_draw_lines (BdkDrawable    *drawable,
 		BdkGC          *gc,
 		const BdkPoint *points,
-		gint            n_points)
+		bint            n_points)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (points != NULL);
@@ -941,8 +941,8 @@ real_draw_glyphs (BdkDrawable       *drawable,
 		  BdkGC	            *gc,
 		  const BangoMatrix *matrix,
 		  BangoFont         *font,
-		  gdouble            x,
-		  gdouble            y,
+		  bdouble            x,
+		  bdouble            y,
 		  BangoGlyphString  *glyphs)
 {
   bairo_t *cr;
@@ -994,8 +994,8 @@ void
 bdk_draw_glyphs (BdkDrawable      *drawable,
 		 BdkGC            *gc,
 		 BangoFont        *font,
-		 gint              x,
-		 gint              y,
+		 bint              x,
+		 bint              y,
 		 BangoGlyphString *glyphs)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
@@ -1035,8 +1035,8 @@ bdk_draw_glyphs_transformed (BdkDrawable       *drawable,
 			     BdkGC	       *gc,
 			     const BangoMatrix *matrix,
 			     BangoFont         *font,
-			     gint               x,
-			     gint               y,
+			     bint               x,
+			     bint               y,
 			     BangoGlyphString  *glyphs)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
@@ -1068,7 +1068,7 @@ void
 bdk_draw_trapezoids (BdkDrawable        *drawable,
 		     BdkGC	        *gc,
 		     const BdkTrapezoid *trapezoids,
-		     gint                n_trapezoids)
+		     bint                n_trapezoids)
 {
   bairo_t *cr;
   int i;
@@ -1120,16 +1120,16 @@ bdk_draw_trapezoids (BdkDrawable        *drawable,
 BdkImage*
 bdk_drawable_copy_to_image (BdkDrawable *drawable,
 			    BdkImage    *image,
-			    gint         src_x,
-			    gint         src_y,
-			    gint         dest_x,
-			    gint         dest_y,
-			    gint         width,
-			    gint         height)
+			    bint         src_x,
+			    bint         src_y,
+			    bint         dest_x,
+			    bint         dest_y,
+			    bint         width,
+			    bint         height)
 {
   BdkDrawable *composite;
-  gint composite_x_offset = 0;
-  gint composite_y_offset = 0;
+  bint composite_x_offset = 0;
+  bint composite_y_offset = 0;
   BdkImage *retval;
   BdkColormap *cmap;
   
@@ -1218,14 +1218,14 @@ bdk_drawable_copy_to_image (BdkDrawable *drawable,
  **/
 BdkImage*
 bdk_drawable_get_image (BdkDrawable *drawable,
-                        gint         x,
-                        gint         y,
-                        gint         width,
-                        gint         height)
+                        bint         x,
+                        bint         y,
+                        bint         width,
+                        bint         height)
 {
   BdkDrawable *composite;
-  gint composite_x_offset = 0;
-  gint composite_y_offset = 0;
+  bint composite_x_offset = 0;
+  bint composite_y_offset = 0;
   BdkImage *retval;
   BdkColormap *cmap;
   
@@ -1266,22 +1266,22 @@ bdk_drawable_get_image (BdkDrawable *drawable,
 
 static BdkImage*
 bdk_drawable_real_get_image (BdkDrawable     *drawable,
-			     gint             x,
-			     gint             y,
-			     gint             width,
-			     gint             height)
+			     bint             x,
+			     bint             y,
+			     bint             width,
+			     bint             height)
 {
   return bdk_drawable_copy_to_image (drawable, NULL, x, y, 0, 0, width, height);
 }
 
 static BdkDrawable *
 bdk_drawable_real_get_composite_drawable (BdkDrawable *drawable,
-                                          gint         x,
-                                          gint         y,
-                                          gint         width,
-                                          gint         height,
-                                          gint        *composite_x_offset,
-                                          gint        *composite_y_offset)
+                                          bint         x,
+                                          bint         y,
+                                          bint         width,
+                                          bint         height,
+                                          bint        *composite_x_offset,
+                                          bint        *composite_y_offset)
 {
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
 
@@ -1366,26 +1366,26 @@ _bdk_drawable_ref_bairo_surface (BdkDrawable *drawable)
 }
 
 static void
-composite (guchar *src_buf,
-	   gint    src_rowstride,
-	   guchar *dest_buf,
-	   gint    dest_rowstride,
-	   gint    width,
-	   gint    height)
+composite (buchar *src_buf,
+	   bint    src_rowstride,
+	   buchar *dest_buf,
+	   bint    dest_rowstride,
+	   bint    width,
+	   bint    height)
 {
-  guchar *src = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src = src_buf;
+  buchar *dest = dest_buf;
 
   while (height--)
     {
-      gint twidth = width;
-      guchar *p = src;
-      guchar *q = dest;
+      bint twidth = width;
+      buchar *p = src;
+      buchar *q = dest;
 
       while (twidth--)
 	{
-	  guchar a = p[3];
-	  guint t;
+	  buchar a = p[3];
+	  buint t;
 
 	  t = a * p[0] + (255 - a) * q[0] + 0x80;
 	  q[0] = (t + (t >> 8)) >> 8;
@@ -1404,28 +1404,28 @@ composite (guchar *src_buf,
 }
 
 static void
-composite_0888 (guchar      *src_buf,
-		gint         src_rowstride,
-		guchar      *dest_buf,
-		gint         dest_rowstride,
+composite_0888 (buchar      *src_buf,
+		bint         src_rowstride,
+		buchar      *dest_buf,
+		bint         dest_rowstride,
 		BdkByteOrder dest_byte_order,
-		gint         width,
-		gint         height)
+		bint         width,
+		bint         height)
 {
-  guchar *src = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src = src_buf;
+  buchar *dest = dest_buf;
 
   while (height--)
     {
-      gint twidth = width;
-      guchar *p = src;
-      guchar *q = dest;
+      bint twidth = width;
+      buchar *p = src;
+      buchar *q = dest;
 
       if (dest_byte_order == BDK_LSB_FIRST)
 	{
 	  while (twidth--)
 	    {
-	      guint t;
+	      buint t;
 	      
 	      t = p[3] * p[2] + (255 - p[3]) * q[0] + 0x80;
 	      q[0] = (t + (t >> 8)) >> 8;
@@ -1441,7 +1441,7 @@ composite_0888 (guchar      *src_buf,
 	{
 	  while (twidth--)
 	    {
-	      guint t;
+	      buint t;
 	      
 	      t = p[3] * p[0] + (255 - p[3]) * q[1] + 0x80;
 	      q[1] = (t + (t >> 8)) >> 8;
@@ -1461,16 +1461,16 @@ composite_0888 (guchar      *src_buf,
 
 #ifdef USE_MEDIALIB
 static void
-composite_0888_medialib (guchar      *src_buf,
-			 gint         src_rowstride,
-			 guchar      *dest_buf,
-			 gint         dest_rowstride,
+composite_0888_medialib (buchar      *src_buf,
+			 bint         src_rowstride,
+			 buchar      *dest_buf,
+			 bint         dest_rowstride,
 			 BdkByteOrder dest_byte_order,
-			 gint         width,
-			 gint         height)
+			 bint         width,
+			 bint         height)
 {
-  guchar *src  = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src  = src_buf;
+  buchar *dest = dest_buf;
 
   mlib_image img_src, img_dst;
 
@@ -1498,29 +1498,29 @@ composite_0888_medialib (guchar      *src_buf,
 #endif
 
 static void
-composite_565 (guchar      *src_buf,
-	       gint         src_rowstride,
-	       guchar      *dest_buf,
-	       gint         dest_rowstride,
+composite_565 (buchar      *src_buf,
+	       bint         src_rowstride,
+	       buchar      *dest_buf,
+	       bint         dest_rowstride,
 	       BdkByteOrder dest_byte_order,
-	       gint         width,
-	       gint         height)
+	       bint         width,
+	       bint         height)
 {
-  guchar *src = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src = src_buf;
+  buchar *dest = dest_buf;
 
   while (height--)
     {
-      gint twidth = width;
-      guchar *p = src;
-      gushort *q = (gushort *)dest;
+      bint twidth = width;
+      buchar *p = src;
+      bushort *q = (bushort *)dest;
 
       while (twidth--)
 	{
-	  guchar a = p[3];
-	  guint tr, tg, tb;
-	  guint tr1, tg1, tb1;
-	  guint tmp = *q;
+	  buchar a = p[3];
+	  buint tr, tg, tb;
+	  buint tr1, tg1, tb1;
+	  buint tmp = *q;
 
 #if 1
 	  /* This is fast, and corresponds to what composite() above does
@@ -1541,8 +1541,8 @@ composite_565 (guchar      *src_buf,
 	   * a bit of precision is lost since we convert to 8 bit after premultiplying
 	   * instead of at the end
 	   */
-	  guint tr2, tg2, tb2;
-	  guint tr3, tg3, tb3;
+	  buint tr2, tg2, tb2;
+	  buint tr3, tg3, tb3;
 	  
 	  tr = (tmp & 0xf800);
 	  tr1 = (255 - a) * ((tr >> 8) + (tr >> 13)) + 0x80;
@@ -1579,12 +1579,12 @@ static void
 bdk_drawable_real_draw_drawable (BdkDrawable  *drawable,
 				 BdkGC	       *gc,
 				 BdkDrawable  *src,
-				 gint		xsrc,
-				 gint		ysrc,
-				 gint		xdest,
-				 gint		ydest,
-				 gint		width,
-				 gint		height)
+				 bint		xsrc,
+				 bint		ysrc,
+				 bint		xdest,
+				 bint		ydest,
+				 bint		width,
+				 bint		height)
 {
   BDK_DRAWABLE_GET_CLASS (drawable)->draw_drawable_with_src (drawable,
 							     gc,
@@ -1602,18 +1602,18 @@ static void
 bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
 			       BdkGC        *gc,
 			       BdkPixbuf    *pixbuf,
-			       gint          src_x,
-			       gint          src_y,
-			       gint          dest_x,
-			       gint          dest_y,
-			       gint          width,
-			       gint          height,
+			       bint          src_x,
+			       bint          src_y,
+			       bint          dest_x,
+			       bint          dest_y,
+			       bint          width,
+			       bint          height,
 			       BdkRgbDither  dither,
-			       gint          x_dither,
-			       gint          y_dither)
+			       bint          x_dither,
+			       bint          y_dither)
 {
   BdkPixbuf *composited = NULL;
-  gint dwidth, dheight;
+  bint dwidth, dheight;
   BdkRebunnyion *clip;
   BdkRebunnyion *drect;
   BdkRectangle tmp_rect;
@@ -1707,20 +1707,20 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
   if (bdk_pixbuf_get_has_alpha (pixbuf))
     {
       BdkVisual *visual = bdk_drawable_get_visual (drawable);
-      void (*composite_func) (guchar       *src_buf,
-			      gint          src_rowstride,
-			      guchar       *dest_buf,
-			      gint          dest_rowstride,
+      void (*composite_func) (buchar       *src_buf,
+			      bint          src_rowstride,
+			      buchar       *dest_buf,
+			      bint          dest_rowstride,
 			      BdkByteOrder  dest_byte_order,
-			      gint          width,
-			      gint          height) = NULL;
+			      bint          width,
+			      bint          height) = NULL;
 
       /* First we see if we have a visual-specific composition function that can composite
        * the pixbuf data directly onto the image
        */
       if (visual)
 	{
-	  gint bits_per_pixel = _bdk_windowing_get_bits_for_depth (bdk_drawable_get_display (drawable),
+	  bint bits_per_pixel = _bdk_windowing_get_bits_for_depth (bdk_drawable_get_display (drawable),
 								   visual->depth);
 	  
 	  if (visual->byte_order == (G_BYTE_ORDER == G_BIG_ENDIAN ? BDK_MSB_FIRST : BDK_LSB_FIRST) &&
@@ -1749,15 +1749,15 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
        */
       if (composite_func && !(dither == BDK_RGB_DITHER_MAX && visual->depth != 24))
 	{
-	  gint x0, y0;
+	  bint x0, y0;
 	  for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
 	    {
-	      gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+	      bint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
 	      for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 		{
-		  gint xs0, ys0;
+		  bint xs0, ys0;
 		  
-		  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
+		  bint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 		  
 		  BdkImage *image = _bdk_image_get_scratch (bdk_drawable_get_screen (drawable),
 							    width1, height1,
@@ -1769,7 +1769,7 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
 					      width1, height1);
 		  (*composite_func) (bdk_pixbuf_get_pixels (pixbuf) + (src_y + y0) * bdk_pixbuf_get_rowstride (pixbuf) + (src_x + x0) * 4,
 				     bdk_pixbuf_get_rowstride (pixbuf),
-				     (guchar*)image->mem + ys0 * image->bpl + xs0 * image->bpp,
+				     (buchar*)image->mem + ys0 * image->bpl + xs0 * image->bpp,
 				     image->bpl,
 				     visual->byte_order,
 				     width1, height1);
@@ -1812,7 +1812,7 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
   
   if (bdk_pixbuf_get_n_channels (pixbuf) == 4)
     {
-      guchar *buf = bdk_pixbuf_get_pixels (pixbuf) + src_y * bdk_pixbuf_get_rowstride (pixbuf) + src_x * 4;
+      buchar *buf = bdk_pixbuf_get_pixels (pixbuf) + src_y * bdk_pixbuf_get_rowstride (pixbuf) + src_x * 4;
 
       bdk_draw_rgb_32_image_dithalign (real_drawable, gc,
 				       dest_x, dest_y,
@@ -1823,7 +1823,7 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
     }
   else				/* n_channels == 3 */
     {
-      guchar *buf = bdk_pixbuf_get_pixels (pixbuf) + src_y * bdk_pixbuf_get_rowstride (pixbuf) + src_x * 3;
+      buchar *buf = bdk_pixbuf_get_pixels (pixbuf) + src_y * bdk_pixbuf_get_rowstride (pixbuf) + src_x * 3;
 
       bdk_draw_rgb_image_dithalign (real_drawable, gc,
 				    dest_x, dest_y,
@@ -1858,10 +1858,10 @@ bdk_drawable_real_draw_pixbuf (BdkDrawable  *drawable,
  **/
 BdkGC *
 _bdk_drawable_get_scratch_gc (BdkDrawable *drawable,
-			      gboolean     graphics_exposures)
+			      bboolean     graphics_exposures)
 {
   BdkScreen *screen;
-  gint depth;
+  bint depth;
 
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
 
@@ -1918,7 +1918,7 @@ BdkGC *
 _bdk_drawable_get_subwindow_scratch_gc (BdkDrawable *drawable)
 {
   BdkScreen *screen;
-  gint depth;
+  bint depth;
 
   g_return_val_if_fail (BDK_IS_DRAWABLE (drawable), NULL);
 

@@ -24,16 +24,16 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static void btk_file_chooser_embed_class_init (gpointer g_iface);
+static void btk_file_chooser_embed_class_init (bpointer g_iface);
 static void delegate_get_default_size         (BtkFileChooserEmbed *chooser_embed,
-					       gint                *default_width,
-					       gint                *default_height);
-static gboolean delegate_should_respond       (BtkFileChooserEmbed *chooser_embed);
+					       bint                *default_width,
+					       bint                *default_height);
+static bboolean delegate_should_respond       (BtkFileChooserEmbed *chooser_embed);
 static void delegate_initial_focus            (BtkFileChooserEmbed *chooser_embed);
 static void delegate_default_size_changed     (BtkFileChooserEmbed *chooser_embed,
-					       gpointer             data);
+					       bpointer             data);
 static void delegate_response_requested       (BtkFileChooserEmbed *chooser_embed,
-					       gpointer             data);
+					       bpointer             data);
 
 static BtkFileChooserEmbed *
 get_delegate (BtkFileChooserEmbed *receiver)
@@ -87,13 +87,13 @@ _btk_file_chooser_embed_set_delegate (BtkFileChooserEmbed *receiver,
 
 static void
 delegate_get_default_size (BtkFileChooserEmbed *chooser_embed,
-			   gint                *default_width,
-			   gint                *default_height)
+			   bint                *default_width,
+			   bint                *default_height)
 {
   _btk_file_chooser_embed_get_default_size (get_delegate (chooser_embed), default_width, default_height);
 }
 
-static gboolean
+static bboolean
 delegate_should_respond (BtkFileChooserEmbed *chooser_embed)
 {
   return _btk_file_chooser_embed_should_respond (get_delegate (chooser_embed));
@@ -107,14 +107,14 @@ delegate_initial_focus (BtkFileChooserEmbed *chooser_embed)
 
 static void
 delegate_default_size_changed (BtkFileChooserEmbed *chooser_embed,
-			       gpointer             data)
+			       bpointer             data)
 {
   g_signal_emit_by_name (data, "default-size-changed");
 }
 
 static void
 delegate_response_requested (BtkFileChooserEmbed *chooser_embed,
-			     gpointer             data)
+			     bpointer             data)
 {
   g_signal_emit_by_name (data, "response-requested");
 }
@@ -148,7 +148,7 @@ _btk_file_chooser_embed_get_type (void)
 }
 
 static void
-btk_file_chooser_embed_class_init (gpointer g_iface)
+btk_file_chooser_embed_class_init (bpointer g_iface)
 {
   GType iface_type = B_TYPE_FROM_INTERFACE (g_iface);
 
@@ -170,8 +170,8 @@ btk_file_chooser_embed_class_init (gpointer g_iface)
 
 void
 _btk_file_chooser_embed_get_default_size (BtkFileChooserEmbed *chooser_embed,
-					 gint                *default_width,
-					 gint                *default_height)
+					 bint                *default_width,
+					 bint                *default_height)
 {
   g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (chooser_embed));
   g_return_if_fail (default_width != NULL);
@@ -180,7 +180,7 @@ _btk_file_chooser_embed_get_default_size (BtkFileChooserEmbed *chooser_embed,
   BTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->get_default_size (chooser_embed, default_width, default_height);
 }
 
-gboolean
+bboolean
 _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed)
 {
   g_return_val_if_fail (BTK_IS_FILE_CHOOSER_EMBED (chooser_embed), FALSE);

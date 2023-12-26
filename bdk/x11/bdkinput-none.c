@@ -43,10 +43,10 @@ _bdk_input_init (BdkDisplay *display)
 void 
 bdk_device_get_state (BdkDevice       *device,
 		      BdkWindow       *window,
-		      gdouble         *axes,
+		      bdouble         *axes,
 		      BdkModifierType *mask)
 {
-  gint x_int, y_int;
+  bint x_int, y_int;
 
   g_return_if_fail (device != NULL);
   g_return_if_fail (BDK_IS_WINDOW (window));
@@ -60,13 +60,13 @@ bdk_device_get_state (BdkDevice       *device,
     }
 }
 
-gboolean
+bboolean
 _bdk_device_get_history (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   g_warning ("bdk_device_get_history() called for invalid device");
   return FALSE;
@@ -78,7 +78,7 @@ _bdk_input_select_events (BdkWindow        *impl_window,
 {
 }
 
-gboolean
+bboolean
 _bdk_input_other_event (BdkEvent *event, 
 			XEvent *xevent, 
 			BdkWindow *window)
@@ -94,28 +94,28 @@ _bdk_input_configure_event (XConfigureEvent *xevent,
 
 void 
 _bdk_input_crossing_event (BdkWindow *window,
-			   gboolean enter)
+			   bboolean enter)
 {
 }
 
-gint 
+bint 
 _bdk_input_grab_pointer (BdkWindow *     window,
 			 BdkWindow      *native_window,
-			 gint            owner_events,
+			 bint            owner_events,
 			 BdkEventMask    event_mask,
 			 BdkWindow *     confine_to,
-			 guint32         time)
+			 buint32         time)
 {
   return Success;
 }
 
 void
 _bdk_input_ungrab_pointer (BdkDisplay *display,
-			   guint32     time)
+			   buint32     time)
 {
 }
 
-gboolean
+bboolean
 bdk_device_set_mode (BdkDevice   *device,
 		     BdkInputMode mode)
 {

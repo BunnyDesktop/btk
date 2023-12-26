@@ -9,8 +9,8 @@ static BtkWidget *window = NULL;
 
 static void
 on_bar_response (BtkInfoBar *info_bar,
-                 gint        response_id,
-                 gpointer    user_data)
+                 bint        response_id,
+                 bpointer    user_data)
 {
   BtkWidget *dialog;
 

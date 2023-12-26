@@ -55,15 +55,15 @@ enum {
 
 static void bdk_display_manager_class_init   (BdkDisplayManagerClass *klass);
 static void bdk_display_manager_set_property (BObject                *object,
-					      guint                   prop_id,
+					      buint                   prop_id,
 					      const BValue           *value,
 					      BParamSpec             *pspec);
 static void bdk_display_manager_get_property (BObject                *object,
-					      guint                   prop_id,
+					      buint                   prop_id,
 					      BValue                 *value,
 					      BParamSpec             *pspec);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 static BdkDisplay *default_display = NULL;
 
@@ -114,7 +114,7 @@ bdk_display_manager_init (BdkDisplayManager *manager)
 
 static void
 bdk_display_manager_set_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  const BValue *value,
 				  BParamSpec   *pspec)
 {
@@ -132,7 +132,7 @@ bdk_display_manager_set_property (BObject      *object,
 
 static void
 bdk_display_manager_get_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  BValue       *value,
 				  BParamSpec   *pspec)
 {

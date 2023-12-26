@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-lookup-entry" title="btk_accel_map_lookup_entry ()">btk_accel_map_lookup_entry</a> <span class="c_punctuation">()</span>
@@ -67,7 +67,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-change-entry" title="btk_accel_map_change_entry ()">btk_accel_map_change_entry</a> <span class="c_punctuation">()</span>
@@ -205,18 +205,18 @@
 <div class="refsect2">
 <a name="BtkAccelMapForeach"></a><h3>BtkAccelMapForeach ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-<span class="c_punctuation">(</span>*BtkAccelMapForeach<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> accel_key</code></em>,
+<span class="c_punctuation">(</span>*BtkAccelMapForeach<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> accel_key</code></em>,
                        <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods</code></em>,
-                       <em class="parameter"><code><span class="type">gboolean</span> changed</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bboolean</span> changed</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-accel-map-add-entry"></a><h3>btk_accel_map_add_entry ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_add_entry (<em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> accel_key</code></em>,
+btk_accel_map_add_entry (<em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>,
+                         <em class="parameter"><code><span class="type">buint</span> accel_key</code></em>,
                          <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods</code></em>);</pre>
 <p>Registers a new accelerator with the global accelerator map.
 This function should only be called once per <em class="parameter"><code>accel_path</code></em>
@@ -270,8 +270,8 @@ pass a static string, you can save some memory by interning it first with
 <hr>
 <div class="refsect2">
 <a name="btk-accel-map-lookup-entry"></a><h3>btk_accel_map_lookup_entry ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_accel_map_lookup_entry (<em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>,
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
+btk_accel_map_lookup_entry (<em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>,
                             <em class="parameter"><code><a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelKey" title="struct BtkAccelKey"><span class="type">BtkAccelKey</span></a> *key</code></em>);</pre>
 <p>Looks up the accelerator entry for <em class="parameter"><code>accel_path</code></em>
  and fills in <em class="parameter"><code>key</code></em>
@@ -308,11 +308,11 @@ is known, <code class="literal">FALSE</code> otherwise</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-accel-map-change-entry"></a><h3>btk_accel_map_change_entry ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-btk_accel_map_change_entry (<em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> accel_key</code></em>,
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
+btk_accel_map_change_entry (<em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>,
+                            <em class="parameter"><code><span class="type">buint</span> accel_key</code></em>,
                             <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods</code></em>,
-                            <em class="parameter"><code><span class="type">gboolean</span> replace</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bboolean</span> replace</code></em>);</pre>
 <p>Changes the <em class="parameter"><code>accel_key</code></em>
  and <em class="parameter"><code>accel_mods</code></em>
  currently associated with <em class="parameter"><code>accel_path</code></em>
@@ -369,7 +369,7 @@ pass a static string, you can save some memory by interning it first with
 <div class="refsect2">
 <a name="btk-accel-map-foreach"></a><h3>btk_accel_map_foreach ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_foreach (<em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+btk_accel_map_foreach (<em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                        <em class="parameter"><code><a class="link" href="btk2-Accelerator-Maps.html#BtkAccelMapForeach" title="BtkAccelMapForeach ()"><span class="type">BtkAccelMapForeach</span></a> foreach_func</code></em>);</pre>
 <p>Loops over the entries in the accelerator map whose accel path 
 doesn't match any of the filters added with <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-add-filter" title="btk_accel_map_add_filter ()"><code class="function">btk_accel_map_add_filter()</code></a>, 
@@ -409,7 +409,7 @@ is not filtered out</p></td>
 <div class="refsect2">
 <a name="btk-accel-map-load-fd"></a><h3>btk_accel_map_load_fd ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_load_fd (<em class="parameter"><code><span class="type">gint</span> fd</code></em>);</pre>
+btk_accel_map_load_fd (<em class="parameter"><code><span class="type">bint</span> fd</code></em>);</pre>
 <p>Filedescriptor variant of <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-load" title="btk_accel_map_load"><code class="function">btk_accel_map_load()</code></a>.</p>
 <p>Note that the file descriptor will not be closed by this function.</p>
 <div class="refsect3">
@@ -432,7 +432,7 @@ btk_accel_map_load_fd (<em class="parameter"><code><span class="type">gint</span
 <div class="refsect2">
 <a name="btk-accel-map-save-fd"></a><h3>btk_accel_map_save_fd ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_save_fd (<em class="parameter"><code><span class="type">gint</span> fd</code></em>);</pre>
+btk_accel_map_save_fd (<em class="parameter"><code><span class="type">bint</span> fd</code></em>);</pre>
 <p>Filedescriptor variant of <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-save" title="btk_accel_map_save"><code class="function">btk_accel_map_save()</code></a>.</p>
 <p>Note that the file descriptor will not be closed by this function.</p>
 <div class="refsect3">
@@ -477,7 +477,7 @@ btk_accel_map_load_scanner (<em class="parameter"><code><span class="type">GScan
 <div class="refsect2">
 <a name="btk-accel-map-add-filter"></a><h3>btk_accel_map_add_filter ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_add_filter (<em class="parameter"><code>const <span class="type">gchar</span> *filter_pattern</code></em>);</pre>
+btk_accel_map_add_filter (<em class="parameter"><code>const <span class="type">bchar</span> *filter_pattern</code></em>);</pre>
 <p>Adds a filter to the global list of accel path filters.</p>
 <p>Accel map entries whose accel path matches one of the filters
 are skipped by <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-foreach" title="btk_accel_map_foreach ()"><code class="function">btk_accel_map_foreach()</code></a>.</p>
@@ -504,7 +504,7 @@ map dump.</p>
 <div class="refsect2">
 <a name="btk-accel-map-foreach-unfiltered"></a><h3>btk_accel_map_foreach_unfiltered ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_foreach_unfiltered (<em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+btk_accel_map_foreach_unfiltered (<em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                   <em class="parameter"><code><a class="link" href="btk2-Accelerator-Maps.html#BtkAccelMapForeach" title="BtkAccelMapForeach ()"><span class="type">BtkAccelMapForeach</span></a> foreach_func</code></em>);</pre>
 <p>Loops over all entries in the accelerator map, and execute
 <em class="parameter"><code>foreach_func</code></em>
@@ -557,7 +557,7 @@ other accelerator map functions.</p>
 <div class="refsect2">
 <a name="btk-accel-map-lock-path"></a><h3>btk_accel_map_lock_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_lock_path (<em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>);</pre>
+btk_accel_map_lock_path (<em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>);</pre>
 <p>Locks the given accelerator path. If the accelerator map doesn't yet contain
 an entry for <em class="parameter"><code>accel_path</code></em>
 , a new one is created.</p>
@@ -594,7 +594,7 @@ have to be unlocked.</p>
 <div class="refsect2">
 <a name="btk-accel-map-unlock-path"></a><h3>btk_accel_map_unlock_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_accel_map_unlock_path (<em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>);</pre>
+btk_accel_map_unlock_path (<em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>);</pre>
 <p>Undoes the last call to <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-lock-path" title="btk_accel_map_lock_path ()"><code class="function">btk_accel_map_lock_path()</code></a> on this <em class="parameter"><code>accel_path</code></em>
 .
 Refer to <a class="link" href="btk2-Accelerator-Maps.html#btk-accel-map-lock-path" title="btk_accel_map_lock_path ()"><code class="function">btk_accel_map_lock_path()</code></a> for information about accelerator path locking.</p>
@@ -681,9 +681,9 @@ in the GLib file name encoding</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="btk2-Accelerator-Maps.html#BtkAccelMap"><span class="type">BtkAccelMap</span></a>    *object,
                <span class="type">char</span>           *accel_path,
-               <span class="type">guint</span>           accel_key,
+               <span class="type">buint</span>           accel_key,
                <a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> accel_mods,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Notifies of a change in the global accelerator map.
 The path is also used as the detail for the signal,
 so it is possible to connect to

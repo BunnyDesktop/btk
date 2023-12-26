@@ -92,22 +92,22 @@ struct _BtkRecentChooserDefault
   BtkVBox parent_instance;
   
   BtkRecentManager *manager;
-  gulong manager_changed_id;
-  guint local_manager : 1;
+  bulong manager_changed_id;
+  buint local_manager : 1;
   
-  gint icon_size;
+  bint icon_size;
 
   /* RecentChooser properties */
-  gint limit;  
+  bint limit;  
   BtkRecentSortType sort_type;
-  guint show_private : 1;
-  guint show_not_found : 1;
-  guint select_multiple : 1;
-  guint show_tips : 1;
-  guint show_icons : 1;
-  guint local_only : 1;
+  buint show_private : 1;
+  buint show_not_found : 1;
+  buint select_multiple : 1;
+  buint show_tips : 1;
+  buint show_icons : 1;
+  buint local_only : 1;
 
-  guint limit_set : 1;
+  buint limit_set : 1;
   
   GSList *filters;
   BtkRecentFilter *current_filter;
@@ -115,7 +115,7 @@ struct _BtkRecentChooserDefault
   BtkWidget *filter_combo;
   
   BtkRecentSortFunc sort_func;
-  gpointer sort_data;
+  bpointer sort_data;
   GDestroyNotify sort_data_destroy;
 
   BtkIconTheme *icon_theme;
@@ -133,11 +133,11 @@ struct _BtkRecentChooserDefault
   BtkWidget *recent_popup_menu_clear_item;
   BtkWidget *recent_popup_menu_show_private_item;
  
-  guint load_id;
+  buint load_id;
   GList *recent_items;
-  gint n_recent_items;
-  gint loaded_items;
-  guint load_state;
+  bint n_recent_items;
+  bint loaded_items;
+  buint load_state;
 };
 
 typedef struct _BtkRecentChooserDefaultClass
@@ -173,37 +173,37 @@ enum {
 static void     _btk_recent_chooser_default_class_init  (BtkRecentChooserDefaultClass *klass);
 static void     _btk_recent_chooser_default_init        (BtkRecentChooserDefault      *impl);
 static BObject *btk_recent_chooser_default_constructor  (GType                         type,
-						         guint                         n_construct_prop,
+						         buint                         n_construct_prop,
 						         BObjectConstructParam        *construct_params);
 static void     btk_recent_chooser_default_finalize     (BObject                      *object);
 static void     btk_recent_chooser_default_dispose      (BObject                      *object);
 static void     btk_recent_chooser_default_set_property (BObject                      *object,
-						         guint                         prop_id,
+						         buint                         prop_id,
 						         const BValue                 *value,
 						         BParamSpec                   *pspec);
 static void     btk_recent_chooser_default_get_property (BObject                      *object,
-						         guint                         prop_id,
+						         buint                         prop_id,
 						         BValue                       *value,
 						         BParamSpec                   *pspec);
 
 /* BtkRecentChooserIface */
 static void              btk_recent_chooser_iface_init                 (BtkRecentChooserIface  *iface);
-static gboolean          btk_recent_chooser_default_set_current_uri    (BtkRecentChooser       *chooser,
-								        const gchar            *uri,
+static bboolean          btk_recent_chooser_default_set_current_uri    (BtkRecentChooser       *chooser,
+								        const bchar            *uri,
 								        GError                **error);
-static gchar *           btk_recent_chooser_default_get_current_uri    (BtkRecentChooser       *chooser);
-static gboolean          btk_recent_chooser_default_select_uri         (BtkRecentChooser       *chooser,
-								        const gchar            *uri,
+static bchar *           btk_recent_chooser_default_get_current_uri    (BtkRecentChooser       *chooser);
+static bboolean          btk_recent_chooser_default_select_uri         (BtkRecentChooser       *chooser,
+								        const bchar            *uri,
 								        GError                **error);
 static void              btk_recent_chooser_default_unselect_uri       (BtkRecentChooser       *chooser,
-								        const gchar            *uri);
+								        const bchar            *uri);
 static void              btk_recent_chooser_default_select_all         (BtkRecentChooser       *chooser);
 static void              btk_recent_chooser_default_unselect_all       (BtkRecentChooser       *chooser);
 static GList *           btk_recent_chooser_default_get_items          (BtkRecentChooser       *chooser);
 static BtkRecentManager *btk_recent_chooser_default_get_recent_manager (BtkRecentChooser       *chooser);
 static void              btk_recent_chooser_default_set_sort_func      (BtkRecentChooser       *chooser,
 									BtkRecentSortFunc       sort_func,
-									gpointer                sort_data,
+									bpointer                sort_data,
 									GDestroyNotify          data_destroy);
 static void              btk_recent_chooser_default_add_filter         (BtkRecentChooser       *chooser,
 								        BtkRecentFilter        *filter);
@@ -219,9 +219,9 @@ static void set_current_filter        (BtkRecentChooserDefault *impl,
 				       BtkRecentFilter         *filter);
 
 static BtkIconTheme *get_icon_theme_for_widget (BtkWidget   *widget);
-static gint          get_icon_size_for_widget  (BtkWidget   *widget,
+static bint          get_icon_size_for_widget  (BtkWidget   *widget,
 						BtkIconSize  icon_size);
-static gint          get_recent_files_limit    (BtkWidget   *widget);
+static bint          get_recent_files_limit    (BtkWidget   *widget);
 
 static void reload_recent_items (BtkRecentChooserDefault *impl);
 static void chooser_set_model   (BtkRecentChooserDefault *impl);
@@ -233,60 +233,60 @@ static void chooser_set_sort_type (BtkRecentChooserDefault *impl,
 				   BtkRecentSortType        sort_type);
 
 static void recent_manager_changed_cb (BtkRecentManager  *manager,
-			               gpointer           user_data);
+			               bpointer           user_data);
 static void recent_icon_data_func     (BtkTreeViewColumn *tree_column,
 				       BtkCellRenderer   *cell,
 				       BtkTreeModel      *model,
 				       BtkTreeIter       *iter,
-				       gpointer           user_data);
+				       bpointer           user_data);
 static void recent_meta_data_func     (BtkTreeViewColumn *tree_column,
 				       BtkCellRenderer   *cell,
 				       BtkTreeModel      *model,
 				       BtkTreeIter       *iter,
-				       gpointer           user_data);
+				       bpointer           user_data);
 
 static void selection_changed_cb      (BtkTreeSelection  *z,
-				       gpointer           user_data);
+				       bpointer           user_data);
 static void row_activated_cb          (BtkTreeView       *tree_view,
 				       BtkTreePath       *tree_path,
 				       BtkTreeViewColumn *tree_column,
-				       gpointer           user_data);
+				       bpointer           user_data);
 static void filter_combo_changed_cb   (BtkComboBox       *combo_box,
-				       gpointer           user_data);
+				       bpointer           user_data);
 
 static void remove_all_activated_cb   (BtkMenuItem       *menu_item,
-				       gpointer           user_data);
+				       bpointer           user_data);
 static void remove_item_activated_cb  (BtkMenuItem       *menu_item,
-				       gpointer           user_data);
+				       bpointer           user_data);
 static void show_private_toggled_cb   (BtkCheckMenuItem  *menu_item,
-				       gpointer           user_data);
+				       bpointer           user_data);
 
-static gboolean recent_view_popup_menu_cb   (BtkWidget      *widget,
-					     gpointer        user_data);
-static gboolean recent_view_button_press_cb (BtkWidget      *widget,
+static bboolean recent_view_popup_menu_cb   (BtkWidget      *widget,
+					     bpointer        user_data);
+static bboolean recent_view_button_press_cb (BtkWidget      *widget,
 					     BdkEventButton *event,
-					     gpointer        user_data);
+					     bpointer        user_data);
 
 static void     recent_view_drag_begin_cb         (BtkWidget        *widget,
 						   BdkDragContext   *context,
-						   gpointer          user_data);
+						   bpointer          user_data);
 static void     recent_view_drag_data_get_cb      (BtkWidget        *widget,
 						   BdkDragContext   *context,
 						   BtkSelectionData *selection_data,
-						   guint             info,
-						   guint32           time_,
-						   gpointer          data);
-static gboolean recent_view_query_tooltip_cb      (BtkWidget        *widget,
-                                                   gint              x,
-                                                   gint              y,
-                                                   gboolean          keyboard_tip,
+						   buint             info,
+						   buint32           time_,
+						   bpointer          data);
+static bboolean recent_view_query_tooltip_cb      (BtkWidget        *widget,
+                                                   bint              x,
+                                                   bint              y,
+                                                   bboolean          keyboard_tip,
                                                    BtkTooltip       *tooltip,
-                                                   gpointer          user_data);
+                                                   bpointer          user_data);
 
 static void btk_recent_chooser_activatable_iface_init (BtkActivatableIface  *iface);
 static void btk_recent_chooser_update                 (BtkActivatable       *activatable,
 						       BtkAction            *action,
-						       const gchar          *property_name);
+						       const bchar          *property_name);
 static void btk_recent_chooser_sync_action_properties (BtkActivatable       *activatable,
 						       BtkAction            *action);
 
@@ -379,7 +379,7 @@ _btk_recent_chooser_default_init (BtkRecentChooserDefault *impl)
 
 static BObject *
 btk_recent_chooser_default_constructor (GType                  type,
-				        guint                  n_params,
+				        buint                  n_params,
 				        BObjectConstructParam *params)
 {
   BObjectClass *parent_class;
@@ -499,7 +499,7 @@ btk_recent_chooser_default_constructor (GType                  type,
 
 static void
 btk_recent_chooser_default_set_property (BObject      *object,
-				         guint         prop_id,
+				         buint         prop_id,
 					 const BValue *value,
 					 BParamSpec   *pspec)
 {
@@ -569,7 +569,7 @@ btk_recent_chooser_default_set_property (BObject      *object,
 
 static void
 btk_recent_chooser_default_get_property (BObject    *object,
-					 guint       prop_id,
+					 buint       prop_id,
 					 BValue     *value,
 					 BParamSpec *pspec)
 {
@@ -696,8 +696,8 @@ btk_recent_chooser_default_show_all (BtkWidget *widget)
 /* Shows an error dialog set as transient for the specified window */
 static void
 error_message_with_parent (BtkWindow   *parent,
-			   const gchar *msg,
-			   const gchar *detail)
+			   const bchar *msg,
+			   const bchar *detail)
 {
   BtkWidget *dialog;
 
@@ -733,15 +733,15 @@ get_toplevel (BtkWidget *widget)
 /* Shows an error dialog for the file chooser */
 static void
 error_message (BtkRecentChooserDefault *impl,
-	       const gchar             *msg,
-	       const gchar             *detail)
+	       const bchar             *msg,
+	       const bchar             *detail)
 {
   error_message_with_parent (get_toplevel (BTK_WIDGET (impl)), msg, detail);
 }
 
 static void
 set_busy_cursor (BtkRecentChooserDefault *impl,
-		 gboolean                 show_busy_cursor)
+		 bboolean                 show_busy_cursor)
 {
   BtkWindow *toplevel;
   BdkDisplay *display;
@@ -780,14 +780,14 @@ chooser_set_model (BtkRecentChooserDefault *impl)
   impl->load_state = LOAD_FINISHED;
 }
 
-static gboolean
-load_recent_items (gpointer user_data)
+static bboolean
+load_recent_items (bpointer user_data)
 {
   BtkRecentChooserDefault *impl;
   BtkRecentInfo *info;
   BtkTreeIter iter;
-  const gchar *uri, *name;
-  gboolean retval;
+  const bchar *uri, *name;
+  bboolean retval;
   
   impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   
@@ -861,7 +861,7 @@ load_recent_items (gpointer user_data)
 }
 
 static void
-cleanup_after_load (gpointer user_data)
+cleanup_after_load (bpointer user_data)
 {
   BtkRecentChooserDefault *impl;
   
@@ -927,10 +927,10 @@ static void
 set_default_size (BtkRecentChooserDefault *impl)
 {
   BtkWidget *widget;
-  gint width, height;
-  gint font_size;
+  bint width, height;
+  bint font_size;
   BdkScreen *screen;
-  gint monitor_num;
+  bint monitor_num;
   BtkRequisition req;
   BdkRectangle monitor;
 
@@ -979,7 +979,7 @@ recent_icon_data_func (BtkTreeViewColumn *tree_column,
 		       BtkCellRenderer   *cell,
 		       BtkTreeModel      *model,
 		       BtkTreeIter       *iter,
-		       gpointer           user_data)
+		       bpointer           user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   BtkRecentInfo *info = NULL;
@@ -1007,10 +1007,10 @@ recent_meta_data_func (BtkTreeViewColumn *tree_column,
 		       BtkCellRenderer   *cell,
 		       BtkTreeModel      *model,
 		       BtkTreeIter       *iter,
-		       gpointer           user_data)
+		       bpointer           user_data)
 {
   BtkRecentInfo *info = NULL;
-  gchar *name;
+  bchar *name;
   
   btk_tree_model_get (model, iter,
                       RECENT_DISPLAY_NAME_COLUMN, &name,
@@ -1028,7 +1028,7 @@ recent_meta_data_func (BtkTreeViewColumn *tree_column,
 }
 
 
-static gchar *
+static bchar *
 btk_recent_chooser_default_get_current_uri (BtkRecentChooser *chooser)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
@@ -1039,7 +1039,7 @@ btk_recent_chooser_default_get_current_uri (BtkRecentChooser *chooser)
     {
       BtkTreeModel *model;
       BtkTreeIter iter;
-      gchar *uri = NULL;
+      bchar *uri = NULL;
       
       if (!btk_tree_selection_get_selected (impl->selection, &model, &iter))
         return NULL;
@@ -1054,23 +1054,23 @@ btk_recent_chooser_default_get_current_uri (BtkRecentChooser *chooser)
 
 typedef struct
 {
-  guint found : 1;
-  guint do_select : 1;
-  guint do_activate : 1;
+  buint found : 1;
+  buint do_select : 1;
+  buint do_activate : 1;
   
-  gchar *uri;
+  bchar *uri;
   
   BtkRecentChooserDefault *impl;
 } SelectURIData;
 
-static gboolean
+static bboolean
 scan_for_uri_cb (BtkTreeModel *model,
 		 BtkTreePath  *path,
 		 BtkTreeIter  *iter,
-		 gpointer      user_data)
+		 bpointer      user_data)
 {
   SelectURIData *select_data = (SelectURIData *) user_data;
-  gchar *uri = NULL;
+  bchar *uri = NULL;
   
   if (!select_data)
     return TRUE;
@@ -1106,9 +1106,9 @@ scan_for_uri_cb (BtkTreeModel *model,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_recent_chooser_default_set_current_uri (BtkRecentChooser  *chooser,
-					    const gchar       *uri,
+					    const bchar       *uri,
 					    GError           **error)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
@@ -1143,9 +1143,9 @@ btk_recent_chooser_default_set_current_uri (BtkRecentChooser  *chooser,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_recent_chooser_default_select_uri (BtkRecentChooser  *chooser,
-				       const gchar       *uri,
+				       const bchar       *uri,
 				       GError           **error)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
@@ -1182,7 +1182,7 @@ btk_recent_chooser_default_select_uri (BtkRecentChooser  *chooser,
 
 static void
 btk_recent_chooser_default_unselect_uri (BtkRecentChooser *chooser,
-					 const gchar      *uri)
+					 const bchar      *uri)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
   SelectURIData *data;
@@ -1224,7 +1224,7 @@ btk_recent_chooser_default_unselect_all (BtkRecentChooser *chooser)
 static void
 btk_recent_chooser_default_set_sort_func (BtkRecentChooser  *chooser,
 					  BtkRecentSortFunc  sort_func,
-					  gpointer           sort_data,
+					  bpointer           sort_data,
 					  GDestroyNotify     data_destroy)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
@@ -1267,7 +1267,7 @@ btk_recent_chooser_default_get_recent_manager (BtkRecentChooser *chooser)
 
 static void
 show_filters (BtkRecentChooserDefault *impl,
-              gboolean                 show)
+              bboolean                 show)
 {
   if (show)
     btk_widget_show (impl->filter_combo_hbox);
@@ -1280,7 +1280,7 @@ btk_recent_chooser_default_add_filter (BtkRecentChooser *chooser,
 				       BtkRecentFilter  *filter)
 {
   BtkRecentChooserDefault *impl;
-  const gchar *name;
+  const bchar *name;
 
   impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
   
@@ -1313,7 +1313,7 @@ btk_recent_chooser_default_remove_filter (BtkRecentChooser *chooser,
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (chooser);
   BtkTreeModel *model;
   BtkTreeIter iter;
-  gint filter_idx;
+  bint filter_idx;
   
   filter_idx = b_slist_index (impl->filters, filter);
   
@@ -1357,7 +1357,7 @@ set_current_filter (BtkRecentChooserDefault *impl,
 {
   if (impl->current_filter != filter)
     {
-      gint filter_idx;
+      bint filter_idx;
       
       filter_idx = b_slist_index (impl->filters, filter);
       if (impl->filters && filter && filter_idx < 0)
@@ -1407,12 +1407,12 @@ get_icon_theme_for_widget (BtkWidget *widget)
   return btk_icon_theme_get_default ();
 }
 
-static gint
+static bint
 get_icon_size_for_widget (BtkWidget   *widget,
 			  BtkIconSize  icon_size)
 {
   BtkSettings *settings;
-  gint width, height;
+  bint width, height;
 
   if (btk_widget_has_screen (widget))
     settings = btk_settings_get_for_screen (btk_widget_get_screen (widget));
@@ -1426,11 +1426,11 @@ get_icon_size_for_widget (BtkWidget   *widget,
   return FALLBACK_ICON_SIZE;
 }
 
-static gint
+static bint
 get_recent_files_limit (BtkWidget *widget)
 {
   BtkSettings *settings;
-  gint limit;
+  bint limit;
 
   if (btk_widget_has_screen (widget))
     settings = btk_settings_get_for_screen (btk_widget_get_screen (widget));
@@ -1444,7 +1444,7 @@ get_recent_files_limit (BtkWidget *widget)
 
 static void
 recent_manager_changed_cb (BtkRecentManager *manager,
-			   gpointer          user_data)
+			   bpointer          user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
 
@@ -1453,7 +1453,7 @@ recent_manager_changed_cb (BtkRecentManager *manager,
 
 static void
 selection_changed_cb (BtkTreeSelection *selection,
-		      gpointer          user_data)
+		      bpointer          user_data)
 {
   _btk_recent_chooser_selection_changed (BTK_RECENT_CHOOSER (user_data));
 }
@@ -1462,17 +1462,17 @@ static void
 row_activated_cb (BtkTreeView       *tree_view,
 		  BtkTreePath       *tree_path,
 		  BtkTreeViewColumn *tree_column,
-		  gpointer           user_data)
+		  bpointer           user_data)
 {
   _btk_recent_chooser_item_activated (BTK_RECENT_CHOOSER (user_data));
 }
 
 static void
 filter_combo_changed_cb (BtkComboBox *combo_box,
-			 gpointer     user_data)
+			 bpointer     user_data)
 {
   BtkRecentChooserDefault *impl;
-  gint new_index;
+  bint new_index;
   BtkRecentFilter *filter;
   
   impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
@@ -1488,7 +1488,7 @@ get_drag_pixbuf (BtkRecentChooserDefault *impl)
 {
   BtkRecentInfo *info;
   BdkPixbuf *retval;
-  gint size;
+  bint size;
   
   g_assert (BTK_IS_RECENT_CHOOSER_DEFAULT (impl));
 
@@ -1507,7 +1507,7 @@ get_drag_pixbuf (BtkRecentChooserDefault *impl)
 static void
 recent_view_drag_begin_cb (BtkWidget      *widget,
 			   BdkDragContext *context,
-			   gpointer        user_data)
+			   bpointer        user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   BdkPixbuf *pixbuf;
@@ -1524,21 +1524,21 @@ recent_view_drag_begin_cb (BtkWidget      *widget,
 
 typedef struct
 {
-  gchar **uri_list;
-  gsize next_pos;
+  bchar **uri_list;
+  bsize next_pos;
 } DragData;
 
 static void
 append_uri_to_urilist (BtkTreeModel *model,
 		       BtkTreePath  *path,
 		       BtkTreeIter  *iter,
-		       gpointer      user_data)
+		       bpointer      user_data)
 {
   DragData *drag_data = (DragData *) user_data;
   BtkTreeModel *child_model;
   BtkTreeIter child_iter;
-  gchar *uri = NULL;
-  gsize pos;
+  bchar *uri = NULL;
+  bsize pos;
 
   child_model = btk_tree_model_filter_get_model (BTK_TREE_MODEL_FILTER (model));
   btk_tree_model_filter_convert_iter_to_child_iter (BTK_TREE_MODEL_FILTER (model),
@@ -1558,19 +1558,19 @@ static void
 recent_view_drag_data_get_cb (BtkWidget        *widget,
 			      BdkDragContext   *context,
 			      BtkSelectionData *selection_data,
-			      guint             info,
-			      guint32           time_,
-			      gpointer          data)
+			      buint             info,
+			      buint32           time_,
+			      bpointer          data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (data);
   DragData drag_data;
-  gsize n_uris;
+  bsize n_uris;
   
   n_uris = btk_tree_selection_count_selected_rows (impl->selection);
   if (n_uris == 0)
     return;
 
-  drag_data.uri_list = g_new0 (gchar *, n_uris + 1);
+  drag_data.uri_list = g_new0 (bchar *, n_uris + 1);
   drag_data.next_pos = 0;
   
   btk_tree_selection_selected_foreach (impl->selection,
@@ -1582,20 +1582,20 @@ recent_view_drag_data_get_cb (BtkWidget        *widget,
   g_strfreev (drag_data.uri_list);
 }
 
-static gboolean
+static bboolean
 recent_view_query_tooltip_cb (BtkWidget  *widget,
-                              gint        x,
-                              gint        y,
-                              gboolean    keyboard_tip,
+                              bint        x,
+                              bint        y,
+                              bboolean    keyboard_tip,
                               BtkTooltip *tooltip,
-                              gpointer    user_data)
+                              bpointer    user_data)
 {
   BtkRecentChooserDefault *impl = user_data;
   BtkTreeView *tree_view;
   BtkTreeIter iter;
   BtkTreePath *path = NULL;
   BtkRecentInfo *info = NULL;
-  gchar *uri_display;
+  bchar *uri_display;
 
   if (!impl->show_tips)
     return FALSE;
@@ -1634,7 +1634,7 @@ recent_view_query_tooltip_cb (BtkWidget  *widget,
 static void
 remove_selected_from_list (BtkRecentChooserDefault *impl)
 {
-  gchar *uri;
+  bchar *uri;
   GError *err;
   
   if (impl->select_multiple)
@@ -1647,7 +1647,7 @@ remove_selected_from_list (BtkRecentChooserDefault *impl)
   err = NULL;
   if (!btk_recent_manager_remove_item (impl->manager, uri, &err))
     {
-      gchar *msg;
+      bchar *msg;
    
       msg = g_strdup (_("Could not remove item"));
       error_message (impl, msg, err->message);
@@ -1661,11 +1661,11 @@ remove_selected_from_list (BtkRecentChooserDefault *impl)
 
 static void
 copy_activated_cb (BtkMenuItem *menu_item,
-		   gpointer     user_data)
+		   bpointer     user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   BtkRecentInfo *info;
-  gchar *utf8_uri;
+  bchar *utf8_uri;
 
   info = btk_recent_chooser_get_current_item (BTK_RECENT_CHOOSER (impl));
   if (!info)
@@ -1683,7 +1683,7 @@ copy_activated_cb (BtkMenuItem *menu_item,
 
 static void
 remove_all_activated_cb (BtkMenuItem *menu_item,
-			 gpointer     user_data)
+			 bpointer     user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   GError *err = NULL;
@@ -1691,7 +1691,7 @@ remove_all_activated_cb (BtkMenuItem *menu_item,
   btk_recent_manager_purge_items (impl->manager, &err);
   if (err)
     {
-       gchar *msg;
+       bchar *msg;
 
        msg = g_strdup (_("Could not clear list"));
 
@@ -1704,7 +1704,7 @@ remove_all_activated_cb (BtkMenuItem *menu_item,
 
 static void
 remove_item_activated_cb (BtkMenuItem *menu_item,
-			  gpointer     user_data)
+			  bpointer     user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   
@@ -1713,7 +1713,7 @@ remove_item_activated_cb (BtkMenuItem *menu_item,
 
 static void
 show_private_toggled_cb (BtkCheckMenuItem *menu_item,
-			 gpointer          user_data)
+			 bpointer          user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
   
@@ -1741,7 +1741,7 @@ recent_popup_menu_detach_cb (BtkWidget *attach_widget,
 static void
 recent_view_menu_ensure_state (BtkRecentChooserDefault *impl)
 {
-  gint count;
+  bint count;
   
   g_assert (BTK_IS_RECENT_CHOOSER_DEFAULT (impl));
   g_assert (impl->recent_popup_menu != NULL);
@@ -1827,15 +1827,15 @@ recent_view_menu_build (BtkRecentChooserDefault *impl)
 /* taken from btkfilechooserdefault.c */
 static void
 popup_position_func (BtkMenu   *menu,
-                     gint      *x,
-                     gint      *y,
-                     gboolean  *push_in,
-                     gpointer	user_data)
+                     bint      *x,
+                     bint      *y,
+                     bboolean  *push_in,
+                     bpointer	user_data)
 {
   BtkWidget *widget = BTK_WIDGET (user_data);
   BdkScreen *screen = btk_widget_get_screen (widget);
   BtkRequisition req;
-  gint monitor_num;
+  bint monitor_num;
   BdkRectangle monitor;
 
   if (B_UNLIKELY (!btk_widget_get_realized (widget)))
@@ -1880,25 +1880,25 @@ recent_view_menu_popup (BtkRecentChooserDefault *impl,
     }
 }
 
-static gboolean
+static bboolean
 recent_view_popup_menu_cb (BtkWidget *widget,
-			   gpointer   user_data)
+			   bpointer   user_data)
 {
   recent_view_menu_popup (BTK_RECENT_CHOOSER_DEFAULT (user_data), NULL);
   return TRUE;
 }
 
-static gboolean
+static bboolean
 recent_view_button_press_cb (BtkWidget      *widget,
 			     BdkEventButton *event,
-			     gpointer        user_data)
+			     bpointer        user_data)
 {
   BtkRecentChooserDefault *impl = BTK_RECENT_CHOOSER_DEFAULT (user_data);
 
   if (_btk_button_event_triggers_context_menu (event))
     {
       BtkTreePath *path;
-      gboolean res;
+      bboolean res;
 
       if (event->window != btk_tree_view_get_bin_window (BTK_TREE_VIEW (impl->recent_view)))
         return FALSE;
@@ -1953,7 +1953,7 @@ set_recent_manager (BtkRecentChooserDefault *impl,
 static void
 btk_recent_chooser_update (BtkActivatable *activatable,
 			   BtkAction      *action,
-			   const gchar    *property_name)
+			   const bchar    *property_name)
 {
   if (strcmp (property_name, "visible") == 0)
     {

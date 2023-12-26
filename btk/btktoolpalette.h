@@ -90,19 +90,19 @@ BtkWidget*                     btk_tool_palette_new                   (void);
 
 void                           btk_tool_palette_set_group_position    (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gint                       position);
+                                                                       bint                       position);
 void                           btk_tool_palette_set_exclusive         (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gboolean                   exclusive);
+                                                                       bboolean                   exclusive);
 void                           btk_tool_palette_set_expand            (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gboolean                   expand);
+                                                                       bboolean                   expand);
 
-gint                           btk_tool_palette_get_group_position    (BtkToolPalette            *palette,
+bint                           btk_tool_palette_get_group_position    (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
-gboolean                       btk_tool_palette_get_exclusive         (BtkToolPalette            *palette,
+bboolean                       btk_tool_palette_get_exclusive         (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
-gboolean                       btk_tool_palette_get_expand            (BtkToolPalette            *palette,
+bboolean                       btk_tool_palette_get_expand            (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
 
 void                           btk_tool_palette_set_icon_size         (BtkToolPalette            *palette,
@@ -116,11 +116,11 @@ BtkIconSize                    btk_tool_palette_get_icon_size         (BtkToolPa
 BtkToolbarStyle                btk_tool_palette_get_style             (BtkToolPalette            *palette);
 
 BtkToolItem*                   btk_tool_palette_get_drop_item         (BtkToolPalette            *palette,
-                                                                       gint                       x,
-                                                                       gint                       y);
+                                                                       bint                       x,
+                                                                       bint                       y);
 BtkToolItemGroup*              btk_tool_palette_get_drop_group        (BtkToolPalette            *palette,
-                                                                       gint                       x,
-                                                                       gint                       y);
+                                                                       bint                       x,
+                                                                       bint                       y);
 BtkWidget*                     btk_tool_palette_get_drag_item         (BtkToolPalette            *palette,
                                                                        const BtkSelectionData    *selection);
 

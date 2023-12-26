@@ -92,9 +92,9 @@ bdk_colormap_get_visual (BdkColormap *colormap)
 void
 bdk_colors_store (BdkColormap   *colormap,
 		  BdkColor      *colors,
-		  gint           ncolors)
+		  bint           ncolors)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < ncolors; i++)
     {
@@ -153,11 +153,11 @@ bdk_color_free (BdkColor *color)
  * 
  * Return value: %TRUE if the allocation succeeded.
  **/
-gboolean
+bboolean
 bdk_color_white (BdkColormap *colormap,
 		 BdkColor    *color)
 {
-  gint return_val;
+  bint return_val;
 
   g_return_val_if_fail (colormap != NULL, FALSE);
 
@@ -185,11 +185,11 @@ bdk_color_white (BdkColormap *colormap,
  * 
  * Return value: %TRUE if the allocation succeeded.
  **/
-gboolean
+bboolean
 bdk_color_black (BdkColormap *colormap,
 		 BdkColor    *color)
 {
-  gint return_val;
+  bint return_val;
 
   g_return_val_if_fail (colormap != NULL, FALSE);
 
@@ -227,13 +227,13 @@ bdk_color_black (BdkColormap *colormap,
  * 
  * Return value: %TRUE if the allocation succeeded.
  **/
-gboolean
+bboolean
 bdk_colormap_alloc_color (BdkColormap *colormap,
 			  BdkColor    *color,
-			  gboolean     writeable,
-			  gboolean     best_match)
+			  bboolean     writeable,
+			  bboolean     best_match)
 {
-  gboolean success;
+  bboolean success;
 
   bdk_colormap_alloc_colors (colormap, color, 1, writeable, best_match,
 			     &success);
@@ -253,11 +253,11 @@ bdk_colormap_alloc_color (BdkColormap *colormap,
  *
  * Deprecated: 2.2: Use bdk_colormap_alloc_color() instead.
  **/
-gboolean
+bboolean
 bdk_color_alloc (BdkColormap *colormap,
 		 BdkColor    *color)
 {
-  gboolean success;
+  bboolean success;
 
   bdk_colormap_alloc_colors (colormap, color, 1, FALSE, TRUE, &success);
 
@@ -273,7 +273,7 @@ bdk_color_alloc (BdkColormap *colormap,
  * 
  * Return value: The hash function applied to @colora
  **/
-guint
+buint
 bdk_color_hash (const BdkColor *colora)
 {
   return ((colora->red) +
@@ -291,7 +291,7 @@ bdk_color_hash (const BdkColor *colora)
  * 
  * Return value: %TRUE if the two colors compare equal
  **/
-gboolean
+bboolean
 bdk_color_equal (const BdkColor *colora,
 		 const BdkColor *colorb)
 {
@@ -335,8 +335,8 @@ bdk_color_get_type (void)
  * 
  * Return value: %TRUE if the parsing succeeded.
  **/
-gboolean
-bdk_color_parse (const gchar *spec,
+bboolean
+bdk_color_parse (const bchar *spec,
 		 BdkColor    *color)
 {
   BangoColor bango_color;
@@ -366,7 +366,7 @@ bdk_color_parse (const gchar *spec,
  *
  * Since: 2.12
  **/
-gchar *
+bchar *
 bdk_color_to_string (const BdkColor *color)
 {
   BangoColor bango_color;

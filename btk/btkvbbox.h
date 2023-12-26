@@ -66,8 +66,8 @@ BtkWidget *btk_vbutton_box_new      (void);
 /* buttons can be added by btk_container_add() */
 
 #ifndef BTK_DISABLE_DEPRECATED
-gint btk_vbutton_box_get_spacing_default (void);
-void btk_vbutton_box_set_spacing_default (gint spacing);
+bint btk_vbutton_box_get_spacing_default (void);
+void btk_vbutton_box_set_spacing_default (bint spacing);
 
 BtkButtonBoxStyle btk_vbutton_box_get_layout_default (void);
 void btk_vbutton_box_set_layout_default (BtkButtonBoxStyle layout);

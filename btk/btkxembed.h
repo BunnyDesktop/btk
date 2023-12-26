@@ -31,17 +31,17 @@ B_BEGIN_DECLS
 
 void _btk_xembed_send_message       (BdkWindow         *recipient,
 				     XEmbedMessageType  message,
-				     glong              detail,
-				     glong              data1,
-				     glong              data2);
+				     blong              detail,
+				     blong              data1,
+				     blong              data2);
 void _btk_xembed_send_focus_message (BdkWindow         *recipient,
 				     XEmbedMessageType  message,
-				     glong              detail);
+				     blong              detail);
 
 void        _btk_xembed_push_message       (XEvent    *xevent);
 void        _btk_xembed_pop_message        (void);
 void        _btk_xembed_set_focus_wrapped  (void);
-gboolean    _btk_xembed_get_focus_wrapped  (void);
+bboolean    _btk_xembed_get_focus_wrapped  (void);
 const char *_btk_xembed_message_name       (XEmbedMessageType message);
 
 B_END_DECLS

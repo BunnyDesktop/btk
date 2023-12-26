@@ -37,16 +37,16 @@ B_BEGIN_DECLS
 GType btk_tooltip_get_type (void);
 
 void btk_tooltip_set_markup              (BtkTooltip         *tooltip,
-                                          const gchar        *markup);
+                                          const bchar        *markup);
 void btk_tooltip_set_text                (BtkTooltip         *tooltip,
-                                          const gchar        *text);
+                                          const bchar        *text);
 void btk_tooltip_set_icon                (BtkTooltip         *tooltip,
                                           BdkPixbuf          *pixbuf);
 void btk_tooltip_set_icon_from_stock     (BtkTooltip         *tooltip,
-                                          const gchar        *stock_id,
+                                          const bchar        *stock_id,
                                           BtkIconSize         size);
 void btk_tooltip_set_icon_from_icon_name (BtkTooltip         *tooltip,
-				          const gchar        *icon_name,
+				          const bchar        *icon_name,
 				          BtkIconSize         size);
 void btk_tooltip_set_icon_from_gicon     (BtkTooltip         *tooltip,
 					  GIcon              *gicon,
@@ -67,10 +67,10 @@ void _btk_tooltip_handle_event           (BdkEvent           *event);
 void _btk_tooltip_hide                   (BtkWidget          *widget);
 
 BtkWidget * _btk_widget_find_at_coords   (BdkWindow          *window,
-                                          gint                window_x,
-                                          gint                window_y,
-                                          gint               *widget_x,
-                                          gint               *widget_y);
+                                          bint                window_x,
+                                          bint                window_y,
+                                          bint               *widget_x,
+                                          bint               *widget_y);
 
 B_END_DECLS
 

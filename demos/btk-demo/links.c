@@ -9,16 +9,16 @@
 
 static void
 response_cb (BtkWidget *dialog,
-             gint       response_id,
-             gpointer   data)
+             bint       response_id,
+             bpointer   data)
 {
   btk_widget_destroy (dialog);
 }
 
-static gboolean
+static bboolean
 activate_link (BtkWidget   *label,
-               const gchar *uri,
-               gpointer     data)
+               const bchar *uri,
+               bpointer     data)
 {
   if (g_strcmp0 (uri, "keynav") == 0)
     {

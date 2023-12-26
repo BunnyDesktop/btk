@@ -141,7 +141,7 @@ typedef struct
 } StartupNotificationData;
 
 static void
-free_startup_notification_data (gpointer data)
+free_startup_notification_data (bpointer data)
 {
   StartupNotificationData *sn_data = data;
 
@@ -153,7 +153,7 @@ free_startup_notification_data (gpointer data)
 typedef struct 
 {
   GSList *contexts;
-  guint timeout_id;
+  buint timeout_id;
 } StartupTimeoutData;
 
 static void
@@ -175,7 +175,7 @@ free_startup_timeout (void *data)
   g_free (std);
 }
 
-static gboolean
+static bboolean
 startup_timeout (void *data)
 {
   StartupTimeoutData *std;
@@ -276,7 +276,7 @@ _bdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
   char *screen_str;
   char *workspace_str;
   GIcon *icon;
-  guint32 timestamp;
+  buint32 timestamp;
   char *startup_id;
   GFileInfo *fileinfo;
 
@@ -307,7 +307,7 @@ _bdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
     }
   else if (files_count == 1)
     {
-      gchar *display_name;
+      bchar *display_name;
 
       if (g_file_is_native (files->data))
         fileinfo = g_file_query_info (files->data,

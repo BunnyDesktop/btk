@@ -44,7 +44,7 @@ typedef void (* BtkCellLayoutDataFunc) (BtkCellLayout   *cell_layout,
                                         BtkCellRenderer *cell,
                                         BtkTreeModel    *tree_model,
                                         BtkTreeIter     *iter,
-                                        gpointer         data);
+                                        bpointer         data);
 
 struct _BtkCellLayoutIface
 {
@@ -53,35 +53,35 @@ struct _BtkCellLayoutIface
   /* Virtual Table */
   void (* pack_start)         (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* pack_end)           (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* clear)              (BtkCellLayout         *cell_layout);
   void (* add_attribute)      (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               const gchar           *attribute,
-                               gint                   column);
+                               const bchar           *attribute,
+                               bint                   column);
   void (* set_cell_data_func) (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
                                BtkCellLayoutDataFunc  func,
-                               gpointer               func_data,
+                               bpointer               func_data,
                                GDestroyNotify         destroy);
   void (* clear_attributes)   (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell);
   void (* reorder)            (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gint                   position);
+                               bint                   position);
   GList* (* get_cells)        (BtkCellLayout         *cell_layout);
 };
 
 GType btk_cell_layout_get_type           (void) B_GNUC_CONST;
 void  btk_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gboolean               expand);
+                                          bboolean               expand);
 void  btk_cell_layout_pack_end           (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gboolean               expand);
+                                          bboolean               expand);
 GList *btk_cell_layout_get_cells         (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_clear              (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_set_attributes     (BtkCellLayout         *cell_layout,
@@ -89,33 +89,33 @@ void  btk_cell_layout_set_attributes     (BtkCellLayout         *cell_layout,
                                           ...) B_GNUC_NULL_TERMINATED;
 void  btk_cell_layout_add_attribute      (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          const gchar           *attribute,
-                                          gint                   column);
+                                          const bchar           *attribute,
+                                          bint                   column);
 void  btk_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
                                           BtkCellLayoutDataFunc  func,
-                                          gpointer               func_data,
+                                          bpointer               func_data,
                                           GDestroyNotify         destroy);
 void  btk_cell_layout_clear_attributes   (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell);
 void  btk_cell_layout_reorder            (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gint                   position);
-gboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                          bint                   position);
+bboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
 						      BObject       *child,
-						      const gchar   *tagname,
+						      const bchar   *tagname,
 						      GMarkupParser *parser,
-						      gpointer      *data);
+						      bpointer      *data);
 void _btk_cell_layout_buildable_custom_tag_end       (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
 						      BObject       *child,
-						      const gchar   *tagname,
-						      gpointer      *data);
+						      const bchar   *tagname,
+						      bpointer      *data);
 void _btk_cell_layout_buildable_add_child            (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
 						      BObject       *child,
-						      const gchar   *type);
+						      const bchar   *type);
 
 B_END_DECLS
 

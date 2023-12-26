@@ -32,7 +32,7 @@
 
 typedef struct
 {
-  gboolean above_child;
+  bboolean above_child;
   BdkWindow *event_window;
 } BtkEventBoxPrivate;
 
@@ -55,14 +55,14 @@ static void     btk_event_box_size_allocate (BtkWidget        *widget,
                                              BtkAllocation    *allocation);
 static void     btk_event_box_paint         (BtkWidget        *widget,
                                              BdkRectangle     *area);
-static gboolean btk_event_box_expose        (BtkWidget        *widget,
+static bboolean btk_event_box_expose        (BtkWidget        *widget,
                                              BdkEventExpose   *event);
 static void     btk_event_box_set_property  (BObject          *object,
-                                             guint             prop_id,
+                                             buint             prop_id,
                                              const BValue     *value,
                                              BParamSpec       *pspec);
 static void     btk_event_box_get_property  (BObject          *object,
-                                             guint             prop_id,
+                                             buint             prop_id,
                                              BValue           *value,
                                              BParamSpec       *pspec);
 
@@ -122,7 +122,7 @@ btk_event_box_new (void)
 
 static void 
 btk_event_box_set_property (BObject      *object,
-			    guint         prop_id,
+			    buint         prop_id,
 			    const BValue *value,
 			    BParamSpec   *pspec)
 {
@@ -146,7 +146,7 @@ btk_event_box_set_property (BObject      *object,
 
 static void 
 btk_event_box_get_property (BObject     *object,
-			    guint        prop_id,
+			    buint        prop_id,
 			    BValue      *value,
 			    BParamSpec  *pspec)
 {
@@ -179,7 +179,7 @@ btk_event_box_get_property (BObject     *object,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_event_box_get_visible_window (BtkEventBox *event_box)
 {
   g_return_val_if_fail (BTK_IS_EVENT_BOX (event_box), FALSE);
@@ -232,7 +232,7 @@ btk_event_box_get_visible_window (BtkEventBox *event_box)
  **/
 void
 btk_event_box_set_visible_window (BtkEventBox *event_box,
-				  gboolean visible_window)
+				  bboolean visible_window)
 {
   BtkWidget *widget;
 
@@ -246,7 +246,7 @@ btk_event_box_set_visible_window (BtkEventBox *event_box,
     {
       if (btk_widget_get_realized (widget))
 	{
-	  gboolean visible = btk_widget_get_visible (widget);
+	  bboolean visible = btk_widget_get_visible (widget);
 
 	  if (visible)
 	    btk_widget_hide (widget);
@@ -285,7 +285,7 @@ btk_event_box_set_visible_window (BtkEventBox *event_box,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_event_box_get_above_child (BtkEventBox *event_box)
 {
   BtkEventBoxPrivate *priv;
@@ -314,7 +314,7 @@ btk_event_box_get_above_child (BtkEventBox *event_box)
  **/
 void
 btk_event_box_set_above_child (BtkEventBox *event_box,
-			       gboolean above_child)
+			       bboolean above_child)
 {
   BtkWidget *widget;
   BtkEventBoxPrivate *priv;
@@ -341,7 +341,7 @@ btk_event_box_set_above_child (BtkEventBox *event_box,
 	    }
 	  else
 	    {
-	      gboolean visible = btk_widget_get_visible (widget);
+	      bboolean visible = btk_widget_get_visible (widget);
 
 	      if (visible)
 		btk_widget_hide (widget);
@@ -367,10 +367,10 @@ static void
 btk_event_box_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BtkEventBoxPrivate *priv;
-  gboolean visible_window;
+  bboolean visible_window;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -556,7 +556,7 @@ btk_event_box_paint (BtkWidget    *widget,
 			0, 0, -1, -1);
 }
 
-static gboolean
+static bboolean
 btk_event_box_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {

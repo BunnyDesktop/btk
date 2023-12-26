@@ -50,17 +50,17 @@ struct _BtkSeparatorPrivate
 
 
 static void       btk_separator_set_property (BObject        *object,
-                                              guint           prop_id,
+                                              buint           prop_id,
                                               const BValue   *value,
                                               BParamSpec     *pspec);
 static void       btk_separator_get_property (BObject        *object,
-                                              guint           prop_id,
+                                              buint           prop_id,
                                               BValue         *value,
                                               BParamSpec     *pspec);
 
 static void       btk_separator_size_request (BtkWidget      *widget,
                                               BtkRequisition *requisition);
-static gboolean   btk_separator_expose       (BtkWidget      *widget,
+static bboolean   btk_separator_expose       (BtkWidget      *widget,
                                               BdkEventExpose *event);
 
 
@@ -104,7 +104,7 @@ btk_separator_init (BtkSeparator *separator)
 
 static void
 btk_separator_set_property (BObject      *object,
-                            guint         prop_id,
+                            buint         prop_id,
                             const BValue *value,
                             BParamSpec   *pspec)
 {
@@ -124,7 +124,7 @@ btk_separator_set_property (BObject      *object,
 
 static void
 btk_separator_get_property (BObject    *object,
-                            guint       prop_id,
+                            buint       prop_id,
                             BValue     *value,
                             BParamSpec *pspec)
 {
@@ -146,9 +146,9 @@ btk_separator_size_request (BtkWidget      *widget,
                             BtkRequisition *requisition)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
-  gboolean wide_separators;
-  gint     separator_width;
-  gint     separator_height;
+  bboolean wide_separators;
+  bint     separator_width;
+  bint     separator_height;
 
   btk_widget_style_get (widget,
                         "wide-separators",  &wide_separators,
@@ -175,14 +175,14 @@ btk_separator_size_request (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_separator_expose (BtkWidget      *widget,
                       BdkEventExpose *event)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
-  gboolean wide_separators;
-  gint     separator_width;
-  gint     separator_height;
+  bboolean wide_separators;
+  bint     separator_width;
+  bint     separator_height;
 
   if (!btk_widget_is_drawable (widget))
     return FALSE;

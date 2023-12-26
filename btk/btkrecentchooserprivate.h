@@ -33,22 +33,22 @@ BtkRecentManager *_btk_recent_chooser_get_recent_manager     (BtkRecentChooser  
 GList *           _btk_recent_chooser_get_items              (BtkRecentChooser  *chooser,
 							      BtkRecentFilter   *filter,
 							      BtkRecentSortFunc  func,
-							      gpointer           data);
+							      bpointer           data);
 
 void              _btk_recent_chooser_item_activated         (BtkRecentChooser  *chooser);
 void              _btk_recent_chooser_selection_changed      (BtkRecentChooser  *chooser);
 
 void              _btk_recent_chooser_update                 (BtkActivatable       *activatable,
 							      BtkAction            *action,
-							      const gchar          *property_name);
+							      const bchar          *property_name);
 void              _btk_recent_chooser_sync_action_properties (BtkActivatable       *activatable,
 							      BtkAction            *action);
 void              _btk_recent_chooser_set_related_action     (BtkRecentChooser     *recent_chooser, 
 							      BtkAction            *action);
 BtkAction        *_btk_recent_chooser_get_related_action     (BtkRecentChooser     *recent_chooser);
 void              _btk_recent_chooser_set_use_action_appearance (BtkRecentChooser  *recent_chooser, 
-								 gboolean           use_appearance);
-gboolean          _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser  *recent_chooser);
+								 bboolean           use_appearance);
+bboolean          _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser  *recent_chooser);
 
 B_END_DECLS
 

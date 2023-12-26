@@ -175,7 +175,7 @@ print_lc(LOGCONTEXT *lc)
   if (lc->lcMoveMask & PK_ROTATION) g_print (" PK_ROTATION");
   g_print ("\n");
   g_print ("lcBtnDnMask = %#x, lcBtnUpMask = %#x\n",
-	  (guint) lc->lcBtnDnMask, (guint) lc->lcBtnUpMask);
+	  (buint) lc->lcBtnDnMask, (buint) lc->lcBtnUpMask);
   g_print ("lcInOrgX = %ld, lcInOrgY = %ld, lcInOrgZ = %ld\n",
 	  lc->lcInOrgX, lc->lcInOrgY, lc->lcInOrgZ);
   g_print ("lcInExtX = %ld, lcInExtY = %ld, lcInExtZ = %ld\n",
@@ -228,7 +228,7 @@ print_cursor (int index)
   (*p_WTInfoA) (WTI_CURSORS + index, CSR_ACTIVE, &active);
   g_print ("ACTIVE: %s\n", active ? "YES" : "NO");
   (*p_WTInfoA) (WTI_CURSORS + index, CSR_PKTDATA, &wtpkt);
-  g_print ("PKTDATA: %#x:", (guint) wtpkt);
+  g_print ("PKTDATA: %#x:", (buint) wtpkt);
 #define BIT(x) if (wtpkt & PK_##x) g_print (" " #x)
   BIT (CONTEXT);
   BIT (STATUS);
@@ -302,7 +302,7 @@ print_cursor (int index)
     }
   g_print ("\n");
   (*p_WTInfoA) (WTI_CURSORS + index, CSR_PHYSID, &physid);
-  g_print ("PHYSID: %#x\n", (guint) physid);
+  g_print ("PHYSID: %#x\n", (buint) physid);
   (*p_WTInfoA) (WTI_CURSORS + index, CSR_CAPABILITIES, &capabilities);
   g_print ("CAPABILITIES: %#x:", capabilities);
 #define BIT(x) if (capabilities & CRC_##x) g_print (" " #x)
@@ -330,7 +330,7 @@ print_cursor (int index)
 void
 _bdk_input_wintab_init_check (void)
 {
-  static gboolean wintab_initialized = FALSE;
+  static bboolean wintab_initialized = FALSE;
   BdkDevicePrivate *bdkdev;
   BdkWindowAttr wa;
   WORD specversion;
@@ -342,7 +342,7 @@ _bdk_input_wintab_init_check (void)
   int i, k, n;
   int devix, cursorix;
   wchar_t devname[100], csrname[100];
-  gchar *devname_utf8, *csrname_utf8;
+  bchar *devname_utf8, *csrname_utf8;
   BOOL defcontext_done;
   HMODULE wintab32;
   char *wintab32_dll_path;
@@ -571,7 +571,7 @@ _bdk_input_wintab_init_check (void)
 
 	  bdkdev->info.axes = g_new (BdkDeviceAxis, bdkdev->info.num_axes);
 	  bdkdev->axes = g_new (BdkAxisInfo, bdkdev->info.num_axes);
-	  bdkdev->last_axis_data = g_new (gint, bdkdev->info.num_axes);
+	  bdkdev->last_axis_data = g_new (bint, bdkdev->info.num_axes);
 	  
 	  k = 0;
 	  if (bdkdev->pktdata & PK_X)
@@ -645,7 +645,7 @@ _bdk_input_wintab_init_check (void)
 }
 
 static void
-decode_tilt (gint   *axis_data,
+decode_tilt (bint   *axis_data,
 	     AXIS   *axes,
 	     PACKET *packet)
 {
@@ -669,10 +669,10 @@ decode_tilt (gint   *axis_data,
 static void
 bdk_input_translate_coordinates (BdkDevicePrivate *bdkdev,
 				 BdkWindow        *window,
-				 gint             *axis_data,
-				 gdouble          *axis_out,
-				 gdouble          *x_out,
-				 gdouble          *y_out)
+				 bint             *axis_data,
+				 bdouble          *axis_out,
+				 bdouble          *x_out,
+				 bdouble          *y_out)
 {
   BdkWindowObject *priv, *impl_window;
   BdkWindowImplWin32 *root_impl;
@@ -808,10 +808,10 @@ _bdk_input_configure_event (BdkWindow         *window)
  * expensive things besides getting the modifiers. This code is somewhat based
  * on build_pointer_event_state from bdkevents-win32.c
  */
-static guint
+static buint
 get_modifier_key_state (void)
 {
-  guint state;
+  buint state;
   
   state = 0;
   /* High-order bit is up/down, low order bit is toggled/untoggled */
@@ -828,10 +828,10 @@ get_modifier_key_state (void)
 }
 
 #if 0
-static guint ignore_core_timer = 0;
+static buint ignore_core_timer = 0;
 
-static gboolean
-ignore_core_timefunc (gpointer data)
+static bboolean
+ignore_core_timefunc (bpointer data)
 {
   /* The delay has passed */
   _bdk_input_ignore_core = FALSE;
@@ -848,7 +848,7 @@ ignore_core_timefunc (gpointer data)
  * which e.g. causes GIMP to switch tools.
  */
 static void
-set_ignore_core (gboolean ignore)
+set_ignore_core (bboolean ignore)
 {
   if (ignore)
     {
@@ -928,7 +928,7 @@ find_window_for_input_event (MSG* msg, int *x, int *y)
   return _bdk_root;
 }
 
-gboolean 
+bboolean 
 _bdk_input_other_event (BdkEvent  *event,
 			MSG       *msg,
 			BdkWindow *window)
@@ -937,16 +937,16 @@ _bdk_input_other_event (BdkEvent  *event,
   BdkWindow *native_window;
   BdkInputWindow *input_window;
   BdkDevicePrivate *bdkdev = NULL;
-  guint key_state;
+  buint key_state;
 
   PACKET packet;
-  gint k;
-  gint x, y;
-  guint translated_buttons, button_diff, button_mask;
+  bint k;
+  bint x, y;
+  buint translated_buttons, button_diff, button_mask;
   /* Translation from tablet button state to BDK button state for
    * buttons 1-3 - swap button 2 and 3.
    */
-  static guint button_map[8] = {0, 1, 4, 5, 2, 3, 6, 7};
+  static buint button_map[8] = {0, 1, 4, 5, 2, 3, 6, 7};
 
   if (window != wintab_window)
     {
@@ -1067,7 +1067,7 @@ _bdk_input_other_event (BdkEvent  *event,
 	  event->button.time = _bdk_win32_get_next_tick (msg->time);
 	  event->button.device = &bdkdev->info;
 	  
-	  event->button.axes = g_new(gdouble, bdkdev->info.num_axes);
+	  event->button.axes = g_new(bdouble, bdkdev->info.num_axes);
 
 	  bdk_input_translate_coordinates (bdkdev, window,
 					   bdkdev->last_axis_data,
@@ -1098,7 +1098,7 @@ _bdk_input_other_event (BdkEvent  *event,
 	  event->motion.is_hint = FALSE;
 	  event->motion.device = &bdkdev->info;
 
-	  event->motion.axes = g_new(gdouble, bdkdev->info.num_axes);
+	  event->motion.axes = g_new(bdouble, bdkdev->info.num_axes);
 
 	  bdk_input_translate_coordinates (bdkdev, window,
 					   bdkdev->last_axis_data,
@@ -1189,7 +1189,7 @@ _bdk_input_other_event (BdkEvent  *event,
 void
 _bdk_input_select_events (BdkWindow *impl_window)
 {
-  guint event_mask;
+  buint event_mask;
   BdkWindowObject *w;
   BdkInputWindow *iw;
   GList *l, *dev_list;
@@ -1223,12 +1223,12 @@ _bdk_input_select_events (BdkWindow *impl_window)
   BDK_WINDOW_IMPL_WIN32 (((BdkWindowObject *)impl_window)->impl)->extension_events_mask = event_mask;
 }
 
-gint
+bint
 _bdk_input_grab_pointer (BdkWindow    *window,
-			 gint          owner_events,
+			 bint          owner_events,
 			 BdkEventMask  event_mask,
 			 BdkWindow    *confine_to,
-			 guint32       time)
+			 buint32       time)
 {
   BDK_NOTE (INPUT, g_print ("_bdk_input_grab_pointer: %p %d %p\n",
 			   BDK_WINDOW_HWND (window),
@@ -1239,20 +1239,20 @@ _bdk_input_grab_pointer (BdkWindow    *window,
 }
 
 void 
-_bdk_input_ungrab_pointer (guint32 time)
+_bdk_input_ungrab_pointer (buint32 time)
 {
 
   BDK_NOTE (INPUT, g_print ("_bdk_input_ungrab_pointer\n"));
 
 }
 
-gboolean
+bboolean
 _bdk_device_get_history (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   return FALSE;
 }
@@ -1260,7 +1260,7 @@ _bdk_device_get_history (BdkDevice         *device,
 void 
 bdk_device_get_state (BdkDevice       *device,
 		      BdkWindow       *window,
-		      gdouble         *axes,
+		      bdouble         *axes,
 		      BdkModifierType *mask)
 {
   g_return_if_fail (device != NULL);
@@ -1268,7 +1268,7 @@ bdk_device_get_state (BdkDevice       *device,
 
   if (BDK_IS_CORE (device))
     {
-      gint x_int, y_int;
+      bint x_int, y_int;
       
       bdk_window_get_pointer (window, &x_int, &y_int, mask);
 

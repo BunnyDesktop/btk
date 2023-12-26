@@ -102,8 +102,8 @@ bdk_offscreen_window_init (BdkOffscreenWindow *window)
 
 static void
 bdk_offscreen_window_destroy (BdkWindow *window,
-			      gboolean   recursing,
-			      gboolean   foreign_destroy)
+			      bboolean   recursing,
+			      bboolean   foreign_destroy)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
   BdkOffscreenWindow *offscreen;
@@ -119,7 +119,7 @@ bdk_offscreen_window_destroy (BdkWindow *window,
   offscreen->colormap = NULL;
 }
 
-static gboolean
+static bboolean
 is_parent_of (BdkWindow *parent,
 	      BdkWindow *child)
 {
@@ -150,12 +150,12 @@ bdk_offscreen_window_create_gc (BdkDrawable     *drawable,
 static BdkImage*
 bdk_offscreen_window_copy_to_image (BdkDrawable    *drawable,
 				    BdkImage       *image,
-				    gint            src_x,
-				    gint            src_y,
-				    gint            dest_x,
-				    gint            dest_y,
-				    gint            width,
-				    gint            height)
+				    bint            src_x,
+				    bint            src_y,
+				    bint            dest_x,
+				    bint            dest_y,
+				    bint            width,
+				    bint            height)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
 
@@ -204,7 +204,7 @@ bdk_offscreen_window_set_colormap (BdkDrawable *drawable,
 }
 
 
-static gint
+static bint
 bdk_offscreen_window_get_depth (BdkDrawable *drawable)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
@@ -222,12 +222,12 @@ bdk_offscreen_window_get_source_drawable (BdkDrawable  *drawable)
 
 static BdkDrawable *
 bdk_offscreen_window_get_composite_drawable (BdkDrawable *drawable,
-					     gint         x,
-					     gint         y,
-					     gint         width,
-					     gint         height,
-					     gint        *composite_x_offset,
-					     gint        *composite_y_offset)
+					     bint         x,
+					     bint         y,
+					     bint         width,
+					     bint         height,
+					     bint        *composite_x_offset,
+					     bint        *composite_y_offset)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
 
@@ -254,7 +254,7 @@ static void
 add_damage (BdkOffscreenWindow *offscreen,
 	    int x, int y,
 	    int w, int h,
-	    gboolean is_line)
+	    bboolean is_line)
 {
   BdkRectangle rect;
   BdkRebunnyion *damage;
@@ -301,12 +301,12 @@ static void
 bdk_offscreen_window_draw_drawable (BdkDrawable *drawable,
 				    BdkGC       *gc,
 				    BdkPixmap   *src,
-				    gint         xsrc,
-				    gint         ysrc,
-				    gint         xdest,
-				    gint         ydest,
-				    gint         width,
-				    gint         height,
+				    bint         xsrc,
+				    bint         ysrc,
+				    bint         xdest,
+				    bint         ydest,
+				    bint         width,
+				    bint         height,
 				    BdkDrawable *original_src)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
@@ -323,11 +323,11 @@ bdk_offscreen_window_draw_drawable (BdkDrawable *drawable,
 static void
 bdk_offscreen_window_draw_rectangle (BdkDrawable  *drawable,
 				     BdkGC	  *gc,
-				     gboolean	   filled,
-				     gint	   x,
-				     gint	   y,
-				     gint	   width,
-				     gint	   height)
+				     bboolean	   filled,
+				     bint	   x,
+				     bint	   y,
+				     bint	   width,
+				     bint	   height)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -342,13 +342,13 @@ bdk_offscreen_window_draw_rectangle (BdkDrawable  *drawable,
 static void
 bdk_offscreen_window_draw_arc (BdkDrawable  *drawable,
 			       BdkGC	       *gc,
-			       gboolean	filled,
-			       gint		x,
-			       gint		y,
-			       gint		width,
-			       gint		height,
-			       gint		angle1,
-			       gint		angle2)
+			       bboolean	filled,
+			       bint		x,
+			       bint		y,
+			       bint		width,
+			       bint		height,
+			       bint		angle1,
+			       bint		angle2)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -368,9 +368,9 @@ bdk_offscreen_window_draw_arc (BdkDrawable  *drawable,
 static void
 bdk_offscreen_window_draw_polygon (BdkDrawable  *drawable,
 				   BdkGC	       *gc,
-				   gboolean	filled,
+				   bboolean	filled,
 				   BdkPoint     *points,
-				   gint		npoints)
+				   bint		npoints)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -406,10 +406,10 @@ static void
 bdk_offscreen_window_draw_text (BdkDrawable  *drawable,
 				BdkFont      *font,
 				BdkGC	       *gc,
-				gint		x,
-				gint		y,
-				const gchar  *text,
-				gint		text_length)
+				bint		x,
+				bint		y,
+				const bchar  *text,
+				bint		text_length)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -431,10 +431,10 @@ static void
 bdk_offscreen_window_draw_text_wc (BdkDrawable	 *drawable,
 				   BdkFont	 *font,
 				   BdkGC		 *gc,
-				   gint		  x,
-				   gint		  y,
+				   bint		  x,
+				   bint		  y,
 				   const BdkWChar *text,
-				   gint		  text_length)
+				   bint		  text_length)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -456,7 +456,7 @@ static void
 bdk_offscreen_window_draw_points (BdkDrawable  *drawable,
 				  BdkGC	       *gc,
 				  BdkPoint     *points,
-				  gint		npoints)
+				  bint		npoints)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -493,7 +493,7 @@ static void
 bdk_offscreen_window_draw_segments (BdkDrawable  *drawable,
 				    BdkGC	 *gc,
 				    BdkSegment   *segs,
-				    gint	  nsegs)
+				    bint	  nsegs)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -533,7 +533,7 @@ static void
 bdk_offscreen_window_draw_lines (BdkDrawable  *drawable,
 				 BdkGC        *gc,
 				 BdkPoint     *points,
-				 gint          npoints)
+				 bint          npoints)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -554,12 +554,12 @@ static void
 bdk_offscreen_window_draw_image (BdkDrawable *drawable,
 				 BdkGC	      *gc,
 				 BdkImage    *image,
-				 gint	       xsrc,
-				 gint	       ysrc,
-				 gint	       xdest,
-				 gint	       ydest,
-				 gint	       width,
-				 gint	       height)
+				 bint	       xsrc,
+				 bint	       ysrc,
+				 bint	       xdest,
+				 bint	       ydest,
+				 bint	       width,
+				 bint	       height)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -582,15 +582,15 @@ static void
 bdk_offscreen_window_draw_pixbuf (BdkDrawable *drawable,
 				  BdkGC       *gc,
 				  BdkPixbuf   *pixbuf,
-				  gint         src_x,
-				  gint         src_y,
-				  gint         dest_x,
-				  gint         dest_y,
-				  gint         width,
-				  gint         height,
+				  bint         src_x,
+				  bint         src_y,
+				  bint         dest_x,
+				  bint         dest_y,
+				  bint         width,
+				  bint         height,
 				  BdkRgbDither dither,
-				  gint         x_dither,
-				  gint         y_dither)
+				  bint         x_dither,
+				  bint         y_dither)
 {
   BdkOffscreenWindow *offscreen = BDK_OFFSCREEN_WINDOW (drawable);
   BdkDrawable *real_drawable = get_real_drawable (offscreen);
@@ -617,7 +617,7 @@ _bdk_offscreen_window_new (BdkWindow     *window,
 			   BdkScreen     *screen,
 			   BdkVisual     *visual,
 			   BdkWindowAttr *attributes,
-			   gint           attributes_mask)
+			   bint           attributes_mask)
 {
   BdkWindowObject *private;
   BdkOffscreenWindow *offscreen;
@@ -658,16 +658,16 @@ _bdk_offscreen_window_new (BdkWindow     *window,
   bdk_drawable_set_colormap (offscreen->pixmap, offscreen->colormap);
 }
 
-static gboolean
+static bboolean
 bdk_offscreen_window_reparent (BdkWindow *window,
 			       BdkWindow *new_parent,
-			       gint       x,
-			       gint       y)
+			       bint       x,
+			       bint       y)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkWindowObject *new_parent_private = (BdkWindowObject *)new_parent;
   BdkWindowObject *old_parent;
-  gboolean was_mapped;
+  bboolean was_mapped;
 
   if (new_parent)
     {
@@ -734,12 +734,12 @@ to_embedder (BdkWindow *window,
 			 NULL);
 }
 
-static gint
+static bint
 bdk_offscreen_window_get_root_coords (BdkWindow *window,
-				      gint       x,
-				      gint       y,
-				      gint      *root_x,
-				      gint      *root_y)
+				      bint       x,
+				      bint       y,
+				      bint      *root_x,
+				      bint      *root_y)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
   BdkOffscreenWindow *offscreen;
@@ -771,10 +771,10 @@ bdk_offscreen_window_get_root_coords (BdkWindow *window,
   return TRUE;
 }
 
-static gint
+static bint
 bdk_offscreen_window_get_deskrelative_origin (BdkWindow *window,
-					      gint      *x,
-					      gint      *y)
+					      bint      *x,
+					      bint      *y)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
   BdkOffscreenWindow *offscreen;
@@ -806,10 +806,10 @@ bdk_offscreen_window_get_deskrelative_origin (BdkWindow *window,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 bdk_offscreen_window_get_pointer (BdkWindow       *window,
-				  gint            *x,
-				  gint            *y,
+				  bint            *x,
+				  bint            *y,
 				  BdkModifierType *mask)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
@@ -891,15 +891,15 @@ bdk_offscreen_window_lower (BdkWindow *window)
 
 static void
 bdk_offscreen_window_move_resize_internal (BdkWindow *window,
-					   gint       x,
-					   gint       y,
-					   gint       width,
-					   gint       height,
-					   gboolean   send_expose_events)
+					   bint       x,
+					   bint       y,
+					   bint       width,
+					   bint       height,
+					   bboolean   send_expose_events)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkOffscreenWindow *offscreen;
-  gint dx, dy, dw, dh;
+  bint dx, dy, dw, dh;
   BdkGC *gc;
   BdkPixmap *old_pixmap;
 
@@ -952,11 +952,11 @@ bdk_offscreen_window_move_resize_internal (BdkWindow *window,
 
 static void
 bdk_offscreen_window_move_resize (BdkWindow *window,
-				  gboolean   with_move,
-				  gint       x,
-				  gint       y,
-				  gint       width,
-				  gint       height)
+				  bboolean   with_move,
+				  bint       x,
+				  bint       y,
+				  bint       width,
+				  bint       height)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkOffscreenWindow *offscreen;
@@ -982,7 +982,7 @@ bdk_offscreen_window_move_resize (BdkWindow *window,
 
 static void
 bdk_offscreen_window_show (BdkWindow *window,
-			   gboolean already_mapped)
+			   bboolean already_mapped)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
 
@@ -1091,22 +1091,22 @@ bdk_offscreen_window_set_back_pixmap (BdkWindow *window,
 static void
 bdk_offscreen_window_shape_combine_rebunnyion (BdkWindow       *window,
 					   const BdkRebunnyion *shape_rebunnyion,
-					   gint             offset_x,
-					   gint             offset_y)
+					   bint             offset_x,
+					   bint             offset_y)
 {
 }
 
 static void
 bdk_offscreen_window_input_shape_combine_rebunnyion (BdkWindow       *window,
 						 const BdkRebunnyion *shape_rebunnyion,
-						 gint             offset_x,
-						 gint             offset_y)
+						 bint             offset_x,
+						 bint             offset_y)
 {
 }
 
-static gboolean
+static bboolean
 bdk_offscreen_window_set_static_gravities (BdkWindow *window,
-					   gboolean   use_static)
+					   bboolean   use_static)
 {
   return TRUE;
 }
@@ -1134,11 +1134,11 @@ bdk_offscreen_window_set_cursor (BdkWindow *window,
 
 static void
 bdk_offscreen_window_get_geometry (BdkWindow *window,
-				   gint      *x,
-				   gint      *y,
-				   gint      *width,
-				   gint      *height,
-				   gint      *depth)
+				   bint      *x,
+				   bint      *y,
+				   bint      *width,
+				   bint      *height,
+				   bint      *depth)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
 
@@ -1159,7 +1159,7 @@ bdk_offscreen_window_get_geometry (BdkWindow *window,
     }
 }
 
-static gboolean
+static bboolean
 bdk_offscreen_window_queue_antiexpose (BdkWindow *window,
 				       BdkRebunnyion *area)
 {
@@ -1170,8 +1170,8 @@ static void
 bdk_offscreen_window_queue_translation (BdkWindow *window,
 					BdkGC     *gc,
 					BdkRebunnyion *area,
-					gint       dx,
-					gint       dy)
+					bint       dx,
+					bint       dy)
 {
 }
 

@@ -51,15 +51,15 @@
 void
 _btk_marshal_OBJECT__VOID (GClosure     *closure,
                            BValue       *return_value,
-                           guint         n_param_values,
+                           buint         n_param_values,
                            const BValue *param_values,
-                           gpointer      invocation_hint B_GNUC_UNUSED,
-                           gpointer      marshal_data)
+                           bpointer      invocation_hint B_GNUC_UNUSED,
+                           bpointer      marshal_data)
 {
-  typedef BObject* (*GMarshalFunc_OBJECT__VOID) (gpointer data1,
-                                                 gpointer data2);
+  typedef BObject* (*GMarshalFunc_OBJECT__VOID) (bpointer data1,
+                                                 bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_OBJECT__VOID callback;
   BObject* v_return;
 
@@ -88,18 +88,18 @@ _btk_marshal_OBJECT__VOID (GClosure     *closure,
 void
 _btk_marshal_VOID__ENUM_OBJECT_DOUBLE (GClosure     *closure,
                                        BValue       *return_value B_GNUC_UNUSED,
-                                       guint         n_param_values,
+                                       buint         n_param_values,
                                        const BValue *param_values,
-                                       gpointer      invocation_hint B_GNUC_UNUSED,
-                                       gpointer      marshal_data)
+                                       bpointer      invocation_hint B_GNUC_UNUSED,
+                                       bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__ENUM_OBJECT_DOUBLE) (gpointer data1,
-                                                         gint arg1,
-                                                         gpointer arg2,
-                                                         gdouble arg3,
-                                                         gpointer data2);
+  typedef void (*GMarshalFunc_VOID__ENUM_OBJECT_DOUBLE) (bpointer data1,
+                                                         bint arg1,
+                                                         bpointer arg2,
+                                                         bdouble arg3,
+                                                         bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__ENUM_OBJECT_DOUBLE callback;
 
   g_return_if_fail (n_param_values == 4);

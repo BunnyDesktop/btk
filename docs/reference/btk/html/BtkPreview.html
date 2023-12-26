@@ -174,7 +174,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPreview.html#BtkPreview--expand" title="The “expand” property">expand</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -246,8 +246,8 @@ btk_preview_new (<em class="parameter"><code><a class="link" href="btk2-Standard
 <a name="btk-preview-size"></a><h3>btk_preview_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_preview_size (<em class="parameter"><code><a class="link" href="BtkPreview.html" title="BtkPreview"><span class="type">BtkPreview</span></a> *preview</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_size</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -257,12 +257,12 @@ btk_preview_size (<em class="parameter"><code><a class="link" href="BtkPreview.h
 btk_preview_put (<em class="parameter"><code><a class="link" href="BtkPreview.html" title="BtkPreview"><span class="type">BtkPreview</span></a> *preview</code></em>,
                  <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                  <em class="parameter"><code><a href="../html/bdk2-Graphics-Contexts.html#BdkGC-struct"><span class="type">BdkGC</span></a> *gc</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> srcx</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> srcy</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> destx</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> desty</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> srcx</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> srcy</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> destx</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> desty</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_put</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -270,10 +270,10 @@ btk_preview_put (<em class="parameter"><code><a class="link" href="BtkPreview.ht
 <a name="btk-preview-draw-row"></a><h3>btk_preview_draw_row ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_preview_draw_row (<em class="parameter"><code><a class="link" href="BtkPreview.html" title="BtkPreview"><span class="type">BtkPreview</span></a> *preview</code></em>,
-                      <em class="parameter"><code><span class="type">guchar</span> *data</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> w</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">buchar</span> *data</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> w</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_draw_row</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -281,7 +281,7 @@ btk_preview_draw_row (<em class="parameter"><code><a class="link" href="BtkPrevi
 <a name="btk-preview-set-expand"></a><h3>btk_preview_set_expand ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_preview_set_expand (<em class="parameter"><code><a class="link" href="BtkPreview.html" title="BtkPreview"><span class="type">BtkPreview</span></a> *preview</code></em>,
-                        <em class="parameter"><code><span class="type">gboolean</span> expand</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bboolean</span> expand</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_set_expand</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -295,24 +295,24 @@ btk_preview_set_gamma (<em class="parameter"><code><span class="type">double</sp
 <div class="refsect2">
 <a name="btk-preview-set-color-cube"></a><h3>btk_preview_set_color_cube ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_preview_set_color_cube (<em class="parameter"><code><span class="type">guint</span> nred_shades</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> ngreen_shades</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> nblue_shades</code></em>,
-                            <em class="parameter"><code><span class="type">guint</span> ngray_shades</code></em>);</pre>
+btk_preview_set_color_cube (<em class="parameter"><code><span class="type">buint</span> nred_shades</code></em>,
+                            <em class="parameter"><code><span class="type">buint</span> ngreen_shades</code></em>,
+                            <em class="parameter"><code><span class="type">buint</span> nblue_shades</code></em>,
+                            <em class="parameter"><code><span class="type">buint</span> ngray_shades</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_set_color_cube</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-preview-set-install-cmap"></a><h3>btk_preview_set_install_cmap ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_preview_set_install_cmap (<em class="parameter"><code><span class="type">gint</span> install_cmap</code></em>);</pre>
+btk_preview_set_install_cmap (<em class="parameter"><code><span class="type">bint</span> install_cmap</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_set_install_cmap</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-preview-set-reserved"></a><h3>btk_preview_set_reserved ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_preview_set_reserved (<em class="parameter"><code><span class="type">gint</span> nreserved</code></em>);</pre>
+btk_preview_set_reserved (<em class="parameter"><code><span class="type">bint</span> nreserved</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_preview_set_reserved</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -363,9 +363,9 @@ btk_preview_reset (<em class="parameter"><code><span class="type">void</span></c
 <div class="refsect2">
 <a name="BtkPreviewInfo"></a><h3>struct BtkPreviewInfo</h3>
 <pre class="programlisting">struct BtkPreviewInfo {
-  guchar *lookup;
+  buchar *lookup;
 
-  gdouble gamma;
+  bdouble gamma;
 };
 </pre>
 <div class="warning"><p><code class="literal">BtkPreviewInfo</code> is deprecated and should not be used in newly-written code.</p></div>
@@ -380,7 +380,7 @@ btk_preview_reset (<em class="parameter"><code><span class="type">void</span></c
 <a name="BtkPreview.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkPreview--expand"></a><h3>The <code class="literal">“expand”</code> property</h3>
-<pre class="programlisting">  “expand”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “expand”                   <span class="type">bboolean</span></pre>
 <p>Whether the preview widget should take up the entire space it is allocated.</p>
 <p>Owner: BtkPreview</p>
 <p>Flags: Read / Write</p>

@@ -56,18 +56,18 @@ struct _BtkRecentActionClass
 };
 
 GType      btk_recent_action_get_type         (void) B_GNUC_CONST;
-BtkAction *btk_recent_action_new              (const gchar      *name,
-                                               const gchar      *label,
-                                               const gchar      *tooltip,
-                                               const gchar      *stock_id);
-BtkAction *btk_recent_action_new_for_manager  (const gchar      *name,
-                                               const gchar      *label,
-                                               const gchar      *tooltip,
-                                               const gchar      *stock_id,
+BtkAction *btk_recent_action_new              (const bchar      *name,
+                                               const bchar      *label,
+                                               const bchar      *tooltip,
+                                               const bchar      *stock_id);
+BtkAction *btk_recent_action_new_for_manager  (const bchar      *name,
+                                               const bchar      *label,
+                                               const bchar      *tooltip,
+                                               const bchar      *stock_id,
                                                BtkRecentManager *manager);
-gboolean   btk_recent_action_get_show_numbers (BtkRecentAction  *action);
+bboolean   btk_recent_action_get_show_numbers (BtkRecentAction  *action);
 void       btk_recent_action_set_show_numbers (BtkRecentAction  *action,
-                                               gboolean          show_numbers);
+                                               bboolean          show_numbers);
 
 B_END_DECLS
 

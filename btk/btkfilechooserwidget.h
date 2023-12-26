@@ -59,7 +59,7 @@ BtkWidget *btk_file_chooser_widget_new              (BtkFileChooserAction  actio
 
 #ifndef BTK_DISABLE_DEPRECATED
 BtkWidget *btk_file_chooser_widget_new_with_backend (BtkFileChooserAction  action,
-						     const gchar          *backend);
+						     const bchar          *backend);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 B_END_DECLS

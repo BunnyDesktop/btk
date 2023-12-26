@@ -58,7 +58,7 @@
  *   ...
  * 
  *   BtkAction      *action;
- *   gboolean        use_action_appearance;
+ *   bboolean        use_action_appearance;
  * };
  * 
  * ...
@@ -66,7 +66,7 @@
  * static void foo_bar_activatable_interface_init         (BtkActivatableIface  *iface);
  * static void foo_bar_activatable_update                 (BtkActivatable       *activatable,
  * 						           BtkAction            *action,
- * 						           const gchar          *property_name);
+ * 						           const bchar          *property_name);
  * static void foo_bar_activatable_sync_action_properties (BtkActivatable       *activatable,
  * 						           BtkAction            *action);
  * ...
@@ -114,7 +114,7 @@
  *
  * static void
  * foo_bar_set_property (BObject         *object,
- *                       guint            prop_id,
+ *                       buint            prop_id,
  *                       const BValue    *value,
  *                       BParamSpec      *pspec)
  * {
@@ -140,7 +140,7 @@
  * 
  * static void
  * foo_bar_get_property (BObject         *object,
- *                          guint            prop_id,
+ *                          buint            prop_id,
  *                          BValue          *value,
  *                          BParamSpec      *pspec)
  * {
@@ -167,7 +167,7 @@
  * 
  * static void
  * foo_bar_set_use_action_appearance (FooBar   *bar, 
- * 				   gboolean  use_appearance)
+ * 				   bboolean  use_appearance)
  * {
  *   FooBarPrivate *priv = FOO_BAR_GET_PRIVATE (bar);
  * 
@@ -230,7 +230,7 @@
  * static void 
  * foo_bar_activatable_update (BtkActivatable       *activatable,
  * 			       BtkAction            *action,
- * 			       const gchar          *property_name)
+ * 			       const bchar          *property_name)
  * {
  *   FooBarPrivate *priv = FOO_BAR_GET_PRIVATE (activatable);
  * 
@@ -269,7 +269,7 @@
 #include "btkalias.h"
 
 
-static void btk_activatable_class_init (gpointer g_iface);
+static void btk_activatable_class_init (bpointer g_iface);
 
 GType
 btk_activatable_get_type (void)
@@ -290,7 +290,7 @@ btk_activatable_get_type (void)
 }
 
 static void
-btk_activatable_class_init (gpointer g_iface)
+btk_activatable_class_init (bpointer g_iface)
 {
   /**
    * BtkActivatable:related-action:
@@ -339,7 +339,7 @@ btk_activatable_class_init (gpointer g_iface)
 static void
 btk_activatable_update (BtkActivatable *activatable,
 			BtkAction      *action,
-			const gchar    *property_name)
+			const bchar    *property_name)
 {
   BtkActivatableIface *iface;
 
@@ -533,7 +533,7 @@ btk_activatable_get_related_action (BtkActivatable *activatable)
  **/
 void
 btk_activatable_set_use_action_appearance (BtkActivatable *activatable,
-					   gboolean        use_appearance)
+					   bboolean        use_appearance)
 {
   g_object_set (activatable, "use-action-appearance", use_appearance, NULL);
 }
@@ -550,10 +550,10 @@ btk_activatable_set_use_action_appearance (BtkActivatable *activatable,
  *
  * Since: 2.16
  **/
-gboolean
+bboolean
 btk_activatable_get_use_action_appearance  (BtkActivatable *activatable)
 {
-  gboolean use_appearance;
+  bboolean use_appearance;
 
   g_object_get (activatable, "use-action-appearance", &use_appearance, NULL);  
 

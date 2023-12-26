@@ -50,17 +50,17 @@ typedef struct _BtkColorSelectionClass  BtkColorSelectionClass;
 
 
 typedef void (* BtkColorSelectionChangePaletteFunc) (const BdkColor    *colors,
-                                                     gint               n_colors);
+                                                     bint               n_colors);
 typedef void (* BtkColorSelectionChangePaletteWithScreenFunc) (BdkScreen         *screen,
 							       const BdkColor    *colors,
-							       gint               n_colors);
+							       bint               n_colors);
 
 struct _BtkColorSelection
 {
   BtkVBox parent_instance;
 
   /* < private_data > */
-  gpointer GSEAL (private_data);
+  bpointer GSEAL (private_data);
 };
 
 struct _BtkColorSelectionClass
@@ -81,36 +81,36 @@ struct _BtkColorSelectionClass
 
 GType      btk_color_selection_get_type                (void) B_GNUC_CONST;
 BtkWidget *btk_color_selection_new                     (void);
-gboolean   btk_color_selection_get_has_opacity_control (BtkColorSelection *colorsel);
+bboolean   btk_color_selection_get_has_opacity_control (BtkColorSelection *colorsel);
 void       btk_color_selection_set_has_opacity_control (BtkColorSelection *colorsel,
-							gboolean           has_opacity);
-gboolean   btk_color_selection_get_has_palette         (BtkColorSelection *colorsel);
+							bboolean           has_opacity);
+bboolean   btk_color_selection_get_has_palette         (BtkColorSelection *colorsel);
 void       btk_color_selection_set_has_palette         (BtkColorSelection *colorsel,
-							gboolean           has_palette);
+							bboolean           has_palette);
 
 
 void     btk_color_selection_set_current_color   (BtkColorSelection *colorsel,
 						  const BdkColor    *color);
 void     btk_color_selection_set_current_alpha   (BtkColorSelection *colorsel,
-						  guint16            alpha);
+						  buint16            alpha);
 void     btk_color_selection_get_current_color   (BtkColorSelection *colorsel,
 						  BdkColor          *color);
-guint16  btk_color_selection_get_current_alpha   (BtkColorSelection *colorsel);
+buint16  btk_color_selection_get_current_alpha   (BtkColorSelection *colorsel);
 void     btk_color_selection_set_previous_color  (BtkColorSelection *colorsel,
 						  const BdkColor    *color);
 void     btk_color_selection_set_previous_alpha  (BtkColorSelection *colorsel,
-						  guint16            alpha);
+						  buint16            alpha);
 void     btk_color_selection_get_previous_color  (BtkColorSelection *colorsel,
 						  BdkColor          *color);
-guint16  btk_color_selection_get_previous_alpha  (BtkColorSelection *colorsel);
+buint16  btk_color_selection_get_previous_alpha  (BtkColorSelection *colorsel);
 
-gboolean btk_color_selection_is_adjusting        (BtkColorSelection *colorsel);
+bboolean btk_color_selection_is_adjusting        (BtkColorSelection *colorsel);
 
-gboolean btk_color_selection_palette_from_string (const gchar       *str,
+bboolean btk_color_selection_palette_from_string (const bchar       *str,
                                                   BdkColor         **colors,
-                                                  gint              *n_colors);
-gchar*   btk_color_selection_palette_to_string   (const BdkColor    *colors,
-                                                  gint               n_colors);
+                                                  bint              *n_colors);
+bchar*   btk_color_selection_palette_to_string   (const BdkColor    *colors,
+                                                  bint               n_colors);
 
 #ifndef BTK_DISABLE_DEPRECATED
 #ifndef BDK_MULTIHEAD_SAFE
@@ -123,9 +123,9 @@ BtkColorSelectionChangePaletteWithScreenFunc btk_color_selection_set_change_pale
 #ifndef BTK_DISABLE_DEPRECATED
 /* Deprecated calls: */
 void btk_color_selection_set_color         (BtkColorSelection *colorsel,
-					    gdouble           *color);
+					    bdouble           *color);
 void btk_color_selection_get_color         (BtkColorSelection *colorsel,
-					    gdouble           *color);
+					    bdouble           *color);
 void btk_color_selection_set_update_policy (BtkColorSelection *colorsel,
 					    BtkUpdateType      policy);
 #endif /* BTK_DISABLE_DEPRECATED */

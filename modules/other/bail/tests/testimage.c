@@ -20,7 +20,7 @@ typedef struct
   BtkImage  *image;
 }MainDialog;
 
-static void destroy (BtkWidget *widget, gpointer data)
+static void destroy (BtkWidget *widget, bpointer data)
 {
   btk_widget_destroy(BTK_WIDGET(data));
 }
@@ -29,7 +29,7 @@ static void _check_arrows (BatkObject *obj)
 {
   BatkRole role;
   MainDialog *md;
-  static gint visibleDialog = 0;
+  static bint visibleDialog = 0;
 
 
   role = batk_object_get_role(obj);
@@ -75,10 +75,10 @@ static void _check_arrows (BatkObject *obj)
 static void 
 _print_image_info(BatkObject *obj) {
 
-  gint height, width;
-  const gchar *desc;
-  const gchar *name = batk_object_get_name (obj);
-  const gchar *type_name = g_type_name(B_TYPE_FROM_INSTANCE (obj));
+  bint height, width;
+  const bchar *desc;
+  const bchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name(B_TYPE_FROM_INSTANCE (obj));
 
   height = width = 0;
 
@@ -104,7 +104,7 @@ _print_image_info(BatkObject *obj) {
 }
 static void _traverse_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
 
   n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
@@ -146,7 +146,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testimages Module loaded\n");
 

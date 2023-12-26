@@ -61,7 +61,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCellRendererCombo.html#BtkCellRendererCombo--has-entry" title="The “has-entry” property">has-entry</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -156,7 +156,7 @@ a different string in each row of the <a class="link" href="BtkTreeView.html" ti
 <a name="BtkCellRendererCombo.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkCellRendererCombo--has-entry"></a><h3>The <code class="literal">“has-entry”</code> property</h3>
-<pre class="programlisting">  “has-entry”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-entry”                <span class="type">bboolean</span></pre>
 <p>If <code class="literal">TRUE</code>, the cell renderer will include an entry and allow to enter
 
 values other than the ones in the popup list.</p>
@@ -206,7 +206,7 @@ this column to its combo box.</p>
 user_function (<a class="link" href="BtkCellRendererCombo.html" title="BtkCellRendererCombo"><span class="type">BtkCellRendererCombo</span></a> *combo,
                <span class="type">char</span>                 *path_string,
                <a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a>          *new_iter,
-               <span class="type">gpointer</span>              user_data)</pre>
+               <span class="type">bpointer</span>              user_data)</pre>
 <p>This signal is emitted each time after the user selected an item in
 the combo box, either by using the mouse or the arrow keys.  Contrary
 to BtkComboBox, BtkCellRendererCombo::changed is not emitted for

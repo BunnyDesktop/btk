@@ -34,11 +34,11 @@ enum {
 };
 
 static void btk_size_group_set_property (BObject      *object,
-					 guint         prop_id,
+					 buint         prop_id,
 					 const BValue *value,
 					 BParamSpec   *pspec);
 static void btk_size_group_get_property (BObject      *object,
-					 guint         prop_id,
+					 buint         prop_id,
 					 BValue       *value,
 					 BParamSpec   *pspec);
 
@@ -53,23 +53,23 @@ static void add_widget_to_closure (BtkWidget         *widget,
 
 /* BtkBuildable */
 static void btk_size_group_buildable_init (BtkBuildableIface *iface);
-static gboolean btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
+static bboolean btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
 							   BtkBuilder    *builder,
 							   BObject       *child,
-							   const gchar   *tagname,
+							   const bchar   *tagname,
 							   GMarkupParser *parser,
-							   gpointer      *data);
+							   bpointer      *data);
 static void btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
 						      BObject       *child,
-						      const gchar   *tagname,
-						      gpointer       user_data);
+						      const bchar   *tagname,
+						      bpointer       user_data);
 
 static GQuark size_groups_quark;
-static const gchar size_groups_tag[] = "btk-size-groups";
+static const bchar size_groups_tag[] = "btk-size-groups";
 
 static GQuark visited_quark;
-static const gchar visited_tag[] = "btk-size-group-visited";
+static const bchar visited_tag[] = "btk-size-group-visited";
 
 static GSList *
 get_size_groups (BtkWidget *widget)
@@ -85,19 +85,19 @@ set_size_groups (BtkWidget *widget,
 }
 
 static void
-mark_visited (gpointer object)
+mark_visited (bpointer object)
 {
   g_object_set_qdata (object, visited_quark, "visited");
 }
 
 static void
-mark_unvisited (gpointer object)
+mark_unvisited (bpointer object)
 {
   g_object_set_qdata (object, visited_quark, NULL);
 }
 
-static gboolean
-is_visited (gpointer object)
+static bboolean
+is_visited (bpointer object)
 {
   return g_object_get_qdata (object, visited_quark) != NULL;
 }
@@ -178,7 +178,7 @@ reset_group_sizes (GSList *groups)
 
 static void
 queue_resize_on_widget (BtkWidget *widget,
-			gboolean   check_siblings)
+			bboolean   check_siblings)
 {
   BtkWidget *parent = widget;
   GSList *tmp_list;
@@ -347,7 +347,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkSizeGroup, btk_size_group, B_TYPE_OBJECT,
 
 static void
 btk_size_group_set_property (BObject      *object,
-			     guint         prop_id,
+			     buint         prop_id,
 			     const BValue *value,
 			     BParamSpec   *pspec)
 {
@@ -369,7 +369,7 @@ btk_size_group_set_property (BObject      *object,
 
 static void
 btk_size_group_get_property (BObject      *object,
-			     guint         prop_id,
+			     buint         prop_id,
 			     BValue       *value,
 			     BParamSpec   *pspec)
 {
@@ -466,7 +466,7 @@ btk_size_group_get_mode (BtkSizeGroup *size_group)
  */
 void
 btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
-				  gboolean      ignore_hidden)
+				  bboolean      ignore_hidden)
 {
   g_return_if_fail (BTK_IS_SIZE_GROUP (size_group));
   
@@ -490,7 +490,7 @@ btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
  *
  * Since: 2.8
  */
-gboolean
+bboolean
 btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group)
 {
   g_return_val_if_fail (BTK_IS_SIZE_GROUP (size_group), FALSE);
@@ -596,7 +596,7 @@ btk_size_group_get_widgets (BtkSizeGroup *size_group)
   return size_group->widgets;
 }
 
-static gint
+static bint
 get_base_dimension (BtkWidget        *widget,
 		    BtkSizeGroupMode  mode)
 {
@@ -631,7 +631,7 @@ do_size_request (BtkWidget *widget)
     }
 }
 
-static gint
+static bint
 compute_base_dimension (BtkWidget        *widget,
 			BtkSizeGroupMode  mode)
 {
@@ -640,14 +640,14 @@ compute_base_dimension (BtkWidget        *widget,
   return get_base_dimension (widget, mode);
 }
 
-static gint
+static bint
 compute_dimension (BtkWidget        *widget,
 		   BtkSizeGroupMode  mode)
 {
   GSList *widgets = NULL;
   GSList *groups = NULL;
   GSList *tmp_list;
-  gint result = 0;
+  bint result = 0;
 
   add_widget_to_closure (widget, mode, &groups, &widgets);
 
@@ -675,7 +675,7 @@ compute_dimension (BtkWidget        *widget,
 	    {
 	      BtkWidget *tmp_widget = tmp_list->data;
 
-	      gint dimension = compute_base_dimension (tmp_widget, mode);
+	      bint dimension = compute_base_dimension (tmp_widget, mode);
 
 	      if (btk_widget_get_mapped (tmp_widget) || !group->ignore_hidden)
 		{
@@ -715,13 +715,13 @@ compute_dimension (BtkWidget        *widget,
   return result;
 }
 
-static gint
+static bint
 get_dimension (BtkWidget        *widget,
 	       BtkSizeGroupMode  mode)
 {
   GSList *widgets = NULL;
   GSList *groups = NULL;
-  gint result = 0;
+  bint result = 0;
 
   add_widget_to_closure (widget, mode, &groups, &widgets);
 
@@ -805,8 +805,8 @@ void
 _btk_size_group_compute_requisition (BtkWidget      *widget,
 				     BtkRequisition *requisition)
 {
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   initialize_size_group_quarks ();
 
@@ -853,13 +853,13 @@ typedef struct {
 
 static void
 size_group_start_element (GMarkupParseContext *context,
-			  const gchar         *element_name,
-			  const gchar        **names,
-			  const gchar        **values,
-			  gpointer            user_data,
+			  const bchar         *element_name,
+			  const bchar        **names,
+			  const bchar        **values,
+			  bpointer            user_data,
 			  GError            **error)
 {
-  guint i;
+  buint i;
   GSListSubParserData *data = (GSListSubParserData*)user_data;
 
   if (strcmp (element_name, "widget") == 0)
@@ -879,13 +879,13 @@ static const GMarkupParser size_group_parser =
     size_group_start_element
   };
 
-static gboolean
+static bboolean
 btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
 					   BtkBuilder    *builder,
 					   BObject       *child,
-					   const gchar   *tagname,
+					   const bchar   *tagname,
 					   GMarkupParser *parser,
-					   gpointer      *data)
+					   bpointer      *data)
 {
   GSListSubParserData *parser_data;
 
@@ -910,8 +910,8 @@ static void
 btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
 					  BObject       *child,
-					  const gchar   *tagname,
-					  gpointer       user_data)
+					  const bchar   *tagname,
+					  bpointer       user_data)
 {
   GSList *l;
   GSListSubParserData *data;
@@ -929,7 +929,7 @@ btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
       if (!object)
 	{
 	  g_warning ("Unknown object %s specified in sizegroup %s",
-		     (const gchar*)l->data,
+		     (const bchar*)l->data,
 		     btk_buildable_get_name (BTK_BUILDABLE (data->object)));
 	  continue;
 	}

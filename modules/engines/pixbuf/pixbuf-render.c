@@ -29,17 +29,17 @@ static GCache *pixbuf_cache = NULL;
 
 static BdkPixbuf *
 bilinear_gradient (BdkPixbuf    *src,
-		   gint          src_x,
-		   gint          src_y,
-		   gint          width,
-		   gint          height)
+		   bint          src_x,
+		   bint          src_y,
+		   bint          width,
+		   bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  guchar *src_pixels = bdk_pixbuf_get_pixels (src);
-  guchar *p1, *p2, *p3, *p4;
-  guint dest_rowstride;
-  guchar *dest_pixels;
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  buchar *src_pixels = bdk_pixbuf_get_pixels (src);
+  buchar *p1, *p2, *p3, *p4;
+  buint dest_rowstride;
+  buchar *dest_pixels;
   BdkPixbuf *result;
   int i, j, k;
 
@@ -68,16 +68,16 @@ bilinear_gradient (BdkPixbuf    *src,
 
   for (i = 0; i < height; i++)
     {
-      guchar *p = dest_pixels + dest_rowstride *i;
-      guint v[4];
-      gint dv[4];
+      buchar *p = dest_pixels + dest_rowstride *i;
+      buint v[4];
+      bint dv[4];
 
       for (k = 0; k < n_channels; k++)
 	{
-	  guint start = ((height - i) * p1[k] + (1 + i) * p3[k]) / (height + 1);
-	  guint end = ((height -  i) * p2[k] + (1 + i) * p4[k]) / (height + 1);
+	  buint start = ((height - i) * p1[k] + (1 + i) * p3[k]) / (height + 1);
+	  buint end = ((height -  i) * p2[k] + (1 + i) * p4[k]) / (height + 1);
 
-	  dv[k] = (((gint)end - (gint)start) << 16) / (width + 1);
+	  dv[k] = (((bint)end - (bint)start) << 16) / (width + 1);
 	  v[k] = (start << 16) + dv[k] + 0x8000;
 	}
 
@@ -96,16 +96,16 @@ bilinear_gradient (BdkPixbuf    *src,
 
 static BdkPixbuf *
 horizontal_gradient (BdkPixbuf    *src,
-		     gint          src_x,
-		     gint          src_y,
-		     gint          width,
-		     gint          height)
+		     bint          src_x,
+		     bint          src_y,
+		     bint          width,
+		     bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  guchar *src_pixels = bdk_pixbuf_get_pixels (src);
-  guint dest_rowstride;
-  guchar *dest_pixels;
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  buchar *src_pixels = bdk_pixbuf_get_pixels (src);
+  buint dest_rowstride;
+  buchar *dest_pixels;
   BdkPixbuf *result;
   int i, j, k;
 
@@ -129,16 +129,16 @@ horizontal_gradient (BdkPixbuf    *src,
 
   for (i = 0; i < height; i++)
     {
-      guchar *p = dest_pixels + dest_rowstride *i;
-      guchar *p1 = src_pixels + (src_y + i) * src_rowstride + (src_x - 1) * n_channels;
-      guchar *p2 = p1 + n_channels;
+      buchar *p = dest_pixels + dest_rowstride *i;
+      buchar *p1 = src_pixels + (src_y + i) * src_rowstride + (src_x - 1) * n_channels;
+      buchar *p2 = p1 + n_channels;
 
-      guint v[4];
-      gint dv[4];
+      buint v[4];
+      bint dv[4];
 
       for (k = 0; k < n_channels; k++)
 	{
-	  dv[k] = (((gint)p2[k] - (gint)p1[k]) << 16) / (width + 1);
+	  dv[k] = (((bint)p2[k] - (bint)p1[k]) << 16) / (width + 1);
 	  v[k] = (p1[k] << 16) + dv[k] + 0x8000;
 	}
       
@@ -157,17 +157,17 @@ horizontal_gradient (BdkPixbuf    *src,
 
 static BdkPixbuf *
 vertical_gradient (BdkPixbuf    *src,
-		   gint          src_x,
-		   gint          src_y,
-		   gint          width,
-		   gint          height)
+		   bint          src_x,
+		   bint          src_y,
+		   bint          width,
+		   bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  guchar *src_pixels = bdk_pixbuf_get_pixels (src);
-  guchar *top_pixels, *bottom_pixels;
-  guint dest_rowstride;
-  guchar *dest_pixels;
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  buchar *src_pixels = bdk_pixbuf_get_pixels (src);
+  buchar *top_pixels, *bottom_pixels;
+  buint dest_rowstride;
+  buchar *dest_pixels;
   BdkPixbuf *result;
   int i, j;
 
@@ -194,9 +194,9 @@ vertical_gradient (BdkPixbuf    *src,
 
   for (i = 0; i < height; i++)
     {
-      guchar *p = dest_pixels + dest_rowstride *i;
-      guchar *p1 = top_pixels;
-      guchar *p2 = bottom_pixels;
+      buchar *p = dest_pixels + dest_rowstride *i;
+      buchar *p1 = top_pixels;
+      buchar *p2 = bottom_pixels;
 
       for (j = width * n_channels; j; j--)
 	*(p++) = ((height - i) * *(p1++) + (1 + i) * *(p2++)) / (height + 1);
@@ -207,21 +207,21 @@ vertical_gradient (BdkPixbuf    *src,
 
 static BdkPixbuf *
 replicate_single (BdkPixbuf    *src,
-		  gint          src_x,
-		  gint          src_y,
-		  gint          width,
-		  gint          height)
+		  bint          src_x,
+		  bint          src_y,
+		  bint          width,
+		  bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guchar *pixels = (bdk_pixbuf_get_pixels (src) +
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buchar *pixels = (bdk_pixbuf_get_pixels (src) +
 		    src_y * bdk_pixbuf_get_rowstride (src) +
 		    src_x * n_channels);
-  guchar r = *(pixels++);
-  guchar g = *(pixels++);
-  guchar b = *(pixels++);
-  guint dest_rowstride;
-  guchar *dest_pixels;
-  guchar a = 0;
+  buchar r = *(pixels++);
+  buchar g = *(pixels++);
+  buchar b = *(pixels++);
+  buint dest_rowstride;
+  buchar *dest_pixels;
+  buchar a = 0;
   BdkPixbuf *result;
   int i, j;
 
@@ -242,7 +242,7 @@ replicate_single (BdkPixbuf    *src,
   
   for (i = 0; i < height; i++)
     {
-      guchar *p = dest_pixels + dest_rowstride *i;
+      buchar *p = dest_pixels + dest_rowstride *i;
 
       for (j = 0; j < width; j++)
 	{
@@ -260,17 +260,17 @@ replicate_single (BdkPixbuf    *src,
 
 static BdkPixbuf *
 replicate_rows (BdkPixbuf    *src,
-		gint          src_x,
-		gint          src_y,
-		gint          width,
-		gint          height)
+		bint          src_x,
+		bint          src_y,
+		bint          width,
+		bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  guchar *pixels = (bdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x * n_channels);
-  guchar *dest_pixels;
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  buchar *pixels = (bdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x * n_channels);
+  buchar *dest_pixels;
   BdkPixbuf *result;
-  guint dest_rowstride;
+  buint dest_rowstride;
   int i;
 
   result = bdk_pixbuf_new (BDK_COLORSPACE_RGB, n_channels == 4, 8,
@@ -293,17 +293,17 @@ replicate_rows (BdkPixbuf    *src,
 
 static BdkPixbuf *
 replicate_cols (BdkPixbuf    *src,
-		gint          src_x,
-		gint          src_y,
-		gint          width,
-		gint          height)
+		bint          src_x,
+		bint          src_y,
+		bint          width,
+		bint          height)
 {
-  guint n_channels = bdk_pixbuf_get_n_channels (src);
-  guint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  guchar *pixels = (bdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x * n_channels);
-  guchar *dest_pixels;
+  buint n_channels = bdk_pixbuf_get_n_channels (src);
+  buint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  buchar *pixels = (bdk_pixbuf_get_pixels (src) + src_y * src_rowstride + src_x * n_channels);
+  buchar *dest_pixels;
   BdkPixbuf *result;
-  guint dest_rowstride;
+  buint dest_rowstride;
   int i, j;
 
   result = bdk_pixbuf_new (BDK_COLORSPACE_RGB, n_channels == 4, 8,
@@ -320,13 +320,13 @@ replicate_cols (BdkPixbuf    *src,
 
   for (i = 0; i < height; i++)
     {
-      guchar *p = dest_pixels + dest_rowstride * i;
-      guchar *q = pixels + src_rowstride * i;
+      buchar *p = dest_pixels + dest_rowstride * i;
+      buchar *q = pixels + src_rowstride * i;
 
-      guchar r = *(q++);
-      guchar g = *(q++);
-      guchar b = *(q++);
-      guchar a = 0;
+      buchar r = *(q++);
+      buchar g = *(q++);
+      buchar b = *(q++);
+      buchar a = 0;
       
       if (n_channels == 4)
 	a = *(q++);
@@ -351,25 +351,25 @@ replicate_cols (BdkPixbuf    *src,
  */
 static void
 pixbuf_render (BdkPixbuf    *src,
-	       guint         hints,
+	       buint         hints,
 	       BdkWindow    *window,
 	       BdkBitmap    *mask,
 	       BdkRectangle *clip_rect,
-	       gint          src_x,
-	       gint          src_y,
-	       gint          src_width,
-	       gint          src_height,
-	       gint          dest_x,
-	       gint          dest_y,
-	       gint          dest_width,
-	       gint          dest_height)
+	       bint          src_x,
+	       bint          src_y,
+	       bint          src_width,
+	       bint          src_height,
+	       bint          dest_x,
+	       bint          dest_y,
+	       bint          dest_width,
+	       bint          dest_height)
 {
   BdkPixbuf *tmp_pixbuf = NULL;
   BdkRectangle rect;
   int x_offset, y_offset;
-  gboolean has_alpha = bdk_pixbuf_get_has_alpha (src);
-  gint src_rowstride = bdk_pixbuf_get_rowstride (src);
-  gint src_n_channels = bdk_pixbuf_get_n_channels (src);
+  bboolean has_alpha = bdk_pixbuf_get_has_alpha (src);
+  bint src_rowstride = bdk_pixbuf_get_rowstride (src);
+  bint src_n_channels = bdk_pixbuf_get_n_channels (src);
 
   if (dest_width <= 0 || dest_height <= 0)
     return;
@@ -446,7 +446,7 @@ pixbuf_render (BdkPixbuf    *src,
     {
       double x_scale = (double)dest_width / src_width;
       double y_scale = (double)dest_height / src_height;
-      guchar *pixels;
+      buchar *pixels;
       BdkPixbuf *partial_src;
       
       pixels = (bdk_pixbuf_get_pixels (src)
@@ -563,18 +563,18 @@ theme_pixbuf_set_filename (ThemePixbuf *theme_pb,
     theme_pb->filename = NULL;
 }
 
-static guint
+static buint
 compute_hint (BdkPixbuf *pixbuf,
-	      gint       x0,
-	      gint       x1,
-	      gint       y0,
-	      gint       y1)
+	      bint       x0,
+	      bint       x1,
+	      bint       y0,
+	      bint       y1)
 {
   int i, j;
   int hints = THEME_CONSTANT_ROWS | THEME_CONSTANT_COLS | THEME_MISSING;
   int n_channels = bdk_pixbuf_get_n_channels (pixbuf);
   
-  guchar *data = bdk_pixbuf_get_pixels (pixbuf);
+  buchar *data = bdk_pixbuf_get_pixels (pixbuf);
   int rowstride = bdk_pixbuf_get_rowstride (pixbuf);
 
   if (x0 == x1 || y0 == y1)
@@ -582,11 +582,11 @@ compute_hint (BdkPixbuf *pixbuf,
 
   for (i = y0; i < y1; i++)
     {
-      guchar *p = data + i * rowstride + x0 * n_channels;
-      guchar r = p[0];
-      guchar g = p[1];
-      guchar b = p[2];
-      guchar a = 0;
+      buchar *p = data + i * rowstride + x0 * n_channels;
+      buchar r = p[0];
+      buchar g = p[1];
+      buchar b = p[2];
+      buchar a = 0;
       
       if (n_channels == 4)
 	a = p[3];
@@ -615,8 +615,8 @@ compute_hint (BdkPixbuf *pixbuf,
  cols:
   for (i = y0 + 1; i < y1; i++)
     {
-      guchar *base = data + y0 * rowstride + x0 * n_channels;
-      guchar *p = data + i * rowstride + x0 * n_channels;
+      buchar *base = data + y0 * rowstride + x0 * n_channels;
+      buchar *p = data + i * rowstride + x0 * n_channels;
 
       if (memcmp (p, base, n_channels * (x1 - x0)) != 0)
 	{
@@ -632,8 +632,8 @@ static void
 theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
 {
   int i, j;
-  gint width = bdk_pixbuf_get_width (theme_pb->pixbuf);
-  gint height = bdk_pixbuf_get_height (theme_pb->pixbuf);
+  bint width = bdk_pixbuf_get_width (theme_pb->pixbuf);
+  bint height = bdk_pixbuf_get_height (theme_pb->pixbuf);
 
   if (theme_pb->border_left + theme_pb->border_right > width ||
       theme_pb->border_top + theme_pb->border_bottom > height)
@@ -655,7 +655,7 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
   
   for (i = 0; i < 3; i++)
     {
-      gint y0, y1;
+      bint y0, y1;
 
       switch (i)
 	{
@@ -675,7 +675,7 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
       
       for (j = 0; j < 3; j++)
 	{
-	  gint x0, x1;
+	  bint x0, x1;
 	  
 	  switch (j)
 	    {
@@ -701,10 +701,10 @@ theme_pixbuf_compute_hints (ThemePixbuf *theme_pb)
 
 void
 theme_pixbuf_set_border (ThemePixbuf *theme_pb,
-			 gint         left,
-			 gint         right,
-			 gint         top,
-			 gint         bottom)
+			 bint         left,
+			 bint         right,
+			 bint         top,
+			 bint         bottom)
 {
   theme_pb->border_left = left;
   theme_pb->border_right = right;
@@ -717,7 +717,7 @@ theme_pixbuf_set_border (ThemePixbuf *theme_pb,
 
 void
 theme_pixbuf_set_stretch (ThemePixbuf *theme_pb,
-			  gboolean     stretch)
+			  bboolean     stretch)
 {
   theme_pb->stretch = stretch;
 
@@ -726,7 +726,7 @@ theme_pixbuf_set_stretch (ThemePixbuf *theme_pb,
 }
 
 static BdkPixbuf *
-pixbuf_cache_value_new (gchar *filename)
+pixbuf_cache_value_new (bchar *filename)
 {
   GError *err = NULL;
     
@@ -767,17 +767,17 @@ theme_pixbuf_render (ThemePixbuf  *theme_pb,
 		     BdkWindow    *window,
 		     BdkBitmap    *mask,
 		     BdkRectangle *clip_rect,
-		     guint         component_mask,
-		     gboolean      center,
-		     gint          x,
-		     gint          y,
-		     gint          width,
-		     gint          height)
+		     buint         component_mask,
+		     bboolean      center,
+		     bint          x,
+		     bint          y,
+		     bint          width,
+		     bint          height)
 {
   BdkPixbuf *pixbuf = theme_pixbuf_get_pixbuf (theme_pb);
-  gint src_x[4], src_y[4], dest_x[4], dest_y[4];
-  gint pixbuf_width = bdk_pixbuf_get_width (pixbuf);
-  gint pixbuf_height = bdk_pixbuf_get_height (pixbuf);
+  bint src_x[4], src_y[4], dest_x[4], dest_y[4];
+  bint pixbuf_width = bdk_pixbuf_get_width (pixbuf);
+  bint pixbuf_height = bdk_pixbuf_get_height (pixbuf);
 
   if (!pixbuf)
     return;

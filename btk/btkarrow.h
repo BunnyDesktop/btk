@@ -53,8 +53,8 @@ struct _BtkArrow
 {
   BtkMisc misc;
 
-  gint16 GSEAL (arrow_type);
-  gint16 GSEAL (shadow_type);
+  bint16 GSEAL (arrow_type);
+  bint16 GSEAL (shadow_type);
 };
 
 struct _BtkArrowClass

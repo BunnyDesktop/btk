@@ -56,11 +56,11 @@
 
 typedef struct
 {
-  gint wrap_width;
-  gint width_chars;
-  gint max_width_chars;
+  bint wrap_width;
+  bint width_chars;
+  bint max_width_chars;
 
-  gboolean mnemonics_visible;
+  bboolean mnemonics_visible;
 } BtkLabelPrivate;
 
 /* Notes about the handling of links:
@@ -94,32 +94,32 @@ typedef struct
  */
 typedef struct
 {
-  gchar *uri;
-  gchar *title;     /* the title attribute, used as tooltip */
-  gboolean visited; /* get set when the link is activated; this flag
+  bchar *uri;
+  bchar *title;     /* the title attribute, used as tooltip */
+  bboolean visited; /* get set when the link is activated; this flag
                      * gets preserved over later set_markup() calls
                      */
-  gint start;       /* position of the link in the BangoLayout */
-  gint end;
+  bint start;       /* position of the link in the BangoLayout */
+  bint end;
 } BtkLabelLink;
 
 struct _BtkLabelSelectionInfo
 {
   BdkWindow *window;
-  gint selection_anchor;
-  gint selection_end;
+  bint selection_anchor;
+  bint selection_end;
   BtkWidget *popup_menu;
 
   GList *links;
   BtkLabelLink *active_link;
 
-  gint drag_start_x;
-  gint drag_start_y;
+  bint drag_start_x;
+  bint drag_start_y;
 
-  guint in_drag      : 1;
-  guint select_words : 1;
-  guint selectable   : 1;
-  guint link_clicked : 1;
+  buint in_drag      : 1;
+  buint select_words : 1;
+  buint selectable   : 1;
+  buint link_clicked : 1;
 };
 
 enum {
@@ -154,17 +154,17 @@ enum {
   PROP_TRACK_VISITED_LINKS
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 static const BdkColor default_link_color = { 0, 0, 0, 0xeeee };
 static const BdkColor default_visited_link_color = { 0, 0x5555, 0x1a1a, 0x8b8b };
 
 static void btk_label_set_property      (BObject          *object,
-					 guint             prop_id,
+					 buint             prop_id,
 					 const BValue     *value,
 					 BParamSpec       *pspec);
 static void btk_label_get_property      (BObject          *object,
-					 guint             prop_id,
+					 buint             prop_id,
 					 BValue           *value,
 					 BParamSpec       *pspec);
 static void btk_label_destroy           (BtkObject        *object);
@@ -179,9 +179,9 @@ static void btk_label_style_set         (BtkWidget        *widget,
 					 BtkStyle         *previous_style);
 static void btk_label_direction_changed (BtkWidget        *widget,
 					 BtkTextDirection  previous_dir);
-static gint btk_label_expose            (BtkWidget        *widget,
+static bint btk_label_expose            (BtkWidget        *widget,
 					 BdkEventExpose   *event);
-static gboolean btk_label_focus         (BtkWidget         *widget,
+static bboolean btk_label_focus         (BtkWidget         *widget,
                                          BtkDirectionType   direction);
 
 static void btk_label_realize           (BtkWidget        *widget);
@@ -189,47 +189,47 @@ static void btk_label_unrealize         (BtkWidget        *widget);
 static void btk_label_map               (BtkWidget        *widget);
 static void btk_label_unmap             (BtkWidget        *widget);
 
-static gboolean btk_label_button_press      (BtkWidget        *widget,
+static bboolean btk_label_button_press      (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_label_button_release    (BtkWidget        *widget,
+static bboolean btk_label_button_release    (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_label_motion            (BtkWidget        *widget,
+static bboolean btk_label_motion            (BtkWidget        *widget,
 					     BdkEventMotion   *event);
-static gboolean btk_label_leave_notify      (BtkWidget        *widget,
+static bboolean btk_label_leave_notify      (BtkWidget        *widget,
                                              BdkEventCrossing *event);
 
 static void     btk_label_grab_focus        (BtkWidget        *widget);
 
-static gboolean btk_label_query_tooltip     (BtkWidget        *widget,
-                                             gint              x,
-                                             gint              y,
-                                             gboolean          keyboard_tip,
+static bboolean btk_label_query_tooltip     (BtkWidget        *widget,
+                                             bint              x,
+                                             bint              y,
+                                             bboolean          keyboard_tip,
                                              BtkTooltip       *tooltip);
 
 static void btk_label_set_text_internal          (BtkLabel      *label,
-						  gchar         *str);
+						  bchar         *str);
 static void btk_label_set_label_internal         (BtkLabel      *label,
-						  gchar         *str);
+						  bchar         *str);
 static void btk_label_set_use_markup_internal    (BtkLabel      *label,
-						  gboolean       val);
+						  bboolean       val);
 static void btk_label_set_use_underline_internal (BtkLabel      *label,
-						  gboolean       val);
+						  bboolean       val);
 static void btk_label_set_attributes_internal    (BtkLabel      *label,
 						  BangoAttrList *attrs);
 static void btk_label_set_uline_text_internal    (BtkLabel      *label,
-						  const gchar   *str);
+						  const bchar   *str);
 static void btk_label_set_pattern_internal       (BtkLabel      *label,
-				                  const gchar   *pattern,
-                                                  gboolean       is_mnemonic);
+				                  const bchar   *pattern,
+                                                  bboolean       is_mnemonic);
 static void btk_label_set_markup_internal        (BtkLabel      *label,
-						  const gchar   *str,
-						  gboolean       with_uline);
+						  const bchar   *str,
+						  bboolean       with_uline);
 static void btk_label_recalculate                (BtkLabel      *label);
 static void btk_label_hierarchy_changed          (BtkWidget     *widget,
 						  BtkWidget     *old_toplevel);
 static void btk_label_screen_changed             (BtkWidget     *widget,
 						  BdkScreen     *old_screen);
-static gboolean btk_label_popup_menu             (BtkWidget     *widget);
+static bboolean btk_label_popup_menu             (BtkWidget     *widget);
 
 static void btk_label_create_window       (BtkLabel *label);
 static void btk_label_destroy_window      (BtkLabel *label);
@@ -240,60 +240,60 @@ static void btk_label_clear_layout        (BtkLabel *label);
 static void btk_label_ensure_layout       (BtkLabel *label);
 static void btk_label_invalidate_wrap_width (BtkLabel *label);
 static void btk_label_select_rebunnyion_index (BtkLabel *label,
-                                           gint      anchor_index,
-                                           gint      end_index);
+                                           bint      anchor_index,
+                                           bint      end_index);
 
-static gboolean btk_label_mnemonic_activate (BtkWidget         *widget,
-					     gboolean           group_cycling);
+static bboolean btk_label_mnemonic_activate (BtkWidget         *widget,
+					     bboolean           group_cycling);
 static void     btk_label_setup_mnemonic    (BtkLabel          *label,
-					     guint              last_key);
+					     buint              last_key);
 static void     btk_label_drag_data_get     (BtkWidget         *widget,
 					     BdkDragContext    *context,
 					     BtkSelectionData  *selection_data,
-					     guint              info,
-					     guint              time);
+					     buint              info,
+					     buint              time);
 
 static void     btk_label_buildable_interface_init     (BtkBuildableIface *iface);
-static gboolean btk_label_buildable_custom_tag_start   (BtkBuildable     *buildable,
+static bboolean btk_label_buildable_custom_tag_start   (BtkBuildable     *buildable,
 							BtkBuilder       *builder,
 							BObject          *child,
-							const gchar      *tagname,
+							const bchar      *tagname,
 							GMarkupParser    *parser,
-							gpointer         *data);
+							bpointer         *data);
 
 static void     btk_label_buildable_custom_finished    (BtkBuildable     *buildable,
 							BtkBuilder       *builder,
 							BObject          *child,
-							const gchar      *tagname,
-							gpointer          user_data);
+							const bchar      *tagname,
+							bpointer          user_data);
 
 
 static void connect_mnemonics_visible_notify    (BtkLabel   *label);
-static gboolean      separate_uline_pattern     (const gchar  *str,
-                                                 guint        *accel_key,
-                                                 gchar       **new_str,
-                                                 gchar       **pattern);
+static bboolean      separate_uline_pattern     (const bchar  *str,
+                                                 buint        *accel_key,
+                                                 bchar       **new_str,
+                                                 bchar       **pattern);
 
 
 /* For selectable labels: */
 static void btk_label_move_cursor        (BtkLabel        *label,
 					  BtkMovementStep  step,
-					  gint             count,
-					  gboolean         extend_selection);
+					  bint             count,
+					  bboolean         extend_selection);
 static void btk_label_copy_clipboard     (BtkLabel        *label);
 static void btk_label_select_all         (BtkLabel        *label);
 static void btk_label_do_popup           (BtkLabel        *label,
 					  BdkEventButton  *event);
-static gint btk_label_move_forward_word  (BtkLabel        *label,
-					  gint             start);
-static gint btk_label_move_backward_word (BtkLabel        *label,
-					  gint             start);
+static bint btk_label_move_forward_word  (BtkLabel        *label,
+					  bint             start);
+static bint btk_label_move_backward_word (BtkLabel        *label,
+					  bint             start);
 
 /* For links: */
 static void          btk_label_rescan_links     (BtkLabel  *label);
 static void          btk_label_clear_links      (BtkLabel  *label);
-static gboolean      btk_label_activate_link    (BtkLabel    *label,
-                                                 const gchar *uri);
+static bboolean      btk_label_activate_link    (BtkLabel    *label,
+                                                 const bchar *uri);
 static void          btk_label_activate_current_link (BtkLabel *label);
 static BtkLabelLink *btk_label_get_current_link (BtkLabel  *label);
 static void          btk_label_get_link_colors  (BtkWidget  *widget,
@@ -312,10 +312,10 @@ G_DEFINE_TYPE_WITH_CODE (BtkLabel, btk_label, BTK_TYPE_MISC,
 
 static void
 add_move_binding (BtkBindingSet  *binding_set,
-		  guint           keyval,
-		  guint           modmask,
+		  buint           keyval,
+		  buint           modmask,
 		  BtkMovementStep step,
-		  gint            count)
+		  bint            count)
 {
   g_return_if_fail ((modmask & BDK_SHIFT_MASK) == 0);
   
@@ -584,7 +584,7 @@ btk_label_class_init (BtkLabelClass *class)
 						      P_("Mnemonic key"),
 						      P_("The mnemonic accelerator key for this label"),
 						      0,
-						      G_MAXUINT,
+						      B_MAXUINT,
 						      BDK_VoidSymbol,
 						      BTK_PARAM_READABLE));
   g_object_class_install_property (bobject_class,
@@ -602,7 +602,7 @@ btk_label_class_init (BtkLabelClass *class)
                                                      P_("Cursor Position"),
                                                      P_("The current position of the insertion cursor in chars"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READABLE));
   
@@ -612,7 +612,7 @@ btk_label_class_init (BtkLabelClass *class)
                                                      P_("Selection Bound"),
                                                      P_("The position of the opposite end of the selection from the cursor in chars"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READABLE));
   
@@ -659,7 +659,7 @@ btk_label_class_init (BtkLabelClass *class)
                                                      P_("Width In Characters"),
                                                      P_("The desired width of the label, in characters"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
   
@@ -719,7 +719,7 @@ btk_label_class_init (BtkLabelClass *class)
                                                      P_("Maximum Width In Characters"),
                                                      P_("The desired maximum width of the label, in characters"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -860,7 +860,7 @@ btk_label_class_init (BtkLabelClass *class)
 
 static void 
 btk_label_set_property (BObject      *object,
-			guint         prop_id,
+			buint         prop_id,
 			const BValue *value,
 			BParamSpec   *pspec)
 {
@@ -926,7 +926,7 @@ btk_label_set_property (BObject      *object,
 
 static void 
 btk_label_get_property (BObject     *object,
-			guint        prop_id,
+			buint        prop_id,
 			BValue      *value,
 			BParamSpec  *pspec)
 {
@@ -969,7 +969,7 @@ btk_label_get_property (BObject     *object,
     case PROP_CURSOR_POSITION:
       if (label->select_info && label->select_info->selectable)
 	{
-	  gint offset = g_utf8_pointer_to_offset (label->text,
+	  bint offset = g_utf8_pointer_to_offset (label->text,
 						  label->text + label->select_info->selection_end);
 	  b_value_set_int (value, offset);
 	}
@@ -979,7 +979,7 @@ btk_label_get_property (BObject     *object,
     case PROP_SELECTION_BOUND:
       if (label->select_info && label->select_info->selectable)
 	{
-	  gint offset = g_utf8_pointer_to_offset (label->text,
+	  bint offset = g_utf8_pointer_to_offset (label->text,
 						  label->text + label->select_info->selection_anchor);
 	  b_value_set_int (value, offset);
 	}
@@ -1064,8 +1064,8 @@ typedef struct {
 
 static BangoAttribute *
 attribute_from_text (BtkBuilder   *builder,
-		     const gchar  *name, 
-		     const gchar  *value,
+		     const bchar  *name, 
+		     const bchar  *value,
 		     GError      **error)
 {
   BangoAttribute *attribute = NULL;
@@ -1215,26 +1215,26 @@ attribute_from_text (BtkBuilder   *builder,
 
 static void
 bango_start_element (GMarkupParseContext *context,
-		     const gchar         *element_name,
-		     const gchar        **names,
-		     const gchar        **values,
-		     gpointer             user_data,
+		     const bchar         *element_name,
+		     const bchar        **names,
+		     const bchar        **values,
+		     bpointer             user_data,
 		     GError             **error)
 {
   BangoParserData *data = (BangoParserData*)user_data;
   BValue val = { 0, };
-  guint i;
-  gint line_number, char_number;
+  buint i;
+  bint line_number, char_number;
 
   if (strcmp (element_name, "attribute") == 0)
     {
       BangoAttribute *attr = NULL;
-      const gchar *name = NULL;
-      const gchar *value = NULL;
-      const gchar *start = NULL;
-      const gchar *end = NULL;
-      guint start_val = 0;
-      guint end_val   = G_MAXUINT;
+      const bchar *name = NULL;
+      const bchar *value = NULL;
+      const bchar *start = NULL;
+      const bchar *end = NULL;
+      buint start_val = 0;
+      buint end_val   = B_MAXUINT;
 
       for (i = 0; names[i]; i++)
 	{
@@ -1318,13 +1318,13 @@ static const GMarkupParser bango_parser =
     bango_start_element,
   };
 
-static gboolean
+static bboolean
 btk_label_buildable_custom_tag_start (BtkBuildable     *buildable,
 				      BtkBuilder       *builder,
 				      BObject          *child,
-				      const gchar      *tagname,
+				      const bchar      *tagname,
 				      GMarkupParser    *parser,
-				      gpointer         *data)
+				      bpointer         *data)
 {
   if (buildable_parent_iface->custom_tag_start (buildable, builder, child, 
 						tagname, parser, data))
@@ -1348,8 +1348,8 @@ static void
 btk_label_buildable_custom_finished (BtkBuildable *buildable,
 				     BtkBuilder   *builder,
 				     BObject      *child,
-				     const gchar  *tagname,
-				     gpointer      user_data)
+				     const bchar  *tagname,
+				     bpointer      user_data)
 {
   BangoParserData *data;
 
@@ -1383,7 +1383,7 @@ btk_label_buildable_custom_finished (BtkBuildable *buildable,
  * Return value: the new #BtkLabel
  **/
 BtkWidget*
-btk_label_new (const gchar *str)
+btk_label_new (const bchar *str)
 {
   BtkLabel *label;
   
@@ -1418,7 +1418,7 @@ btk_label_new (const gchar *str)
  * Return value: the new #BtkLabel
  **/
 BtkWidget*
-btk_label_new_with_mnemonic (const gchar *str)
+btk_label_new_with_mnemonic (const bchar *str)
 {
   BtkLabel *label;
   
@@ -1430,9 +1430,9 @@ btk_label_new_with_mnemonic (const gchar *str)
   return BTK_WIDGET (label);
 }
 
-static gboolean
+static bboolean
 btk_label_mnemonic_activate (BtkWidget *widget,
-			     gboolean   group_cycling)
+			     bboolean   group_cycling)
 {
   BtkWidget *parent;
 
@@ -1466,7 +1466,7 @@ btk_label_mnemonic_activate (BtkWidget *widget,
 
 static void
 btk_label_setup_mnemonic (BtkLabel *label,
-			  guint     last_key)
+			  buint     last_key)
 {
   BtkWidget *widget = BTK_WIDGET (label);
   BtkWidget *toplevel;
@@ -1545,7 +1545,7 @@ label_shortcut_setting_apply (BtkLabel *label)
 
 static void
 label_shortcut_setting_traverse_container (BtkWidget *widget,
-                                           gpointer   data)
+                                           bpointer   data)
 {
   if (BTK_IS_LABEL (widget))
     label_shortcut_setting_apply (BTK_LABEL (widget));
@@ -1575,7 +1575,7 @@ label_shortcut_setting_changed (BtkSettings *settings)
 
 static void
 mnemonics_visible_apply (BtkWidget *widget,
-                         gboolean   mnemonics_visible)
+                         bboolean   mnemonics_visible)
 {
   BtkLabel *label;
   BtkLabelPrivate *priv;
@@ -1596,37 +1596,37 @@ mnemonics_visible_apply (BtkWidget *widget,
 
 static void
 label_mnemonics_visible_traverse_container (BtkWidget *widget,
-                                            gpointer   data)
+                                            bpointer   data)
 {
-  gboolean mnemonics_visible = GPOINTER_TO_INT (data);
+  bboolean mnemonics_visible = BPOINTER_TO_INT (data);
 
   _btk_label_mnemonics_visible_apply_recursively (widget, mnemonics_visible);
 }
 
 void
 _btk_label_mnemonics_visible_apply_recursively (BtkWidget *widget,
-                                                gboolean   mnemonics_visible)
+                                                bboolean   mnemonics_visible)
 {
   if (BTK_IS_LABEL (widget))
     mnemonics_visible_apply (widget, mnemonics_visible);
   else if (BTK_IS_CONTAINER (widget))
     btk_container_forall (BTK_CONTAINER (widget),
                           label_mnemonics_visible_traverse_container,
-                          GINT_TO_POINTER (mnemonics_visible));
+                          BINT_TO_POINTER (mnemonics_visible));
 }
 
 static void
 label_mnemonics_visible_changed (BtkWindow  *window,
                                  BParamSpec *pspec,
-                                 gpointer    data)
+                                 bpointer    data)
 {
-  gboolean mnemonics_visible;
+  bboolean mnemonics_visible;
 
   g_object_get (window, "mnemonics-visible", &mnemonics_visible, NULL);
 
   btk_container_forall (BTK_CONTAINER (window),
                         label_mnemonics_visible_traverse_container,
-                        GINT_TO_POINTER (mnemonics_visible));
+                        BINT_TO_POINTER (mnemonics_visible));
 }
 
 static void
@@ -1634,7 +1634,7 @@ btk_label_screen_changed (BtkWidget *widget,
 			  BdkScreen *old_screen)
 {
   BtkSettings *settings;
-  gboolean shortcuts_connected;
+  bboolean shortcuts_connected;
 
   if (!btk_widget_has_screen (widget))
     return;
@@ -1642,7 +1642,7 @@ btk_label_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
 
   shortcuts_connected =
-    GPOINTER_TO_INT (g_object_get_data (B_OBJECT (settings),
+    BPOINTER_TO_INT (g_object_get_data (B_OBJECT (settings),
                                         "btk-label-shortcuts-connected"));
 
   if (! shortcuts_connected)
@@ -1655,7 +1655,7 @@ btk_label_screen_changed (BtkWidget *widget,
                         NULL);
 
       g_object_set_data (B_OBJECT (settings), "btk-label-shortcuts-connected",
-                         GINT_TO_POINTER (TRUE));
+                         BINT_TO_POINTER (TRUE));
     }
 
   label_shortcut_setting_apply (BTK_LABEL (widget));
@@ -1663,7 +1663,7 @@ btk_label_screen_changed (BtkWidget *widget,
 
 
 static void
-label_mnemonic_widget_weak_notify (gpointer      data,
+label_mnemonic_widget_weak_notify (bpointer      data,
 				   BObject      *where_the_object_was)
 {
   BtkLabel *label = data;
@@ -1747,7 +1747,7 @@ btk_label_get_mnemonic_widget (BtkLabel *label)
  *
  * Returns: BDK keyval usable for accelerators, or #BDK_VoidSymbol
  **/
-guint
+buint
 btk_label_get_mnemonic_keyval (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), BDK_VoidSymbol);
@@ -1757,7 +1757,7 @@ btk_label_get_mnemonic_keyval (BtkLabel *label)
 
 static void
 btk_label_set_text_internal (BtkLabel *label,
-			     gchar    *str)
+			     bchar    *str)
 {
   g_free (label->text);
   
@@ -1768,7 +1768,7 @@ btk_label_set_text_internal (BtkLabel *label,
 
 static void
 btk_label_set_label_internal (BtkLabel *label,
-			      gchar    *str)
+			      bchar    *str)
 {
   g_free (label->label);
   
@@ -1779,7 +1779,7 @@ btk_label_set_label_internal (BtkLabel *label,
 
 static void
 btk_label_set_use_markup_internal (BtkLabel *label,
-				   gboolean  val)
+				   bboolean  val)
 {
   val = val != FALSE;
   if (label->use_markup != val)
@@ -1792,7 +1792,7 @@ btk_label_set_use_markup_internal (BtkLabel *label,
 
 static void
 btk_label_set_use_underline_internal (BtkLabel *label,
-				      gboolean val)
+				      bboolean val)
 {
   val = val != FALSE;
   if (label->use_underline != val)
@@ -1857,7 +1857,7 @@ btk_label_set_attributes_internal (BtkLabel      *label,
 static void
 btk_label_recalculate (BtkLabel *label)
 {
-  guint keyval = label->mnemonic_keyval;
+  buint keyval = label->mnemonic_keyval;
 
   if (label->use_markup)
     btk_label_set_markup_internal (label, label->label, label->use_underline);
@@ -1902,7 +1902,7 @@ btk_label_recalculate (BtkLabel *label)
  **/
 void
 btk_label_set_text (BtkLabel    *label,
-		    const gchar *str)
+		    const bchar *str)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
@@ -1980,7 +1980,7 @@ btk_label_get_attributes (BtkLabel *label)
  **/
 void
 btk_label_set_label (BtkLabel    *label,
-		     const gchar *str)
+		     const bchar *str)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -2003,7 +2003,7 @@ btk_label_set_label (BtkLabel    *label,
  * Return value: the text of the label widget. This string is
  *   owned by the widget and must not be modified or freed.
  **/
-const gchar *
+const bchar *
 btk_label_get_label (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), NULL);
@@ -2022,10 +2022,10 @@ typedef struct
 
 static void
 start_element_handler (GMarkupParseContext  *context,
-                       const gchar          *element_name,
-                       const gchar         **attribute_names,
-                       const gchar         **attribute_values,
-                       gpointer              user_data,
+                       const bchar          *element_name,
+                       const bchar         **attribute_names,
+                       const bchar         **attribute_values,
+                       bpointer              user_data,
                        GError              **error)
 {
   UriParserData *pdata = user_data;
@@ -2033,19 +2033,19 @@ start_element_handler (GMarkupParseContext  *context,
   if (strcmp (element_name, "a") == 0)
     {
       BtkLabelLink *link;
-      const gchar *uri = NULL;
-      const gchar *title = NULL;
-      gboolean visited = FALSE;
-      gint line_number;
-      gint char_number;
-      gint i;
+      const bchar *uri = NULL;
+      const bchar *title = NULL;
+      bboolean visited = FALSE;
+      bint line_number;
+      bint char_number;
+      bint i;
       BdkColor *color = NULL;
 
       g_markup_parse_context_get_position (context, &line_number, &char_number);
 
       for (i = 0; attribute_names[i] != NULL; i++)
         {
-          const gchar *attr = attribute_names[i];
+          const bchar *attr = attribute_names[i];
 
           if (strcmp (attr, "href") == 0)
             uri = attribute_values[i];
@@ -2108,16 +2108,16 @@ start_element_handler (GMarkupParseContext  *context,
     }
   else
     {
-      gint i;
+      bint i;
 
       g_string_append_c (pdata->new_str, '<');
       g_string_append (pdata->new_str, element_name);
 
       for (i = 0; attribute_names[i] != NULL; i++)
         {
-          const gchar *attr  = attribute_names[i];
-          const gchar *value = attribute_values[i];
-          gchar *newvalue;
+          const bchar *attr  = attribute_names[i];
+          const bchar *value = attribute_values[i];
+          bchar *newvalue;
 
           newvalue = g_markup_escape_text (value, -1);
 
@@ -2135,8 +2135,8 @@ start_element_handler (GMarkupParseContext  *context,
 
 static void
 end_element_handler (GMarkupParseContext  *context,
-                     const gchar          *element_name,
-                     gpointer              user_data,
+                     const bchar          *element_name,
+                     bpointer              user_data,
                      GError              **error)
 {
   UriParserData *pdata = user_data;
@@ -2153,13 +2153,13 @@ end_element_handler (GMarkupParseContext  *context,
 
 static void
 text_handler (GMarkupParseContext  *context,
-              const gchar          *text,
-              gsize                 text_len,
-              gpointer              user_data,
+              const bchar          *text,
+              bsize                 text_len,
+              bpointer              user_data,
               GError              **error)
 {
   UriParserData *pdata = user_data;
-  gchar *newtext;
+  bchar *newtext;
 
   newtext = g_markup_escape_text (text, text_len);
   g_string_append (pdata->new_str, newtext);
@@ -2175,8 +2175,8 @@ static const GMarkupParser markup_parser =
   NULL
 };
 
-static gboolean
-xml_isspace (gchar c)
+static bboolean
+xml_isspace (bchar c)
 {
   return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
 }
@@ -2205,17 +2205,17 @@ btk_label_get_link_colors (BtkWidget  *widget,
     *visited_link_color = bdk_color_copy (&default_visited_link_color);
 }
 
-static gboolean
+static bboolean
 parse_uri_markup (BtkLabel     *label,
-                  const gchar  *str,
-                  gchar       **new_str,
+                  const bchar  *str,
+                  bchar       **new_str,
                   GList       **links,
                   GError      **error)
 {
   GMarkupParseContext *context = NULL;
-  const gchar *p, *end;
-  gboolean needs_root = TRUE;
-  gsize length;
+  const bchar *p, *end;
+  bboolean needs_root = TRUE;
+  bsize length;
   UriParserData pdata;
 
   length = strlen (str);
@@ -2279,7 +2279,7 @@ static void
 btk_label_ensure_has_tooltip (BtkLabel *label)
 {
   GList *l;
-  gboolean has_tooltip = FALSE;
+  bboolean has_tooltip = FALSE;
 
   for (l = label->select_info->links; l; l = l->next)
     {
@@ -2296,15 +2296,15 @@ btk_label_ensure_has_tooltip (BtkLabel *label)
 
 static void
 btk_label_set_markup_internal (BtkLabel    *label,
-                               const gchar *str,
-                               gboolean     with_uline)
+                               const bchar *str,
+                               bboolean     with_uline)
 {
   BtkLabelPrivate *priv = BTK_LABEL_GET_PRIVATE (label);
-  gchar *text = NULL;
+  bchar *text = NULL;
   GError *error = NULL;
   BangoAttrList *attrs = NULL;
   gunichar accel_char = 0;
-  gchar *new_str;
+  bchar *new_str;
   GList *links = NULL;
 
   if (!parse_uri_markup (label, str, &new_str, &links, &error))
@@ -2325,8 +2325,8 @@ btk_label_set_markup_internal (BtkLabel    *label,
 
   if (with_uline)
     {
-      gboolean enable_mnemonics;
-      gboolean auto_mnemonics;
+      bboolean enable_mnemonics;
+      bboolean auto_mnemonics;
 
       g_object_get (btk_widget_get_settings (BTK_WIDGET (label)),
                     "btk-enable-mnemonics", &enable_mnemonics,
@@ -2339,9 +2339,9 @@ btk_label_set_markup_internal (BtkLabel    *label,
               (!label->mnemonic_widget ||
                btk_widget_is_sensitive (label->mnemonic_widget))))))
         {
-          gchar *tmp;
-          gchar *pattern;
-          guint key;
+          bchar *tmp;
+          bchar *pattern;
+          buint key;
 
           if (separate_uline_pattern (new_str, &key, &tmp, &pattern))
             {
@@ -2405,7 +2405,7 @@ btk_label_set_markup_internal (BtkLabel    *label,
  **/
 void
 btk_label_set_markup (BtkLabel    *label,
-                      const gchar *str)
+                      const bchar *str)
 {  
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -2435,7 +2435,7 @@ btk_label_set_markup (BtkLabel    *label,
  **/
 void
 btk_label_set_markup_with_mnemonic (BtkLabel    *label,
-				    const gchar *str)
+				    const bchar *str)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -2461,7 +2461,7 @@ btk_label_set_markup_with_mnemonic (BtkLabel    *label,
  * Return value: the text in the label widget. This is the internal
  *   string used by the label, and must not be modified.
  **/
-const gchar *
+const bchar *
 btk_label_get_text (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), NULL);
@@ -2471,7 +2471,7 @@ btk_label_get_text (BtkLabel *label)
 
 static BangoAttrList *
 btk_label_pattern_to_attrs (BtkLabel      *label,
-			    const gchar   *pattern)
+			    const bchar   *pattern)
 {
   const char *start;
   const char *p = label->text;
@@ -2511,13 +2511,13 @@ btk_label_pattern_to_attrs (BtkLabel      *label,
 
 static void
 btk_label_set_pattern_internal (BtkLabel    *label,
-				const gchar *pattern,
-                                gboolean     is_mnemonic)
+				const bchar *pattern,
+                                bboolean     is_mnemonic)
 {
   BtkLabelPrivate *priv = BTK_LABEL_GET_PRIVATE (label);
   BangoAttrList *attrs;
-  gboolean enable_mnemonics;
-  gboolean auto_mnemonics;
+  bboolean enable_mnemonics;
+  bboolean auto_mnemonics;
 
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -2550,7 +2550,7 @@ btk_label_set_pattern_internal (BtkLabel    *label,
 
 void
 btk_label_set_pattern (BtkLabel	   *label,
-		       const gchar *pattern)
+		       const bchar *pattern)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
@@ -2674,7 +2674,7 @@ btk_label_get_ellipsize (BtkLabel *label)
  **/
 void
 btk_label_set_width_chars (BtkLabel *label,
-			   gint      n_chars)
+			   bint      n_chars)
 {
   BtkLabelPrivate *priv;
 
@@ -2702,7 +2702,7 @@ btk_label_set_width_chars (BtkLabel *label,
  * 
  * Since: 2.6
  **/
-gint
+bint
 btk_label_get_width_chars (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), -1);
@@ -2721,7 +2721,7 @@ btk_label_get_width_chars (BtkLabel *label)
  **/
 void
 btk_label_set_max_width_chars (BtkLabel *label,
-			       gint      n_chars)
+			       bint      n_chars)
 {
   BtkLabelPrivate *priv;
 
@@ -2750,7 +2750,7 @@ btk_label_set_max_width_chars (BtkLabel *label,
  * 
  * Since: 2.6
  **/
-gint
+bint
 btk_label_get_max_width_chars (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), -1);
@@ -2775,7 +2775,7 @@ btk_label_get_max_width_chars (BtkLabel *label)
  **/
 void
 btk_label_set_line_wrap (BtkLabel *label,
-			 gboolean  wrap)
+			 bboolean  wrap)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
@@ -2800,7 +2800,7 @@ btk_label_set_line_wrap (BtkLabel *label,
  *
  * Return value: %TRUE if the lines of the label are automatically wrapped.
  */
-gboolean
+bboolean
 btk_label_get_line_wrap (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -2855,7 +2855,7 @@ btk_label_get_line_wrap_mode (BtkLabel *label)
 
 void
 btk_label_get (BtkLabel *label,
-	       gchar   **str)
+	       bchar   **str)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   g_return_if_fail (str != NULL);
@@ -2908,13 +2908,13 @@ btk_label_clear_layout (BtkLabel *label)
     }
 }
 
-static gint
+static bint
 get_label_char_width (BtkLabel *label)
 {
   BtkLabelPrivate *priv;
   BangoContext *context;
   BangoFontMetrics *metrics;
-  gint char_width, digit_width, char_pixels, w;
+  bint char_width, digit_width, char_pixels, w;
   
   priv = BTK_LABEL_GET_PRIVATE (label);
   
@@ -2956,7 +2956,7 @@ btk_label_invalidate_wrap_width (BtkLabel *label)
   priv->wrap_width = -1;
 }
 
-static gint
+static bint
 get_label_wrap_width (BtkLabel *label)
 {
   BtkLabelPrivate *priv;
@@ -2986,7 +2986,7 @@ btk_label_ensure_layout (BtkLabel *label)
 {
   BtkWidget *widget;
   BangoRectangle logical_rect;
-  gboolean rtl;
+  bboolean rtl;
 
   widget = BTK_WIDGET (label);
 
@@ -2995,7 +2995,7 @@ btk_label_ensure_layout (BtkLabel *label)
   if (!label->layout)
     {
       BangoAlignment align = BANGO_ALIGN_LEFT; /* Quiet gcc */
-      gdouble angle = btk_label_get_angle (label);
+      bdouble angle = btk_label_get_angle (label);
 
       if (angle != 0.0 && !label->wrap && !label->ellipsize && !label->select_info)
 	{
@@ -3055,8 +3055,8 @@ btk_label_ensure_layout (BtkLabel *label)
       else if (label->wrap)
 	{
 	  BtkWidgetAuxInfo *aux_info;
-	  gint longest_paragraph;
-	  gint width, height;
+	  bint longest_paragraph;
+	  bint width, height;
 
 	  bango_layout_set_wrap (label->layout, label->wrap_mode);
 	  
@@ -3066,7 +3066,7 @@ btk_label_ensure_layout (BtkLabel *label)
 	  else
 	    {
 	      BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (label));
-	      gint wrap_width;
+	      bint wrap_width;
 	      
 	      bango_layout_set_width (label->layout, -1);
 	      bango_layout_get_extents (label->layout, NULL, &logical_rect);
@@ -3091,7 +3091,7 @@ btk_label_ensure_layout (BtkLabel *label)
 	       */
 	      if (longest_paragraph > 0)
 		{
-		  gint nlines, perfect_width;
+		  bint nlines, perfect_width;
 		  
 		  nlines = bango_layout_get_line_count (label->layout);
 		  perfect_width = (longest_paragraph + nlines - 1) / nlines;
@@ -3105,7 +3105,7 @@ btk_label_ensure_layout (BtkLabel *label)
 			width = logical_rect.width;
 		      else
 			{
-			  gint mid_width = (perfect_width + width) / 2;
+			  bint mid_width = (perfect_width + width) / 2;
 			  
 			  if (mid_width > perfect_width)
 			    {
@@ -3132,7 +3132,7 @@ btk_label_size_request (BtkWidget      *widget,
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelPrivate *priv;
-  gint width, height;
+  bint width, height;
   BangoRectangle logical_rect;
   BtkWidgetAuxInfo *aux_info;
 
@@ -3194,7 +3194,7 @@ btk_label_size_request (BtkWidget      *widget,
     {
       BangoContext *context;
       BangoFontMetrics *metrics;
-      gint ascent, descent;
+      bint ascent, descent;
 
       context = bango_layout_get_context (label->layout);
       metrics = bango_context_get_metrics (context, widget->style->font_desc,
@@ -3227,7 +3227,7 @@ btk_label_size_allocate (BtkWidget     *widget,
     {
       if (label->layout)
 	{
-	  gint width;
+	  bint width;
 	  BangoRectangle logical;
 
 	  width = (allocation->width - label->misc.xpad * 2) * BANGO_SCALE;
@@ -3327,14 +3327,14 @@ btk_label_direction_changed (BtkWidget        *widget,
 
 static void
 get_layout_location (BtkLabel  *label,
-                     gint      *xp,
-                     gint      *yp)
+                     bint      *xp,
+                     bint      *yp)
 {
   BtkMisc *misc;
   BtkWidget *widget; 
   BtkLabelPrivate *priv;
-  gfloat xalign;
-  gint req_width, x, y;
+  bfloat xalign;
+  bint req_width, x, y;
   BangoRectangle logical;
   
   misc = BTK_MISC (label);
@@ -3362,7 +3362,7 @@ get_layout_location (BtkLabel  *label,
   else
     req_width = widget->requisition.width;
 
-  x = floor (widget->allocation.x + (gint)misc->xpad +
+  x = floor (widget->allocation.x + (bint)misc->xpad +
 	      xalign * (widget->allocation.width - req_width));
 
   if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_LTR)
@@ -3385,10 +3385,10 @@ get_layout_location (BtkLabel  *label,
    *   middle".  You want to read the first line, at least, to get some context.
    */
   if (bango_layout_get_line_count (label->layout) == 1)
-    y = floor (widget->allocation.y + (gint)misc->ypad 
+    y = floor (widget->allocation.y + (bint)misc->ypad 
 	       + (widget->allocation.height - widget->requisition.height) * misc->yalign);
   else
-    y = floor (widget->allocation.y + (gint)misc->ypad 
+    y = floor (widget->allocation.y + (bint)misc->ypad 
 	       + MAX (((widget->allocation.height - widget->requisition.height) * misc->yalign),
 		      0));
 
@@ -3402,9 +3402,9 @@ get_layout_location (BtkLabel  *label,
 static void
 draw_insertion_cursor (BtkLabel      *label,
 		       BdkRectangle  *cursor_location,
-		       gboolean       is_primary,
+		       bboolean       is_primary,
 		       BangoDirection direction,
-		       gboolean       draw_arrow)
+		       bboolean       draw_arrow)
 {
   BtkWidget *widget = BTK_WIDGET (label);
   BtkTextDirection text_dir;
@@ -3447,7 +3447,7 @@ get_cursor_direction (BtkLabel *label)
 }
 
 static void
-btk_label_draw_cursor (BtkLabel  *label, gint xoffset, gint yoffset)
+btk_label_draw_cursor (BtkLabel  *label, bint xoffset, bint yoffset)
 {
   BtkWidget *widget;
 
@@ -3461,7 +3461,7 @@ btk_label_draw_cursor (BtkLabel  *label, gint xoffset, gint yoffset)
       BangoDirection keymap_direction;
       BangoDirection cursor_direction;
       BangoRectangle strong_pos, weak_pos;
-      gboolean split_cursor;
+      bboolean split_cursor;
       BangoRectangle *cursor1 = NULL;
       BangoRectangle *cursor2 = NULL;
       BdkRectangle cursor_location;
@@ -3547,13 +3547,13 @@ btk_label_get_focus_link (BtkLabel *label)
   return NULL;
 }
 
-static gint
+static bint
 btk_label_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelSelectionInfo *info = label->select_info;
-  gint x, y;
+  bint x, y;
 
   btk_label_ensure_layout (label);
   
@@ -3575,7 +3575,7 @@ btk_label_expose (BtkWidget      *widget,
       if (info &&
           (info->selection_anchor != info->selection_end))
         {
-          gint range[2];
+          bint range[2];
           BdkRebunnyion *clip;
 	  BtkStateType state;
           bairo_t *cr;
@@ -3585,7 +3585,7 @@ btk_label_expose (BtkWidget      *widget,
 
           if (range[0] > range[1])
             {
-              gint tmp = range[0];
+              bint tmp = range[0];
               range[0] = range[1];
               range[1] = tmp;
             }
@@ -3623,7 +3623,7 @@ btk_label_expose (BtkWidget      *widget,
         {
           BtkLabelLink *focus_link;
           BtkLabelLink *active_link;
-          gint range[2];
+          bint range[2];
           BdkRebunnyion *clip;
           BdkRectangle rect;
           BdkColor *text_color;
@@ -3704,20 +3704,20 @@ btk_label_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-separate_uline_pattern (const gchar  *str,
-                        guint        *accel_key,
-                        gchar       **new_str,
-                        gchar       **pattern)
+static bboolean
+separate_uline_pattern (const bchar  *str,
+                        buint        *accel_key,
+                        bchar       **new_str,
+                        bchar       **pattern)
 {
-  gboolean underscore;
-  const gchar *src;
-  gchar *dest;
-  gchar *pattern_dest;
+  bboolean underscore;
+  const bchar *src;
+  bchar *dest;
+  bchar *pattern_dest;
 
   *accel_key = BDK_VoidSymbol;
-  *new_str = g_new (gchar, strlen (str) + 1);
-  *pattern = g_new (gchar, g_utf8_strlen (str, -1) + 1);
+  *new_str = g_new (bchar, strlen (str) + 1);
+  *pattern = g_new (bchar, g_utf8_strlen (str, -1) + 1);
 
   underscore = FALSE;
 
@@ -3728,7 +3728,7 @@ separate_uline_pattern (const gchar  *str,
   while (*src)
     {
       gunichar c;
-      const gchar *next_src;
+      const bchar *next_src;
 
       c = g_utf8_get_char (src);
       if (c == (gunichar)-1)
@@ -3782,11 +3782,11 @@ separate_uline_pattern (const gchar  *str,
 
 static void
 btk_label_set_uline_text_internal (BtkLabel    *label,
-				   const gchar *str)
+				   const bchar *str)
 {
-  guint accel_key = BDK_VoidSymbol;
-  gchar *new_str;
-  gchar *pattern;
+  buint accel_key = BDK_VoidSymbol;
+  bchar *new_str;
+  bchar *pattern;
 
   g_return_if_fail (BTK_IS_LABEL (label));
   g_return_if_fail (str != NULL);
@@ -3804,11 +3804,11 @@ btk_label_set_uline_text_internal (BtkLabel    *label,
   g_free (pattern);
 }
 
-guint
+buint
 btk_label_parse_uline (BtkLabel    *label,
-		       const gchar *str)
+		       const bchar *str)
 {
-  guint keyval;
+  buint keyval;
   
   g_return_val_if_fail (BTK_IS_LABEL (label), BDK_VoidSymbol);
   g_return_val_if_fail (str != NULL, BDK_VoidSymbol);
@@ -3847,7 +3847,7 @@ btk_label_parse_uline (BtkLabel    *label,
  **/
 void
 btk_label_set_text_with_mnemonic (BtkLabel    *label,
-				  const gchar *str)
+				  const bchar *str)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   g_return_if_fail (str != NULL);
@@ -3917,10 +3917,10 @@ btk_label_unmap (BtkWidget *widget)
 
 static void
 window_to_layout_coords (BtkLabel *label,
-                         gint     *x,
-                         gint     *y)
+                         bint     *x,
+                         bint     *y)
 {
-  gint lx, ly;
+  bint lx, ly;
   BtkWidget *widget;
 
   widget = BTK_WIDGET (label);
@@ -3944,10 +3944,10 @@ window_to_layout_coords (BtkLabel *label,
 #if 0
 static void
 layout_to_window_coords (BtkLabel *label,
-                         gint     *x,
-                         gint     *y)
+                         bint     *x,
+                         bint     *y)
 {
-  gint lx, ly;
+  bint lx, ly;
   BtkWidget *widget;
 
   widget = BTK_WIDGET (label);
@@ -3969,16 +3969,16 @@ layout_to_window_coords (BtkLabel *label,
 }
 #endif
 
-static gboolean
+static bboolean
 get_layout_index (BtkLabel *label,
-                  gint      x,
-                  gint      y,
-                  gint     *index)
+                  bint      x,
+                  bint      y,
+                  bint     *index)
 {
-  gint trailing = 0;
-  const gchar *cluster;
-  const gchar *cluster_end;
-  gboolean inside;
+  bint trailing = 0;
+  const bchar *cluster;
+  const bchar *cluster_end;
+  bboolean inside;
 
   *index = 0;
 
@@ -4009,10 +4009,10 @@ get_layout_index (BtkLabel *label,
 static void
 btk_label_select_word (BtkLabel *label)
 {
-  gint min, max;
+  bint min, max;
   
-  gint start_index = btk_label_move_backward_word (label, label->select_info->selection_end);
-  gint end_index = btk_label_move_forward_word (label, label->select_info->selection_end);
+  bint start_index = btk_label_move_backward_word (label, label->select_info->selection_end);
+  bint end_index = btk_label_move_forward_word (label, label->select_info->selection_end);
 
   min = MIN (label->select_info->selection_anchor,
 	     label->select_info->selection_end);
@@ -4029,7 +4029,7 @@ static void
 btk_label_grab_focus (BtkWidget *widget)
 {
   BtkLabel *label;
-  gboolean select_on_focus;
+  bboolean select_on_focus;
   BtkLabelLink *link;
 
   label = BTK_LABEL (widget);
@@ -4060,7 +4060,7 @@ btk_label_grab_focus (BtkWidget *widget)
     }
 }
 
-static gboolean
+static bboolean
 btk_label_focus (BtkWidget        *widget,
                  BtkDirectionType  direction)
 {
@@ -4092,7 +4092,7 @@ btk_label_focus (BtkWidget        *widget,
 
   if (info->selectable)
     {
-      gint index;
+      bint index;
 
       if (info->selection_anchor != info->selection_end)
         goto out;
@@ -4169,14 +4169,14 @@ out:
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_label_button_press (BtkWidget      *widget,
                         BdkEventButton *event)
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelSelectionInfo *info = label->select_info;
-  gint index = 0;
-  gint min, max;
+  bint index = 0;
+  bint min, max;
 
   if (info == NULL)
     return FALSE;
@@ -4245,7 +4245,7 @@ btk_label_button_press (BtkWidget      *widget,
 	  /* ensure the anchor is opposite index */
 	  if (index == min)
 	    {
-	      gint tmp = min;
+	      bint tmp = min;
 	      min = max;
 	      max = tmp;
 	    }
@@ -4275,14 +4275,14 @@ btk_label_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_label_button_release (BtkWidget      *widget,
                           BdkEventButton *event)
 
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelSelectionInfo *info = label->select_info;
-  gint index;
+  bint index;
 
   if (info == NULL)
     return FALSE;
@@ -4321,7 +4321,7 @@ connect_mnemonics_visible_notify (BtkLabel *label)
 {
   BtkLabelPrivate *priv = BTK_LABEL_GET_PRIVATE (label);
   BtkWidget *toplevel;
-  gboolean connected;
+  bboolean connected;
 
   toplevel = btk_widget_get_toplevel (BTK_WIDGET (label));
 
@@ -4333,7 +4333,7 @@ connect_mnemonics_visible_notify (BtkLabel *label)
     btk_window_get_mnemonics_visible (BTK_WINDOW (toplevel));
 
   connected =
-    GPOINTER_TO_INT (g_object_get_data (B_OBJECT (toplevel),
+    BPOINTER_TO_INT (g_object_get_data (B_OBJECT (toplevel),
                                         "btk-label-mnemonics-visible-connected"));
 
   if (!connected)
@@ -4344,14 +4344,14 @@ connect_mnemonics_visible_notify (BtkLabel *label)
                         label);
       g_object_set_data (B_OBJECT (toplevel),
                          "btk-label-mnemonics-visible-connected",
-                         GINT_TO_POINTER (1));
+                         BINT_TO_POINTER (1));
     }
 }
 
 static void
 drag_begin_cb (BtkWidget      *widget,
                BdkDragContext *context,
-               gpointer        data)
+               bpointer        data)
 {
   BtkLabel *label;
   BdkPixmap *pixmap = NULL;
@@ -4364,8 +4364,8 @@ drag_begin_cb (BtkWidget      *widget,
        label->select_info->selection_end) &&
       label->text)
     {
-      gint start, end;
-      gint len;
+      bint start, end;
+      bint len;
 
       start = MIN (label->select_info->selection_anchor,
                    label->select_info->selection_end);
@@ -4398,14 +4398,14 @@ drag_begin_cb (BtkWidget      *widget,
     g_object_unref (pixmap);
 }
 
-static gboolean
+static bboolean
 btk_label_motion (BtkWidget      *widget,
                   BdkEventMotion *event)
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelSelectionInfo *info = label->select_info;
-  gint index;
-  gint x, y;
+  bint index;
+  bint x, y;
 
   if (info == NULL)
     return FALSE;
@@ -4414,7 +4414,7 @@ btk_label_motion (BtkWidget      *widget,
     {
       GList *l;
       BtkLabelLink *link;
-      gboolean found = FALSE;
+      bboolean found = FALSE;
 
       if (info->selection_anchor == info->selection_end)
         {
@@ -4491,9 +4491,9 @@ btk_label_motion (BtkWidget      *widget,
 
       if (info->select_words)
         {
-          gint min, max;
-          gint old_min, old_max;
-          gint anchor, end;
+          bint min, max;
+          bint old_min, old_max;
+          bint anchor, end;
 
           min = btk_label_move_backward_word (label, index);
           max = btk_label_move_forward_word (label, index);
@@ -4534,7 +4534,7 @@ btk_label_motion (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_label_leave_notify (BtkWidget        *widget,
                         BdkEventCrossing *event)
 {
@@ -4558,7 +4558,7 @@ btk_label_create_window (BtkLabel *label)
 {
   BtkWidget *widget;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   
   g_assert (label->select_info);
   widget = BTK_WIDGET (label);
@@ -4655,9 +4655,9 @@ btk_label_clear_select_info (BtkLabel *label)
  **/
 void
 btk_label_set_selectable (BtkLabel *label,
-                          gboolean  setting)
+                          bboolean  setting)
 {
-  gboolean old_setting;
+  bboolean old_setting;
 
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -4701,7 +4701,7 @@ btk_label_set_selectable (BtkLabel *label,
  * 
  * Return value: %TRUE if the user can copy text from the label
  **/
-gboolean
+bboolean
 btk_label_get_selectable (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -4710,9 +4710,9 @@ btk_label_get_selectable (BtkLabel *label)
 }
 
 static void
-free_angle (gpointer angle)
+free_angle (bpointer angle)
 {
-  g_slice_free (gdouble, angle);
+  g_slice_free (bdouble, angle);
 }
 
 /**
@@ -4730,17 +4730,17 @@ free_angle (gpointer angle)
  **/
 void
 btk_label_set_angle (BtkLabel *label,
-		     gdouble   angle)
+		     bdouble   angle)
 {
-  gdouble *label_angle;
+  bdouble *label_angle;
 
   g_return_if_fail (BTK_IS_LABEL (label));
 
-  label_angle = (gdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
+  label_angle = (bdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
 
   if (!label_angle)
     {
-      label_angle = g_slice_new (gdouble);
+      label_angle = g_slice_new (bdouble);
       *label_angle = 0.0;
       g_object_set_qdata_full (B_OBJECT (label), quark_angle, 
 			       label_angle, free_angle);
@@ -4775,14 +4775,14 @@ btk_label_set_angle (BtkLabel *label,
  *
  * Since: 2.6
  **/
-gdouble
+bdouble
 btk_label_get_angle  (BtkLabel *label)
 {
-  gdouble *angle;
+  bdouble *angle;
 
   g_return_val_if_fail (BTK_IS_LABEL (label), 0.0);
   
-  angle = (gdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
+  angle = (bdouble *)g_object_get_qdata (B_OBJECT (label), quark_angle);
 
   if (angle)
     return *angle;
@@ -4798,8 +4798,8 @@ btk_label_set_selection_text (BtkLabel         *label,
        label->select_info->selection_end) &&
       label->text)
     {
-      gint start, end;
-      gint len;
+      bint start, end;
+      bint len;
       
       start = MIN (label->select_info->selection_anchor,
                    label->select_info->selection_end);
@@ -4824,8 +4824,8 @@ static void
 btk_label_drag_data_get (BtkWidget        *widget,
 			 BdkDragContext   *context,
 			 BtkSelectionData *selection_data,
-			 guint             info,
-			 guint             time)
+			 buint             info,
+			 buint             time)
 {
   btk_label_set_selection_text (BTK_LABEL (widget), selection_data);
 }
@@ -4833,15 +4833,15 @@ btk_label_drag_data_get (BtkWidget        *widget,
 static void
 get_text_callback (BtkClipboard     *clipboard,
                    BtkSelectionData *selection_data,
-                   guint             info,
-                   gpointer          user_data_or_owner)
+                   buint             info,
+                   bpointer          user_data_or_owner)
 {
   btk_label_set_selection_text (BTK_LABEL (user_data_or_owner), selection_data);
 }
 
 static void
 clear_text_callback (BtkClipboard     *clipboard,
-                     gpointer          user_data_or_owner)
+                     bpointer          user_data_or_owner)
 {
   BtkLabel *label;
 
@@ -4857,8 +4857,8 @@ clear_text_callback (BtkClipboard     *clipboard,
 
 static void
 btk_label_select_rebunnyion_index (BtkLabel *label,
-                               gint      anchor_index,
-                               gint      end_index)
+                               bint      anchor_index,
+                               bint      end_index)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
@@ -4880,7 +4880,7 @@ btk_label_select_rebunnyion_index (BtkLabel *label,
         {
           BtkTargetList *list;
           BtkTargetEntry *targets;
-          gint n_targets;
+          bint n_targets;
 
           list = btk_target_list_new (NULL, 0);
           btk_target_list_add_text_targets (list, 0);
@@ -4923,8 +4923,8 @@ btk_label_select_rebunnyion_index (BtkLabel *label,
  **/
 void
 btk_label_select_rebunnyion  (BtkLabel *label,
-                          gint      start_offset,
-                          gint      end_offset)
+                          bint      start_offset,
+                          bint      end_offset)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
   
@@ -4953,10 +4953,10 @@ btk_label_select_rebunnyion  (BtkLabel *label,
  * 
  * Return value: %TRUE if selection is non-empty
  **/
-gboolean
+bboolean
 btk_label_get_selection_bounds (BtkLabel  *label,
-                                gint      *start,
-                                gint      *end)
+                                bint      *start,
+                                bint      *end)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
 
@@ -4972,9 +4972,9 @@ btk_label_get_selection_bounds (BtkLabel  *label,
     }
   else
     {
-      gint start_index, end_index;
-      gint start_offset, end_offset;
-      gint len;
+      bint start_index, end_index;
+      bint start_offset, end_offset;
+      bint len;
       
       start_index = MIN (label->select_info->selection_anchor,
                    label->select_info->selection_end);
@@ -4994,7 +4994,7 @@ btk_label_get_selection_bounds (BtkLabel  *label,
 
       if (start_offset > end_offset)
         {
-          gint tmp = start_offset;
+          bint tmp = start_offset;
           start_offset = end_offset;
           end_offset = tmp;
         }
@@ -5049,8 +5049,8 @@ btk_label_get_layout (BtkLabel *label)
  **/
 void
 btk_label_get_layout_offsets (BtkLabel *label,
-                              gint     *x,
-                              gint     *y)
+                              bint     *x,
+                              bint     *y)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -5070,7 +5070,7 @@ btk_label_get_layout_offsets (BtkLabel *label,
  **/
 void
 btk_label_set_use_markup (BtkLabel *label,
-			  gboolean  setting)
+			  bboolean  setting)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -5088,7 +5088,7 @@ btk_label_set_use_markup (BtkLabel *label,
  *
  * Return value: %TRUE if the label's text will be parsed for markup.
  **/
-gboolean
+bboolean
 btk_label_get_use_markup (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -5106,7 +5106,7 @@ btk_label_get_use_markup (BtkLabel *label)
  */
 void
 btk_label_set_use_underline (BtkLabel *label,
-			     gboolean  setting)
+			     bboolean  setting)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -5124,7 +5124,7 @@ btk_label_set_use_underline (BtkLabel *label,
  * Return value: %TRUE whether an embedded underline in the label indicates
  *               the mnemonic accelerator keys.
  **/
-gboolean
+bboolean
 btk_label_get_use_underline (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -5143,7 +5143,7 @@ btk_label_get_use_underline (BtkLabel *label)
  */
 void
 btk_label_set_single_line_mode (BtkLabel *label,
-                                gboolean single_line_mode)
+                                bboolean single_line_mode)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -5170,7 +5170,7 @@ btk_label_set_single_line_mode (BtkLabel *label,
  *
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_label_get_single_line_mode  (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -5185,14 +5185,14 @@ btk_label_get_single_line_mode  (BtkLabel *label)
  */
 static void
 get_better_cursor (BtkLabel *label,
-		   gint      index,
-		   gint      *x,
-		   gint      *y)
+		   bint      index,
+		   bint      *x,
+		   bint      *y)
 {
   BdkKeymap *keymap = bdk_keymap_get_for_display (btk_widget_get_display (BTK_WIDGET (label)));
   BangoDirection keymap_direction = bdk_keymap_get_direction (keymap);
   BangoDirection cursor_direction = get_cursor_direction (label);
-  gboolean split_cursor;
+  bboolean split_cursor;
   BangoRectangle strong_pos, weak_pos;
   
   g_object_get (btk_widget_get_settings (BTK_WIDGET (label)),
@@ -5225,19 +5225,19 @@ get_better_cursor (BtkLabel *label,
 }
 
 
-static gint
+static bint
 btk_label_move_logically (BtkLabel *label,
-			  gint      start,
-			  gint      count)
+			  bint      start,
+			  bint      count)
 {
-  gint offset = g_utf8_pointer_to_offset (label->text,
+  bint offset = g_utf8_pointer_to_offset (label->text,
 					  label->text + start);
 
   if (label->text)
     {
       BangoLogAttr *log_attrs;
-      gint n_attrs;
-      gint length;
+      bint n_attrs;
+      bint length;
 
       btk_label_ensure_layout (label);
       
@@ -5268,20 +5268,20 @@ btk_label_move_logically (BtkLabel *label,
   return g_utf8_offset_to_pointer (label->text, offset) - label->text;
 }
 
-static gint
+static bint
 btk_label_move_visually (BtkLabel *label,
-			 gint      start,
-			 gint      count)
+			 bint      start,
+			 bint      count)
 {
-  gint index;
+  bint index;
 
   index = start;
   
   while (count != 0)
     {
       int new_index, new_trailing;
-      gboolean split_cursor;
-      gboolean strong;
+      bboolean split_cursor;
+      bboolean strong;
 
       btk_label_ensure_layout (label);
 
@@ -5310,7 +5310,7 @@ btk_label_move_visually (BtkLabel *label,
 	  count++;
 	}
 
-      if (new_index < 0 || new_index == G_MAXINT)
+      if (new_index < 0 || new_index == B_MAXINT)
 	break;
 
       index = new_index;
@@ -5322,19 +5322,19 @@ btk_label_move_visually (BtkLabel *label,
   return index;
 }
 
-static gint
+static bint
 btk_label_move_forward_word (BtkLabel *label,
-			     gint      start)
+			     bint      start)
 {
-  gint new_pos = g_utf8_pointer_to_offset (label->text,
+  bint new_pos = g_utf8_pointer_to_offset (label->text,
 					   label->text + start);
-  gint length;
+  bint length;
 
   length = g_utf8_strlen (label->text, -1);
   if (new_pos < length)
     {
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       btk_label_ensure_layout (label);
       
@@ -5352,17 +5352,17 @@ btk_label_move_forward_word (BtkLabel *label,
 }
 
 
-static gint
+static bint
 btk_label_move_backward_word (BtkLabel *label,
-			      gint      start)
+			      bint      start)
 {
-  gint new_pos = g_utf8_pointer_to_offset (label->text,
+  bint new_pos = g_utf8_pointer_to_offset (label->text,
 					   label->text + start);
 
   if (new_pos > 0)
     {
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       btk_label_ensure_layout (label);
       
@@ -5383,11 +5383,11 @@ btk_label_move_backward_word (BtkLabel *label,
 static void
 btk_label_move_cursor (BtkLabel       *label,
 		       BtkMovementStep step,
-		       gint            count,
-		       gboolean        extend_selection)
+		       bint            count,
+		       bboolean        extend_selection)
 {
-  gint old_pos;
-  gint new_pos;
+  bint old_pos;
+  bint new_pos;
   
   if (label->select_info == NULL)
     return;
@@ -5404,9 +5404,9 @@ btk_label_move_cursor (BtkLabel       *label,
 	{
 	case BTK_MOVEMENT_VISUAL_POSITIONS:
 	  {
-	    gint end_x, end_y;
-	    gint anchor_x, anchor_y;
-	    gboolean end_is_left;
+	    bint end_x, end_y;
+	    bint anchor_x, anchor_y;
+	    bboolean end_is_left;
 	    
 	    get_better_cursor (label, label->select_info->selection_end, &end_x, &end_y);
 	    get_better_cursor (label, label->select_info->selection_anchor, &anchor_x, &anchor_y);
@@ -5513,8 +5513,8 @@ btk_label_copy_clipboard (BtkLabel *label)
 {
   if (label->text && label->select_info)
     {
-      gint start, end;
-      gint len;
+      bint start, end;
+      bint len;
       BtkClipboard *clipboard;
 
       start = MIN (label->select_info->selection_anchor,
@@ -5557,16 +5557,16 @@ static void
 activate_cb (BtkWidget *menuitem,
 	     BtkLabel  *label)
 {
-  const gchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
+  const bchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (label, signal);
 }
 
 static void
 append_action_signal (BtkLabel     *label,
 		      BtkWidget    *menu,
-		      const gchar  *stock_id,
-		      const gchar  *signal,
-                      gboolean      sensitive)
+		      const bchar  *stock_id,
+		      const bchar  *signal,
+                      bboolean      sensitive)
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
@@ -5592,10 +5592,10 @@ popup_menu_detach (BtkWidget *attach_widget,
 
 static void
 popup_position_func (BtkMenu   *menu,
-                     gint      *x,
-                     gint      *y,
-                     gboolean  *push_in,
-                     gpointer	user_data)
+                     bint      *x,
+                     bint      *y,
+                     bboolean  *push_in,
+                     bpointer	user_data)
 {
   BtkLabel *label;
   BtkWidget *widget;
@@ -5639,7 +5639,7 @@ copy_link_activate_cb (BtkMenuItem *menu_item,
                        BtkLabel    *label)
 {
   BtkClipboard *clipboard;
-  const gchar *uri;
+  const bchar *uri;
 
   uri = btk_label_get_current_uri (label);
   if (uri)
@@ -5649,7 +5649,7 @@ copy_link_activate_cb (BtkMenuItem *menu_item,
     }
 }
 
-static gboolean
+static bboolean
 btk_label_popup_menu (BtkWidget *widget)
 {
   btk_label_do_popup (BTK_LABEL (widget), NULL);
@@ -5664,7 +5664,7 @@ btk_label_do_popup (BtkLabel       *label,
   BtkWidget *menuitem;
   BtkWidget *menu;
   BtkWidget *image;
-  gboolean have_selection;
+  bboolean have_selection;
   BtkLabelLink *link;
 
   if (!label->select_info)
@@ -5795,7 +5795,7 @@ btk_label_rescan_links (BtkLabel *label)
 
       if (underline != NULL && color != NULL)
         {
-          gint start, end;
+          bint start, end;
           BangoRectangle start_pos;
           BangoRectangle end_pos;
           BtkLabelLink *link;
@@ -5819,9 +5819,9 @@ btk_label_rescan_links (BtkLabel *label)
     bango_attr_iterator_destroy (iter);
 }
 
-static gboolean
+static bboolean
 btk_label_activate_link (BtkLabel    *label,
-                         const gchar *uri)
+                         const bchar *uri)
 {
   BtkWidget *widget = BTK_WIDGET (label);
   GError *error = NULL;
@@ -5840,7 +5840,7 @@ static void
 emit_activate_link (BtkLabel     *label,
                     BtkLabelLink *link)
 {
-  gboolean handled;
+  bboolean handled;
 
   g_signal_emit (label, signals[ACTIVATE_LINK], 0, link->uri, &handled);
   if (handled && label->track_links && !link->visited)
@@ -5915,7 +5915,7 @@ btk_label_get_current_link (BtkLabel *label)
  *
  * Since: 2.18
  */
-const gchar *
+const bchar *
 btk_label_get_current_uri (BtkLabel *label)
 {
   BtkLabelLink *link;
@@ -5941,7 +5941,7 @@ btk_label_get_current_uri (BtkLabel *label)
  */
 void
 btk_label_set_track_visited_links (BtkLabel *label,
-                                   gboolean  track_links)
+                                   bboolean  track_links)
 {
   g_return_if_fail (BTK_IS_LABEL (label));
 
@@ -5969,7 +5969,7 @@ btk_label_set_track_visited_links (BtkLabel *label,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_label_get_track_visited_links (BtkLabel *label)
 {
   g_return_val_if_fail (BTK_IS_LABEL (label), FALSE);
@@ -5977,16 +5977,16 @@ btk_label_get_track_visited_links (BtkLabel *label)
   return label->track_links;
 }
 
-static gboolean
+static bboolean
 btk_label_query_tooltip (BtkWidget  *widget,
-                         gint        x,
-                         gint        y,
-                         gboolean    keyboard_tip,
+                         bint        x,
+                         bint        y,
+                         bboolean    keyboard_tip,
                          BtkTooltip *tooltip)
 {
   BtkLabel *label = BTK_LABEL (widget);
   BtkLabelSelectionInfo *info = label->select_info;
-  gint index = -1;
+  bint index = -1;
   GList *l;
 
   if (info && info->links)

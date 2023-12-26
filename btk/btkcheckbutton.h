@@ -70,12 +70,12 @@ struct _BtkCheckButtonClass
 
 GType      btk_check_button_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_check_button_new               (void);
-BtkWidget* btk_check_button_new_with_label    (const gchar *label);
-BtkWidget* btk_check_button_new_with_mnemonic (const gchar *label);
+BtkWidget* btk_check_button_new_with_label    (const bchar *label);
+BtkWidget* btk_check_button_new_with_mnemonic (const bchar *label);
 
 void _btk_check_button_get_props (BtkCheckButton *check_button,
-				  gint           *indicator_size,
-				  gint           *indicator_spacing);
+				  bint           *indicator_size,
+				  bint           *indicator_spacing);
 
 B_END_DECLS
 

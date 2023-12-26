@@ -159,16 +159,16 @@ create_completion_model (void)
   return BTK_TREE_MODEL (store);
 }
 
-static gboolean
+static bboolean
 match_func (BtkEntryCompletion *completion,
-	    const gchar        *key,
+	    const bchar        *key,
 	    BtkTreeIter        *iter,
-	    gpointer            user_data)
+	    bpointer            user_data)
 {
-  gchar *item = NULL;
+  bchar *item = NULL;
   BtkTreeModel *model;
 
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   model = btk_entry_completion_get_model (completion);
 
@@ -188,15 +188,15 @@ match_func (BtkEntryCompletion *completion,
 
 static void
 activated_cb (BtkEntryCompletion *completion, 
-	      gint                index,
-	      gpointer            user_data)
+	      bint                index,
+	      bpointer            user_data)
 {
   g_print ("action activated: %d\n", index);
 }
 
-static gint timer_count = 0;
+static bint timer_count = 0;
 
-static gchar *dynamic_completions[] = {
+static bchar *dynamic_completions[] = {
   "BUNNY",
   "gnominious",
   "Gnomonic projection",
@@ -222,12 +222,12 @@ static gchar *dynamic_completions[] = {
   "zombie"
 };
 
-static gint
+static bint
 animation_timer (BtkEntryCompletion *completion)
 {
   BtkTreeIter iter;
-  gint n_completions = G_N_ELEMENTS (dynamic_completions);
-  gint n;
+  bint n_completions = G_N_ELEMENTS (dynamic_completions);
+  bint n;
   static BtkListStore *old_store = NULL;
   BtkListStore *store = BTK_LIST_STORE (btk_entry_completion_get_model (completion));
 
@@ -273,12 +273,12 @@ animation_timer (BtkEntryCompletion *completion)
   return TRUE;
 }
 
-gboolean 
+bboolean 
 match_selected_cb (BtkEntryCompletion *completion,
 		   BtkTreeModel       *model,
 		   BtkTreeIter        *iter)
 {
-  gchar *str;
+  bchar *str;
   BtkWidget *entry;
 
   entry = btk_entry_completion_get_entry (completion);

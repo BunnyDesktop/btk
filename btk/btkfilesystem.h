@@ -82,15 +82,15 @@ struct BtkFolder
 typedef void (* BtkFileSystemGetFolderCallback)    (GCancellable        *cancellable,
 						    BtkFolder           *folder,
 						    const GError        *error,
-						    gpointer             data);
+						    bpointer             data);
 typedef void (* BtkFileSystemGetInfoCallback)      (GCancellable        *cancellable,
 						    GFileInfo           *file_info,
 						    const GError        *error,
-						    gpointer             data);
+						    bpointer             data);
 typedef void (* BtkFileSystemVolumeMountCallback)  (GCancellable        *cancellable,
 						    BtkFileSystemVolume *volume,
 						    const GError        *error,
-						    gpointer             data);
+						    bpointer             data);
 
 /* BtkFileSystem methods */
 GType           _btk_file_system_get_type     (void) B_GNUC_CONST;
@@ -102,33 +102,33 @@ GSList *        _btk_file_system_list_bookmarks (BtkFileSystem *file_system);
 
 GCancellable *  _btk_file_system_get_info               (BtkFileSystem                     *file_system,
 							 GFile                             *file,
-							 const gchar                       *attributes,
+							 const bchar                       *attributes,
 							 BtkFileSystemGetInfoCallback       callback,
-							 gpointer                           data);
+							 bpointer                           data);
 GCancellable *  _btk_file_system_mount_volume           (BtkFileSystem                     *file_system,
 							 BtkFileSystemVolume               *volume,
 							 GMountOperation                   *mount_operation,
 							 BtkFileSystemVolumeMountCallback   callback,
-							 gpointer                           data);
+							 bpointer                           data);
 GCancellable *  _btk_file_system_mount_enclosing_volume (BtkFileSystem                     *file_system,
 							 GFile                             *file,
 							 GMountOperation                   *mount_operation,
 							 BtkFileSystemVolumeMountCallback   callback,
-							 gpointer                           data);
+							 bpointer                           data);
 
-gboolean        _btk_file_system_insert_bookmark    (BtkFileSystem      *file_system,
+bboolean        _btk_file_system_insert_bookmark    (BtkFileSystem      *file_system,
 						     GFile              *file,
-						     gint                position,
+						     bint                position,
 						     GError            **error);
-gboolean        _btk_file_system_remove_bookmark    (BtkFileSystem      *file_system,
+bboolean        _btk_file_system_remove_bookmark    (BtkFileSystem      *file_system,
 						     GFile              *file,
 						     GError            **error);
 
-gchar *         _btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
+bchar *         _btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
 						     GFile         *file);
 void            _btk_file_system_set_bookmark_label (BtkFileSystem *file_system,
 						     GFile         *file,
-						     const gchar   *label);
+						     const bchar   *label);
 
 BtkFileSystemVolume * _btk_file_system_get_volume_for_file (BtkFileSystem       *file_system,
 							    GFile               *file);
@@ -138,16 +138,16 @@ GSList *     _btk_folder_list_children (BtkFolder  *folder);
 GFileInfo *  _btk_folder_get_info      (BtkFolder  *folder,
 				        GFile      *file);
 
-gboolean     _btk_folder_is_finished_loading (BtkFolder *folder);
+bboolean     _btk_folder_is_finished_loading (BtkFolder *folder);
 
 
 /* BtkFileSystemVolume methods */
-gchar *               _btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume);
-gboolean              _btk_file_system_volume_is_mounted       (BtkFileSystemVolume *volume);
+bchar *               _btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume);
+bboolean              _btk_file_system_volume_is_mounted       (BtkFileSystemVolume *volume);
 GFile *               _btk_file_system_volume_get_root         (BtkFileSystemVolume *volume);
 BdkPixbuf *           _btk_file_system_volume_render_icon      (BtkFileSystemVolume  *volume,
 							        BtkWidget            *widget,
-							        gint                  icon_size,
+							        bint                  icon_size,
 							        GError              **error);
 
 BtkFileSystemVolume  *_btk_file_system_volume_ref              (BtkFileSystemVolume *volume);
@@ -159,12 +159,12 @@ void                   _btk_file_system_bookmark_free          (BtkFileSystemBoo
 /* GFileInfo helper functions */
 BdkPixbuf *     _btk_file_info_render_icon (GFileInfo *info,
 					    BtkWidget *widget,
-					    gint       icon_size);
+					    bint       icon_size);
 
-gboolean	_btk_file_info_consider_as_directory (GFileInfo *info);
+bboolean	_btk_file_info_consider_as_directory (GFileInfo *info);
 
 /* GFile helper functions */
-gboolean	_btk_file_has_native_path (GFile *file);
+bboolean	_btk_file_has_native_path (GFile *file);
 
 B_END_DECLS
 

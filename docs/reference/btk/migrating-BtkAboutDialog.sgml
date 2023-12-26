@@ -24,13 +24,13 @@
     <structname>BtkAboutDialog</structname>, as a first step, replace calls 
     like
     <informalexample><programlisting>
-    const gchar *documentors[] = { 
+    const bchar *documentors[] = { 
       "Documenter 1", 
       "Documenter 2", 
       NULL 
     };
 
-    const gchar *documentors[] = { 
+    const bchar *documentors[] = { 
       "Author 1", 
       "Author 2", 
       NULL 

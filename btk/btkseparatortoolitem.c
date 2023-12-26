@@ -34,22 +34,22 @@ enum {
   PROP_DRAW
 };
 
-static gboolean btk_separator_tool_item_create_menu_proxy (BtkToolItem               *item);
+static bboolean btk_separator_tool_item_create_menu_proxy (BtkToolItem               *item);
 static void     btk_separator_tool_item_set_property      (BObject                   *object,
-							   guint                      prop_id,
+							   buint                      prop_id,
 							   const BValue              *value,
 							   BParamSpec                *pspec);
 static void     btk_separator_tool_item_get_property       (BObject                   *object,
-							   guint                      prop_id,
+							   buint                      prop_id,
 							   BValue                    *value,
 							   BParamSpec                *pspec);
 static void     btk_separator_tool_item_size_request      (BtkWidget                 *widget,
 							   BtkRequisition            *requisition);
-static gboolean btk_separator_tool_item_expose            (BtkWidget                 *widget,
+static bboolean btk_separator_tool_item_expose            (BtkWidget                 *widget,
 							   BdkEventExpose            *event);
 static void     btk_separator_tool_item_add               (BtkContainer              *container,
 							   BtkWidget                 *child);
-static gint     get_space_size                            (BtkToolItem               *tool_item);
+static bint     get_space_size                            (BtkToolItem               *tool_item);
 
 
 
@@ -57,15 +57,15 @@ static gint     get_space_size                            (BtkToolItem          
 
 struct _BtkSeparatorToolItemPrivate
 {
-  guint draw : 1;
+  buint draw : 1;
 };
 
 G_DEFINE_TYPE (BtkSeparatorToolItem, btk_separator_tool_item, BTK_TYPE_TOOL_ITEM)
 
-static gint
+static bint
 get_space_size (BtkToolItem *tool_item)
 {
-  gint space_size = _btk_toolbar_get_default_space_size();
+  bint space_size = _btk_toolbar_get_default_space_size();
   BtkWidget *parent = BTK_WIDGET (tool_item)->parent;
   
   if (BTK_IS_TOOLBAR (parent))
@@ -124,7 +124,7 @@ btk_separator_tool_item_add (BtkContainer *container,
   g_warning ("attempt to add a child to an BtkSeparatorToolItem");
 }
 
-static gboolean
+static bboolean
 btk_separator_tool_item_create_menu_proxy (BtkToolItem *item)
 {
   BtkWidget *menu_item = NULL;
@@ -138,7 +138,7 @@ btk_separator_tool_item_create_menu_proxy (BtkToolItem *item)
 
 static void
 btk_separator_tool_item_set_property (BObject      *object,
-				      guint         prop_id,
+				      buint         prop_id,
 				      const BValue *value,
 				      BParamSpec   *pspec)
 {
@@ -157,7 +157,7 @@ btk_separator_tool_item_set_property (BObject      *object,
 
 static void
 btk_separator_tool_item_get_property (BObject      *object,
-				      guint         prop_id,
+				      buint         prop_id,
 				      BValue       *value,
 				      BParamSpec   *pspec)
 {
@@ -193,7 +193,7 @@ btk_separator_tool_item_size_request (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_separator_tool_item_expose (BtkWidget      *widget,
 				BdkEventExpose *event)
 {
@@ -244,7 +244,7 @@ btk_separator_tool_item_new (void)
  * 
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item)
 {
   g_return_val_if_fail (BTK_IS_SEPARATOR_TOOL_ITEM (item), FALSE);
@@ -265,7 +265,7 @@ btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item)
  */
 void
 btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
-				  gboolean              draw)
+				  bboolean              draw)
 {
   g_return_if_fail (BTK_IS_SEPARATOR_TOOL_ITEM (item));
 

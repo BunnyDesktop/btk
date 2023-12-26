@@ -44,7 +44,7 @@ bdk_rectangle_union (const BdkRectangle *src1,
 		     const BdkRectangle *src2,
 		     BdkRectangle       *dest)
 {
-  gint dest_x, dest_y;
+  bint dest_x, dest_y;
   
   g_return_if_fail (src1 != NULL);
   g_return_if_fail (src2 != NULL);
@@ -74,14 +74,14 @@ bdk_rectangle_union (const BdkRectangle *src1,
  *
  * Returns: %TRUE if the rectangles intersect.
  */
-gboolean
+bboolean
 bdk_rectangle_intersect (const BdkRectangle *src1,
 			 const BdkRectangle *src2,
 			 BdkRectangle       *dest)
 {
-  gint dest_x, dest_y;
-  gint dest_x2, dest_y2;
-  gint return_val;
+  bint dest_x, dest_y;
+  bint dest_x2, dest_y2;
+  bint return_val;
 
   g_return_val_if_fail (src1 != NULL, FALSE);
   g_return_val_if_fail (src2 != NULL, FALSE);

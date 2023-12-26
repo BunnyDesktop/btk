@@ -31,16 +31,16 @@ B_BEGIN_DECLS
 
 /* --- Bdk Test Utility API --- */
 void            bdk_test_render_sync            (BdkWindow      *window);
-gboolean        bdk_test_simulate_key           (BdkWindow      *window,
-                                                 gint            x,
-                                                 gint            y,
-                                                 guint           keyval,
+bboolean        bdk_test_simulate_key           (BdkWindow      *window,
+                                                 bint            x,
+                                                 bint            y,
+                                                 buint           keyval,
                                                  BdkModifierType modifiers,
                                                  BdkEventType    key_pressrelease);
-gboolean        bdk_test_simulate_button        (BdkWindow      *window,
-                                                 gint            x,
-                                                 gint            y,
-                                                 guint           button, /*1..3*/
+bboolean        bdk_test_simulate_button        (BdkWindow      *window,
+                                                 bint            x,
+                                                 bint            y,
+                                                 buint           button, /*1..3*/
                                                  BdkModifierType modifiers,
                                                  BdkEventType    button_pressrelease);
 

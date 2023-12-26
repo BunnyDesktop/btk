@@ -22,7 +22,7 @@ struct _BtkRotatedBin
 
   BtkWidget *child;
   BdkWindow *offscreen_window;
-  gdouble angle;
+  bdouble angle;
 };
 
 struct _BtkRotatedBinClass
@@ -33,7 +33,7 @@ struct _BtkRotatedBinClass
 GType      btk_rotated_bin_get_type  (void) B_GNUC_CONST;
 BtkWidget* btk_rotated_bin_new       (void);
 void       btk_rotated_bin_set_angle (BtkRotatedBin *bin,
-                                      gdouble        angle);
+                                      bdouble        angle);
 
 /*** implementation ***/
 
@@ -43,9 +43,9 @@ static void     btk_rotated_bin_size_request  (BtkWidget       *widget,
                                                BtkRequisition  *requisition);
 static void     btk_rotated_bin_size_allocate (BtkWidget       *widget,
                                                BtkAllocation   *allocation);
-static gboolean btk_rotated_bin_damage        (BtkWidget       *widget,
+static bboolean btk_rotated_bin_damage        (BtkWidget       *widget,
                                                BdkEventExpose  *event);
-static gboolean btk_rotated_bin_expose        (BtkWidget       *widget,
+static bboolean btk_rotated_bin_expose        (BtkWidget       *widget,
                                                BdkEventExpose  *offscreen);
 
 static void     btk_rotated_bin_add           (BtkContainer    *container,
@@ -53,9 +53,9 @@ static void     btk_rotated_bin_add           (BtkContainer    *container,
 static void     btk_rotated_bin_remove        (BtkContainer    *container,
                                                BtkWidget       *widget);
 static void     btk_rotated_bin_forall        (BtkContainer    *container,
-                                               gboolean         include_internals,
+                                               bboolean         include_internals,
                                                BtkCallback      callback,
-                                               gpointer         callback_data);
+                                               bpointer         callback_data);
 static GType    btk_rotated_bin_child_type    (BtkContainer    *container);
 
 G_DEFINE_TYPE (BtkRotatedBin, btk_rotated_bin, BTK_TYPE_CONTAINER);
@@ -226,8 +226,8 @@ btk_rotated_bin_realize (BtkWidget *widget)
   BtkRotatedBin *bin = BTK_ROTATED_BIN (widget);
   BdkWindow *bdk_window;
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BtkRequisition child_requisition;
   BtkAllocation widget_allocation, bin_child_allocation;
   BtkStyle *style;
@@ -334,7 +334,7 @@ btk_rotated_bin_remove (BtkContainer *container,
                         BtkWidget    *widget)
 {
   BtkRotatedBin *bin = BTK_ROTATED_BIN (container);
-  gboolean was_visible;
+  bboolean was_visible;
 
   was_visible = btk_widget_get_visible (widget);
 
@@ -351,9 +351,9 @@ btk_rotated_bin_remove (BtkContainer *container,
 
 static void
 btk_rotated_bin_forall (BtkContainer *container,
-                        gboolean      include_internals,
+                        bboolean      include_internals,
                         BtkCallback   callback,
-                        gpointer      callback_data)
+                        bpointer      callback_data)
 {
   BtkRotatedBin *bin = BTK_ROTATED_BIN (container);
 
@@ -365,7 +365,7 @@ btk_rotated_bin_forall (BtkContainer *container,
 
 void
 btk_rotated_bin_set_angle (BtkRotatedBin *bin,
-                           gdouble        angle)
+                           bdouble        angle)
 {
   g_return_if_fail (BTK_IS_ROTATED_BIN (bin));
 
@@ -381,7 +381,7 @@ btk_rotated_bin_size_request (BtkWidget      *widget,
 {
   BtkRotatedBin *bin = BTK_ROTATED_BIN (widget);
   BtkRequisition child_requisition;
-  gint border_width;
+  bint border_width;
   double s, c;
   double w, h;
   
@@ -407,9 +407,9 @@ btk_rotated_bin_size_allocate (BtkWidget     *widget,
                                BtkAllocation *allocation)
 {
   BtkRotatedBin *bin = BTK_ROTATED_BIN (widget);
-  gint border_width;
-  gint w, h;
-  gdouble s, c;
+  bint border_width;
+  bint w, h;
+  bdouble s, c;
 
   btk_widget_set_allocation (widget, allocation);
 
@@ -456,7 +456,7 @@ btk_rotated_bin_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_rotated_bin_damage (BtkWidget      *widget,
                         BdkEventExpose *event)
 {
@@ -465,14 +465,14 @@ btk_rotated_bin_damage (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_rotated_bin_expose (BtkWidget      *widget,
                         BdkEventExpose *event)
 {
   BtkRotatedBin *bin = BTK_ROTATED_BIN (widget);
-  gint width, height;
-  gdouble s, c;
-  gdouble w, h;
+  bint width, height;
+  bdouble s, c;
+  bdouble w, h;
 
   if (btk_widget_is_drawable (widget))
     {

@@ -54,7 +54,7 @@ static void update_widgets (BtkPrinterOptionWidget *widget);
 struct BtkPrinterOptionWidgetPrivate
 {
   BtkPrinterOption *source;
-  gulong source_changed_handler;
+  bulong source_changed_handler;
   
   BtkWidget *check;
   BtkWidget *combo;
@@ -75,20 +75,20 @@ enum {
   PROP_SOURCE
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkPrinterOptionWidget, btk_printer_option_widget, BTK_TYPE_HBOX)
 
 static void btk_printer_option_widget_set_property (BObject      *object,
-						    guint         prop_id,
+						    buint         prop_id,
 						    const BValue *value,
 						    BParamSpec   *pspec);
 static void btk_printer_option_widget_get_property (BObject      *object,
-						    guint         prop_id,
+						    buint         prop_id,
 						    BValue       *value,
 						    BParamSpec   *pspec);
-static gboolean btk_printer_option_widget_mnemonic_activate (BtkWidget *widget,
-							      gboolean  group_cycling);
+static bboolean btk_printer_option_widget_mnemonic_activate (BtkWidget *widget,
+							      bboolean  group_cycling);
 
 static void
 btk_printer_option_widget_class_init (BtkPrinterOptionWidgetClass *class)
@@ -151,7 +151,7 @@ btk_printer_option_widget_finalize (BObject *object)
 
 static void
 btk_printer_option_widget_set_property (BObject         *object,
-					guint            prop_id,
+					buint            prop_id,
 					const BValue    *value,
 					BParamSpec      *pspec)
 {
@@ -172,7 +172,7 @@ btk_printer_option_widget_set_property (BObject         *object,
 
 static void
 btk_printer_option_widget_get_property (BObject    *object,
-					guint       prop_id,
+					buint       prop_id,
 					BValue     *value,
 					BParamSpec *pspec)
 {
@@ -190,9 +190,9 @@ btk_printer_option_widget_get_property (BObject    *object,
     }
 }
 
-static gboolean
+static bboolean
 btk_printer_option_widget_mnemonic_activate (BtkWidget *widget,
-					     gboolean   group_cycling)
+					     bboolean   group_cycling)
 {
   BtkPrinterOptionWidget *powidget = BTK_PRINTER_OPTION_WIDGET (widget);
   BtkPrinterOptionWidgetPrivate *priv = powidget->priv;
@@ -310,8 +310,8 @@ combo_box_new (void)
   
 static void
 combo_box_append (BtkWidget   *combo,
-		  const gchar *display_text,
-		  const gchar *value)
+		  const bchar *display_text,
+		  const bchar *value)
 {
   BtkTreeModel *model;
   BtkListStore *store;
@@ -329,17 +329,17 @@ combo_box_append (BtkWidget   *combo,
 
 struct ComboSet {
   BtkComboBox *combo;
-  const gchar *value;
+  const bchar *value;
 };
 
-static gboolean
+static bboolean
 set_cb (BtkTreeModel *model, 
 	BtkTreePath  *path, 
 	BtkTreeIter  *iter, 
-	gpointer      data)
+	bpointer      data)
 {
   struct ComboSet *set_data = data;
-  gboolean found;
+  bboolean found;
   char *value;
   
   btk_tree_model_get (model, iter, VALUE_COLUMN, &value, -1);
@@ -354,7 +354,7 @@ set_cb (BtkTreeModel *model,
 
 static void
 combo_box_set (BtkWidget   *combo,
-	       const gchar *value)
+	       const bchar *value)
 {
   BtkTreeModel *model;
   struct ComboSet set_data;
@@ -366,11 +366,11 @@ combo_box_set (BtkWidget   *combo,
   btk_tree_model_foreach (model, set_cb, &set_data);
 }
 
-static gchar *
-combo_box_get (BtkWidget *combo, gboolean *custom)
+static bchar *
+combo_box_get (BtkWidget *combo, bboolean *custom)
 {
   BtkTreeModel *model;
-  gchar *value;
+  bchar *value;
   BtkTreeIter iter;
 
   model = btk_combo_box_get_model (BTK_COMBO_BOX (combo));
@@ -396,7 +396,7 @@ combo_box_get (BtkWidget *combo, gboolean *custom)
        * the non-custom option instead. */
       do
         {
-          gchar *val, *name;
+          bchar *val, *name;
           btk_tree_model_get (model, &iter, VALUE_COLUMN, &val,
                                             NAME_COLUMN, &name, -1);
           if (g_str_equal (value, name))
@@ -479,8 +479,8 @@ filesave_changed_cb (BtkWidget              *button,
                      BtkPrinterOptionWidget *widget)
 {
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
-  gchar *uri, *file;
-  gchar *directory;
+  bchar *uri, *file;
+  bchar *directory;
 
   file = g_filename_from_utf8 (btk_entry_get_text (BTK_ENTRY (priv->entry)),
 			       -1, NULL, NULL, NULL);
@@ -498,7 +498,7 @@ filesave_changed_cb (BtkWidget              *button,
         uri = g_filename_to_uri (file, NULL, NULL);
       else
         {
-          gchar *path;
+          bchar *path;
 
 #ifdef G_OS_UNIX
           if (file[0] == '~' && file[1] == '/')
@@ -522,7 +522,7 @@ filesave_changed_cb (BtkWidget              *button,
         uri = g_strdup (file);
       else
         {
-          gchar *chooser_uri = btk_file_chooser_get_uri (BTK_FILE_CHOOSER (priv->combo));
+          bchar *chooser_uri = btk_file_chooser_get_uri (BTK_FILE_CHOOSER (priv->combo));
           if (chooser_uri)
             {
               uri = g_build_path ("/", chooser_uri, file, NULL);
@@ -544,16 +544,16 @@ filesave_changed_cb (BtkWidget              *button,
   emit_changed (widget);
 }
 
-static gchar *
-filter_numeric (const gchar *val,
-                gboolean     allow_neg,
-		gboolean     allow_dec,
-                gboolean    *changed_out)
+static bchar *
+filter_numeric (const bchar *val,
+                bboolean     allow_neg,
+		bboolean     allow_dec,
+                bboolean    *changed_out)
 {
-  gchar *filtered_val;
+  bchar *filtered_val;
   int i, j;
   int len = strlen (val);
-  gboolean dec_set = FALSE;
+  bboolean dec_set = FALSE;
 
   filtered_val = g_malloc (len + 1);
 
@@ -593,10 +593,10 @@ combo_changed_cb (BtkWidget              *combo,
 		  BtkPrinterOptionWidget *widget)
 {
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
-  gchar *value;
-  gchar *filtered_val = NULL;
-  gboolean changed;
-  gboolean custom = TRUE;
+  bchar *value;
+  bchar *filtered_val = NULL;
+  bboolean changed;
+  bboolean custom = TRUE;
 
   g_signal_handler_block (priv->source, priv->source_changed_handler);
   
@@ -648,7 +648,7 @@ entry_changed_cb (BtkWidget              *entry,
 		  BtkPrinterOptionWidget *widget)
 {
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
-  const gchar *value;
+  const bchar *value;
   
   g_signal_handler_block (priv->source, priv->source_changed_handler);
   value = btk_entry_get_text (BTK_ENTRY (entry));
@@ -664,7 +664,7 @@ radio_changed_cb (BtkWidget              *button,
 		  BtkPrinterOptionWidget *widget)
 {
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;
-  gchar *value;
+  bchar *value;
   
   g_signal_handler_block (priv->source, priv->source_changed_handler);
   value = g_object_get_data (B_OBJECT (button), "value");
@@ -676,9 +676,9 @@ radio_changed_cb (BtkWidget              *button,
 
 static void
 select_maybe (BtkWidget   *widget, 
-	      const gchar *value)
+	      const bchar *value)
 {
-  gchar *v = g_object_get_data (B_OBJECT (widget), "value");
+  bchar *v = g_object_get_data (B_OBJECT (widget), "value");
       
   if (strcmp (value, v) == 0)
     btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (widget), TRUE);
@@ -686,17 +686,17 @@ select_maybe (BtkWidget   *widget,
 
 static void
 alternative_set (BtkWidget   *box,
-		 const gchar *value)
+		 const bchar *value)
 {
   btk_container_foreach (BTK_CONTAINER (box), 
 			 (BtkCallback) select_maybe,
-			 (gpointer) value);
+			 (bpointer) value);
 }
 
 static GSList *
 alternative_append (BtkWidget              *box,
-		    const gchar            *label,
-                    const gchar            *value,
+		    const bchar            *label,
+                    const bchar            *value,
 		    BtkPrinterOptionWidget *widget,
 		    GSList                 *group)
 {
@@ -706,7 +706,7 @@ alternative_append (BtkWidget              *box,
   btk_widget_show (button);
   btk_box_pack_start (BTK_BOX (box), button, FALSE, FALSE, 0);
 
-  g_object_set_data (B_OBJECT (button), "value", (gpointer)value);
+  g_object_set_data (B_OBJECT (button), "value", (bpointer)value);
   g_signal_connect (button, "toggled", 
 		    G_CALLBACK (radio_changed_cb), widget);
 
@@ -927,10 +927,10 @@ update_widgets (BtkPrinterOptionWidget *widget)
       }
     case BTK_PRINTER_OPTION_TYPE_FILESAVE:
       {
-        gchar *filename = g_filename_from_uri (source->value, NULL, NULL);
+        bchar *filename = g_filename_from_uri (source->value, NULL, NULL);
         if (filename != NULL)
           {
-            gchar *basename, *dirname, *text;
+            bchar *basename, *dirname, *text;
 
             basename = g_path_get_basename (filename);
             dirname = g_path_get_dirname (filename);
@@ -960,7 +960,7 @@ update_widgets (BtkPrinterOptionWidget *widget)
     btk_widget_hide (priv->image);
 }
 
-gboolean
+bboolean
 btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *widget)
 {
   return widget->priv->label != NULL;
@@ -972,7 +972,7 @@ btk_printer_option_widget_get_external_label (BtkPrinterOptionWidget  *widget)
   return widget->priv->label;
 }
 
-const gchar *
+const bchar *
 btk_printer_option_widget_get_value (BtkPrinterOptionWidget *widget)
 {
   BtkPrinterOptionWidgetPrivate *priv = widget->priv;

@@ -80,7 +80,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkOldEditable.html#BtkOldEditable--editable" title="The “editable” property">editable</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -212,7 +212,7 @@ BtkOldEditable implements
 <a name="BtkTextFunction"></a><h3>BtkTextFunction ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkTextFunction<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *editable</code></em>,
-                    <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                    <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <div class="warning"><p><code class="literal">BtkTextFunction</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -220,8 +220,8 @@ BtkOldEditable implements
 <a name="btk-old-editable-claim-selection"></a><h3>btk_old_editable_claim_selection ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_old_editable_claim_selection (<em class="parameter"><code><a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *old_editable</code></em>,
-                                  <em class="parameter"><code><span class="type">gboolean</span> claim</code></em>,
-                                  <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bboolean</span> claim</code></em>,
+                                  <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_old_editable_claim_selection</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Claims or gives up ownership of the selection.</p>
 <div class="refsect3">
@@ -283,11 +283,11 @@ btk_old_editable_changed (<em class="parameter"><code><a class="link" href="BtkO
 <div class="refsect2">
 <a name="BtkOldEditable-struct"></a><h3>struct BtkOldEditable</h3>
 <pre class="programlisting">struct BtkOldEditable {
-  guint      current_pos;
+  buint      current_pos;
 
-  guint      selection_start_pos;
-  guint      selection_end_pos;
-  guint      has_selection : 1;
+  buint      selection_start_pos;
+  buint      selection_end_pos;
+  buint      has_selection : 1;
 };
 </pre>
 <div class="warning"><p><code class="literal">BtkOldEditable</code> is deprecated and should not be used in newly-written code.</p></div>
@@ -297,7 +297,7 @@ btk_old_editable_changed (<em class="parameter"><code><a class="link" href="BtkO
 <a name="BtkOldEditable.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkOldEditable--editable"></a><h3>The <code class="literal">“editable”</code> property</h3>
-<pre class="programlisting">  “editable”                 <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “editable”                 <span class="type">bboolean</span></pre>
 <p>Owner: BtkOldEditable</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
@@ -317,7 +317,7 @@ btk_old_editable_changed (<em class="parameter"><code><a class="link" href="BtkO
 <a name="BtkOldEditable-activate"></a><h3>The <code class="literal">“activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -325,7 +325,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <a name="BtkOldEditable-copy-clipboard"></a><h3>The <code class="literal">“copy-clipboard”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -333,7 +333,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <a name="BtkOldEditable-cut-clipboard"></a><h3>The <code class="literal">“cut-clipboard”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -342,7 +342,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -351,7 +351,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -360,7 +360,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -370,7 +370,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
                <span class="type">int</span>             arg2,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -380,7 +380,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
                <span class="type">int</span>             arg2,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -389,7 +389,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -398,7 +398,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -407,7 +407,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
                <span class="type">int</span>             arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -415,7 +415,7 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <a name="BtkOldEditable-paste-clipboard"></a><h3>The <code class="literal">“paste-clipboard”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -423,8 +423,8 @@ user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"
 <a name="BtkOldEditable-set-editable"></a><h3>The <code class="literal">“set-editable”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkOldEditable.html" title="BtkOldEditable"><span class="type">BtkOldEditable</span></a> *oldeditable,
-               <span class="type">gboolean</span>        arg1,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bboolean</span>        arg1,
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>Flags: Action</p>
 </div>
 </div>

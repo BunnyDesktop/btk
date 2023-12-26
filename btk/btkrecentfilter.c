@@ -45,7 +45,7 @@ struct _BtkRecentFilter
 {
   BtkObject parent_instance;
   
-  gchar *name;
+  bchar *name;
   GSList *rules;
   
   BtkRecentFilterFlags needed;
@@ -62,16 +62,16 @@ struct _FilterRule
   BtkRecentFilterFlags needed;
   
   union {
-    gchar *uri;
-    gchar *pattern;
-    gchar *mime_type;
+    bchar *uri;
+    bchar *pattern;
+    bchar *mime_type;
     GSList *pixbuf_formats;
-    gchar *application;
-    gchar *group;
-    gint age;
+    bchar *application;
+    bchar *group;
+    bint age;
     struct {
       BtkRecentFilterFunc func;
-      gpointer data;
+      bpointer data;
       GDestroyNotify data_destroy;
     } custom;
   } u;
@@ -190,7 +190,7 @@ btk_recent_filter_new (void)
  */
 void
 btk_recent_filter_set_name (BtkRecentFilter *filter,
-			    const gchar     *name)
+			    const bchar     *name)
 {
   g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   
@@ -212,7 +212,7 @@ btk_recent_filter_set_name (BtkRecentFilter *filter,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_recent_filter_get_name (BtkRecentFilter *filter)
 {
   g_return_val_if_fail (BTK_IS_RECENT_FILTER (filter), NULL);
@@ -261,7 +261,7 @@ recent_filter_add_rule (BtkRecentFilter *filter,
  */
 void
 btk_recent_filter_add_mime_type (BtkRecentFilter *filter,
-				 const gchar     *mime_type)
+				 const bchar     *mime_type)
 {
   FilterRule *rule;
   
@@ -288,7 +288,7 @@ btk_recent_filter_add_mime_type (BtkRecentFilter *filter,
  */
 void
 btk_recent_filter_add_pattern (BtkRecentFilter *filter,
-			       const gchar     *pattern)
+			       const bchar     *pattern)
 {
   FilterRule *rule;
   
@@ -339,7 +339,7 @@ btk_recent_filter_add_pixbuf_formats (BtkRecentFilter *filter)
  */
 void
 btk_recent_filter_add_application (BtkRecentFilter *filter,
-				   const gchar     *application)
+				   const bchar     *application)
 {
   FilterRule *rule;
   
@@ -366,7 +366,7 @@ btk_recent_filter_add_application (BtkRecentFilter *filter,
  */
 void
 btk_recent_filter_add_group (BtkRecentFilter *filter,
-			     const gchar     *group)
+			     const bchar     *group)
 {
   FilterRule *rule;
   
@@ -393,7 +393,7 @@ btk_recent_filter_add_group (BtkRecentFilter *filter,
  */
 void
 btk_recent_filter_add_age (BtkRecentFilter *filter,
-			   gint             days)
+			   bint             days)
 {
   FilterRule *rule;
   
@@ -429,7 +429,7 @@ void
 btk_recent_filter_add_custom (BtkRecentFilter      *filter,
 			      BtkRecentFilterFlags  needed,
 			      BtkRecentFilterFunc   func,
-			      gpointer              data,
+			      bpointer              data,
 			      GDestroyNotify        data_destroy)
 {
   FilterRule *rule;
@@ -466,7 +466,7 @@ btk_recent_filter_add_custom (BtkRecentFilter      *filter,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_filter_filter (BtkRecentFilter           *filter,
 			  const BtkRecentFilterInfo *filter_info)
 {
@@ -487,8 +487,8 @@ btk_recent_filter_filter (BtkRecentFilter           *filter,
         case FILTER_RULE_MIME_TYPE:
           if (filter_info->mime_type != NULL)
             {
-              gchar *filter_content_type, *rule_content_type;
-              gboolean match;
+              bchar *filter_content_type, *rule_content_type;
+              bboolean match;
 
               filter_content_type = g_content_type_from_mime_type (filter_info->mime_type);
               rule_content_type = g_content_type_from_mime_type (rule->u.mime_type);
@@ -503,7 +503,7 @@ btk_recent_filter_filter (BtkRecentFilter           *filter,
         case FILTER_RULE_APPLICATION:
           if (filter_info->applications)
             {
-              gint i;
+              bint i;
               
               for (i = 0; filter_info->applications[i] != NULL; i++)
                 {
@@ -515,7 +515,7 @@ btk_recent_filter_filter (BtkRecentFilter           *filter,
 	case FILTER_RULE_GROUP:
 	  if (filter_info->groups)
             {
-	      gint i;
+	      bint i;
 
 	      for (i = 0; filter_info->groups[i] != NULL; i++)
 		{
@@ -532,8 +532,8 @@ btk_recent_filter_filter (BtkRecentFilter           *filter,
 
 	    for (list = rule->u.pixbuf_formats; list; list = list->next)
               {
-                gint i;
-		gchar **mime_types;
+                bint i;
+		bchar **mime_types;
 
 		mime_types = bdk_pixbuf_format_get_mime_types (list->data);
 

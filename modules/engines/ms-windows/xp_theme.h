@@ -119,36 +119,36 @@ typedef struct
   BdkDrawable *drawable;
   BdkGC *gc;
   
-  gint x_offset;
-  gint y_offset;
+  bint x_offset;
+  bint y_offset;
   
   /*< private >*/
-  gpointer data;
+  bpointer data;
 } XpDCInfo;
 
 HDC get_window_dc (BtkStyle *style,
 		   BdkWindow *window,
 		   BtkStateType state_type,
 		   XpDCInfo *dc_info_out,
-		   gint x, gint y, gint width, gint height,
+		   bint x, bint y, bint width, bint height,
 		   RECT *rect_out);
 void release_window_dc (XpDCInfo *dc_info);
 
 void xp_theme_init (void);
 void xp_theme_reset (void);
 void xp_theme_exit (void);
-gboolean xp_theme_draw (BdkWindow *win, XpThemeElement element,
+bboolean xp_theme_draw (BdkWindow *win, XpThemeElement element,
                         BtkStyle *style, int x, int y, int width,
                         int height, BtkStateType state_type,
                         BdkRectangle *area);
-gboolean xp_theme_is_drawable (XpThemeElement element);
-gboolean xp_theme_get_element_dimensions (XpThemeElement element,
+bboolean xp_theme_is_drawable (XpThemeElement element);
+bboolean xp_theme_get_element_dimensions (XpThemeElement element,
                                           BtkStateType state_type,
-                                          gint *cx, gint *cy);
-gboolean xp_theme_get_system_font (XpThemeClass klazz, XpThemeFont fontId, OUT LOGFONTW *lf);
-gboolean xp_theme_get_system_color (XpThemeClass klazz, int colorId, OUT DWORD *pColor);
-gboolean xp_theme_get_system_metric (XpThemeClass klazz, int metricId, OUT int *pVal);
+                                          bint *cx, bint *cy);
+bboolean xp_theme_get_system_font (XpThemeClass klazz, XpThemeFont fontId, OUT LOGFONTW *lf);
+bboolean xp_theme_get_system_color (XpThemeClass klazz, int colorId, OUT DWORD *pColor);
+bboolean xp_theme_get_system_metric (XpThemeClass klazz, int metricId, OUT int *pVal);
 
-gboolean xp_theme_is_active (void);
+bboolean xp_theme_is_active (void);
 
 #endif /* XP_THEME_H */

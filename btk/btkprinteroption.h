@@ -70,9 +70,9 @@ struct _BtkPrinterOption
   char **choices;
   char **choices_display;
   
-  gboolean activates_default;
+  bboolean activates_default;
 
-  gboolean has_conflict;
+  bboolean has_conflict;
   char *group;
 };
 
@@ -100,21 +100,21 @@ BtkPrinterOption *btk_printer_option_new                    (const char         
 void              btk_printer_option_set                    (BtkPrinterOption     *option,
 							     const char           *value);
 void              btk_printer_option_set_has_conflict       (BtkPrinterOption     *option,
-							     gboolean              has_conflict);
+							     bboolean              has_conflict);
 void              btk_printer_option_clear_has_conflict     (BtkPrinterOption     *option);
 void              btk_printer_option_set_boolean            (BtkPrinterOption     *option,
-							     gboolean              value);
+							     bboolean              value);
 void              btk_printer_option_allocate_choices       (BtkPrinterOption     *option,
 							     int                   num);
 void              btk_printer_option_choices_from_array     (BtkPrinterOption     *option,
 							     int                   num_choices,
 							     char                 *choices[],
 							     char                 *choices_display[]);
-gboolean          btk_printer_option_has_choice             (BtkPrinterOption     *option,
+bboolean          btk_printer_option_has_choice             (BtkPrinterOption     *option,
 							    const char           *choice);
 void              btk_printer_option_set_activates_default (BtkPrinterOption     *option,
-							    gboolean              activates);
-gboolean          btk_printer_option_get_activates_default (BtkPrinterOption     *option);
+							    bboolean              activates);
+bboolean          btk_printer_option_get_activates_default (BtkPrinterOption     *option);
 
 
 B_END_DECLS

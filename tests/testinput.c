@@ -36,19 +36,19 @@ static BdkPixmap *pixmap = NULL;
 
 /* Information about cursor */
 
-static gint cursor_proximity = TRUE;
-static gdouble cursor_x;
-static gdouble cursor_y;
+static bint cursor_proximity = TRUE;
+static bdouble cursor_x;
+static bdouble cursor_y;
 
 /* Unique ID of current device */
 static BdkDevice *current_device;
 
 /* Erase the old cursor, and/or draw a new one, if necessary */
 static void
-update_cursor (BtkWidget *widget,  gdouble x, gdouble y)
+update_cursor (BtkWidget *widget,  bdouble x, bdouble y)
 {
-  static gint cursor_present = 0;
-  gint state = !current_device->has_cursor && cursor_proximity;
+  static bint cursor_present = 0;
+  bint state = !current_device->has_cursor && cursor_proximity;
 
   if (pixmap != NULL)
     {
@@ -80,7 +80,7 @@ update_cursor (BtkWidget *widget,  gdouble x, gdouble y)
 }
 
 /* Create a new backing pixmap of the appropriate size */
-static gint
+static bint
 configure_event (BtkWidget *widget, BdkEventConfigure *event)
 {
   bairo_t *cr;
@@ -102,7 +102,7 @@ configure_event (BtkWidget *widget, BdkEventConfigure *event)
 }
 
 /* Refill the screen from the backing pixmap */
-static gint
+static bint
 expose_event (BtkWidget *widget, BdkEventExpose *event)
 {
   bairo_t *cr = bdk_bairo_create (widget->window);
@@ -120,7 +120,7 @@ expose_event (BtkWidget *widget, BdkEventExpose *event)
    and color on the type of device */
 static void
 draw_brush (BtkWidget *widget, BdkInputSource source,
-	    gdouble x, gdouble y, gdouble pressure)
+	    bdouble x, bdouble y, bdouble pressure)
 {
   BdkColor color;
   BdkRectangle update_rect;
@@ -158,10 +158,10 @@ draw_brush (BtkWidget *widget, BdkInputSource source,
   bdk_window_process_updates (widget->window, TRUE);
 }
 
-static guint32 motion_time;
+static buint32 motion_time;
 
 static void
-print_axes (BdkDevice *device, gdouble *axes)
+print_axes (BdkDevice *device, bdouble *axes)
 {
   int i;
   
@@ -176,7 +176,7 @@ print_axes (BdkDevice *device, gdouble *axes)
     }
 }
 
-static gint
+static bint
 button_press_event (BtkWidget *widget, BdkEventButton *event)
 {
   current_device = event->device;
@@ -184,7 +184,7 @@ button_press_event (BtkWidget *widget, BdkEventButton *event)
 
   if (event->button == 1 && pixmap != NULL)
     {
-      gdouble pressure = 0.5;
+      bdouble pressure = 0.5;
 
       print_axes (event->device, event->axes);
       bdk_event_get_axis ((BdkEvent *)event, BDK_AXIS_PRESSURE, &pressure);
@@ -198,7 +198,7 @@ button_press_event (BtkWidget *widget, BdkEventButton *event)
   return TRUE;
 }
 
-static gint
+static bint
 key_press_event (BtkWidget *widget, BdkEventKey *event)
 {
   if ((event->keyval >= 0x20) && (event->keyval <= 0xFF))
@@ -209,7 +209,7 @@ key_press_event (BtkWidget *widget, BdkEventKey *event)
   return TRUE;
 }
 
-static gint
+static bint
 motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 {
   BdkTimeCoord **events;
@@ -261,7 +261,7 @@ motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 /* We track the next two events to know when we need to draw a
    cursor */
 
-static gint
+static bint
 proximity_out_event (BtkWidget *widget, BdkEventProximity *event)
 {
   cursor_proximity = FALSE;
@@ -269,7 +269,7 @@ proximity_out_event (BtkWidget *widget, BdkEventProximity *event)
   return TRUE;
 }
 
-static gint
+static bint
 leave_notify_event (BtkWidget *widget, BdkEventCrossing *event)
 {
   cursor_proximity = FALSE;
@@ -278,7 +278,7 @@ leave_notify_event (BtkWidget *widget, BdkEventCrossing *event)
 }
 
 void
-input_dialog_destroy (BtkWidget *w, gpointer data)
+input_dialog_destroy (BtkWidget *w, bpointer data)
 {
   *((BtkWidget **)data) = NULL;
 }

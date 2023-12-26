@@ -70,7 +70,7 @@ struct _BtkInfoBarClass
   BtkHBoxClass parent_class;
 
   /* Signals */
-  void (* response) (BtkInfoBar *info_bar, gint response_id);
+  void (* response) (BtkInfoBar *info_bar, bint response_id);
 
   /* Keybinding signals */
   void (* close)    (BtkInfoBar *info_bar);
@@ -87,29 +87,29 @@ struct _BtkInfoBarClass
 GType          btk_info_bar_get_type               (void) B_GNUC_CONST;
 BtkWidget     *btk_info_bar_new                    (void);
 
-BtkWidget     *btk_info_bar_new_with_buttons       (const gchar    *first_button_text,
+BtkWidget     *btk_info_bar_new_with_buttons       (const bchar    *first_button_text,
                                                     ...);
 
 BtkWidget     *btk_info_bar_get_action_area        (BtkInfoBar     *info_bar);
 BtkWidget     *btk_info_bar_get_content_area       (BtkInfoBar     *info_bar);
 void           btk_info_bar_add_action_widget      (BtkInfoBar     *info_bar,
                                                     BtkWidget      *child,
-                                                    gint            response_id);
+                                                    bint            response_id);
 BtkWidget     *btk_info_bar_add_button             (BtkInfoBar     *info_bar,
-                                                    const gchar    *button_text,
-                                                    gint            response_id);
+                                                    const bchar    *button_text,
+                                                    bint            response_id);
 void           btk_info_bar_add_buttons            (BtkInfoBar     *info_bar,
-                                                    const gchar    *first_button_text,
+                                                    const bchar    *first_button_text,
                                                     ...);
 void           btk_info_bar_set_response_sensitive (BtkInfoBar     *info_bar,
-                                                    gint            response_id,
-                                                    gboolean        setting);
+                                                    bint            response_id,
+                                                    bboolean        setting);
 void           btk_info_bar_set_default_response   (BtkInfoBar     *info_bar,
-                                                    gint            response_id);
+                                                    bint            response_id);
 
 /* Emit response signal */
 void           btk_info_bar_response               (BtkInfoBar     *info_bar,
-                                                    gint            response_id);
+                                                    bint            response_id);
 
 void           btk_info_bar_set_message_type       (BtkInfoBar     *info_bar,
                                                     BtkMessageType  message_type);

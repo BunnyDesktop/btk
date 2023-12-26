@@ -58,17 +58,17 @@ struct _BtkPathBar
   GList *fake_root;
   BtkWidget *up_slider_button;
   BtkWidget *down_slider_button;
-  guint settings_signal_id;
-  gint icon_size;
-  gint16 slider_width;
-  gint16 spacing;
-  gint16 button_offset;
-  guint timer;
-  guint slider_visible : 1;
-  guint need_timer     : 1;
-  guint ignore_click   : 1;
-  guint scrolling_up   : 1;
-  guint scrolling_down : 1;
+  buint settings_signal_id;
+  bint icon_size;
+  bint16 slider_width;
+  bint16 spacing;
+  bint16 button_offset;
+  buint timer;
+  buint slider_visible : 1;
+  buint need_timer     : 1;
+  buint ignore_click   : 1;
+  buint scrolling_up   : 1;
+  buint scrolling_down : 1;
 };
 
 struct _BtkPathBarClass
@@ -78,15 +78,15 @@ struct _BtkPathBarClass
   void (* path_clicked) (BtkPathBar  *path_bar,
 			 GFile       *file,
 			 GFile       *child_file,
-			 gboolean     child_is_hidden);
+			 bboolean     child_is_hidden);
 };
 
 GType    btk_path_bar_get_type (void) B_GNUC_CONST;
 void     _btk_path_bar_set_file_system (BtkPathBar         *path_bar,
 					BtkFileSystem      *file_system);
-gboolean _btk_path_bar_set_file        (BtkPathBar         *path_bar,
+bboolean _btk_path_bar_set_file        (BtkPathBar         *path_bar,
 					GFile              *file,
-					gboolean            keep_trail,
+					bboolean            keep_trail,
 					GError            **error);
 void     _btk_path_bar_up              (BtkPathBar *path_bar);
 void     _btk_path_bar_down            (BtkPathBar *path_bar);

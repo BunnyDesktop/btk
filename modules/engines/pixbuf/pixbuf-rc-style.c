@@ -27,7 +27,7 @@
 static void      pixbuf_rc_style_init         (PixbufRcStyle      *style);
 static void      pixbuf_rc_style_class_init   (PixbufRcStyleClass *klass);
 static void      pixbuf_rc_style_finalize     (BObject            *object);
-static guint     pixbuf_rc_style_parse        (BtkRcStyle         *rc_style,
+static buint     pixbuf_rc_style_parse        (BtkRcStyle         *rc_style,
 					       BtkSettings  *settings,
 					       GScanner           *scanner);
 static void      pixbuf_rc_style_merge        (BtkRcStyle         *dest,
@@ -38,8 +38,8 @@ static void theme_image_unref (ThemeImage *data);
 
 static const struct
   {
-    gchar              *name;
-    guint               token;
+    bchar              *name;
+    buint               token;
   }
 theme_symbols[] =
 {
@@ -194,13 +194,13 @@ pixbuf_rc_style_finalize (BObject *object)
   B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-static guint
+static buint
 theme_parse_file(BtkSettings  *settings,
 		 GScanner     *scanner,
 		 ThemePixbuf **theme_pb)
 {
-  guint token;
-  gchar *pixmap;
+  buint token;
+  bchar *pixmap;
 
   /* Skip 'blah_file' */
   token = g_scanner_get_next_token(scanner);
@@ -226,12 +226,12 @@ theme_parse_file(BtkSettings  *settings,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_border (GScanner     *scanner,
 		    ThemePixbuf **theme_pb)
 {
-  guint               token;
-  gint left, right, top, bottom;
+  buint               token;
+  bint left, right, top, bottom;
 
   /* Skip 'blah_border' */
   token = g_scanner_get_next_token(scanner);
@@ -285,12 +285,12 @@ theme_parse_border (GScanner     *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_stretch(GScanner     *scanner,
 		    ThemePixbuf **theme_pb)
 {
-  guint token;
-  gboolean stretch;
+  buint token;
+  bboolean stretch;
 
   /* Skip 'blah_stretch' */
   token = g_scanner_get_next_token(scanner);
@@ -315,11 +315,11 @@ theme_parse_stretch(GScanner     *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_recolorable(GScanner * scanner,
 			ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_RECOLORABLE)
@@ -340,11 +340,11 @@ theme_parse_recolorable(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_function(GScanner * scanner,
 		     ThemeImage *data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_FUNCTION)
@@ -361,11 +361,11 @@ theme_parse_function(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_detail(GScanner * scanner,
 		   ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_DETAIL)
@@ -386,11 +386,11 @@ theme_parse_detail(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_state(GScanner * scanner,
 		  ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_STATE)
@@ -419,11 +419,11 @@ theme_parse_state(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_shadow(GScanner * scanner,
 		   ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_SHADOW)
@@ -452,11 +452,11 @@ theme_parse_shadow(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_arrow_direction(GScanner * scanner,
 			    ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_ARROW_DIRECTION)
@@ -483,11 +483,11 @@ theme_parse_arrow_direction(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_gap_side(GScanner * scanner,
 		     ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_GAP_SIDE)
@@ -515,11 +515,11 @@ theme_parse_gap_side(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_orientation(GScanner * scanner,
 			ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_ORIENTATION)
@@ -543,11 +543,11 @@ theme_parse_orientation(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_expander_style(GScanner * scanner,
 			   ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_EXPANDER_STYLE)
@@ -574,11 +574,11 @@ theme_parse_expander_style(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_window_edge(GScanner * scanner,
 			ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_WINDOW_EDGE)
@@ -613,11 +613,11 @@ theme_parse_window_edge(GScanner * scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 theme_parse_direction(GScanner * scanner,
                       ThemeImage * data)
 {
-  guint               token;
+  buint               token;
 
   token = g_scanner_get_next_token(scanner);
   if (token != TOKEN_DIRECTION)
@@ -672,13 +672,13 @@ clear_theme_pixbuf_and_warn (ThemePixbuf **theme_pb,
   g_scanner_warn (scanner, "%s", message);
 }
 
-static guint
+static buint
 theme_parse_image(BtkSettings  *settings,
 		  GScanner      *scanner,
 		  PixbufRcStyle *pixbuf_style,
 		  ThemeImage   **data_return)
 {
-  guint               token;
+  buint               token;
   ThemeImage *data;
 
   data = NULL;
@@ -825,7 +825,7 @@ theme_parse_image(BtkSettings  *settings,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 pixbuf_rc_style_parse (BtkRcStyle *rc_style,
 		       BtkSettings  *settings,
 		       GScanner   *scanner)
@@ -834,9 +834,9 @@ pixbuf_rc_style_parse (BtkRcStyle *rc_style,
   static GQuark scope_id = 0;
   PixbufRcStyle *pixbuf_style = PIXBUF_RC_STYLE (rc_style);
 
-  guint old_scope;
-  guint token;
-  gint i;
+  buint old_scope;
+  buint token;
+  bint i;
   ThemeImage *img;
   
   /* Set up a new scope in this scanner. */
@@ -859,7 +859,7 @@ pixbuf_rc_style_parse (BtkRcStyle *rc_style,
       for (i = 0; i < G_N_ELEMENTS (theme_symbols); i++)
 	g_scanner_scope_add_symbol(scanner, scope_id,
 				   theme_symbols[i].name,
-				   GINT_TO_POINTER(theme_symbols[i].token));
+				   BINT_TO_POINTER(theme_symbols[i].token));
     }
 
   /* We're ready to go, now parse the top level */

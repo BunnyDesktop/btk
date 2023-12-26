@@ -34,14 +34,14 @@
       return FALSE; \
     } 
 
-static inline gboolean 
+static inline bboolean 
 get_uint16 (CacheInfo *info, 
-            guint32    offset, 
-            guint16   *value)
+            buint32    offset, 
+            buint16   *value)
 {
   if (offset < info->cache_size) 
     { 
-      *value = GUINT16_FROM_BE(*(guint16*)(info->cache + offset)); 
+      *value = GUINT16_FROM_BE(*(buint16*)(info->cache + offset)); 
       return TRUE;
     }
   else 
@@ -51,14 +51,14 @@ get_uint16 (CacheInfo *info,
     } 
 }
 
-static inline gboolean 
+static inline bboolean 
 get_uint32 (CacheInfo *info, 
-            guint32    offset, 
-            guint32   *value)
+            buint32    offset, 
+            buint32   *value)
 {
   if (offset < info->cache_size) 
     { 
-      *value = GUINT32_FROM_BE(*(guint32*)(info->cache + offset)); 
+      *value = GUINT32_FROM_BE(*(buint32*)(info->cache + offset)); 
       return TRUE;
     }
   else 
@@ -68,10 +68,10 @@ get_uint32 (CacheInfo *info,
     } 
 }
 
-static gboolean 
+static bboolean 
 check_version (CacheInfo *info)
 {
-  guint16 major, minor;
+  buint16 major, minor;
 
   check ("major version", get_uint16 (info, 0, &major) && major == 1);
   check ("minor version", get_uint16 (info, 2, &minor) && minor == 0);
@@ -79,16 +79,16 @@ check_version (CacheInfo *info)
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_string (CacheInfo *info, 
-              guint32    offset)
+              buint32    offset)
 {
   check ("string offset", offset < info->cache_size);
 
   if (info->flags & CHECK_STRINGS) 
     {
-      gint i;
-      gchar c;
+      bint i;
+      bchar c;
 
       /* assume no string is longer than 1k */
       for (i = 0; i < 1024; i++) 
@@ -105,16 +105,16 @@ check_string (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_string_utf8 (CacheInfo *info, 
-                   guint32    offset)
+                   buint32    offset)
 {
   check ("string offset", offset < info->cache_size);
 
   if (info->flags & CHECK_STRINGS) 
     {
-      gint i;
-      gchar c;
+      bint i;
+      bchar c;
 
       /* assume no string is longer than 1k */
       for (i = 0; i < 1024; i++) 
@@ -131,12 +131,12 @@ check_string_utf8 (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_directory_list (CacheInfo *info, 
-                      guint32    offset)
+                      buint32    offset)
 {
-  guint32 directory_offset;
-  gint i;
+  buint32 directory_offset;
+  bint i;
 	
   check ("offset, directory list", get_uint32 (info, offset, &info->n_directories));
 	
@@ -150,12 +150,12 @@ check_directory_list (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_pixel_data (CacheInfo *info, 
-                  guint32    offset)
+                  buint32    offset)
 {
-  guint32 type;
-  guint32 length;
+  buint32 type;
+  buint32 length;
 
   check ("offset, pixel data type", get_uint32 (info, offset, &type));
   check ("offset, pixel data length", get_uint32 (info, offset + 4, &length));
@@ -168,27 +168,27 @@ check_pixel_data (CacheInfo *info,
       BdkPixdata data; 
  
       check ("pixel data", bdk_pixdata_deserialize (&data, length,
-                                                    (const guint8*)info->cache + offset + 8, 
+                                                    (const buint8*)info->cache + offset + 8, 
                                                     NULL));
     }
 	
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_embedded_rect (CacheInfo *info, 
-                     guint32    offset)
+                     buint32    offset)
 {
   check ("embedded rect", offset + 4 < info->cache_size);
 
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_attach_point_list (CacheInfo *info, 
-                         guint32    offset)
+                         buint32    offset)
 {
-  guint32 n_attach_points;
+  buint32 n_attach_points;
 
   check ("offset, attach point list", get_uint32 (info, offset, &n_attach_points));
   check ("attach points", offset + 4 + 4 * n_attach_points < info->cache_size); 
@@ -196,12 +196,12 @@ check_attach_point_list (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_display_name_list (CacheInfo *info, 
-                         guint32    offset)
+                         buint32    offset)
 {
-  guint32 n_display_names, ofs;
-  gint i;
+  buint32 n_display_names, ofs;
+  bint i;
 
   check ("offset, display name list", 
          get_uint32 (info, offset, &n_display_names));
@@ -218,13 +218,13 @@ check_display_name_list (CacheInfo *info,
   return TRUE;	
 }
 
-static gboolean 
+static bboolean 
 check_meta_data (CacheInfo *info, 
-                 guint32    offset)
+                 buint32    offset)
 {
-  guint32 embedded_rect_offset;
-  guint32 attach_point_list_offset;
-  guint32 display_name_list_offset;
+  buint32 embedded_rect_offset;
+  buint32 attach_point_list_offset;
+  buint32 display_name_list_offset;
 
   check ("offset, embedded rect", 
          get_uint32 (info, offset, &embedded_rect_offset));
@@ -254,12 +254,12 @@ check_meta_data (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_image_data (CacheInfo *info, 
-                  guint32    offset)
+                  buint32    offset)
 {
-  guint32 pixel_data_offset;
-  guint32 meta_data_offset;
+  buint32 pixel_data_offset;
+  buint32 meta_data_offset;
 
   check ("offset, pixel data", get_uint32 (info, offset, &pixel_data_offset));
   check ("offset, meta data", get_uint32 (info, offset + 4, &meta_data_offset));
@@ -278,13 +278,13 @@ check_image_data (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_image (CacheInfo *info, 
-             guint32    offset)
+             buint32    offset)
 {
-  guint16 index;
-  guint16 flags;
-  guint32 image_data_offset;
+  buint16 index;
+  buint16 flags;
+  buint32 image_data_offset;
 
   check ("offset, image index", get_uint16 (info, offset, &index));
   check ("offset, image flags", get_uint16 (info, offset + 2, &flags));	
@@ -303,12 +303,12 @@ check_image (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_image_list (CacheInfo *info, 
-                  guint32    offset)
+                  buint32    offset)
 {
-  guint32 n_images;
-  gint i;
+  buint32 n_images;
+  bint i;
 
   check ("offset, image list", get_uint32 (info, offset, &n_images));
 	
@@ -321,13 +321,13 @@ check_image_list (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_icon (CacheInfo *info, 
-            guint32    offset)
+            buint32    offset)
 {
-  guint32 chain_offset;
-  guint32 name_offset;
-  guint32 image_list_offset;
+  buint32 chain_offset;
+  buint32 name_offset;
+  buint32 image_list_offset;
 
   check ("offset, icon chain", get_uint32 (info, offset, &chain_offset));
   check ("offset, icon name", get_uint32 (info, offset + 4, &name_offset));
@@ -347,12 +347,12 @@ check_icon (CacheInfo *info,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 check_hash (CacheInfo *info, 
-            guint32    offset)
+            buint32    offset)
 {
-  guint32 n_buckets, icon_offset;
-  gint i;
+  buint32 n_buckets, icon_offset;
+  bint i;
 
   check ("offset, hash size", get_uint32 (info, offset, &n_buckets));
 
@@ -384,11 +384,11 @@ check_hash (CacheInfo *info,
  *
  * Return value: %TRUE if the cache is valid
  */
-gboolean 
+bboolean 
 _btk_icon_cache_validate (CacheInfo *info)
 {
-  guint32 hash_offset;
-  guint32 directory_list_offset;
+  buint32 hash_offset;
+  buint32 directory_list_offset;
 
   if (!check_version (info))
     return FALSE;

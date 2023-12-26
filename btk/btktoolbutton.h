@@ -68,21 +68,21 @@ struct _BtkToolButtonClass
 
 GType        btk_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem *btk_tool_button_new            (BtkWidget   *icon_widget,
-					     const gchar *label);
-BtkToolItem *btk_tool_button_new_from_stock (const gchar *stock_id);
+					     const bchar *label);
+BtkToolItem *btk_tool_button_new_from_stock (const bchar *stock_id);
 
 void                  btk_tool_button_set_label         (BtkToolButton *button,
-							 const gchar   *label);
-const gchar *         btk_tool_button_get_label         (BtkToolButton *button);
+							 const bchar   *label);
+const bchar *         btk_tool_button_get_label         (BtkToolButton *button);
 void                  btk_tool_button_set_use_underline (BtkToolButton *button,
-							 gboolean       use_underline);
-gboolean              btk_tool_button_get_use_underline (BtkToolButton *button);
+							 bboolean       use_underline);
+bboolean              btk_tool_button_get_use_underline (BtkToolButton *button);
 void                  btk_tool_button_set_stock_id      (BtkToolButton *button,
-							 const gchar   *stock_id);
-const gchar *         btk_tool_button_get_stock_id      (BtkToolButton *button);
+							 const bchar   *stock_id);
+const bchar *         btk_tool_button_get_stock_id      (BtkToolButton *button);
 void                  btk_tool_button_set_icon_name     (BtkToolButton *button,
-							 const gchar   *icon_name);
-const gchar *         btk_tool_button_get_icon_name     (BtkToolButton *button);
+							 const bchar   *icon_name);
+const bchar *         btk_tool_button_get_icon_name     (BtkToolButton *button);
 void                  btk_tool_button_set_icon_widget   (BtkToolButton *button,
 							 BtkWidget     *icon_widget);
 BtkWidget *           btk_tool_button_get_icon_widget   (BtkToolButton *button);

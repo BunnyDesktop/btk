@@ -48,7 +48,7 @@ B_BEGIN_DECLS
 /* these values are used as "info" for the targets contained in the
  * lists returned by btk_text_buffer_get_copy,paste_target_list()
  *
- * the enum counts down from G_MAXUINT to avoid clashes with application
+ * the enum counts down from B_MAXUINT to avoid clashes with application
  * added drag destinations which usually start at 0.
  */
 typedef enum
@@ -83,12 +83,12 @@ struct _BtkTextBuffer
 
   BtkTextLogAttrCache *GSEAL (log_attr_cache);
 
-  guint GSEAL (user_action_count);
+  buint GSEAL (user_action_count);
 
   /* Whether the buffer has been modified since last save */
-  guint GSEAL (modified) : 1;
+  buint GSEAL (modified) : 1;
 
-  guint GSEAL (has_selection) : 1;
+  buint GSEAL (has_selection) : 1;
 };
 
 struct _BtkTextBufferClass
@@ -97,8 +97,8 @@ struct _BtkTextBufferClass
 
   void (* insert_text)     (BtkTextBuffer *buffer,
                             BtkTextIter *pos,
-                            const gchar *text,
-                            gint length);
+                            const bchar *text,
+                            bint length);
 
   void (* insert_pixbuf)   (BtkTextBuffer *buffer,
                             BtkTextIter   *pos,
@@ -160,83 +160,83 @@ GType        btk_text_buffer_get_type       (void) B_GNUC_CONST;
 
 /* table is NULL to create a new one */
 BtkTextBuffer *btk_text_buffer_new            (BtkTextTagTable *table);
-gint           btk_text_buffer_get_line_count (BtkTextBuffer   *buffer);
-gint           btk_text_buffer_get_char_count (BtkTextBuffer   *buffer);
+bint           btk_text_buffer_get_line_count (BtkTextBuffer   *buffer);
+bint           btk_text_buffer_get_char_count (BtkTextBuffer   *buffer);
 
 
 BtkTextTagTable* btk_text_buffer_get_tag_table (BtkTextBuffer  *buffer);
 
 /* Delete whole buffer, then insert */
 void btk_text_buffer_set_text          (BtkTextBuffer *buffer,
-                                        const gchar   *text,
-                                        gint           len);
+                                        const bchar   *text,
+                                        bint           len);
 
 /* Insert into the buffer */
 void btk_text_buffer_insert            (BtkTextBuffer *buffer,
                                         BtkTextIter   *iter,
-                                        const gchar   *text,
-                                        gint           len);
+                                        const bchar   *text,
+                                        bint           len);
 void btk_text_buffer_insert_at_cursor  (BtkTextBuffer *buffer,
-                                        const gchar   *text,
-                                        gint           len);
+                                        const bchar   *text,
+                                        bint           len);
 
-gboolean btk_text_buffer_insert_interactive           (BtkTextBuffer *buffer,
+bboolean btk_text_buffer_insert_interactive           (BtkTextBuffer *buffer,
                                                        BtkTextIter   *iter,
-                                                       const gchar   *text,
-                                                       gint           len,
-                                                       gboolean       default_editable);
-gboolean btk_text_buffer_insert_interactive_at_cursor (BtkTextBuffer *buffer,
-                                                       const gchar   *text,
-                                                       gint           len,
-                                                       gboolean       default_editable);
+                                                       const bchar   *text,
+                                                       bint           len,
+                                                       bboolean       default_editable);
+bboolean btk_text_buffer_insert_interactive_at_cursor (BtkTextBuffer *buffer,
+                                                       const bchar   *text,
+                                                       bint           len,
+                                                       bboolean       default_editable);
 
 void     btk_text_buffer_insert_range             (BtkTextBuffer     *buffer,
                                                    BtkTextIter       *iter,
                                                    const BtkTextIter *start,
                                                    const BtkTextIter *end);
-gboolean btk_text_buffer_insert_range_interactive (BtkTextBuffer     *buffer,
+bboolean btk_text_buffer_insert_range_interactive (BtkTextBuffer     *buffer,
                                                    BtkTextIter       *iter,
                                                    const BtkTextIter *start,
                                                    const BtkTextIter *end,
-                                                   gboolean           default_editable);
+                                                   bboolean           default_editable);
 
 void    btk_text_buffer_insert_with_tags          (BtkTextBuffer     *buffer,
                                                    BtkTextIter       *iter,
-                                                   const gchar       *text,
-                                                   gint               len,
+                                                   const bchar       *text,
+                                                   bint               len,
                                                    BtkTextTag        *first_tag,
                                                    ...) B_GNUC_NULL_TERMINATED;
 
 void    btk_text_buffer_insert_with_tags_by_name  (BtkTextBuffer     *buffer,
                                                    BtkTextIter       *iter,
-                                                   const gchar       *text,
-                                                   gint               len,
-                                                   const gchar       *first_tag_name,
+                                                   const bchar       *text,
+                                                   bint               len,
+                                                   const bchar       *first_tag_name,
                                                    ...) B_GNUC_NULL_TERMINATED;
 
 /* Delete from the buffer */
 void     btk_text_buffer_delete             (BtkTextBuffer *buffer,
 					     BtkTextIter   *start,
 					     BtkTextIter   *end);
-gboolean btk_text_buffer_delete_interactive (BtkTextBuffer *buffer,
+bboolean btk_text_buffer_delete_interactive (BtkTextBuffer *buffer,
 					     BtkTextIter   *start_iter,
 					     BtkTextIter   *end_iter,
-					     gboolean       default_editable);
-gboolean btk_text_buffer_backspace          (BtkTextBuffer *buffer,
+					     bboolean       default_editable);
+bboolean btk_text_buffer_backspace          (BtkTextBuffer *buffer,
 					     BtkTextIter   *iter,
-					     gboolean       interactive,
-					     gboolean       default_editable);
+					     bboolean       interactive,
+					     bboolean       default_editable);
 
 /* Obtain strings from the buffer */
-gchar          *btk_text_buffer_get_text            (BtkTextBuffer     *buffer,
+bchar          *btk_text_buffer_get_text            (BtkTextBuffer     *buffer,
                                                      const BtkTextIter *start,
                                                      const BtkTextIter *end,
-                                                     gboolean           include_hidden_chars);
+                                                     bboolean           include_hidden_chars);
 
-gchar          *btk_text_buffer_get_slice           (BtkTextBuffer     *buffer,
+bchar          *btk_text_buffer_get_slice           (BtkTextBuffer     *buffer,
                                                      const BtkTextIter *start,
                                                      const BtkTextIter *end,
-                                                     gboolean           include_hidden_chars);
+                                                     bboolean           include_hidden_chars);
 
 /* Insert a pixbuf */
 void btk_text_buffer_insert_pixbuf         (BtkTextBuffer *buffer,
@@ -257,22 +257,22 @@ void           btk_text_buffer_add_mark    (BtkTextBuffer     *buffer,
                                             BtkTextMark       *mark,
                                             const BtkTextIter *where);
 BtkTextMark   *btk_text_buffer_create_mark (BtkTextBuffer     *buffer,
-                                            const gchar       *mark_name,
+                                            const bchar       *mark_name,
                                             const BtkTextIter *where,
-                                            gboolean           left_gravity);
+                                            bboolean           left_gravity);
 void           btk_text_buffer_move_mark   (BtkTextBuffer     *buffer,
                                             BtkTextMark       *mark,
                                             const BtkTextIter *where);
 void           btk_text_buffer_delete_mark (BtkTextBuffer     *buffer,
                                             BtkTextMark       *mark);
 BtkTextMark*   btk_text_buffer_get_mark    (BtkTextBuffer     *buffer,
-                                            const gchar       *name);
+                                            const bchar       *name);
 
 void btk_text_buffer_move_mark_by_name   (BtkTextBuffer     *buffer,
-                                          const gchar       *name,
+                                          const bchar       *name,
                                           const BtkTextIter *where);
 void btk_text_buffer_delete_mark_by_name (BtkTextBuffer     *buffer,
-                                          const gchar       *name);
+                                          const bchar       *name);
 
 BtkTextMark* btk_text_buffer_get_insert          (BtkTextBuffer *buffer);
 BtkTextMark* btk_text_buffer_get_selection_bound (BtkTextBuffer *buffer);
@@ -296,11 +296,11 @@ void btk_text_buffer_remove_tag            (BtkTextBuffer     *buffer,
                                             const BtkTextIter *start,
                                             const BtkTextIter *end);
 void btk_text_buffer_apply_tag_by_name     (BtkTextBuffer     *buffer,
-                                            const gchar       *name,
+                                            const bchar       *name,
                                             const BtkTextIter *start,
                                             const BtkTextIter *end);
 void btk_text_buffer_remove_tag_by_name    (BtkTextBuffer     *buffer,
-                                            const gchar       *name,
+                                            const bchar       *name,
                                             const BtkTextIter *start,
                                             const BtkTextIter *end);
 void btk_text_buffer_remove_all_tags       (BtkTextBuffer     *buffer,
@@ -312,8 +312,8 @@ void btk_text_buffer_remove_all_tags       (BtkTextBuffer     *buffer,
  * set the attributes of the tag. tag_name can be NULL
  */
 BtkTextTag    *btk_text_buffer_create_tag (BtkTextBuffer *buffer,
-                                           const gchar   *tag_name,
-                                           const gchar   *first_property_name,
+                                           const bchar   *tag_name,
+                                           const bchar   *first_property_name,
                                            ...);
 
 /* Obtain iterators pointed at various places, then you can move the
@@ -321,18 +321,18 @@ BtkTextTag    *btk_text_buffer_create_tag (BtkTextBuffer *buffer,
  */
 void btk_text_buffer_get_iter_at_line_offset (BtkTextBuffer *buffer,
                                               BtkTextIter   *iter,
-                                              gint           line_number,
-                                              gint           char_offset);
+                                              bint           line_number,
+                                              bint           char_offset);
 void btk_text_buffer_get_iter_at_line_index  (BtkTextBuffer *buffer,
                                               BtkTextIter   *iter,
-                                              gint           line_number,
-                                              gint           byte_index);
+                                              bint           line_number,
+                                              bint           byte_index);
 void btk_text_buffer_get_iter_at_offset      (BtkTextBuffer *buffer,
                                               BtkTextIter   *iter,
-                                              gint           char_offset);
+                                              bint           char_offset);
 void btk_text_buffer_get_iter_at_line        (BtkTextBuffer *buffer,
                                               BtkTextIter   *iter,
-                                              gint           line_number);
+                                              bint           line_number);
 void btk_text_buffer_get_start_iter          (BtkTextBuffer *buffer,
                                               BtkTextIter   *iter);
 void btk_text_buffer_get_end_iter            (BtkTextBuffer *buffer,
@@ -357,11 +357,11 @@ void btk_text_buffer_get_iter_at_child_anchor (BtkTextBuffer      *buffer,
    flag, but if you would like them to you can connect a handler to
    the tag/mark signals and call set_modified in your handler */
 
-gboolean        btk_text_buffer_get_modified            (BtkTextBuffer *buffer);
+bboolean        btk_text_buffer_get_modified            (BtkTextBuffer *buffer);
 void            btk_text_buffer_set_modified            (BtkTextBuffer *buffer,
-                                                         gboolean       setting);
+                                                         bboolean       setting);
 
-gboolean        btk_text_buffer_get_has_selection       (BtkTextBuffer *buffer);
+bboolean        btk_text_buffer_get_has_selection       (BtkTextBuffer *buffer);
 
 void btk_text_buffer_add_selection_clipboard    (BtkTextBuffer     *buffer,
 						 BtkClipboard      *clipboard);
@@ -370,20 +370,20 @@ void btk_text_buffer_remove_selection_clipboard (BtkTextBuffer     *buffer,
 
 void            btk_text_buffer_cut_clipboard           (BtkTextBuffer *buffer,
 							 BtkClipboard  *clipboard,
-                                                         gboolean       default_editable);
+                                                         bboolean       default_editable);
 void            btk_text_buffer_copy_clipboard          (BtkTextBuffer *buffer,
 							 BtkClipboard  *clipboard);
 void            btk_text_buffer_paste_clipboard         (BtkTextBuffer *buffer,
 							 BtkClipboard  *clipboard,
 							 BtkTextIter   *override_location,
-                                                         gboolean       default_editable);
+                                                         bboolean       default_editable);
 
-gboolean        btk_text_buffer_get_selection_bounds    (BtkTextBuffer *buffer,
+bboolean        btk_text_buffer_get_selection_bounds    (BtkTextBuffer *buffer,
                                                          BtkTextIter   *start,
                                                          BtkTextIter   *end);
-gboolean        btk_text_buffer_delete_selection        (BtkTextBuffer *buffer,
-                                                         gboolean       interactive,
-                                                         gboolean       default_editable);
+bboolean        btk_text_buffer_delete_selection        (BtkTextBuffer *buffer,
+                                                         bboolean       interactive,
+                                                         bboolean       default_editable);
 
 /* Called to specify atomic user actions, used to implement undo */
 void            btk_text_buffer_begin_user_action       (BtkTextBuffer *buffer);
@@ -399,7 +399,7 @@ BtkTextBTree*   _btk_text_buffer_get_btree             (BtkTextBuffer      *buff
 
 const BangoLogAttr* _btk_text_buffer_get_line_log_attrs (BtkTextBuffer     *buffer,
                                                          const BtkTextIter *anywhere_in_line,
-                                                         gint              *char_len);
+                                                         bint              *char_len);
 
 void _btk_text_buffer_notify_will_remove_tag (BtkTextBuffer *buffer,
                                               BtkTextTag    *tag);

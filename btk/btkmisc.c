@@ -42,11 +42,11 @@ enum {
 
 static void btk_misc_realize      (BtkWidget    *widget);
 static void btk_misc_set_property (BObject         *object,
-				   guint            prop_id,
+				   buint            prop_id,
 				   const BValue    *value,
 				   BParamSpec      *pspec);
 static void btk_misc_get_property (BObject         *object,
-				   guint            prop_id,
+				   buint            prop_id,
 				   BValue          *value,
 				   BParamSpec      *pspec);
 
@@ -93,7 +93,7 @@ btk_misc_class_init (BtkMiscClass *class)
 						     P_("X pad"),
 						     P_("The amount of space to add on the left and right of the widget, in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -103,7 +103,7 @@ btk_misc_class_init (BtkMiscClass *class)
 						     P_("Y pad"),
 						     P_("The amount of space to add on the top and bottom of the widget, in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 }
@@ -119,7 +119,7 @@ btk_misc_init (BtkMisc *misc)
 
 static void
 btk_misc_set_property (BObject      *object,
-		       guint         prop_id,
+		       buint         prop_id,
 		       const BValue *value,
 		       BParamSpec   *pspec)
 {
@@ -149,7 +149,7 @@ btk_misc_set_property (BObject      *object,
 
 static void
 btk_misc_get_property (BObject      *object,
-		       guint         prop_id,
+		       buint         prop_id,
 		       BValue       *value,
 		       BParamSpec   *pspec)
 {
@@ -179,8 +179,8 @@ btk_misc_get_property (BObject      *object,
 
 void
 btk_misc_set_alignment (BtkMisc *misc,
-			gfloat   xalign,
-			gfloat   yalign)
+			bfloat   xalign,
+			bfloat   yalign)
 {
   BtkWidget *widget;
 
@@ -229,8 +229,8 @@ btk_misc_set_alignment (BtkMisc *misc,
  **/
 void
 btk_misc_get_alignment (BtkMisc *misc,
-		        gfloat  *xalign,
-			gfloat  *yalign)
+		        bfloat  *xalign,
+			bfloat  *yalign)
 {
   g_return_if_fail (BTK_IS_MISC (misc));
 
@@ -242,8 +242,8 @@ btk_misc_get_alignment (BtkMisc *misc,
 
 void
 btk_misc_set_padding (BtkMisc *misc,
-		      gint     xpad,
-		      gint     ypad)
+		      bint     xpad,
+		      bint     ypad)
 {
   BtkRequisition *requisition;
   
@@ -293,8 +293,8 @@ btk_misc_set_padding (BtkMisc *misc,
  **/
 void
 btk_misc_get_padding (BtkMisc *misc,
-		      gint    *xpad,
-		      gint    *ypad)
+		      bint    *xpad,
+		      bint    *ypad)
 {
   g_return_if_fail (BTK_IS_MISC (misc));
 
@@ -308,7 +308,7 @@ static void
 btk_misc_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 

@@ -45,19 +45,19 @@ static void btk_cell_renderer_combo_class_init (BtkCellRendererComboClass *klass
 static void btk_cell_renderer_combo_init       (BtkCellRendererCombo      *self);
 static void btk_cell_renderer_combo_finalize     (BObject      *object);
 static void btk_cell_renderer_combo_get_property (BObject      *object,
-						  guint         prop_id,
+						  buint         prop_id,
 						  BValue       *value,
 						  BParamSpec   *pspec);
 
 static void btk_cell_renderer_combo_set_property (BObject      *object,
-						  guint         prop_id,
+						  buint         prop_id,
 						  const BValue *value,
 						  BParamSpec   *pspec);
 
 static BtkCellEditable *btk_cell_renderer_combo_start_editing (BtkCellRenderer     *cell,
 							       BdkEvent            *event,
 							       BtkWidget           *widget,
-							       const gchar         *path,
+							       const bchar         *path,
 							       BdkRectangle        *background_area,
 							       BdkRectangle        *cell_area,
 							       BtkCellRendererState flags);
@@ -74,7 +74,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint cell_renderer_combo_signals[LAST_SIGNAL] = { 0, };
+static buint cell_renderer_combo_signals[LAST_SIGNAL] = { 0, };
 
 #define BTK_CELL_RENDERER_COMBO_PATH "btk-cell-renderer-combo-path"
 
@@ -129,7 +129,7 @@ btk_cell_renderer_combo_class_init (BtkCellRendererComboClass *klass)
                                                      P_("Text Column"),
                                                      P_("A column in the data source model to get the strings from"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -232,7 +232,7 @@ btk_cell_renderer_combo_finalize (BObject *object)
 
 static void
 btk_cell_renderer_combo_get_property (BObject    *object,
-				      guint       prop_id,
+				      buint       prop_id,
 				      BValue     *value,
 				      BParamSpec *pspec)
 {
@@ -257,7 +257,7 @@ btk_cell_renderer_combo_get_property (BObject    *object,
 
 static void
 btk_cell_renderer_combo_set_property (BObject      *object,
-				      guint         prop_id,
+				      buint         prop_id,
 				      const BValue *value,
 				      BParamSpec   *pspec)
 {
@@ -292,7 +292,7 @@ btk_cell_renderer_combo_set_property (BObject      *object,
 
 static void
 btk_cell_renderer_combo_changed (BtkComboBox *combo,
-				 gpointer     data)
+				 bpointer     data)
 {
   BtkTreeIter iter;
   BtkCellRendererCombo *cell;
@@ -311,15 +311,15 @@ btk_cell_renderer_combo_changed (BtkComboBox *combo,
 
 static void
 btk_cell_renderer_combo_editing_done (BtkCellEditable *combo,
-				      gpointer         data)
+				      bpointer         data)
 {
-  const gchar *path;
-  gchar *new_text = NULL;
+  const bchar *path;
+  bchar *new_text = NULL;
   BtkTreeModel *model;
   BtkTreeIter iter;
   BtkCellRendererCombo *cell;
   BtkEntry *entry;
-  gboolean canceled;
+  bboolean canceled;
   BtkCellRendererComboPrivate *priv;
 
   cell = BTK_CELL_RENDERER_COMBO (data);
@@ -363,10 +363,10 @@ btk_cell_renderer_combo_editing_done (BtkCellEditable *combo,
   g_free (new_text);
 }
 
-static gboolean
+static bboolean
 btk_cell_renderer_combo_focus_out_event (BtkWidget *widget,
 					 BdkEvent  *event,
-					 gpointer   data)
+					 bpointer   data)
 {
   
   btk_cell_renderer_combo_editing_done (BTK_CELL_EDITABLE (widget), data);
@@ -377,18 +377,18 @@ btk_cell_renderer_combo_focus_out_event (BtkWidget *widget,
 typedef struct 
 {
   BtkCellRendererCombo *cell;
-  gboolean found;
+  bboolean found;
   BtkTreeIter iter;
 } SearchData;
 
-static gboolean 
+static bboolean 
 find_text (BtkTreeModel *model, 
 	   BtkTreePath  *path, 
 	   BtkTreeIter  *iter, 
-	   gpointer      data)
+	   bpointer      data)
 {
   SearchData *search_data = (SearchData *)data;
-  gchar *text;
+  bchar *text;
   
   btk_tree_model_get (model, iter, search_data->cell->text_column, &text, -1);
   if (text && BTK_CELL_RENDERER_TEXT (search_data->cell)->text &&
@@ -407,7 +407,7 @@ static BtkCellEditable *
 btk_cell_renderer_combo_start_editing (BtkCellRenderer     *cell,
 				       BdkEvent            *event,
 				       BtkWidget           *widget,
-				       const gchar         *path,
+				       const bchar         *path,
 				       BdkRectangle        *background_area,
 				       BdkRectangle        *cell_area,
 				       BtkCellRendererState flags)

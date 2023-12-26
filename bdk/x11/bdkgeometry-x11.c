@@ -39,13 +39,13 @@ typedef enum {
 struct _BdkWindowQueueItem
 {
   BdkWindow *window;
-  gulong serial;
+  bulong serial;
   BdkWindowQueueType type;
   union {
     struct {
       BdkRebunnyion *area;
-      gint dx;
-      gint dy;
+      bint dx;
+      bint dy;
     } translate;
     struct {
       BdkRebunnyion *area;
@@ -55,10 +55,10 @@ struct _BdkWindowQueueItem
 
 void
 _bdk_window_move_resize_child (BdkWindow *window,
-			       gint       x,
-			       gint       y,
-			       gint       width,
-			       gint       height)
+			       bint       x,
+			       bint       y,
+			       bint       width,
+			       bint       height)
 {
   BdkWindowObject *obj;
 
@@ -103,7 +103,7 @@ expose_serial_predicate (Display *xdisplay,
 			 XEvent  *xev,
 			 XPointer arg)
 {
-  gulong *serial = (gulong *)arg;
+  bulong *serial = (bulong *)arg;
 
   if (xev->xany.type == Expose || xev->xany.type == GraphicsExpose)
     *serial = MIN (*serial, xev->xany.serial);
@@ -113,11 +113,11 @@ expose_serial_predicate (Display *xdisplay,
 
 /* Find oldest possible serial for an outstanding expose event
  */
-static gulong
+static bulong
 find_current_serial (Display *xdisplay)
 {
   XEvent xev;
-  gulong serial = NextRequest (xdisplay);
+  bulong serial = NextRequest (xdisplay);
   
   XSync (xdisplay, False);
 
@@ -144,7 +144,7 @@ queue_item_free (BdkWindowQueueItem *item)
   if (item->window)
     {
       g_object_remove_weak_pointer (B_OBJECT (item->window),
-				    (gpointer *)&(item->window));
+				    (bpointer *)&(item->window));
     }
   
   if (item->type == BDK_WINDOW_QUEUE_ANTIEXPOSE)
@@ -173,7 +173,7 @@ bdk_window_queue (BdkWindow          *window,
    */
   if (display_x11->translate_queue->length >= 64)
     {
-      gulong serial = find_current_serial (BDK_WINDOW_XDISPLAY (window));
+      bulong serial = find_current_serial (BDK_WINDOW_XDISPLAY (window));
       GList *tmp_list = display_x11->translate_queue->head;
       
       while (tmp_list)
@@ -182,7 +182,7 @@ bdk_window_queue (BdkWindow          *window,
 	  GList *next = tmp_list->next;
 	  
 	  /* an overflow-safe (item->serial < serial) */
-	  if (item->serial - serial > (gulong) G_MAXLONG)
+	  if (item->serial - serial > (bulong) B_MAXLONG)
 	    {
 	      queue_delete_link (display_x11->translate_queue, tmp_list);
 	      queue_item_free (item);
@@ -221,7 +221,7 @@ bdk_window_queue (BdkWindow          *window,
   item->serial = NextRequest (BDK_WINDOW_XDISPLAY (window));
   
   g_object_add_weak_pointer (B_OBJECT (window),
-			     (gpointer *)&(item->window));
+			     (bpointer *)&(item->window));
 
   g_queue_push_tail (display_x11->translate_queue, item);
 }
@@ -230,8 +230,8 @@ void
 _bdk_x11_window_queue_translation (BdkWindow *window,
 				   BdkGC     *gc,
 				   BdkRebunnyion *area,
-				   gint       dx,
-				   gint       dy)
+				   bint       dx,
+				   bint       dy)
 {
   BdkWindowQueueItem *item = g_new (BdkWindowQueueItem, 1);
   item->type = BDK_WINDOW_QUEUE_TRANSLATE;
@@ -247,7 +247,7 @@ _bdk_x11_window_queue_translation (BdkWindow *window,
   bdk_window_queue (window, item);
 }
 
-gboolean
+bboolean
 _bdk_x11_window_queue_antiexpose (BdkWindow *window,
 				  BdkRebunnyion *area)
 {
@@ -262,7 +262,7 @@ _bdk_x11_window_queue_antiexpose (BdkWindow *window,
 
 void
 _bdk_window_process_expose (BdkWindow    *window,
-			    gulong        serial,
+			    bulong        serial,
 			    BdkRectangle *area)
 {
   BdkRebunnyion *invalidate_rebunnyion = bdk_rebunnyion_rectangle (area);
@@ -278,7 +278,7 @@ _bdk_window_process_expose (BdkWindow    *window,
           GList *next = tmp_list->next;
 
 	  /* an overflow-safe (serial < item->serial) */
-	  if (serial - item->serial > (gulong) G_MAXLONG)
+	  if (serial - item->serial > (bulong) B_MAXLONG)
 	    {
 	      if (item->window == window)
 		{

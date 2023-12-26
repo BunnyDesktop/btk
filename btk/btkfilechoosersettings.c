@@ -76,7 +76,7 @@ get_config_filename (void)
 }
 
 static void
-warn_if_invalid_key_and_clear_error (const gchar  *key,
+warn_if_invalid_key_and_clear_error (const bchar  *key,
                                      GError      **error)
 {
   if (error && *error)
@@ -114,10 +114,10 @@ ensure_settings_read (BtkFileChooserSettings *settings)
 {
   GError *error;
   GKeyFile *key_file;
-  gchar *location_mode_str, *filename;
-  gchar *sort_column, *sort_order;
-  gchar *startup_mode;
-  gboolean value;
+  bchar *location_mode_str, *filename;
+  bchar *sort_column, *sort_order;
+  bchar *startup_mode;
+  bboolean value;
 
   if (settings->settings_read)
     return;
@@ -287,7 +287,7 @@ _btk_file_chooser_settings_set_location_mode (BtkFileChooserSettings *settings,
   settings->location_mode = location_mode;
 }
 
-gboolean
+bboolean
 _btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
@@ -296,19 +296,19 @@ _btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings)
 
 void
 _btk_file_chooser_settings_set_show_hidden (BtkFileChooserSettings *settings,
-					    gboolean show_hidden)
+					    bboolean show_hidden)
 {
   settings->show_hidden = show_hidden != FALSE;
 }
 
 void
 _btk_file_chooser_settings_set_show_size_column (BtkFileChooserSettings *settings,
-					         gboolean show_column)
+					         bboolean show_column)
 {
   settings->show_size_column = show_column != FALSE;
 }
 
-gboolean
+bboolean
 _btk_file_chooser_settings_get_show_size_column (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
@@ -343,7 +343,7 @@ _btk_file_chooser_settings_set_geometry (BtkFileChooserSettings *settings,
   settings->geometry_height = height;
 }
 
-gint
+bint
 _btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
@@ -352,7 +352,7 @@ _btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings)
 
 void
 _btk_file_chooser_settings_set_sort_column (BtkFileChooserSettings *settings,
-					    gint sort_column)
+					    bint sort_column)
 {
   settings->sort_column = sort_column;
 }
@@ -385,19 +385,19 @@ _btk_file_chooser_settings_get_startup_mode (BtkFileChooserSettings *settings)
   return settings->startup_mode;
 }
 
-gboolean
+bboolean
 _btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
 				 GError                **error)
 {
-  const gchar *location_mode_str;
-  gchar *filename;
-  gchar *dirname;
-  gchar *contents;
-  gchar *sort_column;
-  gchar *sort_order;
-  gchar *startup_mode;
-  gsize len;
-  gboolean retval;
+  const bchar *location_mode_str;
+  bchar *filename;
+  bchar *dirname;
+  bchar *contents;
+  bchar *sort_column;
+  bchar *sort_order;
+  bchar *startup_mode;
+  bsize len;
+  bboolean retval;
   GKeyFile *key_file;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);

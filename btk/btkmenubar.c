@@ -62,11 +62,11 @@ struct _BtkMenuBarPrivate
 
 
 static void btk_menu_bar_set_property      (BObject             *object,
-					    guint                prop_id,
+					    buint                prop_id,
 					    const BValue        *value,
 					    BParamSpec          *pspec);
 static void btk_menu_bar_get_property      (BObject             *object,
-					    guint                prop_id,
+					    buint                prop_id,
 					    BValue              *value,
 					    BParamSpec          *pspec);
 static void btk_menu_bar_size_request      (BtkWidget       *widget,
@@ -75,11 +75,11 @@ static void btk_menu_bar_size_allocate     (BtkWidget       *widget,
 					    BtkAllocation   *allocation);
 static void btk_menu_bar_paint             (BtkWidget       *widget,
 					    BdkRectangle    *area);
-static gint btk_menu_bar_expose            (BtkWidget       *widget,
+static bint btk_menu_bar_expose            (BtkWidget       *widget,
 					    BdkEventExpose  *event);
 static void btk_menu_bar_hierarchy_changed (BtkWidget       *widget,
 					    BtkWidget       *old_toplevel);
-static gint btk_menu_bar_get_popup_delay   (BtkMenuShell    *menu_shell);
+static bint btk_menu_bar_get_popup_delay   (BtkMenuShell    *menu_shell);
 static void btk_menu_bar_move_current      (BtkMenuShell     *menu_shell,
                                             BtkMenuDirectionType direction);
 
@@ -202,7 +202,7 @@ btk_menu_bar_class_init (BtkMenuBarClass *class)
 							     P_("Internal padding"),
 							     P_("Amount of border space between the menubar shadow and the menu items"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_IPADDING,
                                                              BTK_PARAM_READABLE));
 
@@ -222,7 +222,7 @@ btk_menu_bar_new (void)
 
 static void
 btk_menu_bar_set_property (BObject      *object,
-			   guint         prop_id,
+			   buint         prop_id,
 			   const BValue *value,
 			   BParamSpec   *pspec)
 {
@@ -244,7 +244,7 @@ btk_menu_bar_set_property (BObject      *object,
 
 static void
 btk_menu_bar_get_property (BObject    *object,
-			   guint       prop_id,
+			   buint       prop_id,
 			   BValue     *value,
 			   BParamSpec *pspec)
 {
@@ -273,9 +273,9 @@ btk_menu_bar_size_request (BtkWidget      *widget,
   BtkMenuShell *menu_shell;
   BtkWidget *child;
   GList *children;
-  gint nchildren;
+  bint nchildren;
   BtkRequisition child_requisition;
-  gint ipadding;
+  bint ipadding;
 
   g_return_if_fail (BTK_IS_MENU_BAR (widget));
   g_return_if_fail (requisition != NULL);
@@ -299,7 +299,7 @@ btk_menu_bar_size_request (BtkWidget      *widget,
 
 	  if (btk_widget_get_visible (child))
 	    {
-              gint toggle_size;
+              bint toggle_size;
 
 	      BTK_MENU_ITEM (child)->show_submenu_indicator = FALSE;
 	      btk_widget_size_request (child, &child_requisition);
@@ -355,10 +355,10 @@ btk_menu_bar_size_allocate (BtkWidget     *widget,
   GList *children;
   BtkAllocation child_allocation;
   BtkRequisition child_requisition;
-  guint offset;
+  buint offset;
   BtkTextDirection direction;
-  gint ltr_x, ltr_y;
-  gint ipadding;
+  bint ltr_x, ltr_y;
+  bint ipadding;
 
   g_return_if_fail (BTK_IS_MENU_BAR (widget));
   g_return_if_fail (allocation != NULL);
@@ -394,7 +394,7 @@ btk_menu_bar_size_allocate (BtkWidget     *widget,
       if (priv->pack_direction == BTK_PACK_DIRECTION_LTR ||
 	  priv->pack_direction == BTK_PACK_DIRECTION_RTL)
 	{
-	  child_allocation.height = MAX (1, (gint)allocation->height - child_allocation.y * 2);
+	  child_allocation.height = MAX (1, (bint)allocation->height - child_allocation.y * 2);
 	  
 	  offset = child_allocation.x; 	/* Window edge to menubar start */
 	  ltr_x = child_allocation.x;
@@ -402,7 +402,7 @@ btk_menu_bar_size_allocate (BtkWidget     *widget,
 	  children = menu_shell->children;
 	  while (children)
 	    {
-	      gint toggle_size;          
+	      bint toggle_size;          
 	      
 	      child = children->data;
 	      children = children->next;
@@ -444,7 +444,7 @@ btk_menu_bar_size_allocate (BtkWidget     *widget,
 	}
       else
 	{
-	  child_allocation.width = MAX (1, (gint)allocation->width - child_allocation.x * 2);
+	  child_allocation.width = MAX (1, (bint)allocation->width - child_allocation.x * 2);
 	  
 	  offset = child_allocation.y; 	/* Window edge to menubar start */
 	  ltr_y = child_allocation.y;
@@ -452,7 +452,7 @@ btk_menu_bar_size_allocate (BtkWidget     *widget,
 	  children = menu_shell->children;
 	  while (children)
 	    {
-	      gint toggle_size;          
+	      bint toggle_size;          
 	      
 	      child = children->data;
 	      children = children->next;
@@ -503,7 +503,7 @@ btk_menu_bar_paint (BtkWidget    *widget,
 
   if (btk_widget_is_drawable (widget))
     {
-      gint border;
+      bint border;
 
       border = BTK_CONTAINER (widget)->border_width;
       
@@ -518,7 +518,7 @@ btk_menu_bar_paint (BtkWidget    *widget,
     }
 }
 
-static gint
+static bint
 btk_menu_bar_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {
@@ -552,7 +552,7 @@ get_viewable_menu_bars (BtkWindow *window)
        menu_bars = menu_bars->next)
     {
       BtkWidget *widget = menu_bars->data;
-      gboolean viewable = TRUE;
+      bboolean viewable = TRUE;
       
       while (widget)
 	{
@@ -576,13 +576,13 @@ set_menu_bars (BtkWindow *window,
   g_object_set_data (B_OBJECT (window), I_("btk-menu-bar-list"), menubars);
 }
 
-static gboolean
+static bboolean
 window_key_press_handler (BtkWidget   *widget,
                           BdkEventKey *event,
-                          gpointer     data)
+                          bpointer     data)
 {
-  gchar *accel = NULL;
-  gboolean retval = FALSE;
+  bchar *accel = NULL;
+  bboolean retval = FALSE;
   
   g_object_get (btk_widget_get_settings (widget),
                 "btk-menu-bar-accel", &accel,
@@ -590,7 +590,7 @@ window_key_press_handler (BtkWidget   *widget,
 
   if (accel && *accel)
     {
-      guint keyval = 0;
+      buint keyval = 0;
       BdkModifierType mods = 0;
 
       btk_accelerator_parse (accel, &keyval, &mods);
@@ -742,10 +742,10 @@ get_shadow_type (BtkMenuBar *menubar)
   return shadow_type;
 }
 
-static gint
+static bint
 btk_menu_bar_get_popup_delay (BtkMenuShell *menu_shell)
 {
-  gint popup_delay;
+  bint popup_delay;
   
   g_object_get (btk_widget_get_settings (BTK_WIDGET (menu_shell)),
 		"btk-menu-bar-popup-delay", &popup_delay,

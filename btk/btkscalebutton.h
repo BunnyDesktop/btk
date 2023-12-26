@@ -72,7 +72,7 @@ struct _BtkScaleButtonClass
 
   /* signals */
   void	(* value_changed) (BtkScaleButton *button,
-                           gdouble         value);
+                           bdouble         value);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -83,15 +83,15 @@ struct _BtkScaleButtonClass
 
 GType            btk_scale_button_get_type         (void) B_GNUC_CONST;
 BtkWidget *      btk_scale_button_new              (BtkIconSize      size,
-                                                    gdouble          min,
-                                                    gdouble          max,
-                                                    gdouble          step,
-                                                    const gchar    **icons);
+                                                    bdouble          min,
+                                                    bdouble          max,
+                                                    bdouble          step,
+                                                    const bchar    **icons);
 void             btk_scale_button_set_icons        (BtkScaleButton  *button,
-                                                    const gchar    **icons);
-gdouble          btk_scale_button_get_value        (BtkScaleButton  *button);
+                                                    const bchar    **icons);
+bdouble          btk_scale_button_get_value        (BtkScaleButton  *button);
 void             btk_scale_button_set_value        (BtkScaleButton  *button,
-                                                    gdouble          value);
+                                                    bdouble          value);
 BtkAdjustment *  btk_scale_button_get_adjustment   (BtkScaleButton  *button);
 void             btk_scale_button_set_adjustment   (BtkScaleButton  *button,
                                                     BtkAdjustment   *adjustment);

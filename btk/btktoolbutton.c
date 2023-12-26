@@ -59,11 +59,11 @@ static void btk_tool_button_init          (BtkToolButton      *button,
 					   BtkToolButtonClass *klass);
 static void btk_tool_button_class_init    (BtkToolButtonClass *klass);
 static void btk_tool_button_set_property  (BObject            *object,
-					   guint               prop_id,
+					   buint               prop_id,
 					   const BValue       *value,
 					   BParamSpec         *pspec);
 static void btk_tool_button_get_property  (BObject            *object,
-					   guint               prop_id,
+					   buint               prop_id,
 					   BValue             *value,
 					   BParamSpec         *pspec);
 static void btk_tool_button_property_notify (BObject          *object,
@@ -71,7 +71,7 @@ static void btk_tool_button_property_notify (BObject          *object,
 static void btk_tool_button_finalize      (BObject            *object);
 
 static void btk_tool_button_toolbar_reconfigured (BtkToolItem *tool_item);
-static gboolean   btk_tool_button_create_menu_proxy (BtkToolItem     *item);
+static bboolean   btk_tool_button_create_menu_proxy (BtkToolItem     *item);
 static void       button_clicked                    (BtkWidget       *widget,
 						     BtkToolButton   *button);
 static void btk_tool_button_style_set      (BtkWidget          *widget,
@@ -82,7 +82,7 @@ static void btk_tool_button_construct_contents (BtkToolItem *tool_item);
 static void btk_tool_button_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_tool_button_update                     (BtkActivatable       *activatable,
 							BtkAction            *action,
-							const gchar          *property_name);
+							const bchar          *property_name);
 static void btk_tool_button_sync_action_properties     (BtkActivatable       *activatable,
 							BtkAction            *action);
 
@@ -91,21 +91,21 @@ struct _BtkToolButtonPrivate
 {
   BtkWidget *button;
 
-  gchar *stock_id;
-  gchar *icon_name;
-  gchar *label_text;
+  bchar *stock_id;
+  bchar *icon_name;
+  bchar *label_text;
   BtkWidget *label_widget;
   BtkWidget *icon_widget;
 
   BtkSizeGroup *text_size_group;
 
-  guint use_underline : 1;
-  guint contents_invalid : 1;
+  buint use_underline : 1;
+  buint contents_invalid : 1;
 };
 
 static BObjectClass        *parent_class = NULL;
 static BtkActivatableIface *parent_activatable_iface;
-static guint                toolbutton_signals[LAST_SIGNAL] = { 0 };
+static buint                toolbutton_signals[LAST_SIGNAL] = { 0 };
 
 #define BTK_TOOL_BUTTON_GET_PRIVATE(obj)(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOL_BUTTON, BtkToolButtonPrivate))
 
@@ -263,7 +263,7 @@ btk_tool_button_class_init (BtkToolButtonClass *klass)
 							     P_("Icon spacing"),
 							     P_("Spacing in pixels between the icon and label"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     3,
 							     BTK_PARAM_READWRITE));
 
@@ -315,11 +315,11 @@ btk_tool_button_construct_contents (BtkToolItem *tool_item)
   BtkWidget *label = NULL;
   BtkWidget *icon = NULL;
   BtkToolbarStyle style;
-  gboolean need_label = FALSE;
-  gboolean need_icon = FALSE;
+  bboolean need_label = FALSE;
+  bboolean need_icon = FALSE;
   BtkIconSize icon_size;
   BtkWidget *box = NULL;
-  guint icon_spacing;
+  buint icon_spacing;
   BtkOrientation text_orientation = BTK_ORIENTATION_HORIZONTAL;
   BtkSizeGroup *size_group = NULL;
 
@@ -390,8 +390,8 @@ btk_tool_button_construct_contents (BtkToolItem *tool_item)
       else
 	{
 	  BtkStockItem stock_item;
-	  gboolean elide;
-	  gchar *label_text;
+	  bboolean elide;
+	  bchar *label_text;
 
 	  if (button->priv->label_text)
 	    {
@@ -546,7 +546,7 @@ btk_tool_button_construct_contents (BtkToolItem *tool_item)
 
 static void
 btk_tool_button_set_property (BObject         *object,
-			      guint            prop_id,
+			      buint            prop_id,
 			      const BValue    *value,
 			      BParamSpec      *pspec)
 {
@@ -594,7 +594,7 @@ btk_tool_button_property_notify (BObject          *object,
 
 static void
 btk_tool_button_get_property (BObject         *object,
-			      guint            prop_id,
+			      buint            prop_id,
 			      BValue          *value,
 			      BParamSpec      *pspec)
 {
@@ -651,13 +651,13 @@ clone_image_menu_size (BtkImage *image, BtkSettings *settings)
 
   if (storage_type == BTK_IMAGE_STOCK)
     {
-      gchar *stock_id;
+      bchar *stock_id;
       btk_image_get_stock (image, &stock_id, NULL);
       return btk_image_new_from_stock (stock_id, BTK_ICON_SIZE_MENU);
     }
   else if (storage_type == BTK_IMAGE_ICON_NAME)
     {
-      const gchar *icon_name;
+      const bchar *icon_name;
       btk_image_get_icon_name (image, &icon_name, NULL);
       return btk_image_new_from_icon_name (icon_name, BTK_ICON_SIZE_MENU);
     }
@@ -675,7 +675,7 @@ clone_image_menu_size (BtkImage *image, BtkSettings *settings)
     }
   else if (storage_type == BTK_IMAGE_PIXBUF)
     {
-      gint width, height;
+      bint width, height;
       
       if (settings &&
 	  btk_icon_size_lookup_for_settings (settings, BTK_ICON_SIZE_MENU,
@@ -698,14 +698,14 @@ clone_image_menu_size (BtkImage *image, BtkSettings *settings)
   return NULL;
 }
       
-static gboolean
+static bboolean
 btk_tool_button_create_menu_proxy (BtkToolItem *item)
 {
   BtkToolButton *button = BTK_TOOL_BUTTON (item);
   BtkWidget *menu_item;
   BtkWidget *menu_image = NULL;
   BtkStockItem stock_item;
-  gboolean use_mnemonic = TRUE;
+  bboolean use_mnemonic = TRUE;
   const char *label;
 
   if (_btk_tool_item_create_menu_proxy (item))
@@ -783,7 +783,7 @@ static void
 btk_tool_button_update_icon_spacing (BtkToolButton *button)
 {
   BtkWidget *box;
-  guint spacing;
+  buint spacing;
 
   box = BTK_BIN (button->priv->button)->child;
   if (BTK_IS_BOX (box))
@@ -813,7 +813,7 @@ btk_tool_button_activatable_interface_init (BtkActivatableIface  *iface)
 static void
 btk_tool_button_update (BtkActivatable *activatable,
 			BtkAction      *action,
-			const gchar    *property_name)
+			const bchar    *property_name)
 {
   BtkToolButton *button;
   BtkWidget *image;
@@ -831,7 +831,7 @@ btk_tool_button_update (BtkActivatable *activatable,
     btk_tool_button_set_stock_id (button, btk_action_get_stock_id (action));
   else if (strcmp (property_name, "gicon") == 0)
     {
-      const gchar *stock_id = btk_action_get_stock_id (action);
+      const bchar *stock_id = btk_action_get_stock_id (action);
       GIcon *icon = btk_action_get_gicon (action);
       BtkIconSize icon_size = BTK_ICON_SIZE_BUTTON;
 
@@ -860,7 +860,7 @@ btk_tool_button_sync_action_properties (BtkActivatable *activatable,
 {
   BtkToolButton *button;
   GIcon         *icon;
-  const gchar   *stock_id;
+  const bchar   *stock_id;
 
   parent_activatable_iface->sync_action_properties (activatable, action);
 
@@ -915,7 +915,7 @@ btk_tool_button_sync_action_properties (BtkActivatable *activatable,
  * Since: 2.4
  **/
 BtkToolItem *
-btk_tool_button_new_from_stock (const gchar *stock_id)
+btk_tool_button_new_from_stock (const bchar *stock_id)
 {
   BtkToolButton *button;
 
@@ -942,7 +942,7 @@ btk_tool_button_new_from_stock (const gchar *stock_id)
  **/
 BtkToolItem *
 btk_tool_button_new (BtkWidget	 *icon_widget,
-		     const gchar *label)
+		     const bchar *label)
 {
   BtkToolButton *button;
 
@@ -971,10 +971,10 @@ btk_tool_button_new (BtkWidget	 *icon_widget,
  **/
 void
 btk_tool_button_set_label (BtkToolButton *button,
-			   const gchar   *label)
+			   const bchar   *label)
 {
-  gchar *old_label;
-  gchar *elided_label;
+  bchar *old_label;
+  bchar *elided_label;
   BatkObject *accessible;
   
   g_return_if_fail (BTK_IS_TOOL_BUTTON (button));
@@ -1009,7 +1009,7 @@ btk_tool_button_set_label (BtkToolButton *button,
  * 
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_tool_button_get_label (BtkToolButton *button)
 {
   g_return_val_if_fail (BTK_IS_TOOL_BUTTON (button), NULL);
@@ -1035,7 +1035,7 @@ btk_tool_button_get_label (BtkToolButton *button)
  **/
 void
 btk_tool_button_set_use_underline (BtkToolButton *button,
-				   gboolean       use_underline)
+				   bboolean       use_underline)
 {
   g_return_if_fail (BTK_IS_TOOL_BUTTON (button));
 
@@ -1062,7 +1062,7 @@ btk_tool_button_set_use_underline (BtkToolButton *button,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_button_get_use_underline (BtkToolButton *button)
 {
   g_return_val_if_fail (BTK_IS_TOOL_BUTTON (button), FALSE);
@@ -1083,9 +1083,9 @@ btk_tool_button_get_use_underline (BtkToolButton *button)
  **/
 void
 btk_tool_button_set_stock_id (BtkToolButton *button,
-			      const gchar   *stock_id)
+			      const bchar   *stock_id)
 {
-  gchar *old_stock_id;
+  bchar *old_stock_id;
   
   g_return_if_fail (BTK_IS_TOOL_BUTTON (button));
 
@@ -1110,7 +1110,7 @@ btk_tool_button_set_stock_id (BtkToolButton *button,
  * 
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_tool_button_get_stock_id (BtkToolButton *button)
 {
   g_return_val_if_fail (BTK_IS_TOOL_BUTTON (button), NULL);
@@ -1133,9 +1133,9 @@ btk_tool_button_get_stock_id (BtkToolButton *button)
  **/
 void
 btk_tool_button_set_icon_name (BtkToolButton *button,
-			       const gchar   *icon_name)
+			       const bchar   *icon_name)
 {
-  gchar *old_icon_name;
+  bchar *old_icon_name;
 
   g_return_if_fail (BTK_IS_TOOL_BUTTON (button));
 
@@ -1161,7 +1161,7 @@ btk_tool_button_set_icon_name (BtkToolButton *button,
  * 
  * Since: 2.8
  **/
-const gchar*
+const bchar*
 btk_tool_button_get_icon_name (BtkToolButton *button)
 {
   g_return_val_if_fail (BTK_IS_TOOL_BUTTON (button), NULL);

@@ -64,82 +64,82 @@ struct _BdkDrawableClass
 		          BdkGCValuesMask mask);
   void (*draw_rectangle) (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
-			  gboolean	filled,
-			  gint		x,
-			  gint		y,
-			  gint		width,
-			  gint		height);
+			  bboolean	filled,
+			  bint		x,
+			  bint		y,
+			  bint		width,
+			  bint		height);
   void (*draw_arc)       (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
-			  gboolean	filled,
-			  gint		x,
-			  gint		y,
-			  gint		width,
-			  gint		height,
-			  gint		angle1,
-			  gint		angle2);
+			  bboolean	filled,
+			  bint		x,
+			  bint		y,
+			  bint		width,
+			  bint		height,
+			  bint		angle1,
+			  bint		angle2);
   void (*draw_polygon)   (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
-			  gboolean	filled,
+			  bboolean	filled,
 			  BdkPoint     *points,
-			  gint		npoints);
+			  bint		npoints);
   void (*draw_text)      (BdkDrawable  *drawable,
 			  BdkFont      *font,
 			  BdkGC	       *gc,
-			  gint		x,
-			  gint		y,
-			  const gchar  *text,
-			  gint		text_length);
+			  bint		x,
+			  bint		y,
+			  const bchar  *text,
+			  bint		text_length);
   void (*draw_text_wc)   (BdkDrawable	 *drawable,
 			  BdkFont	 *font,
 			  BdkGC		 *gc,
-			  gint		  x,
-			  gint		  y,
+			  bint		  x,
+			  bint		  y,
 			  const BdkWChar *text,
-			  gint		  text_length);
+			  bint		  text_length);
   void (*draw_drawable)  (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
 			  BdkDrawable  *src,
-			  gint		xsrc,
-			  gint		ysrc,
-			  gint		xdest,
-			  gint		ydest,
-			  gint		width,
-			  gint		height);
+			  bint		xsrc,
+			  bint		ysrc,
+			  bint		xdest,
+			  bint		ydest,
+			  bint		width,
+			  bint		height);
   void (*draw_points)	 (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
 			  BdkPoint     *points,
-			  gint		npoints);
+			  bint		npoints);
   void (*draw_segments)	 (BdkDrawable  *drawable,
 			  BdkGC	       *gc,
 			  BdkSegment   *segs,
-			  gint		nsegs);
+			  bint		nsegs);
   void (*draw_lines)     (BdkDrawable  *drawable,
 			  BdkGC        *gc,
 			  BdkPoint     *points,
-			  gint          npoints);
+			  bint          npoints);
 
   void (*draw_glyphs)    (BdkDrawable      *drawable,
 			  BdkGC	           *gc,
 			  BangoFont        *font,
-			  gint              x,
-			  gint              y,
+			  bint              x,
+			  bint              y,
 			  BangoGlyphString *glyphs);
 
   void (*draw_image)     (BdkDrawable *drawable,
                           BdkGC	      *gc,
                           BdkImage    *image,
-                          gint	       xsrc,
-                          gint	       ysrc,
-                          gint	       xdest,
-                          gint	       ydest,
-                          gint	       width,
-                          gint	       height);
+                          bint	       xsrc,
+                          bint	       ysrc,
+                          bint	       xdest,
+                          bint	       ydest,
+                          bint	       width,
+                          bint	       height);
   
-  gint (*get_depth)      (BdkDrawable  *drawable);
+  bint (*get_depth)      (BdkDrawable  *drawable);
   void (*get_size)       (BdkDrawable  *drawable,
-                          gint         *width,
-                          gint         *height);
+                          bint         *width,
+                          bint         *height);
 
   void (*set_colormap)   (BdkDrawable  *drawable,
                           BdkColormap  *cmap);
@@ -149,54 +149,54 @@ struct _BdkDrawableClass
   BdkScreen*   (*get_screen)	(BdkDrawable  *drawable);
 
   BdkImage*    (*get_image)  (BdkDrawable  *drawable,
-                              gint          x,
-                              gint          y,
-                              gint          width,
-                              gint          height);
+                              bint          x,
+                              bint          y,
+                              bint          width,
+                              bint          height);
 
   BdkRebunnyion*   (*get_clip_rebunnyion)    (BdkDrawable  *drawable);
   BdkRebunnyion*   (*get_visible_rebunnyion) (BdkDrawable  *drawable);
 
   BdkDrawable* (*get_composite_drawable) (BdkDrawable *drawable,
-                                          gint         x,
-                                          gint         y,
-                                          gint         width,
-                                          gint         height,
-                                          gint        *composite_x_offset,
-                                          gint        *composite_y_offset);
+                                          bint         x,
+                                          bint         y,
+                                          bint         width,
+                                          bint         height,
+                                          bint        *composite_x_offset,
+                                          bint        *composite_y_offset);
 
   void         (*draw_pixbuf) (BdkDrawable *drawable,
 			       BdkGC       *gc,
 			       BdkPixbuf   *pixbuf,
-			       gint         src_x,
-			       gint         src_y,
-			       gint         dest_x,
-			       gint         dest_y,
-			       gint         width,
-			       gint         height,
+			       bint         src_x,
+			       bint         src_y,
+			       bint         dest_x,
+			       bint         dest_y,
+			       bint         width,
+			       bint         height,
 			       BdkRgbDither dither,
-			       gint         x_dither,
-			       gint         y_dither);
+			       bint         x_dither,
+			       bint         y_dither);
   BdkImage*    (*_copy_to_image) (BdkDrawable    *drawable,
 				  BdkImage       *image,
-				  gint            src_x,
-				  gint            src_y,
-				  gint            dest_x,
-				  gint            dest_y,
-				  gint            width,
-				  gint            height);
+				  bint            src_x,
+				  bint            src_y,
+				  bint            dest_x,
+				  bint            dest_y,
+				  bint            width,
+				  bint            height);
   
   void (*draw_glyphs_transformed) (BdkDrawable      *drawable,
 				   BdkGC	    *gc,
 				   BangoMatrix      *matrix,
 				   BangoFont        *font,
-				   gint              x,
-				   gint              y,
+				   bint              x,
+				   bint              y,
 				   BangoGlyphString *glyphs);
   void (*draw_trapezoids)         (BdkDrawable      *drawable,
 				   BdkGC	    *gc,
 				   BdkTrapezoid     *trapezoids,
-				   gint              n_trapezoids);
+				   bint              n_trapezoids);
 
   bairo_surface_t *(*ref_bairo_surface) (BdkDrawable *drawable);
 
@@ -212,12 +212,12 @@ struct _BdkDrawableClass
   void (*draw_drawable_with_src)  (BdkDrawable  *drawable,
 				   BdkGC	       *gc,
 				   BdkDrawable  *src,
-				   gint		xsrc,
-				   gint		ysrc,
-				   gint		xdest,
-				   gint		ydest,
-				   gint		width,
-				   gint		height,
+				   bint		xsrc,
+				   bint		ysrc,
+				   bint		xdest,
+				   bint		ydest,
+				   bint		width,
+				   bint		height,
 				   BdkDrawable  *original_src);
 
   /* Padding for future expansion */
@@ -243,22 +243,22 @@ GType           bdk_drawable_get_type     (void) B_GNUC_CONST;
 
 #ifndef BDK_DISABLE_DEPRECATED
 void            bdk_drawable_set_data     (BdkDrawable    *drawable,
-					   const gchar    *key,
-					   gpointer	  data,
+					   const bchar    *key,
+					   bpointer	  data,
 					   GDestroyNotify  destroy_func);
-gpointer        bdk_drawable_get_data     (BdkDrawable    *drawable,
-					   const gchar    *key);
+bpointer        bdk_drawable_get_data     (BdkDrawable    *drawable,
+					   const bchar    *key);
 #endif /* BDK_DISABLE_DEPRECATED */
 
 void	        bdk_drawable_set_colormap (BdkDrawable	  *drawable,
 					   BdkColormap	  *colormap);
 BdkColormap*    bdk_drawable_get_colormap (BdkDrawable	  *drawable);
-gint            bdk_drawable_get_depth    (BdkDrawable	  *drawable);
+bint            bdk_drawable_get_depth    (BdkDrawable	  *drawable);
 
 #if !defined (BDK_DISABLE_DEPRECATED)
 void            bdk_drawable_get_size     (BdkDrawable	  *drawable,
-					   gint	          *width,
-					   gint  	  *height);
+					   bint	          *width,
+					   bint  	  *height);
 BdkVisual*      bdk_drawable_get_visual   (BdkDrawable	  *drawable);
 BdkScreen*	bdk_drawable_get_screen   (BdkDrawable    *drawable);
 BdkDisplay*	bdk_drawable_get_display  (BdkDrawable    *drawable);
@@ -274,126 +274,126 @@ void            bdk_drawable_unref        (BdkDrawable    *drawable);
 #ifndef BDK_DISABLE_DEPRECATED
 void bdk_draw_point     (BdkDrawable      *drawable,
 			 BdkGC            *gc,
-			 gint              x,
-			 gint              y);
+			 bint              x,
+			 bint              y);
 void bdk_draw_line      (BdkDrawable      *drawable,
 			 BdkGC            *gc,
-			 gint              x1_,
-			 gint              y1_,
-			 gint              x2_,
-			 gint              y2_);
+			 bint              x1_,
+			 bint              y1_,
+			 bint              x2_,
+			 bint              y2_);
 void bdk_draw_rectangle (BdkDrawable      *drawable,
 			 BdkGC            *gc,
-			 gboolean          filled,
-			 gint              x,
-			 gint              y,
-			 gint              width,
-			 gint              height);
+			 bboolean          filled,
+			 bint              x,
+			 bint              y,
+			 bint              width,
+			 bint              height);
 void bdk_draw_arc       (BdkDrawable      *drawable,
 			 BdkGC            *gc,
-			 gboolean          filled,
-			 gint              x,
-			 gint              y,
-			 gint              width,
-			 gint              height,
-			 gint              angle1,
-			 gint              angle2);
+			 bboolean          filled,
+			 bint              x,
+			 bint              y,
+			 bint              width,
+			 bint              height,
+			 bint              angle1,
+			 bint              angle2);
 void bdk_draw_polygon   (BdkDrawable      *drawable,
 			 BdkGC            *gc,
-			 gboolean          filled,
+			 bboolean          filled,
 			 const BdkPoint   *points,
-			 gint              n_points);
+			 bint              n_points);
 void bdk_draw_string    (BdkDrawable      *drawable,
 			 BdkFont          *font,
 			 BdkGC            *gc,
-			 gint              x,
-			 gint              y,
-			 const gchar      *string);
+			 bint              x,
+			 bint              y,
+			 const bchar      *string);
 void bdk_draw_text      (BdkDrawable      *drawable,
 			 BdkFont          *font,
 			 BdkGC            *gc,
-			 gint              x,
-			 gint              y,
-			 const gchar      *text,
-			 gint              text_length);
+			 bint              x,
+			 bint              y,
+			 const bchar      *text,
+			 bint              text_length);
 void bdk_draw_text_wc   (BdkDrawable      *drawable,
 			 BdkFont          *font,
 			 BdkGC            *gc,
-			 gint              x,
-			 gint              y,
+			 bint              x,
+			 bint              y,
 			 const BdkWChar   *text,
-			 gint              text_length);
+			 bint              text_length);
 void bdk_draw_drawable  (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 BdkDrawable      *src,
-			 gint              xsrc,
-			 gint              ysrc,
-			 gint              xdest,
-			 gint              ydest,
-			 gint              width,
-			 gint              height);
+			 bint              xsrc,
+			 bint              ysrc,
+			 bint              xdest,
+			 bint              ydest,
+			 bint              width,
+			 bint              height);
 void bdk_draw_image     (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 BdkImage         *image,
-			 gint              xsrc,
-			 gint              ysrc,
-			 gint              xdest,
-			 gint              ydest,
-			 gint              width,
-			 gint              height);
+			 bint              xsrc,
+			 bint              ysrc,
+			 bint              xdest,
+			 bint              ydest,
+			 bint              width,
+			 bint              height);
 void bdk_draw_points    (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 const BdkPoint   *points,
-			 gint              n_points);
+			 bint              n_points);
 void bdk_draw_segments  (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 const BdkSegment *segs,
-			 gint              n_segs);
+			 bint              n_segs);
 void bdk_draw_lines     (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 const BdkPoint   *points,
-			 gint              n_points);
+			 bint              n_points);
 void bdk_draw_pixbuf    (BdkDrawable      *drawable,
 			 BdkGC            *gc,
 			 const BdkPixbuf  *pixbuf,
-			 gint              src_x,
-			 gint              src_y,
-			 gint              dest_x,
-			 gint              dest_y,
-			 gint              width,
-			 gint              height,
+			 bint              src_x,
+			 bint              src_y,
+			 bint              dest_x,
+			 bint              dest_y,
+			 bint              width,
+			 bint              height,
 			 BdkRgbDither      dither,
-			 gint              x_dither,
-			 gint              y_dither);
+			 bint              x_dither,
+			 bint              y_dither);
 
 void bdk_draw_glyphs      (BdkDrawable      *drawable,
 			   BdkGC            *gc,
 			   BangoFont        *font,
-			   gint              x,
-			   gint              y,
+			   bint              x,
+			   bint              y,
 			   BangoGlyphString *glyphs);
 void bdk_draw_layout_line (BdkDrawable      *drawable,
 			   BdkGC            *gc,
-			   gint              x,
-			   gint              y,
+			   bint              x,
+			   bint              y,
 			   BangoLayoutLine  *line);
 void bdk_draw_layout      (BdkDrawable      *drawable,
 			   BdkGC            *gc,
-			   gint              x,
-			   gint              y,
+			   bint              x,
+			   bint              y,
 			   BangoLayout      *layout);
 
 void bdk_draw_layout_line_with_colors (BdkDrawable     *drawable,
                                        BdkGC           *gc,
-                                       gint             x,
-                                       gint             y,
+                                       bint             x,
+                                       bint             y,
                                        BangoLayoutLine *line,
                                        const BdkColor  *foreground,
                                        const BdkColor  *background);
 void bdk_draw_layout_with_colors      (BdkDrawable     *drawable,
                                        BdkGC           *gc,
-                                       gint             x,
-                                       gint             y,
+                                       bint             x,
+                                       bint             y,
                                        BangoLayout     *layout,
                                        const BdkColor  *foreground,
                                        const BdkColor  *background);
@@ -402,30 +402,30 @@ void bdk_draw_glyphs_transformed (BdkDrawable        *drawable,
 				  BdkGC	             *gc,
 				  const BangoMatrix  *matrix,
 				  BangoFont          *font,
-				  gint                x,
-				  gint                y,
+				  bint                x,
+				  bint                y,
 				  BangoGlyphString   *glyphs);
 void bdk_draw_trapezoids         (BdkDrawable        *drawable,
 				  BdkGC	             *gc,
 				  const BdkTrapezoid *trapezoids,
-				  gint                n_trapezoids);
+				  bint                n_trapezoids);
 
 #define bdk_draw_pixmap                bdk_draw_drawable
 #define bdk_draw_bitmap                bdk_draw_drawable
 
 BdkImage* bdk_drawable_get_image      (BdkDrawable *drawable,
-                                       gint         x,
-                                       gint         y,
-                                       gint         width,
-                                       gint         height);
+                                       bint         x,
+                                       bint         y,
+                                       bint         width,
+                                       bint         height);
 BdkImage *bdk_drawable_copy_to_image (BdkDrawable  *drawable,
 				      BdkImage     *image,
-				      gint          src_x,
-				      gint          src_y,
-				      gint          dest_x,
-				      gint          dest_y,
-				      gint          width,
-				      gint          height);
+				      bint          src_x,
+				      bint          src_y,
+				      bint          dest_x,
+				      bint          dest_y,
+				      bint          width,
+				      bint          height);
 #endif /* BDK_DISABLE_DEPRECATED */
 
 BdkRebunnyion *bdk_drawable_get_clip_rebunnyion    (BdkDrawable *drawable);

@@ -57,10 +57,10 @@ struct	_BtkTipsQuery
 {
   BtkLabel	label;
 
-  guint		emit_always : 1;
-  guint		in_query : 1;
-  gchar		*label_inactive;
-  gchar		*label_no_tip;
+  buint		emit_always : 1;
+  buint		in_query : 1;
+  bchar		*label_inactive;
+  bchar		*label_no_tip;
 
   BtkWidget	*caller;
   BtkWidget	*last_crossed;
@@ -76,12 +76,12 @@ struct	_BtkTipsQueryClass
   void	(*stop_query)		(BtkTipsQuery	*tips_query);
   void	(*widget_entered)	(BtkTipsQuery	*tips_query,
 				 BtkWidget	*widget,
-				 const gchar	*tip_text,
-				 const gchar	*tip_private);
-  gint	(*widget_selected)	(BtkTipsQuery	*tips_query,
+				 const bchar	*tip_text,
+				 const bchar	*tip_private);
+  bint	(*widget_selected)	(BtkTipsQuery	*tips_query,
 				 BtkWidget	*widget,
-				 const gchar	*tip_text,
-				 const gchar	*tip_private,
+				 const bchar	*tip_text,
+				 const bchar	*tip_private,
 				 BdkEventButton	*event);
 
   /* Padding for future expansion */
@@ -100,8 +100,8 @@ void		btk_tips_query_stop_query	(BtkTipsQuery	*tips_query);
 void		btk_tips_query_set_caller	(BtkTipsQuery	*tips_query,
 						 BtkWidget	*caller);
 void		btk_tips_query_set_labels 	(BtkTipsQuery   *tips_query,
-						 const gchar    *label_inactive,
-						 const gchar    *label_no_tip);
+						 const bchar    *label_inactive,
+						 const bchar    *label_no_tip);
 
 B_END_DECLS
 

@@ -61,11 +61,11 @@
                                     + (clist)->hoffset)
 #define COLUMN_LEFT(clist, column) ((clist)->column[(column)].area.x)
 
-static inline gint
+static inline bint
 COLUMN_FROM_XPIXEL (BtkCList * clist,
-		    gint x)
+		    bint x)
 {
-  gint i, cx;
+  bint i, cx;
 
   for (i = 0; i < clist->columns; i++)
     if (clist->column[i].visible)
@@ -103,50 +103,50 @@ enum {
 static void     btk_ctree_class_init    (BtkCTreeClass         *klass);
 static void     btk_ctree_init          (BtkCTree              *ctree);
 static BObject* btk_ctree_constructor   (GType                  type,
-				         guint                  n_construct_properties,
+				         buint                  n_construct_properties,
 				         BObjectConstructParam *construct_params);
 static void btk_ctree_set_arg		(BtkObject      *object,
 					 BtkArg         *arg,
-					 guint           arg_id);
+					 buint           arg_id);
 static void btk_ctree_get_arg      	(BtkObject      *object,
 					 BtkArg         *arg,
-					 guint           arg_id);
+					 buint           arg_id);
 static void btk_ctree_realize           (BtkWidget      *widget);
 static void btk_ctree_unrealize         (BtkWidget      *widget);
-static gint btk_ctree_button_press      (BtkWidget      *widget,
+static bint btk_ctree_button_press      (BtkWidget      *widget,
 					 BdkEventButton *event);
 static void ctree_attach_styles         (BtkCTree       *ctree,
 					 BtkCTreeNode   *node,
-					 gpointer        data);
+					 bpointer        data);
 static void ctree_detach_styles         (BtkCTree       *ctree,
 					 BtkCTreeNode   *node, 
-					 gpointer        data);
-static gint draw_cell_pixmap            (BdkWindow      *window,
+					 bpointer        data);
+static bint draw_cell_pixmap            (BdkWindow      *window,
 					 BdkRectangle   *clip_rectangle,
 					 BdkGC          *fg_gc,
 					 BdkPixmap      *pixmap,
 					 BdkBitmap      *mask,
-					 gint            x,
-					 gint            y,
-					 gint            width,
-					 gint            height);
+					 bint            x,
+					 bint            y,
+					 bint            width,
+					 bint            height);
 static void get_cell_style              (BtkCList       *clist,
 					 BtkCListRow    *clist_row,
-					 gint            state,
-					 gint            column,
+					 bint            state,
+					 bint            column,
 					 BtkStyle      **style,
 					 BdkGC         **fg_gc,
 					 BdkGC         **bg_gc);
-static gint btk_ctree_draw_expander     (BtkCTree       *ctree,
+static bint btk_ctree_draw_expander     (BtkCTree       *ctree,
 					 BtkCTreeRow    *ctree_row,
 					 BtkStyle       *style,
 					 BdkRectangle   *clip_rectangle,
-					 gint            x);
-static gint btk_ctree_draw_lines        (BtkCTree       *ctree,
+					 bint            x);
+static bint btk_ctree_draw_lines        (BtkCTree       *ctree,
 					 BtkCTreeRow    *ctree_row,
-					 gint            row,
-					 gint            column,
-					 gint            state,
+					 bint            row,
+					 bint            column,
+					 bint            state,
 					 BdkRectangle   *clip_rectangle,
 					 BdkRectangle   *cell_rectangle,
 					 BdkRectangle   *crect,
@@ -154,81 +154,81 @@ static gint btk_ctree_draw_lines        (BtkCTree       *ctree,
 					 BtkStyle       *style);
 static void draw_row                    (BtkCList       *clist,
 					 BdkRectangle   *area,
-					 gint            row,
+					 bint            row,
 					 BtkCListRow    *clist_row);
 static void draw_drag_highlight         (BtkCList        *clist,
 					 BtkCListRow     *dest_row,
-					 gint             dest_row_number,
+					 bint             dest_row_number,
 					 BtkCListDragPos  drag_pos);
 static void tree_draw_node              (BtkCTree      *ctree,
 					 BtkCTreeNode  *node);
 static void set_cell_contents           (BtkCList      *clist,
 					 BtkCListRow   *clist_row,
-					 gint           column,
+					 bint           column,
 					 BtkCellType    type,
-					 const gchar   *text,
-					 guint8         spacing,
+					 const bchar   *text,
+					 buint8         spacing,
 					 BdkPixmap     *pixmap,
 					 BdkBitmap     *mask);
 static void set_node_info               (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
-					 const gchar   *text,
-					 guint8         spacing,
+					 const bchar   *text,
+					 buint8         spacing,
 					 BdkPixmap     *pixmap_closed,
 					 BdkBitmap     *mask_closed,
 					 BdkPixmap     *pixmap_opened,
 					 BdkBitmap     *mask_opened,
-					 gboolean       is_leaf,
-					 gboolean       expanded);
+					 bboolean       is_leaf,
+					 bboolean       expanded);
 static BtkCTreeRow *row_new             (BtkCTree      *ctree);
 static void row_delete                  (BtkCTree      *ctree,
 				 	 BtkCTreeRow   *ctree_row);
 static void tree_delete                 (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gpointer       data);
+					 bpointer       data);
 static void tree_delete_row             (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gpointer       data);
+					 bpointer       data);
 static void real_clear                  (BtkCList      *clist);
 static void tree_update_level           (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gpointer       data);
+					 bpointer       data);
 static void tree_select                 (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gpointer       data);
+					 bpointer       data);
 static void tree_unselect               (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-				         gpointer       data);
+				         bpointer       data);
 static void real_select_all             (BtkCList      *clist);
 static void real_unselect_all           (BtkCList      *clist);
 static void tree_expand                 (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node,
-					 gpointer       data);
+					 bpointer       data);
 static void tree_collapse               (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node,
-					 gpointer       data);
+					 bpointer       data);
 static void tree_collapse_to_depth      (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gint           depth);
+					 bint           depth);
 static void tree_toggle_expansion       (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
-					 gpointer       data);
+					 bpointer       data);
 static void change_focus_row_expansion  (BtkCTree      *ctree,
 				         BtkCTreeExpansionType expansion);
 static void real_select_row             (BtkCList      *clist,
-					 gint           row,
-					 gint           column,
+					 bint           row,
+					 bint           column,
 					 BdkEvent      *event);
 static void real_unselect_row           (BtkCList      *clist,
-					 gint           row,
-					 gint           column,
+					 bint           row,
+					 bint           column,
 					 BdkEvent      *event);
 static void real_tree_select            (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
-					 gint           column);
+					 bint           column);
 static void real_tree_unselect          (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
-					 gint           column);
+					 bint           column);
 static void real_tree_expand            (BtkCTree      *ctree,
 					 BtkCTreeNode  *node);
 static void real_tree_collapse          (BtkCTree      *ctree,
@@ -238,76 +238,76 @@ static void real_tree_move              (BtkCTree      *ctree,
 					 BtkCTreeNode  *new_parent, 
 					 BtkCTreeNode  *new_sibling);
 static void real_row_move               (BtkCList      *clist,
-					 gint           source_row,
-					 gint           dest_row);
+					 bint           source_row,
+					 bint           dest_row);
 static void btk_ctree_link              (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
 					 BtkCTreeNode  *parent,
 					 BtkCTreeNode  *sibling,
-					 gboolean       update_focus_row);
+					 bboolean       update_focus_row);
 static void btk_ctree_unlink            (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node,
-					 gboolean       update_focus_row);
+					 bboolean       update_focus_row);
 static BtkCTreeNode * btk_ctree_last_visible (BtkCTree     *ctree,
 					      BtkCTreeNode *node);
-static gboolean ctree_is_hot_spot       (BtkCTree      *ctree, 
+static bboolean ctree_is_hot_spot       (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node,
-					 gint           row, 
-					 gint           x, 
-					 gint           y);
+					 bint           row, 
+					 bint           x, 
+					 bint           y);
 static void tree_sort                   (BtkCTree      *ctree,
 					 BtkCTreeNode  *node,
-					 gpointer       data);
+					 bpointer       data);
 static void fake_unselect_all           (BtkCList      *clist,
-					 gint           row);
+					 bint           row);
 static GList * selection_find           (BtkCList      *clist,
-					 gint           row_number,
+					 bint           row_number,
 					 GList         *row_list_element);
 static void resync_selection            (BtkCList      *clist,
 					 BdkEvent      *event);
 static void real_undo_selection         (BtkCList      *clist);
 static void select_row_recursive        (BtkCTree      *ctree, 
 					 BtkCTreeNode  *node, 
-					 gpointer       data);
-static gint real_insert_row             (BtkCList      *clist,
-					 gint           row,
-					 gchar         *text[]);
+					 bpointer       data);
+static bint real_insert_row             (BtkCList      *clist,
+					 bint           row,
+					 bchar         *text[]);
 static void real_remove_row             (BtkCList      *clist,
-					 gint           row);
+					 bint           row);
 static void real_sort_list              (BtkCList      *clist);
 static void cell_size_request           (BtkCList       *clist,
 					 BtkCListRow    *clist_row,
-					 gint            column,
+					 bint            column,
 					 BtkRequisition *requisition);
 static void column_auto_resize          (BtkCList       *clist,
 					 BtkCListRow    *clist_row,
-					 gint            column,
-					 gint            old_width);
+					 bint            column,
+					 bint            old_width);
 static void auto_resize_columns         (BtkCList       *clist);
 
 
-static gboolean check_drag               (BtkCTree         *ctree,
+static bboolean check_drag               (BtkCTree         *ctree,
 			                  BtkCTreeNode     *drag_source,
 					  BtkCTreeNode     *drag_target,
 					  BtkCListDragPos   insert_pos);
 static void btk_ctree_drag_begin         (BtkWidget        *widget,
 					  BdkDragContext   *context);
-static gint btk_ctree_drag_motion        (BtkWidget        *widget,
+static bint btk_ctree_drag_motion        (BtkWidget        *widget,
 					  BdkDragContext   *context,
-					  gint              x,
-					  gint              y,
-					  guint             time);
+					  bint              x,
+					  bint              y,
+					  buint             time);
 static void btk_ctree_drag_data_received (BtkWidget        *widget,
 					  BdkDragContext   *context,
-					  gint              x,
-					  gint              y,
+					  bint              x,
+					  bint              y,
 					  BtkSelectionData *selection_data,
-					  guint             info,
-					  guint32           time);
+					  buint             info,
+					  buint32           time);
 static void remove_grab                  (BtkCList         *clist);
 static void drag_dest_cell               (BtkCList         *clist,
-					  gint              x,
-					  gint              y,
+					  bint              x,
+					  bint              y,
 					  BtkCListDestInfo *dest_info);
 
 
@@ -324,7 +324,7 @@ enum
 
 static BtkCListClass *parent_class = NULL;
 static BtkContainerClass *container_class = NULL;
-static guint ctree_signals[LAST_SIGNAL] = {0};
+static buint ctree_signals[LAST_SIGNAL] = {0};
 
 
 BtkType
@@ -559,7 +559,7 @@ btk_ctree_class_init (BtkCTreeClass *klass)
 static void
 btk_ctree_set_arg (BtkObject      *object,
 		   BtkArg         *arg,
-		   guint           arg_id)
+		   buint           arg_id)
 {
   BtkCTree *ctree;
   BtkCList *clist;
@@ -600,7 +600,7 @@ btk_ctree_set_arg (BtkObject      *object,
 static void
 btk_ctree_get_arg (BtkObject      *object,
 		   BtkArg         *arg,
-		   guint           arg_id)
+		   buint           arg_id)
 {
   BtkCTree *ctree;
 
@@ -659,10 +659,10 @@ btk_ctree_init (BtkCTree *ctree)
 static void
 ctree_attach_styles (BtkCTree     *ctree,
 		     BtkCTreeNode *node,
-		     gpointer      data)
+		     bpointer      data)
 {
   BtkCList *clist;
-  gint i;
+  bint i;
 
   clist = BTK_CLIST (ctree);
 
@@ -695,10 +695,10 @@ ctree_attach_styles (BtkCTree     *ctree,
 static void
 ctree_detach_styles (BtkCTree     *ctree,
 		     BtkCTreeNode *node,
-		     gpointer      data)
+		     bpointer      data)
 {
   BtkCList *clist;
-  gint i;
+  bint i;
 
   clist = BTK_CLIST (ctree);
 
@@ -717,7 +717,7 @@ btk_ctree_realize (BtkWidget *widget)
   BdkGCValues values;
   BtkCTreeNode *node;
   BtkCTreeNode *child;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_CTREE (widget));
 
@@ -749,7 +749,7 @@ btk_ctree_realize (BtkWidget *widget)
 
   if (ctree->line_style == BTK_CTREE_LINES_DOTTED)
     {
-      gint8 dashes[] = { 1, 1 };
+      bint8 dashes[] = { 1, 1 };
 
       bdk_gc_set_line_attributes (ctree->lines_gc, 1, 
 				  BDK_LINE_ON_OFF_DASH, BDK_CAP_BUTT, BDK_JOIN_MITER);
@@ -774,7 +774,7 @@ btk_ctree_unrealize (BtkWidget *widget)
     {
       BtkCTreeNode *node;
       BtkCTreeNode *child;
-      gint i;
+      bint i;
 
       node = BTK_CTREE_NODE (clist->row_list);
       for (i = 0; i < clist->rows; i++)
@@ -791,13 +791,13 @@ btk_ctree_unrealize (BtkWidget *widget)
   g_object_unref (ctree->lines_gc);
 }
 
-static gint
+static bint
 btk_ctree_button_press (BtkWidget      *widget,
 			BdkEventButton *event)
 {
   BtkCTree *ctree;
   BtkCList *clist;
-  gint button_actions;
+  bint button_actions;
 
   g_return_val_if_fail (BTK_IS_CTREE (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -813,10 +813,10 @@ btk_ctree_button_press (BtkWidget      *widget,
   if (event->window == clist->clist_window)
     {
       BtkCTreeNode *work;
-      gint x;
-      gint y;
-      gint row;
-      gint column;
+      bint x;
+      bint y;
+      bint row;
+      bint column;
 
       x = event->x;
       y = event->y;
@@ -846,14 +846,14 @@ btk_ctree_button_press (BtkWidget      *widget,
 static void
 draw_drag_highlight (BtkCList        *clist,
 		     BtkCListRow     *dest_row,
-		     gint             dest_row_number,
+		     bint             dest_row_number,
 		     BtkCListDragPos  drag_pos)
 {
   BtkCTree *ctree;
   BdkPoint points[4];
-  gint level;
-  gint i;
-  gint y = 0;
+  bint level;
+  bint i;
+  bint y = 0;
 
   g_return_if_fail (BTK_IS_CTREE (clist));
 
@@ -995,19 +995,19 @@ draw_drag_highlight (BtkCList        *clist,
     }
 }
 
-static gint
+static bint
 draw_cell_pixmap (BdkWindow    *window,
 		  BdkRectangle *clip_rectangle,
 		  BdkGC        *fg_gc,
 		  BdkPixmap    *pixmap,
 		  BdkBitmap    *mask,
-		  gint          x,
-		  gint          y,
-		  gint          width,
-		  gint          height)
+		  bint          x,
+		  bint          y,
+		  bint          width,
+		  bint          height)
 {
-  gint xsrc = 0;
-  gint ysrc = 0;
+  bint xsrc = 0;
+  bint ysrc = 0;
 
   if (mask)
     {
@@ -1047,13 +1047,13 @@ draw_cell_pixmap (BdkWindow    *window,
 static void
 get_cell_style (BtkCList     *clist,
 		BtkCListRow  *clist_row,
-		gint          state,
-		gint          column,
+		bint          state,
+		bint          column,
 		BtkStyle    **style,
 		BdkGC       **fg_gc,
 		BdkGC       **bg_gc)
 {
-  gint fg_state;
+  bint fg_state;
 
   if ((state == BTK_STATE_NORMAL) &&
       (BTK_WIDGET (clist)->state == BTK_STATE_INSENSITIVE))
@@ -1110,17 +1110,17 @@ get_cell_style (BtkCList     *clist,
     }
 }
 
-static gint
+static bint
 btk_ctree_draw_expander (BtkCTree     *ctree,
 			 BtkCTreeRow  *ctree_row,
 			 BtkStyle     *style,
 			 BdkRectangle *clip_rectangle,
-			 gint          x)
+			 bint          x)
 {
   BtkCList *clist;
   BdkPoint points[3];
-  gint justification_factor;
-  gint y;
+  bint justification_factor;
+  bint y;
 
  if (ctree->expander_style == BTK_CTREE_EXPANDER_NONE)
    return x;
@@ -1225,12 +1225,12 @@ btk_ctree_draw_expander (BtkCTree     *ctree,
 }
 
 
-static gint
+static bint
 btk_ctree_draw_lines (BtkCTree     *ctree,
 		      BtkCTreeRow  *ctree_row,
-		      gint          row,
-		      gint          column,
-		      gint          state,
+		      bint          row,
+		      bint          column,
+		      bint          state,
 		      BdkRectangle *clip_rectangle,
 		      BdkRectangle *cell_rectangle,
 		      BdkRectangle *crect,
@@ -1243,16 +1243,16 @@ btk_ctree_draw_lines (BtkCTree     *ctree,
   BdkRectangle tree_rectangle;
   BdkRectangle tc_rectangle;
   BdkGC *bg_gc;
-  gint offset;
-  gint offset_x;
-  gint offset_y;
-  gint xcenter;
-  gint ycenter;
-  gint next_level;
-  gint column_right;
-  gint column_left;
-  gint justify_right;
-  gint justification_factor;
+  bint offset;
+  bint offset_x;
+  bint offset_y;
+  bint xcenter;
+  bint ycenter;
+  bint next_level;
+  bint column_right;
+  bint column_left;
+  bint justify_right;
+  bint justification_factor;
   
   clist = BTK_CLIST (ctree);
   ycenter = clip_rectangle->y + (clip_rectangle->height / 2);
@@ -1378,7 +1378,7 @@ btk_ctree_draw_lines (BtkCTree     *ctree,
 			       xcenter, crect->y + crect->height);
 	      else
 		{
-		  gint width;
+		  bint width;
 
 		  offset_x = MIN (ctree->tree_indent, 2 * TAB_SIZE);
 		  width = offset_x / 2 + offset_x % 2;
@@ -1622,7 +1622,7 @@ btk_ctree_draw_lines (BtkCTree     *ctree,
 static void
 draw_row (BtkCList     *clist,
 	  BdkRectangle *area,
-	  gint          row,
+	  bint          row,
 	  BtkCListRow  *clist_row)
 {
   BtkWidget *widget;
@@ -1632,12 +1632,12 @@ draw_row (BtkCList     *clist,
   BdkRectangle cell_rectangle; 
   BdkRectangle clip_rectangle;
   BdkRectangle intersect_rectangle;
-  gint last_column;
-  gint column_left = 0;
-  gint column_right = 0;
-  gint offset = 0;
-  gint state;
-  gint i;
+  bint last_column;
+  bint column_left = 0;
+  bint column_right = 0;
+  bint offset = 0;
+  bint state;
+  bint i;
 
   g_return_if_fail (clist != NULL);
 
@@ -1793,11 +1793,11 @@ draw_row (BtkCList     *clist,
       BangoLayout *layout = NULL;
       BangoRectangle logical_rect;
 
-      gint width;
-      gint height;
-      gint pixmap_width;
-      gint string_width;
-      gint old_offset;
+      bint width;
+      bint height;
+      bint pixmap_width;
+      bint string_width;
+      bint old_offset;
 
       if (!clist->column[i].visible)
 	continue;
@@ -1913,7 +1913,7 @@ draw_row (BtkCList     *clist,
 		case BTK_CELL_TEXT:
 		  if (layout)
 		    {
-		      gint row_center_offset = (clist->row_height - logical_rect.height) / 2;
+		      bint row_center_offset = (clist->row_height - logical_rect.height) / 2;
 
 		      bdk_gc_set_clip_rectangle (fg_gc, &clip_rectangle);
 		      bdk_draw_layout (clist->clist_window, fg_gc,
@@ -1976,7 +1976,7 @@ draw_row (BtkCList     *clist,
 
       if (layout)
 	{
-	  gint row_center_offset = (clist->row_height - logical_rect.height) / 2;
+	  bint row_center_offset = (clist->row_height - logical_rect.height) / 2;
 	  
 	  if (clist->column[i].justification == BTK_JUSTIFY_RIGHT)
 	    {
@@ -2033,7 +2033,7 @@ tree_draw_node (BtkCTree     *ctree,
   if (CLIST_UNFROZEN (clist) && btk_ctree_is_viewable (ctree, node))
     {
       BtkCTreeNode *work;
-      gint num = 0;
+      bint num = 0;
       
       work = BTK_CTREE_NODE (clist->row_list);
       while (work && work != node)
@@ -2072,14 +2072,14 @@ btk_ctree_link (BtkCTree     *ctree,
 		BtkCTreeNode *node,
 		BtkCTreeNode *parent,
 		BtkCTreeNode *sibling,
-		gboolean      update_focus_row)
+		bboolean      update_focus_row)
 {
   BtkCList *clist;
   GList *list_end;
   GList *list;
   GList *work;
-  gboolean visible = FALSE;
-  gint rows = 0;
+  bboolean visible = FALSE;
+  bint rows = 0;
   
   if (sibling)
     g_return_if_fail (BTK_CTREE_ROW (sibling)->parent == parent);
@@ -2203,7 +2203,7 @@ btk_ctree_link (BtkCTree     *ctree,
 
   if (visible && update_focus_row)
     {
-      gint pos;
+      bint pos;
 	  
       pos = g_list_position (clist->row_list, (GList *)node);
   
@@ -2218,12 +2218,12 @@ btk_ctree_link (BtkCTree     *ctree,
 static void
 btk_ctree_unlink (BtkCTree     *ctree, 
 		  BtkCTreeNode *node,
-                  gboolean      update_focus_row)
+                  bboolean      update_focus_row)
 {
   BtkCList *clist;
-  gint rows;
-  gint level;
-  gint visible;
+  bint rows;
+  bint level;
+  bint visible;
   BtkCTreeNode *work;
   BtkCTreeNode *parent;
   GList *list;
@@ -2269,7 +2269,7 @@ btk_ctree_unlink (BtkCTree     *ctree,
 
       if (update_focus_row)
 	{
-	  gint pos;
+	  bint pos;
 	  
 	  pos = g_list_position (clist->row_list, (GList *)node);
 	  if (pos + rows < clist->focus_row)
@@ -2340,8 +2340,8 @@ btk_ctree_unlink (BtkCTree     *ctree,
 
 static void
 real_row_move (BtkCList *clist,
-	       gint      source_row,
-	       gint      dest_row)
+	       bint      source_row,
+	       bint      dest_row)
 {
   BtkCTree *ctree;
   BtkCTreeNode *node;
@@ -2395,7 +2395,7 @@ real_tree_move (BtkCTree     *ctree,
 {
   BtkCList *clist;
   BtkCTreeNode *work;
-  gboolean visible = FALSE;
+  bboolean visible = FALSE;
 
   g_return_if_fail (ctree != NULL);
   g_return_if_fail (node != NULL);
@@ -2520,7 +2520,7 @@ real_tree_expand (BtkCTree     *ctree,
   BtkCList *clist;
   BtkCTreeNode *work;
   BtkRequisition requisition;
-  gboolean visible;
+  bboolean visible;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -2580,14 +2580,14 @@ real_tree_expand (BtkCTree     *ctree,
   if (work)
     {
       GList *list = (GList *)work;
-      gint *cell_width = NULL;
-      gint tmp = 0;
-      gint row;
-      gint i;
+      bint *cell_width = NULL;
+      bint tmp = 0;
+      bint row;
+      bint i;
       
       if (visible && !BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
 	{
-	  cell_width = g_new0 (gint, clist->columns);
+	  cell_width = g_new0 (bint, clist->columns);
 	  if (clist->column[ctree->tree_column].auto_resize)
 	      cell_width[ctree->tree_column] = requisition.width;
 
@@ -2661,8 +2661,8 @@ real_tree_collapse (BtkCTree     *ctree,
   BtkCList *clist;
   BtkCTreeNode *work;
   BtkRequisition requisition;
-  gboolean visible;
-  gint level;
+  bboolean visible;
+  bint level;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -2722,8 +2722,8 @@ real_tree_collapse (BtkCTree     *ctree,
   work = BTK_CTREE_ROW (node)->children;
   if (work)
     {
-      gint tmp = 0;
-      gint row;
+      bint tmp = 0;
+      bint row;
       GList *list;
 
       while (work && BTK_CTREE_ROW (work)->level > level)
@@ -2771,8 +2771,8 @@ real_tree_collapse (BtkCTree     *ctree,
 static void
 column_auto_resize (BtkCList    *clist,
 		    BtkCListRow *clist_row,
-		    gint         column,
-		    gint         old_width)
+		    bint         column,
+		    bint         old_width)
 {
   /* resize column if needed for auto_resize */
   BtkRequisition requisition;
@@ -2793,7 +2793,7 @@ column_auto_resize (BtkCList    *clist,
 	   old_width == clist->column[column].width)
     {
       GList *list;
-      gint new_width;
+      bint new_width;
 
       /* run a "btk_clist_optimal_column_width" but break, if
        * the column doesn't shrink */
@@ -2819,7 +2819,7 @@ column_auto_resize (BtkCList    *clist,
 static void
 auto_resize_columns (BtkCList *clist)
 {
-  gint i;
+  bint i;
 
   if (BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
     return;
@@ -2831,12 +2831,12 @@ auto_resize_columns (BtkCList *clist)
 static void
 cell_size_request (BtkCList       *clist,
 		   BtkCListRow    *clist_row,
-		   gint            column,
+		   bint            column,
 		   BtkRequisition *requisition)
 {
   BtkCTree *ctree;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
   BangoLayout *layout;
   BangoRectangle logical_rect;
 
@@ -2914,17 +2914,17 @@ cell_size_request (BtkCList       *clist,
 static void
 set_cell_contents (BtkCList    *clist,
 		   BtkCListRow *clist_row,
-		   gint         column,
+		   bint         column,
 		   BtkCellType  type,
-		   const gchar *text,
-		   guint8       spacing,
+		   const bchar *text,
+		   buint8       spacing,
 		   BdkPixmap   *pixmap,
 		   BdkBitmap   *mask)
 {
-  gboolean visible = FALSE;
+  bboolean visible = FALSE;
   BtkCTree *ctree;
   BtkRequisition requisition;
-  gchar *old_text = NULL;
+  bchar *old_text = NULL;
   BdkPixmap *old_pixmap = NULL;
   BdkBitmap *old_mask = NULL;
 
@@ -3043,14 +3043,14 @@ set_cell_contents (BtkCList    *clist,
 static void 
 set_node_info (BtkCTree     *ctree,
 	       BtkCTreeNode *node,
-	       const gchar  *text,
-	       guint8        spacing,
+	       const bchar  *text,
+	       buint8        spacing,
 	       BdkPixmap    *pixmap_closed,
 	       BdkBitmap    *mask_closed,
 	       BdkPixmap    *pixmap_opened,
 	       BdkBitmap    *mask_opened,
-	       gboolean      is_leaf,
-	       gboolean      expanded)
+	       bboolean      is_leaf,
+	       bboolean      expanded)
 {
   if (BTK_CTREE_ROW (node)->pixmap_opened)
     {
@@ -3097,7 +3097,7 @@ set_node_info (BtkCTree     *ctree,
 static void
 tree_delete (BtkCTree     *ctree, 
 	     BtkCTreeNode *node, 
-	     gpointer      data)
+	     bpointer      data)
 {
   tree_unselect (ctree,  node, NULL);
   row_delete (ctree, BTK_CTREE_ROW (node));
@@ -3107,7 +3107,7 @@ tree_delete (BtkCTree     *ctree,
 static void
 tree_delete_row (BtkCTree     *ctree, 
 		 BtkCTreeNode *node, 
-		 gpointer      data)
+		 bpointer      data)
 {
   row_delete (ctree, BTK_CTREE_ROW (node));
   g_list_free_1 ((GList *)node);
@@ -3116,7 +3116,7 @@ tree_delete_row (BtkCTree     *ctree,
 static void
 tree_update_level (BtkCTree     *ctree, 
 		   BtkCTreeNode *node, 
-		   gpointer      data)
+		   bpointer      data)
 {
   if (!node)
     return;
@@ -3131,7 +3131,7 @@ tree_update_level (BtkCTree     *ctree,
 static void
 tree_select (BtkCTree     *ctree, 
 	     BtkCTreeNode *node, 
-	     gpointer      data)
+	     bpointer      data)
 {
   if (node && BTK_CTREE_ROW (node)->row.state != BTK_STATE_SELECTED &&
       BTK_CTREE_ROW (node)->row.selectable)
@@ -3142,7 +3142,7 @@ tree_select (BtkCTree     *ctree,
 static void
 tree_unselect (BtkCTree     *ctree, 
 	       BtkCTreeNode *node, 
-	       gpointer      data)
+	       bpointer      data)
 {
   if (node && BTK_CTREE_ROW (node)->row.state == BTK_STATE_SELECTED)
     btk_signal_emit (BTK_OBJECT (ctree), ctree_signals[TREE_UNSELECT_ROW], 
@@ -3152,7 +3152,7 @@ tree_unselect (BtkCTree     *ctree,
 static void
 tree_expand (BtkCTree     *ctree, 
 	     BtkCTreeNode *node, 
-	     gpointer      data)
+	     bpointer      data)
 {
   if (node && !BTK_CTREE_ROW (node)->expanded)
     btk_signal_emit (BTK_OBJECT (ctree), ctree_signals[TREE_EXPAND], node);
@@ -3161,7 +3161,7 @@ tree_expand (BtkCTree     *ctree,
 static void
 tree_collapse (BtkCTree     *ctree, 
 	       BtkCTreeNode *node, 
-	       gpointer      data)
+	       bpointer      data)
 {
   if (node && BTK_CTREE_ROW (node)->expanded)
     btk_signal_emit (BTK_OBJECT (ctree), ctree_signals[TREE_COLLAPSE], node);
@@ -3170,7 +3170,7 @@ tree_collapse (BtkCTree     *ctree,
 static void
 tree_collapse_to_depth (BtkCTree     *ctree, 
 			BtkCTreeNode *node, 
-			gint          depth)
+			bint          depth)
 {
   if (node && BTK_CTREE_ROW (node)->level == depth)
     btk_ctree_collapse_recursive (ctree, node);
@@ -3179,7 +3179,7 @@ tree_collapse_to_depth (BtkCTree     *ctree,
 static void
 tree_toggle_expansion (BtkCTree     *ctree,
 		       BtkCTreeNode *node,
-		       gpointer      data)
+		       bpointer      data)
 {
   if (!node)
     return;
@@ -3237,7 +3237,7 @@ row_delete (BtkCTree    *ctree,
 	    BtkCTreeRow *ctree_row)
 {
   BtkCList *clist;
-  gint i;
+  bint i;
 
   clist = BTK_CLIST (ctree);
 
@@ -3277,7 +3277,7 @@ row_delete (BtkCTree    *ctree,
   if (ctree_row->row.destroy)
     {
       GDestroyNotify dnotify = ctree_row->row.destroy;
-      gpointer ddata = ctree_row->row.data;
+      bpointer ddata = ctree_row->row.data;
 
       ctree_row->row.destroy = NULL;
       ctree_row->row.data = NULL;
@@ -3291,8 +3291,8 @@ row_delete (BtkCTree    *ctree,
 
 static void
 real_select_row (BtkCList *clist,
-		 gint      row,
-		 gint      column,
+		 bint      row,
+		 bint      column,
 		 BdkEvent *event)
 {
   GList *node;
@@ -3307,8 +3307,8 @@ real_select_row (BtkCList *clist,
 
 static void
 real_unselect_row (BtkCList *clist,
-		   gint      row,
-		   gint      column,
+		   bint      row,
+		   bint      column,
 		   BdkEvent *event)
 {
   GList *node;
@@ -3323,12 +3323,12 @@ real_unselect_row (BtkCList *clist,
 static void
 real_tree_select (BtkCTree     *ctree,
 		  BtkCTreeNode *node,
-		  gint          column)
+		  bint          column)
 {
   BtkCList *clist;
   GList *list;
   BtkCTreeNode *sel_row;
-  gboolean node_selected;
+  bboolean node_selected;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -3381,7 +3381,7 @@ real_tree_select (BtkCTree     *ctree,
 static void
 real_tree_unselect (BtkCTree     *ctree,
 		    BtkCTreeNode *node,
-		    gint          column)
+		    bint          column)
 {
   BtkCList *clist;
 
@@ -3405,7 +3405,7 @@ real_tree_unselect (BtkCTree     *ctree,
 static void
 select_row_recursive (BtkCTree     *ctree, 
 		      BtkCTreeNode *node, 
-		      gpointer      data)
+		      bpointer      data)
 {
   if (!node || BTK_CTREE_ROW (node)->row.state == BTK_STATE_SELECTED ||
       !BTK_CTREE_ROW (node)->row.selectable)
@@ -3507,17 +3507,17 @@ real_unselect_all (BtkCList *clist)
     }
 }
 
-static gboolean
+static bboolean
 ctree_is_hot_spot (BtkCTree     *ctree, 
 		   BtkCTreeNode *node,
-		   gint          row, 
-		   gint          x, 
-		   gint          y)
+		   bint          row, 
+		   bint          x, 
+		   bint          y)
 {
   BtkCTreeRow *tree_row;
   BtkCList *clist;
-  gint xl;
-  gint yu;
+  bint xl;
+  bint yu;
   
   g_return_val_if_fail (BTK_IS_CTREE (ctree), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -3559,7 +3559,7 @@ ctree_is_hot_spot (BtkCTree     *ctree,
 
 static BObject*
 btk_ctree_constructor (GType                  type,
-		       guint                  n_construct_properties,
+		       buint                  n_construct_properties,
 		       BObjectConstructParam *construct_properties)
 {
   BObject *object = B_OBJECT_CLASS (parent_class)->constructor (type,
@@ -3570,9 +3570,9 @@ btk_ctree_constructor (GType                  type,
 }
 
 BtkWidget*
-btk_ctree_new_with_titles (gint         columns, 
-			   gint         tree_column,
-			   gchar       *titles[])
+btk_ctree_new_with_titles (bint         columns, 
+			   bint         tree_column,
+			   bchar       *titles[])
 {
   BtkWidget *widget;
 
@@ -3586,7 +3586,7 @@ btk_ctree_new_with_titles (gint         columns,
   if (titles)
     {
       BtkCList *clist = BTK_CLIST (widget);
-      guint i;
+      buint i;
 
       for (i = 0; i < columns; i++)
 	btk_clist_set_column_title (clist, i, titles[i]);
@@ -3597,16 +3597,16 @@ btk_ctree_new_with_titles (gint         columns,
 }
 
 BtkWidget *
-btk_ctree_new (gint columns, 
-	       gint tree_column)
+btk_ctree_new (bint columns, 
+	       bint tree_column)
 {
   return btk_ctree_new_with_titles (columns, tree_column, NULL);
 }
 
-static gint
+static bint
 real_insert_row (BtkCList *clist,
-		 gint      row,
-		 gchar    *text[])
+		 bint      row,
+		 bchar    *text[])
 {
   BtkCTreeNode *parent = NULL;
   BtkCTreeNode *sibling;
@@ -3639,20 +3639,20 @@ BtkCTreeNode *
 btk_ctree_insert_node (BtkCTree     *ctree,
 		       BtkCTreeNode *parent,
 		       BtkCTreeNode *sibling,
-		       gchar        *text[],
-		       guint8        spacing,
+		       bchar        *text[],
+		       buint8        spacing,
 		       BdkPixmap    *pixmap_closed,
 		       BdkBitmap    *mask_closed,
 		       BdkPixmap    *pixmap_opened,
 		       BdkBitmap    *mask_opened,
-		       gboolean      is_leaf,
-		       gboolean      expanded)
+		       bboolean      is_leaf,
+		       bboolean      expanded)
 {
   BtkCList *clist;
   BtkCTreeRow *new_row;
   BtkCTreeNode *node;
   GList *list;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (BTK_IS_CTREE (ctree), NULL);
   if (sibling)
@@ -3721,7 +3721,7 @@ btk_ctree_insert_gnode (BtkCTree          *ctree,
 			BtkCTreeNode      *sibling,
 			GNode             *gnode,
 			BtkCTreeGNodeFunc  func,
-			gpointer           data)
+			bpointer           data)
 {
   BtkCList *clist;
   BtkCTreeNode *cnode = NULL;
@@ -3729,7 +3729,7 @@ btk_ctree_insert_gnode (BtkCTree          *ctree,
   BtkCTreeNode *new_child;
   GList *list;
   GNode *work;
-  guint depth = 1;
+  buint depth = 1;
 
   g_return_val_if_fail (BTK_IS_CTREE (ctree), NULL);
   g_return_val_if_fail (gnode != NULL, NULL);
@@ -3790,11 +3790,11 @@ btk_ctree_export_to_gnode (BtkCTree          *ctree,
 			   GNode             *sibling,
 			   BtkCTreeNode      *node,
 			   BtkCTreeGNodeFunc  func,
-			   gpointer           data)
+			   bpointer           data)
 {
   BtkCTreeNode *work;
   GNode *gnode;
-  gint depth;
+  bint depth;
 
   g_return_val_if_fail (BTK_IS_CTREE (ctree), NULL);
   g_return_val_if_fail (node != NULL, NULL);
@@ -3834,7 +3834,7 @@ btk_ctree_export_to_gnode (BtkCTree          *ctree,
   
 static void
 real_remove_row (BtkCList *clist,
-		 gint      row)
+		 bint      row)
 {
   BtkCTreeNode *node;
 
@@ -3915,7 +3915,7 @@ void
 btk_ctree_post_recursive (BtkCTree     *ctree, 
 			  BtkCTreeNode *node,
 			  BtkCTreeFunc  func,
-			  gpointer      data)
+			  bpointer      data)
 {
   BtkCTreeNode *work;
   BtkCTreeNode *tmp;
@@ -3942,9 +3942,9 @@ btk_ctree_post_recursive (BtkCTree     *ctree,
 void
 btk_ctree_post_recursive_to_depth (BtkCTree     *ctree, 
 				   BtkCTreeNode *node,
-				   gint          depth,
+				   bint          depth,
 				   BtkCTreeFunc  func,
-				   gpointer      data)
+				   bpointer      data)
 {
   BtkCTreeNode *work;
   BtkCTreeNode *tmp;
@@ -3981,7 +3981,7 @@ void
 btk_ctree_pre_recursive (BtkCTree     *ctree, 
 			 BtkCTreeNode *node,
 			 BtkCTreeFunc  func,
-			 gpointer      data)
+			 bpointer      data)
 {
   BtkCTreeNode *work;
   BtkCTreeNode *tmp;
@@ -4008,9 +4008,9 @@ btk_ctree_pre_recursive (BtkCTree     *ctree,
 void
 btk_ctree_pre_recursive_to_depth (BtkCTree     *ctree, 
 				  BtkCTreeNode *node,
-				  gint          depth, 
+				  bint          depth, 
 				  BtkCTreeFunc  func,
-				  gpointer      data)
+				  bpointer      data)
 {
   BtkCTreeNode *work;
   BtkCTreeNode *tmp;
@@ -4044,7 +4044,7 @@ btk_ctree_pre_recursive_to_depth (BtkCTree     *ctree,
     }
 }
 
-gboolean
+bboolean
 btk_ctree_is_viewable (BtkCTree     *ctree, 
 		       BtkCTreeNode *node)
 { 
@@ -4104,7 +4104,7 @@ btk_ctree_find_node_ptr (BtkCTree    *ctree,
 
 BtkCTreeNode *
 btk_ctree_node_nth (BtkCTree *ctree,
-		    guint     row)
+		    buint     row)
 {
   g_return_val_if_fail (BTK_IS_CTREE (ctree), NULL);
 
@@ -4114,7 +4114,7 @@ btk_ctree_node_nth (BtkCTree *ctree,
   return BTK_CTREE_NODE (g_list_nth (BTK_CLIST (ctree)->row_list, row));
 }
 
-gboolean
+bboolean
 btk_ctree_find (BtkCTree     *ctree,
 		BtkCTreeNode *node,
 		BtkCTreeNode *child)
@@ -4139,7 +4139,7 @@ btk_ctree_find (BtkCTree     *ctree,
   return FALSE;
 }
 
-gboolean
+bboolean
 btk_ctree_is_ancestor (BtkCTree     *ctree,
 		       BtkCTreeNode *node,
 		       BtkCTreeNode *child)
@@ -4156,7 +4156,7 @@ btk_ctree_is_ancestor (BtkCTree     *ctree,
 BtkCTreeNode *
 btk_ctree_find_by_row_data (BtkCTree     *ctree,
 			    BtkCTreeNode *node,
-			    gpointer      data)
+			    bpointer      data)
 {
   BtkCTreeNode *work;
   
@@ -4179,7 +4179,7 @@ btk_ctree_find_by_row_data (BtkCTree     *ctree,
 GList *
 btk_ctree_find_all_by_row_data (BtkCTree     *ctree,
 				BtkCTreeNode *node,
-				gpointer      data)
+				bpointer      data)
 {
   GList *list = NULL;
 
@@ -4212,7 +4212,7 @@ btk_ctree_find_all_by_row_data (BtkCTree     *ctree,
 BtkCTreeNode *
 btk_ctree_find_by_row_data_custom (BtkCTree     *ctree,
 				   BtkCTreeNode *node,
-				   gpointer      data,
+				   bpointer      data,
 				   GCompareFunc  func)
 {
   BtkCTreeNode *work;
@@ -4238,7 +4238,7 @@ btk_ctree_find_by_row_data_custom (BtkCTree     *ctree,
 GList *
 btk_ctree_find_all_by_row_data_custom (BtkCTree     *ctree,
 				       BtkCTreeNode *node,
-				       gpointer      data,
+				       bpointer      data,
 				       GCompareFunc  func)
 {
   GList *list = NULL;
@@ -4271,14 +4271,14 @@ btk_ctree_find_all_by_row_data_custom (BtkCTree     *ctree,
   return list;
 }
 
-gboolean
+bboolean
 btk_ctree_is_hot_spot (BtkCTree *ctree, 
-		       gint      x, 
-		       gint      y)
+		       bint      x, 
+		       bint      y)
 {
   BtkCTreeNode *node;
-  gint column;
-  gint row;
+  bint column;
+  bint row;
   
   g_return_val_if_fail (BTK_IS_CTREE (ctree), FALSE);
 
@@ -4331,7 +4331,7 @@ btk_ctree_expand_recursive (BtkCTree     *ctree,
 			    BtkCTreeNode *node)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
+  bboolean thaw = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -4355,10 +4355,10 @@ btk_ctree_expand_recursive (BtkCTree     *ctree,
 void 
 btk_ctree_expand_to_depth (BtkCTree     *ctree,
 			   BtkCTreeNode *node,
-			   gint          depth)
+			   bint          depth)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
+  bboolean thaw = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -4398,8 +4398,8 @@ btk_ctree_collapse_recursive (BtkCTree     *ctree,
 			      BtkCTreeNode *node)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
-  gint i;
+  bboolean thaw = FALSE;
+  bint i;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -4429,11 +4429,11 @@ btk_ctree_collapse_recursive (BtkCTree     *ctree,
 void 
 btk_ctree_collapse_to_depth (BtkCTree     *ctree,
 			     BtkCTreeNode *node,
-			     gint          depth)
+			     bint          depth)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
-  gint i;
+  bboolean thaw = FALSE;
+  bint i;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -4451,7 +4451,7 @@ btk_ctree_collapse_to_depth (BtkCTree     *ctree,
   BTK_CLIST_SET_FLAG (clist, CLIST_AUTO_RESIZE_BLOCKED);
   btk_ctree_post_recursive_to_depth (ctree, node, depth,
 				     BTK_CTREE_FUNC (tree_collapse_to_depth),
-				     GINT_TO_POINTER (depth));
+				     BINT_TO_POINTER (depth));
   BTK_CLIST_UNSET_FLAG (clist, CLIST_AUTO_RESIZE_BLOCKED);
   for (i = 0; i < clist->columns; i++)
     if (clist->column[i].auto_resize)
@@ -4480,7 +4480,7 @@ btk_ctree_toggle_expansion_recursive (BtkCTree     *ctree,
 				      BtkCTreeNode *node)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
+  bboolean thaw = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
   
@@ -4542,10 +4542,10 @@ btk_ctree_unselect_recursive (BtkCTree     *ctree,
 void
 btk_ctree_real_select_recursive (BtkCTree     *ctree, 
 				 BtkCTreeNode *node, 
-				 gint          state)
+				 bint          state)
 {
   BtkCList *clist;
-  gboolean thaw = FALSE;
+  bboolean thaw = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -4593,8 +4593,8 @@ btk_ctree_real_select_recursive (BtkCTree     *ctree,
 void 
 btk_ctree_node_set_text (BtkCTree     *ctree,
 			 BtkCTreeNode *node,
-			 gint          column,
-			 const gchar  *text)
+			 bint          column,
+			 const bchar  *text)
 {
   BtkCList *clist;
 
@@ -4621,7 +4621,7 @@ btk_ctree_node_set_text (BtkCTree     *ctree,
 void
 btk_ctree_node_set_pixmap (BtkCTree     *ctree,
 			   BtkCTreeNode *node,
-			   gint          column,
+			   bint          column,
 			   BdkPixmap    *pixmap,
 			   BdkBitmap    *mask)
 {
@@ -4655,9 +4655,9 @@ btk_ctree_node_set_pixmap (BtkCTree     *ctree,
 void
 btk_ctree_node_set_pixtext (BtkCTree     *ctree,
 			    BtkCTreeNode *node,
-			    gint          column,
-			    const gchar  *text,
-			    guint8        spacing,
+			    bint          column,
+			    const bchar  *text,
+			    buint8        spacing,
 			    BdkPixmap    *pixmap,
 			    BdkBitmap    *mask)
 {
@@ -4697,17 +4697,17 @@ btk_ctree_node_set_pixtext (BtkCTree     *ctree,
 void
 btk_ctree_set_node_info (BtkCTree     *ctree,
 			 BtkCTreeNode *node,
-			 const gchar  *text,
-			 guint8        spacing,
+			 const bchar  *text,
+			 buint8        spacing,
 			 BdkPixmap    *pixmap_closed,
 			 BdkBitmap    *mask_closed,
 			 BdkPixmap    *pixmap_opened,
 			 BdkBitmap    *mask_opened,
-			 gboolean      is_leaf,
-			 gboolean      expanded)
+			 bboolean      is_leaf,
+			 bboolean      expanded)
 {
-  gboolean old_leaf;
-  gboolean old_expanded;
+  bboolean old_leaf;
+  bboolean old_expanded;
  
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -4749,13 +4749,13 @@ btk_ctree_set_node_info (BtkCTree     *ctree,
 void
 btk_ctree_node_set_shift (BtkCTree     *ctree,
 			  BtkCTreeNode *node,
-			  gint          column,
-			  gint          vertical,
-			  gint          horizontal)
+			  bint          column,
+			  bint          vertical,
+			  bint          horizontal)
 {
   BtkCList *clist;
   BtkRequisition requisition;
-  gboolean visible = FALSE;
+  bboolean visible = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -4811,7 +4811,7 @@ remove_grab (BtkCList *clist)
 void
 btk_ctree_node_set_selectable (BtkCTree     *ctree,
 			       BtkCTreeNode *node,
-			       gboolean      selectable)
+			       bboolean      selectable)
 {
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -4839,7 +4839,7 @@ btk_ctree_node_set_selectable (BtkCTree     *ctree,
     }      
 }
 
-gboolean
+bboolean
 btk_ctree_node_get_selectable (BtkCTree     *ctree,
 			       BtkCTreeNode *node)
 {
@@ -4851,7 +4851,7 @@ btk_ctree_node_get_selectable (BtkCTree     *ctree,
 BtkCellType 
 btk_ctree_node_get_cell_type (BtkCTree     *ctree,
 			      BtkCTreeNode *node,
-			      gint          column)
+			      bint          column)
 {
   g_return_val_if_fail (BTK_IS_CTREE (ctree), -1);
   g_return_val_if_fail (node != NULL, -1);
@@ -4862,11 +4862,11 @@ btk_ctree_node_get_cell_type (BtkCTree     *ctree,
   return BTK_CTREE_ROW (node)->row.cell[column].type;
 }
 
-gboolean
+bboolean
 btk_ctree_node_get_text (BtkCTree      *ctree,
 			 BtkCTreeNode  *node,
-			 gint           column,
-			 gchar        **text)
+			 bint           column,
+			 bchar        **text)
 {
   g_return_val_if_fail (BTK_IS_CTREE (ctree), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -4883,10 +4883,10 @@ btk_ctree_node_get_text (BtkCTree      *ctree,
   return TRUE;
 }
 
-gboolean
+bboolean
 btk_ctree_node_get_pixmap (BtkCTree     *ctree,
 			   BtkCTreeNode *node,
-			   gint          column,
+			   bint          column,
 			   BdkPixmap   **pixmap,
 			   BdkBitmap   **mask)
 {
@@ -4907,12 +4907,12 @@ btk_ctree_node_get_pixmap (BtkCTree     *ctree,
   return TRUE;
 }
 
-gboolean
+bboolean
 btk_ctree_node_get_pixtext (BtkCTree      *ctree,
 			    BtkCTreeNode  *node,
-			    gint           column,
-			    gchar        **text,
-			    guint8        *spacing,
+			    bint           column,
+			    bchar        **text,
+			    buint8        *spacing,
 			    BdkPixmap    **pixmap,
 			    BdkBitmap    **mask)
 {
@@ -4939,17 +4939,17 @@ btk_ctree_node_get_pixtext (BtkCTree      *ctree,
   return TRUE;
 }
 
-gboolean
+bboolean
 btk_ctree_get_node_info (BtkCTree      *ctree,
 			 BtkCTreeNode  *node,
-			 gchar        **text,
-			 guint8        *spacing,
+			 bchar        **text,
+			 buint8        *spacing,
 			 BdkPixmap    **pixmap_closed,
 			 BdkBitmap    **mask_closed,
 			 BdkPixmap    **pixmap_opened,
 			 BdkBitmap    **mask_opened,
-			 gboolean      *is_leaf,
-			 gboolean      *expanded)
+			 bboolean      *is_leaf,
+			 bboolean      *expanded)
 {
   g_return_val_if_fail (BTK_IS_CTREE (ctree), FALSE);
   g_return_val_if_fail (node != NULL, FALSE);
@@ -4979,12 +4979,12 @@ btk_ctree_get_node_info (BtkCTree      *ctree,
 void
 btk_ctree_node_set_cell_style (BtkCTree     *ctree,
 			       BtkCTreeNode *node,
-			       gint          column,
+			       bint          column,
 			       BtkStyle     *style)
 {
   BtkCList *clist;
   BtkRequisition requisition;
-  gboolean visible = FALSE;
+  bboolean visible = FALSE;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -5035,7 +5035,7 @@ btk_ctree_node_set_cell_style (BtkCTree     *ctree,
 BtkStyle *
 btk_ctree_node_get_cell_style (BtkCTree     *ctree,
 			       BtkCTreeNode *node,
-			       gint          column)
+			       bint          column)
 {
   g_return_val_if_fail (BTK_IS_CTREE (ctree), NULL);
   g_return_val_if_fail (node != NULL, NULL);
@@ -5053,9 +5053,9 @@ btk_ctree_node_set_row_style (BtkCTree     *ctree,
 {
   BtkCList *clist;
   BtkRequisition requisition;
-  gboolean visible;
-  gint *old_width = NULL;
-  gint i;
+  bboolean visible;
+  bint *old_width = NULL;
+  bint i;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -5068,7 +5068,7 @@ btk_ctree_node_set_row_style (BtkCTree     *ctree,
   visible = btk_ctree_is_viewable (ctree, node);
   if (visible && !BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
     {
-      old_width = g_new (gint, clist->columns);
+      old_width = g_new (bint, clist->columns);
       for (i = 0; i < clist->columns; i++)
 	if (clist->column[i].auto_resize)
 	  {
@@ -5167,7 +5167,7 @@ btk_ctree_node_set_background (BtkCTree       *ctree,
 void
 btk_ctree_node_set_row_data (BtkCTree     *ctree,
 			     BtkCTreeNode *node,
-			     gpointer      data)
+			     bpointer      data)
 {
   btk_ctree_node_set_row_data_full (ctree, node, data, NULL);
 }
@@ -5175,11 +5175,11 @@ btk_ctree_node_set_row_data (BtkCTree     *ctree,
 void
 btk_ctree_node_set_row_data_full (BtkCTree       *ctree,
 				  BtkCTreeNode   *node,
-				  gpointer        data,
+				  bpointer        data,
 				  GDestroyNotify  destroy)
 {
   GDestroyNotify dnotify;
-  gpointer ddata;
+  bpointer ddata;
   
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (node != NULL);
@@ -5194,7 +5194,7 @@ btk_ctree_node_set_row_data_full (BtkCTree       *ctree,
     dnotify (ddata);
 }
 
-gpointer
+bpointer
 btk_ctree_node_get_row_data (BtkCTree     *ctree,
 			     BtkCTreeNode *node)
 {
@@ -5206,11 +5206,11 @@ btk_ctree_node_get_row_data (BtkCTree     *ctree,
 void
 btk_ctree_node_moveto (BtkCTree     *ctree,
 		       BtkCTreeNode *node,
-		       gint          column,
-		       gfloat        row_align,
-		       gfloat        col_align)
+		       bint          column,
+		       bfloat        row_align,
+		       bfloat        col_align)
 {
-  gint row = -1;
+  bint row = -1;
   BtkCList *clist;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
@@ -5230,7 +5230,7 @@ BtkVisibility
 btk_ctree_node_is_visible (BtkCTree     *ctree,
                            BtkCTreeNode *node)
 {
-  gint row;
+  bint row;
   
   g_return_val_if_fail (ctree != NULL, 0);
   g_return_val_if_fail (node != NULL, 0);
@@ -5246,7 +5246,7 @@ btk_ctree_node_is_visible (BtkCTree     *ctree,
 
 void
 btk_ctree_set_indent (BtkCTree *ctree, 
-                      gint      indent)
+                      bint      indent)
 {
   BtkCList *clist;
 
@@ -5270,10 +5270,10 @@ btk_ctree_set_indent (BtkCTree *ctree,
 
 void
 btk_ctree_set_spacing (BtkCTree *ctree, 
-		       gint      spacing)
+		       bint      spacing)
 {
   BtkCList *clist;
-  gint old_spacing;
+  bint old_spacing;
 
   g_return_if_fail (BTK_IS_CTREE (ctree));
   g_return_if_fail (spacing >= 0);
@@ -5297,7 +5297,7 @@ btk_ctree_set_spacing (BtkCTree *ctree,
 
 void
 btk_ctree_set_show_stub (BtkCTree *ctree, 
-			 gboolean  show_stub)
+			 bboolean  show_stub)
 {
   g_return_if_fail (BTK_IS_CTREE (ctree));
 
@@ -5349,7 +5349,7 @@ btk_ctree_set_line_style (BtkCTree          *ctree,
 
   if (btk_widget_get_realized (BTK_WIDGET (ctree)))
     {
-      gint8 dashes[] = { 1, 1 };
+      bint8 dashes[] = { 1, 1 };
 
       switch (line_style)
 	{
@@ -5398,7 +5398,7 @@ btk_ctree_set_expander_style (BtkCTree              *ctree,
   if (clist->column[ctree->tree_column].auto_resize &&
       !BTK_CLIST_AUTO_RESIZE_BLOCKED (clist))
     {
-      gint new_width;
+      bint new_width;
 
       new_width = clist->column[ctree->tree_column].width;
       switch (old_style)
@@ -5443,7 +5443,7 @@ btk_ctree_set_expander_style (BtkCTree              *ctree,
 static void
 tree_sort (BtkCTree     *ctree,
 	   BtkCTreeNode *node,
-	   gpointer      data)
+	   bpointer      data)
 {
   BtkCTreeNode *list_start;
   BtkCTreeNode *cmp;
@@ -5576,7 +5576,7 @@ btk_ctree_sort_node (BtkCTree     *ctree,
 
 static void
 fake_unselect_all (BtkCList *clist,
-		   gint      row)
+		   bint      row)
 {
   GList *list;
   GList *focus_node = NULL;
@@ -5611,7 +5611,7 @@ fake_unselect_all (BtkCList *clist,
 
 static GList *
 selection_find (BtkCList *clist,
-		gint      row_number,
+		bint      row_number,
 		GList    *row_list_element)
 {
   return g_list_find (clist->selection, row_list_element);
@@ -5623,10 +5623,10 @@ resync_selection (BtkCList *clist, BdkEvent *event)
   BtkCTree *ctree;
   GList *list;
   BtkCTreeNode *node;
-  gint i;
-  gint e;
-  gint row;
-  gboolean unselect;
+  bint i;
+  bint e;
+  bint row;
+  bboolean unselect;
 
   g_return_if_fail (BTK_IS_CTREE (clist));
 
@@ -5793,7 +5793,7 @@ btk_ctree_set_drag_compare_func (BtkCTree                *ctree,
   ctree->drag_compare = cmp_func;
 }
 
-static gboolean
+static bboolean
 check_drag (BtkCTree        *ctree,
 	    BtkCTreeNode    *drag_source,
 	    BtkCTreeNode    *drag_target,
@@ -5843,7 +5843,7 @@ check_drag (BtkCTree        *ctree,
 
 /************************************/
 static void
-drag_dest_info_destroy (gpointer data)
+drag_dest_info_destroy (bpointer data)
 {
   BtkCListDestInfo *info = data;
 
@@ -5852,8 +5852,8 @@ drag_dest_info_destroy (gpointer data)
 
 static void
 drag_dest_cell (BtkCList         *clist,
-		gint              x,
-		gint              y,
+		bint              x,
+		bint              y,
 		BtkCListDestInfo *dest_info)
 {
   BtkWidget *widget;
@@ -5880,8 +5880,8 @@ drag_dest_cell (BtkCList         *clist,
 
   if (dest_info->cell.row >= 0)
     {
-      gint y_delta;
-      gint h = 0;
+      bint y_delta;
+      bint h = 0;
 
       y_delta = y - ROW_TOP_YPIXEL (clist, dest_info->cell.row);
       
@@ -5914,7 +5914,7 @@ btk_ctree_drag_begin (BtkWidget	     *widget,
 {
   BtkCList *clist;
   BtkCTree *ctree;
-  gboolean use_icons;
+  bboolean use_icons;
 
   g_return_if_fail (BTK_IS_CTREE (widget));
   g_return_if_fail (context != NULL);
@@ -5953,12 +5953,12 @@ btk_ctree_drag_begin (BtkWidget	     *widget,
     }
 }
 
-static gint
+static bint
 btk_ctree_drag_motion (BtkWidget      *widget,
 		       BdkDragContext *context,
-		       gint            x,
-		       gint            y,
-		       guint           time)
+		       bint            x,
+		       bint            y,
+		       buint           time)
 {
   BtkCList *clist;
   BtkCTree *ctree;
@@ -6058,11 +6058,11 @@ btk_ctree_drag_motion (BtkWidget      *widget,
 static void
 btk_ctree_drag_data_received (BtkWidget        *widget,
 			      BdkDragContext   *context,
-			      gint              x,
-			      gint              y,
+			      bint              x,
+			      bint              y,
 			      BtkSelectionData *selection_data,
-			      guint             info,
-			      guint32           time)
+			      buint             info,
+			      buint32           time)
 {
   BtkCTree *ctree;
   BtkCList *clist;

@@ -40,7 +40,7 @@ test_button_clicks (void)
                                                       "IgnoreMe2", &c,
                                                       NULL);
   BtkWidget *button = btk_test_find_widget (window, "*Click*", BTK_TYPE_BUTTON);
-  gboolean simsuccess;
+  bboolean simsuccess;
   g_assert (button != NULL);
   simsuccess = btk_test_widget_click (button, 1, 0);
   g_assert (simsuccess == TRUE);
@@ -64,7 +64,7 @@ test_button_keys (void)
                                                       "IgnoreMe2", &c,
                                                       NULL);
   BtkWidget *button = btk_test_find_widget (window, "*Click*", BTK_TYPE_BUTTON);
-  gboolean simsuccess;
+  bboolean simsuccess;
   g_assert (button != NULL);
   btk_widget_grab_focus (button);
   g_assert (btk_widget_has_focus (button));
@@ -77,12 +77,12 @@ test_button_keys (void)
   g_assert (c == 0);
 }
 
-static gboolean
+static bboolean
 store_last_key_release (BtkWidget   *widget,
                         BdkEventKey *event,
-                        gpointer     user_data)
+                        bpointer     user_data)
 {
-  *((gint *)user_data) = event->keyval;
+  *((bint *)user_data) = event->keyval;
   return FALSE;
 }
 
@@ -96,8 +96,8 @@ test_send_shift_key (void)
                                                       "IgnoreMe2", NULL,
                                                       NULL);
   BtkWidget *button = btk_test_find_widget (window, "SendMeKeys", BTK_TYPE_BUTTON);
-  gint last_key_release = 0;
-  gboolean simsuccess;
+  bint last_key_release = 0;
+  bboolean simsuccess;
   g_assert (button != NULL);
   g_signal_connect (button, "key-release-event",
                     G_CALLBACK (store_last_key_release),
@@ -150,7 +150,7 @@ test_text_access (void)
     btk_test_text_set (widgets[i], "foobar");
   for (i = 0; i < N_WIDGETS; i++)
     {
-      gchar *text  = btk_test_text_get (widgets[i]);
+      bchar *text  = btk_test_text_get (widgets[i]);
       g_assert (strcmp (text, "foobar") == 0);
       g_free (text);
     }
@@ -158,7 +158,7 @@ test_text_access (void)
     btk_test_text_set (widgets[i], "");
   for (i = 0; i < N_WIDGETS; i++)
     {
-      gchar *text  = btk_test_text_get (widgets[i]);
+      bchar *text  = btk_test_text_get (widgets[i]);
       g_assert (strcmp (text, "") == 0);
       g_free (text);
     }
@@ -170,14 +170,14 @@ test_xserver_sync (void)
   BtkWidget *window = btk_test_create_simple_window ("Test Window", "Test: test_xserver_sync");
   BtkWidget *darea = btk_drawing_area_new ();
   GTimer *gtimer = g_timer_new();
-  gint sync_is_slower = 0, repeat = 5;
+  bint sync_is_slower = 0, repeat = 5;
   btk_widget_set_size_request (darea, 320, 200);
   btk_container_add (BTK_CONTAINER (BTK_BIN (window)->child), darea);
   btk_widget_show (darea);
   btk_widget_show_now (window);
   while (repeat--)
     {
-      gint i, many = 200;
+      bint i, many = 200;
       double nosync_time, sync_time;
       bairo_t *cr;
 
@@ -216,7 +216,7 @@ test_spin_button_arrows (void)
 {
   BtkWidget *window = btk_test_create_simple_window ("Test Window", "Test: test_spin_button_arrows");
   BtkWidget *spinner = btk_spin_button_new_with_range (0, 100, 5);
-  gboolean simsuccess;
+  bboolean simsuccess;
   double oldval, newval;
   btk_container_add (BTK_CONTAINER (BTK_BIN (window)->child), spinner);
   btk_widget_show (spinner);

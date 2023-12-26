@@ -49,8 +49,8 @@
  * token for the fake "File System" volume.  So, we'll return a pointer to
  * this particular string.
  */
-static const gchar *root_volume_token = N_("File System");
-#define IS_ROOT_VOLUME(volume) ((gpointer) (volume) == (gpointer) root_volume_token)
+static const bchar *root_volume_token = N_("File System");
+#define IS_ROOT_VOLUME(volume) ((bpointer) (volume) == (bpointer) root_volume_token)
 
 enum {
   PROP_0,
@@ -74,8 +74,8 @@ enum {
   FOLDER_LAST_SIGNAL
 };
 
-static guint fs_signals [FS_LAST_SIGNAL] = { 0, };
-static guint folder_signals [FOLDER_LAST_SIGNAL] = { 0, };
+static buint fs_signals [FS_LAST_SIGNAL] = { 0, };
+static buint folder_signals [FOLDER_LAST_SIGNAL] = { 0, };
 
 typedef struct BtkFileSystemPrivate BtkFileSystemPrivate;
 typedef struct BtkFolderPrivate BtkFolderPrivate;
@@ -104,9 +104,9 @@ struct BtkFolderPrivate
   GFileMonitor *directory_monitor;
   GFileEnumerator *enumerator;
   GCancellable *cancellable;
-  gchar *attributes;
+  bchar *attributes;
 
-  guint finished_loading : 1;
+  buint finished_loading : 1;
 };
 
 struct AsyncFuncData
@@ -114,16 +114,16 @@ struct AsyncFuncData
   BtkFileSystem *file_system;
   GFile *file;
   GCancellable *cancellable;
-  gchar *attributes;
+  bchar *attributes;
 
-  gpointer callback;
-  gpointer data;
+  bpointer callback;
+  bpointer data;
 };
 
 struct BtkFileSystemBookmark
 {
   GFile *file;
-  gchar *label;
+  bchar *label;
 };
 
 G_DEFINE_TYPE (BtkFileSystem, _btk_file_system, B_TYPE_OBJECT)
@@ -132,7 +132,7 @@ G_DEFINE_TYPE (BtkFolder, _btk_folder, B_TYPE_OBJECT)
 
 
 static void btk_folder_set_finished_loading (BtkFolder *folder,
-					     gboolean   finished_loading);
+					     bboolean   finished_loading);
 static void btk_folder_add_file             (BtkFolder *folder,
 					     GFile     *file,
 					     GFileInfo *info);
@@ -150,8 +150,8 @@ _btk_file_system_bookmark_free (BtkFileSystemBookmark *bookmark)
 /* BtkFileSystem methods */
 static void
 volumes_changed (GVolumeMonitor *volume_monitor,
-		 gpointer        volume,
-		 gpointer        user_data)
+		 bpointer        volume,
+		 bpointer        user_data)
 {
   BtkFileSystem *file_system;
 
@@ -245,7 +245,7 @@ static GFile *
 get_legacy_bookmarks_file (void)
 {
   GFile *file;
-  gchar *filename;
+  bchar *filename;
 
   filename = g_build_filename (g_get_home_dir (), ".btk-bookmarks", NULL);
   file = g_file_new_for_path (filename);
@@ -258,7 +258,7 @@ static GFile *
 get_bookmarks_file (void)
 {
   GFile *file;
-  gchar *filename;
+  bchar *filename;
 
   filename = g_build_filename (g_get_user_config_dir (), "btk-3.0", "bookmarks", NULL);
   file = g_file_new_for_path (filename);
@@ -270,10 +270,10 @@ get_bookmarks_file (void)
 static GSList *
 read_bookmarks (GFile *file)
 {
-  gchar *contents;
-  gchar **lines, *space;
+  bchar *contents;
+  bchar **lines, *space;
   GSList *bookmarks = NULL;
-  gint i;
+  bint i;
 
   if (!g_file_load_contents (file, NULL, &contents,
 			     NULL, NULL, NULL))
@@ -318,14 +318,14 @@ save_bookmarks (GFile  *bookmarks_file,
   GString *contents;
   GSList *l;
   GFile *parent_file;
-  gchar *path;
+  bchar *path;
 
   contents = g_string_new ("");
 
   for (l = bookmarks; l; l = l->next)
     {
       BtkFileSystemBookmark *bookmark = l->data;
-      gchar *uri;
+      bchar *uri;
 
       uri = g_file_get_uri (bookmark->file);
       if (!uri)
@@ -364,7 +364,7 @@ bookmarks_file_changed (GFileMonitor      *monitor,
 			GFile             *file,
 			GFile             *other_file,
 			GFileMonitorEvent  event,
-			gpointer           data)
+			bpointer           data)
 {
   BtkFileSystemPrivate *priv;
 
@@ -391,12 +391,12 @@ bookmarks_file_changed (GFileMonitor      *monitor,
     }
 }
 
-static gboolean
+static bboolean
 mount_referenced_by_volume_activation_root (GList *volumes, GMount *mount)
 {
   GList *l;
   GFile *mount_root;
-  gboolean ret;
+  bboolean ret;
 
   ret = FALSE;
 
@@ -650,7 +650,7 @@ _btk_file_system_list_volumes (BtkFileSystem *file_system)
 
 #ifndef G_OS_WIN32
   /* Prepend root volume */
-  list = b_slist_prepend (list, (gpointer) root_volume_token);
+  list = b_slist_prepend (list, (bpointer) root_volume_token);
 #endif
 
   return list;
@@ -694,7 +694,7 @@ free_async_data (AsyncFuncData *async_data)
 static void
 query_info_callback (BObject      *source_object,
 		     GAsyncResult *result,
-		     gpointer      user_data)
+		     bpointer      user_data)
 {
   AsyncFuncData *async_data;
   GError *error = NULL;
@@ -727,9 +727,9 @@ query_info_callback (BObject      *source_object,
 GCancellable *
 _btk_file_system_get_info (BtkFileSystem                *file_system,
 			   GFile                        *file,
-			   const gchar                  *attributes,
+			   const bchar                  *attributes,
 			   BtkFileSystemGetInfoCallback  callback,
-			   gpointer                      data)
+			   bpointer                      data)
 {
   GCancellable *cancellable;
   AsyncFuncData *async_data;
@@ -761,7 +761,7 @@ _btk_file_system_get_info (BtkFileSystem                *file_system,
 static void
 drive_poll_for_media_cb (BObject      *source_object,
                          GAsyncResult *result,
-                         gpointer      user_data)
+                         bpointer      user_data)
 {
   AsyncFuncData *async_data;
   GError *error = NULL;
@@ -782,7 +782,7 @@ drive_poll_for_media_cb (BObject      *source_object,
 static void
 volume_mount_cb (BObject      *source_object,
 		 GAsyncResult *result,
-		 gpointer      user_data)
+		 bpointer      user_data)
 {
   AsyncFuncData *async_data;
   GError *error = NULL;
@@ -805,11 +805,11 @@ _btk_file_system_mount_volume (BtkFileSystem                    *file_system,
 			       BtkFileSystemVolume              *volume,
 			       GMountOperation                  *mount_operation,
 			       BtkFileSystemVolumeMountCallback  callback,
-			       gpointer                          data)
+			       bpointer                          data)
 {
   GCancellable *cancellable;
   AsyncFuncData *async_data;
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   DEBUG ("volume_mount");
 
@@ -846,7 +846,7 @@ _btk_file_system_mount_volume (BtkFileSystem                    *file_system,
 static void
 enclosing_volume_mount_cb (BObject      *source_object,
 			   GAsyncResult *result,
-			   gpointer      user_data)
+			   bpointer      user_data)
 {
   BtkFileSystemVolume *volume;
   AsyncFuncData *async_data;
@@ -877,7 +877,7 @@ _btk_file_system_mount_enclosing_volume (BtkFileSystem                     *file
 					 GFile                             *file,
 					 GMountOperation                   *mount_operation,
 					 BtkFileSystemVolumeMountCallback   callback,
-					 gpointer                           data)
+					 bpointer                           data)
 {
   GCancellable *cancellable;
   AsyncFuncData *async_data;
@@ -906,16 +906,16 @@ _btk_file_system_mount_enclosing_volume (BtkFileSystem                     *file
   return cancellable;
 }
 
-gboolean
+bboolean
 _btk_file_system_insert_bookmark (BtkFileSystem  *file_system,
 				  GFile          *file,
-				  gint            position,
+				  bint            position,
 				  GError        **error)
 {
   BtkFileSystemPrivate *priv;
   GSList *bookmarks;
   BtkFileSystemBookmark *bookmark;
-  gboolean result = TRUE;
+  bboolean result = TRUE;
 
   priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
   bookmarks = priv->bookmarks;
@@ -935,7 +935,7 @@ _btk_file_system_insert_bookmark (BtkFileSystem  *file_system,
 
   if (!result)
     {
-      gchar *uri = g_file_get_uri (file);
+      bchar *uri = g_file_get_uri (file);
 
       g_set_error (error,
 		   BTK_FILE_CHOOSER_ERROR,
@@ -959,7 +959,7 @@ _btk_file_system_insert_bookmark (BtkFileSystem  *file_system,
   return TRUE;
 }
 
-gboolean
+bboolean
 _btk_file_system_remove_bookmark (BtkFileSystem  *file_system,
 				  GFile          *file,
 				  GError        **error)
@@ -967,7 +967,7 @@ _btk_file_system_remove_bookmark (BtkFileSystem  *file_system,
   BtkFileSystemPrivate *priv;
   BtkFileSystemBookmark *bookmark;
   GSList *bookmarks;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
 
@@ -994,7 +994,7 @@ _btk_file_system_remove_bookmark (BtkFileSystem  *file_system,
 
   if (!result)
     {
-      gchar *uri = g_file_get_uri (file);
+      bchar *uri = g_file_get_uri (file);
 
       g_set_error (error,
 		   BTK_FILE_CHOOSER_ERROR,
@@ -1014,13 +1014,13 @@ _btk_file_system_remove_bookmark (BtkFileSystem  *file_system,
   return TRUE;
 }
 
-gchar *
+bchar *
 _btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
 				     GFile         *file)
 {
   BtkFileSystemPrivate *priv;
   GSList *bookmarks;
-  gchar *label = NULL;
+  bchar *label = NULL;
 
   DEBUG ("get_bookmark_label");
 
@@ -1047,10 +1047,10 @@ _btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
 void
 _btk_file_system_set_bookmark_label (BtkFileSystem *file_system,
 				     GFile         *file,
-				     const gchar   *label)
+				     const bchar   *label)
 {
   BtkFileSystemPrivate *priv;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
   GSList *bookmarks;
 
   DEBUG ("set_bookmark_label");
@@ -1099,7 +1099,7 @@ _btk_file_system_get_volume_for_file (BtkFileSystem *file_system,
 /* BtkFolder methods */
 static void
 btk_folder_set_property (BObject      *object,
-			 guint         prop_id,
+			 buint         prop_id,
 			 const BValue *value,
 			 BParamSpec   *pspec)
 {
@@ -1126,7 +1126,7 @@ btk_folder_set_property (BObject      *object,
 
 static void
 btk_folder_get_property (BObject    *object,
-			 guint       prop_id,
+			 buint       prop_id,
 			 BValue     *value,
 			 BParamSpec *pspec)
 {
@@ -1154,7 +1154,7 @@ btk_folder_get_property (BObject    *object,
 static void
 query_created_file_info_callback (BObject      *source_object,
 				  GAsyncResult *result,
-				  gpointer      user_data)
+				  bpointer      user_data)
 {
   GFile *file = G_FILE (source_object);
   GError *error = NULL;
@@ -1188,7 +1188,7 @@ directory_monitor_changed (GFileMonitor      *monitor,
 			   GFile             *file,
 			   GFile             *other_file,
 			   GFileMonitorEvent  event,
-			   gpointer           data)
+			   bpointer           data)
 {
   BtkFolderPrivate *priv;
   BtkFolder *folder;
@@ -1229,7 +1229,7 @@ directory_monitor_changed (GFileMonitor      *monitor,
 static void
 enumerator_files_callback (BObject      *source_object,
 			   GAsyncResult *result,
-			   gpointer      user_data)
+			   bpointer      user_data)
 {
   GFileEnumerator *enumerator;
   BtkFolderPrivate *priv;
@@ -1433,7 +1433,7 @@ _btk_folder_init (BtkFolder *folder)
 
 static void
 btk_folder_set_finished_loading (BtkFolder *folder,
-				 gboolean   finished_loading)
+				 bboolean   finished_loading)
 {
   BtkFolderPrivate *priv;
 
@@ -1494,7 +1494,7 @@ _btk_folder_get_info (BtkFolder  *folder,
   return g_object_ref (info);
 }
 
-gboolean
+bboolean
 _btk_folder_is_finished_loading (BtkFolder *folder)
 {
   BtkFolderPrivate *priv;
@@ -1505,7 +1505,7 @@ _btk_folder_is_finished_loading (BtkFolder *folder)
 }
 
 /* BtkFileSystemVolume public methods */
-gchar *
+bchar *
 _btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume)
 {
   DEBUG ("volume_get_display_name");
@@ -1522,10 +1522,10 @@ _btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume)
   return NULL;
 }
 
-gboolean
+bboolean
 _btk_file_system_volume_is_mounted (BtkFileSystemVolume *volume)
 {
-  gboolean mounted;
+  bboolean mounted;
 
   DEBUG ("volume_is_mounted");
 
@@ -1583,7 +1583,7 @@ _btk_file_system_volume_get_root (BtkFileSystemVolume *volume)
 static BdkPixbuf *
 get_pixbuf_from_gicon (GIcon      *icon,
 		       BtkWidget  *widget,
-		       gint        icon_size,
+		       bint        icon_size,
 		       GError    **error)
 {
   BdkScreen *screen;
@@ -1611,7 +1611,7 @@ get_pixbuf_from_gicon (GIcon      *icon,
 BdkPixbuf *
 _btk_file_system_volume_render_icon (BtkFileSystemVolume  *volume,
 				     BtkWidget            *widget,
-				     gint                  icon_size,
+				     bint                  icon_size,
 				     GError              **error)
 {
   GIcon *icon = NULL;
@@ -1669,11 +1669,11 @@ _btk_file_system_volume_unref (BtkFileSystemVolume *volume)
 BdkPixbuf *
 _btk_file_info_render_icon (GFileInfo *info,
 			   BtkWidget *widget,
-			   gint       icon_size)
+			   bint       icon_size)
 {
   GIcon *icon;
   BdkPixbuf *pixbuf = NULL;
-  const gchar *thumbnail_path;
+  const bchar *thumbnail_path;
 
   thumbnail_path = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH);
 
@@ -1701,7 +1701,7 @@ _btk_file_info_render_icon (GFileInfo *info,
   return pixbuf;
 }
 
-gboolean
+bboolean
 _btk_file_info_consider_as_directory (GFileInfo *info)
 {
   GFileType type = g_file_info_get_file_type (info);
@@ -1711,11 +1711,11 @@ _btk_file_info_consider_as_directory (GFileInfo *info)
           type == G_FILE_TYPE_SHORTCUT);
 }
 
-gboolean
+bboolean
 _btk_file_has_native_path (GFile *file)
 {
   char *local_file_path;
-  gboolean has_native_path;
+  bboolean has_native_path;
 
   /* Don't use g_file_is_native(), as we want to support FUSE paths if available */
   local_file_path = g_file_get_path (file);

@@ -43,31 +43,31 @@ struct _BtkTreeDragSourceIface
 
   /* VTable - not signals */
 
-  gboolean     (* row_draggable)        (BtkTreeDragSource   *drag_source,
+  bboolean     (* row_draggable)        (BtkTreeDragSource   *drag_source,
                                          BtkTreePath         *path);
 
-  gboolean     (* drag_data_get)        (BtkTreeDragSource   *drag_source,
+  bboolean     (* drag_data_get)        (BtkTreeDragSource   *drag_source,
                                          BtkTreePath         *path,
                                          BtkSelectionData    *selection_data);
 
-  gboolean     (* drag_data_delete)     (BtkTreeDragSource *drag_source,
+  bboolean     (* drag_data_delete)     (BtkTreeDragSource *drag_source,
                                          BtkTreePath       *path);
 };
 
 GType           btk_tree_drag_source_get_type   (void) B_GNUC_CONST;
 
 /* Returns whether the given row can be dragged */
-gboolean btk_tree_drag_source_row_draggable    (BtkTreeDragSource *drag_source,
+bboolean btk_tree_drag_source_row_draggable    (BtkTreeDragSource *drag_source,
                                                 BtkTreePath       *path);
 
 /* Deletes the given row, or returns FALSE if it can't */
-gboolean btk_tree_drag_source_drag_data_delete (BtkTreeDragSource *drag_source,
+bboolean btk_tree_drag_source_drag_data_delete (BtkTreeDragSource *drag_source,
                                                 BtkTreePath       *path);
 
 /* Fills in selection_data with type selection_data->target based on
  * the row denoted by path, returns TRUE if it does anything
  */
-gboolean btk_tree_drag_source_drag_data_get    (BtkTreeDragSource *drag_source,
+bboolean btk_tree_drag_source_drag_data_get    (BtkTreeDragSource *drag_source,
                                                 BtkTreePath       *path,
                                                 BtkSelectionData  *selection_data);
 
@@ -85,11 +85,11 @@ struct _BtkTreeDragDestIface
 
   /* VTable - not signals */
 
-  gboolean     (* drag_data_received) (BtkTreeDragDest   *drag_dest,
+  bboolean     (* drag_data_received) (BtkTreeDragDest   *drag_dest,
                                        BtkTreePath       *dest,
                                        BtkSelectionData  *selection_data);
 
-  gboolean     (* row_drop_possible)  (BtkTreeDragDest   *drag_dest,
+  bboolean     (* row_drop_possible)  (BtkTreeDragDest   *drag_dest,
                                        BtkTreePath       *dest_path,
 				       BtkSelectionData  *selection_data);
 };
@@ -99,13 +99,13 @@ GType           btk_tree_drag_dest_get_type   (void) B_GNUC_CONST;
 /* Inserts a row before dest which contains data in selection_data,
  * or returns FALSE if it can't
  */
-gboolean btk_tree_drag_dest_drag_data_received (BtkTreeDragDest   *drag_dest,
+bboolean btk_tree_drag_dest_drag_data_received (BtkTreeDragDest   *drag_dest,
 						BtkTreePath       *dest,
 						BtkSelectionData  *selection_data);
 
 
 /* Returns TRUE if we can drop before path; path may not exist. */
-gboolean btk_tree_drag_dest_row_drop_possible  (BtkTreeDragDest   *drag_dest,
+bboolean btk_tree_drag_dest_row_drop_possible  (BtkTreeDragDest   *drag_dest,
 						BtkTreePath       *dest_path,
 						BtkSelectionData  *selection_data);
 
@@ -113,10 +113,10 @@ gboolean btk_tree_drag_dest_row_drop_possible  (BtkTreeDragDest   *drag_dest,
 /* The selection data would normally have target type BTK_TREE_MODEL_ROW in this
  * case. If the target is wrong these functions return FALSE.
  */
-gboolean btk_tree_set_row_drag_data            (BtkSelectionData  *selection_data,
+bboolean btk_tree_set_row_drag_data            (BtkSelectionData  *selection_data,
 						BtkTreeModel      *tree_model,
 						BtkTreePath       *path);
-gboolean btk_tree_get_row_drag_data            (BtkSelectionData  *selection_data,
+bboolean btk_tree_get_row_drag_data            (BtkSelectionData  *selection_data,
 						BtkTreeModel     **tree_model,
 						BtkTreePath      **path);
 

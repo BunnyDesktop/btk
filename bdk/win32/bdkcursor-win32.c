@@ -63,10 +63,10 @@ typedef struct {
 static HCURSOR
 hcursor_from_type (BdkCursorType cursor_type)
 {
-  gint i, j, x, y, ofs;
+  bint i, j, x, y, ofs;
   HCURSOR rv;
-  gint w, h;
-  guchar *and_plane, *xor_plane;
+  bint w, h;
+  buchar *and_plane, *xor_plane;
 
   if (cursor_type != BDK_BLANK_CURSOR)
     {
@@ -103,9 +103,9 @@ hcursor_from_type (BdkCursorType cursor_type)
 	  
 	  for (x = 0; x < cursors[i].width && x < w ; x++, j++)
 	    {
-	      gint pofs = ofs + x / 8;
-	      guchar data = (cursors[i].data[j/4] & (0xc0 >> (2 * (j%4)))) >> (2 * (3 - (j%4)));
-	      gint bit = 7 - (j % cursors[i].width) % 8;
+	      bint pofs = ofs + x / 8;
+	      buchar data = (cursors[i].data[j/4] & (0xc0 >> (2 * (j%4)))) >> (2 * (3 - (j%4)));
+	      bint bit = 7 - (j % cursors[i].width) % 8;
 	      
 	      if (data)
 		{
@@ -170,7 +170,7 @@ bdk_cursor_new_for_display (BdkDisplay   *display,
   return cursor_new_from_hcursor (hcursor, cursor_type);
 }
 
-static gboolean
+static bboolean
 color_is_white (const BdkColor *color)
 {
   return (color->red == 0xFFFF
@@ -183,18 +183,18 @@ bdk_cursor_new_from_pixmap (BdkPixmap      *source,
 			    BdkPixmap      *mask,
 			    const BdkColor *fg,
 			    const BdkColor *bg,
-			    gint            x,
-			    gint            y)
+			    bint            x,
+			    bint            y)
 {
   BdkPixmapImplWin32 *source_impl, *mask_impl;
-  guchar *source_bits, *mask_bits;
-  gint source_bpl, mask_bpl;
+  buchar *source_bits, *mask_bits;
+  bint source_bpl, mask_bpl;
   HCURSOR hcursor;
-  guchar *p, *q, *xor_mask, *and_mask;
-  gint width, height, cursor_width, cursor_height;
-  guchar residue;
-  gint ix, iy;
-  const gboolean bg_is_white = color_is_white (bg);
+  buchar *p, *q, *xor_mask, *and_mask;
+  bint width, height, cursor_width, cursor_height;
+  buchar residue;
+  bint ix, iy;
+  const bboolean bg_is_white = color_is_white (bg);
   
   g_return_val_if_fail (BDK_IS_PIXMAP (source), NULL);
   g_return_val_if_fail (BDK_IS_PIXMAP (mask), NULL);
@@ -381,7 +381,7 @@ static struct {
 
 BdkCursor*  
 bdk_cursor_new_from_name (BdkDisplay  *display,
-			  const gchar *name)
+			  const bchar *name)
 {
   HCURSOR hcursor = NULL;
   int i;
@@ -440,9 +440,9 @@ bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
     RGBQUAD colors[2];
   } bmi;
   HDC hdc;
-  guchar *pixels, *bits;
-  gchar buf[32];
-  gint rowstride, x, y, w, h;
+  buchar *pixels, *bits;
+  bchar buf[32];
+  bint rowstride, x, y, w, h;
 
   if (!GDI_CALL (GetIconInfo, (hicon, &ii)))
     return NULL;
@@ -460,7 +460,7 @@ bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
     {
       /* Colour cursor */
 
-      gboolean no_alpha;
+      bboolean no_alpha;
       
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmColor, 0, 1, NULL, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out1;
@@ -540,7 +540,7 @@ bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
 	{
 	  for (x = 0; x < w; x++)
 	    {
-	      const gint bit = 7 - (x % 8);
+	      const bint bit = 7 - (x % 8);
 	      printf ("%c ", ((bits[bpl*y+x/8])&(1<<bit)) ? ' ' : 'X');
 	    }
 	  printf ("\n");
@@ -549,7 +549,7 @@ bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
 
       for (y = 0; y < h; y++)
 	{
-	  const guchar *andp, *xorp;
+	  const buchar *andp, *xorp;
 	  if (bmi.bi.biHeight < 0)
 	    {
 	      andp = bits + bpl*y;
@@ -562,7 +562,7 @@ bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
 	    }
 	  for (x = 0; x < w; x++)
 	    {
-	      const gint bit = 7 - (x % 8);
+	      const bint bit = 7 - (x % 8);
 	      if ((*andp) & (1<<bit))
 		{
 		  if ((*xorp) & (1<<bit))
@@ -616,8 +616,8 @@ bdk_cursor_get_image (BdkCursor *cursor)
 BdkCursor *
 bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
 			    BdkPixbuf  *pixbuf,
-			    gint        x,
-			    gint        y)
+			    bint        x,
+			    bint        y)
 {
   HCURSOR hcursor;
 
@@ -632,7 +632,7 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
   return cursor_new_from_hcursor (hcursor, BDK_CURSOR_IS_PIXMAP);
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_alpha (BdkDisplay    *display)
 {
   g_return_val_if_fail (display == _bdk_display, FALSE);
@@ -640,7 +640,7 @@ bdk_display_supports_cursor_alpha (BdkDisplay    *display)
   return _bdk_win32_pixbuf_to_hicon_supports_alpha ();
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_color (BdkDisplay    *display)
 {
   g_return_val_if_fail (display == _bdk_display, FALSE);
@@ -648,7 +648,7 @@ bdk_display_supports_cursor_color (BdkDisplay    *display)
   return TRUE;
 }
 
-guint     
+buint     
 bdk_display_get_default_cursor_size (BdkDisplay    *display)
 {
   g_return_val_if_fail (display == _bdk_display, 0);
@@ -658,8 +658,8 @@ bdk_display_get_default_cursor_size (BdkDisplay    *display)
 
 void     
 bdk_display_get_maximal_cursor_size (BdkDisplay *display,
-				     guint       *width,
-				     guint       *height)
+				     buint       *width,
+				     buint       *height)
 {
   g_return_if_fail (display == _bdk_display);
   
@@ -676,8 +676,8 @@ bdk_display_get_maximal_cursor_size (BdkDisplay *display,
  */
 
 static HBITMAP
-create_alpha_bitmap (gint     size,
-		     guchar **outdata)
+create_alpha_bitmap (bint     size,
+		     buchar **outdata)
 {
   BITMAPV5HEADER bi;
   HDC hdc;
@@ -714,9 +714,9 @@ create_alpha_bitmap (gint     size,
 }
 
 static HBITMAP
-create_color_bitmap (gint     size,
-		     guchar **outdata,
-		     gint     bits)
+create_color_bitmap (bint     size,
+		     buchar **outdata,
+		     bint     bits)
 {
   struct {
     BITMAPV4HEADER bmiHeader;
@@ -754,7 +754,7 @@ create_color_bitmap (gint     size,
   return hBitmap;
 }
 
-static gboolean
+static bboolean
 pixbuf_to_hbitmaps_alpha_winxp (BdkPixbuf *pixbuf,
 				HBITMAP   *color,
 				HBITMAP   *mask)
@@ -763,10 +763,10 @@ pixbuf_to_hbitmaps_alpha_winxp (BdkPixbuf *pixbuf,
    * http://www.dotnet247.com/247reference/msgs/13/66301.aspx
    */
   HBITMAP hColorBitmap, hMaskBitmap;
-  guchar *indata, *inrow;
-  guchar *colordata, *colorrow, *maskdata, *maskbyte;
-  gint width, height, size, i, i_offset, j, j_offset, rowstride;
-  guint maskstride, mask_bit;
+  buchar *indata, *inrow;
+  buchar *colordata, *colorrow, *maskdata, *maskbyte;
+  bint width, height, size, i, i_offset, j, j_offset, rowstride;
+  buint maskstride, mask_bit;
 
   width = bdk_pixbuf_get_width (pixbuf); /* width of icon */
   height = bdk_pixbuf_get_height (pixbuf); /* height of icon */
@@ -832,7 +832,7 @@ pixbuf_to_hbitmaps_alpha_winxp (BdkPixbuf *pixbuf,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 pixbuf_to_hbitmaps_normal (BdkPixbuf *pixbuf,
 			   HBITMAP   *color,
 			   HBITMAP   *mask)
@@ -841,11 +841,11 @@ pixbuf_to_hbitmaps_normal (BdkPixbuf *pixbuf,
    * http://www.dotnet247.com/247reference/msgs/13/66301.aspx
    */
   HBITMAP hColorBitmap, hMaskBitmap;
-  guchar *indata, *inrow;
-  guchar *colordata, *colorrow, *maskdata, *maskbyte;
-  gint width, height, size, i, i_offset, j, j_offset, rowstride, nc, bmstride;
-  gboolean has_alpha;
-  guint maskstride, mask_bit;
+  buchar *indata, *inrow;
+  buchar *colordata, *colorrow, *maskdata, *maskbyte;
+  bint width, height, size, i, i_offset, j, j_offset, rowstride, nc, bmstride;
+  bboolean has_alpha;
+  buint maskstride, mask_bit;
 
   width = bdk_pixbuf_get_width (pixbuf); /* width of icon */
   height = bdk_pixbuf_get_height (pixbuf); /* height of icon */
@@ -924,13 +924,13 @@ pixbuf_to_hbitmaps_normal (BdkPixbuf *pixbuf,
 
 static HICON
 pixbuf_to_hicon (BdkPixbuf *pixbuf,
-		 gboolean   is_icon,
-		 gint       x,
-		 gint       y)
+		 bboolean   is_icon,
+		 bint       x,
+		 bint       y)
 {
   ICONINFO ii;
   HICON icon;
-  gboolean success;
+  bboolean success;
 
   if (pixbuf == NULL)
     return NULL;
@@ -960,16 +960,16 @@ _bdk_win32_pixbuf_to_hicon (BdkPixbuf *pixbuf)
 
 HICON
 _bdk_win32_pixbuf_to_hcursor (BdkPixbuf *pixbuf,
-			      gint       x_hotspot,
-			      gint       y_hotspot)
+			      bint       x_hotspot,
+			      bint       y_hotspot)
 {
   return pixbuf_to_hicon (pixbuf, FALSE, x_hotspot, y_hotspot);
 }
 
-gboolean
+bboolean
 _bdk_win32_pixbuf_to_hicon_supports_alpha (void)
 {
-  static gboolean is_win_xp=FALSE, is_win_xp_checked=FALSE;
+  static bboolean is_win_xp=FALSE, is_win_xp_checked=FALSE;
 
   if (!is_win_xp_checked)
     {

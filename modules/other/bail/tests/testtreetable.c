@@ -4,38 +4,38 @@
 /*
  * This module is for use with the test program testtreeview
  */
-static gboolean state_change_watch  (GSignalInvocationHint *ihint,
-                                     guint                  n_param_values,
+static bboolean state_change_watch  (GSignalInvocationHint *ihint,
+                                     buint                  n_param_values,
                                      const BValue          *param_values,
-                                     gpointer               data);
+                                     bpointer               data);
 
 static void _check_table             (BatkObject         *in_obj);
 static void _check_cell_actions      (BatkObject         *in_obj);
 
-static gint _find_expander_column    (BatkTable          *table);
+static bint _find_expander_column    (BatkTable          *table);
 static void _check_expanders         (BatkTable          *table,
-                                      gint              expander_column);
+                                      bint              expander_column);
 static void _runtest                 (BatkObject         *obj);
 static void _create_event_watcher    (void);
 static void row_inserted             (BatkObject         *obj,
-                                      gint              row,
-                                      gint              count);
+                                      bint              row,
+                                      bint              count);
 static void row_deleted              (BatkObject         *obj,
-                                      gint              row,
-                                      gint              count);
+                                      bint              row,
+                                      bint              count);
 static BatkObject *table_obj = NULL;
-static gint expander_column = -1;
-static gboolean editing_cell = FALSE;
+static bint expander_column = -1;
+static bboolean editing_cell = FALSE;
 
-static gboolean 
+static bboolean 
 state_change_watch (GSignalInvocationHint *ihint,
-                    guint                  n_param_values,
+                    buint                  n_param_values,
                     const BValue          *param_values,
-                    gpointer               data)
+                    bpointer               data)
 {
   BObject *object;
-  gboolean state_set;
-  const gchar *state_name;
+  bboolean state_set;
+  const bchar *state_name;
   BatkStateType state_type;
 
   object = b_value_get_object (param_values + 0);
@@ -63,7 +63,7 @@ _check_table (BatkObject *in_obj)
   BatkObject *obj;
   BatkRole role[2];
   BatkRole obj_role;
-  static gboolean emission_hook_added = FALSE;
+  static bboolean emission_hook_added = FALSE;
 
   if (!emission_hook_added)
     {
@@ -133,9 +133,9 @@ _check_table (BatkObject *in_obj)
        * We do not call these functions at the same time as we set the 
        * signals as the BtkTreeView may not be displayed yet.
        */
-      gint x, y, width, height, first_x, last_x, last_y;
-      gint first_row, last_row, first_column, last_column;
-      gint index;
+      bint x, y, width, height, first_x, last_x, last_y;
+      bint first_row, last_row, first_column, last_column;
+      bint index;
       BatkObject *first_child, *last_child, *header;
       BatkComponent *component = BATK_COMPONENT (obj);
       BatkTable *table = BATK_TABLE (obj);
@@ -177,7 +177,7 @@ _check_table (BatkObject *in_obj)
       if (last_child == NULL)
         {
           /* The TreeView may be bigger than the data */
-          gint n_children;
+          bint n_children;
 
           n_children = batk_object_get_n_accessible_children (obj);
           last_child = batk_object_ref_accessible_child (obj, n_children - 1);
@@ -197,15 +197,15 @@ _check_table (BatkObject *in_obj)
 
       if (expander_column >= 0)
         {
-          gint n_rows, i;
-          gint x, y, width, height;
+          bint n_rows, i;
+          bint x, y, width, height;
 
           n_rows = batk_table_get_n_rows (table);
           for (i = 0; i < n_rows; i++)
             {
               BatkObject *child_obj;
               BatkStateSet *state_set;
-              gboolean showing;
+              bboolean showing;
 
               child_obj = batk_table_ref_at (table, i, expander_column);
               state_set = batk_object_ref_state_set (child_obj);
@@ -229,7 +229,7 @@ _check_cell_actions (BatkObject *in_obj)
 {
   BatkRole role;
   BatkAction *action;
-  gint n_actions, i;
+  bint n_actions, i;
 
   role = batk_object_get_role (in_obj);
   if (role != BATK_ROLE_TABLE_CELL)
@@ -247,7 +247,7 @@ _check_cell_actions (BatkObject *in_obj)
 
   for (i = 0; i < n_actions; i++)
     {
-      const gchar* name;
+      const bchar* name;
 
       name = batk_action_get_name (action, i);
       g_print ("Action %d is %s\n", i, name);
@@ -262,11 +262,11 @@ _check_cell_actions (BatkObject *in_obj)
   return;
 }
 
-static gint 
+static bint 
 _find_expander_column (BatkTable *table)
 {
-  gint n_columns, i;
-  gint retval = -1;
+  bint n_columns, i;
+  bint retval = -1;
 
   n_columns = batk_table_get_n_columns (table);
   for (i = 0; i < n_columns; i++)
@@ -289,9 +289,9 @@ _find_expander_column (BatkTable *table)
 
 static void
 _check_expanders (BatkTable *table,
-                  gint     expander_column)
+                  bint     expander_column)
 {
-  gint n_rows, i;
+  bint n_rows, i;
 
   n_rows = batk_table_get_n_rows (table);
 
@@ -301,7 +301,7 @@ _check_expanders (BatkTable *table,
       BatkRelationSet *relation_set;
       BatkRelation *relation;
       GPtrArray *target;
-      gint j;
+      bint j;
 
       cell = batk_table_ref_at (table, i, expander_column);
 
@@ -315,7 +315,7 @@ _check_expanders (BatkTable *table,
         {
           BatkObject *target_obj;
           BatkRole role;
-          gint target_index, target_row;
+          bint target_index, target_row;
 
           target_obj = g_ptr_array_index (target, j);
           role = batk_object_get_role (target_obj);
@@ -346,7 +346,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init (gint argc, 
+btk_module_init (bint argc, 
                  char *argv[])
 {
   g_print ("testtreetable Module loaded\n");
@@ -362,8 +362,8 @@ _runtest (BatkObject *obj)
   BatkObject *child_obj;
   BatkTable *table;
   BatkObject *caption;
-  gint i;
-  gint n_cols, n_rows, n_children; 
+  bint i;
+  bint n_cols, n_rows, n_children; 
 
   table = BATK_TABLE (obj);
   n_children = batk_object_get_n_accessible_children (BATK_OBJECT (obj));
@@ -374,8 +374,8 @@ _runtest (BatkObject *obj)
   
   for (i = 0; i < n_rows; i++)
     {
-      gint index = batk_table_get_index_at (table, i, expander_column);
-      gint index_in_parent;
+      bint index = batk_table_get_index_at (table, i, expander_column);
+      bint index_in_parent;
 
       child_obj = batk_table_ref_at (table, i, expander_column);
       index_in_parent = batk_object_get_index_in_parent (child_obj);
@@ -386,7 +386,7 @@ _runtest (BatkObject *obj)
   caption = batk_table_get_caption (table);
   if (caption)
     {
-      const gchar *caption_name = batk_object_get_name (caption);
+      const bchar *caption_name = batk_object_get_name (caption);
 
       g_print ("Caption: %s\n", caption_name ? caption_name : "<null>");
     }
@@ -398,11 +398,11 @@ _runtest (BatkObject *obj)
       g_print ("Header for column %d is %p\n", i, header);
       if (header)
         {
-	  const gchar *name;
+	  const bchar *name;
 	  BatkRole role;
           BatkObject *parent;
           BatkObject *child;
-          gint index;
+          bint index;
 
           name = batk_object_get_name (header);
           role = batk_object_get_role (header);
@@ -430,15 +430,15 @@ _runtest (BatkObject *obj)
 
 static void 
 row_inserted (BatkObject *obj,
-              gint      row,
-              gint      count)
+              bint      row,
+              bint      count)
 {
 #if 0
   BtkWidget *widget;
   BtkTreeView *tree_view;
   BtkTreeModel *tree_model;
 #endif
-  gint index;
+  bint index;
 
   g_print ("row_inserted: row: %d count: %d\n", row, count);
   index = batk_table_get_index_at (BATK_TABLE (obj), row+1, 0);
@@ -465,15 +465,15 @@ row_inserted (BatkObject *obj,
 
 static void 
 row_deleted (BatkObject *obj,
-             gint      row,
-             gint      count)
+             bint      row,
+             bint      count)
 {
 #if 0
   BtkWidget *widget;
   BtkTreeView *tree_view;
   BtkTreeModel *tree_model;
 #endif
-  gint index;
+  bint index;
 
   g_print ("row_deleted: row: %d count: %d\n", row, count);
   index = batk_table_get_index_at (BATK_TABLE (obj), row+1, 0);

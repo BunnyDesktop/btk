@@ -52,7 +52,7 @@ struct _BtkDrawingArea
 {
   BtkWidget widget;
 
-  gpointer GSEAL (draw_data);
+  bpointer GSEAL (draw_data);
 };
 
 struct _BtkDrawingAreaClass
@@ -72,8 +72,8 @@ BtkWidget* btk_drawing_area_new        (void);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void       btk_drawing_area_size       (BtkDrawingArea      *darea,
-					gint                 width,
-					gint                 height);
+					bint                 width,
+					bint                 height);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 

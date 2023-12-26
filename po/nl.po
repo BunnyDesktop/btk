@@ -2628,7 +2628,7 @@ msgid "_Information"
 msgstr "_Informatie"
 
 # _schuin/_schuingedrukt/_cursief
-# voorzover ik kan zien alleen in gucharmap gebruikt.
+# voorzover ik kan zien alleen in bucharmap gebruikt.
 #: ../btk/btkstock.c:367
 msgctxt "Stock label"
 msgid "_Italic"

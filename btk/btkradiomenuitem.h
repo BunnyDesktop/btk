@@ -73,14 +73,14 @@ GType      btk_radio_menu_item_get_type	         (void) B_GNUC_CONST;
 
 BtkWidget* btk_radio_menu_item_new                           (GSList           *group);
 BtkWidget* btk_radio_menu_item_new_with_label                (GSList           *group,
-							      const gchar      *label);
+							      const bchar      *label);
 BtkWidget* btk_radio_menu_item_new_with_mnemonic             (GSList           *group,
-							      const gchar      *label);
+							      const bchar      *label);
 BtkWidget* btk_radio_menu_item_new_from_widget               (BtkRadioMenuItem *group);
 BtkWidget *btk_radio_menu_item_new_with_mnemonic_from_widget (BtkRadioMenuItem *group,
-							      const gchar      *label);
+							      const bchar      *label);
 BtkWidget *btk_radio_menu_item_new_with_label_from_widget    (BtkRadioMenuItem *group,
-							      const gchar      *label);
+							      const bchar      *label);
 GSList*    btk_radio_menu_item_get_group                     (BtkRadioMenuItem *radio_menu_item);
 void       btk_radio_menu_item_set_group                     (BtkRadioMenuItem *radio_menu_item,
 							      GSList           *group);

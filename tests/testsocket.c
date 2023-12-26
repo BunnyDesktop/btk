@@ -42,12 +42,12 @@ typedef struct
   BtkWidget *socket;
 } Socket;
 
-extern guint32 create_child_plug (guint32  xid,
-				  gboolean local);
+extern buint32 create_child_plug (buint32  xid,
+				  bboolean local);
 
 static void
-quit_cb (gpointer        callback_data,
-	 guint           callback_action,
+quit_cb (bpointer        callback_data,
+	 buint           callback_action,
 	 BtkWidget      *widget)
 {
   BtkWidget *message_dialog = btk_message_dialog_new (BTK_WINDOW (window), 0,
@@ -86,7 +86,7 @@ plug_added (BtkWidget *widget,
   btk_widget_hide (socket->frame);
 }
 
-static gboolean
+static bboolean
 plug_removed (BtkWidget *widget,
 	      Socket    *socket)
 {
@@ -137,8 +137,8 @@ create_socket (void)
 void
 steal (BtkWidget *window, BtkEntry *entry)
 {
-  guint32 xid;
-  const gchar *text;
+  buint32 xid;
+  const bchar *text;
   Socket *socket;
 
   text = btk_entry_get_text (entry);
@@ -167,13 +167,13 @@ remove_child (BtkWidget *window)
     }
 }
 
-static gboolean
-child_read_watch (BUNNYIOChannel *channel, BUNNYIOCondition cond, gpointer data)
+static bboolean
+child_read_watch (BUNNYIOChannel *channel, BUNNYIOCondition cond, bpointer data)
 {
   BUNNYIOStatus status;
   GError *error = NULL;
   char *line;
-  gsize term;
+  bsize term;
   int xid;
   
   status = g_io_channel_read_line (channel, &line, NULL, &term, &error);
@@ -214,7 +214,7 @@ child_read_watch (BUNNYIOChannel *channel, BUNNYIOCondition cond, gpointer data)
 
 void
 add_child (BtkWidget *window,
-	   gboolean   active)
+	   bboolean   active)
 {
   Socket *socket;
   char *argv[3] = { "./testsocket_child", NULL, NULL };
@@ -228,7 +228,7 @@ add_child (BtkWidget *window,
       socket = create_socket ();
       btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
       btk_widget_show (socket->box);
-      sprintf(buffer, "%#lx", (gulong) btk_socket_get_id (BTK_SOCKET (socket->socket)));
+      sprintf(buffer, "%#lx", (bulong) btk_socket_get_id (BTK_SOCKET (socket->socket)));
       argv[1] = buffer;
     }
   

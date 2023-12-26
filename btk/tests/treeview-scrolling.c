@@ -45,7 +45,7 @@
 
 /* Constructing models for testing */
 static BtkTreeModel *
-create_model (gboolean constant)
+create_model (bboolean constant)
 {
 	int i;
 
@@ -66,7 +66,7 @@ create_model (gboolean constant)
 }
 
 static BtkTreeModel *
-create_big_model (gboolean constant)
+create_big_model (bboolean constant)
 {
 	int i;
 
@@ -226,8 +226,8 @@ enum Pos
 static int
 get_row_start_for_index (BtkTreeView *tree_view, int index)
 {
-	gint height1, height2;
-	gint row_start;
+	bint height1, height2;
+	bint row_start;
 	BtkTreePath *path;
 	BdkRectangle rect;
 
@@ -250,7 +250,7 @@ get_row_start_for_index (BtkTreeView *tree_view, int index)
 static enum Pos
 get_pos_from_path (BtkTreeView   *tree_view,
 		   BtkTreePath   *path,
-		   gint           row_height,
+		   bint           row_height,
 		   BtkAdjustment *vadj)
 {
 	int row_start;
@@ -267,15 +267,15 @@ get_pos_from_path (BtkTreeView   *tree_view,
 	return POS_CENTER;
 }
 
-static gboolean
+static bboolean
 test_position_with_align (BtkTreeView  *tree_view,
 			  enum Pos      pos,
-			  gint          row_y,
-			  gint          row_start,
-			  gint          row_height,
-			  gfloat        row_align)
+			  bint          row_y,
+			  bint          row_start,
+			  bint          row_height,
+			  bfloat        row_align)
 {
-	gboolean passed = TRUE;
+	bboolean passed = TRUE;
 	BtkAdjustment *vadj = btk_tree_view_get_vadjustment (tree_view);
 
 	/* Switch on row-align: 0.0, 0.5, 1.0 */
@@ -370,10 +370,10 @@ test_position_with_align (BtkTreeView  *tree_view,
 	return passed;
 }
 
-static gboolean
+static bboolean
 test_position_without_align (BtkTreeView *tree_view,
-			     gint         row_start,
-			     gint         row_height)
+			     bint         row_start,
+			     bint         row_height)
 {
 	BtkAdjustment *vadj = btk_tree_view_get_vadjustment (tree_view);
 
@@ -391,15 +391,15 @@ test_position_without_align (BtkTreeView *tree_view,
 static void
 test_position (BtkTreeView *tree_view,
 	       BtkTreePath *path,
-	       gboolean     use_align,
-	       gfloat       row_align,
-	       gfloat       col_align)
+	       bboolean     use_align,
+	       bfloat       row_align,
+	       bfloat       col_align)
 {
-	gint pos;
-	gchar *path_str;
+	bint pos;
+	bchar *path_str;
 	BdkRectangle rect;
 	BtkTreeModel *model;
-	gint row_start;
+	bint row_start;
 
 	/* Get the location of the path we scrolled to */
 	btk_tree_view_get_background_area (BTK_TREE_VIEW (tree_view),
@@ -450,8 +450,8 @@ test_position (BtkTreeView *tree_view,
 static void
 scroll (ScrollFixture *fixture,
 	BtkTreePath   *path,
-	gboolean       use_align,
-	gfloat         row_align)
+	bboolean       use_align,
+	bfloat         row_align)
 {
 	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view), path,
 				  NULL, FALSE);
@@ -516,8 +516,8 @@ scroll_align_1_0 (ScrollFixture *fixture,
 static void
 scroll_after_realize (ScrollFixture *fixture,
 		      BtkTreePath   *path,
-		      gboolean       use_align,
-		      gfloat         row_align)
+		      bboolean       use_align,
+		      bfloat         row_align)
 {
 	btk_widget_show_all (fixture->window);
 
@@ -585,8 +585,8 @@ scroll_after_align_1_0 (ScrollFixture *fixture,
 static void
 scroll_both_realize (ScrollFixture *fixture,
 		     BtkTreePath   *path,
-		     gboolean       use_align,
-		     gfloat         row_align)
+		     bboolean       use_align,
+		     bfloat         row_align)
 {
 	BtkTreePath *end;
 
@@ -703,7 +703,7 @@ static void
 scroll_new_row_editing_started (BtkCellRenderer *cell,
 				BtkCellEditable *editable,
 				const char      *path,
-				gpointer         user_data)
+				bpointer         user_data)
 {
 	BtkWidget **widget = user_data;
 
@@ -754,7 +754,7 @@ scroll_new_row (ScrollFixture *fixture,
 
 	/* Create the new row and scroll to it */
 	model = btk_tree_view_get_model (BTK_TREE_VIEW (fixture->tree_view));
-	create_new_row (BTK_LIST_STORE (model), GPOINTER_TO_INT (test_data),
+	create_new_row (BTK_LIST_STORE (model), BPOINTER_TO_INT (test_data),
 			&scroll_iter);
 
 	/* Set up a signal handler to acquire the editable widget */
@@ -968,8 +968,8 @@ test_type_string (int test_type)
 }
 
 static char *
-align_string (gboolean use_align,
-	      gfloat   row_align)
+align_string (bboolean use_align,
+	      bfloat   row_align)
 {
 	char *ret;
 
@@ -982,15 +982,15 @@ align_string (gboolean use_align,
 
 static void
 add_test (const char *path,
-	  gboolean    mixed,
+	  bboolean    mixed,
 	  int         test_type,
-	  gboolean    use_align,
-	  gfloat      row_align,
+	  bboolean    use_align,
+	  bfloat      row_align,
 	  void (* setup) (ScrollFixture *, gconstpointer),
 	  void (* scroll_func) (ScrollFixture *, gconstpointer))
 {
-	gchar *test_path;
-	gchar *align;
+	bchar *test_path;
+	bchar *align;
 
 	align = align_string (use_align, row_align);
 
@@ -1007,10 +1007,10 @@ add_test (const char *path,
 }
 
 static void
-add_tests (gboolean mixed,
+add_tests (bboolean mixed,
 	   int test_type,
-	   gboolean use_align,
-	   gfloat row_align,
+	   bboolean use_align,
+	   bfloat row_align,
 	   void (*scroll_func) (ScrollFixture *, gconstpointer))
 {
 	void (* setup) (ScrollFixture *, gconstpointer);
@@ -1142,12 +1142,12 @@ main (int argc, char **argv)
 
 	/* Test scrolling to a newly created row */
 	g_test_add ("/TreeView/scrolling/new-row/path-0", ScrollFixture,
-		    GINT_TO_POINTER (0),
+		    BINT_TO_POINTER (0),
 		    scroll_fixture_constant_setup,
 		    scroll_new_row,
 		    scroll_fixture_teardown);
 	g_test_add ("/TreeView/scrolling/new-row/path-4", ScrollFixture,
-		    GINT_TO_POINTER (4),
+		    BINT_TO_POINTER (4),
 		    scroll_fixture_constant_setup,
 		    scroll_new_row,
 		    scroll_fixture_teardown);
@@ -1156,17 +1156,17 @@ main (int argc, char **argv)
 	 * the separators set to 0.  (This should be made dynamic; FIXME).
 	 */
 	g_test_add ("/TreeView/scrolling/new-row/path-8", ScrollFixture,
-		    GINT_TO_POINTER (8),
+		    BINT_TO_POINTER (8),
 		    scroll_fixture_constant_setup,
 		    scroll_new_row,
 		    scroll_fixture_teardown);
 	g_test_add ("/TreeView/scrolling/new-row/path-500", ScrollFixture,
-		    GINT_TO_POINTER (500),
+		    BINT_TO_POINTER (500),
 		    scroll_fixture_constant_setup,
 		    scroll_new_row,
 		    scroll_fixture_teardown);
 	g_test_add ("/TreeView/scrolling/new-row/path-999", ScrollFixture,
-		    GINT_TO_POINTER (999),
+		    BINT_TO_POINTER (999),
 		    scroll_fixture_constant_setup,
 		    scroll_new_row,
 		    scroll_fixture_teardown);

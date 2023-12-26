@@ -52,9 +52,9 @@ struct _BtkPrintOperationPreviewIface
 
   /* methods */
   void              (*render_page)    (BtkPrintOperationPreview *preview,
-				       gint                      page_nr);
-  gboolean          (*is_selected)    (BtkPrintOperationPreview *preview,
-				       gint                      page_nr);
+				       bint                      page_nr);
+  bboolean          (*is_selected)    (BtkPrintOperationPreview *preview,
+				       bint                      page_nr);
   void              (*end_preview)    (BtkPrintOperationPreview *preview);
 
   /* Padding for future expansion */
@@ -70,10 +70,10 @@ struct _BtkPrintOperationPreviewIface
 GType   btk_print_operation_preview_get_type       (void) B_GNUC_CONST;
 
 void     btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
-						  gint                      page_nr);
+						  bint                      page_nr);
 void     btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview);
-gboolean btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
-						  gint                      page_nr);
+bboolean btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
+						  bint                      page_nr);
 
 B_END_DECLS
 

@@ -43,11 +43,11 @@ struct _BailNotebookPage
 #ifndef BTK_DISABLE_DEPRECATED
   BtkNotebookPage *page;
 #else
-  gpointer page;
+  bpointer page;
 #endif
   
-  gint index;
-  guint notify_child_added_id;
+  bint index;
+  buint notify_child_added_id;
 
   BailTextUtil *textutil;
 };
@@ -59,7 +59,7 @@ struct _BailNotebookPageClass
   BatkObjectClass parent_class;
 };
 
-BatkObject *bail_notebook_page_new(BtkNotebook *notebook, gint pagenum);
+BatkObject *bail_notebook_page_new(BtkNotebook *notebook, bint pagenum);
 
 B_END_DECLS
 

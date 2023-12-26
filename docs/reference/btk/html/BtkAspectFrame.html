@@ -71,7 +71,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkAspectFrame.html#BtkAspectFrame--obey-child" title="The “obey-child” property">obey-child</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -144,11 +144,11 @@ a frame around the child. The frame will be
 <div class="refsect2">
 <a name="btk-aspect-frame-new"></a><h3>btk_aspect_frame_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_aspect_frame_new (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> ratio</code></em>,
-                      <em class="parameter"><code><span class="type">gboolean</span> obey_child</code></em>);</pre>
+btk_aspect_frame_new (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>,
+                      <em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                      <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>,
+                      <em class="parameter"><code><span class="type">bfloat</span> ratio</code></em>,
+                      <em class="parameter"><code><span class="type">bboolean</span> obey_child</code></em>);</pre>
 <p>Create a new <a class="link" href="BtkAspectFrame.html" title="BtkAspectFrame"><span class="type">BtkAspectFrame</span></a>.</p>
 <div class="refsect3">
 <a name="btk-aspect-frame-new.parameters"></a><h4>Parameters</h4>
@@ -203,10 +203,10 @@ ratio is taken from the requistion of the child.</p></td>
 <a name="btk-aspect-frame-set"></a><h3>btk_aspect_frame_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_aspect_frame_set (<em class="parameter"><code><a class="link" href="BtkAspectFrame.html" title="BtkAspectFrame"><span class="type">BtkAspectFrame</span></a> *aspect_frame</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> ratio</code></em>,
-                      <em class="parameter"><code><span class="type">gboolean</span> obey_child</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                      <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>,
+                      <em class="parameter"><code><span class="type">bfloat</span> ratio</code></em>,
+                      <em class="parameter"><code><span class="type">bboolean</span> obey_child</code></em>);</pre>
 <p>Set parameters for an existing <a class="link" href="BtkAspectFrame.html" title="BtkAspectFrame"><span class="type">BtkAspectFrame</span></a>.</p>
 <div class="refsect3">
 <a name="btk-aspect-frame-set.parameters"></a><h4>Parameters</h4>
@@ -264,7 +264,7 @@ ratio is taken from the requistion of the child.</p></td>
 <a name="BtkAspectFrame.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkAspectFrame--obey-child"></a><h3>The <code class="literal">“obey-child”</code> property</h3>
-<pre class="programlisting">  “obey-child”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “obey-child”               <span class="type">bboolean</span></pre>
 <p>Force aspect ratio to match that of the frame's child.</p>
 <p>Owner: BtkAspectFrame</p>
 <p>Flags: Read / Write</p>

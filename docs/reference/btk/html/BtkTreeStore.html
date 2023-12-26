@@ -99,7 +99,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeStore.html#btk-tree-store-remove" title="btk_tree_store_remove ()">btk_tree_store_remove</a> <span class="c_punctuation">()</span>
@@ -163,7 +163,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeStore.html#btk-tree-store-is-ancestor" title="btk_tree_store_is_ancestor ()">btk_tree_store_is_ancestor</a> <span class="c_punctuation">()</span>
@@ -171,7 +171,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeStore.html#btk-tree-store-iter-depth" title="btk_tree_store_iter_depth ()">btk_tree_store_iter_depth</a> <span class="c_punctuation">()</span>
@@ -187,7 +187,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeStore.html#btk-tree-store-iter-is-valid" title="btk_tree_store_iter_is_valid ()">btk_tree_store_iter_is_valid</a> <span class="c_punctuation">()</span>
@@ -266,7 +266,7 @@ BtkTreeStore implements
 <div class="refsect2">
 <a name="btk-tree-store-new"></a><h3>btk_tree_store_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="returnvalue">BtkTreeStore</span></a> *
-btk_tree_store_new (<em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+btk_tree_store_new (<em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                     <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new tree store as with <em class="parameter"><code>n_columns</code></em>
  columns each of the types passed
@@ -306,7 +306,7 @@ BDK_TYPE_PIXBUF);</code> will create a new <a class="link" href="BtkTreeStore.ht
 <div class="refsect2">
 <a name="btk-tree-store-newv"></a><h3>btk_tree_store_newv ()</h3>
 <pre class="programlisting"><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="returnvalue">BtkTreeStore</span></a> *
-btk_tree_store_newv (<em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+btk_tree_store_newv (<em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                      <em class="parameter"><code><span class="type">GType</span> *types</code></em>);</pre>
 <p>Non vararg creation function.  Used primarily by language bindings.</p>
 <div class="refsect3">
@@ -342,7 +342,7 @@ btk_tree_store_newv (<em class="parameter"><code><span class="type">gint</span> 
 <a name="btk-tree-store-set-column-types"></a><h3>btk_tree_store_set_column_types ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_store_set_column_types (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                                  <em class="parameter"><code><span class="type">GType</span> *types</code></em>);</pre>
 <p>This function is meant primarily for <span class="type">BObjects</span> that inherit from 
 <a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a>, and should only be used when constructing a new 
@@ -382,7 +382,7 @@ or a method on the <a class="link" href="BtkTreeModel.html" title="BtkTreeModel"
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_store_set_value (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> column</code></em>,
                           <em class="parameter"><code><span class="type">BValue</span> *value</code></em>);</pre>
 <p>Sets the data in the cell specified by <em class="parameter"><code>iter</code></em>
  and <em class="parameter"><code>column</code></em>
@@ -511,9 +511,9 @@ use by language bindings.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_store_set_valuesv (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> *columns</code></em>,
                             <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkTreeStore.html#btk-tree-store-set-valist" title="btk_tree_store_set_valist ()"><code class="function">btk_tree_store_set_valist()</code></a> which takes
 the columns and values as two arrays, instead of varargs.  This
 function is mainly intended for language bindings or in case
@@ -562,7 +562,7 @@ arrays</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-tree-store-remove"></a><h3>btk_tree_store_remove ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_store_remove (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <p>Removes <em class="parameter"><code>iter</code></em>
@@ -606,7 +606,7 @@ is still valid, <code class="literal">FALSE</code> if not.</p>
 btk_tree_store_insert (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *parent</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Creates a new row at <em class="parameter"><code>position</code></em>
 .  If parent is non-<code class="literal">NULL</code>, then the row will be
 made a child of <em class="parameter"><code>parent</code></em>
@@ -780,7 +780,7 @@ this function is called.  To fill in values, you need to call
 btk_tree_store_insert_with_values (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                                    <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                                    <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *parent</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> position</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> position</code></em>,
                                    <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new row at <em class="parameter"><code>position</code></em>
 .  <em class="parameter"><code>iter</code></em>
@@ -858,10 +858,10 @@ inserting rows in a sorted tree store.</p>
 btk_tree_store_insert_with_valuesv (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                                     <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *parent</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> position</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> *columns</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> position</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> *columns</code></em>,
                                     <em class="parameter"><code><span class="type">BValue</span> *values</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> n_values</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> n_values</code></em>);</pre>
 <p>A variant of <a class="link" href="BtkTreeStore.html#btk-tree-store-insert-with-values" title="btk_tree_store_insert_with_values ()"><code class="function">btk_tree_store_insert_with_values()</code></a> which takes
 the columns and values as two arrays, instead of varargs.  This
 function is mainly intended for language bindings.</p>
@@ -1007,7 +1007,7 @@ be empty after this function is called.  To fill in values, you need to call
 <hr>
 <div class="refsect2">
 <a name="btk-tree-store-is-ancestor"></a><h3>btk_tree_store_is_ancestor ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_store_is_ancestor (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *descendant</code></em>);</pre>
@@ -1054,7 +1054,7 @@ is an ancestor of <em class="parameter"><code>descendant</code></em>
 <hr>
 <div class="refsect2">
 <a name="btk-tree-store-iter-depth"></a><h3>btk_tree_store_iter_depth ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_tree_store_iter_depth (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <p>Returns the depth of <em class="parameter"><code>iter</code></em>
@@ -1114,7 +1114,7 @@ btk_tree_store_clear (<em class="parameter"><code><a class="link" href="BtkTreeS
 <hr>
 <div class="refsect2">
 <a name="btk-tree-store-iter-is-valid"></a><h3>btk_tree_store_iter_is_valid ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_store_iter_is_valid (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <p>WARNING: This function is slow. Only use it for debugging and/or testing
@@ -1154,7 +1154,7 @@ purposes.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_store_reorder (<em class="parameter"><code><a class="link" href="BtkTreeStore.html" title="BtkTreeStore"><span class="type">BtkTreeStore</span></a> *tree_store</code></em>,
                         <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *parent</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *new_order</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> *new_order</code></em>);</pre>
 <p>Reorders the children of <em class="parameter"><code>parent</code></em>
  in <em class="parameter"><code>tree_store</code></em>
  to follow the order

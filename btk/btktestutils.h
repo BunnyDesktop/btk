@@ -32,40 +32,40 @@ void            btk_test_init                   (int            *argcp,
                                                  char         ***argvp,
                                                  ...);
 void            btk_test_register_all_types     (void);
-const GType*    btk_test_list_all_types         (guint          *n_types);
+const GType*    btk_test_list_all_types         (buint          *n_types);
 BtkWidget*      btk_test_find_widget            (BtkWidget      *widget,
-                                                 const gchar    *label_pattern,
+                                                 const bchar    *label_pattern,
                                                  GType           widget_type);
 BtkWidget*      btk_test_create_widget          (GType           widget_type,
-                                                 const gchar    *first_property_name,
+                                                 const bchar    *first_property_name,
                                                  ...);
-BtkWidget*      btk_test_create_simple_window   (const gchar    *window_title,
-                                                 const gchar    *dialog_text);
-BtkWidget*      btk_test_display_button_window  (const gchar    *window_title,
-                                                 const gchar    *dialog_text,
+BtkWidget*      btk_test_create_simple_window   (const bchar    *window_title,
+                                                 const bchar    *dialog_text);
+BtkWidget*      btk_test_display_button_window  (const bchar    *window_title,
+                                                 const bchar    *dialog_text,
                                                  ...); /* NULL terminated list of (label, &int) pairs */
 void            btk_test_slider_set_perc        (BtkWidget      *widget, /* BtkRange-alike */
                                                  double          percentage);
 double          btk_test_slider_get_value       (BtkWidget      *widget);
-gboolean        btk_test_spin_button_click      (BtkSpinButton  *spinner,
-                                                 guint           button,
-                                                 gboolean        upwards);
-gboolean        btk_test_widget_click           (BtkWidget      *widget,
-                                                 guint           button,
+bboolean        btk_test_spin_button_click      (BtkSpinButton  *spinner,
+                                                 buint           button,
+                                                 bboolean        upwards);
+bboolean        btk_test_widget_click           (BtkWidget      *widget,
+                                                 buint           button,
                                                  BdkModifierType modifiers);
-gboolean        btk_test_widget_send_key        (BtkWidget      *widget,
-                                                 guint           keyval,
+bboolean        btk_test_widget_send_key        (BtkWidget      *widget,
+                                                 buint           keyval,
                                                  BdkModifierType modifiers);
 /* operate on BtkEntry, BtkText, BtkTextView or BtkLabel */
 void            btk_test_text_set               (BtkWidget      *widget,
-                                                 const gchar    *string);
-gchar*          btk_test_text_get               (BtkWidget      *widget);
+                                                 const bchar    *string);
+bchar*          btk_test_text_get               (BtkWidget      *widget);
 
 /* --- Btk+ Test low-level API --- */
 BtkWidget*      btk_test_find_sibling           (BtkWidget      *base_widget,
                                                  GType           widget_type);
 BtkWidget*      btk_test_find_label             (BtkWidget      *widget,
-                                                 const gchar    *label_pattern);
+                                                 const bchar    *label_pattern);
 B_END_DECLS
 
 #endif /* __BTK_TEST_UTILS_H__ */

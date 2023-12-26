@@ -63,9 +63,9 @@ void                 bdk_app_launch_context_set_display   (BdkAppLaunchContext *
 void                 bdk_app_launch_context_set_screen    (BdkAppLaunchContext *context,
 							   BdkScreen           *screen);
 void                 bdk_app_launch_context_set_desktop   (BdkAppLaunchContext *context,
-							   gint                 desktop);
+							   bint                 desktop);
 void                 bdk_app_launch_context_set_timestamp (BdkAppLaunchContext *context,
-							   guint32              timestamp);
+							   buint32              timestamp);
 void                 bdk_app_launch_context_set_icon      (BdkAppLaunchContext *context,
 							   GIcon               *icon);
 void                 bdk_app_launch_context_set_icon_name (BdkAppLaunchContext *context,

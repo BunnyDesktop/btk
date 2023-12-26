@@ -123,7 +123,7 @@ typedef struct _FetchLinesData        FetchLinesData;
 typedef struct _LineParams            LineParams;
 typedef struct _SetVerticalScrollData SetVerticalScrollData;
 
-typedef gint (*LineIteratorFunction) (BtkText* text, LineParams* lp, void* data);
+typedef bint (*LineIteratorFunction) (BtkText* text, LineParams* lp, void* data);
 
 typedef enum
 {
@@ -132,9 +132,9 @@ typedef enum
 } FLType;
 
 struct _SetVerticalScrollData {
-  gint pixel_height;
-  gint last_didnt_wrap;
-  gint last_line_start;
+  bint pixel_height;
+  bint last_didnt_wrap;
+  bint last_line_start;
   BtkPropertyMark mark;
 };
 
@@ -142,9 +142,9 @@ struct _BtkTextFont
 {
   /* The actual font. */
   BdkFont *bdk_font;
-  guint ref_count;
+  buint ref_count;
 
-  gint16 char_widths[256];
+  bint16 char_widths[256];
 };
 
 typedef enum {
@@ -168,19 +168,19 @@ struct _TextProperty
   TextPropertyFlags flags;
 
   /* Length of this property. */
-  guint length;
+  buint length;
 };
 
 struct _TabStopMark
 {
   GList* tab_stops; /* Index into list containing the next tab position.  If
 		     * NULL, using default widths. */
-  gint to_next_tab;
+  bint to_next_tab;
 };
 
 struct _PrevTabCont
 {
-  guint pixel_offset;
+  buint pixel_offset;
   TabStopMark tab_start;
 };
 
@@ -188,17 +188,17 @@ struct _FetchLinesData
 {
   GList* new_lines;
   FLType fl_type;
-  gint data;
-  gint data_max;
+  bint data;
+  bint data_max;
 };
 
 struct _LineParams
 {
-  guint font_ascent;
-  guint font_descent;
-  guint pixel_width;
-  guint displayable_chars;
-  guint wraps : 1;
+  buint font_ascent;
+  buint font_descent;
+  buint pixel_width;
+  buint displayable_chars;
+  buint wraps : 1;
   
   PrevTabCont tab_cont;
   PrevTabCont tab_cont_next;
@@ -210,11 +210,11 @@ struct _LineParams
 
 static void  btk_text_class_init     (BtkTextClass   *klass);
 static void  btk_text_set_property   (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      const BValue    *value,
 				      BParamSpec      *pspec);
 static void  btk_text_get_property   (BObject         *object,
-				      guint            prop_id,
+				      buint            prop_id,
 				      BValue          *value,
 				      BParamSpec      *pspec);
 static void  btk_text_editable_init  (BtkEditableClass *iface);
@@ -235,50 +235,50 @@ static void  btk_text_size_allocate  (BtkWidget      *widget,
 static void  btk_text_adjustment     (BtkAdjustment  *adjustment,
 				      BtkText        *text);
 static void   btk_text_insert_text       (BtkEditable    *editable,
-					  const gchar    *new_text,
-					  gint            new_text_length,
-					  gint           *position);
+					  const bchar    *new_text,
+					  bint            new_text_length,
+					  bint           *position);
 static void   btk_text_delete_text       (BtkEditable    *editable,
-					  gint            start_pos,
-					  gint            end_pos);
+					  bint            start_pos,
+					  bint            end_pos);
 static void   btk_text_update_text       (BtkOldEditable *old_editable,
-					  gint            start_pos,
-					  gint            end_pos);
-static gchar *btk_text_get_chars         (BtkOldEditable *old_editable,
-					  gint            start,
-					  gint            end);
+					  bint            start_pos,
+					  bint            end_pos);
+static bchar *btk_text_get_chars         (BtkOldEditable *old_editable,
+					  bint            start,
+					  bint            end);
 static void   btk_text_set_selection     (BtkOldEditable *old_editable,
-					  gint            start,
-					  gint            end);
+					  bint            start,
+					  bint            end);
 static void   btk_text_real_set_editable (BtkOldEditable *old_editable,
-					  gboolean        is_editable);
+					  bboolean        is_editable);
 
 static void  btk_text_adjustment_destroyed (BtkAdjustment  *adjustment,
                                             BtkText        *text);
 
 /* Event handlers */
-static gint  btk_text_expose            (BtkWidget         *widget,
+static bint  btk_text_expose            (BtkWidget         *widget,
 					 BdkEventExpose    *event);
-static gint  btk_text_button_press      (BtkWidget         *widget,
+static bint  btk_text_button_press      (BtkWidget         *widget,
 					 BdkEventButton    *event);
-static gint  btk_text_button_release    (BtkWidget         *widget,
+static bint  btk_text_button_release    (BtkWidget         *widget,
 					 BdkEventButton    *event);
-static gint  btk_text_motion_notify     (BtkWidget         *widget,
+static bint  btk_text_motion_notify     (BtkWidget         *widget,
 					 BdkEventMotion    *event);
-static gint  btk_text_key_press         (BtkWidget         *widget,
+static bint  btk_text_key_press         (BtkWidget         *widget,
 					 BdkEventKey       *event);
 
-static void move_gap (BtkText* text, guint index);
-static void make_forward_space (BtkText* text, guint len);
+static void move_gap (BtkText* text, buint index);
+static void make_forward_space (BtkText* text, buint len);
 
 /* Property management */
 static BtkTextFont* get_text_font (BdkFont* gfont);
 static void         text_font_unref (BtkTextFont *text_font);
 
 static void insert_text_property (BtkText* text, BdkFont* font,
-				  const BdkColor *fore, const BdkColor* back, guint len);
+				  const BdkColor *fore, const BdkColor* back, buint len);
 static TextProperty* new_text_property (BtkText *text, BdkFont* font, 
-					const BdkColor* fore, const BdkColor* back, guint length);
+					const BdkColor* fore, const BdkColor* back, buint length);
 static void destroy_text_property (TextProperty *prop);
 static void init_properties      (BtkText *text);
 static void realize_property     (BtkText *text, TextProperty *prop);
@@ -286,64 +286,64 @@ static void realize_properties   (BtkText *text);
 static void unrealize_property   (BtkText *text, TextProperty *prop);
 static void unrealize_properties (BtkText *text);
 
-static void delete_text_property (BtkText* text, guint len);
+static void delete_text_property (BtkText* text, buint len);
 
-static guint pixel_height_of (BtkText* text, GList* cache_line);
+static buint pixel_height_of (BtkText* text, GList* cache_line);
 
 /* Property Movement and Size Computations */
 static void advance_mark (BtkPropertyMark* mark);
 static void decrement_mark (BtkPropertyMark* mark);
-static void advance_mark_n (BtkPropertyMark* mark, gint n);
-static void decrement_mark_n (BtkPropertyMark* mark, gint n);
-static void move_mark_n (BtkPropertyMark* mark, gint n);
-static BtkPropertyMark find_mark (BtkText* text, guint mark_position);
-static BtkPropertyMark find_mark_near (BtkText* text, guint mark_position, const BtkPropertyMark* near);
-static void find_line_containing_point (BtkText* text, guint point,
-					gboolean scroll);
+static void advance_mark_n (BtkPropertyMark* mark, bint n);
+static void decrement_mark_n (BtkPropertyMark* mark, bint n);
+static void move_mark_n (BtkPropertyMark* mark, bint n);
+static BtkPropertyMark find_mark (BtkText* text, buint mark_position);
+static BtkPropertyMark find_mark_near (BtkText* text, buint mark_position, const BtkPropertyMark* near);
+static void find_line_containing_point (BtkText* text, buint point,
+					bboolean scroll);
 
 /* Display */
-static void compute_lines_pixels (BtkText* text, guint char_count,
-				  guint *lines, guint *pixels);
+static void compute_lines_pixels (BtkText* text, buint char_count,
+				  buint *lines, buint *pixels);
 
-static gint total_line_height (BtkText* text,
+static bint total_line_height (BtkText* text,
 			       GList* line,
-			       gint line_count);
+			       bint line_count);
 static LineParams find_line_params (BtkText* text,
 				    const BtkPropertyMark *mark,
 				    const PrevTabCont *tab_cont,
 				    PrevTabCont *next_cont);
 static void recompute_geometry (BtkText* text);
-static void insert_expose (BtkText* text, guint old_pixels, gint nchars, guint new_line_count);
+static void insert_expose (BtkText* text, buint old_pixels, bint nchars, buint new_line_count);
 static void delete_expose (BtkText* text,
-			   guint nchars,
-			   guint old_lines, 
-			   guint old_pixels);
+			   buint nchars,
+			   buint old_lines, 
+			   buint old_pixels);
 static BdkGC *create_bg_gc (BtkText *text);
 static void clear_area (BtkText *text, BdkRectangle *area);
 static void draw_line (BtkText* text,
-		       gint pixel_height,
+		       bint pixel_height,
 		       LineParams* lp);
 static void draw_line_wrap (BtkText* text,
-			    guint height);
-static void draw_cursor (BtkText* text, gint absolute);
-static void undraw_cursor (BtkText* text, gint absolute);
-static gint drawn_cursor_min (BtkText* text);
-static gint drawn_cursor_max (BtkText* text);
-static void expose_text (BtkText* text, BdkRectangle *area, gboolean cursor);
+			    buint height);
+static void draw_cursor (BtkText* text, bint absolute);
+static void undraw_cursor (BtkText* text, bint absolute);
+static bint drawn_cursor_min (BtkText* text);
+static bint drawn_cursor_max (BtkText* text);
+static void expose_text (BtkText* text, BdkRectangle *area, bboolean cursor);
 
 /* Search and Placement. */
 static void find_cursor (BtkText* text,
-			 gboolean scroll);
+			 bboolean scroll);
 static void find_cursor_at_line (BtkText* text,
 				 const LineParams* start_line,
-				 gint pixel_height);
-static void find_mouse_cursor (BtkText* text, gint x, gint y);
+				 bint pixel_height);
+static void find_mouse_cursor (BtkText* text, bint x, bint y);
 
 /* Scrolling. */
 static void adjust_adj  (BtkText* text, BtkAdjustment* adj);
-static void scroll_up   (BtkText* text, gint diff);
-static void scroll_down (BtkText* text, gint diff);
-static void scroll_int  (BtkText* text, gint diff);
+static void scroll_up   (BtkText* text, bint diff);
+static void scroll_down (BtkText* text, bint diff);
+static void scroll_int  (BtkText* text, bint diff);
 
 static void process_exposes (BtkText *text);
 
@@ -359,23 +359,23 @@ static void move_cursor_hor (BtkText *text, int count);
 
 /* Binding actions */
 static void btk_text_move_cursor    (BtkOldEditable *old_editable,
-				     gint            x,
-				     gint            y);
+				     bint            x,
+				     bint            y);
 static void btk_text_move_word      (BtkOldEditable *old_editable,
-				     gint            n);
+				     bint            n);
 static void btk_text_move_page      (BtkOldEditable *old_editable,
-				     gint            x,
-				     gint            y);
+				     bint            x,
+				     bint            y);
 static void btk_text_move_to_row    (BtkOldEditable *old_editable,
-				     gint            row);
+				     bint            row);
 static void btk_text_move_to_column (BtkOldEditable *old_editable,
-				     gint            row);
+				     bint            row);
 static void btk_text_kill_char      (BtkOldEditable *old_editable,
-				     gint            direction);
+				     bint            direction);
 static void btk_text_kill_word      (BtkOldEditable *old_editable,
-				     gint            direction);
+				     bint            direction);
 static void btk_text_kill_line      (BtkOldEditable *old_editable,
-				     gint            direction);
+				     bint            direction);
 
 /* To be removed */
 static void btk_text_move_forward_character    (BtkText          *text);
@@ -394,12 +394,12 @@ static void btk_text_delete_backward_word      (BtkText          *text);
 static void btk_text_delete_line               (BtkText          *text);
 static void btk_text_delete_to_line_end        (BtkText          *text);
 static void btk_text_select_word               (BtkText          *text,
-						guint32           time);
+						buint32           time);
 static void btk_text_select_line               (BtkText          *text,
-						guint32           time);
+						buint32           time);
 
 static void btk_text_set_position (BtkOldEditable *old_editable,
-				   gint            position);
+				   bint            position);
 
 /* #define DEBUG_BTK_TEXT */
 
@@ -409,21 +409,21 @@ static void btk_text_assert_mark (BtkText         *text,
 				  BtkPropertyMark *mark,
 				  BtkPropertyMark *before,
 				  BtkPropertyMark *after,
-				  const gchar     *msg,
-				  const gchar     *where,
-				  gint             line);
+				  const bchar     *msg,
+				  const bchar     *where,
+				  bint             line);
 
 static void btk_text_assert (BtkText         *text,
-			     const gchar     *msg,
-			     gint             line);
+			     const bchar     *msg,
+			     bint             line);
 static void btk_text_show_cache_line (BtkText *text, GList *cache,
-				      const char* what, const char* func, gint line);
-static void btk_text_show_cache (BtkText *text, const char* func, gint line);
+				      const char* what, const char* func, bint line);
+static void btk_text_show_cache (BtkText *text, const char* func, bint line);
 static void btk_text_show_adj (BtkText *text,
 			       BtkAdjustment *adj,
 			       const char* what,
 			       const char* func,
-			       gint line);
+			       bint line);
 static void btk_text_show_props (BtkText* test,
 				 const char* func,
 				 int line);
@@ -582,7 +582,7 @@ btk_text_class_init (BtkTextClass *class)
 
 static void
 btk_text_set_property (BObject         *object,
-		       guint            prop_id,
+		       buint            prop_id,
 		       const BValue    *value,
 		       BParamSpec      *pspec)
 {
@@ -616,7 +616,7 @@ btk_text_set_property (BObject         *object,
 
 static void
 btk_text_get_property (BObject         *object,
-		       guint            prop_id,
+		       buint            prop_id,
 		       BValue          *value,
 		       BParamSpec      *pspec)
 {
@@ -665,7 +665,7 @@ btk_text_init (BtkText *text)
   text->line_arrow_bitmap = NULL;
   
   text->use_wchar = FALSE;
-  text->text.ch = g_new (guchar, INITIAL_BUFFER_SIZE);
+  text->text.ch = g_new (buchar, INITIAL_BUFFER_SIZE);
   text->text_len = INITIAL_BUFFER_SIZE;
  
   text->scratch_buffer.ch = NULL;
@@ -719,7 +719,7 @@ btk_text_new (BtkAdjustment *hadj,
 
 void
 btk_text_set_word_wrap (BtkText *text,
-			gboolean word_wrap)
+			bboolean word_wrap)
 {
   g_return_if_fail (BTK_IS_TEXT (text));
   
@@ -736,7 +736,7 @@ btk_text_set_word_wrap (BtkText *text,
 
 void
 btk_text_set_line_wrap (BtkText *text,
-			gboolean line_wrap)
+			bboolean line_wrap)
 {
   g_return_if_fail (BTK_IS_TEXT (text));
   
@@ -753,7 +753,7 @@ btk_text_set_line_wrap (BtkText *text,
 
 void
 btk_text_set_editable (BtkText *text,
-		       gboolean is_editable)
+		       bboolean is_editable)
 {
   g_return_if_fail (BTK_IS_TEXT (text));
   
@@ -762,7 +762,7 @@ btk_text_set_editable (BtkText *text,
 
 static void
 btk_text_real_set_editable (BtkOldEditable *old_editable,
-			    gboolean        is_editable)
+			    bboolean        is_editable)
 {
   BtkText *text;
   
@@ -848,7 +848,7 @@ btk_text_set_adjustments (BtkText       *text,
 
 void
 btk_text_set_point (BtkText *text,
-		    guint    index)
+		    buint    index)
 {
   g_return_if_fail (BTK_IS_TEXT (text));
   g_return_if_fail (index <= TEXT_LENGTH (text));
@@ -856,7 +856,7 @@ btk_text_set_point (BtkText *text,
   text->point = find_mark (text, index);
 }
 
-guint
+buint
 btk_text_get_point (BtkText *text)
 {
   g_return_val_if_fail (BTK_IS_TEXT (text), 0);
@@ -864,7 +864,7 @@ btk_text_get_point (BtkText *text)
   return text->point.index;
 }
 
-guint
+buint
 btk_text_get_length (BtkText *text)
 {
   g_return_val_if_fail (BTK_IS_TEXT (text), 0);
@@ -899,16 +899,16 @@ btk_text_insert (BtkText        *text,
 		 const BdkColor *fore,
 		 const BdkColor *back,
 		 const char     *chars,
-		 gint            nchars)
+		 bint            nchars)
 {
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (text);
-  gboolean frozen = FALSE;
+  bboolean frozen = FALSE;
   
-  gint new_line_count = 1;
-  guint old_height = 0;
-  guint length;
-  guint i;
-  gint numwcs;
+  bint new_line_count = 1;
+  buint old_height = 0;
+  buint length;
+  buint i;
+  bint numwcs;
   
   g_return_if_fail (BTK_IS_TEXT (text));
 
@@ -1018,9 +1018,9 @@ btk_text_insert (BtkText        *text,
     btk_text_thaw (text);
 }
 
-gboolean
+bboolean
 btk_text_backward_delete (BtkText *text,
-			  guint    nchars)
+			  buint    nchars)
 {
   g_return_val_if_fail (BTK_IS_TEXT (text), FALSE);
   
@@ -1032,13 +1032,13 @@ btk_text_backward_delete (BtkText *text,
   return btk_text_forward_delete (text, nchars);
 }
 
-gboolean
+bboolean
 btk_text_forward_delete (BtkText *text,
-			 guint    nchars)
+			 buint    nchars)
 {
-  guint old_lines = 0, old_height = 0;
+  buint old_lines = 0, old_height = 0;
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (text);
-  gboolean frozen = FALSE;
+  bboolean frozen = FALSE;
   
   g_return_val_if_fail (BTK_IS_TEXT (text), FALSE);
   
@@ -1108,7 +1108,7 @@ btk_text_forward_delete (BtkText *text,
 
 static void
 btk_text_set_position (BtkOldEditable *old_editable,
-		       gint            position)
+		       bint            position)
 {
   BtkText *text = (BtkText *) old_editable;
 
@@ -1122,14 +1122,14 @@ btk_text_set_position (BtkOldEditable *old_editable,
   btk_editable_select_rebunnyion (BTK_EDITABLE (old_editable), 0, 0);
 }
 
-static gchar *    
+static bchar *    
 btk_text_get_chars (BtkOldEditable *old_editable,
-		    gint            start_pos,
-		    gint            end_pos)
+		    bint            start_pos,
+		    bint            end_pos)
 {
   BtkText *text;
 
-  gchar *retval;
+  bchar *retval;
   
   g_return_val_if_fail (BTK_IS_TEXT (old_editable), NULL);
   text = BTK_TEXT (old_editable);
@@ -1155,10 +1155,10 @@ btk_text_get_chars (BtkOldEditable *old_editable,
     }
   else
     {
-      guchar ch;
+      buchar ch;
       ch = text->text.ch[end_pos];
       text->text.ch[end_pos] = 0;
-      retval = g_strdup ((gchar *)(text->text.ch + start_pos));
+      retval = g_strdup ((bchar *)(text->text.ch + start_pos));
       text->text.ch[end_pos] = ch;
     }
 
@@ -1237,7 +1237,7 @@ btk_text_realize (BtkWidget *widget)
   BtkText *text = BTK_TEXT (widget);
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
   
@@ -1264,8 +1264,8 @@ btk_text_realize (BtkWidget *widget)
   
   attributes.x = (widget->style->xthickness + TEXT_BORDER_ROOM);
   attributes.y = (widget->style->ythickness + TEXT_BORDER_ROOM);
-  attributes.width = MAX (1, (gint)widget->allocation.width - (gint)attributes.x * 2);
-  attributes.height = MAX (1, (gint)widget->allocation.height - (gint)attributes.y * 2);
+  attributes.width = MAX (1, (bint)widget->allocation.width - (bint)attributes.x * 2);
+  attributes.height = MAX (1, (bint)widget->allocation.height - (bint)attributes.y * 2);
 
   attributes.cursor = bdk_cursor_new_for_display (btk_widget_get_display (widget), BDK_XTERM);
   attributes_mask |= BDK_WA_CURSOR;
@@ -1285,12 +1285,12 @@ btk_text_realize (BtkWidget *widget)
     text->bg_gc = create_bg_gc (text);
   
   text->line_wrap_bitmap = bdk_bitmap_create_from_data (text->text_area,
-							(gchar*) line_wrap_bits,
+							(bchar*) line_wrap_bits,
 							line_wrap_width,
 							line_wrap_height);
   
   text->line_arrow_bitmap = bdk_bitmap_create_from_data (text->text_area,
-							 (gchar*) line_arrow_bits,
+							 (bchar*) line_arrow_bits,
 							 line_arrow_width,
 							 line_arrow_height);
   
@@ -1378,15 +1378,15 @@ btk_text_unrealize (BtkWidget *widget)
 }
 
 static void
-clear_focus_area (BtkText *text, gint area_x, gint area_y, gint area_width, gint area_height)
+clear_focus_area (BtkText *text, bint area_x, bint area_y, bint area_width, bint area_height)
 {
   BtkWidget *widget = BTK_WIDGET (text);
   BdkGC *gc;
  
-  gint ythick = TEXT_BORDER_ROOM + widget->style->ythickness;
-  gint xthick = TEXT_BORDER_ROOM + widget->style->xthickness;
+  bint ythick = TEXT_BORDER_ROOM + widget->style->ythickness;
+  bint xthick = TEXT_BORDER_ROOM + widget->style->xthickness;
   
-  gint width, height;
+  bint width, height;
   
   if (area_width == 0 || area_height == 0)
     return;
@@ -1412,8 +1412,8 @@ static void
 btk_text_draw_focus (BtkWidget *widget)
 {
   BtkText *text;
-  gint width, height;
-  gint x, y;
+  bint width, height;
+  bint x, y;
   
   g_return_if_fail (BTK_IS_TEXT (widget));
   
@@ -1421,10 +1421,10 @@ btk_text_draw_focus (BtkWidget *widget)
   
   if (BTK_WIDGET_DRAWABLE (widget))
     {
-      gint ythick = widget->style->ythickness;
-      gint xthick = widget->style->xthickness;
-      gint xextra = TEXT_BORDER_ROOM;
-      gint yextra = TEXT_BORDER_ROOM;
+      bint ythick = widget->style->ythickness;
+      bint xthick = widget->style->xthickness;
+      bint xextra = TEXT_BORDER_ROOM;
+      bint yextra = TEXT_BORDER_ROOM;
       
       TDEBUG (("in btk_text_draw_focus\n"));
       
@@ -1481,10 +1481,10 @@ btk_text_size_request (BtkWidget      *widget,
 		       BtkRequisition *requisition)
 {
   BdkFont *font;
-  gint xthickness;
-  gint ythickness;
-  gint char_height;
-  gint char_width;
+  bint xthickness;
+  bint ythickness;
+  bint char_height;
+  bint char_width;
 
   xthickness = widget->style->xthickness + TEXT_BORDER_ROOM;
   ythickness = widget->style->ythickness + TEXT_BORDER_ROOM;
@@ -1519,16 +1519,16 @@ btk_text_size_allocate (BtkWidget     *widget,
       bdk_window_move_resize (text->text_area,
 			      widget->style->xthickness + TEXT_BORDER_ROOM,
 			      widget->style->ythickness + TEXT_BORDER_ROOM,
-			      MAX (1, (gint)widget->allocation.width - (gint)(widget->style->xthickness +
-							  (gint)TEXT_BORDER_ROOM) * 2),
-			      MAX (1, (gint)widget->allocation.height - (gint)(widget->style->ythickness +
-							   (gint)TEXT_BORDER_ROOM) * 2));
+			      MAX (1, (bint)widget->allocation.width - (bint)(widget->style->xthickness +
+							  (bint)TEXT_BORDER_ROOM) * 2),
+			      MAX (1, (bint)widget->allocation.height - (bint)(widget->style->ythickness +
+							   (bint)TEXT_BORDER_ROOM) * 2));
       
       recompute_geometry (text);
     }
 }
 
-static gint
+static bint
 btk_text_expose (BtkWidget      *widget,
 		 BdkEventExpose *event)
 {
@@ -1546,11 +1546,11 @@ btk_text_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
-btk_text_scroll_timeout (gpointer data)
+static bint
+btk_text_scroll_timeout (bpointer data)
 {
   BtkText *text;
-  gint x, y;
+  bint x, y;
   BdkModifierType mask;
   
   text = BTK_TEXT (data);
@@ -1575,7 +1575,7 @@ btk_text_scroll_timeout (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 btk_text_button_press (BtkWidget      *widget,
 		       BdkEventButton *event)
 {
@@ -1598,7 +1598,7 @@ btk_text_button_press (BtkWidget      *widget,
 	  btk_grab_add (widget);
 	  
 	  undraw_cursor (text, FALSE);
-	  find_mouse_cursor (text, (gint)event->x, (gint)event->y);
+	  find_mouse_cursor (text, (bint)event->x, (bint)event->y);
 	  draw_cursor (text, FALSE);
 	  
 	  /* Set it now, so we display things right. We'll unset it
@@ -1630,7 +1630,7 @@ btk_text_button_press (BtkWidget      *widget,
 	      old_editable->has_selection)
 	    {
 	      undraw_cursor (text, FALSE);
-	      find_mouse_cursor (text, (gint)event->x, (gint)event->y);
+	      find_mouse_cursor (text, (bint)event->x, (bint)event->y);
 	      draw_cursor (text, FALSE);
 	      
 	    }
@@ -1666,7 +1666,7 @@ btk_text_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_text_button_release (BtkWidget      *widget,
 			 BdkEventButton *event)
 {
@@ -1729,13 +1729,13 @@ btk_text_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_text_motion_notify (BtkWidget      *widget,
 			BdkEventMotion *event)
 {
   BtkText *text = BTK_TEXT (widget);
-  gint x, y;
-  gint height;
+  bint x, y;
+  bint height;
   BdkModifierType mask;
 
   x = event->x;
@@ -1782,9 +1782,9 @@ btk_text_motion_notify (BtkWidget      *widget,
 
 static void 
 btk_text_insert_text    (BtkEditable       *editable,
-			 const gchar       *new_text,
-			 gint               new_text_length,
-			 gint              *position)
+			 const bchar       *new_text,
+			 bint               new_text_length,
+			 bint              *position)
 {
   BtkText *text = BTK_TEXT (editable);
   BdkFont *font;
@@ -1806,8 +1806,8 @@ btk_text_insert_text    (BtkEditable       *editable,
 
 static void 
 btk_text_delete_text    (BtkEditable       *editable,
-			 gint               start_pos,
-			 gint               end_pos)
+			 bint               start_pos,
+			 bint               end_pos)
 {
   BtkText *text = BTK_TEXT (editable);
   
@@ -1821,15 +1821,15 @@ btk_text_delete_text    (BtkEditable       *editable,
     btk_text_forward_delete (text, end_pos - start_pos);
 }
 
-static gint
+static bint
 btk_text_key_press (BtkWidget   *widget,
 		    BdkEventKey *event)
 {
   BtkText *text = BTK_TEXT (widget);
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (widget);
-  gchar key;
-  gint return_val;
-  gint position;
+  bchar key;
+  bint return_val;
+  bint position;
 
   key = event->keyval;
   return_val = TRUE;
@@ -1875,9 +1875,9 @@ btk_text_key_press (BtkWidget   *widget,
     }
   else
     {
-      gint extend_selection;
-      gint extend_start;
-      guint initial_pos = old_editable->current_pos;
+      bint extend_selection;
+      bint extend_start;
+      buint initial_pos = old_editable->current_pos;
       
       text->point = find_mark (text, text->cursor_mark.index);
       
@@ -2139,7 +2139,7 @@ btk_text_adjustment (BtkAdjustment *adjustment,
     }
   else
     {
-      gint diff = ((gint)adjustment->value) - text->last_ver_value;
+      bint diff = ((bint)adjustment->value) - text->last_ver_value;
       
       if (diff != 0)
 	{
@@ -2172,7 +2172,7 @@ btk_text_adjustment_destroyed (BtkAdjustment *adjustment,
 
 
 static BtkPropertyMark
-find_this_line_start_mark (BtkText* text, guint point_position, const BtkPropertyMark* near)
+find_this_line_start_mark (BtkText* text, buint point_position, const BtkPropertyMark* near)
 {
   BtkPropertyMark mark;
   
@@ -2190,7 +2190,7 @@ init_tab_cont (BtkText* text, PrevTabCont* tab_cont)
 {
   tab_cont->pixel_offset          = 0;
   tab_cont->tab_start.tab_stops   = text->tab_stops;
-  tab_cont->tab_start.to_next_tab = (gintptr) text->tab_stops->data;
+  tab_cont->tab_start.to_next_tab = (bintptr) text->tab_stops->data;
   
   if (!tab_cont->tab_start.to_next_tab)
     tab_cont->tab_start.to_next_tab = text->default_tab_width;
@@ -2200,7 +2200,7 @@ static void
 line_params_iterate (BtkText* text,
 		     const BtkPropertyMark* mark0,
 		     const PrevTabCont* tab_mark0,
-		     gint8 alloc,
+		     bint8 alloc,
 		     void* data,
 		     LineIteratorFunction iter)
      /* mark0 MUST be a real line start.  if ALLOC, allocate line params
@@ -2211,7 +2211,7 @@ line_params_iterate (BtkText* text,
   BtkPropertyMark mark = *mark0;
   PrevTabCont  tab_conts[2];
   LineParams   *lp, lpbuf;
-  gint         tab_cont_index = 0;
+  bint         tab_cont_index = 0;
   
   if (tab_mark0)
     tab_conts[0] = *tab_mark0;
@@ -2240,7 +2240,7 @@ line_params_iterate (BtkText* text,
     }
 }
 
-static gint
+static bint
 fetch_lines_iterator (BtkText* text, LineParams* lp, void* data)
 {
   FetchLinesData *fldata = (FetchLinesData*) data;
@@ -2275,7 +2275,7 @@ fetch_lines (BtkText* text,
 	     const BtkPropertyMark* mark0,
 	     const PrevTabCont* tab_cont0,
 	     FLType fl_type,
-	     gint data)
+	     bint data)
 {
   FetchLinesData fl_data;
   
@@ -2312,7 +2312,7 @@ fetch_lines_backward (BtkText* text)
 }
 
 static void
-fetch_lines_forward (BtkText* text, gint line_count)
+fetch_lines_forward (BtkText* text, bint line_count)
 {
   BtkPropertyMark mark;
   GList* line = text->line_start_cache;
@@ -2337,11 +2337,11 @@ fetch_lines_forward (BtkText* text, gint line_count)
  * starting from the point 
  */
 static void
-compute_lines_pixels (BtkText* text, guint char_count,
-		      guint *lines, guint *pixels)
+compute_lines_pixels (BtkText* text, buint char_count,
+		      buint *lines, buint *pixels)
 {
   GList *line = text->current_line;
-  gint chars_left = char_count;
+  bint chars_left = char_count;
   
   *lines = 0;
   *pixels = 0;
@@ -2369,10 +2369,10 @@ compute_lines_pixels (BtkText* text, guint char_count,
     }
 }
 
-static gint
-total_line_height (BtkText* text, GList* line, gint line_count)
+static bint
+total_line_height (BtkText* text, GList* line, bint line_count)
 {
-  gint height = 0;
+  bint height = 0;
   
   for (; line && line_count > 0; line = line->next)
     {
@@ -2389,7 +2389,7 @@ total_line_height (BtkText* text, GList* line, gint line_count)
 }
 
 static void
-swap_lines (BtkText* text, GList* old, GList* new, guint old_line_count)
+swap_lines (BtkText* text, GList* old, GList* new, buint old_line_count)
 {
   if (old == text->line_start_cache)
     {
@@ -2443,10 +2443,10 @@ swap_lines (BtkText* text, GList* old, GList* new, guint old_line_count)
 }
 
 static void
-correct_cache_delete (BtkText* text, gint nchars, gint lines)
+correct_cache_delete (BtkText* text, bint nchars, bint lines)
 {
   GList* cache = text->current_line;
-  gint i;
+  bint i;
   
   for (i = 0; cache && i < lines; i += 1, cache = cache->next)
     /* nothing */;
@@ -2477,15 +2477,15 @@ correct_cache_delete (BtkText* text, gint nchars, gint lines)
 }
 
 static void
-delete_expose (BtkText* text, guint nchars, guint old_lines, guint old_pixels)
+delete_expose (BtkText* text, buint nchars, buint old_lines, buint old_pixels)
 {
   BtkWidget *widget = BTK_WIDGET (text);
   
-  gint pixel_height;
-  guint new_pixels = 0;
+  bint pixel_height;
+  buint new_pixels = 0;
   BdkRectangle rect;
   GList* new_line = NULL;
-  gint width, height;
+  bint width, height;
   
   text->cursor_virtual_x = 0;
   
@@ -2563,12 +2563,12 @@ delete_expose (BtkText* text, guint nchars, guint old_lines, guint old_pixels)
 
 /* note, the point has already been moved forward */
 static void
-correct_cache_insert (BtkText* text, gint nchars)
+correct_cache_insert (BtkText* text, bint nchars)
 {
   GList *cache;
   BtkPropertyMark *start;
   BtkPropertyMark *end;
-  gboolean was_split = FALSE;
+  bboolean was_split = FALSE;
   
   /* We need to distinguish whether the property was split in the
    * insert or not, so we check if the point (which points after
@@ -2662,16 +2662,16 @@ correct_cache_insert (BtkText* text, gint nchars)
 
 
 static void
-insert_expose (BtkText* text, guint old_pixels, gint nchars,
-	       guint new_line_count)
+insert_expose (BtkText* text, buint old_pixels, bint nchars,
+	       buint new_line_count)
 {
   BtkWidget *widget = BTK_WIDGET (text);
   
-  gint pixel_height;
-  guint new_pixels = 0;
+  bint pixel_height;
+  buint new_pixels = 0;
   BdkRectangle rect;
   GList* new_lines = NULL;
-  gint width, height;
+  bint width, height;
   
   text->cursor_virtual_x = 0;
   
@@ -2754,7 +2754,7 @@ insert_expose (BtkText* text, guint old_pixels, gint nchars,
 
 /* Text property functions */
 
-static guint
+static buint
 font_hash (gconstpointer font)
 {
   return bdk_font_id ((const BdkFont*) font);
@@ -2766,7 +2766,7 @@ static BtkTextFont*
 get_text_font (BdkFont* gfont)
 {
   BtkTextFont* tf;
-  gint i;
+  bint i;
   
   if (!font_cache_table)
     font_cache_table = g_hash_table_new (font_hash, (GEqualFunc) bdk_font_equal);
@@ -2805,12 +2805,12 @@ text_font_unref (BtkTextFont *text_font)
     }
 }
 
-static gint
+static bint
 text_properties_equal (TextProperty* prop, BdkFont* font, const BdkColor *fore, const BdkColor *back)
 {
   if (prop->flags & PROPERTY_FONT)
     {
-      gboolean retval;
+      bboolean retval;
       BtkTextFont *text_font;
 
       if (!font)
@@ -2901,7 +2901,7 @@ unrealize_properties (BtkText *text)
 
 static TextProperty*
 new_text_property (BtkText *text, BdkFont *font, const BdkColor* fore,
-		   const BdkColor* back, guint length)
+		   const BdkColor* back, buint length)
 {
   TextProperty *prop;
   
@@ -2948,11 +2948,11 @@ destroy_text_property (TextProperty *prop)
 /* Flop the memory between the point and the gap around like a
  * dead fish. */
 static void
-move_gap (BtkText* text, guint index)
+move_gap (BtkText* text, buint index)
 {
   if (text->gap_position < index)
     {
-      gint diff = index - text->gap_position;
+      bint diff = index - text->gap_position;
       
       if (text->use_wchar)
 	g_memmove (text->text.wc + text->gap_position,
@@ -2967,7 +2967,7 @@ move_gap (BtkText* text, guint index)
     }
   else if (text->gap_position > index)
     {
-      gint diff = text->gap_position - index;
+      bint diff = text->gap_position - index;
       
       if (text->use_wchar)
 	g_memmove (text->text.wc + index + text->gap_size,
@@ -2984,15 +2984,15 @@ move_gap (BtkText* text, guint index)
 
 /* Increase the gap size. */
 static void
-make_forward_space (BtkText* text, guint len)
+make_forward_space (BtkText* text, buint len)
 {
   if (text->gap_size < len)
     {
-      guint sum = MAX(2*len, MIN_GAP_SIZE) + text->text_end;
+      buint sum = MAX(2*len, MIN_GAP_SIZE) + text->text_end;
       
       if (sum >= text->text_len)
 	{
-	  guint i = 1;
+	  buint i = 1;
 	  
 	  while (i <= sum) i <<= 1;
 	  
@@ -3000,7 +3000,7 @@ make_forward_space (BtkText* text, guint len)
 	    text->text.wc = (BdkWChar *)g_realloc(text->text.wc,
 						  i*sizeof(BdkWChar));
 	  else
-	    text->text.ch = (guchar *)g_realloc(text->text.ch, i);
+	    text->text.ch = (buchar *)g_realloc(text->text.ch, i);
 	  text->text_len = i;
 	}
       
@@ -3026,7 +3026,7 @@ make_forward_space (BtkText* text, guint len)
  * point. */
 static void
 insert_text_property (BtkText* text, BdkFont* font,
-		      const BdkColor *fore, const BdkColor* back, guint len)
+		      const BdkColor *fore, const BdkColor* back, buint len)
 {
   BtkPropertyMark *mark = &text->point;
   TextProperty* forward_prop = MARK_CURRENT_PROPERTY(mark);
@@ -3139,7 +3139,7 @@ insert_text_property (BtkText* text, BdkFont* font,
 	{
 	  GList* new_prop = g_list_alloc();
 	  GList* new_prop_forward = g_list_alloc();
-	  gint old_length = forward_prop->length;
+	  bint old_length = forward_prop->length;
 	  GList* next = MARK_NEXT_LIST_PTR(mark);
 	  
 	  /* Set the new lengths according to where they are split.  Construct
@@ -3182,7 +3182,7 @@ insert_text_property (BtkText* text, BdkFont* font,
 }
 
 static void
-delete_text_property (BtkText* text, guint nchars)
+delete_text_property (BtkText* text, buint nchars)
 {
   /* Delete nchars forward from point. */
   
@@ -3205,7 +3205,7 @@ delete_text_property (BtkText* text, guint nchars)
   
   TextProperty *prop;
   GList        *tmp;
-  gint          is_first;
+  bint          is_first;
   
   for(; nchars; nchars -= 1)
     {
@@ -3289,7 +3289,7 @@ init_properties (BtkText *text)
 /**********************************************************************/
 
 static void
-move_mark_n (BtkPropertyMark* mark, gint n)
+move_mark_n (BtkPropertyMark* mark, bint n)
 {
   if (n > 0)
     advance_mark_n(mark, n);
@@ -3314,9 +3314,9 @@ advance_mark (BtkPropertyMark* mark)
 }
 
 static void
-advance_mark_n (BtkPropertyMark* mark, gint n)
+advance_mark_n (BtkPropertyMark* mark, bint n)
 {
-  gint i;
+  bint i;
   TextProperty* prop;
 
   g_assert (n > 0);
@@ -3359,7 +3359,7 @@ decrement_mark (BtkPropertyMark* mark)
 }
 
 static void
-decrement_mark_n (BtkPropertyMark* mark, gint n)
+decrement_mark_n (BtkPropertyMark* mark, bint n)
 {
   g_assert (n > 0);
 
@@ -3377,7 +3377,7 @@ decrement_mark_n (BtkPropertyMark* mark, gint n)
 }
  
 static BtkPropertyMark
-find_mark (BtkText* text, guint mark_position)
+find_mark (BtkText* text, buint mark_position)
 {
   return find_mark_near (text, mark_position, &text->point);
 }
@@ -3386,10 +3386,10 @@ find_mark (BtkText* text, guint mark_position)
  * You can also start from the end, what a drag.
  */
 static BtkPropertyMark
-find_mark_near (BtkText* text, guint mark_position, const BtkPropertyMark* near)
+find_mark_near (BtkText* text, buint mark_position, const BtkPropertyMark* near)
 {
-  gint diffa;
-  gint diffb;
+  bint diffa;
+  bint diffb;
   
   BtkPropertyMark mark;
   
@@ -3424,11 +3424,11 @@ find_mark_near (BtkText* text, guint mark_position, const BtkPropertyMark* near)
  */
 
 static void
-find_line_containing_point (BtkText* text, guint point,
-			    gboolean scroll)
+find_line_containing_point (BtkText* text, buint point,
+			    bboolean scroll)
 {
   GList* cache;
-  gint height;
+  bint height;
   
   text->current_line = NULL;
 
@@ -3453,7 +3453,7 @@ find_line_containing_point (BtkText* text, guint point,
   
   for (cache = text->line_start_cache; cache; cache = cache->next)
     {
-      guint lph;
+      buint lph;
       
       if (CACHE_DATA(cache).end.index >= point ||
 	  LAST_INDEX(text, CACHE_DATA(cache).end))
@@ -3488,10 +3488,10 @@ find_line_containing_point (BtkText* text, guint point,
   g_assert_not_reached (); /* Must set text->current_line here */
 }
 
-static guint
+static buint
 pixel_height_of (BtkText* text, GList* cache_line)
 {
-  gint pixels = - text->first_cut_pixels;
+  bint pixels = - text->first_cut_pixels;
   GList *cache = text->line_start_cache;
   
   while (TRUE) {
@@ -3510,11 +3510,11 @@ pixel_height_of (BtkText* text, GList* cache_line)
 /*			Search and Placement                          */
 /**********************************************************************/
 
-static gint
+static bint
 find_char_width (BtkText* text, const BtkPropertyMark *mark, const TabStopMark *tab_mark)
 {
   BdkWChar ch;
-  gint16* char_widths;
+  bint16* char_widths;
   
   if (LAST_INDEX (text, *mark))
     return 0;
@@ -3544,7 +3544,7 @@ advance_tab_mark (BtkText* text, TabStopMark* tab_mark, BdkWChar ch)
       if (tab_mark->tab_stops->next)
 	{
 	  tab_mark->tab_stops = tab_mark->tab_stops->next;
-	  tab_mark->to_next_tab = (gintptr) tab_mark->tab_stops->data;
+	  tab_mark->to_next_tab = (bintptr) tab_mark->tab_stops->data;
 	}
       else
 	{
@@ -3558,7 +3558,7 @@ advance_tab_mark (BtkText* text, TabStopMark* tab_mark, BdkWChar ch)
 }
 
 static void
-advance_tab_mark_n (BtkText* text, TabStopMark* tab_mark, gint n)
+advance_tab_mark_n (BtkText* text, TabStopMark* tab_mark, bint n)
      /* No tabs! */
 {
   while (n--)
@@ -3566,13 +3566,13 @@ advance_tab_mark_n (BtkText* text, TabStopMark* tab_mark, gint n)
 }
 
 static void
-find_cursor_at_line (BtkText* text, const LineParams* start_line, gint pixel_height)
+find_cursor_at_line (BtkText* text, const LineParams* start_line, bint pixel_height)
 {
   BdkWChar ch;
   
   BtkPropertyMark mark        = start_line->start;
   TabStopMark  tab_mark    = start_line->tab_cont.tab_start;
-  gint         pixel_width = LINE_START_PIXEL (*start_line);
+  bint         pixel_width = LINE_START_PIXEL (*start_line);
   
   while (mark.index < text->cursor_mark.index)
     {
@@ -3597,7 +3597,7 @@ find_cursor_at_line (BtkText* text, const LineParams* start_line, gint pixel_hei
 }
 
 static void
-find_cursor (BtkText* text, gboolean scroll)
+find_cursor (BtkText* text, bboolean scroll)
 {
   if (btk_widget_get_realized (BTK_WIDGET (text)))
     {
@@ -3614,14 +3614,14 @@ find_cursor (BtkText* text, gboolean scroll)
 
 static void
 find_mouse_cursor_at_line (BtkText *text, const LineParams* lp,
-			   guint line_pixel_height,
-			   gint button_x)
+			   buint line_pixel_height,
+			   bint button_x)
 {
   BtkPropertyMark mark     = lp->start;
   TabStopMark  tab_mark = lp->tab_cont.tab_start;
   
-  gint char_width = find_char_width(text, &mark, &tab_mark);
-  gint pixel_width = LINE_START_PIXEL (*lp) + (char_width+1)/2;
+  bint char_width = find_char_width(text, &mark, &tab_mark);
+  bint pixel_width = LINE_START_PIXEL (*lp) + (char_width+1)/2;
   
   text->cursor_pos_y = line_pixel_height;
   
@@ -3656,9 +3656,9 @@ find_mouse_cursor_at_line (BtkText *text, const LineParams* lp,
 }
 
 static void
-find_mouse_cursor (BtkText* text, gint x, gint y)
+find_mouse_cursor (BtkText* text, bint x, bint y)
 {
-  gint pixel_height;
+  bint pixel_height;
   GList* cache = text->line_start_cache;
   
   g_assert (cache);
@@ -3767,9 +3767,9 @@ move_cursor_page_ver (BtkText *text, int dir)
 static void
 move_cursor_ver (BtkText *text, int count)
 {
-  gint i;
+  bint i;
   BtkPropertyMark mark;
-  gint offset;
+  bint offset;
   
   mark = find_this_line_start_mark (text, text->cursor_mark.index, &text->cursor_mark);
   offset = text->cursor_mark.index - mark.index;
@@ -3834,8 +3834,8 @@ move_cursor_hor (BtkText *text, int count)
 
 static void 
 btk_text_move_cursor (BtkOldEditable *old_editable,
-		      gint            x,
-		      gint            y)
+		      bint            x,
+		      bint            y)
 {
   if (x > 0)
     {
@@ -3886,7 +3886,7 @@ btk_text_move_previous_line (BtkText *text)
 
 static void 
 btk_text_move_word (BtkOldEditable *old_editable,
-		    gint            n)
+		    bint            n)
 {
   if (n > 0)
     {
@@ -3966,8 +3966,8 @@ btk_text_move_backward_word (BtkText *text)
 
 static void 
 btk_text_move_page (BtkOldEditable *old_editable,
-		    gint            x,
-		    gint            y)
+		    bint            x,
+		    bint            y)
 {
   if (y != 0)
     scroll_int (BTK_TEXT (old_editable), 
@@ -3976,13 +3976,13 @@ btk_text_move_page (BtkOldEditable *old_editable,
 
 static void 
 btk_text_move_to_row (BtkOldEditable *old_editable,
-		      gint            row)
+		      bint            row)
 {
 }
 
 static void 
 btk_text_move_to_column (BtkOldEditable *old_editable,
-			 gint            column)
+			 bint            column)
 {
   BtkText *text;
   
@@ -4027,7 +4027,7 @@ btk_text_move_end_of_line (BtkText *text)
 
 static void 
 btk_text_kill_char (BtkOldEditable *old_editable,
-		    gint            direction)
+		    bint            direction)
 {
   BtkText *text;
   
@@ -4064,13 +4064,13 @@ btk_text_delete_backward_character (BtkText *text)
 
 static void 
 btk_text_kill_word (BtkOldEditable *old_editable,
-		    gint            direction)
+		    bint            direction)
 {
   if (old_editable->selection_start_pos != old_editable->selection_end_pos)
     btk_editable_delete_selection (BTK_EDITABLE (old_editable));
   else
     {
-      gint old_pos = old_editable->current_pos;
+      bint old_pos = old_editable->current_pos;
       if (direction >= 0)
 	{
 	  btk_text_move_word (old_editable, 1);
@@ -4098,9 +4098,9 @@ btk_text_delete_backward_word (BtkText *text)
 
 static void 
 btk_text_kill_line (BtkOldEditable *old_editable,
-		    gint            direction)
+		    bint            direction)
 {
-  gint old_pos = old_editable->current_pos;
+  bint old_pos = old_editable->current_pos;
   if (direction >= 0)
     {
       btk_text_move_to_column (old_editable, -1);
@@ -4127,10 +4127,10 @@ btk_text_delete_to_line_end (BtkText *text)
 }
 
 static void
-btk_text_select_word (BtkText *text, guint32 time)
+btk_text_select_word (BtkText *text, buint32 time)
 {
-  gint start_pos;
-  gint end_pos;
+  bint start_pos;
+  bint end_pos;
   
   BtkOldEditable *old_editable;
   old_editable = BTK_OLD_EDITABLE (text);
@@ -4147,10 +4147,10 @@ btk_text_select_word (BtkText *text, guint32 time)
 }
 
 static void
-btk_text_select_line (BtkText *text, guint32 time)
+btk_text_select_line (BtkText *text, buint32 time)
 {
-  gint start_pos;
-  gint end_pos;
+  bint start_pos;
+  bint end_pos;
   
   BtkOldEditable *old_editable;
   old_editable = BTK_OLD_EDITABLE (text);
@@ -4174,7 +4174,7 @@ btk_text_select_line (BtkText *text, guint32 time)
 static void
 adjust_adj (BtkText* text, BtkAdjustment* adj)
 {
-  gint height;
+  bint height;
   
   bdk_drawable_get_size (text->text_area, NULL, &height);
   
@@ -4187,7 +4187,7 @@ adjust_adj (BtkText* text, BtkAdjustment* adj)
   btk_signal_emit_by_name (BTK_OBJECT (adj), "changed");
 }
 
-static gint
+static bint
 set_vertical_scroll_iterator (BtkText* text, LineParams* lp, void* data)
 {
   SetVerticalScrollData *svdata = (SetVerticalScrollData *) data;
@@ -4215,18 +4215,18 @@ set_vertical_scroll_iterator (BtkText* text, LineParams* lp, void* data)
   return FALSE;
 }
 
-static gint
+static bint
 set_vertical_scroll_find_iterator (BtkText* text, LineParams* lp, void* data)
 {
   SetVerticalScrollData *svdata = (SetVerticalScrollData *) data;
-  gint return_val;
+  bint return_val;
   
-  if (svdata->pixel_height <= (gint) text->vadj->value &&
-      svdata->pixel_height + LINE_HEIGHT(*lp) > (gint) text->vadj->value)
+  if (svdata->pixel_height <= (bint) text->vadj->value &&
+      svdata->pixel_height + LINE_HEIGHT(*lp) > (bint) text->vadj->value)
     {
       svdata->mark = lp->start;
       
-      text->first_cut_pixels = (gint)text->vadj->value - svdata->pixel_height;
+      text->first_cut_pixels = (bint)text->vadj->value - svdata->pixel_height;
       text->first_onscreen_ver_pixel = svdata->pixel_height;
       text->first_line_start_index = lp->start.index;
       
@@ -4247,14 +4247,14 @@ set_vertical_scroll (BtkText* text)
 {
   BtkPropertyMark mark = find_mark (text, 0);
   SetVerticalScrollData data;
-  gint height;
-  gint orib_value;
+  bint height;
+  bint orib_value;
   
   data.pixel_height = 0;
   line_params_iterate (text, &mark, NULL, FALSE, &data, set_vertical_scroll_iterator);
   
   text->vadj->upper = data.pixel_height;
-  orib_value = (gint) text->vadj->value;
+  orib_value = (bint) text->vadj->value;
   
   bdk_drawable_get_size (text->text_area, NULL, &height);
   
@@ -4264,7 +4264,7 @@ set_vertical_scroll (BtkText* text)
   text->vadj->value          = MIN (text->vadj->value, text->vadj->upper - text->vadj->page_size);
   text->vadj->value          = MAX (text->vadj->value, 0.0);
   
-  text->last_ver_value = (gint)text->vadj->value;
+  text->last_ver_value = (bint)text->vadj->value;
   
   btk_signal_emit_by_name (BTK_OBJECT (text->vadj), "changed");
   
@@ -4283,9 +4283,9 @@ set_vertical_scroll (BtkText* text)
 }
 
 static void
-scroll_int (BtkText* text, gint diff)
+scroll_int (BtkText* text, bint diff)
 {
-  gdouble upper;
+  bdouble upper;
   
   text->vadj->value += diff;
   
@@ -4316,10 +4316,10 @@ process_exposes (BtkText *text)
     }
 }
 
-static gint last_visible_line_height (BtkText* text)
+static bint last_visible_line_height (BtkText* text)
 {
   GList *cache = text->line_start_cache;
-  gint height;
+  bint height;
   
   bdk_drawable_get_size (text->text_area, NULL, &height);
   
@@ -4333,7 +4333,7 @@ static gint last_visible_line_height (BtkText* text)
     return 0;
 }
 
-static gint first_visible_line_height (BtkText* text)
+static bint first_visible_line_height (BtkText* text)
 {
   if (text->first_cut_pixels)
     return pixel_height_of(text, text->line_start_cache) + 1;
@@ -4342,11 +4342,11 @@ static gint first_visible_line_height (BtkText* text)
 }
 
 static void
-scroll_down (BtkText* text, gint diff0)
+scroll_down (BtkText* text, bint diff0)
 {
   BdkRectangle rect;
-  gint real_diff = 0;
-  gint width, height;
+  bint real_diff = 0;
+  bint width, height;
   
   text->first_onscreen_ver_pixel += diff0;
   
@@ -4396,7 +4396,7 @@ scroll_down (BtkText* text, gint diff0)
   
   if (text->current_line)
     {
-      gint cursor_min;
+      bint cursor_min;
       
       text->cursor_pos_y -= real_diff;
       cursor_min = drawn_cursor_min(text);
@@ -4411,11 +4411,11 @@ scroll_down (BtkText* text, gint diff0)
 }
 
 static void
-scroll_up (BtkText* text, gint diff0)
+scroll_up (BtkText* text, bint diff0)
 {
-  gint real_diff = 0;
+  bint real_diff = 0;
   BdkRectangle rect;
-  gint width, height;
+  bint width, height;
   
   text->first_onscreen_ver_pixel += diff0;
   
@@ -4465,8 +4465,8 @@ scroll_up (BtkText* text, gint diff0)
   
   if (text->current_line)
     {
-      gint cursor_max;
-      gint height;
+      bint cursor_max;
+      bint height;
       
       text->cursor_pos_y += real_diff;
       cursor_max = drawn_cursor_max(text);
@@ -4497,12 +4497,12 @@ find_line_params (BtkText* text,
 {
   LineParams lp;
   TabStopMark tab_mark = tab_cont->tab_start;
-  guint max_display_pixels;
+  buint max_display_pixels;
   BdkWChar ch;
-  gint ch_width;
+  bint ch_width;
   BdkFont *font;
   
-  bdk_drawable_get_size (text->text_area, (gint*) &max_display_pixels, NULL);
+  bdk_drawable_get_size (text->text_area, (bint*) &max_display_pixels, NULL);
   max_display_pixels -= LINE_WRAP_ROOM;
   
   lp.wraps             = 0;
@@ -4555,9 +4555,9 @@ find_line_params (BtkText* text,
 	      if (ch == '\t')
 		{
 		  /* Here's the tough case, a tab is wrapping. */
-		  gint pixels_avail = max_display_pixels - lp.pixel_width;
-		  gint space_width  = MARK_CURRENT_TEXT_FONT(text, &lp.end)->char_widths[' '];
-		  gint spaces_avail = pixels_avail / space_width;
+		  bint pixels_avail = max_display_pixels - lp.pixel_width;
+		  bint space_width  = MARK_CURRENT_TEXT_FONT(text, &lp.end)->char_widths[' '];
+		  bint spaces_avail = pixels_avail / space_width;
 		  
 		  if (spaces_avail == 0)
 		    {
@@ -4576,7 +4576,7 @@ find_line_params (BtkText* text,
 		  if (text->word_wrap)
 		    {
 		      BtkPropertyMark saved_mark = lp.end;
-		      guint saved_characters = lp.displayable_chars;
+		      buint saved_characters = lp.displayable_chars;
 		      
 		      lp.displayable_chars += 1;
 		      
@@ -4647,11 +4647,11 @@ find_line_params (BtkText* text,
 }
 
 static void
-expand_scratch_buffer (BtkText* text, guint len)
+expand_scratch_buffer (BtkText* text, buint len)
 {
   if (len >= text->scratch_buffer_len)
     {
-      guint i = 1;
+      buint i = 1;
       
       while (i <= len && i < MIN_GAP_SIZE) i <<= 1;
       
@@ -4666,7 +4666,7 @@ expand_scratch_buffer (BtkText* text, guint len)
       else
         {
 	  if (text->scratch_buffer.ch)
-	    text->scratch_buffer.ch = g_new (guchar, i);
+	    text->scratch_buffer.ch = g_new (buchar, i);
 	  else
 	    text->scratch_buffer.ch = g_realloc (text->scratch_buffer.ch, i);
         }
@@ -4679,8 +4679,8 @@ expand_scratch_buffer (BtkText* text, guint len)
  */
 static void
 draw_bg_rect (BtkText* text, BtkPropertyMark *mark,
-	      gint x, gint y, gint width, gint height,
-	      gboolean already_cleared)
+	      bint x, bint y, bint width, bint height,
+	      bboolean already_cleared)
 {
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (text);
 
@@ -4720,25 +4720,25 @@ draw_bg_rect (BtkText* text, BtkPropertyMark *mark,
 
 static void
 draw_line (BtkText* text,
-	   gint pixel_start_height,
+	   bint pixel_start_height,
 	   LineParams* lp)
 {
   BdkGCValues gc_values;
-  gint i;
-  gint len = 0;
-  guint running_offset = lp->tab_cont.pixel_offset;
-  union { BdkWChar *wc; guchar *ch; } buffer;
+  bint i;
+  bint len = 0;
+  buint running_offset = lp->tab_cont.pixel_offset;
+  union { BdkWChar *wc; buchar *ch; } buffer;
   BdkGC *fg_gc;
   
   BtkOldEditable *old_editable = BTK_OLD_EDITABLE (text);
   
-  guint selection_start_pos = MIN (old_editable->selection_start_pos, old_editable->selection_end_pos);
-  guint selection_end_pos = MAX (old_editable->selection_start_pos, old_editable->selection_end_pos);
+  buint selection_start_pos = MIN (old_editable->selection_start_pos, old_editable->selection_end_pos);
+  buint selection_end_pos = MAX (old_editable->selection_start_pos, old_editable->selection_end_pos);
   
   BtkPropertyMark mark = lp->start;
   TabStopMark tab_mark = lp->tab_cont.tab_start;
-  gint pixel_height = pixel_start_height + lp->font_ascent;
-  guint chars = lp->displayable_chars;
+  bint pixel_height = pixel_start_height + lp->font_ascent;
+  buint chars = lp->displayable_chars;
   
   /* First provide a contiguous segment of memory.  This makes reading
    * the code below *much* easier, and only incurs the cost of copying
@@ -4792,8 +4792,8 @@ draw_line (BtkText* text,
       if ((text->use_wchar && buffer.wc[0] != '\t') ||
 	  (!text->use_wchar && buffer.ch[0] != '\t'))
 	{
-	  union { BdkWChar *wc; guchar *ch; } next_tab;
-	  gint pixel_width;
+	  union { BdkWChar *wc; buchar *ch; } next_tab;
+	  bint pixel_width;
 	  BdkFont *font;
 
 	  next_tab.wc = NULL;
@@ -4837,14 +4837,14 @@ draw_line (BtkText* text,
 						 buffer.wc, len);
 	      else
 	      pixel_width = bdk_text_width (gc_values.font,
-					    (gchar *)buffer.ch, len);
+					    (bchar *)buffer.ch, len);
 	    }
 	  else
 	    {
 	      if (text->use_wchar)
 		pixel_width = bdk_text_width_wc (font, buffer.wc, len);
 	      else
-		pixel_width = bdk_text_width (font, (gchar *)buffer.ch, len);
+		pixel_width = bdk_text_width (font, (bchar *)buffer.ch, len);
 	    }
 	  
 	  draw_bg_rect (text, &mark, running_offset, pixel_start_height,
@@ -4876,7 +4876,7 @@ draw_line (BtkText* text,
 			   fg_gc,
 			   running_offset,
 			   pixel_height,
-			   (gchar *)buffer.ch,
+			   (bchar *)buffer.ch,
 			   len);
 	  
 	  running_offset += pixel_width;
@@ -4885,9 +4885,9 @@ draw_line (BtkText* text,
 	}
       else
 	{
-	  gint pixels_remaining;
-	  gint space_width;
-	  gint spaces_avail;
+	  bint pixels_remaining;
+	  bint space_width;
+	  bint spaces_avail;
 	      
 	  len = 1;
 	  
@@ -4918,12 +4918,12 @@ draw_line (BtkText* text,
 }
 
 static void
-draw_line_wrap (BtkText* text, guint height /* baseline height */)
+draw_line_wrap (BtkText* text, buint height /* baseline height */)
 {
-  gint width;
+  bint width;
   BdkPixmap *bitmap;
-  gint bitmap_width;
-  gint bitmap_height;
+  bint bitmap_width;
+  bint bitmap_height;
   
   if (text->line_wrap)
     {
@@ -4966,7 +4966,7 @@ draw_line_wrap (BtkText* text, guint height /* baseline height */)
 }
 
 static void
-undraw_cursor (BtkText* text, gint absolute)
+undraw_cursor (BtkText* text, bint absolute)
 {
   BtkOldEditable *old_editable = (BtkOldEditable *) text;
 
@@ -5007,7 +5007,7 @@ undraw_cursor (BtkText* text, gint absolute)
     }
 }
 
-static gint
+static bint
 drawn_cursor_min (BtkText* text)
 {
   BdkFont* font;
@@ -5019,7 +5019,7 @@ drawn_cursor_min (BtkText* text)
   return text->cursor_pos_y - text->cursor_char_offset - font->ascent;
 }
 
-static gint
+static bint
 drawn_cursor_max (BtkText* text)
 {
   g_assert(text->cursor_mark.property);
@@ -5028,7 +5028,7 @@ drawn_cursor_max (BtkText* text)
 }
 
 static void
-draw_cursor (BtkText* text, gint absolute)
+draw_cursor (BtkText* text, bint absolute)
 {
   BtkOldEditable *old_editable = (BtkOldEditable *)text;
   
@@ -5076,7 +5076,7 @@ clear_area (BtkText *text, BdkRectangle *area)
   
   if (text->bg_gc)
     {
-      gint width, height;
+      bint width, height;
       
       bdk_drawable_get_size (widget->style->bg_pixmap[BTK_STATE_NORMAL], &width, &height);
       
@@ -5092,13 +5092,13 @@ clear_area (BtkText *text, BdkRectangle *area)
 }
 
 static void
-expose_text (BtkText* text, BdkRectangle *area, gboolean cursor)
+expose_text (BtkText* text, BdkRectangle *area, bboolean cursor)
 {
   GList *cache = text->line_start_cache;
-  gint pixels = - text->first_cut_pixels;
-  gint min_y = MAX (0, area->y);
-  gint max_y = MAX (0, area->y + area->height);
-  gint height;
+  bint pixels = - text->first_cut_pixels;
+  bint min_y = MAX (0, area->y);
+  bint max_y = MAX (0, area->y + area->height);
+  bint height;
   
   bdk_drawable_get_size (text->text_area, NULL, &height);
   max_y = MIN (max_y, height);
@@ -5109,7 +5109,7 @@ expose_text (BtkText* text, BdkRectangle *area, gboolean cursor)
   
   for (; pixels < height; cache = cache->next)
     {
-      if (pixels < max_y && (pixels + (gint)LINE_HEIGHT(CACHE_DATA(cache))) >= min_y)
+      if (pixels < max_y && (pixels + (bint)LINE_HEIGHT(CACHE_DATA(cache))) >= min_y)
 	{
 	  draw_line (text, pixels, &CACHE_DATA(cache));
 	  
@@ -5145,16 +5145,16 @@ expose_text (BtkText* text, BdkRectangle *area, gboolean cursor)
 
 static void 
 btk_text_update_text (BtkOldEditable    *old_editable,
-		      gint               start_pos,
-		      gint               end_pos)
+		      bint               start_pos,
+		      bint               end_pos)
 {
   BtkText *text = BTK_TEXT (old_editable);
   
   GList *cache = text->line_start_cache;
-  gint pixels = - text->first_cut_pixels;
+  bint pixels = - text->first_cut_pixels;
   BdkRectangle area;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
   
   if (end_pos < 0)
     end_pos = TEXT_LENGTH (text);
@@ -5204,8 +5204,8 @@ recompute_geometry (BtkText* text)
 {
   BtkPropertyMark mark, start_mark;
   GList *new_lines;
-  gint height;
-  gint width;
+  bint height;
+  bint width;
   
   free_cache (text);
   
@@ -5260,12 +5260,12 @@ recompute_geometry (BtkText* text)
 
 static void 
 btk_text_set_selection  (BtkOldEditable  *old_editable,
-			 gint             start,
-			 gint             end)
+			 bint             start,
+			 bint             end)
 {
   BtkText *text = BTK_TEXT (old_editable);
   
-  guint start1, end1, start2, end2;
+  buint start1, end1, start2, end2;
   
   if (end < 0)
     end = TEXT_LENGTH (text);
@@ -5277,7 +5277,7 @@ btk_text_set_selection  (BtkOldEditable  *old_editable,
   
   if (start2 < start1)
     {
-      guint tmp;
+      buint tmp;
       
       tmp = start1; start1 = start2; start2 = tmp;
       tmp = end1;   end1   = end2;   end2   = tmp;
@@ -5307,10 +5307,10 @@ btk_text_set_selection  (BtkOldEditable  *old_editable,
 #ifdef DEBUG_BTK_TEXT
 static void
 btk_text_show_cache_line (BtkText *text, GList *cache,
-			  const char* what, const char* func, gint line)
+			  const char* what, const char* func, bint line)
 {
   LineParams *lp = &CACHE_DATA(cache);
-  gint i;
+  bint i;
   
   if (cache == text->line_start_cache)
     g_message ("Line Start Cache: ");
@@ -5333,7 +5333,7 @@ btk_text_show_cache_line (BtkText *text, GList *cache,
 }
 
 static void
-btk_text_show_cache (BtkText *text, const char* func, gint line)
+btk_text_show_cache (BtkText *text, const char* func, bint line)
 {
   GList *l = text->line_start_cache;
   
@@ -5355,9 +5355,9 @@ btk_text_assert_mark (BtkText         *text,
 		      BtkPropertyMark *mark,
 		      BtkPropertyMark *before,
 		      BtkPropertyMark *after,
-		      const gchar     *msg,
-		      const gchar     *where,
-		      gint             line)
+		      const bchar     *msg,
+		      const bchar     *where,
+		      bint             line)
 {
   BtkPropertyMark correct_mark = find_mark (text, mark->index);
   
@@ -5368,8 +5368,8 @@ btk_text_assert_mark (BtkText         *text,
 
 static void
 btk_text_assert (BtkText         *text,
-		 const gchar     *msg,
-		 gint             line)
+		 const bchar     *msg,
+		 bint             line)
 {
   GList* cache = text->line_start_cache;
   BtkPropertyMark* before_mark = NULL;
@@ -5403,7 +5403,7 @@ btk_text_show_adj (BtkText *text,
 		   BtkAdjustment *adj,
 		   const char* what,
 		   const char* func,
-		   gint line)
+		   bint line)
 {
   g_message ("*** adjustment ***\n");
   

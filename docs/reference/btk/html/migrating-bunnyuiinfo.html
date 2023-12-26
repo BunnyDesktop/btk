@@ -304,15 +304,15 @@ btk_widget_show_all (window);
       </p>
 <pre class="programlisting">
 static struct { 
-  gchar *filename;
-  gchar *stock_id;
+  bchar *filename;
+  bchar *stock_id;
 } stock_icons[] = {
   { "high-quality.png", "my-stock-high-quality" },
   { "normal-quality.png", "my-stock-normal-quality" },
   { "low-quality.png", "my-stock-low-quality" },
 };
  
-static gint n_stock_icons = G_N_ELEMENTS (stock_icons);
+static bint n_stock_icons = G_N_ELEMENTS (stock_icons);
 
 static void
 register_my_stock_icons (void)
@@ -320,7 +320,7 @@ register_my_stock_icons (void)
    BtkIconFactory *icon_factory;
    BtkIconSet *icon_set; 
    BtkIconSource *icon_source;
-   gint i;
+   bint i;
 
    icon_factory = btk_icon_factory_new ();
    

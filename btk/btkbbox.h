@@ -52,10 +52,10 @@ typedef struct _BtkButtonBoxClass  BtkButtonBoxClass;
 struct _BtkButtonBox
 {
   BtkBox box;
-  gint GSEAL (child_min_width);
-  gint GSEAL (child_min_height);
-  gint GSEAL (child_ipad_x);
-  gint GSEAL (child_ipad_y);
+  bint GSEAL (child_min_width);
+  bint GSEAL (child_min_height);
+  bint GSEAL (child_ipad_x);
+  bint GSEAL (child_ipad_y);
   BtkButtonBoxStyle GSEAL (layout_style);
 };
 
@@ -70,28 +70,28 @@ GType btk_button_box_get_type (void) B_GNUC_CONST;
 BtkButtonBoxStyle btk_button_box_get_layout          (BtkButtonBox      *widget);
 void              btk_button_box_set_layout          (BtkButtonBox      *widget,
 						      BtkButtonBoxStyle  layout_style);
-gboolean          btk_button_box_get_child_secondary (BtkButtonBox      *widget,
+bboolean          btk_button_box_get_child_secondary (BtkButtonBox      *widget,
 						      BtkWidget         *child);
 void              btk_button_box_set_child_secondary (BtkButtonBox      *widget,
 						      BtkWidget         *child,
-						      gboolean           is_secondary);
+						      bboolean           is_secondary);
 
 #ifndef BTK_DISABLE_DEPRECATED
 #define btk_button_box_set_spacing(b,s) btk_box_set_spacing (BTK_BOX (b), s)
 #define btk_button_box_get_spacing(b)   btk_box_get_spacing (BTK_BOX (b))
 
 void btk_button_box_set_child_size     (BtkButtonBox *widget,
-					gint          min_width,
-					gint          min_height);
+					bint          min_width,
+					bint          min_height);
 void btk_button_box_set_child_ipadding (BtkButtonBox *widget,
-					gint          ipad_x,
-					gint          ipad_y);
+					bint          ipad_x,
+					bint          ipad_y);
 void btk_button_box_get_child_size     (BtkButtonBox *widget,
-					gint         *min_width,
-					gint         *min_height);
+					bint         *min_width,
+					bint         *min_height);
 void btk_button_box_get_child_ipadding (BtkButtonBox *widget,
-					gint         *ipad_x,
-					gint         *ipad_y);
+					bint         *ipad_x,
+					bint         *ipad_y);
 #endif
 
 /* Internal method - do not use. */

@@ -27,19 +27,19 @@ bdk_test_render_sync (BdkWindow *window)
 {
 }
 
-gboolean
+bboolean
 bdk_test_simulate_key (BdkWindow      *window,
-                       gint            x,
-                       gint            y,
-                       guint           keyval,
+                       bint            x,
+                       bint            y,
+                       buint           keyval,
                        BdkModifierType modifiers,
                        BdkEventType    key_pressrelease)
 {
-  gboolean      success = FALSE;
+  bboolean      success = FALSE;
   BdkKeymapKey *keys    = NULL;
-  gint          n_keys  = 0;
+  bint          n_keys  = 0;
   INPUT         ip;
-  gint          i;
+  bint          i;
 
   g_return_val_if_fail (key_pressrelease == BDK_KEY_PRESS || key_pressrelease == BDK_KEY_RELEASE, FALSE);
   g_return_val_if_fail (window != NULL, FALSE);
@@ -117,11 +117,11 @@ bdk_test_simulate_key (BdkWindow      *window,
   return success;
 }
 
-gboolean
+bboolean
 bdk_test_simulate_button (BdkWindow      *window,
-                          gint            x,
-                          gint            y,
-                          guint           button, /*1..3*/
+                          bint            x,
+                          bint            y,
+                          buint           button, /*1..3*/
                           BdkModifierType modifiers,
                           BdkEventType    button_pressrelease)
 {

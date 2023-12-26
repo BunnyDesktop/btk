@@ -61,14 +61,14 @@ enum {
 };
 
 static void btk_progress_bar_set_property  (BObject             *object,
-					    guint                prop_id,
+					    buint                prop_id,
 					    const BValue        *value,
 					    BParamSpec          *pspec);
 static void btk_progress_bar_get_property  (BObject             *object,
-					    guint                prop_id,
+					    buint                prop_id,
 					    BValue              *value,
 					    BParamSpec          *pspec);
-static gboolean btk_progress_bar_expose    (BtkWidget           *widget,
+static bboolean btk_progress_bar_expose    (BtkWidget           *widget,
 					    BdkEventExpose      *event);
 static void btk_progress_bar_size_request  (BtkWidget           *widget,
 					    BtkRequisition      *requisition);
@@ -81,11 +81,11 @@ static void btk_progress_bar_act_mode_enter (BtkProgress        *progress);
 static void btk_progress_bar_set_bar_style_internal       (BtkProgressBar *pbar,
 							   BtkProgressBarStyle style);
 static void btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
-							   guint           blocks);
+							   buint           blocks);
 static void btk_progress_bar_set_activity_step_internal   (BtkProgressBar *pbar,
-							   guint           step);
+							   buint           step);
 static void btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
-							   guint           blocks);
+							   buint           blocks);
 
 
 G_DEFINE_TYPE (BtkProgressBar, btk_progress_bar, BTK_TYPE_PROGRESS)
@@ -143,7 +143,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                    g_param_spec_uint ("activity-step",
 						      P_("Activity Step"),
 						      P_("The increment used for each iteration in activity mode (Deprecated)"),
-						      0, G_MAXUINT, 3,
+						      0, B_MAXUINT, 3,
 						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (bobject_class,
@@ -151,7 +151,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                    g_param_spec_uint ("activity-blocks",
 						      P_("Activity Blocks"),
 						      P_("The number of blocks which can fit in the progress bar area in activity mode (Deprecated)"),
-						      2, G_MAXUINT, 5,
+						      2, B_MAXUINT, 5,
 						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (bobject_class,
@@ -159,7 +159,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                    g_param_spec_uint ("discrete-blocks",
 						      P_("Discrete Blocks"),
 						      P_("The number of discrete blocks in a progress bar (when shown in the discrete style)"),
-						      2, G_MAXUINT, 10,
+						      2, B_MAXUINT, 10,
 						      BTK_PARAM_READWRITE));
   
   g_object_class_install_property (bobject_class,
@@ -213,13 +213,13 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                            g_param_spec_int ("xspacing",
                                                              P_("XSpacing"),
                                                              P_("Extra spacing applied to the width of a progress bar."),
-                                                             0, G_MAXINT, 7,
+                                                             0, B_MAXINT, 7,
                                                              G_PARAM_READWRITE));
   btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("yspacing",
                                                              P_("YSpacing"),
                                                              P_("Extra spacing applied to the height of a progress bar."),
-                                                             0, G_MAXINT, 7,
+                                                             0, B_MAXINT, 7,
                                                              G_PARAM_READWRITE));
 
   /**
@@ -233,7 +233,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                            g_param_spec_int ("min-horizontal-bar-width",
                                                              P_("Min horizontal bar width"),
                                                              P_("The minimum horizontal width of the progress bar"),
-                                                             1, G_MAXINT, MIN_HORIZONTAL_BAR_WIDTH,
+                                                             1, B_MAXINT, MIN_HORIZONTAL_BAR_WIDTH,
                                                              G_PARAM_READWRITE));
   /**
    * BtkProgressBar:min-horizontal-bar-height:
@@ -246,7 +246,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                            g_param_spec_int ("min-horizontal-bar-height",
                                                              P_("Min horizontal bar height"),
                                                              P_("Minimum horizontal height of the progress bar"),
-                                                             1, G_MAXINT, MIN_HORIZONTAL_BAR_HEIGHT,
+                                                             1, B_MAXINT, MIN_HORIZONTAL_BAR_HEIGHT,
                                                              G_PARAM_READWRITE));
   /**
    * BtkProgressBar:min-vertical-bar-width:
@@ -259,7 +259,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                            g_param_spec_int ("min-vertical-bar-width",
                                                              P_("Min vertical bar width"),
                                                              P_("The minimum vertical width of the progress bar"),
-                                                             1, G_MAXINT, MIN_VERTICAL_BAR_WIDTH,
+                                                             1, B_MAXINT, MIN_VERTICAL_BAR_WIDTH,
                                                              G_PARAM_READWRITE));
   /**
    * BtkProgressBar:min-vertical-bar-height:
@@ -272,7 +272,7 @@ btk_progress_bar_class_init (BtkProgressBarClass *class)
                                            g_param_spec_int ("min-vertical-bar-height",
                                                              P_("Min vertical bar height"),
                                                              P_("The minimum vertical height of the progress bar"),
-                                                             1, G_MAXINT, MIN_VERTICAL_BAR_HEIGHT,
+                                                             1, B_MAXINT, MIN_VERTICAL_BAR_HEIGHT,
                                                              G_PARAM_READWRITE));
 }
 
@@ -293,7 +293,7 @@ btk_progress_bar_init (BtkProgressBar *pbar)
 
 static void
 btk_progress_bar_set_property (BObject      *object,
-			       guint         prop_id,
+			       buint         prop_id,
 			       const BValue *value,
 			       BParamSpec   *pspec)
 {
@@ -342,7 +342,7 @@ btk_progress_bar_set_property (BObject      *object,
 
 static void
 btk_progress_bar_get_property (BObject      *object,
-			       guint         prop_id,
+			       buint         prop_id,
 			       BValue       *value,
 			       BParamSpec   *pspec)
 {
@@ -443,7 +443,7 @@ btk_progress_bar_real_update (BtkProgress *progress)
     {
       if (BTK_PROGRESS (pbar)->activity_mode)
 	{
-	  guint size;
+	  buint size;
           
 	  /* advance the block */
 
@@ -514,10 +514,10 @@ btk_progress_bar_real_update (BtkProgress *progress)
     }
   else
     {
-      gint in_block;
+      bint in_block;
       
-      in_block = -1 + (gint)(btk_progress_get_current_percentage (progress) *
-			     (gdouble)pbar->blocks);
+      in_block = -1 + (bint)(btk_progress_get_current_percentage (progress) *
+			     (bdouble)pbar->blocks);
       
       if (pbar->in_block != in_block)
 	{
@@ -528,7 +528,7 @@ btk_progress_bar_real_update (BtkProgress *progress)
     }
 }
 
-static gboolean
+static bboolean
 btk_progress_bar_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {
@@ -550,12 +550,12 @@ btk_progress_bar_size_request (BtkWidget      *widget,
 {
   BtkProgress *progress;
   BtkProgressBar *pbar;
-  gchar *buf;
+  bchar *buf;
   BangoRectangle logical_rect;
   BangoLayout *layout;
-  gint width, height;
-  gint xspacing, yspacing;
-  gint min_width, min_height;
+  bint width, height;
+  bint xspacing, yspacing;
+  bint min_width, min_height;
 
   g_return_if_fail (BTK_IS_PROGRESS_BAR (widget));
   g_return_if_fail (requisition != NULL);
@@ -586,7 +586,7 @@ btk_progress_bar_size_request (BtkWidget      *widget,
 	{
 	  BangoContext *context;
 	  BangoFontMetrics *metrics;
-	  gint char_width;
+	  bint char_width;
 	  
 	  /* The minimum size for ellipsized text is ~ 3 chars */
 	  context = bango_layout_get_context (layout);
@@ -690,8 +690,8 @@ btk_progress_bar_act_mode_enter (BtkProgress *progress)
 static void
 btk_progress_bar_get_activity (BtkProgressBar            *pbar,
 			       BtkProgressBarOrientation  orientation,
-			       gint                      *offset,
-			       gint                      *amount)
+			       bint                      *offset,
+			       bint                      *amount)
 {
   BtkWidget *widget = BTK_WIDGET (pbar);
 
@@ -749,7 +749,7 @@ btk_progress_bar_paint_activity (BtkProgressBar            *pbar,
 
 static void
 btk_progress_bar_paint_continuous (BtkProgressBar            *pbar,
-				   gint                       amount,
+				   bint                       amount,
 				   BtkProgressBarOrientation  orientation)
 {
   BdkRectangle area;
@@ -799,12 +799,12 @@ btk_progress_bar_paint_discrete (BtkProgressBar            *pbar,
 				 BtkProgressBarOrientation  orientation)
 {
   BtkWidget *widget = BTK_WIDGET (pbar);
-  gint i;
+  bint i;
 
   for (i = 0; i <= pbar->in_block; i++)
     {
       BdkRectangle area;
-      gint space;
+      bint space;
 
       switch (orientation)
 	{
@@ -849,21 +849,21 @@ btk_progress_bar_paint_discrete (BtkProgressBar            *pbar,
 
 static void
 btk_progress_bar_paint_text (BtkProgressBar            *pbar,
-			     gint                       offset,
-			     gint			amount,
+			     bint                       offset,
+			     bint			amount,
 			     BtkProgressBarOrientation  orientation)
 {
   BtkProgress *progress = BTK_PROGRESS (pbar);
   BtkWidget *widget = BTK_WIDGET (pbar);
-  gint x;
-  gint y;
-  gchar *buf;
+  bint x;
+  bint y;
+  bchar *buf;
   BdkRectangle rect;
   BangoLayout *layout;
   BangoRectangle logical_rect;
   BdkRectangle prelight_clip, start_clip, end_clip;
-  gfloat text_xalign = progress->x_align;
-  gfloat text_yalign = progress->y_align;
+  bfloat text_xalign = progress->x_align;
+  bfloat text_yalign = progress->y_align;
 
   if (btk_widget_get_direction (widget) != BTK_TEXT_DIR_LTR)
     text_xalign = 1.0 - text_xalign;
@@ -1009,8 +1009,8 @@ btk_progress_bar_paint (BtkProgress *progress)
 
 	  if (BTK_PROGRESS (pbar)->show_text)
 	    {
-	      gint offset;
-	      gint amount;
+	      bint offset;
+	      bint amount;
 
 	      btk_progress_bar_get_activity (pbar, orientation, &offset, &amount);
 	      btk_progress_bar_paint_text (pbar, offset, amount, orientation);
@@ -1018,8 +1018,8 @@ btk_progress_bar_paint (BtkProgress *progress)
 	}
       else
 	{
-	  gint amount;
-	  gint space;
+	  bint amount;
+	  bint space;
 	  
 	  if (orientation == BTK_PROGRESS_LEFT_TO_RIGHT ||
 	      orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
@@ -1064,7 +1064,7 @@ btk_progress_bar_set_bar_style_internal (BtkProgressBar     *pbar,
 
 static void
 btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
-					       guint           blocks)
+					       buint           blocks)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
@@ -1082,7 +1082,7 @@ btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
 
 static void
 btk_progress_bar_set_activity_step_internal (BtkProgressBar *pbar,
-					     guint           step)
+					     buint           step)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
@@ -1095,7 +1095,7 @@ btk_progress_bar_set_activity_step_internal (BtkProgressBar *pbar,
 
 static void
 btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
-					       guint           blocks)
+					       buint           blocks)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
@@ -1121,7 +1121,7 @@ btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
  **/
 void
 btk_progress_bar_set_fraction (BtkProgressBar *pbar,
-                               gdouble         fraction)
+                               bdouble         fraction)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
@@ -1168,7 +1168,7 @@ btk_progress_bar_pulse (BtkProgressBar *pbar)
  **/
 void
 btk_progress_bar_set_text (BtkProgressBar *pbar,
-                           const gchar    *text)
+                           const bchar    *text)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   
@@ -1194,7 +1194,7 @@ btk_progress_bar_set_text (BtkProgressBar *pbar,
  **/
 void
 btk_progress_bar_set_pulse_step   (BtkProgressBar *pbar,
-                                   gdouble         fraction)
+                                   bdouble         fraction)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   
@@ -1205,7 +1205,7 @@ btk_progress_bar_set_pulse_step   (BtkProgressBar *pbar,
 
 void
 btk_progress_bar_update (BtkProgressBar *pbar,
-			 gdouble         percentage)
+			 bdouble         percentage)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
@@ -1253,7 +1253,7 @@ btk_progress_bar_set_orientation (BtkProgressBar           *pbar,
  * Return value: text, or %NULL; this string is owned by the widget
  * and should not be modified or freed.
  **/
-const gchar*
+const bchar*
 btk_progress_bar_get_text (BtkProgressBar *pbar)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), NULL);
@@ -1272,7 +1272,7 @@ btk_progress_bar_get_text (BtkProgressBar *pbar)
  * 
  * Return value: a fraction from 0.0 to 1.0
  **/
-gdouble
+bdouble
 btk_progress_bar_get_fraction (BtkProgressBar *pbar)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), 0);
@@ -1288,7 +1288,7 @@ btk_progress_bar_get_fraction (BtkProgressBar *pbar)
  * 
  * Return value: a fraction from 0.0 to 1.0
  **/
-gdouble
+bdouble
 btk_progress_bar_get_pulse_step (BtkProgressBar *pbar)
 {
   g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), 0);
@@ -1323,7 +1323,7 @@ btk_progress_bar_set_bar_style (BtkProgressBar     *pbar,
 
 void
 btk_progress_bar_set_discrete_blocks (BtkProgressBar *pbar,
-				      guint           blocks)
+				      buint           blocks)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
@@ -1333,7 +1333,7 @@ btk_progress_bar_set_discrete_blocks (BtkProgressBar *pbar,
 
 void
 btk_progress_bar_set_activity_step (BtkProgressBar *pbar,
-                                    guint           step)
+                                    buint           step)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
@@ -1342,7 +1342,7 @@ btk_progress_bar_set_activity_step (BtkProgressBar *pbar,
 
 void
 btk_progress_bar_set_activity_blocks (BtkProgressBar *pbar,
-				      guint           blocks)
+				      buint           blocks)
 {
   g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);

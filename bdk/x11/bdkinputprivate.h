@@ -46,17 +46,17 @@ typedef struct _BdkDevicePrivate BdkDevicePrivate;
 struct _BdkAxisInfo
 {
   /* reported x resolution */
-  gint xresolution;
+  bint xresolution;
 
   /* reported x minimum/maximum values */
-  gint xmin_value, xmax_value;
+  bint xmin_value, xmax_value;
 
   /* calibrated resolution (for aspect ration) - only relative values
      between axes used */
-  gint resolution;
+  bint resolution;
   
   /* calibrated minimum/maximum values */
-  gint min_value, max_value;
+  bint min_value, max_value;
 };
 
 #define BDK_INPUT_NUM_EVENTC 6
@@ -65,7 +65,7 @@ struct _BdkDevicePrivate
 {
   BdkDevice info;
 
-  guint32 deviceid;
+  buint32 deviceid;
 
   BdkDisplay *display;
   
@@ -73,13 +73,13 @@ struct _BdkDevicePrivate
 #ifndef XINPUT_NONE
   /* information about the axes */
   BdkAxisInfo *axes;
-  gint *axis_data;
+  bint *axis_data;
 
   /* Information about XInput device */
   XDevice       *xdevice;
 
   /* minimum key code for device */
-  gint min_keycode;	       
+  bint min_keycode;	       
 
   int buttonpress_type, buttonrelease_type, keypress_type,
       keyrelease_type, motionnotify_type, proximityin_type, 
@@ -87,14 +87,14 @@ struct _BdkDevicePrivate
 
   /* true if we need to select a different set of events, but
      can't because this is the core pointer */
-  gint needs_update;
+  bint needs_update;
 
   /* Mask of buttons (used for button grabs) */
   char button_state[32];
-  gint button_count;
+  bint button_count;
 
   /* true if we've claimed the device as active. (used only for XINPUT_GXI) */
-  gint claimed;
+  bint claimed;
 #endif /* !XINPUT_NONE */
 };
 
@@ -115,11 +115,11 @@ struct _BdkInputWindow
   BdkWindow *button_down_window;
 
   /* position relative to root window */
-  gint root_x;
-  gint root_y;
+  bint root_x;
+  bint root_y;
 
   /* Is there a pointer grab for this window ? */
-  gint grabbed;
+  bint grabbed;
 };
 
 /* Global data */
@@ -131,7 +131,7 @@ struct _BdkInputWindow
 BdkInputWindow *_bdk_input_window_find       (BdkWindow *window);
 void            _bdk_input_window_destroy    (BdkWindow *window);
 BdkTimeCoord ** _bdk_device_allocate_history (BdkDevice *device,
-					      gint       n_events);
+					      bint       n_events);
 void            _bdk_init_input_core         (BdkDisplay *display);
 
 /* The following functions are provided by each implementation
@@ -140,47 +140,47 @@ void            _bdk_init_input_core         (BdkDisplay *display);
 void             _bdk_input_configure_event  (XConfigureEvent  *xevent,
 					      BdkWindow        *window);
 void             _bdk_input_crossing_event   (BdkWindow        *window,
-					      gboolean          enter);
-gboolean         _bdk_input_other_event      (BdkEvent         *event,
+					      bboolean          enter);
+bboolean         _bdk_input_other_event      (BdkEvent         *event,
 					      XEvent           *xevent,
 					      BdkWindow        *window);
-gint             _bdk_input_grab_pointer     (BdkWindow        *window,
+bint             _bdk_input_grab_pointer     (BdkWindow        *window,
 					      BdkWindow        *native_window,
-					      gint              owner_events,
+					      bint              owner_events,
 					      BdkEventMask      event_mask,
 					      BdkWindow        *confine_to,
-					      guint32           time);
+					      buint32           time);
 void             _bdk_input_ungrab_pointer   (BdkDisplay       *display,
-					      guint32           time);
-gboolean         _bdk_device_get_history     (BdkDevice         *device,
+					      buint32           time);
+bboolean         _bdk_device_get_history     (BdkDevice         *device,
 					      BdkWindow         *window,
-					      guint32            start,
-					      guint32            stop,
+					      buint32            start,
+					      buint32            stop,
 					      BdkTimeCoord    ***events,
-					      gint              *n_events);
+					      bint              *n_events);
 
 #ifndef XINPUT_NONE
 
 #define BDK_MAX_DEVICE_CLASSES 13
 
-gint               _bdk_input_common_init               (BdkDisplay	  *display,
-							 gint              include_core);
+bint               _bdk_input_common_init               (BdkDisplay	  *display,
+							 bint              include_core);
 BdkDevicePrivate * _bdk_input_find_device               (BdkDisplay	  *display,
-							 guint32           id);
+							 buint32           id);
 void               _bdk_input_get_root_relative_geometry(BdkWindow        *window,
 							 int              *x_ret,
 							 int              *y_ret);
 void               _bdk_input_common_find_events        (BdkDevicePrivate *bdkdev,
-							 gint              mask,
+							 bint              mask,
 							 XEventClass      *classes,
 							 int              *num_classes);
 void               _bdk_input_select_events             (BdkWindow        *impl_window,
 							 BdkDevicePrivate *bdkdev);
-gint               _bdk_input_common_other_event        (BdkEvent         *event,
+bint               _bdk_input_common_other_event        (BdkEvent         *event,
 							 XEvent           *xevent,
 							 BdkWindow        *window,
 							 BdkDevicePrivate *bdkdev);
-gboolean	   _bdk_input_common_event_selected     (BdkEvent         *event,
+bboolean	   _bdk_input_common_event_selected     (BdkEvent         *event,
 							 BdkWindow        *window,
 							 BdkDevicePrivate *bdkdev);
 

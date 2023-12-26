@@ -50,12 +50,12 @@ typedef struct
 {
   BtkWindow *parent;        /* just in case we need to throw error dialogs */
   GMainLoop *loop;
-  gboolean data_sent;
+  bboolean data_sent;
 
   /* Real printing (not preview) */
   BtkPrintJob *job;         /* the job we are sending to the printer */
   bairo_surface_t *surface;
-  gulong job_status_changed_tag;
+  bulong job_status_changed_tag;
 
   
 } BtkPrintOperationUnix;
@@ -63,9 +63,9 @@ typedef struct
 typedef struct _PrinterFinder PrinterFinder;
 
 static void printer_finder_free (PrinterFinder *finder);
-static void find_printer        (const gchar   *printer,
+static void find_printer        (const bchar   *printer,
 				 GFunc          func,
-				 gpointer       data);
+				 bpointer       data);
 
 static void
 unix_start_page (BtkPrintOperation *op,
@@ -75,7 +75,7 @@ unix_start_page (BtkPrintOperation *op,
   BtkPrintOperationUnix *op_unix;  
   BtkPaperSize *paper_size;
   bairo_surface_type_t type;
-  gdouble w, h;
+  bdouble w, h;
 
   op_unix = op->priv->platform_data;
   
@@ -141,14 +141,14 @@ op_unix_free (BtkPrintOperationUnix *op_unix)
   g_free (op_unix);
 }
 
-static gchar *
-shell_command_substitute_file (const gchar *cmd,
-			       const gchar *pdf_filename,
-			       const gchar *settings_filename,
-                               gboolean    *pdf_filename_replaced,
-                               gboolean    *settings_filename_replaced)
+static bchar *
+shell_command_substitute_file (const bchar *cmd,
+			       const bchar *pdf_filename,
+			       const bchar *settings_filename,
+                               bboolean    *pdf_filename_replaced,
+                               bboolean    *settings_filename_replaced)
 {
-  const gchar *inptr, *start;
+  const bchar *inptr, *start;
   GString *final;
 
   g_return_val_if_fail (cmd != NULL, NULL);
@@ -200,27 +200,27 @@ void
 _btk_print_operation_platform_backend_launch_preview (BtkPrintOperation *op,
 						      bairo_surface_t   *surface,
 						      BtkWindow         *parent,
-						      const gchar       *filename)
+						      const bchar       *filename)
 {
-  gint argc;
-  gchar **argv;
-  gchar *cmd;
-  gchar *preview_cmd;
+  bint argc;
+  bchar **argv;
+  bchar *cmd;
+  bchar *preview_cmd;
   BtkSettings *settings;
   BtkPrintSettings *print_settings = NULL;
   BtkPageSetup *page_setup;
   GKeyFile *key_file = NULL;
-  gchar *data = NULL;
-  gsize data_len;
-  gchar *settings_filename = NULL;
-  gchar *quoted_filename;
-  gchar *quoted_settings_filename;
-  gboolean filename_used = FALSE;
-  gboolean settings_used = FALSE;
+  bchar *data = NULL;
+  bsize data_len;
+  bchar *settings_filename = NULL;
+  bchar *quoted_filename;
+  bchar *quoted_settings_filename;
+  bboolean filename_used = FALSE;
+  bboolean settings_used = FALSE;
   BdkScreen *screen;
   GError *error = NULL;
-  gint fd;
-  gboolean retval;
+  bint fd;
+  bboolean retval;
 
   bairo_surface_destroy (surface);
  
@@ -293,7 +293,7 @@ _btk_print_operation_platform_backend_launch_preview (BtkPrintOperation *op,
 
   if (error != NULL)
     {
-      gchar* uri;
+      bchar* uri;
 
       g_warning ("%s %s", _("Error launching preview"), error->message);
 
@@ -343,7 +343,7 @@ _btk_print_operation_platform_backend_launch_preview (BtkPrintOperation *op,
 
 static void
 unix_finish_send  (BtkPrintJob *job,
-                   gpointer     user_data, 
+                   bpointer     user_data, 
                    GError      *error)
 {
   BtkPrintOperation *op = (BtkPrintOperation *) user_data;
@@ -376,8 +376,8 @@ unix_finish_send  (BtkPrintJob *job,
 
 static void
 unix_end_run (BtkPrintOperation *op,
-	      gboolean           wait,
-	      gboolean           cancelled)
+	      bboolean           wait,
+	      bboolean           cancelled)
 {
   BtkPrintOperationUnix *op_unix = op->priv->platform_data;
 
@@ -424,7 +424,7 @@ job_status_changed_cb (BtkPrintJob       *job,
 static void
 print_setup_changed_cb (BtkPrintUnixDialog *print_dialog, 
                         BParamSpec         *pspec,
-                        gpointer            user_data)
+                        bpointer            user_data)
 {
   BtkPageSetup             *page_setup;
   BtkPrintSettings         *print_settings;
@@ -447,7 +447,7 @@ get_print_dialog (BtkPrintOperation *op,
 {
   BtkPrintOperationPrivate *priv = op->priv;
   BtkWidget *pd, *label;
-  const gchar *custom_tab_label;
+  const bchar *custom_tab_label;
 
   pd = btk_print_unix_dialog_new (NULL, parent);
 
@@ -510,8 +510,8 @@ get_print_dialog (BtkPrintOperation *op,
 typedef struct 
 {
   BtkPrintOperation           *op;
-  gboolean                     do_print;
-  gboolean                     do_preview;
+  bboolean                     do_print;
+  bboolean                     do_preview;
   BtkPrintOperationResult      result;
   BtkPrintOperationPrintFunc   print_cb;
   GDestroyNotify               destroy;
@@ -520,7 +520,7 @@ typedef struct
 } PrintResponseData;
 
 static void
-print_response_data_free (gpointer data)
+print_response_data_free (bpointer data)
 {
   PrintResponseData *rdata = data;
 
@@ -533,12 +533,12 @@ finish_print (PrintResponseData *rdata,
 	      BtkPrinter        *printer,
 	      BtkPageSetup      *page_setup,
 	      BtkPrintSettings  *settings,
-	      gboolean           page_setup_set)
+	      bboolean           page_setup_set)
 {
   BtkPrintOperation *op = rdata->op;
   BtkPrintOperationPrivate *priv = op->priv;
   BtkPrintJob *job;
-  gdouble top, bottom, left, right;
+  bdouble top, bottom, left, right;
   
   if (rdata->do_print)
     {
@@ -626,15 +626,15 @@ finish_print (PrintResponseData *rdata,
 
 static void 
 handle_print_response (BtkWidget *dialog,
-		       gint       response,
-		       gpointer   data)
+		       bint       response,
+		       bpointer   data)
 {
   BtkPrintUnixDialog *pd = BTK_PRINT_UNIX_DIALOG (dialog);
   PrintResponseData *rdata = data;
   BtkPrintSettings *settings = NULL;
   BtkPageSetup *page_setup = NULL;
   BtkPrinter *printer = NULL;
-  gboolean page_setup_set = FALSE;
+  bboolean page_setup_set = FALSE;
 
   if (response == BTK_RESPONSE_OK)
     {
@@ -721,13 +721,13 @@ found_printer (BtkPrinter        *printer,
 
 void
 _btk_print_operation_platform_backend_run_dialog_async (BtkPrintOperation          *op,
-							gboolean                    show_dialog,
+							bboolean                    show_dialog,
                                                         BtkWindow                  *parent,
 							BtkPrintOperationPrintFunc  print_cb)
 {
   BtkWidget *pd;
   PrintResponseData *rdata;
-  const gchar *printer_name;
+  const bchar *printer_name;
 
   rdata = g_new (PrintResponseData, 1);
   rdata->op = g_object_ref (op);
@@ -764,8 +764,8 @@ write_preview (void                *closure,
                const unsigned char *data,
                unsigned int         length)
 {
-  gint fd = GPOINTER_TO_INT (closure);
-  gssize written;
+  bint fd = BPOINTER_TO_INT (closure);
+  bssize written;
   
   while (length > 0) 
     {
@@ -789,7 +789,7 @@ write_preview (void                *closure,
 static void
 close_preview (void *data)
 {
-  gint fd = GPOINTER_TO_INT (data);
+  bint fd = BPOINTER_TO_INT (data);
 
   close (fd);
 }
@@ -797,14 +797,14 @@ close_preview (void *data)
 bairo_surface_t *
 _btk_print_operation_platform_backend_create_preview_surface (BtkPrintOperation *op,
 							      BtkPageSetup      *page_setup,
-							      gdouble           *dpi_x,
-							      gdouble           *dpi_y,
-							      gchar            **target)
+							      bdouble           *dpi_x,
+							      bdouble           *dpi_y,
+							      bchar            **target)
 {
-  gchar *filename;
-  gint fd;
+  bchar *filename;
+  bint fd;
   BtkPaperSize *paper_size;
-  gdouble w, h;
+  bdouble w, h;
   bairo_surface_t *surface;
   static bairo_user_data_key_t key;
   
@@ -824,9 +824,9 @@ _btk_print_operation_platform_backend_create_preview_surface (BtkPrintOperation 
   h = btk_paper_size_get_height (paper_size, BTK_UNIT_POINTS);
     
   *dpi_x = *dpi_y = 72;
-  surface = bairo_pdf_surface_create_for_stream (write_preview, GINT_TO_POINTER (fd), w, h);
+  surface = bairo_pdf_surface_create_for_stream (write_preview, BINT_TO_POINTER (fd), w, h);
  
-  bairo_surface_set_user_data (surface, &key, GINT_TO_POINTER (fd), close_preview);
+  bairo_surface_set_user_data (surface, &key, BINT_TO_POINTER (fd), close_preview);
 
   return surface;
 }
@@ -852,7 +852,7 @@ _btk_print_operation_platform_backend_resize_preview_surface (BtkPrintOperation 
 							      bairo_surface_t   *surface)
 {
   BtkPaperSize *paper_size;
-  gdouble w, h;
+  bdouble w, h;
   
   paper_size = btk_page_setup_get_paper_size (page_setup);
   w = btk_paper_size_get_width (paper_size, BTK_UNIT_POINTS);
@@ -863,14 +863,14 @@ _btk_print_operation_platform_backend_resize_preview_surface (BtkPrintOperation 
 
 BtkPrintOperationResult
 _btk_print_operation_platform_backend_run_dialog (BtkPrintOperation *op,
-						  gboolean           show_dialog,
+						  bboolean           show_dialog,
 						  BtkWindow         *parent,
-						  gboolean          *do_print)
+						  bboolean          *do_print)
  {
   BtkWidget *pd;
   PrintResponseData rdata;
-  gint response;  
-  const gchar *printer_name;
+  bint response;  
+  const bchar *printer_name;
    
   rdata.op = op;
   rdata.do_print = FALSE;
@@ -916,12 +916,12 @@ typedef struct
 {
   BtkPageSetup         *page_setup;
   BtkPageSetupDoneFunc  done_cb;
-  gpointer              data;
+  bpointer              data;
   GDestroyNotify        destroy;
 } PageSetupResponseData;
 
 static void
-page_setup_data_free (gpointer data)
+page_setup_data_free (bpointer data)
 {
   PageSetupResponseData *rdata = data;
 
@@ -933,8 +933,8 @@ page_setup_data_free (gpointer data)
 
 static void
 handle_page_setup_response (BtkWidget *dialog,
-			    gint       response,
-			    gpointer   data)
+			    bint       response,
+			    bpointer   data)
 {
   BtkPageSetupUnixDialog *psd;
   PageSetupResponseData *rdata = data;
@@ -994,7 +994,7 @@ btk_print_run_page_setup_dialog (BtkWindow        *parent,
 				 BtkPrintSettings *settings)
 {
   BtkWidget *dialog;
-  gint response;
+  bint response;
   PageSetupResponseData rdata;  
   
   rdata.page_setup = NULL;
@@ -1035,7 +1035,7 @@ btk_print_run_page_setup_dialog_async (BtkWindow            *parent,
 				       BtkPageSetup         *page_setup,
 				       BtkPrintSettings     *settings,
 				       BtkPageSetupDoneFunc  done_cb,
-				       gpointer              data)
+				       bpointer              data)
 {
   BtkWidget *dialog;
   PageSetupResponseData *rdata;
@@ -1057,19 +1057,19 @@ btk_print_run_page_setup_dialog_async (BtkWindow            *parent,
 
 struct _PrinterFinder 
 {
-  gboolean found_printer;
+  bboolean found_printer;
   GFunc func;
-  gpointer data;
-  gchar *printer_name;
+  bpointer data;
+  bchar *printer_name;
   GList *backends;
-  guint timeout_tag;
+  buint timeout_tag;
   BtkPrinter *printer;
   BtkPrinter *default_printer;
   BtkPrinter *first_printer;
 };
 
-static gboolean
-find_printer_idle (gpointer data)
+static bboolean
+find_printer_idle (bpointer data)
 {
   PrinterFinder *finder = data;
   BtkPrinter *printer;
@@ -1209,9 +1209,9 @@ printer_finder_free (PrinterFinder *finder)
 }
 
 static void 
-find_printer (const gchar *printer,
+find_printer (const bchar *printer,
 	      GFunc        func,
-	      gpointer     data)
+	      bpointer     data)
 {
   GList *node, *next;
   PrinterFinder *finder;

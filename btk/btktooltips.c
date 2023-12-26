@@ -67,10 +67,10 @@ static void btk_tooltips_destroy           (BtkObject       *object);
 static void btk_tooltips_destroy_data      (BtkTooltipsData *tooltipsdata);
 
 static void btk_tooltips_widget_remove     (BtkWidget       *widget,
-                                            gpointer         data);
+                                            bpointer         data);
 
-static const gchar  tooltips_data_key[] = "_BtkTooltipsData";
-static const gchar  tooltips_info_key[] = "_BtkTooltipsInfo";
+static const bchar  tooltips_data_key[] = "_BtkTooltipsData";
+static const bchar  tooltips_info_key[] = "_BtkTooltipsInfo";
 
 G_DEFINE_TYPE (BtkTooltips, btk_tooltips, BTK_TYPE_OBJECT)
 
@@ -195,7 +195,7 @@ btk_tooltips_disable (BtkTooltips *tooltips)
 
 void
 btk_tooltips_set_delay (BtkTooltips *tooltips,
-                        guint         delay)
+                        buint         delay)
 {
   g_return_if_fail (tooltips != NULL);
 
@@ -224,8 +224,8 @@ btk_tooltips_data_get (BtkWidget       *widget)
 void
 btk_tooltips_set_tip (BtkTooltips *tooltips,
 		      BtkWidget   *widget,
-		      const gchar *tip_text,
-		      const gchar *tip_private)
+		      const bchar *tip_text,
+		      const bchar *tip_private)
 {
   BtkTooltipsData *tooltipsdata;
 
@@ -283,7 +283,7 @@ btk_tooltips_set_tip (BtkTooltips *tooltips,
 
 static void
 btk_tooltips_widget_remove (BtkWidget *widget,
-			    gpointer   data)
+			    bpointer   data)
 {
   BtkTooltipsData *tooltipsdata = (BtkTooltipsData*) data;
   BtkTooltips *tooltips = tooltipsdata->tooltips;
@@ -312,13 +312,13 @@ btk_tooltips_widget_remove (BtkWidget *widget,
  *
  * Deprecated: 2.12:
  **/
-gboolean
+bboolean
 btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
                                        BtkTooltips **tooltips,
                                        BtkWidget   **current_widget)
 {
   BtkTooltips  *current_tooltips;  
-  gboolean has_tips;
+  bboolean has_tips;
 
   g_return_val_if_fail (BTK_IS_WINDOW (tip_window), FALSE);
 

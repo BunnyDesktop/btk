@@ -20,7 +20,7 @@
    setters and getters to set the color from floating point or integer 
     components. So instead of
    <informalexample><programlisting>
-   guint red, green, blue, alpha;
+   buint red, green, blue, alpha;
    /* ... */
    bunny_color_picker_set_i8 (color_picker, red, green, blue, alpha);
    </programlisting></informalexample>   
@@ -39,9 +39,9 @@
   for <function>bunny_color_picker_set_d()</function>, you need to convert 
   the color components like this:
    <informalexample><programlisting>  
-   color.red = (guint16) (red * 65535.0 + 0.5);
-   color.green = (guint16) (green * 65535.0 + 0.5);
-   color.blue = (guint16) (blue * 65535.0 + 0.5);
+   color.red = (buint16) (red * 65535.0 + 0.5);
+   color.green = (buint16) (green * 65535.0 + 0.5);
+   color.blue = (buint16) (blue * 65535.0 + 0.5);
    </programlisting></informalexample>   
   </para>
 </chapter>

@@ -56,7 +56,7 @@
 #include "circles.xbm"
 #include "test.xpm"
 
-gboolean
+bboolean
 file_exists (const char *filename)
 {
   GStatBuf statbuf;
@@ -67,18 +67,18 @@ file_exists (const char *filename)
 BtkWidget *
 shape_create_icon (BdkScreen *screen,
 		   char      *xpm_file,
-		   gint       x,
-		   gint       y,
-		   gint       px,
-		   gint       py,
-		   gint       window_type);
+		   bint       x,
+		   bint       y,
+		   bint       px,
+		   bint       py,
+		   bint       window_type);
 
 static BtkWidget *
-build_option_menu (gchar           *items[],
-		   gint             num_items,
-		   gint             history,
-		   void           (*func) (BtkWidget *widget, gpointer data),
-		   gpointer         data);
+build_option_menu (bchar           *items[],
+		   bint             num_items,
+		   bint             history,
+		   void           (*func) (BtkWidget *widget, bpointer data),
+		   bpointer         data);
 
 /* macro, structure and variables used by tree window demos */
 #define DEFAULT_NUMBER_OF_ITEM  3
@@ -97,7 +97,7 @@ struct {
 } sTreeSampleSelection;
 
 typedef struct sTreeButtons {
-  guint nb_item_add;
+  buint nb_item_add;
   BtkWidget* add_button;
   BtkWidget* remove_button;
   BtkWidget* subtree_button;
@@ -105,16 +105,16 @@ typedef struct sTreeButtons {
 /* end of tree section */
 
 static BtkWidget *
-build_option_menu (gchar           *items[],
-		   gint             num_items,
-		   gint             history,
-		   void           (*func)(BtkWidget *widget, gpointer data),
-		   gpointer         data)
+build_option_menu (bchar           *items[],
+		   bint             num_items,
+		   bint             history,
+		   void           (*func)(BtkWidget *widget, bpointer data),
+		   bpointer         data)
 {
   BtkWidget *omenu;
   BtkWidget *menu;
   GSList *group;
-  gint i;
+  bint i;
 
   omenu = btk_combo_box_text_new ();
   g_signal_connect (omenu, "changed",
@@ -146,7 +146,7 @@ destroy_tooltips (BtkWidget *widget, BtkWindow **window)
  */
 
 
-static gboolean
+static bboolean
 on_alpha_window_expose (BtkWidget      *widget,
 			BdkEventExpose *expose)
 {
@@ -291,7 +291,7 @@ static void
 on_composited_changed (BtkWidget *window,
 		      BtkLabel *label)
 {
-  gboolean is_composited = btk_widget_is_composited (window);
+  bboolean is_composited = btk_widget_is_composited (window);
 
   if (is_composited)
     btk_label_set_text (label, "Composited");
@@ -367,7 +367,7 @@ create_alpha_window (BtkWidget *widget)
  * (and because BTK might actually replace our transparency with its
  * default background colour).
  */
-static gboolean
+static bboolean
 transparent_expose (BtkWidget *widget,
                     BdkEventExpose *event)
 {
@@ -393,7 +393,7 @@ transparent_expose (BtkWidget *widget,
  * this handler is called after the red has been drawn.  If it was
  * called before then BTK would just blindly paint over our work.
  */
-static gboolean
+static bboolean
 window_expose_event (BtkWidget *widget,
                      BdkEventExpose *event)
 {
@@ -499,10 +499,10 @@ create_composited_window (BtkWidget *widget)
  * Big windows and guffaw scrolling
  */
 
-static gboolean
+static bboolean
 pattern_expose (BtkWidget      *widget,
 		BdkEventExpose *event,
-		gpointer        data)
+		bpointer        data)
 {
   BdkColor *color;
   BdkWindow *window = event->window;
@@ -525,7 +525,7 @@ pattern_expose (BtkWidget      *widget,
 static void
 pattern_set_bg (BtkWidget   *widget,
 		BdkWindow   *child,
-		gint         level)
+		bint         level)
 {
   static const BdkColor colors[] = {
     { 0, 0x4444, 0x4444, 0xffff },
@@ -533,33 +533,33 @@ pattern_set_bg (BtkWidget   *widget,
     { 0, 0xaaaa, 0xaaaa, 0xffff }
   };
     
-  g_object_set_data (B_OBJECT (child), "pattern-color", (gpointer) &colors[level]);
+  g_object_set_data (B_OBJECT (child), "pattern-color", (bpointer) &colors[level]);
   bdk_window_set_user_data (child, widget);
 }
 
 static void
 create_pattern (BtkWidget   *widget,
 		BdkWindow   *parent,
-		gint         level,
-		gint         width,
-		gint         height)
+		bint         level,
+		bint         width,
+		bint         height)
 {
-  gint h = 1;
-  gint i = 0;
+  bint h = 1;
+  bint i = 0;
     
   BdkWindow *child;
 
   while (2 * h <= height)
     {
-      gint w = 1;
-      gint j = 0;
+      bint w = 1;
+      bint j = 0;
       
       while (2 * w <= width)
 	{
 	  if ((i + j) % 2 == 0)
 	    {
-	      gint x = w  - 1;
-	      gint y = h - 1;
+	      bint x = w  - 1;
+	      bint y = h - 1;
 	      
 	      BdkWindowAttr attributes;
 
@@ -597,8 +597,8 @@ static void
 pattern_hadj_changed (BtkAdjustment *adj,
 		      BtkWidget     *darea)
 {
-  gint *old_value = g_object_get_data (B_OBJECT (adj), "old-value");
-  gint new_value = adj->value;
+  bint *old_value = g_object_get_data (B_OBJECT (adj), "old-value");
+  bint new_value = adj->value;
 
   if (btk_widget_get_realized (darea))
     {
@@ -611,8 +611,8 @@ static void
 pattern_vadj_changed (BtkAdjustment *adj,
 		      BtkWidget *darea)
 {
-  gint *old_value = g_object_get_data (B_OBJECT (adj), "old-value");
-  gint new_value = adj->value;
+  bint *old_value = g_object_get_data (B_OBJECT (adj), "old-value");
+  bint new_value = adj->value;
 
   if (btk_widget_get_realized (darea))
     {
@@ -623,7 +623,7 @@ pattern_vadj_changed (BtkAdjustment *adj,
 
 static void
 pattern_realize (BtkWidget *widget,
-		 gpointer   data)
+		 bpointer   data)
 {
   pattern_set_bg (widget, widget->window, 0);
   create_pattern (widget, widget->window, 1, PATTERN_SIZE, PATTERN_SIZE);
@@ -637,8 +637,8 @@ create_big_windows (BtkWidget *widget)
   BtkWidget *eventbox;
   BtkAdjustment *hadj;
   BtkAdjustment *vadj;
-  static gint current_x;
-  static gint current_y;
+  static bint current_x;
+  static bint current_y;
  
   if (!window)
     {
@@ -922,7 +922,7 @@ create_widget_grid (GType widget_type)
 {
   BtkWidget *table;
   BtkWidget *group_widget = NULL;
-  gint i, j;
+  bint i, j;
   
   table = btk_table_new (FALSE, 3, 3);
   
@@ -1139,12 +1139,12 @@ create_radio_buttons (BtkWidget *widget)
  */
 
 static BtkWidget *
-create_bbox (gint  horizontal,
+create_bbox (bint  horizontal,
 	     char* title, 
-	     gint  spacing,
-	     gint  child_w,
-	     gint  child_h,
-	     gint  layout)
+	     bint  spacing,
+	     bint  child_w,
+	     bint  child_h,
+	     bint  layout)
 {
   BtkWidget *frame;
   BtkWidget *bbox;
@@ -1295,70 +1295,70 @@ new_pixmap (char      *filename,
 
 static void
 set_toolbar_small_stock (BtkWidget *widget,
-			 gpointer   data)
+			 bpointer   data)
 {
   btk_toolbar_set_icon_size (BTK_TOOLBAR (data), BTK_ICON_SIZE_SMALL_TOOLBAR);
 }
 
 static void
 set_toolbar_large_stock (BtkWidget *widget,
-			 gpointer   data)
+			 bpointer   data)
 {
   btk_toolbar_set_icon_size (BTK_TOOLBAR (data), BTK_ICON_SIZE_LARGE_TOOLBAR);
 }
 
 static void
 set_toolbar_horizontal (BtkWidget *widget,
-			gpointer   data)
+			bpointer   data)
 {
   btk_toolbar_set_orientation (BTK_TOOLBAR (data), BTK_ORIENTATION_HORIZONTAL);
 }
 
 static void
 set_toolbar_vertical (BtkWidget *widget,
-		      gpointer   data)
+		      bpointer   data)
 {
   btk_toolbar_set_orientation (BTK_TOOLBAR (data), BTK_ORIENTATION_VERTICAL);
 }
 
 static void
 set_toolbar_icons (BtkWidget *widget,
-		   gpointer   data)
+		   bpointer   data)
 {
   btk_toolbar_set_style (BTK_TOOLBAR (data), BTK_TOOLBAR_ICONS);
 }
 
 static void
 set_toolbar_text (BtkWidget *widget,
-	          gpointer   data)
+	          bpointer   data)
 {
   btk_toolbar_set_style (BTK_TOOLBAR (data), BTK_TOOLBAR_TEXT);
 }
 
 static void
 set_toolbar_both (BtkWidget *widget,
-		  gpointer   data)
+		  bpointer   data)
 {
   btk_toolbar_set_style (BTK_TOOLBAR (data), BTK_TOOLBAR_BOTH);
 }
 
 static void
 set_toolbar_both_horiz (BtkWidget *widget,
-			gpointer   data)
+			bpointer   data)
 {
   btk_toolbar_set_style (BTK_TOOLBAR (data), BTK_TOOLBAR_BOTH_HORIZ);
 }
 
 static void
 set_toolbar_enable (BtkWidget *widget,
-		    gpointer   data)
+		    bpointer   data)
 {
   btk_toolbar_set_tooltips (BTK_TOOLBAR (data), TRUE);
 }
 
 static void
 set_toolbar_disable (BtkWidget *widget,
-		     gpointer   data)
+		     bpointer   data)
 {
   btk_toolbar_set_tooltips (BTK_TOOLBAR (data), FALSE);
 }
@@ -1554,13 +1554,13 @@ make_toolbar (BtkWidget *window)
  * BtkStatusBar
  */
 
-static guint statusbar_counter = 1;
+static buint statusbar_counter = 1;
 
 static void
 statusbar_push (BtkWidget *button,
 		BtkStatusbar *statusbar)
 {
-  gchar text[1024];
+  bchar text[1024];
 
   sprintf (text, "something %d", statusbar_counter++);
 
@@ -1571,7 +1571,7 @@ static void
 statusbar_push_long (BtkWidget *button,
                      BtkStatusbar *statusbar)
 {
-  gchar text[1024];
+  bchar text[1024];
 
   sprintf (text, "Just because a system has menu choices written with English words, phrases or sentences, that is no guarantee, that it is comprehensible. Individual words may not be familiar to some users (for example, \"repaginate\"), and two menu items may appear to satisfy the users's needs, whereas only one does (for example, \"put away\" or \"eject\").");
 
@@ -1594,8 +1594,8 @@ statusbar_steal (BtkWidget *button,
 
 static void
 statusbar_popped (BtkStatusbar  *statusbar,
-		  guint          context_id,
-		  const gchar	*text)
+		  buint          context_id,
+		  const bchar	*text)
 {
   if (!statusbar->messages)
     statusbar_counter = 1;
@@ -1604,7 +1604,7 @@ statusbar_popped (BtkStatusbar  *statusbar,
 static void
 statusbar_contexts (BtkStatusbar *statusbar)
 {
-  gchar *string;
+  bchar *string;
 
   string = "any context";
   g_print ("BtkStatusBar: context=\"%s\", context_id=%d\n",
@@ -1834,7 +1834,7 @@ cb_tree_changed(BtkTree* tree)
 {
   sTreeButtons* tree_buttons;
   GList* selected_list;
-  guint nb_selected;
+  buint nb_selected;
 
   tree_buttons = g_object_get_data (B_OBJECT (tree), "user_data");
 
@@ -1859,11 +1859,11 @@ cb_tree_changed(BtkTree* tree)
 }
 
 static void 
-create_subtree(BtkWidget* item, guint level, guint nb_item_max, guint recursion_level_max)
+create_subtree(BtkWidget* item, buint level, buint nb_item_max, buint recursion_level_max)
 {
   BtkWidget* item_subtree;
   BtkWidget* item_new;
-  guint nb_item;
+  buint nb_item;
   char buffer[255];
   int no_root_item;
 
@@ -1898,9 +1898,9 @@ create_subtree(BtkWidget* item, guint level, guint nb_item_max, guint recursion_
 }
 
 static void
-create_tree_sample(BdkScreen *screen, guint selection_mode, 
-		   guint draw_line, guint view_line, guint no_root_item,
-		   guint nb_item_max, guint recursion_level_max) 
+create_tree_sample(BdkScreen *screen, buint selection_mode, 
+		   buint draw_line, buint view_line, buint no_root_item,
+		   buint nb_item_max, buint recursion_level_max) 
 {
   BtkWidget* window;
   BtkWidget* box1;
@@ -2028,12 +2028,12 @@ create_tree_sample(BdkScreen *screen, guint selection_mode,
 static void
 cb_create_tree(BtkWidget* w)
 {
-  guint selection_mode = BTK_SELECTION_SINGLE;
-  guint view_line;
-  guint draw_line;
-  guint no_root_item;
-  guint nb_item;
-  guint recursion_level;
+  buint selection_mode = BTK_SELECTION_SINGLE;
+  buint view_line;
+  buint draw_line;
+  buint no_root_item;
+  buint nb_item;
+  buint recursion_level;
 
   /* get selection mode choice */
   if(BTK_TOGGLE_BUTTON(sTreeSampleSelection.single_button)->active)
@@ -2218,7 +2218,7 @@ create_tree_mode_window(BtkWidget *widget)
 #define GRID_SIZE 20
 #define DEFAULT_GEOMETRY "10x10"
 
-static gboolean
+static bboolean
 gridded_geometry_expose (BtkWidget      *widget,
 			 BdkEventExpose *event)
 {
@@ -2248,8 +2248,8 @@ gridded_geometry_expose (BtkWidget      *widget,
 
 static void
 gridded_geometry_subresponse (BtkDialog *dialog,
-			      gint       response_id,
-			      gchar     *geometry_string)
+			      bint       response_id,
+			      bchar     *geometry_string)
 {
   if (response_id == BTK_RESPONSE_NONE)
     {
@@ -2267,7 +2267,7 @@ gridded_geometry_subresponse (BtkDialog *dialog,
 
 static void
 gridded_geometry_response (BtkDialog *dialog,
-			   gint       response_id,
+			   bint       response_id,
 			   BtkEntry  *entry)
 {
   if (response_id == BTK_RESPONSE_NONE)
@@ -2276,8 +2276,8 @@ gridded_geometry_response (BtkDialog *dialog,
     }
   else
     {
-      gchar *geometry_string = g_strdup (btk_entry_get_text (entry));
-      gchar *title = g_strdup_printf ("Gridded window at: %s", geometry_string);
+      bchar *geometry_string = g_strdup (btk_entry_get_text (entry));
+      bchar *title = g_strdup_printf ("Gridded window at: %s", geometry_string);
       BtkWidget *window;
       BtkWidget *drawing_area;
       BtkWidget *box;
@@ -2339,7 +2339,7 @@ static void
 create_gridded_geometry (BtkWidget *widget)
 {
   static BtkWidget *window = NULL;
-  gpointer window_ptr;
+  bpointer window_ptr;
   BtkWidget *entry;
   BtkWidget *label;
 
@@ -2379,7 +2379,7 @@ create_gridded_geometry (BtkWidget *widget)
 static void
 handle_box_child_signal (BtkHandleBox *hb,
 			 BtkWidget    *child,
-			 const gchar  *action)
+			 const bchar  *action)
 {
   printf ("%s: child <%s> %sed\n",
 	  g_type_name (B_OBJECT_TYPE (hb)),
@@ -2526,7 +2526,7 @@ create_sensitivity_control (BtkWidget *widget)
 
 static void
 set_selectable_recursive (BtkWidget *widget,
-                          gboolean   setting)
+                          bboolean   setting)
 {
   if (BTK_IS_CONTAINER (widget))
     {
@@ -2578,9 +2578,9 @@ create_selectable_control (BtkWidget *widget)
 }
 
 static void
-dialog_response (BtkWidget *dialog, gint response_id, BtkLabel *label)
+dialog_response (BtkWidget *dialog, bint response_id, BtkLabel *label)
 {
-  const gchar *text;
+  const bchar *text;
 
   btk_widget_destroy (dialog);
 
@@ -2591,8 +2591,8 @@ dialog_response (BtkWidget *dialog, gint response_id, BtkLabel *label)
   btk_label_set_markup (label, text);
 }
 
-static gboolean
-activate_link (BtkWidget *label, const gchar *uri, gpointer data)
+static bboolean
+activate_link (BtkWidget *label, const bchar *uri, bpointer data)
 {
   if (g_strcmp0 (uri, "keynav") == 0)
     {
@@ -2854,12 +2854,12 @@ on_rotated_text_unrealize (BtkWidget *widget)
   g_object_set_data (B_OBJECT (widget), "text-gc", NULL);
 }
 
-static gboolean
+static bboolean
 on_rotated_text_expose (BtkWidget      *widget,
 			BdkEventExpose *event,
 			BdkPixbuf      *tile_pixbuf)
 {
-  static const gchar *words[] = { "The", "grand", "old", "Duke", "of", "York",
+  static const bchar *words[] = { "The", "grand", "old", "Duke", "of", "York",
                                   "had", "10,000", "men" };
   int n_words;
   int i;
@@ -2987,13 +2987,13 @@ reparent_label (BtkWidget *widget,
 static void
 set_parent_signal (BtkWidget *child,
 		   BtkWidget *old_parent,
-		   gpointer   func_data)
+		   bpointer   func_data)
 {
   g_message ("set_parent for \"%s\": new parent: \"%s\", old parent: \"%s\", data: %d\n",
              g_type_name (B_OBJECT_TYPE (child)),
              child->parent ? g_type_name (B_OBJECT_TYPE (child->parent)) : "NULL",
              old_parent ? g_type_name (B_OBJECT_TYPE (old_parent)) : "NULL",
-             GPOINTER_TO_INT (func_data));
+             BPOINTER_TO_INT (func_data));
 }
 
 static void
@@ -3053,7 +3053,7 @@ create_reparent (BtkWidget *widget)
       
       g_signal_connect (label, "parent_set",
 			G_CALLBACK (set_parent_signal),
-			GINT_TO_POINTER (42));
+			BINT_TO_POINTER (42));
 
       frame = btk_frame_new ("Frame 2");
       btk_box_pack_start (BTK_BOX (box2), frame, TRUE, TRUE, 0);
@@ -3097,7 +3097,7 @@ create_reparent (BtkWidget *widget)
 /*
  * Resize Grips
  */
-static gboolean
+static bboolean
 grippy_button_press (BtkWidget *area, BdkEventButton *event, BdkWindowEdge edge)
 {
   if (event->type == BDK_BUTTON_PRESS) 
@@ -3114,7 +3114,7 @@ grippy_button_press (BtkWidget *area, BdkEventButton *event, BdkWindowEdge edge)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 grippy_expose (BtkWidget *area, BdkEventExpose *event, BdkWindowEdge edge)
 {
   btk_paint_resize_grip (area->style,
@@ -3161,27 +3161,27 @@ create_resize_grips (BtkWidget *widget)
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_WEST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_WEST));
       
       /* North */
       area = btk_drawing_area_new ();
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH));
 
       /* North east */
       area = btk_drawing_area_new ();
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_EAST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_NORTH_EAST));
 
       hbox = btk_hbox_new (FALSE, 0);
       btk_box_pack_start (BTK_BOX (vbox), hbox, TRUE, TRUE, 0);
@@ -3191,9 +3191,9 @@ create_resize_grips (BtkWidget *widget)
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_WEST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_WEST));
 
       /* Middle */
       area = btk_drawing_area_new ();
@@ -3204,9 +3204,9 @@ create_resize_grips (BtkWidget *widget)
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_EAST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_EAST));
 
 
       hbox = btk_hbox_new (FALSE, 0);
@@ -3217,26 +3217,26 @@ create_resize_grips (BtkWidget *widget)
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_WEST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_WEST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_WEST));
       /* South */
       area = btk_drawing_area_new ();
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH));
       
       /* South east */
       area = btk_drawing_area_new ();
       btk_widget_add_events (area, BDK_BUTTON_PRESS_MASK);
       btk_box_pack_start (BTK_BOX (hbox), area, TRUE, TRUE, 0);
       g_signal_connect (area, "expose_event", G_CALLBACK (grippy_expose),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_EAST));
       g_signal_connect (area, "button_press_event", G_CALLBACK (grippy_button_press),
-			GINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_EAST));
+			BINT_TO_POINTER (BDK_WINDOW_EDGE_SOUTH_EAST));
     }
 
   if (!btk_widget_get_visible (window))
@@ -3248,15 +3248,15 @@ create_resize_grips (BtkWidget *widget)
 /*
  * Saved Position
  */
-gint upositionx = 0;
-gint upositiony = 0;
+bint upositionx = 0;
+bint upositiony = 0;
 
-static gint
+static bint
 uposition_configure (BtkWidget *window)
 {
   BtkLabel *lx;
   BtkLabel *ly;
-  gchar buffer[64];
+  bchar buffer[64];
 
   lx = g_object_get_data (B_OBJECT (window), "x");
   ly = g_object_get_data (B_OBJECT (window), "y");
@@ -3470,8 +3470,8 @@ create_pixmap (BtkWidget *widget)
 static void
 tips_query_widget_entered (BtkTipsQuery   *tips_query,
 			   BtkWidget      *widget,
-			   const gchar    *tip_text,
-			   const gchar    *tip_private,
+			   const bchar    *tip_text,
+			   const bchar    *tip_private,
 			   BtkWidget	  *toggle)
 {
   if (BTK_TOGGLE_BUTTON (toggle)->active)
@@ -3482,13 +3482,13 @@ tips_query_widget_entered (BtkTipsQuery   *tips_query,
     }
 }
 
-static gint
+static bint
 tips_query_widget_selected (BtkWidget      *tips_query,
 			    BtkWidget      *widget,
-			    const gchar    *tip_text,
-			    const gchar    *tip_private,
+			    const bchar    *tip_text,
+			    const bchar    *tip_private,
 			    BdkEventButton *event,
-			    gpointer        func_data)
+			    bpointer        func_data)
 {
   if (widget)
     g_print ("Help \"%s\" requested for <%s>\n",
@@ -3640,7 +3640,7 @@ create_tooltips (BtkWidget *widget)
 
 static void
 pack_image (BtkWidget *box,
-            const gchar *text,
+            const bchar *text,
             BtkWidget *image)
 {
   btk_box_pack_start (BTK_BOX (box),
@@ -3706,7 +3706,7 @@ create_image (BtkWidget *widget)
  */
 
 static BtkWidget*
-create_menu (BdkScreen *screen, gint depth, gint length, gboolean tearoff)
+create_menu (BdkScreen *screen, bint depth, bint length, bboolean tearoff)
 {
   BtkWidget *menu;
   BtkWidget *menuitem;
@@ -3768,7 +3768,7 @@ create_menu (BdkScreen *screen, gint depth, gint length, gboolean tearoff)
 }
 
 static BtkWidget*
-create_table_menu (BdkScreen *screen, gint cols, gint rows, gboolean tearoff)
+create_table_menu (BdkScreen *screen, bint cols, bint rows, bboolean tearoff)
 {
   BtkWidget *menu;
   BtkWidget *menuitem;
@@ -4119,8 +4119,8 @@ create_menus (BtkWidget *widget)
 }
 
 static void
-btk_ifactory_cb (gpointer             callback_data,
-		 guint                callback_action,
+btk_ifactory_cb (bpointer             callback_data,
+		 buint                callback_action,
 		 BtkWidget           *widget)
 {
   g_message ("ItemFactory: activated \"%s\"", btk_item_factory_path_from_widget (widget));
@@ -4128,7 +4128,7 @@ btk_ifactory_cb (gpointer             callback_data,
 
 /* BdkPixbuf RGBA C-Source image dump */
 
-static const guint8 apple[] = 
+static const buint8 apple[] = 
 { ""
   /* Pixbuf magic (0x47646b50) */
   "BdkP"
@@ -4225,8 +4225,8 @@ static const guint8 apple[] =
 
 
 static void
-dump_accels (gpointer             callback_data,
-	     guint                callback_action,
+dump_accels (bpointer             callback_data,
+	     buint                callback_action,
 	     BtkWidget           *widget)
 {
   btk_accel_map_save_fd (1 /* stdout */);
@@ -4391,10 +4391,10 @@ create_item_factory (BtkWidget *widget)
 
 static BtkWidget *
 accel_button_new (BtkAccelGroup *accel_group,
-		  const gchar   *text,
-		  const gchar   *accel)
+		  const bchar   *text,
+		  const bchar   *accel)
 {
-  guint keyval;
+  buint keyval;
   BdkModifierType modifiers;
   BtkWidget *button;
   BtkWidget *label;
@@ -4419,7 +4419,7 @@ static void
 create_key_lookup (BtkWidget *widget)
 {
   static BtkWidget *window = NULL;
-  gpointer window_ptr;
+  bpointer window_ptr;
 
   if (!window)
     {
@@ -4483,7 +4483,7 @@ create_key_lookup (BtkWidget *widget)
  create_modal_window
  */
 
-static gboolean
+static bboolean
 cmw_destroy_cb(BtkWidget *widget)
 {
   /* This is needed to get out of btk_main */
@@ -4620,7 +4620,7 @@ make_message_dialog (BdkScreen *screen,
 		     BtkWidget **dialog,
                      BtkMessageType  type,
                      BtkButtonsType  buttons,
-		     guint           default_response)
+		     buint           default_response)
 {
   if (*dialog)
     {
@@ -4670,9 +4670,9 @@ create_message_dialog (BtkWidget *widget)
 
 static BtkWidget *sw_parent = NULL;
 static BtkWidget *sw_float_parent;
-static guint sw_destroyed_handler = 0;
+static buint sw_destroyed_handler = 0;
 
-static gboolean
+static bboolean
 scrolled_windows_delete_cb (BtkWidget *widget, BdkEventAny *event, BtkWidget *scrollwin)
 {
   btk_widget_reparent (scrollwin, sw_parent);
@@ -4831,16 +4831,16 @@ entry_toggle_sensitive (BtkWidget *checkbutton,
    btk_widget_set_sensitive (entry, BTK_TOGGLE_BUTTON(checkbutton)->active);
 }
 
-static gboolean
-entry_progress_timeout (gpointer data)
+static bboolean
+entry_progress_timeout (bpointer data)
 {
-  if (GPOINTER_TO_INT (g_object_get_data (B_OBJECT (data), "progress-pulse")))
+  if (BPOINTER_TO_INT (g_object_get_data (B_OBJECT (data), "progress-pulse")))
     {
       btk_entry_progress_pulse (BTK_ENTRY (data));
     }
   else
     {
-      gdouble fraction;
+      bdouble fraction;
 
       fraction = btk_entry_get_progress_fraction (BTK_ENTRY (data));
 
@@ -4855,9 +4855,9 @@ entry_progress_timeout (gpointer data)
 }
 
 static void
-entry_remove_timeout (gpointer data)
+entry_remove_timeout (bpointer data)
 {
-  g_source_remove (GPOINTER_TO_UINT (data));
+  g_source_remove (BPOINTER_TO_UINT (data));
 }
 
 static void
@@ -4866,17 +4866,17 @@ entry_toggle_progress (BtkWidget *checkbutton,
 {
   if (BTK_TOGGLE_BUTTON (checkbutton)->active)
     {
-      guint timeout = bdk_threads_add_timeout (100,
+      buint timeout = bdk_threads_add_timeout (100,
                                                entry_progress_timeout,
                                                entry);
       g_object_set_data_full (B_OBJECT (entry), "timeout-id",
-                              GUINT_TO_POINTER (timeout),
+                              BUINT_TO_POINTER (timeout),
                               entry_remove_timeout);
     }
   else
     {
       g_object_set_data (B_OBJECT (entry), "timeout-id",
-                         GUINT_TO_POINTER (0));
+                         BUINT_TO_POINTER (0));
 
       btk_entry_set_progress_fraction (BTK_ENTRY (entry), 0.0);
     }
@@ -4887,7 +4887,7 @@ entry_toggle_pulse (BtkWidget *checkbutton,
                     BtkWidget *entry)
 {
   g_object_set_data (B_OBJECT (entry), "progress-pulse",
-                     GUINT_TO_POINTER ((guint) BTK_TOGGLE_BUTTON (checkbutton)->active));
+                     BUINT_TO_POINTER ((buint) BTK_TOGGLE_BUTTON (checkbutton)->active));
 }
 
 static void
@@ -5058,7 +5058,7 @@ create_expander (BtkWidget *widget)
 static void
 event_box_label_pressed (BtkWidget        *widget,
 			 BdkEventButton   *event,
-			 gpointer user_data)
+			 bpointer user_data)
 {
   g_print ("clicked on event box\n");
 }
@@ -5066,7 +5066,7 @@ event_box_label_pressed (BtkWidget        *widget,
 static void
 event_box_button_clicked (BtkWidget *widget,
 			  BtkWidget *button,
-			  gpointer user_data)
+			  bpointer user_data)
 {
   g_print ("pushed button\n");
 }
@@ -5377,15 +5377,15 @@ change_digits (BtkWidget *widget, BtkSpinButton *spin)
 }
 
 static void
-get_value (BtkWidget *widget, gpointer data)
+get_value (BtkWidget *widget, bpointer data)
 {
-  gchar buf[32];
+  bchar buf[32];
   BtkLabel *label;
   BtkSpinButton *spin;
 
   spin = BTK_SPIN_BUTTON (spinner1);
   label = BTK_LABEL (g_object_get_data (B_OBJECT (widget), "user_data"));
-  if (GPOINTER_TO_INT (data) == 1)
+  if (BPOINTER_TO_INT (data) == 1)
     sprintf (buf, "%d", btk_spin_button_get_value_as_int (spin));
   else
     sprintf (buf, "%0.*f", spin->digits, btk_spin_button_get_value (spin));
@@ -5393,9 +5393,9 @@ get_value (BtkWidget *widget, gpointer data)
 }
 
 static void
-get_spin_value (BtkWidget *widget, gpointer data)
+get_spin_value (BtkWidget *widget, bpointer data)
 {
-  gchar *buffer;
+  bchar *buffer;
   BtkLabel *label;
   BtkSpinButton *spin;
 
@@ -5409,12 +5409,12 @@ get_spin_value (BtkWidget *widget, gpointer data)
   g_free (buffer);
 }
 
-static gint
+static bint
 spin_button_time_output_func (BtkSpinButton *spin_button)
 {
-  static gchar buf[6];
-  gdouble hours;
-  gdouble minutes;
+  static bchar buf[6];
+  bdouble hours;
+  bdouble minutes;
 
   hours = spin_button->adjustment->value / 60.0;
   minutes = (fabs(floor (hours) - hours) < 1e-5) ? 0.0 : 30;
@@ -5424,16 +5424,16 @@ spin_button_time_output_func (BtkSpinButton *spin_button)
   return TRUE;
 }
 
-static gint
+static bint
 spin_button_month_input_func (BtkSpinButton *spin_button,
-			      gdouble       *new_val)
+			      bdouble       *new_val)
 {
-  gint i;
-  static gchar *month[12] = { "January", "February", "March", "April",
+  bint i;
+  static bchar *month[12] = { "January", "February", "March", "April",
 			      "May", "June", "July", "August",
 			      "September", "October", "November", "December" };
-  gchar *tmp1, *tmp2;
-  gboolean found = FALSE;
+  bchar *tmp1, *tmp2;
+  bboolean found = FALSE;
 
   for (i = 1; i <= 12; i++)
     {
@@ -5451,15 +5451,15 @@ spin_button_month_input_func (BtkSpinButton *spin_button,
       *new_val = 0.0;
       return BTK_INPUT_ERROR;
     }
-  *new_val = (gdouble) i;
+  *new_val = (bdouble) i;
   return TRUE;
 }
 
-static gint
+static bint
 spin_button_month_output_func (BtkSpinButton *spin_button)
 {
-  gint i;
-  static gchar *month[12] = { "January", "February", "March", "April",
+  bint i;
+  static bchar *month[12] = { "January", "February", "March", "April",
 			      "May", "June", "July", "August", "September",
 			      "October", "November", "December" };
 
@@ -5472,13 +5472,13 @@ spin_button_month_output_func (BtkSpinButton *spin_button)
   return TRUE;
 }
 
-static gint
+static bint
 spin_button_hex_input_func (BtkSpinButton *spin_button,
-			    gdouble       *new_val)
+			    bdouble       *new_val)
 {
-  const gchar *buf;
-  gchar *err;
-  gdouble res;
+  const bchar *buf;
+  bchar *err;
+  bdouble res;
 
   buf = btk_entry_get_text (BTK_ENTRY (spin_button));
   res = strtol(buf, &err, 16);
@@ -5489,13 +5489,13 @@ spin_button_hex_input_func (BtkSpinButton *spin_button,
     return TRUE;
 }
 
-static gint
+static bint
 spin_button_hex_output_func (BtkSpinButton *spin_button)
 {
-  static gchar buf[7];
-  gint val;
+  static bchar buf[7];
+  bint val;
 
-  val = (gint) spin_button->adjustment->value;
+  val = (bint) spin_button->adjustment->value;
   if (fabs (val) < 1e-5)
     sprintf (buf, "0x00");
   else
@@ -5676,14 +5676,14 @@ create_spins (BtkWidget *widget)
       g_object_set_data (B_OBJECT (button), "user_data", val_label);
       g_signal_connect (button, "clicked",
 			G_CALLBACK (get_value),
-			GINT_TO_POINTER (1));
+			BINT_TO_POINTER (1));
       btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
 
       button = btk_button_new_with_label ("Value as Float");
       g_object_set_data (B_OBJECT (button), "user_data", val_label);
       g_signal_connect (button, "clicked",
 			G_CALLBACK (get_value),
-			GINT_TO_POINTER (2));
+			BINT_TO_POINTER (2));
       btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
 
       btk_box_pack_start (BTK_BOX (vbox), val_label, TRUE, TRUE, 0);
@@ -5726,15 +5726,15 @@ create_spins (BtkWidget *widget)
  * Cursors
  */
 
-static gint
+static bint
 cursor_expose_event (BtkWidget *widget,
 		     BdkEvent  *event,
-		     gpointer   user_data)
+		     bpointer   user_data)
 {
   BtkDrawingArea *darea;
   BdkDrawable *drawable;
-  guint max_width;
-  guint max_height;
+  buint max_width;
+  buint max_height;
   bairo_t *cr;
 
   g_return_val_if_fail (widget != NULL, TRUE);
@@ -5768,7 +5768,7 @@ static void
 set_cursor (BtkWidget *spinner,
 	    BtkWidget *widget)
 {
-  guint c;
+  buint c;
   BdkCursor *cursor;
   BtkWidget *label;
   GEnumClass *class;
@@ -5796,7 +5796,7 @@ set_cursor (BtkWidget *spinner,
   bdk_cursor_unref (cursor);
 }
 
-static gint
+static bint
 cursor_event (BtkWidget          *widget,
 	      BdkEvent           *event,
 	      BtkSpinButton	 *spinner)
@@ -5818,16 +5818,16 @@ cursor_event (BtkWidget          *widget,
 
 static void
 change_cursor_theme (BtkWidget *widget,
-		     gpointer   data)
+		     bpointer   data)
 {
-  const gchar *theme;
-  gint size;
+  const bchar *theme;
+  bint size;
   GList *children;
 
   children = btk_container_get_children (BTK_CONTAINER (data));
 
   theme = btk_entry_get_text (BTK_ENTRY (children->next->data));
-  size = (gint) btk_spin_button_get_value (BTK_SPIN_BUTTON (children->next->next->data));
+  size = (bint) btk_spin_button_get_value (BTK_SPIN_BUTTON (children->next->next->data));
 
   g_list_free (children);
 
@@ -5988,7 +5988,7 @@ list_add (BtkWidget *widget,
 	  BtkWidget *list)
 {
   static int i = 1;
-  gchar buffer[64];
+  bchar buffer[64];
   BtkWidget *list_item;
   BtkContainer *container;
 
@@ -6044,7 +6044,7 @@ list_remove (BtkWidget *widget,
     btk_list_select_child (list, BTK_WIDGET(sel_row->data));
 }
 
-static gchar *selection_mode_items[] =
+static bchar *selection_mode_items[] =
 {
   "Single",
   "Browse",
@@ -6060,10 +6060,10 @@ static const BtkSelectionMode selection_modes[] = {
 static BtkWidget *list_omenu;
 
 static void 
-list_toggle_sel_mode (BtkWidget *widget, gpointer data)
+list_toggle_sel_mode (BtkWidget *widget, bpointer data)
 {
   BtkList *list;
-  gint i;
+  bint i;
 
   list = BTK_LIST (data);
 
@@ -6337,13 +6337,13 @@ static char * btk_mini_xpm[] = {
 "      >=       "};
 
 #define TESTBTK_CLIST_COLUMNS 12
-static gint clist_rows = 0;
+static bint clist_rows = 0;
 static BtkWidget *clist_omenu;
 
 static void
-add1000_clist (BtkWidget *widget, gpointer data)
+add1000_clist (BtkWidget *widget, bpointer data)
 {
-  gint i, row;
+  bint i, row;
   char text[TESTBTK_CLIST_COLUMNS][50];
   char *texts[TESTBTK_CLIST_COLUMNS];
   BdkBitmap *mask;
@@ -6382,9 +6382,9 @@ add1000_clist (BtkWidget *widget, gpointer data)
 }
 
 static void
-add10000_clist (BtkWidget *widget, gpointer data)
+add10000_clist (BtkWidget *widget, bpointer data)
 {
-  gint i;
+  bint i;
   char text[TESTBTK_CLIST_COLUMNS][50];
   char *texts[TESTBTK_CLIST_COLUMNS];
 
@@ -6407,7 +6407,7 @@ add10000_clist (BtkWidget *widget, gpointer data)
 }
 
 void
-clear_clist (BtkWidget *widget, gpointer data)
+clear_clist (BtkWidget *widget, bpointer data)
 {
   btk_clist_clear (BTK_CLIST (data));
   clist_rows = 0;
@@ -6419,10 +6419,10 @@ void clist_remove_selection (BtkWidget *widget, BtkCList *clist)
 
   while (clist->selection)
     {
-      gint row;
+      bint row;
 
       clist_rows--;
-      row = GPOINTER_TO_INT (clist->selection->data);
+      row = BPOINTER_TO_INT (clist->selection->data);
 
       btk_clist_remove (clist, row);
 
@@ -6451,7 +6451,7 @@ void toggle_reorderable (BtkWidget *widget, BtkCList *clist)
 }
 
 static void
-insert_row_clist (BtkWidget *widget, gpointer data)
+insert_row_clist (BtkWidget *widget, bpointer data)
 {
   static char *text[] =
   {
@@ -6463,7 +6463,7 @@ insert_row_clist (BtkWidget *widget, gpointer data)
   static BtkStyle *style1 = NULL;
   static BtkStyle *style2 = NULL;
   static BtkStyle *style3 = NULL;
-  gint row;
+  bint row;
   
   if (BTK_CLIST (data)->focus_row >= 0)
     row = btk_clist_insert (BTK_CLIST (data), BTK_CLIST (data)->focus_row,
@@ -6503,7 +6503,7 @@ clist_warning_test (BtkWidget *button,
 		    BtkWidget *clist)
 {
   BtkWidget *child;
-  static gboolean add_remove = FALSE;
+  static bboolean add_remove = FALSE;
 
   add_remove = !add_remove;
 
@@ -6531,10 +6531,10 @@ undo_selection (BtkWidget *button, BtkCList *clist)
 }
 
 static void 
-clist_toggle_sel_mode (BtkWidget *widget, gpointer data)
+clist_toggle_sel_mode (BtkWidget *widget, bpointer data)
 {
   BtkCList *clist;
-  gint i;
+  bint i;
 
   clist = BTK_CLIST (data);
 
@@ -6547,7 +6547,7 @@ clist_toggle_sel_mode (BtkWidget *widget, gpointer data)
 }
 
 static void 
-clist_click_column (BtkCList *clist, gint column, gpointer data)
+clist_click_column (BtkCList *clist, bint column, bpointer data)
 {
   if (column == 4)
     btk_clist_set_column_visibility (clist, column, FALSE);
@@ -6567,7 +6567,7 @@ clist_click_column (BtkCList *clist, gint column, gpointer data)
 static void
 create_clist (BtkWidget *widget)
 {
-  gint i;
+  bint i;
   static BtkWidget *window = NULL;
 
   static char *titles[] =
@@ -6789,8 +6789,8 @@ typedef struct
   BdkBitmap *mask3;
 } CTreePixmaps;
 
-static gint books = 0;
-static gint pages = 0;
+static bint books = 0;
+static bint pages = 0;
 
 static BtkWidget *book_label;
 static BtkWidget *page_label;
@@ -6803,7 +6803,7 @@ static BtkWidget *omenu4;
 static BtkWidget *spin1;
 static BtkWidget *spin2;
 static BtkWidget *spin3;
-static gint line_style;
+static bint line_style;
 
 
 static CTreePixmaps *
@@ -6833,7 +6833,7 @@ get_ctree_pixmaps (BtkCTree *ctree)
   return pixmaps;
 }
 
-void after_press (BtkCTree *ctree, gpointer data)
+void after_press (BtkCTree *ctree, bpointer data)
 {
   char buf[80];
 
@@ -6851,7 +6851,7 @@ void after_press (BtkCTree *ctree, gpointer data)
 }
 
 void after_move (BtkCTree *ctree, BtkCTreeNode *child, BtkCTreeNode *parent, 
-		 BtkCTreeNode *sibling, gpointer data)
+		 BtkCTreeNode *sibling, bpointer data)
 {
   char *source;
   char *target1;
@@ -6981,19 +6981,19 @@ void remove_selection (BtkWidget *widget, BtkCTree *ctree)
 }
 
 struct _ExportStruct {
-  gchar *tree;
-  gchar *info;
-  gboolean is_leaf;
+  bchar *tree;
+  bchar *info;
+  bboolean is_leaf;
 };
 
 typedef struct _ExportStruct ExportStruct;
 
-gboolean
+bboolean
 gnode2ctree (BtkCTree   *ctree,
-	     guint       depth,
+	     buint       depth,
 	     GNode        *gnode,
 	     BtkCTreeNode *cnode,
-	     gpointer    data)
+	     bpointer    data)
 {
   ExportStruct *es;
   BdkPixmap *pixmap_closed;
@@ -7032,12 +7032,12 @@ gnode2ctree (BtkCTree   *ctree,
   return TRUE;
 }
 
-gboolean
+bboolean
 ctree2gnode (BtkCTree   *ctree,
-	     guint       depth,
+	     buint       depth,
 	     GNode        *gnode,
 	     BtkCTreeNode *cnode,
-	     gpointer    data)
+	     bpointer    data)
 {
   ExportStruct *es;
 
@@ -7143,7 +7143,7 @@ void change_row_height (BtkWidget *widget, BtkCList *clist)
   btk_clist_set_row_height (clist, BTK_ADJUSTMENT (widget)->value);
 }
 
-void set_background (BtkCTree *ctree, BtkCTreeNode *node, gpointer data)
+void set_background (BtkCTree *ctree, BtkCTreeNode *node, bpointer data)
 {
   BtkStyle *style = NULL;
   
@@ -7162,10 +7162,10 @@ void set_background (BtkCTree *ctree, BtkCTreeNode *node, gpointer data)
 }
 
 void 
-ctree_toggle_line_style (BtkWidget *widget, gpointer data)
+ctree_toggle_line_style (BtkWidget *widget, bpointer data)
 {
   BtkCTree *ctree;
-  gint i;
+  bint i;
 
   ctree = BTK_CTREE (data);
 
@@ -7184,10 +7184,10 @@ ctree_toggle_line_style (BtkWidget *widget, gpointer data)
 }
 
 void 
-ctree_toggle_expander_style (BtkWidget *widget, gpointer data)
+ctree_toggle_expander_style (BtkWidget *widget, bpointer data)
 {
   BtkCTree *ctree;
-  gint i;
+  bint i;
 
   ctree = BTK_CTREE (data);
 
@@ -7200,10 +7200,10 @@ ctree_toggle_expander_style (BtkWidget *widget, gpointer data)
 }
 
 void 
-ctree_toggle_justify (BtkWidget *widget, gpointer data)
+ctree_toggle_justify (BtkWidget *widget, bpointer data)
 {
   BtkCTree *ctree;
-  gint i;
+  bint i;
 
   ctree = BTK_CTREE (data);
 
@@ -7217,10 +7217,10 @@ ctree_toggle_justify (BtkWidget *widget, gpointer data)
 }
 
 void 
-ctree_toggle_sel_mode (BtkWidget *widget, gpointer data)
+ctree_toggle_sel_mode (BtkWidget *widget, bpointer data)
 {
   BtkCTree *ctree;
-  gint i;
+  bint i;
 
   ctree = BTK_CTREE (data);
 
@@ -7233,15 +7233,15 @@ ctree_toggle_sel_mode (BtkWidget *widget, gpointer data)
   after_press (ctree, NULL);
 }
     
-void build_recursive (BtkCTree *ctree, gint cur_depth, gint depth, 
-		      gint num_books, gint num_pages, BtkCTreeNode *parent)
+void build_recursive (BtkCTree *ctree, bint cur_depth, bint depth, 
+		      bint num_books, bint num_pages, BtkCTreeNode *parent)
 {
-  gchar *text[2];
-  gchar buf1[60];
-  gchar buf2[60];
+  bchar *text[2];
+  bchar buf1[60];
+  bchar buf2[60];
   BtkCTreeNode *sibling;
   CTreePixmaps *pixmaps;
-  gint i;
+  bint i;
 
   text[0] = buf1;
   text[1] = buf2;
@@ -7252,7 +7252,7 @@ void build_recursive (BtkCTree *ctree, gint cur_depth, gint depth,
   for (i = num_pages + num_books; i > num_books; i--)
     {
       pages++;
-      sprintf (buf1, "Page %02d", (gint) rand() % 100);
+      sprintf (buf1, "Page %02d", (bint) rand() % 100);
       sprintf (buf2, "Item %d-%d", cur_depth, i);
       sibling = btk_ctree_insert_node (ctree, parent, sibling, text, 5,
 				       pixmaps->pixmap3, pixmaps->mask3, NULL, NULL,
@@ -7271,7 +7271,7 @@ void build_recursive (BtkCTree *ctree, gint cur_depth, gint depth,
       BtkStyle *style;
 
       books++;
-      sprintf (buf1, "Book %02d", (gint) rand() % 100);
+      sprintf (buf1, "Book %02d", (bint) rand() % 100);
       sprintf (buf2, "Item %d-%d", cur_depth, i);
       sibling = btk_ctree_insert_node (ctree, parent, sibling, text, 5,
 				       pixmaps->pixmap1, pixmaps->mask1, pixmaps->pixmap2, pixmaps->mask2,
@@ -7309,12 +7309,12 @@ void build_recursive (BtkCTree *ctree, gint cur_depth, gint depth,
 
 void rebuild_tree (BtkWidget *widget, BtkCTree *ctree)
 {
-  gchar *text [2];
-  gchar label1[] = "Root";
-  gchar label2[] = "";
+  bchar *text [2];
+  bchar label1[] = "Root";
+  bchar label2[] = "";
   BtkCTreeNode *parent;
   BtkStyle *style;
-  guint b, d, p, n;
+  buint b, d, p, n;
   CTreePixmaps *pixmaps;
 
   pixmaps = get_ctree_pixmaps (ctree);
@@ -7359,7 +7359,7 @@ void rebuild_tree (BtkWidget *widget, BtkCTree *ctree)
 }
 
 static void 
-ctree_click_column (BtkCTree *ctree, gint column, gpointer data)
+ctree_click_column (BtkCTree *ctree, bint column, bpointer data)
 {
   BtkCList *clist;
 
@@ -7399,7 +7399,7 @@ void create_ctree (BtkWidget *widget)
   char *title[] = { "Tree" , "Info" };
   char buf[80];
 
-  static gchar *items1[] =
+  static bchar *items1[] =
   {
     "No lines",
     "Solid",
@@ -7407,7 +7407,7 @@ void create_ctree (BtkWidget *widget)
     "Tabbed"
   };
 
-  static gchar *items2[] =
+  static bchar *items2[] =
   {
     "None",
     "Square",
@@ -7415,7 +7415,7 @@ void create_ctree (BtkWidget *widget)
     "Circular"
   };
 
-  static gchar *items3[] =
+  static bchar *items3[] =
   {
     "Left",
     "Right"
@@ -7730,7 +7730,7 @@ color_selection_ok (BtkWidget               *w,
                     BtkColorSelectionDialog *cs)
 {
   BtkColorSelection *colorsel;
-  gdouble color[4];
+  bdouble color[4];
 
   colorsel=BTK_COLOR_SELECTION(cs->colorsel);
 
@@ -7743,7 +7743,7 @@ color_selection_changed (BtkWidget *w,
                          BtkColorSelectionDialog *cs)
 {
   BtkColorSelection *colorsel;
-  gdouble color[4];
+  bdouble color[4];
 
   colorsel=BTK_COLOR_SELECTION(cs->colorsel);
   btk_color_selection_get_color(colorsel,color);
@@ -7828,7 +7828,7 @@ void
 show_fileops (BtkWidget        *widget,
 	      BtkFileSelection *fs)
 {
-  gboolean show_ops;
+  bboolean show_ops;
 
   show_ops = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget));
 
@@ -7842,7 +7842,7 @@ void
 select_multiple (BtkWidget        *widget,
 		 BtkFileSelection *fs)
 {
-  gboolean select_multiple;
+  bboolean select_multiple;
 
   select_multiple = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget));
   btk_file_selection_set_select_multiple (fs, select_multiple);
@@ -7852,7 +7852,7 @@ void
 file_selection_ok (BtkFileSelection *fs)
 {
   int i;
-  gchar **selections;
+  bchar **selections;
 
   selections = btk_file_selection_get_selections (fs);
 
@@ -7917,7 +7917,7 @@ create_file_selection (BtkWidget *widget)
 }
 
 void
-flipping_toggled_cb (BtkWidget *widget, gpointer data)
+flipping_toggled_cb (BtkWidget *widget, bpointer data)
 {
   int state = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget));
   int new_direction = state ? BTK_TEXT_DIR_RTL : BTK_TEXT_DIR_LTR;
@@ -7954,14 +7954,14 @@ orientable_toggle_orientation (BtkOrientable *orientable)
 }
 
 void
-flipping_orientation_toggled_cb (BtkWidget *widget, gpointer data)
+flipping_orientation_toggled_cb (BtkWidget *widget, bpointer data)
 {
   orientable_toggle_orientation (BTK_ORIENTABLE (BTK_DIALOG (btk_widget_get_toplevel (widget))->vbox));
 }
 
 static void
 set_direction_recurse (BtkWidget *widget,
-		       gpointer   data)
+		       bpointer   data)
 {
   BtkTextDirection *dir = data;
   
@@ -8063,7 +8063,7 @@ static BtkWidget*
 make_focus_table (GList **list)
 {
   BtkWidget *table;
-  gint i, j;
+  bint i, j;
   
   table = btk_table_new (5, 5, FALSE);
 
@@ -8174,7 +8174,7 @@ void
 font_selection_ok (BtkWidget              *w,
 		   BtkFontSelectionDialog *fs)
 {
-  gchar *s = btk_font_selection_dialog_get_font_name (fs);
+  bchar *s = btk_font_selection_dialog_get_font_name (fs);
 
   g_print ("%s\n", s);
   g_free (s);
@@ -8251,8 +8251,8 @@ label_toggle (BtkWidget  *widget,
 
 static void
 print_response (BtkWidget *dialog,
-                gint       response_id,
-                gpointer   data)
+                bint       response_id,
+                bpointer   data)
 {
   g_print ("response signal received (%d)\n", response_id);
 
@@ -8370,12 +8370,12 @@ screen_display_check (BtkWidget *widget, ScreenDisplaySelection *data)
       else
         {
           BtkTreeModel *model = btk_combo_box_get_model (BTK_COMBO_BOX (data->combo));
-          gint i = 0;
+          bint i = 0;
           BtkTreeIter iter;
-          gboolean found = FALSE;
+          bboolean found = FALSE;
           while (btk_tree_model_iter_nth_child (model, &iter, NULL, i++))
             {
-              gchar *name;
+              bchar *name;
               btk_tree_model_get (model, &iter, 0, &name, -1);
               found = !g_ascii_strcasecmp (display_name, name);
               g_free (name);
@@ -8390,8 +8390,8 @@ screen_display_check (BtkWidget *widget, ScreenDisplaySelection *data)
     }
   else
     {
-      gint number_of_screens = bdk_display_get_n_screens (display);
-      gint screen_num = bdk_screen_get_number (current_screen);
+      bint number_of_screens = bdk_display_get_n_screens (display);
+      bint screen_num = bdk_screen_get_number (current_screen);
       if ((screen_num +1) < number_of_screens)
 	new_screen = bdk_display_get_screen (display, screen_num + 1);
       else
@@ -8492,14 +8492,14 @@ create_display_screen (BtkWidget *widget)
 
 /* Event Watcher
  */
-static gboolean event_watcher_enter_id = 0;
-static gboolean event_watcher_leave_id = 0;
+static bboolean event_watcher_enter_id = 0;
+static bboolean event_watcher_leave_id = 0;
 
-static gboolean
+static bboolean
 event_watcher (GSignalInvocationHint *ihint,
-	       guint                  n_param_values,
+	       buint                  n_param_values,
 	       const BValue          *param_values,
-	       gpointer               data)
+	       bpointer               data)
 {
   g_print ("Watch: \"%s\" emitted for %s\n",
 	   g_signal_name (ihint->signal_id),
@@ -8513,7 +8513,7 @@ event_watcher_down (void)
 {
   if (event_watcher_enter_id)
     {
-      guint signal_id;
+      buint signal_id;
 
       signal_id = g_signal_lookup ("enter_notify_event", BTK_TYPE_WIDGET);
       g_signal_remove_emission_hook (signal_id, event_watcher_enter_id);
@@ -8531,7 +8531,7 @@ event_watcher_toggle (void)
     event_watcher_down ();
   else
     {
-      guint signal_id;
+      buint signal_id;
 
       signal_id = g_signal_lookup ("enter_notify_event", BTK_TYPE_WIDGET);
       event_watcher_enter_id = g_signal_add_emission_hook (signal_id, 0, event_watcher, NULL, NULL);
@@ -8592,9 +8592,9 @@ create_event_watcher (BtkWidget *widget)
  * BtkRange
  */
 
-static gchar*
+static bchar*
 reformat_value (BtkScale *scale,
-                gdouble   value)
+                bdouble   value)
 {
   return g_strdup_printf ("-->%0.*g<--",
                           btk_scale_get_digits (scale), value);
@@ -8807,7 +8807,7 @@ text_toggle_word_wrap (BtkWidget *checkbutton,
 
 struct {
   BdkColor color;
-  gchar *name;
+  bchar *name;
 } text_colors[] = {
  { { 0, 0x0000, 0x0000, 0x0000 }, "black" },
  { { 0, 0xFFFF, 0xFFFF, 0xFFFF }, "white" },
@@ -9007,7 +9007,7 @@ BdkPixbuf *book_closed;
 BtkWidget *sample_notebook;
 
 static void
-set_page_image (BtkNotebook *notebook, gint page_num, BdkPixbuf *pixbuf)
+set_page_image (BtkNotebook *notebook, bint page_num, BdkPixbuf *pixbuf)
 {
   BtkWidget *page_widget;
   BtkWidget *pixwid;
@@ -9022,10 +9022,10 @@ set_page_image (BtkNotebook *notebook, gint page_num, BdkPixbuf *pixbuf)
 }
 
 static void
-page_switch (BtkWidget *widget, gpointer *page, gint page_num)
+page_switch (BtkWidget *widget, bpointer *page, bint page_num)
 {
   BtkNotebook *notebook = BTK_NOTEBOOK (widget);
-  gint old_page_num = btk_notebook_get_current_page (notebook);
+  bint old_page_num = btk_notebook_get_current_page (notebook);
  
   if (page_num == old_page_num)
     return;
@@ -9039,7 +9039,7 @@ page_switch (BtkWidget *widget, gpointer *page, gint page_num)
 static void
 tab_fill (BtkToggleButton *button, BtkWidget *child)
 {
-  gboolean expand;
+  bboolean expand;
   BtkPackType pack_type;
 
   btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (sample_notebook), child,
@@ -9051,7 +9051,7 @@ tab_fill (BtkToggleButton *button, BtkWidget *child)
 static void
 tab_expand (BtkToggleButton *button, BtkWidget *child)
 {
-  gboolean fill;
+  bboolean fill;
   BtkPackType pack_type;
 
   btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (sample_notebook), child,
@@ -9064,8 +9064,8 @@ static void
 tab_pack (BtkToggleButton *button, BtkWidget *child)
 	  
 { 
-  gboolean expand;
-  gboolean fill;
+  bboolean expand;
+  bboolean fill;
 
   btk_notebook_query_tab_label_packing (BTK_NOTEBOOK (sample_notebook), child,
 					&expand, &fill, NULL);
@@ -9074,7 +9074,7 @@ tab_pack (BtkToggleButton *button, BtkWidget *child)
 }
 
 static void
-create_pages (BtkNotebook *notebook, gint start, gint end)
+create_pages (BtkNotebook *notebook, bint start, bint end)
 {
   BtkWidget *child = NULL;
   BtkWidget *button;
@@ -9084,7 +9084,7 @@ create_pages (BtkNotebook *notebook, gint start, gint end)
   BtkWidget *label_box;
   BtkWidget *menu_box;
   BtkWidget *pixwid;
-  gint i;
+  bint i;
   char buffer[32];
   char accel_buffer[32];
 
@@ -9169,10 +9169,10 @@ show_all_pages (BtkButton   *button,
 
 static void
 notebook_type_changed (BtkWidget *optionmenu,
-		       gpointer   data)
+		       bpointer   data)
 {
   BtkNotebook *notebook;
-  gint i, c;
+  bint i, c;
 
   enum {
     STANDARD,
@@ -9251,7 +9251,7 @@ create_notebook (BtkWidget *widget)
   BtkWidget *omenu;
   BtkWidget *label;
 
-  static gchar *items[] =
+  static bchar *items[] =
   {
     "Standard",
     "No tabs",
@@ -9405,9 +9405,9 @@ paned_props_clicked (BtkWidget *button,
 
 BtkWidget *
 create_pane_options (BtkPaned    *paned,
-		     const gchar *frame_label,
-		     const gchar *label1,
-		     const gchar *label2)
+		     const bchar *frame_label,
+		     const bchar *label1,
+		     const bchar *label2)
 {
   BtkWidget *frame;
   BtkWidget *table;
@@ -9940,7 +9940,7 @@ create_paned_keyboard_navigation (BtkWidget *widget)
  * Shaped Windows
  */
 
-typedef struct _cursoroffset {gint x,y;} CursorOffset;
+typedef struct _cursoroffset {bint x,y;} CursorOffset;
 
 static void
 shape_pressed (BtkWidget *widget, BdkEventButton *event)
@@ -9975,7 +9975,7 @@ static void
 shape_motion (BtkWidget      *widget, 
 	      BdkEventMotion *event)
 {
-  gint xp, yp;
+  bint xp, yp;
   CursorOffset * p;
   BdkModifierType mask;
 
@@ -9992,11 +9992,11 @@ shape_motion (BtkWidget      *widget,
 BtkWidget *
 shape_create_icon (BdkScreen *screen,
 		   char      *xpm_file,
-		   gint       x,
-		   gint       y,
-		   gint       px,
-		   gint       py,
-		   gint       window_type)
+		   bint       x,
+		   bint       y,
+		   bint       px,
+		   bint       py,
+		   bint       window_type)
 {
   BtkWidget *window;
   BtkWidget *pixmap;
@@ -10111,7 +10111,7 @@ create_shapes (BtkWidget *widget)
   if (!with_rebunnyion)
     {
       BdkRebunnyion *rebunnyion;
-      gint x, y;
+      bint x, y;
       
       with_rebunnyion = shape_create_icon (screen, "3DRings.xpm",
                                        460, 270, 25,25, BTK_WINDOW_TOPLEVEL);
@@ -10186,7 +10186,7 @@ create_wmhints (BtkWidget *widget)
       btk_widget_realize (window);
       
       circles = bdk_bitmap_create_from_data (window->window,
-					     (gchar *) circles_bits,
+					     (bchar *) circles_bits,
 					     circles_width,
 					     circles_height);
       bdk_window_set_icon (window->window, NULL,
@@ -10241,13 +10241,13 @@ create_wmhints (BtkWidget *widget)
  * Window state tracking
  */
 
-static gint
+static bint
 window_state_callback (BtkWidget *widget,
                        BdkEventWindowState *event,
-                       gpointer data)
+                       bpointer data)
 {
   BtkWidget *label = data;
-  gchar *msg;
+  bchar *msg;
 
   msg = g_strconcat (BTK_WINDOW (widget)->title, ": ",
                      (event->new_window_state & BDK_WINDOW_STATE_WITHDRAWN) ?
@@ -10351,7 +10351,7 @@ tracking_label (BtkWidget *window)
 }
 
 void
-keep_window_above (BtkToggleButton *togglebutton, gpointer data)
+keep_window_above (BtkToggleButton *togglebutton, bpointer data)
 {
   BtkWidget *button = g_object_get_data (B_OBJECT (togglebutton), "radio");
 
@@ -10363,7 +10363,7 @@ keep_window_above (BtkToggleButton *togglebutton, gpointer data)
 }
 
 void
-keep_window_below (BtkToggleButton *togglebutton, gpointer data)
+keep_window_below (BtkToggleButton *togglebutton, bpointer data)
 {
   BtkWidget *button = g_object_get_data (B_OBJECT (togglebutton), "radio");
 
@@ -10545,14 +10545,14 @@ create_window_states (BtkWidget *widget)
  * Window sizing
  */
 
-static gint
+static bint
 configure_event_callback (BtkWidget *widget,
                           BdkEventConfigure *event,
-                          gpointer data)
+                          bpointer data)
 {
   BtkWidget *label = data;
-  gchar *msg;
-  gint x, y;
+  bchar *msg;
+  bint x, y;
   
   btk_window_get_position (BTK_WINDOW (widget), &x, &y);
   
@@ -10570,8 +10570,8 @@ configure_event_callback (BtkWidget *widget,
 
 static void
 get_ints (BtkWidget *window,
-          gint      *a,
-          gint      *b)
+          bint      *a,
+          bint      *b)
 {
   BtkWidget *spin1;
   BtkWidget *spin2;
@@ -10585,9 +10585,9 @@ get_ints (BtkWidget *window,
 
 static void
 set_size_callback (BtkWidget *widget,
-                   gpointer   data)
+                   bpointer   data)
 {
-  gint w, h;
+  bint w, h;
   
   get_ints (data, &w, &h);
 
@@ -10596,7 +10596,7 @@ set_size_callback (BtkWidget *widget,
 
 static void
 unset_default_size_callback (BtkWidget *widget,
-                             gpointer   data)
+                             bpointer   data)
 {
   btk_window_set_default_size (g_object_get_data (data, "target"),
                                -1, -1);
@@ -10604,9 +10604,9 @@ unset_default_size_callback (BtkWidget *widget,
 
 static void
 set_default_size_callback (BtkWidget *widget,
-                           gpointer   data)
+                           bpointer   data)
 {
-  gint w, h;
+  bint w, h;
   
   get_ints (data, &w, &h);
 
@@ -10616,7 +10616,7 @@ set_default_size_callback (BtkWidget *widget,
 
 static void
 unset_size_request_callback (BtkWidget *widget,
-			     gpointer   data)
+			     bpointer   data)
 {
   btk_widget_set_size_request (g_object_get_data (data, "target"),
                                -1, -1);
@@ -10624,9 +10624,9 @@ unset_size_request_callback (BtkWidget *widget,
 
 static void
 set_size_request_callback (BtkWidget *widget,
-			   gpointer   data)
+			   bpointer   data)
 {
-  gint w, h;
+  bint w, h;
   
   get_ints (data, &w, &h);
 
@@ -10636,9 +10636,9 @@ set_size_request_callback (BtkWidget *widget,
 
 static void
 set_location_callback (BtkWidget *widget,
-                       gpointer   data)
+                       bpointer   data)
 {
-  gint x, y;
+  bint x, y;
   
   get_ints (data, &x, &y);
 
@@ -10647,9 +10647,9 @@ set_location_callback (BtkWidget *widget,
 
 static void
 move_to_position_callback (BtkWidget *widget,
-                           gpointer   data)
+                           bpointer   data)
 {
-  gint x, y;
+  bint x, y;
   BtkWindow *window;
 
   window = g_object_get_data (data, "target");
@@ -10661,9 +10661,9 @@ move_to_position_callback (BtkWidget *widget,
 
 static void
 set_geometry_callback (BtkWidget *entry,
-                       gpointer   data)
+                       bpointer   data)
 {
-  gchar *text;
+  bchar *text;
   BtkWindow *target;
 
   target = BTK_WINDOW (g_object_get_data (B_OBJECT (data), "target"));
@@ -10678,7 +10678,7 @@ set_geometry_callback (BtkWidget *entry,
 
 static void
 allow_shrink_callback (BtkWidget *widget,
-                       gpointer   data)
+                       bpointer   data)
 {
   g_object_set (g_object_get_data (data, "target"),
                 "allow_shrink",
@@ -10688,7 +10688,7 @@ allow_shrink_callback (BtkWidget *widget,
 
 static void
 allow_grow_callback (BtkWidget *widget,
-                     gpointer   data)
+                     bpointer   data)
 {
   g_object_set (g_object_get_data (data, "target"),
                 "allow_grow",
@@ -10698,7 +10698,7 @@ allow_grow_callback (BtkWidget *widget,
 
 static void
 gravity_selected (BtkWidget *widget,
-                  gpointer   data)
+                  bpointer   data)
 {
   btk_window_set_gravity (BTK_WINDOW (g_object_get_data (data, "target")),
                           btk_option_menu_get_history (BTK_OPTION_MENU (widget)) + BDK_GRAVITY_NORTH_WEST);
@@ -10706,7 +10706,7 @@ gravity_selected (BtkWidget *widget,
 
 static void
 pos_selected (BtkWidget *widget,
-              gpointer   data)
+              bpointer   data)
 {
   btk_window_set_position (BTK_WINDOW (g_object_get_data (data, "target")),
                            btk_option_menu_get_history (BTK_OPTION_MENU (widget)) + BTK_WIN_POS_NONE);
@@ -10714,9 +10714,9 @@ pos_selected (BtkWidget *widget,
 
 static void
 move_gravity_window_to_current_position (BtkWidget *widget,
-                                         gpointer   data)
+                                         bpointer   data)
 {
-  gint x, y;
+  bint x, y;
   BtkWindow *window;
 
   window = BTK_WINDOW (data);    
@@ -10728,8 +10728,8 @@ move_gravity_window_to_current_position (BtkWidget *widget,
 
 static void
 get_screen_corner (BtkWindow *window,
-                   gint      *x,
-                   gint      *y)
+                   bint      *x,
+                   bint      *y)
 {
   int w, h;
   BdkScreen * screen = btk_window_get_screen (window);
@@ -10797,9 +10797,9 @@ get_screen_corner (BtkWindow *window,
 
 static void
 move_gravity_window_to_starting_position (BtkWidget *widget,
-                                          gpointer   data)
+                                          bpointer   data)
 {
-  gint x, y;
+  bint x, y;
   BtkWindow *window;
 
   window = BTK_WINDOW (data);    
@@ -10813,7 +10813,7 @@ move_gravity_window_to_starting_position (BtkWidget *widget,
 static BtkWidget*
 make_gravity_window (BtkWidget   *destroy_with,
                      BdkGravity   gravity,
-                     const gchar *title)
+                     const bchar *title)
 {
   BtkWidget *window;
   BtkWidget *button;
@@ -10880,7 +10880,7 @@ make_gravity_window (BtkWidget   *destroy_with,
 
 static void
 do_gravity_test (BtkWidget *widget,
-                 gpointer   data)
+                 bpointer   data)
 {
   BtkWidget *destroy_with = data;
   BtkWidget *window;
@@ -10940,7 +10940,7 @@ window_controls (BtkWidget *window)
   BtkAdjustment *adj;
   BtkWidget *entry;
   BtkWidget *om;
-  gint i;
+  bint i;
   
   control_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
@@ -11102,7 +11102,7 @@ window_controls (BtkWidget *window)
   i = 0;
   while (i < 10)
     {
-      static gchar *names[] = {
+      static bchar *names[] = {
         "BDK_GRAVITY_NORTH_WEST",
         "BDK_GRAVITY_NORTH",
         "BDK_GRAVITY_NORTH_EAST",
@@ -11134,7 +11134,7 @@ window_controls (BtkWidget *window)
   i = 0;
   while (i < 5)
     {
-      static gchar *names[] = {
+      static bchar *names[] = {
         "BTK_WIN_POS_NONE",
         "BTK_WIN_POS_CENTER",
         "BTK_WIN_POS_MOUSE",
@@ -11222,10 +11222,10 @@ typedef struct _ProgressData {
   int timer;
 } ProgressData;
 
-gint
-progress_timeout (gpointer data)
+bint
+progress_timeout (bpointer data)
 {
-  gdouble new_val;
+  bdouble new_val;
   BtkAdjustment *adj;
 
   adj = BTK_PROGRESS (data)->adjustment;
@@ -11251,10 +11251,10 @@ destroy_progress (BtkWidget     *widget,
 }
 
 static void
-progressbar_toggle_orientation (BtkWidget *widget, gpointer data)
+progressbar_toggle_orientation (BtkWidget *widget, bpointer data)
 {
   ProgressData *pdata;
-  gint i;
+  bint i;
 
   pdata = (ProgressData *) data;
 
@@ -11281,21 +11281,21 @@ toggle_show_text (BtkWidget *widget, ProgressData *pdata)
 
 static void
 progressbar_toggle_ellipsize (BtkWidget *widget,
-                              gpointer   data)
+                              bpointer   data)
 {
   ProgressData *pdata = data;
   if (btk_widget_is_drawable (widget))
     {
-      gint i = btk_option_menu_get_history (BTK_OPTION_MENU (widget));
+      bint i = btk_option_menu_get_history (BTK_OPTION_MENU (widget));
       btk_progress_bar_set_ellipsize (BTK_PROGRESS_BAR (pdata->pbar), i);
     }
 }
 
 static void
-progressbar_toggle_bar_style (BtkWidget *widget, gpointer data)
+progressbar_toggle_bar_style (BtkWidget *widget, bpointer data)
 {
   ProgressData *pdata;
-  gint i;
+  bint i;
 
   pdata = (ProgressData *) data;
 
@@ -11390,7 +11390,7 @@ create_progress_bar (BtkWidget *widget)
   BtkAdjustment *adj;
   static ProgressData *pdata = NULL;
 
-  static gchar *items1[] =
+  static bchar *items1[] =
   {
     "Left-Right",
     "Right-Left",
@@ -11398,7 +11398,7 @@ create_progress_bar (BtkWidget *widget)
     "Top-Bottom"
   };
 
-  static gchar *items2[] =
+  static bchar *items2[] =
   {
     "Continuous",
     "Discrete"
@@ -11654,8 +11654,8 @@ create_progress_bar (BtkWidget *widget)
 typedef struct {
   int x;
   int y;
-  gboolean found;
-  gboolean first;
+  bboolean found;
+  bboolean first;
   BtkWidget *res_widget;
 } FindWidgetData;
 
@@ -11663,8 +11663,8 @@ static void
 find_widget (BtkWidget *widget, FindWidgetData *data)
 {
   BtkAllocation new_allocation;
-  gint x_offset = 0;
-  gint y_offset = 0;
+  bint x_offset = 0;
+  bint y_offset = 0;
 
   new_allocation = widget->allocation;
 
@@ -11688,7 +11688,7 @@ find_widget (BtkWidget *widget, FindWidgetData *data)
       BdkWindow *window = widget->window;
       while (window != widget->parent->window)
 	{
-	  gint tx, ty, twidth, theight;
+	  bint tx, ty, twidth, theight;
 	  bdk_drawable_get_size (window, &twidth, &theight);
 
 	  if (new_allocation.x < 0)
@@ -11758,14 +11758,14 @@ find_widget_at_pointer (BdkDisplay *display)
 {
   BtkWidget *widget = NULL;
   BdkWindow *pointer_window;
-  gint x, y;
+  bint x, y;
   FindWidgetData data;
  
  pointer_window = bdk_display_get_window_at_pointer (display, NULL, NULL);
  
  if (pointer_window)
    {
-     gpointer widget_ptr;
+     bpointer widget_ptr;
 
      bdk_window_get_user_data (pointer_window, &widget_ptr);
      widget = widget_ptr;
@@ -11792,8 +11792,8 @@ find_widget_at_pointer (BdkDisplay *display)
 struct PropertiesData {
   BtkWidget **window;
   BdkCursor *cursor;
-  gboolean in_query;
-  gint handler;
+  bboolean in_query;
+  bint handler;
 };
 
 static void
@@ -11821,7 +11821,7 @@ destroy_properties (BtkWidget             *widget,
   g_free (data);
 }
 
-static gint
+static bint
 property_query_event (BtkWidget	       *widget,
 		      BdkEvent	       *event,
 		      struct PropertiesData *data)
@@ -11855,7 +11855,7 @@ static void
 query_properties (BtkButton *button,
 		  struct PropertiesData *data)
 {
-  gint failure;
+  bint failure;
 
   g_signal_connect (button, "event",
 		    G_CALLBACK (property_query_event), data);
@@ -11930,9 +11930,9 @@ struct SnapshotData {
   BtkWidget *toplevel_button;
   BtkWidget **window;
   BdkCursor *cursor;
-  gboolean in_query;
-  gboolean is_toplevel;
-  gint handler;
+  bboolean in_query;
+  bboolean is_toplevel;
+  bint handler;
 };
 
 static void
@@ -11957,7 +11957,7 @@ destroy_snapshot_data (BtkWidget             *widget,
   g_free (data);
 }
 
-static gint
+static bint
 snapshot_widget_event (BtkWidget	       *widget,
 		       BdkEvent	       *event,
 		       struct SnapshotData *data)
@@ -12015,7 +12015,7 @@ static void
 snapshot_widget (BtkButton *button,
 		 struct SnapshotData *data)
 {
-  gint failure;
+  bint failure;
 
   g_signal_connect (button, "event",
 		    G_CALLBACK (snapshot_widget_event), data);
@@ -12098,11 +12098,11 @@ create_snapshot (BtkWidget *widget)
 
 static int color_idle = 0;
 
-gint
+bint
 color_idle_func (BtkWidget *preview)
 {
   static int count = 1;
-  guchar buf[768];
+  buchar buf[768];
   int i, j, k;
 
   for (i = 0; i < 256; i++)
@@ -12141,7 +12141,7 @@ create_color_preview (BtkWidget *widget)
 {
   static BtkWidget *window = NULL;
   BtkWidget *preview;
-  guchar buf[768];
+  buchar buf[768];
   int i, j, k;
 
   if (!window)
@@ -12190,11 +12190,11 @@ create_color_preview (BtkWidget *widget)
 
 static int gray_idle = 0;
 
-gint
+bint
 gray_idle_func (BtkWidget *preview)
 {
   static int count = 1;
-  guchar buf[256];
+  buchar buf[256];
   int i, j;
 
   for (i = 0; i < 256; i++)
@@ -12227,7 +12227,7 @@ create_gray_preview (BtkWidget *widget)
 {
   static BtkWidget *window = NULL;
   BtkWidget *preview;
-  guchar buf[256];
+  buchar buf[256];
   int i, j;
 
   if (!window)
@@ -12411,9 +12411,9 @@ create_gamma_curve (BtkWidget *widget)
 {
   static BtkWidget *window = NULL, *curve;
   static int count = 0;
-  gfloat vec[256];
-  gint max;
-  gint i;
+  bfloat vec[256];
+  bint max;
+  bint i;
   
   if (!window)
     {
@@ -12458,12 +12458,12 @@ create_gamma_curve (BtkWidget *widget)
 
 static int scroll_test_pos = 0.0;
 
-static gint
+static bint
 scroll_test_expose (BtkWidget *widget, BdkEventExpose *event,
 		    BtkAdjustment *adj)
 {
-  gint i,j;
-  gint imin, imax, jmin, jmax;
+  bint i,j;
+  bint imin, imax, jmin, jmax;
   bairo_t *cr;
   
   imin = (event->area.x) / 10;
@@ -12490,11 +12490,11 @@ scroll_test_expose (BtkWidget *widget, BdkEventExpose *event,
   return TRUE;
 }
 
-static gint
+static bint
 scroll_test_scroll (BtkWidget *widget, BdkEventScroll *event,
 		    BtkAdjustment *adj)
 {
-  gdouble new_value = adj->value + ((event->direction == BDK_SCROLL_UP) ?
+  bdouble new_value = adj->value + ((event->direction == BDK_SCROLL_UP) ?
 				    -adj->page_increment / 2:
 				    adj->page_increment / 2);
   new_value = CLAMP (new_value, adj->lower, adj->upper - adj->page_size);
@@ -12516,8 +12516,8 @@ scroll_test_configure (BtkWidget *widget, BdkEventConfigure *event,
 static void
 scroll_test_adjustment_changed (BtkAdjustment *adj, BtkWidget *widget)
 {
-  /* gint source_min = (int)adj->value - scroll_test_pos; */
-  gint dy;
+  /* bint source_min = (int)adj->value - scroll_test_pos; */
+  bint dy;
 
   dy = scroll_test_pos - (int)adj->value;
   scroll_test_pos = adj->value;
@@ -12625,7 +12625,7 @@ create_scroll_test (BtkWidget *widget)
 
 static int timer = 0;
 
-gint
+bint
 timeout_test (BtkWidget *label)
 {
   static int count = 0;
@@ -12649,7 +12649,7 @@ start_timeout_test (BtkWidget *widget,
 
 void
 stop_timeout_test (BtkWidget *widget,
-		   gpointer   data)
+		   bpointer   data)
 {
   if (timer)
     {
@@ -12735,7 +12735,7 @@ create_timeout_test (BtkWidget *widget)
 
 static int idle_id = 0;
 
-static gint
+static bint
 idle_test (BtkWidget *label)
 {
   static int count = 0;
@@ -12759,7 +12759,7 @@ start_idle_test (BtkWidget *widget,
 
 static void
 stop_idle_test (BtkWidget *widget,
-		gpointer   data)
+		bpointer   data)
 {
   if (idle_id)
     {
@@ -12781,7 +12781,7 @@ static void
 toggle_idle_container (BObject *button,
 		       BtkContainer *container)
 {
-  btk_container_set_resize_mode (container, GPOINTER_TO_INT (g_object_get_data (button, "user_data")));
+  btk_container_set_resize_mode (container, BPOINTER_TO_INT (g_object_get_data (button, "user_data")));
 }
 
 static void
@@ -13064,15 +13064,15 @@ create_mainloop (BtkWidget *widget)
     btk_widget_destroy (window);
 }
 
-gboolean
+bboolean
 layout_expose_handler (BtkWidget *widget, BdkEventExpose *event)
 {
   BtkLayout *layout;
   BdkWindow *bin_window;
   bairo_t *cr;
 
-  gint i,j;
-  gint imin, imax, jmin, jmax;
+  bint i,j;
+  bint imin, imax, jmin, jmax;
 
   layout = BTK_LAYOUT (widget);
   bin_window = btk_layout_get_bin_window (layout);
@@ -13111,9 +13111,9 @@ void create_layout (BtkWidget *widget)
 
   if (!window)
     {
-      gchar buf[16];
+      bchar buf[16];
 
-      gint i, j;
+      bint i, j;
       
       window = btk_window_new (BTK_WINDOW_TOPLEVEL);
       btk_window_set_screen (BTK_WINDOW (window),
@@ -13324,7 +13324,7 @@ do_exit (BtkWidget *widget, BtkWidget *window)
 struct {
   char *label;
   void (*func) (BtkWidget *widget);
-  gboolean do_not_benchmark;
+  bboolean do_not_benchmark;
 } buttons[] =
 {
   { "alpha window", create_alpha_window },
@@ -13408,7 +13408,7 @@ create_main_window (void)
   BtkWidget *scrolled_window;
   BtkWidget *button;
   BtkWidget *label;
-  gchar buffer[64];
+  bchar buffer[64];
   BtkWidget *separator;
   BdkGeometry geometry;
   int i;
@@ -13421,7 +13421,7 @@ create_main_window (void)
   geometry.min_width = -1;
   geometry.min_height = -1;
   geometry.max_width = -1;
-  geometry.max_height = G_MAXSHORT;
+  geometry.max_height = B_MAXSHORT;
   btk_window_set_geometry_hints (BTK_WINDOW (window), NULL,
 				 &geometry,
 				 BDK_HINT_MIN_SIZE | BDK_HINT_MAX_SIZE);
@@ -13541,7 +13541,7 @@ do_real_bench (BtkWidget *widget, void (* fn) (BtkWidget *widget), char *name, i
   double dt_first;
   double dt;
   int n;
-  static gboolean printed_headers = FALSE;
+  static bboolean printed_headers = FALSE;
 
   if (!printed_headers) {
     g_print ("Test                 Iters      First      Other\n");
@@ -13619,7 +13619,7 @@ main (int argc, char *argv[])
 {
   BtkBindingSet *binding_set;
   int i;
-  gboolean done_benchmarks = FALSE;
+  bboolean done_benchmarks = FALSE;
 
   srand (time (NULL));
 

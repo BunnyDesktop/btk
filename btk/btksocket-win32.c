@@ -90,7 +90,7 @@ _btk_socket_windowing_size_request (BtkSocket *socket)
 void
 _btk_socket_windowing_send_key_event (BtkSocket *socket,
 				      BdkEvent  *bdk_event,
-				      gboolean   mask_key_presses)
+				      bboolean   mask_key_presses)
 {
   PostMessage (BDK_WINDOW_HWND (socket->plug_window),
 	       (bdk_event->type == BDK_KEY_PRESS ? WM_KEYDOWN : WM_KEYUP),
@@ -99,7 +99,7 @@ _btk_socket_windowing_send_key_event (BtkSocket *socket,
 
 void
 _btk_socket_windowing_focus_change (BtkSocket *socket,
-				    gboolean   focus_in)
+				    bboolean   focus_in)
 {
   if (focus_in)
     _btk_win32_embed_send_focus_message (socket->plug_window,
@@ -113,7 +113,7 @@ _btk_socket_windowing_focus_change (BtkSocket *socket,
 
 void
 _btk_socket_windowing_update_active (BtkSocket *socket,
-				     gboolean   active)
+				     bboolean   active)
 {
   _btk_win32_embed_send (socket->plug_window,
 			 (active ? BTK_WIN32_EMBED_WINDOW_ACTIVATE : BTK_WIN32_EMBED_WINDOW_DEACTIVATE),
@@ -122,7 +122,7 @@ _btk_socket_windowing_update_active (BtkSocket *socket,
 
 void
 _btk_socket_windowing_update_modality (BtkSocket *socket,
-				       gboolean   modality)
+				       bboolean   modality)
 {
   _btk_win32_embed_send (socket->plug_window,
 			 (modality ? BTK_WIN32_EMBED_MODALITY_ON : BTK_WIN32_EMBED_MODALITY_OFF),
@@ -178,7 +178,7 @@ _btk_socket_windowing_embed_notify (BtkSocket *socket)
   /* XXX Nothing needed? */
 }
 
-gboolean
+bboolean
 _btk_socket_windowing_embed_get_focus_wrapped (void)
 {
   return _btk_win32_embed_get_focus_wrapped ();
@@ -193,7 +193,7 @@ _btk_socket_windowing_embed_set_focus_wrapped (void)
 BdkFilterReturn
 _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 				   BdkEvent  *event,
-				   gpointer   data)
+				   bpointer   data)
 {
   BtkSocket *socket;
   BtkWidget *widget;
@@ -216,7 +216,7 @@ _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
       if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_PARENT_NOTIFY))
 	{
 	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkSocket: PARENT_NOTIFY received window=%p version=%d\n",
-					    (gpointer) msg->wParam, (int) msg->lParam));
+					    (bpointer) msg->wParam, (int) msg->lParam));
 	  /* If we some day different protocols deployed need to add
 	   * some more elaborate version handshake
 	   */
@@ -236,8 +236,8 @@ _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 	}
       else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_EVENT_PLUG_MAPPED))
 	{
-	  gboolean was_mapped = socket->is_mapped;
-	  gboolean is_mapped = msg->wParam != 0;
+	  bboolean was_mapped = socket->is_mapped;
+	  bboolean is_mapped = msg->wParam != 0;
 
 	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkSocket: PLUG_MAPPED received is_mapped:%d\n", is_mapped));
 	  if (was_mapped != is_mapped)

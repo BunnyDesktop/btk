@@ -43,20 +43,20 @@ struct _BtkRecentActionPrivate
 {
   BtkRecentManager *manager;
 
-  guint show_numbers   : 1;
+  buint show_numbers   : 1;
 
   /* RecentChooser properties */
-  guint show_private   : 1;
-  guint show_not_found : 1;
-  guint show_tips      : 1;
-  guint show_icons     : 1;
-  guint local_only     : 1;
+  buint show_private   : 1;
+  buint show_not_found : 1;
+  buint show_tips      : 1;
+  buint show_icons     : 1;
+  buint local_only     : 1;
 
-  gint limit;
+  bint limit;
 
   BtkRecentSortType sort_type;
   BtkRecentSortFunc sort_func;
-  gpointer          sort_data;
+  bpointer          sort_data;
   GDestroyNotify    data_destroy;
 
   BtkRecentFilter *current_filter;
@@ -80,9 +80,9 @@ G_DEFINE_TYPE_WITH_CODE (BtkRecentAction,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_RECENT_CHOOSER,
                                                 btk_recent_chooser_iface_init));
 
-static gboolean
+static bboolean
 btk_recent_action_set_current_uri (BtkRecentChooser  *chooser,
-                                   const gchar       *uri,
+                                   const bchar       *uri,
                                    GError           **error)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -100,7 +100,7 @@ btk_recent_action_set_current_uri (BtkRecentChooser  *chooser,
   return TRUE;
 }
 
-static gchar *
+static bchar *
 btk_recent_action_get_current_uri (BtkRecentChooser *chooser)
 {
   BtkRecentAction *recent_action = BTK_RECENT_ACTION (chooser);
@@ -112,9 +112,9 @@ btk_recent_action_get_current_uri (BtkRecentChooser *chooser)
   return NULL;
 }
 
-static gboolean
+static bboolean
 btk_recent_action_select_uri (BtkRecentChooser  *chooser,
-                              const gchar       *uri,
+                              const bchar       *uri,
                               GError           **error)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -134,7 +134,7 @@ btk_recent_action_select_uri (BtkRecentChooser  *chooser,
 
 static void
 btk_recent_action_unselect_uri (BtkRecentChooser *chooser,
-                                const gchar      *uri)
+                                const bchar      *uri)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
   BtkRecentActionPrivate *priv = action->priv;
@@ -186,7 +186,7 @@ btk_recent_action_get_recent_manager (BtkRecentChooser *chooser)
 static void
 btk_recent_action_set_sort_func (BtkRecentChooser  *chooser,
                                  BtkRecentSortFunc  sort_func,
-                                 gpointer           sort_data,
+                                 bpointer           sort_data,
                                  GDestroyNotify     data_destroy)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -490,7 +490,7 @@ btk_recent_action_dispose (BObject *bobject)
 
 static void
 btk_recent_action_set_property (BObject      *bobject,
-                                guint         prop_id,
+                                buint         prop_id,
                                 const BValue *value,
                                 BParamSpec   *pspec)
 {
@@ -542,7 +542,7 @@ btk_recent_action_set_property (BObject      *bobject,
 
 static void
 btk_recent_action_get_property (BObject    *bobject,
-                                guint       prop_id,
+                                buint       prop_id,
                                 BValue     *value,
                                 BParamSpec *pspec)
 {
@@ -663,10 +663,10 @@ btk_recent_action_init (BtkRecentAction *action)
  * Since: 2.12
  */
 BtkAction *
-btk_recent_action_new (const gchar *name,
-                       const gchar *label,
-                       const gchar *tooltip,
-                       const gchar *stock_id)
+btk_recent_action_new (const bchar *name,
+                       const bchar *label,
+                       const bchar *tooltip,
+                       const bchar *stock_id)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
@@ -697,10 +697,10 @@ btk_recent_action_new (const gchar *name,
  * Since: 2.12
  */
 BtkAction *
-btk_recent_action_new_for_manager (const gchar      *name,
-                                   const gchar      *label,
-                                   const gchar      *tooltip,
-                                   const gchar      *stock_id,
+btk_recent_action_new_for_manager (const bchar      *name,
+                                   const bchar      *label,
+                                   const bchar      *tooltip,
+                                   const bchar      *stock_id,
                                    BtkRecentManager *manager)
 {
   g_return_val_if_fail (name != NULL, NULL);
@@ -725,7 +725,7 @@ btk_recent_action_new_for_manager (const gchar      *name,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_recent_action_get_show_numbers (BtkRecentAction *action)
 {
   g_return_val_if_fail (BTK_IS_RECENT_ACTION (action), FALSE);
@@ -747,7 +747,7 @@ btk_recent_action_get_show_numbers (BtkRecentAction *action)
  */
 void
 btk_recent_action_set_show_numbers (BtkRecentAction *action,
-                                    gboolean         show_numbers)
+                                    bboolean         show_numbers)
 {
   BtkRecentActionPrivate *priv;
 

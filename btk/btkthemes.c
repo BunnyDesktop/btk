@@ -47,7 +47,7 @@ struct _BtkThemeEngine
   void (*exit) (void);
   BtkRcStyle *(*create_rc_style) ();
 
-  gchar *name;
+  bchar *name;
 };
 
 struct _BtkThemeEngineClass
@@ -57,12 +57,12 @@ struct _BtkThemeEngineClass
 
 static GHashTable *engine_hash = NULL;
 
-static gboolean
+static bboolean
 btk_theme_engine_load (GTypeModule *module)
 {
   BtkThemeEngine *engine = BTK_THEME_ENGINE (module);
   
-  gchar *engine_path;
+  bchar *engine_path;
       
   engine_path = btk_rc_find_module_in_path (engine->name);
   
@@ -87,11 +87,11 @@ btk_theme_engine_load (GTypeModule *module)
   
   /* extract symbols from the lib */
   if (!g_module_symbol (engine->library, "theme_init",
-			(gpointer *)&engine->init) ||
+			(bpointer *)&engine->init) ||
       !g_module_symbol (engine->library, "theme_exit", 
-			(gpointer *)&engine->exit) ||
+			(bpointer *)&engine->exit) ||
       !g_module_symbol (engine->library, "theme_create_rc_style", 
-			(gpointer *)&engine->create_rc_style))
+			(bpointer *)&engine->create_rc_style))
     {
       g_warning ("%s", g_module_error());
       g_module_close (engine->library);
@@ -158,7 +158,7 @@ btk_theme_engine_get_type (void)
 }
 
 BtkThemeEngine*
-btk_theme_engine_get (const gchar *name)
+btk_theme_engine_get (const bchar *name)
 {
   BtkThemeEngine *result;
   

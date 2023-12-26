@@ -53,11 +53,11 @@
 
 /* returns the column index from a x pixel location in the
  * context of the clist's hoffset */
-static inline gint
+static inline bint
 COLUMN_FROM_XPIXEL (BtkCList * clist,
-                    gint x)
+                    bint x)
 {
-  gint i, cx;
+  bint i, cx;
 
   for (i = 0; i < clist->columns; i++)
     if (clist->column[i].visible)
@@ -85,10 +85,10 @@ COLUMN_FROM_XPIXEL (BtkCList * clist,
 #define LIST_HEIGHT(clist)         (((clist)->row_height * ((clist)->rows)) + \
                                     (CELL_SPACING * ((clist)->rows + 1)))
 
-static inline gint
+static inline bint
 LIST_WIDTH (BtkCList * clist)
 {
-  gint last_column;
+  bint last_column;
 
   for (last_column = clist->columns - 1;
        last_column >= 0 && !clist->column[last_column].visible; last_column--);
@@ -112,81 +112,81 @@ typedef struct _BailCListCellData   BailCListCellData;
 static void       bail_clist_class_init            (BailCListClass    *klass);
 static void       bail_clist_init                  (BailCList         *clist);
 static void       bail_clist_real_initialize       (BatkObject         *obj,
-                                                    gpointer          data);
+                                                    bpointer          data);
 static void       bail_clist_finalize              (BObject           *object);
 
-static gint       bail_clist_get_n_children        (BatkObject         *obj);
+static bint       bail_clist_get_n_children        (BatkObject         *obj);
 static BatkObject* bail_clist_ref_child             (BatkObject         *obj,
-                                                    gint              i);
+                                                    bint              i);
 static BatkStateSet* bail_clist_ref_state_set       (BatkObject         *obj);
 
 
 static void       batk_selection_interface_init     (BatkSelectionIface *iface);
-static gboolean   bail_clist_clear_selection       (BatkSelection   *selection);
+static bboolean   bail_clist_clear_selection       (BatkSelection   *selection);
 
 static BatkObject* bail_clist_ref_selection         (BatkSelection   *selection,
-                                                    gint           i);
-static gint       bail_clist_get_selection_count   (BatkSelection   *selection);
-static gboolean   bail_clist_is_child_selected     (BatkSelection   *selection,
-                                                    gint           i);
-static gboolean   bail_clist_select_all_selection  (BatkSelection   *selection);
+                                                    bint           i);
+static bint       bail_clist_get_selection_count   (BatkSelection   *selection);
+static bboolean   bail_clist_is_child_selected     (BatkSelection   *selection,
+                                                    bint           i);
+static bboolean   bail_clist_select_all_selection  (BatkSelection   *selection);
 
 static void       batk_table_interface_init         (BatkTableIface     *iface);
-static gint       bail_clist_get_index_at          (BatkTable      *table,
-                                                    gint          row,
-                                                    gint          column);
-static gint       bail_clist_get_column_at_index   (BatkTable      *table,
-                                                    gint          index);
-static gint       bail_clist_get_row_at_index      (BatkTable      *table,
-                                                    gint          index);
+static bint       bail_clist_get_index_at          (BatkTable      *table,
+                                                    bint          row,
+                                                    bint          column);
+static bint       bail_clist_get_column_at_index   (BatkTable      *table,
+                                                    bint          index);
+static bint       bail_clist_get_row_at_index      (BatkTable      *table,
+                                                    bint          index);
 static BatkObject* bail_clist_ref_at                (BatkTable      *table,
-                                                    gint          row,
-                                                    gint          column);
+                                                    bint          row,
+                                                    bint          column);
 static BatkObject* bail_clist_ref_at_actual         (BatkTable      *table,
-                                                    gint          row,
-                                                    gint          column);
+                                                    bint          row,
+                                                    bint          column);
 static BatkObject*
                   bail_clist_get_caption           (BatkTable      *table);
 
-static gint       bail_clist_get_n_columns         (BatkTable      *table);
-static gint       bail_clist_get_n_actual_columns  (BtkCList      *clist);
+static bint       bail_clist_get_n_columns         (BatkTable      *table);
+static bint       bail_clist_get_n_actual_columns  (BtkCList      *clist);
 
-static const gchar*
+static const bchar*
                   bail_clist_get_column_description(BatkTable      *table,
-                                                    gint          column);
+                                                    bint          column);
 static BatkObject*  bail_clist_get_column_header     (BatkTable      *table,
-                                                    gint          column);
-static gint       bail_clist_get_n_rows            (BatkTable      *table);
-static const gchar*
+                                                    bint          column);
+static bint       bail_clist_get_n_rows            (BatkTable      *table);
+static const bchar*
                   bail_clist_get_row_description   (BatkTable      *table,
-                                                    gint          row);
+                                                    bint          row);
 static BatkObject*  bail_clist_get_row_header        (BatkTable      *table,
-                                                    gint          row);
+                                                    bint          row);
 static BatkObject* bail_clist_get_summary           (BatkTable      *table);
-static gboolean   bail_clist_add_row_selection     (BatkTable      *table,
-                                                    gint          row);
-static gboolean   bail_clist_remove_row_selection  (BatkTable      *table,
-                                                    gint          row);
-static gint       bail_clist_get_selected_rows     (BatkTable      *table,
-                                                    gint          **rows_selected);
-static gboolean   bail_clist_is_row_selected       (BatkTable      *table,
-                                                    gint          row);
-static gboolean   bail_clist_is_selected           (BatkTable      *table,
-                                                    gint          row,
-                                                    gint          column);
+static bboolean   bail_clist_add_row_selection     (BatkTable      *table,
+                                                    bint          row);
+static bboolean   bail_clist_remove_row_selection  (BatkTable      *table,
+                                                    bint          row);
+static bint       bail_clist_get_selected_rows     (BatkTable      *table,
+                                                    bint          **rows_selected);
+static bboolean   bail_clist_is_row_selected       (BatkTable      *table,
+                                                    bint          row);
+static bboolean   bail_clist_is_selected           (BatkTable      *table,
+                                                    bint          row,
+                                                    bint          column);
 static void       bail_clist_set_caption           (BatkTable      *table,
                                                     BatkObject     *caption);
 static void       bail_clist_set_column_description(BatkTable      *table,
-                                                    gint          column,
-                                                    const gchar   *description);
+                                                    bint          column,
+                                                    const bchar   *description);
 static void       bail_clist_set_column_header     (BatkTable      *table,
-                                                    gint          column,
+                                                    bint          column,
                                                     BatkObject     *header);
 static void       bail_clist_set_row_description   (BatkTable      *table,
-                                                    gint          row,
-                                                    const gchar   *description);
+                                                    bint          row,
+                                                    const bchar   *description);
 static void       bail_clist_set_row_header        (BatkTable      *table,
-                                                    gint          row,
+                                                    bint          row,
                                                     BatkObject     *header);
 static void       bail_clist_set_summary           (BatkTable      *table,
                                                     BatkObject     *accessible);
@@ -196,10 +196,10 @@ static void       bail_clist_set_summary           (BatkTable      *table,
 static void       bail_cell_parent_interface_init  (BailCellParentIface *iface);
 static void       bail_clist_get_cell_extents      (BailCellParent      *parent,
                                                     BailCell            *cell,
-                                                    gint                *x,
-                                                    gint                *y,
-                                                    gint                *width,
-                                                    gint                *height,
+                                                    bint                *x,
+                                                    bint                *y,
+                                                    bint                *width,
+                                                    bint                *height,
                                                     BatkCoordType        coord_type);
 
 static void       bail_clist_get_cell_area         (BailCellParent      *parent,
@@ -210,43 +210,43 @@ static void       bail_clist_select_row_btk        (BtkCList      *clist,
                                                     int           row,
                                                     int           column,
                                                     BdkEvent      *event,
-                                                    gpointer      data);
+                                                    bpointer      data);
 static void       bail_clist_unselect_row_btk      (BtkCList      *clist,
                                                     int           row,
                                                     int           column,
                                                     BdkEvent      *event,
-                                                    gpointer      data);
-static gint       bail_clist_get_visible_column    (BatkTable      *table,
+                                                    bpointer      data);
+static bint       bail_clist_get_visible_column    (BatkTable      *table,
                                                     int           column);
-static gint       bail_clist_get_actual_column     (BatkTable      *table,
+static bint       bail_clist_get_actual_column     (BatkTable      *table,
                                                     int           visible_column);
 static void       bail_clist_set_row_data          (BatkTable      *table,
-                                                    gint          row,
-                                                    const gchar   *description,
+                                                    bint          row,
+                                                    const bchar   *description,
                                                     BatkObject     *header,
-                                                    gboolean      is_header);
+                                                    bboolean      is_header);
 static BailCListRow*
                   bail_clist_get_row_data          (BatkTable      *table,
-                                                    gint          row);
+                                                    bint          row);
 static void       bail_clist_get_visible_rect      (BtkCList      *clist,
                                                     BdkRectangle  *clist_rect);
-static gboolean   bail_clist_is_cell_visible       (BdkRectangle  *cell_rect,
+static bboolean   bail_clist_is_cell_visible       (BdkRectangle  *cell_rect,
                                                     BdkRectangle  *visible_rect);
 static void       bail_clist_cell_data_new         (BailCList     *clist,
                                                     BailCell      *cell,
-                                                    gint          column,
-                                                    gint          row);
-static void       bail_clist_cell_destroyed        (gpointer      data);
+                                                    bint          column,
+                                                    bint          row);
+static void       bail_clist_cell_destroyed        (bpointer      data);
 static void       bail_clist_cell_data_remove      (BailCList     *clist,
                                                     BailCell      *cell);
 static BailCell*  bail_clist_find_cell             (BailCList     *clist,
-                                                    gint          index);
+                                                    bint          index);
 static void       bail_clist_adjustment_changed    (BtkAdjustment *adjustment,
                                                     BtkCList      *clist);
 
 struct _BailCListColumn
 {
-  gchar *description;
+  bchar *description;
   BatkObject *header;
 };
 
@@ -254,7 +254,7 @@ struct _BailCListRow
 {
   BtkCListRow *row_data;
   int row_number;
-  gchar *description;
+  bchar *description;
   BatkObject *header;
 };
 
@@ -292,11 +292,11 @@ bail_clist_init (BailCList *clist)
 
 static void
 bail_clist_real_initialize (BatkObject *obj,
-                            gpointer  data)
+                            bpointer  data)
 {
   BailCList *clist;
   BtkCList *btk_clist;
-  gint i;
+  bint i;
 
   BATK_OBJECT_CLASS (bail_clist_parent_class)->initialize (obj, data);
 
@@ -353,7 +353,7 @@ static void
 bail_clist_finalize (BObject            *object)
 {
   BailCList *clist = BAIL_CLIST (object);
-  gint i;
+  bint i;
   GArray *array;
 
   if (clist->caption)
@@ -402,11 +402,11 @@ bail_clist_finalize (BObject            *object)
   B_OBJECT_CLASS (bail_clist_parent_class)->finalize (object);
 }
 
-static gint
+static bint
 bail_clist_get_n_children (BatkObject *obj)
 {
   BtkWidget *widget;
-  gint row, col;
+  bint row, col;
 
   g_return_val_if_fail (BAIL_IS_CLIST (obj), 0);
 
@@ -424,11 +424,11 @@ bail_clist_get_n_children (BatkObject *obj)
 
 static BatkObject*
 bail_clist_ref_child (BatkObject *obj,
-                      gint      i)
+                      bint      i)
 {
   BtkWidget *widget;
-  gint row, col;
-  gint n_columns;
+  bint row, col;
+  bint n_columns;
 
   g_return_val_if_fail (BAIL_IS_CLIST (obj), NULL);
   g_return_val_if_fail (i >= 0, NULL);
@@ -474,7 +474,7 @@ batk_selection_interface_init (BatkSelectionIface *iface)
   iface->select_all_selection = bail_clist_select_all_selection;
 }
 
-static gboolean
+static bboolean
 bail_clist_clear_selection (BatkSelection   *selection)
 {
   BtkCList *clist;
@@ -492,12 +492,12 @@ bail_clist_clear_selection (BatkSelection   *selection)
 
 static BatkObject*
 bail_clist_ref_selection (BatkSelection   *selection,
-                          gint           i)
+                          bint           i)
 {
-  gint visible_columns;
-  gint selected_row;
-  gint selected_column;
-  gint *selected_rows;
+  bint visible_columns;
+  bint selected_row;
+  bint selected_column;
+  bint *selected_rows;
 
   if ( i < 0 && i >= bail_clist_get_selection_count (selection))
     return NULL;
@@ -513,10 +513,10 @@ bail_clist_ref_selection (BatkSelection   *selection,
                             selected_column);
 }
 
-static gint
+static bint
 bail_clist_get_selection_count (BatkSelection   *selection)
 {
-  gint n_rows_selected;
+  bint n_rows_selected;
 
   n_rows_selected = bail_clist_get_selected_rows (BATK_TABLE (selection), NULL);
 
@@ -529,11 +529,11 @@ bail_clist_get_selection_count (BatkSelection   *selection)
   return 0;
 }
 
-static gboolean
+static bboolean
 bail_clist_is_child_selected (BatkSelection   *selection,
-                              gint           i)
+                              bint           i)
 {
-  gint row;
+  bint row;
 
   row = batk_table_get_row_at_index (BATK_TABLE (selection), i);
 
@@ -542,7 +542,7 @@ bail_clist_is_child_selected (BatkSelection   *selection,
   return bail_clist_is_row_selected (BATK_TABLE (selection), row);
 }
 
-static gboolean
+static bboolean
 bail_clist_select_all_selection (BatkSelection   *selection)
 {
   BtkCList *clist;
@@ -590,11 +590,11 @@ batk_table_interface_init (BatkTableIface *iface)
 
 static BatkObject*
 bail_clist_ref_at (BatkTable *table,
-                   gint     row,
-                   gint     column)
+                   bint     row,
+                   bint     column)
 {
   BtkWidget *widget;
-  gint actual_column;
+  bint actual_column;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -608,8 +608,8 @@ bail_clist_ref_at (BatkTable *table,
 
 static BatkObject*
 bail_clist_ref_at_actual (BatkTable      *table,
-                          gint          row,
-                          gint          column)
+                          bint          row,
+                          bint          column)
 {
   /*
    * The column number pased to this function is the actual column number
@@ -620,8 +620,8 @@ bail_clist_ref_at_actual (BatkTable      *table,
   BtkWidget *widget;
   BtkCellType cellType;
   BatkObject *return_object;
-  gint n_rows, n_columns;
-  gint index;
+  bint n_rows, n_columns;
+  bint index;
   BailCell *cell;
 
   g_return_val_if_fail (BTK_IS_ACCESSIBLE (table), NULL);
@@ -704,12 +704,12 @@ bail_clist_ref_at_actual (BatkTable      *table,
   return return_object; 
 }
 
-static gint
+static bint
 bail_clist_get_index_at (BatkTable *table,
-                         gint     row,
-                         gint     column)
+                         bint     row,
+                         bint     column)
 {
-  gint n_cols, n_rows;
+  bint n_cols, n_rows;
 
   n_cols = batk_table_get_n_columns (table);
   n_rows = batk_table_get_n_rows (table);
@@ -720,32 +720,32 @@ bail_clist_get_index_at (BatkTable *table,
   return row * n_cols + column;
 }
 
-static gint
+static bint
 bail_clist_get_column_at_index (BatkTable *table,
-                                gint     index)
+                                bint     index)
 {
-  gint n_cols;
+  bint n_cols;
 
   n_cols = batk_table_get_n_columns (table);
 
   if (n_cols == 0)
     return 0;
   else
-    return (gint) (index % n_cols);
+    return (bint) (index % n_cols);
 }
 
-static gint
+static bint
 bail_clist_get_row_at_index (BatkTable *table,
-                             gint     index)
+                             bint     index)
 {
-  gint n_cols;
+  bint n_cols;
 
   n_cols = batk_table_get_n_columns (table);
 
   if (n_cols == 0)
     return 0;
   else
-    return (gint) (index / n_cols);
+    return (bint) (index / n_cols);
 }
 
 static BatkObject*
@@ -756,7 +756,7 @@ bail_clist_get_caption (BatkTable      *table)
   return obj->caption;
 }
 
-static gint
+static bint
 bail_clist_get_n_columns (BatkTable      *table)
 {
   BtkWidget *widget;
@@ -773,19 +773,19 @@ bail_clist_get_n_columns (BatkTable      *table)
                                   bail_clist_get_n_actual_columns (clist)); 
 }
 
-static gint
+static bint
 bail_clist_get_n_actual_columns (BtkCList *clist)
 {
   return clist->columns;
 }
 
-static const gchar*
+static const bchar*
 bail_clist_get_column_description (BatkTable      *table,
-                                   gint          column)
+                                   bint          column)
 {
   BailCList *clist = BAIL_CLIST (table);
   BtkWidget *widget;
-  gint actual_column;
+  bint actual_column;
 
   if (column < 0 || column >= bail_clist_get_n_columns (table))
     return NULL;
@@ -803,12 +803,12 @@ bail_clist_get_column_description (BatkTable      *table,
 
 static BatkObject*
 bail_clist_get_column_header (BatkTable      *table,
-                              gint          column)
+                              bint          column)
 {
   BailCList *clist = BAIL_CLIST (table);
   BtkWidget *widget;
   BtkWidget *return_widget;
-  gint actual_column;
+  bint actual_column;
 
   if (column < 0 || column >= bail_clist_get_n_columns (table))
     return NULL;
@@ -833,7 +833,7 @@ bail_clist_get_column_header (BatkTable      *table,
   return btk_widget_get_accessible (return_widget);
 }
 
-static gint
+static bint
 bail_clist_get_n_rows (BatkTable      *table)
 {
   BtkWidget *widget;
@@ -848,9 +848,9 @@ bail_clist_get_n_rows (BatkTable      *table)
   return clist->rows;
 }
 
-static const gchar*
+static const bchar*
 bail_clist_get_row_description (BatkTable      *table,
-                                gint          row)
+                                bint          row)
 {
   BailCListRow* row_data;
 
@@ -862,7 +862,7 @@ bail_clist_get_row_description (BatkTable      *table,
 
 static BatkObject*
 bail_clist_get_row_header (BatkTable      *table,
-                           gint          row)
+                           bint          row)
 {
   BailCListRow* row_data;
 
@@ -880,9 +880,9 @@ bail_clist_get_summary (BatkTable      *table)
   return obj->summary;
 }
 
-static gboolean
+static bboolean
 bail_clist_add_row_selection (BatkTable      *table,
-                              gint          row)
+                              bint          row)
 {
   BtkWidget *widget;
   BtkCList *clist;
@@ -900,9 +900,9 @@ bail_clist_add_row_selection (BatkTable      *table,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_clist_remove_row_selection (BatkTable      *table,
-                                 gint          row)
+                                 bint          row)
 {
   BtkWidget *widget;
   BtkCList *clist;
@@ -921,15 +921,15 @@ bail_clist_remove_row_selection (BatkTable      *table,
   return FALSE;
 }
 
-static gint
+static bint
 bail_clist_get_selected_rows (BatkTable *table,
-                              gint     **rows_selected)
+                              bint     **rows_selected)
 {
   BtkWidget *widget;
   BtkCList *clist;
   GList *list;
-  gint n_selected;
-  gint i;
+  bint n_selected;
+  bint i;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -945,15 +945,15 @@ bail_clist_get_selected_rows (BatkTable *table,
 
   if (rows_selected)
     {
-      gint *selected_rows;
+      bint *selected_rows;
 
-      selected_rows = (gint*) g_malloc (sizeof (gint) * n_selected);
+      selected_rows = (bint*) g_malloc (sizeof (bint) * n_selected);
       list = clist->selection;
 
       i = 0;
       while (list)
         {
-          selected_rows[i++] = GPOINTER_TO_INT (list->data);
+          selected_rows[i++] = BPOINTER_TO_INT (list->data);
           list = list->next;
         }
       *rows_selected = selected_rows;
@@ -961,9 +961,9 @@ bail_clist_get_selected_rows (BatkTable *table,
   return n_selected;
 }
 
-static gboolean
+static bboolean
 bail_clist_is_row_selected (BatkTable      *table,
-                            gint          row)
+                            bint          row)
 {
   GList *elem;
   BtkWidget *widget;
@@ -988,10 +988,10 @@ bail_clist_is_row_selected (BatkTable      *table,
   return (clist_row->state == BTK_STATE_SELECTED);
 }
 
-static gboolean
+static bboolean
 bail_clist_is_selected (BatkTable      *table,
-                        gint          row,
-                        gint          column)
+                        bint          row,
+                        bint          column)
 {
   return bail_clist_is_row_selected (table, row);
 }
@@ -1024,12 +1024,12 @@ bail_clist_set_caption (BatkTable      *table,
 
 static void
 bail_clist_set_column_description (BatkTable      *table,
-                                   gint          column,
-                                   const gchar   *description)
+                                   bint          column,
+                                   const bchar   *description)
 {
   BailCList *clist = BAIL_CLIST (table);
   BatkPropertyValues values = { NULL };
-  gint actual_column;
+  bint actual_column;
 
   if (column < 0 || column >= bail_clist_get_n_columns (table))
     return;
@@ -1053,12 +1053,12 @@ bail_clist_set_column_description (BatkTable      *table,
 
 static void
 bail_clist_set_column_header (BatkTable      *table,
-                              gint          column,
+                              bint          column,
                               BatkObject     *header)
 {
   BailCList *clist = BAIL_CLIST (table);
   BatkPropertyValues values = { NULL };
-  gint actual_column;
+  bint actual_column;
 
   if (column < 0 || column >= bail_clist_get_n_columns (table))
     return;
@@ -1081,15 +1081,15 @@ bail_clist_set_column_header (BatkTable      *table,
 
 static void
 bail_clist_set_row_description (BatkTable      *table,
-                                gint          row,
-                                const gchar   *description)
+                                bint          row,
+                                const bchar   *description)
 {
   bail_clist_set_row_data (table, row, description, NULL, FALSE);
 }
 
 static void
 bail_clist_set_row_header (BatkTable      *table,
-                           gint          row,
+                           bint          row,
                            BatkObject     *header)
 {
   bail_clist_set_row_data (table, row, NULL, header, TRUE);
@@ -1131,15 +1131,15 @@ static void bail_cell_parent_interface_init (BailCellParentIface *iface)
 static void
 bail_clist_get_cell_extents (BailCellParent *parent,
                              BailCell       *cell,
-                             gint           *x,
-                             gint           *y,
-                             gint           *width,
-                             gint           *height,
+                             bint           *x,
+                             bint           *y,
+                             bint           *width,
+                             bint           *height,
                              BatkCoordType   coord_type)
 {
   BtkWidget* widget;
   BtkCList *clist;
-  gint widget_x, widget_y, widget_width, widget_height;
+  bint widget_x, widget_y, widget_width, widget_height;
   BdkRectangle cell_rect;
   BdkRectangle visible_rect;
 
@@ -1163,8 +1163,8 @@ bail_clist_get_cell_extents (BailCellParent *parent,
     }
   else
     {
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
     }
 }
 
@@ -1175,7 +1175,7 @@ bail_clist_get_cell_area (BailCellParent *parent,
 {
   BtkWidget* widget;
   BtkCList *clist;
-  gint column, row, n_columns;
+  bint column, row, n_columns;
 
   widget = BTK_ACCESSIBLE (parent)->widget;
   if (widget == NULL)
@@ -1194,10 +1194,10 @@ bail_clist_get_cell_area (BailCellParent *parent,
 
 static void
 bail_clist_select_row_btk (BtkCList *clist,
-                           gint      row,
-                           gint      column,
+                           bint      row,
+                           bint      column,
                            BdkEvent *event,
-                           gpointer data)
+                           bpointer data)
 {
   BailCList *bail_clist;
   GList *temp_list;
@@ -1239,10 +1239,10 @@ bail_clist_select_row_btk (BtkCList *clist,
 
 static void
 bail_clist_unselect_row_btk (BtkCList *clist,
-                             gint      row,
-                             gint      column,
+                             bint      row,
+                             bint      column,
                              BdkEvent *event,
-                             gpointer data)
+                             bpointer data)
 {
   BailCList *bail_clist;
   GList *temp_list;
@@ -1272,14 +1272,14 @@ bail_clist_unselect_row_btk (BtkCList *clist,
  * This function determines the number of visible columns
  * up to and including the specified column
  */
-static gint
+static bint
 bail_clist_get_visible_column (BatkTable *table,
                                int      column)
 {
   BtkWidget *widget;
   BtkCList *clist;
-  gint i;
-  gint vis_columns;
+  bint i;
+  bint vis_columns;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -1294,14 +1294,14 @@ bail_clist_get_visible_column (BatkTable *table,
   return vis_columns;  
 }
 
-static gint
+static bint
 bail_clist_get_actual_column (BatkTable *table,
                               int      visible_column)
 {
   BtkWidget *widget;
   BtkCList *clist;
-  gint i;
-  gint vis_columns;
+  bint i;
+  bint vis_columns;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -1323,20 +1323,20 @@ bail_clist_get_actual_column (BatkTable *table,
 
 static void
 bail_clist_set_row_data (BatkTable      *table,
-                         gint          row,
-                         const gchar   *description,
+                         bint          row,
+                         const bchar   *description,
                          BatkObject     *header,
-                         gboolean      is_header)
+                         bboolean      is_header)
 {
   BtkWidget *widget;
   BtkCList *btk_clist;
   BailCList *bail_clist;
   GArray *array;
   BailCListRow* row_data;
-  gint i;
-  gboolean found = FALSE;
+  bint i;
+  bboolean found = FALSE;
   BatkPropertyValues values = { NULL };
-  gchar *signal_name;
+  bchar *signal_name;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -1424,14 +1424,14 @@ bail_clist_set_row_data (BatkTable      *table,
 
 static BailCListRow*
 bail_clist_get_row_data (BatkTable      *table,
-                         gint          row)
+                         bint          row)
 {
   BtkWidget *widget;
   BtkCList *clist;
   BailCList *obj;
   GArray *array;
   BailCListRow* row_data;
-  gint i;
+  bint i;
 
   widget = BTK_ACCESSIBLE (table)->widget;
   if (widget == NULL)
@@ -1470,7 +1470,7 @@ bail_clist_get_visible_rect (BtkCList      *clist,
   clist_rect->height = clist->clist_window_height;
 }
 
-static gboolean
+static bboolean
 bail_clist_is_cell_visible (BdkRectangle  *cell_rect,
                             BdkRectangle  *visible_rect)
 {
@@ -1489,8 +1489,8 @@ bail_clist_is_cell_visible (BdkRectangle  *cell_rect,
 static void
 bail_clist_cell_data_new (BailCList     *clist,
                           BailCell      *cell,
-                          gint          column,
-                          gint          row)
+                          bint          column,
+                          bint          row)
 {
   GList *elem;
   BailCListCellData *cell_data;
@@ -1514,7 +1514,7 @@ bail_clist_cell_data_new (BailCList     *clist,
 }
 
 static void
-bail_clist_cell_destroyed (gpointer      data)
+bail_clist_cell_destroyed (bpointer      data)
 {
   BailCell *cell = BAIL_CELL (data);
   BatkObject* parent;
@@ -1547,17 +1547,17 @@ bail_clist_cell_data_remove (BailCList *clist,
 
 static BailCell*
 bail_clist_find_cell (BailCList     *clist,
-                      gint          index)
+                      bint          index)
 {
   GList *temp_list;
-  gint n_cols;
+  bint n_cols;
 
   n_cols = clist->n_cols;
 
   for (temp_list = clist->cell_data; temp_list; temp_list = temp_list->next)
     {
       BailCListCellData *cell_data;
-      gint real_index;
+      bint real_index;
 
       cell_data = (BailCListCellData *) (temp_list->data);
 

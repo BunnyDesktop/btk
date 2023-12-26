@@ -32,10 +32,10 @@ static void       _bail_container_cell_recompute_child_indices
 
 static void       bail_container_cell_refresh_child_index (BailCell *cell);
 
-static gint       bail_container_cell_get_n_children      (BatkObject *obj);
+static bint       bail_container_cell_get_n_children      (BatkObject *obj);
 
 static BatkObject* bail_container_cell_ref_child           (BatkObject *obj,
-                                                           gint      child);
+                                                           bint      child);
 
 G_DEFINE_TYPE (BailContainerCell, bail_container_cell, BAIL_TYPE_CELL)
 
@@ -98,13 +98,13 @@ void
 bail_container_cell_add_child (BailContainerCell *container,
 			       BailCell *child)
 {
-  gint child_index;
+  bint child_index;
 
   g_return_if_fail (BAIL_IS_CONTAINER_CELL(container));
   g_return_if_fail (BAIL_IS_CELL(child));
 
   child_index = container->NChildren++;
-  container->children = g_list_append (container->children, (gpointer) child);
+  container->children = g_list_append (container->children, (bpointer) child);
   child->index = child_index;
   batk_object_set_parent (BATK_OBJECT (child), BATK_OBJECT (container));
   child->refresh_index = bail_container_cell_refresh_child_index;
@@ -119,7 +119,7 @@ bail_container_cell_remove_child (BailContainerCell *container,
   g_return_if_fail (BAIL_IS_CELL(child));
   g_return_if_fail (container->NChildren > 0);
 
-  container->children = g_list_remove (container->children, (gpointer) child);
+  container->children = g_list_remove (container->children, (bpointer) child);
   _bail_container_cell_recompute_child_indices (container);
   container->NChildren--;
 }
@@ -128,7 +128,7 @@ bail_container_cell_remove_child (BailContainerCell *container,
 static void
 _bail_container_cell_recompute_child_indices (BailContainerCell *container)
 {
-  gint cur_index = 0;
+  bint cur_index = 0;
   GList *temp_list;
 
   g_return_if_fail (BAIL_IS_CONTAINER_CELL(container));
@@ -153,7 +153,7 @@ bail_container_cell_refresh_child_index (BailCell *cell)
 
 
 
-static gint
+static bint
 bail_container_cell_get_n_children (BatkObject *obj)
 {
   BailContainerCell *cell;
@@ -165,7 +165,7 @@ bail_container_cell_get_n_children (BatkObject *obj)
 
 static BatkObject *
 bail_container_cell_ref_child (BatkObject *obj,
-			       gint       child)
+			       bint       child)
 {
   BailContainerCell *cell;
   GList *list_node;

@@ -136,74 +136,74 @@ struct _BtkMenuShellPrivate
   BtkMnemonicHash *mnemonic_hash;
   BtkKeyHash *key_hash;
 
-  guint take_focus : 1;
-  guint activated_submenu : 1;
+  buint take_focus : 1;
+  buint activated_submenu : 1;
   /* This flag is a crutch to keep mnemonics in the same menu
    * if the user moves the mouse over an unselectable menuitem.
    */
-  guint in_unselectable_item : 1;
+  buint in_unselectable_item : 1;
 };
 
 static void btk_menu_shell_set_property      (BObject           *object,
-                                              guint              prop_id,
+                                              buint              prop_id,
                                               const BValue      *value,
                                               BParamSpec        *pspec);
 static void btk_menu_shell_get_property      (BObject           *object,
-                                              guint              prop_id,
+                                              buint              prop_id,
                                               BValue            *value,
                                               BParamSpec        *pspec);
 static void btk_menu_shell_realize           (BtkWidget         *widget);
 static void btk_menu_shell_finalize          (BObject           *object);
-static gint btk_menu_shell_button_press      (BtkWidget         *widget,
+static bint btk_menu_shell_button_press      (BtkWidget         *widget,
 					      BdkEventButton    *event);
-static gint btk_menu_shell_button_release    (BtkWidget         *widget,
+static bint btk_menu_shell_button_release    (BtkWidget         *widget,
 					      BdkEventButton    *event);
-static gint btk_menu_shell_key_press         (BtkWidget	        *widget,
+static bint btk_menu_shell_key_press         (BtkWidget	        *widget,
 					      BdkEventKey       *event);
-static gint btk_menu_shell_enter_notify      (BtkWidget         *widget,
+static bint btk_menu_shell_enter_notify      (BtkWidget         *widget,
 					      BdkEventCrossing  *event);
-static gint btk_menu_shell_leave_notify      (BtkWidget         *widget,
+static bint btk_menu_shell_leave_notify      (BtkWidget         *widget,
 					      BdkEventCrossing  *event);
 static void btk_menu_shell_screen_changed    (BtkWidget         *widget,
 					      BdkScreen         *previous_screen);
-static gboolean btk_menu_shell_grab_broken       (BtkWidget         *widget,
+static bboolean btk_menu_shell_grab_broken       (BtkWidget         *widget,
 					      BdkEventGrabBroken *event);
 static void btk_menu_shell_add               (BtkContainer      *container,
 					      BtkWidget         *widget);
 static void btk_menu_shell_remove            (BtkContainer      *container,
 					      BtkWidget         *widget);
 static void btk_menu_shell_forall            (BtkContainer      *container,
-					      gboolean		 include_internals,
+					      bboolean		 include_internals,
 					      BtkCallback        callback,
-					      gpointer           callback_data);
+					      bpointer           callback_data);
 static void btk_menu_shell_real_insert       (BtkMenuShell *menu_shell,
 					      BtkWidget    *child,
-					      gint          position);
+					      bint          position);
 static void btk_real_menu_shell_deactivate   (BtkMenuShell      *menu_shell);
-static gint btk_menu_shell_is_item           (BtkMenuShell      *menu_shell,
+static bint btk_menu_shell_is_item           (BtkMenuShell      *menu_shell,
 					      BtkWidget         *child);
 static BtkWidget *btk_menu_shell_get_item    (BtkMenuShell      *menu_shell,
 					      BdkEvent          *event);
 static GType    btk_menu_shell_child_type  (BtkContainer      *container);
 static void btk_menu_shell_real_select_item  (BtkMenuShell      *menu_shell,
 					      BtkWidget         *menu_item);
-static gboolean btk_menu_shell_select_submenu_first (BtkMenuShell   *menu_shell); 
+static bboolean btk_menu_shell_select_submenu_first (BtkMenuShell   *menu_shell); 
 
 static void btk_real_menu_shell_move_current (BtkMenuShell      *menu_shell,
 					      BtkMenuDirectionType direction);
 static void btk_real_menu_shell_activate_current (BtkMenuShell      *menu_shell,
-						  gboolean           force_hide);
+						  bboolean           force_hide);
 static void btk_real_menu_shell_cancel           (BtkMenuShell      *menu_shell);
 static void btk_real_menu_shell_cycle_focus      (BtkMenuShell      *menu_shell,
 						  BtkDirectionType   dir);
 
 static void     btk_menu_shell_reset_key_hash    (BtkMenuShell *menu_shell);
-static gboolean btk_menu_shell_activate_mnemonic (BtkMenuShell *menu_shell,
+static bboolean btk_menu_shell_activate_mnemonic (BtkMenuShell *menu_shell,
 						  BdkEventKey  *event);
-static gboolean btk_menu_shell_real_move_selected (BtkMenuShell  *menu_shell, 
-						   gint           distance);
+static bboolean btk_menu_shell_real_move_selected (BtkMenuShell  *menu_shell, 
+						   bint           distance);
 
-static guint menu_shell_signals[LAST_SIGNAL] = { 0 };
+static buint menu_shell_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_ABSTRACT_TYPE (BtkMenuShell, btk_menu_shell, BTK_TYPE_CONTAINER)
 
@@ -437,7 +437,7 @@ btk_menu_shell_init (BtkMenuShell *menu_shell)
 
 static void
 btk_menu_shell_set_property (BObject      *object,
-                             guint         prop_id,
+                             buint         prop_id,
                              const BValue *value,
                              BParamSpec   *pspec)
 {
@@ -456,7 +456,7 @@ btk_menu_shell_set_property (BObject      *object,
 
 static void
 btk_menu_shell_get_property (BObject     *object,
-                             guint        prop_id,
+                             buint        prop_id,
                              BValue      *value,
                              BParamSpec  *pspec)
 {
@@ -505,7 +505,7 @@ btk_menu_shell_prepend (BtkMenuShell *menu_shell,
 void
 btk_menu_shell_insert (BtkMenuShell *menu_shell,
 		       BtkWidget    *child,
-		       gint          position)
+		       bint          position)
 {
   g_return_if_fail (BTK_IS_MENU_SHELL (menu_shell));
   g_return_if_fail (BTK_IS_MENU_ITEM (child));
@@ -516,7 +516,7 @@ btk_menu_shell_insert (BtkMenuShell *menu_shell,
 static void
 btk_menu_shell_real_insert (BtkMenuShell *menu_shell,
 			    BtkWidget    *child,
-			    gint          position)
+			    bint          position)
 {
   menu_shell->children = g_list_insert (menu_shell->children, child, position);
 
@@ -535,7 +535,7 @@ static void
 btk_menu_shell_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -574,7 +574,7 @@ btk_menu_shell_activate (BtkMenuShell *menu_shell)
     }
 }
 
-static gint
+static bint
 btk_menu_shell_button_press (BtkWidget      *widget,
 			     BdkEventButton *event)
 {
@@ -649,7 +649,7 @@ btk_menu_shell_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_menu_shell_grab_broken (BtkWidget          *widget,
 			    BdkEventGrabBroken *event)
 {
@@ -669,7 +669,7 @@ btk_menu_shell_grab_broken (BtkWidget          *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_menu_shell_button_release (BtkWidget      *widget,
 			       BdkEventButton *event)
 {
@@ -679,7 +679,7 @@ btk_menu_shell_button_release (BtkWidget      *widget,
   if (menu_shell->active)
     {
       BtkWidget *menu_item;
-      gboolean   deactivate = TRUE;
+      bboolean   deactivate = TRUE;
 
       if (menu_shell->button && (event->button != menu_shell->button))
 	{
@@ -707,9 +707,9 @@ btk_menu_shell_button_release (BtkWidget      *widget,
               else if (BTK_MENU_SHELL_GET_CLASS (menu_shell)->submenu_placement != BTK_TOP_BOTTOM ||
                        priv->activated_submenu)
                 {
-                  gint popdown_delay;
+                  bint popdown_delay;
                   GTimeVal *popup_time;
-                  gint64 usec_since_popup = 0;
+                  bint64 usec_since_popup = 0;
 
                   g_object_get (btk_widget_get_settings (widget),
                                 "btk-menu-popdown-delay", &popdown_delay,
@@ -724,10 +724,10 @@ btk_menu_shell_button_release (BtkWidget      *widget,
 
                       g_get_current_time (&current_time);
 
-                      usec_since_popup = ((gint64) current_time.tv_sec * 1000 * 1000 +
-                                          (gint64) current_time.tv_usec -
-                                          (gint64) popup_time->tv_sec * 1000 * 1000 -
-                                          (gint64) popup_time->tv_usec);
+                      usec_since_popup = ((bint64) current_time.tv_sec * 1000 * 1000 +
+                                          (bint64) current_time.tv_usec -
+                                          (bint64) popup_time->tv_sec * 1000 * 1000 -
+                                          (bint64) popup_time->tv_usec);
 
                       g_object_set_data (B_OBJECT (submenu),
                                          "btk-menu-exact-popup-time", NULL);
@@ -800,12 +800,12 @@ btk_menu_shell_button_release (BtkWidget      *widget,
 
 void
 _btk_menu_shell_set_keyboard_mode (BtkMenuShell *menu_shell,
-                                   gboolean      keyboard_mode)
+                                   bboolean      keyboard_mode)
 {
   menu_shell->keyboard_mode = keyboard_mode;
 }
 
-gboolean
+bboolean
 _btk_menu_shell_get_keyboard_mode (BtkMenuShell *menu_shell)
 {
   return menu_shell->keyboard_mode;
@@ -815,9 +815,9 @@ void
 _btk_menu_shell_update_mnemonics (BtkMenuShell *menu_shell)
 {
   BtkMenuShell *target;
-  gboolean auto_mnemonics;
-  gboolean found;
-  gboolean mnemonics_visible;
+  bboolean auto_mnemonics;
+  bboolean found;
+  bboolean mnemonics_visible;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (menu_shell)),
                 "btk-auto-mnemonics", &auto_mnemonics, NULL);
@@ -873,13 +873,13 @@ _btk_menu_shell_update_mnemonics (BtkMenuShell *menu_shell)
     }
 }
 
-static gint
+static bint
 btk_menu_shell_key_press (BtkWidget   *widget,
 			  BdkEventKey *event)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (widget);
   BtkMenuShellPrivate *priv = BTK_MENU_SHELL_GET_PRIVATE (menu_shell);
-  gboolean enable_mnemonics;
+  bboolean enable_mnemonics;
 
   menu_shell->keyboard_mode = TRUE;
 
@@ -899,7 +899,7 @@ btk_menu_shell_key_press (BtkWidget   *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_menu_shell_enter_notify (BtkWidget        *widget,
 			     BdkEventCrossing *event)
 {
@@ -959,7 +959,7 @@ btk_menu_shell_enter_notify (BtkWidget        *widget,
 
                   if (!btk_widget_get_visible (BTK_MENU_ITEM (menu_item)->submenu))
                     {
-                      gboolean touchscreen_mode;
+                      bboolean touchscreen_mode;
 
                       g_object_get (btk_widget_get_settings (widget),
                                     "btk-touchscreen-mode", &touchscreen_mode,
@@ -980,7 +980,7 @@ btk_menu_shell_enter_notify (BtkWidget        *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_menu_shell_leave_notify (BtkWidget        *widget,
 			     BdkEventCrossing *event)
 {
@@ -1047,7 +1047,7 @@ btk_menu_shell_remove (BtkContainer *container,
 		       BtkWidget    *widget)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (container);
-  gint was_visible;
+  bint was_visible;
 
   was_visible = btk_widget_get_visible (widget);
   menu_shell->children = g_list_remove (menu_shell->children, widget);
@@ -1069,9 +1069,9 @@ btk_menu_shell_remove (BtkContainer *container,
 
 static void
 btk_menu_shell_forall (BtkContainer *container,
-		       gboolean      include_internals,
+		       bboolean      include_internals,
 		       BtkCallback   callback,
-		       gpointer      callback_data)
+		       bpointer      callback_data)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (container);
   BtkWidget *child;
@@ -1123,7 +1123,7 @@ btk_real_menu_shell_deactivate (BtkMenuShell *menu_shell)
     }
 }
 
-static gint
+static bint
 btk_menu_shell_is_item (BtkMenuShell *menu_shell,
 			BtkWidget    *child)
 {
@@ -1240,10 +1240,10 @@ btk_menu_shell_deselect (BtkMenuShell *menu_shell)
 void
 btk_menu_shell_activate_item (BtkMenuShell      *menu_shell,
 			      BtkWidget         *menu_item,
-			      gboolean           force_deactivate)
+			      bboolean           force_deactivate)
 {
   GSList *slist, *shells = NULL;
-  gboolean deactivate = force_deactivate;
+  bboolean deactivate = force_deactivate;
 
   g_return_if_fail (BTK_IS_MENU_SHELL (menu_shell));
   g_return_if_fail (BTK_IS_MENU_ITEM (menu_item));
@@ -1289,16 +1289,16 @@ btk_menu_shell_activate_item (BtkMenuShell      *menu_shell,
 }
 
 /* Distance should be +/- 1 */
-static gboolean
+static bboolean
 btk_menu_shell_real_move_selected (BtkMenuShell  *menu_shell, 
-				   gint           distance)
+				   bint           distance)
 {
   if (menu_shell->active_menu_item)
     {
       GList *node = g_list_find (menu_shell->children,
 				 menu_shell->active_menu_item);
       GList *start_node = node;
-      gboolean wrap_around;
+      bboolean wrap_around;
 
       g_object_get (btk_widget_get_settings (BTK_WIDGET (menu_shell)),
                     "btk-keynav-wrap-around", &wrap_around,
@@ -1349,9 +1349,9 @@ btk_menu_shell_real_move_selected (BtkMenuShell  *menu_shell,
 /* Distance should be +/- 1 */
 static void
 btk_menu_shell_move_selected (BtkMenuShell  *menu_shell, 
-			      gint           distance)
+			      bint           distance)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   g_signal_emit (menu_shell, menu_shell_signals[MOVE_SELECTED], 0,
 		 distance, &handled);
@@ -1374,7 +1374,7 @@ btk_menu_shell_move_selected (BtkMenuShell  *menu_shell,
  **/
 void
 btk_menu_shell_select_first (BtkMenuShell *menu_shell,
-			     gboolean      search_sensitive)
+			     bboolean      search_sensitive)
 {
   BtkWidget *to_select = NULL;
   GList *tmp_list;
@@ -1401,7 +1401,7 @@ btk_menu_shell_select_first (BtkMenuShell *menu_shell,
 
 void
 _btk_menu_shell_select_last (BtkMenuShell *menu_shell,
-			     gboolean      search_sensitive)
+			     bboolean      search_sensitive)
 {
   BtkWidget *to_select = NULL;
   GList *tmp_list;
@@ -1426,7 +1426,7 @@ _btk_menu_shell_select_last (BtkMenuShell *menu_shell,
     btk_menu_shell_select_item (menu_shell, to_select);
 }
 
-static gboolean
+static bboolean
 btk_menu_shell_select_submenu_first (BtkMenuShell     *menu_shell)
 {
   BtkMenuItem *menu_item;
@@ -1453,8 +1453,8 @@ btk_real_menu_shell_move_current (BtkMenuShell         *menu_shell,
 {
   BtkMenuShellPrivate *priv = BTK_MENU_SHELL_GET_PRIVATE (menu_shell);
   BtkMenuShell *parent_menu_shell = NULL;
-  gboolean had_selection;
-  gboolean touchscreen_mode;
+  bboolean had_selection;
+  bboolean touchscreen_mode;
 
   priv->in_unselectable_item = FALSE;
 
@@ -1570,7 +1570,7 @@ btk_real_menu_shell_move_current (BtkMenuShell         *menu_shell,
 
 static void
 btk_real_menu_shell_activate_current (BtkMenuShell      *menu_shell,
-				      gboolean           force_hide)
+				      bboolean           force_hide)
 {
   if (menu_shell->active_menu_item &&
       _btk_menu_item_is_selectable (menu_shell->active_menu_item))
@@ -1611,7 +1611,7 @@ btk_real_menu_shell_cycle_focus (BtkMenuShell      *menu_shell,
     _btk_menu_bar_cycle_focus (BTK_MENU_BAR (menu_shell), dir);
 }
 
-gint
+bint
 _btk_menu_shell_get_popup_delay (BtkMenuShell *menu_shell)
 {
   BtkMenuShellClass *klass = BTK_MENU_SHELL_GET_CLASS (menu_shell);
@@ -1622,7 +1622,7 @@ _btk_menu_shell_get_popup_delay (BtkMenuShell *menu_shell)
     }
   else
     {
-      gint popup_delay;
+      bint popup_delay;
       BtkWidget *widget = BTK_WIDGET (menu_shell);
       
       g_object_get (btk_widget_get_settings (widget),
@@ -1651,7 +1651,7 @@ btk_menu_shell_cancel (BtkMenuShell *menu_shell)
 
 static BtkMnemonicHash *
 btk_menu_shell_get_mnemonic_hash (BtkMenuShell *menu_shell,
-				  gboolean      create)
+				  bboolean      create)
 {
   BtkMenuShellPrivate *private = BTK_MENU_SHELL_GET_PRIVATE (menu_shell);
 
@@ -1662,18 +1662,18 @@ btk_menu_shell_get_mnemonic_hash (BtkMenuShell *menu_shell,
 }
 
 static void
-menu_shell_add_mnemonic_foreach (guint    keyval,
+menu_shell_add_mnemonic_foreach (buint    keyval,
 				 GSList  *targets,
-				 gpointer data)
+				 bpointer data)
 {
   BtkKeyHash *key_hash = data;
 
-  _btk_key_hash_add_entry (key_hash, keyval, 0, GUINT_TO_POINTER (keyval));
+  _btk_key_hash_add_entry (key_hash, keyval, 0, BUINT_TO_POINTER (keyval));
 }
 
 static BtkKeyHash *
 btk_menu_shell_get_key_hash (BtkMenuShell *menu_shell,
-			     gboolean      create)
+			     bboolean      create)
 {
   BtkMenuShellPrivate *private = BTK_MENU_SHELL_GET_PRIVATE (menu_shell);
   BtkWidget *widget = BTK_WIDGET (menu_shell);
@@ -1709,14 +1709,14 @@ btk_menu_shell_reset_key_hash (BtkMenuShell *menu_shell)
     }
 }
 
-static gboolean
+static bboolean
 btk_menu_shell_activate_mnemonic (BtkMenuShell *menu_shell,
 				  BdkEventKey  *event)
 {
   BtkMnemonicHash *mnemonic_hash;
   BtkKeyHash *key_hash;
   GSList *entries;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   mnemonic_hash = btk_menu_shell_get_mnemonic_hash (menu_shell, FALSE);
   if (!mnemonic_hash)
@@ -1734,14 +1734,14 @@ btk_menu_shell_activate_mnemonic (BtkMenuShell *menu_shell,
 
   if (entries)
     result = _btk_mnemonic_hash_activate (mnemonic_hash,
-					  GPOINTER_TO_UINT (entries->data));
+					  BPOINTER_TO_UINT (entries->data));
 
   return result;
 }
 
 void
 _btk_menu_shell_add_mnemonic (BtkMenuShell *menu_shell,
-			      guint      keyval,
+			      buint      keyval,
 			      BtkWidget *target)
 {
   g_return_if_fail (BTK_IS_MENU_SHELL (menu_shell));
@@ -1754,7 +1754,7 @@ _btk_menu_shell_add_mnemonic (BtkMenuShell *menu_shell,
 
 void
 _btk_menu_shell_remove_mnemonic (BtkMenuShell *menu_shell,
-				 guint      keyval,
+				 buint      keyval,
 				 BtkWidget *target)
 {
   g_return_if_fail (BTK_IS_MENU_SHELL (menu_shell));
@@ -1775,7 +1775,7 @@ _btk_menu_shell_remove_mnemonic (BtkMenuShell *menu_shell,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_menu_shell_get_take_focus (BtkMenuShell *menu_shell)
 {
   BtkMenuShellPrivate *priv;
@@ -1822,7 +1822,7 @@ btk_menu_shell_get_take_focus (BtkMenuShell *menu_shell)
  **/
 void
 btk_menu_shell_set_take_focus (BtkMenuShell *menu_shell,
-                               gboolean      take_focus)
+                               bboolean      take_focus)
 {
   BtkMenuShellPrivate *priv;
 

@@ -51,7 +51,7 @@ typedef struct {
   gconstpointer value;
 } IgnoreProperty;
 static const IgnoreProperty*
-list_ignore_properties (gboolean buglist)
+list_ignore_properties (bboolean buglist)
 {
   /* currently untestable properties */
   static const IgnoreProperty ignore_properties[] = {
@@ -174,33 +174,33 @@ pspec_select_value (BParamSpec *pspec,
    */
 }
 
-static gpointer
+static bpointer
 value_as_pointer (BValue *value)
 {
   if (b_value_fits_pointer (value))
     return b_value_peek_pointer (value);
   if (G_VALUE_HOLDS_BOOLEAN (value))
-    return GINT_TO_POINTER(b_value_get_boolean (value));
+    return BINT_TO_POINTER(b_value_get_boolean (value));
   if (G_VALUE_HOLDS_CHAR (value))
-    return (void*) (gssize) b_value_get_char (value);
+    return (void*) (bssize) b_value_get_char (value);
   if (G_VALUE_HOLDS_UCHAR (value))
-    return (void*) (gsize) b_value_get_uchar (value);
+    return (void*) (bsize) b_value_get_uchar (value);
   if (G_VALUE_HOLDS_INT (value))
-    return GINT_TO_POINTER(b_value_get_int (value));
+    return BINT_TO_POINTER(b_value_get_int (value));
   if (G_VALUE_HOLDS_UINT (value))
-    return GUINT_TO_POINTER(b_value_get_uint (value));
+    return BUINT_TO_POINTER(b_value_get_uint (value));
   if (G_VALUE_HOLDS_LONG (value))
     return (void*) b_value_get_long (value);
   if (G_VALUE_HOLDS_ULONG (value))
     return (void*) b_value_get_ulong (value);
   if (G_VALUE_HOLDS_FLOAT (value))
-    return (void*) (gssize) b_value_get_float (value);
+    return (void*) (bssize) b_value_get_float (value);
   if (G_VALUE_HOLDS_DOUBLE (value))
-    return (void*) (gssize) b_value_get_double (value);
+    return (void*) (bssize) b_value_get_double (value);
   if (G_VALUE_HOLDS_ENUM (value))
-    return (void*) (gssize) b_value_get_enum (value);
+    return (void*) (bssize) b_value_get_enum (value);
   if (G_VALUE_HOLDS_FLAGS (value))
-    return (void*) (gsize) b_value_get_flags (value);
+    return (void*) (bsize) b_value_get_flags (value);
   return (void*) 0x1373babe;
 }
 
@@ -214,7 +214,7 @@ object_test_property (BObject           *object,
       !(pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY)))
     {
       BValue value = { 0, };
-      guint i;
+      buint i;
       const IgnoreProperty *ignore_properties;
       /* select value to set */
       b_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
@@ -263,7 +263,7 @@ widget_test_properties (BtkWidget   *widget,
                         double       dvalue)
 {
   /* try setting all possible properties, according to dvalue */
-  guint i, n_pspecs = 0;
+  buint i, n_pspecs = 0;
   BParamSpec **pspecs = g_object_class_list_properties (B_OBJECT_GET_CLASS (widget), &n_pspecs);
   for (i = 0; i < n_pspecs; i++)
     {
@@ -301,7 +301,7 @@ main (int   argc,
       char *argv[])
 {
   const GType *otypes;
-  guint i;
+  buint i;
   /* initialize test program */
   pixbuf_init ();
   btk_test_init (&argc, &argv);
@@ -313,7 +313,7 @@ main (int   argc,
         B_TYPE_IS_OBJECT (otypes[i]) &&
         !B_TYPE_IS_ABSTRACT (otypes[i]))
       {
-        gchar *testpath = g_strdup_printf ("/properties/%s", g_type_name (otypes[i]));
+        bchar *testpath = g_strdup_printf ("/properties/%s", g_type_name (otypes[i]));
         g_test_add_data_func (testpath, (void*) otypes[i], widget_property_tests);
         g_free (testpath);
       }

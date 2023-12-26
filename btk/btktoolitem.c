@@ -97,23 +97,23 @@ enum {
 
 struct _BtkToolItemPrivate
 {
-  gchar *tip_text;
-  gchar *tip_private;
+  bchar *tip_text;
+  bchar *tip_private;
 
-  guint visible_horizontal : 1;
-  guint visible_vertical : 1;
-  guint homogeneous : 1;
-  guint expand : 1;
-  guint use_drag_window : 1;
-  guint is_important : 1;
+  buint visible_horizontal : 1;
+  buint visible_vertical : 1;
+  buint homogeneous : 1;
+  buint expand : 1;
+  buint use_drag_window : 1;
+  buint is_important : 1;
 
   BdkWindow *drag_window;
   
-  gchar *menu_item_id;
+  bchar *menu_item_id;
   BtkWidget *menu_item;
 
   BtkAction *action;
-  gboolean   use_action_appearance;
+  bboolean   use_action_appearance;
 };
   
 static void btk_tool_item_finalize     (BObject         *object);
@@ -121,11 +121,11 @@ static void btk_tool_item_dispose      (BObject         *object);
 static void btk_tool_item_parent_set   (BtkWidget       *toolitem,
 				        BtkWidget       *parent);
 static void btk_tool_item_set_property (BObject         *object,
-					guint            prop_id,
+					buint            prop_id,
 					const BValue    *value,
 					BParamSpec      *pspec);
 static void btk_tool_item_get_property (BObject         *object,
-					guint            prop_id,
+					buint            prop_id,
 					BValue          *value,
 					BParamSpec      *pspec);
 static void btk_tool_item_property_notify (BObject      *object,
@@ -138,23 +138,23 @@ static void btk_tool_item_size_request  (BtkWidget      *widget,
 					 BtkRequisition *requisition);
 static void btk_tool_item_size_allocate (BtkWidget      *widget,
 					 BtkAllocation  *allocation);
-static gboolean btk_tool_item_real_set_tooltip (BtkToolItem *tool_item,
+static bboolean btk_tool_item_real_set_tooltip (BtkToolItem *tool_item,
 						BtkTooltips *tooltips,
-						const gchar *tip_text,
-						const gchar *tip_private);
+						const bchar *tip_text,
+						const bchar *tip_private);
 
 static void btk_tool_item_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_tool_item_update                     (BtkActivatable       *activatable,
 						      BtkAction            *action,
-						      const gchar          *property_name);
+						      const bchar          *property_name);
 static void btk_tool_item_sync_action_properties     (BtkActivatable       *activatable,
 						      BtkAction            *action);
 static void btk_tool_item_set_related_action         (BtkToolItem          *item, 
 						      BtkAction            *action);
 static void btk_tool_item_set_use_action_appearance  (BtkToolItem          *item, 
-						      gboolean              use_appearance);
+						      bboolean              use_appearance);
 
-static guint toolitem_signals[LAST_SIGNAL] = { 0 };
+static buint toolitem_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkToolItem, btk_tool_item, BTK_TYPE_BIN,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
@@ -357,7 +357,7 @@ btk_tool_item_parent_set (BtkWidget   *toolitem,
 
 static void
 btk_tool_item_set_property (BObject      *object,
-			    guint         prop_id,
+			    buint         prop_id,
 			    const BValue *value,
 			    BParamSpec   *pspec)
 {
@@ -388,7 +388,7 @@ btk_tool_item_set_property (BObject      *object,
 
 static void
 btk_tool_item_get_property (BObject    *object,
-			    guint       prop_id,
+			    buint       prop_id,
 			    BValue     *value,
 			    BParamSpec *pspec)
 {
@@ -433,7 +433,7 @@ create_drag_window (BtkToolItem *toolitem)
 {
   BtkWidget *widget;
   BdkWindowAttr attributes;
-  gint attributes_mask, border_width;
+  bint attributes_mask, border_width;
 
   g_return_if_fail (toolitem->priv->use_drag_window == TRUE);
 
@@ -544,7 +544,7 @@ btk_tool_item_size_allocate (BtkWidget     *widget,
 {
   BtkToolItem *toolitem = BTK_TOOL_ITEM (widget);
   BtkAllocation child_allocation;
-  gint border_width;
+  bint border_width;
   BtkWidget *child = BTK_BIN (widget)->child;
 
   widget->allocation = *allocation;
@@ -568,11 +568,11 @@ btk_tool_item_size_allocate (BtkWidget     *widget,
     }
 }
 
-gboolean
+bboolean
 _btk_tool_item_create_menu_proxy (BtkToolItem *item)
 {
   BtkWidget *menu_item;
-  gboolean visible_overflown;
+  bboolean visible_overflown;
 
   if (item->priv->action)
     {
@@ -605,7 +605,7 @@ btk_tool_item_activatable_interface_init (BtkActivatableIface *iface)
 static void
 btk_tool_item_update (BtkActivatable *activatable,
 		      BtkAction      *action,
-	     	      const gchar    *property_name)
+	     	      const bchar    *property_name)
 {
   if (strcmp (property_name, "visible") == 0)
     {
@@ -673,7 +673,7 @@ btk_tool_item_set_related_action (BtkToolItem *item,
 
 static void
 btk_tool_item_set_use_action_appearance (BtkToolItem *item,
-					 gboolean     use_appearance)
+					 bboolean     use_appearance)
 {
   if (item->priv->use_action_appearance != use_appearance)
     {
@@ -863,12 +863,12 @@ btk_tool_item_get_relief_style (BtkToolItem *tool_item)
  * #BtkToolItem should call this function to find out how text should
  * be aligned.
  * 
- * Return value: a #gfloat indicating the horizontal text alignment
+ * Return value: a #bfloat indicating the horizontal text alignment
  * used for @tool_item
  * 
  * Since: 2.20
  **/
-gfloat
+bfloat
 btk_tool_item_get_text_alignment (BtkToolItem *tool_item)
 {
   BtkWidget *parent;
@@ -949,7 +949,7 @@ btk_tool_item_get_text_size_group (BtkToolItem *tool_item)
  */
 void
 btk_tool_item_set_expand (BtkToolItem *tool_item,
-			  gboolean     expand)
+			  bboolean     expand)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (tool_item));
     
@@ -974,7 +974,7 @@ btk_tool_item_set_expand (BtkToolItem *tool_item,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_expand (BtkToolItem *tool_item)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (tool_item), FALSE);
@@ -995,7 +995,7 @@ btk_tool_item_get_expand (BtkToolItem *tool_item)
  **/
 void
 btk_tool_item_set_homogeneous (BtkToolItem *tool_item,
-			       gboolean     homogeneous)
+			       bboolean     homogeneous)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (tool_item));
     
@@ -1021,7 +1021,7 @@ btk_tool_item_set_homogeneous (BtkToolItem *tool_item,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_homogeneous (BtkToolItem *tool_item)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (tool_item), FALSE);
@@ -1040,7 +1040,7 @@ btk_tool_item_get_homogeneous (BtkToolItem *tool_item)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_is_important (BtkToolItem *tool_item)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (tool_item), FALSE);
@@ -1062,7 +1062,7 @@ btk_tool_item_get_is_important (BtkToolItem *tool_item)
  * Since: 2.4
  **/
 void
-btk_tool_item_set_is_important (BtkToolItem *tool_item, gboolean is_important)
+btk_tool_item_set_is_important (BtkToolItem *tool_item, bboolean is_important)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (tool_item));
 
@@ -1078,11 +1078,11 @@ btk_tool_item_set_is_important (BtkToolItem *tool_item, gboolean is_important)
     }
 }
 
-static gboolean
+static bboolean
 btk_tool_item_real_set_tooltip (BtkToolItem *tool_item,
 				BtkTooltips *tooltips,
-				const gchar *tip_text,
-				const gchar *tip_private)
+				const bchar *tip_text,
+				const bchar *tip_private)
 {
   BtkWidget *child = BTK_BIN (tool_item)->child;
 
@@ -1112,10 +1112,10 @@ btk_tool_item_real_set_tooltip (BtkToolItem *tool_item,
 void
 btk_tool_item_set_tooltip (BtkToolItem *tool_item,
 			   BtkTooltips *tooltips,
-			   const gchar *tip_text,
-			   const gchar *tip_private)
+			   const bchar *tip_text,
+			   const bchar *tip_private)
 {
-  gboolean retval;
+  bboolean retval;
   
   g_return_if_fail (BTK_IS_TOOL_ITEM (tool_item));
 
@@ -1135,7 +1135,7 @@ btk_tool_item_set_tooltip (BtkToolItem *tool_item,
  **/
 void
 btk_tool_item_set_tooltip_text (BtkToolItem *tool_item,
-			        const gchar *text)
+			        const bchar *text)
 {
   BtkWidget *child;
 
@@ -1159,7 +1159,7 @@ btk_tool_item_set_tooltip_text (BtkToolItem *tool_item,
  **/
 void
 btk_tool_item_set_tooltip_markup (BtkToolItem *tool_item,
-				  const gchar *markup)
+				  const bchar *markup)
 {
   BtkWidget *child;
 
@@ -1185,7 +1185,7 @@ btk_tool_item_set_tooltip_markup (BtkToolItem *tool_item,
  **/
 void
 btk_tool_item_set_use_drag_window (BtkToolItem *toolitem,
-				   gboolean     use_drag_window)
+				   bboolean     use_drag_window)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (toolitem));
 
@@ -1223,7 +1223,7 @@ btk_tool_item_set_use_drag_window (BtkToolItem *toolitem,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_use_drag_window (BtkToolItem *toolitem)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (toolitem), FALSE);
@@ -1242,7 +1242,7 @@ btk_tool_item_get_use_drag_window (BtkToolItem *toolitem)
  **/
 void
 btk_tool_item_set_visible_horizontal (BtkToolItem *toolitem,
-				      gboolean     visible_horizontal)
+				      bboolean     visible_horizontal)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (toolitem));
 
@@ -1270,7 +1270,7 @@ btk_tool_item_set_visible_horizontal (BtkToolItem *toolitem,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_visible_horizontal (BtkToolItem *toolitem)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (toolitem), FALSE);
@@ -1293,7 +1293,7 @@ btk_tool_item_get_visible_horizontal (BtkToolItem *toolitem)
  **/
 void
 btk_tool_item_set_visible_vertical (BtkToolItem *toolitem,
-				    gboolean     visible_vertical)
+				    bboolean     visible_vertical)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (toolitem));
 
@@ -1320,7 +1320,7 @@ btk_tool_item_set_visible_vertical (BtkToolItem *toolitem,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tool_item_get_visible_vertical (BtkToolItem *toolitem)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (toolitem), FALSE);
@@ -1344,7 +1344,7 @@ btk_tool_item_get_visible_vertical (BtkToolItem *toolitem)
 BtkWidget *
 btk_tool_item_retrieve_proxy_menu_item (BtkToolItem *tool_item)
 {
-  gboolean retval;
+  bboolean retval;
   
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (tool_item), NULL);
 
@@ -1375,7 +1375,7 @@ btk_tool_item_retrieve_proxy_menu_item (BtkToolItem *tool_item)
  **/
 BtkWidget *
 btk_tool_item_get_proxy_menu_item (BtkToolItem *tool_item,
-				   const gchar *menu_item_id)
+				   const bchar *menu_item_id)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (tool_item), NULL);
   g_return_val_if_fail (menu_item_id != NULL, NULL);
@@ -1429,7 +1429,7 @@ btk_tool_item_rebuild_menu (BtkToolItem *tool_item)
  **/
 void
 btk_tool_item_set_proxy_menu_item (BtkToolItem *tool_item,
-				   const gchar *menu_item_id,
+				   const bchar *menu_item_id,
 				   BtkWidget   *menu_item)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM (tool_item));

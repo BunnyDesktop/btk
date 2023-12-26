@@ -77,11 +77,11 @@ static void btk_spin_button_editable_init  (BtkEditableClass   *iface);
 static void btk_spin_button_finalize       (BObject            *object);
 static void btk_spin_button_destroy        (BtkObject          *object);
 static void btk_spin_button_set_property   (BObject         *object,
-					    guint            prop_id,
+					    buint            prop_id,
 					    const BValue    *value,
 					    BParamSpec      *pspec);
 static void btk_spin_button_get_property   (BObject         *object,
-					    guint            prop_id,
+					    buint            prop_id,
 					    BValue          *value,
 					    BParamSpec      *pspec);
 static void btk_spin_button_map            (BtkWidget          *widget);
@@ -92,22 +92,22 @@ static void btk_spin_button_size_request   (BtkWidget          *widget,
 					    BtkRequisition     *requisition);
 static void btk_spin_button_size_allocate  (BtkWidget          *widget,
 					    BtkAllocation      *allocation);
-static gint btk_spin_button_expose         (BtkWidget          *widget,
+static bint btk_spin_button_expose         (BtkWidget          *widget,
 					    BdkEventExpose     *event);
-static gint btk_spin_button_button_press   (BtkWidget          *widget,
+static bint btk_spin_button_button_press   (BtkWidget          *widget,
 					    BdkEventButton     *event);
-static gint btk_spin_button_button_release (BtkWidget          *widget,
+static bint btk_spin_button_button_release (BtkWidget          *widget,
 					    BdkEventButton     *event);
-static gint btk_spin_button_motion_notify  (BtkWidget          *widget,
+static bint btk_spin_button_motion_notify  (BtkWidget          *widget,
 					    BdkEventMotion     *event);
-static gint btk_spin_button_enter_notify   (BtkWidget          *widget,
+static bint btk_spin_button_enter_notify   (BtkWidget          *widget,
 					    BdkEventCrossing   *event);
-static gint btk_spin_button_leave_notify   (BtkWidget          *widget,
+static bint btk_spin_button_leave_notify   (BtkWidget          *widget,
 					    BdkEventCrossing   *event);
-static gint btk_spin_button_focus_out      (BtkWidget          *widget,
+static bint btk_spin_button_focus_out      (BtkWidget          *widget,
 					    BdkEventFocus      *event);
 static void btk_spin_button_grab_notify    (BtkWidget          *widget,
-					    gboolean            was_grabbed);
+					    bboolean            was_grabbed);
 static void btk_spin_button_state_changed  (BtkWidget          *widget,
 					    BtkStateType        previous_state);
 static void btk_spin_button_style_set      (BtkWidget          *widget,
@@ -115,39 +115,39 @@ static void btk_spin_button_style_set      (BtkWidget          *widget,
 static void btk_spin_button_draw_arrow     (BtkSpinButton      *spin_button, 
 					    BdkRectangle       *area,
 					    BtkArrowType        arrow_type);
-static gboolean btk_spin_button_timer          (BtkSpinButton      *spin_button);
+static bboolean btk_spin_button_timer          (BtkSpinButton      *spin_button);
 static void btk_spin_button_stop_spinning  (BtkSpinButton      *spin);
 static void btk_spin_button_value_changed  (BtkAdjustment      *adjustment,
 					    BtkSpinButton      *spin_button); 
-static gint btk_spin_button_key_release    (BtkWidget          *widget,
+static bint btk_spin_button_key_release    (BtkWidget          *widget,
 					    BdkEventKey        *event);
-static gint btk_spin_button_scroll         (BtkWidget          *widget,
+static bint btk_spin_button_scroll         (BtkWidget          *widget,
 					    BdkEventScroll     *event);
 static void btk_spin_button_activate       (BtkEntry           *entry);
 static void btk_spin_button_get_text_area_size (BtkEntry *entry,
-						gint     *x,
-						gint     *y,
-						gint     *width,
-						gint     *height);
+						bint     *x,
+						bint     *y,
+						bint     *width,
+						bint     *height);
 static void btk_spin_button_snap           (BtkSpinButton      *spin_button,
-					    gdouble             val);
+					    bdouble             val);
 static void btk_spin_button_insert_text    (BtkEditable        *editable,
-					    const gchar        *new_text,
-					    gint                new_text_length,
-					    gint               *position);
+					    const bchar        *new_text,
+					    bint                new_text_length,
+					    bint               *position);
 static void btk_spin_button_real_spin      (BtkSpinButton      *spin_button,
-					    gdouble             step);
+					    bdouble             step);
 static void btk_spin_button_real_change_value (BtkSpinButton   *spin,
 					       BtkScrollType    scroll);
 
-static gint btk_spin_button_default_input  (BtkSpinButton      *spin_button,
-					    gdouble            *new_val);
-static gint btk_spin_button_default_output (BtkSpinButton      *spin_button);
+static bint btk_spin_button_default_input  (BtkSpinButton      *spin_button,
+					    bdouble            *new_val);
+static bint btk_spin_button_default_output (BtkSpinButton      *spin_button);
 
-static gint spin_button_get_arrow_size     (BtkSpinButton      *spin_button);
-static gint spin_button_get_shadow_type    (BtkSpinButton      *spin_button);
+static bint spin_button_get_arrow_size     (BtkSpinButton      *spin_button);
+static bint spin_button_get_shadow_type    (BtkSpinButton      *spin_button);
 
-static guint spinbutton_signals[LAST_SIGNAL] = {0};
+static buint spinbutton_signals[LAST_SIGNAL] = {0};
 
 #define NO_ARROW 2
 
@@ -216,7 +216,7 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
 							P_("Climb Rate"),
 							P_("The acceleration rate when you hold down a button"),
 							0.0,
-							G_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
   
@@ -268,8 +268,8 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
                                    g_param_spec_double ("value",
 							P_("Value"),
 							P_("Reads the current value, or sets a new value"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
   
@@ -299,12 +299,12 @@ btk_spin_button_class_init (BtkSpinButtonClass *class)
    * of the value that is displayed in the spin buttons entry.
    * |[
    * /&ast; show leading zeros &ast;/
-   * static gboolean
+   * static bboolean
    * on_output (BtkSpinButton *spin,
-   *            gpointer       data)
+   *            bpointer       data)
    * {
    *    BtkAdjustment *adj;
-   *    gchar *text;
+   *    bchar *text;
    *    int value;
    *    
    *    adj = btk_spin_button_get_adjustment (spin);
@@ -386,7 +386,7 @@ btk_spin_button_editable_init (BtkEditableClass *iface)
 
 static void
 btk_spin_button_set_property (BObject      *object,
-			      guint         prop_id,
+			      buint         prop_id,
 			      const BValue *value,
 			      BParamSpec   *pspec)
 {
@@ -437,7 +437,7 @@ btk_spin_button_set_property (BObject      *object,
 
 static void
 btk_spin_button_get_property (BObject      *object,
-			      guint         prop_id,
+			      buint         prop_id,
 			      BValue       *value,
 			      BParamSpec   *pspec)
 {
@@ -541,9 +541,9 @@ btk_spin_button_realize (BtkWidget *widget)
 {
   BtkSpinButton *spin_button = BTK_SPIN_BUTTON (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gboolean return_val;
-  gint arrow_size;
+  bint attributes_mask;
+  bboolean return_val;
+  bint arrow_size;
 
   arrow_size = spin_button_get_arrow_size (spin_button);
 
@@ -634,7 +634,7 @@ btk_spin_button_size_request (BtkWidget      *widget,
 {
   BtkSpinButton *spin_button = BTK_SPIN_BUTTON (widget);
   BtkEntry *entry = BTK_ENTRY (widget);
-  gint arrow_size;
+  bint arrow_size;
 
   arrow_size = spin_button_get_arrow_size (spin_button);
 
@@ -644,14 +644,14 @@ btk_spin_button_size_request (BtkWidget      *widget,
     {
       BangoContext *context;
       BangoFontMetrics *metrics;
-      gint width;
-      gint w;
-      gint string_len;
-      gint max_string_len;
-      gint digit_width;
-      gboolean interior_focus;
-      gint focus_width;
-      gint xborder, yborder;
+      bint width;
+      bint w;
+      bint string_len;
+      bint max_string_len;
+      bint digit_width;
+      bboolean interior_focus;
+      bint focus_width;
+      bint xborder, yborder;
       BtkBorder inner_border;
 
       btk_widget_style_get (widget,
@@ -700,8 +700,8 @@ btk_spin_button_size_allocate (BtkWidget     *widget,
 {
   BtkSpinButton *spin = BTK_SPIN_BUTTON (widget);
   BtkAllocation panel_allocation;
-  gint arrow_size;
-  gint panel_width;
+  bint arrow_size;
+  bint panel_width;
 
   arrow_size = spin_button_get_arrow_size (spin);
   panel_width = arrow_size + 2 * widget->style->xthickness;
@@ -732,7 +732,7 @@ btk_spin_button_size_allocate (BtkWidget     *widget,
   btk_widget_queue_draw (BTK_WIDGET (spin));
 }
 
-static gint
+static bint
 btk_spin_button_expose (BtkWidget      *widget,
 			BdkEventExpose *event)
 {
@@ -748,8 +748,8 @@ btk_spin_button_expose (BtkWidget      *widget,
 
 	  if (shadow_type != BTK_SHADOW_NONE)
 	    {
-	      gint width, height;
-              gboolean state_hint;
+	      bint width, height;
+              bboolean state_hint;
               BtkStateType state;
 
               btk_widget_style_get (widget, "state-hint", &state_hint, NULL);
@@ -776,7 +776,7 @@ btk_spin_button_expose (BtkWidget      *widget,
         {
           if (event->window == widget->window)
             {
-              gint text_x, text_y, text_width, text_height, slice_x;
+              bint text_x, text_y, text_width, text_height, slice_x;
 
               /* Since we reuse xthickness for the buttons panel on one side, and BtkEntry
                * always sizes its background to (allocation->width - 2 * xthickness), we
@@ -806,7 +806,7 @@ btk_spin_button_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 spin_button_at_limit (BtkSpinButton *spin_button,
                      BtkArrowType   arrow)
 {
@@ -839,11 +839,11 @@ btk_spin_button_draw_arrow (BtkSpinButton *spin_button,
   BtkStateType state_type;
   BtkShadowType shadow_type;
   BtkWidget *widget;
-  gint x;
-  gint y;
-  gint height;
-  gint width;
-  gint h, w;
+  bint x;
+  bint y;
+  bint height;
+  bint width;
+  bint h, w;
 
   g_return_if_fail (arrow_type == BTK_ARROW_UP || arrow_type == BTK_ARROW_DOWN);
 
@@ -940,7 +940,7 @@ btk_spin_button_draw_arrow (BtkSpinButton *spin_button,
     }
 }
 
-static gint
+static bint
 btk_spin_button_enter_notify (BtkWidget        *widget,
 			      BdkEventCrossing *event)
 {
@@ -948,8 +948,8 @@ btk_spin_button_enter_notify (BtkWidget        *widget,
 
   if (event->window == spin->panel)
     {
-      gint x;
-      gint y;
+      bint x;
+      bint y;
 
       bdk_window_get_pointer (spin->panel, &x, &y, NULL);
 
@@ -967,7 +967,7 @@ btk_spin_button_enter_notify (BtkWidget        *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_spin_button_leave_notify (BtkWidget        *widget,
 			      BdkEventCrossing *event)
 {
@@ -982,7 +982,7 @@ btk_spin_button_leave_notify (BtkWidget        *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_spin_button_focus_out (BtkWidget     *widget,
 			   BdkEventFocus *event)
 {
@@ -994,7 +994,7 @@ btk_spin_button_focus_out (BtkWidget     *widget,
 
 static void
 btk_spin_button_grab_notify (BtkWidget *widget,
-			     gboolean   was_grabbed)
+			     bboolean   was_grabbed)
 {
   BtkSpinButton *spin = BTK_SPIN_BUTTON (widget);
 
@@ -1031,7 +1031,7 @@ btk_spin_button_style_set (BtkWidget *widget,
 }
 
 
-static gint
+static bint
 btk_spin_button_scroll (BtkWidget      *widget,
 			BdkEventScroll *event)
 {
@@ -1078,7 +1078,7 @@ btk_spin_button_stop_spinning (BtkSpinButton *spin)
 static void
 start_spinning (BtkSpinButton *spin,
 		BtkArrowType   click_child,
-		gdouble        step)
+		bdouble        step)
 {
   g_return_if_fail (click_child == BTK_ARROW_UP || click_child == BTK_ARROW_DOWN);
   
@@ -1087,7 +1087,7 @@ start_spinning (BtkSpinButton *spin,
   if (!spin->timer)
     {
       BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (spin));
-      guint        timeout;
+      buint        timeout;
 
       g_object_get (settings, "btk-timeout-initial", &timeout, NULL);
 
@@ -1095,14 +1095,14 @@ start_spinning (BtkSpinButton *spin,
       spin->need_timer = TRUE;
       spin->timer = bdk_threads_add_timeout (timeout,
 				   (GSourceFunc) btk_spin_button_timer,
-				   (gpointer) spin);
+				   (bpointer) spin);
     }
   btk_spin_button_real_spin (spin, click_child == BTK_ARROW_UP ? step : -step);
 
   btk_widget_queue_draw (BTK_WIDGET (spin));
 }
 
-static gint
+static bint
 btk_spin_button_button_press (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -1145,12 +1145,12 @@ btk_spin_button_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_spin_button_button_release (BtkWidget      *widget,
 				BdkEventButton *event)
 {
   BtkSpinButton *spin = BTK_SPIN_BUTTON (widget);
-  gint arrow_size;
+  bint arrow_size;
 
   arrow_size = spin_button_get_arrow_size (spin);
 
@@ -1169,7 +1169,7 @@ btk_spin_button_button_release (BtkWidget      *widget,
 	      if (click_child == BTK_ARROW_UP &&
 		  event->y <= widget->requisition.height / 2)
 		{
-		  gdouble diff;
+		  bdouble diff;
 
 		  diff = spin->adjustment->upper - spin->adjustment->value;
 		  if (diff > EPSILON)
@@ -1178,7 +1178,7 @@ btk_spin_button_button_release (BtkWidget      *widget,
 	      else if (click_child == BTK_ARROW_DOWN &&
 		       event->y > widget->requisition.height / 2)
 		{
-		  gdouble diff;
+		  bdouble diff;
 
 		  diff = spin->adjustment->value - spin->adjustment->lower;
 		  if (diff > EPSILON)
@@ -1194,7 +1194,7 @@ btk_spin_button_button_release (BtkWidget      *widget,
     return BTK_WIDGET_CLASS (btk_spin_button_parent_class)->button_release_event (widget, event);
 }
 
-static gint
+static bint
 btk_spin_button_motion_notify (BtkWidget      *widget,
 			       BdkEventMotion *event)
 {
@@ -1205,7 +1205,7 @@ btk_spin_button_motion_notify (BtkWidget      *widget,
 
   if (event->window == spin->panel)
     {
-      gint y = event->y;
+      bint y = event->y;
 
       bdk_event_request_motions (event);
   
@@ -1228,10 +1228,10 @@ btk_spin_button_motion_notify (BtkWidget      *widget,
   return BTK_WIDGET_CLASS (btk_spin_button_parent_class)->motion_notify_event (widget, event);
 }
 
-static gint
+static bint
 btk_spin_button_timer (BtkSpinButton *spin_button)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   
   if (spin_button->timer)
     {
@@ -1243,14 +1243,14 @@ btk_spin_button_timer (BtkSpinButton *spin_button)
       if (spin_button->need_timer)
 	{
           BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (spin_button));
-          guint        timeout;
+          buint        timeout;
 
           g_object_get (settings, "btk-timeout-repeat", &timeout, NULL);
 
 	  spin_button->need_timer = FALSE;
 	  spin_button->timer = bdk_threads_add_timeout (timeout,
 					      (GSourceFunc) btk_spin_button_timer, 
-					      (gpointer) spin_button);
+					      (bpointer) spin_button);
 	}
       else 
 	{
@@ -1276,7 +1276,7 @@ static void
 btk_spin_button_value_changed (BtkAdjustment *adjustment,
 			       BtkSpinButton *spin_button)
 {
-  gboolean return_val;
+  bboolean return_val;
 
   g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
@@ -1296,7 +1296,7 @@ static void
 btk_spin_button_real_change_value (BtkSpinButton *spin,
 				   BtkScrollType  scroll)
 {
-  gdouble old_value;
+  bdouble old_value;
 
   /* When the key binding is activated, there may be an outstanding
    * value, so we first have to commit what is currently written in
@@ -1363,7 +1363,7 @@ btk_spin_button_real_change_value (BtkSpinButton *spin,
       
     case BTK_SCROLL_START:
       {
-	gdouble diff = spin->adjustment->value - spin->adjustment->lower;
+	bdouble diff = spin->adjustment->value - spin->adjustment->lower;
 	if (diff > EPSILON)
 	  btk_spin_button_real_spin (spin, -diff);
 	break;
@@ -1371,7 +1371,7 @@ btk_spin_button_real_change_value (BtkSpinButton *spin,
       
     case BTK_SCROLL_END:
       {
-	gdouble diff = spin->adjustment->upper - spin->adjustment->value;
+	bdouble diff = spin->adjustment->upper - spin->adjustment->value;
 	if (diff > EPSILON)
 	  btk_spin_button_real_spin (spin, diff);
 	break;
@@ -1388,7 +1388,7 @@ btk_spin_button_real_change_value (BtkSpinButton *spin,
     btk_widget_error_bell (BTK_WIDGET (spin));
 }
 
-static gint
+static bint
 btk_spin_button_key_release (BtkWidget   *widget,
 			     BdkEventKey *event)
 {
@@ -1403,10 +1403,10 @@ btk_spin_button_key_release (BtkWidget   *widget,
 
 static void
 btk_spin_button_snap (BtkSpinButton *spin_button,
-		      gdouble        val)
+		      bdouble        val)
 {
-  gdouble inc;
-  gdouble tmp;
+  bdouble inc;
+  bdouble tmp;
 
   inc = spin_button->adjustment->step_increment;
   if (inc == 0)
@@ -1433,13 +1433,13 @@ btk_spin_button_activate (BtkEntry *entry)
 
 static void
 btk_spin_button_get_text_area_size (BtkEntry *entry,
-				    gint     *x,
-				    gint     *y,
-				    gint     *width,
-				    gint     *height)
+				    bint     *x,
+				    bint     *y,
+				    bint     *width,
+				    bint     *height)
 {
-  gint arrow_size;
-  gint panel_width;
+  bint arrow_size;
+  bint panel_width;
 
   BTK_ENTRY_CLASS (btk_spin_button_parent_class)->get_text_area_size (entry, x, y, width, height);
 
@@ -1455,9 +1455,9 @@ btk_spin_button_get_text_area_size (BtkEntry *entry,
 
 static void
 btk_spin_button_insert_text (BtkEditable *editable,
-			     const gchar *new_text,
-			     gint         new_text_length,
-			     gint        *position)
+			     const bchar *new_text,
+			     bint         new_text_length,
+			     bint        *position)
 {
   BtkEntry *entry = BTK_ENTRY (editable);
   BtkSpinButton *spin = BTK_SPIN_BUTTON (editable);
@@ -1466,13 +1466,13 @@ btk_spin_button_insert_text (BtkEditable *editable,
   if (spin->numeric)
     {
       struct lconv *lc;
-      gboolean sign;
-      gint dotpos = -1;
-      gint i;
+      bboolean sign;
+      bint dotpos = -1;
+      bint i;
       BdkWChar pos_sign;
       BdkWChar neg_sign;
-      gint entry_length;
-      const gchar *entry_text;
+      bint entry_length;
+      const bchar *entry_text;
 
       entry_length = btk_entry_get_text_length (entry);
       entry_text = btk_entry_get_text (entry);
@@ -1528,7 +1528,7 @@ btk_spin_button_insert_text (BtkEditable *editable,
 	  }
 
       if (dotpos > -1 && *position > dotpos &&
-	  (gint)spin->digits - entry_length
+	  (bint)spin->digits - entry_length
 	    + dotpos - new_text_length + 1 < 0)
 	return;
 
@@ -1544,7 +1544,7 @@ btk_spin_button_insert_text (BtkEditable *editable,
 	    {
 	      if (!spin->digits || dotpos > -1 || 
  		  (new_text_length - 1 - i + entry_length
-		    - *position > (gint)spin->digits)) 
+		    - *position > (bint)spin->digits)) 
 		return;
 	      dotpos = *position + i;
 	    }
@@ -1559,11 +1559,11 @@ btk_spin_button_insert_text (BtkEditable *editable,
 
 static void
 btk_spin_button_real_spin (BtkSpinButton *spin_button,
-			   gdouble        increment)
+			   bdouble        increment)
 {
   BtkAdjustment *adj;
-  gdouble new_value = 0.0;
-  gboolean wrapped = FALSE;
+  bdouble new_value = 0.0;
+  bboolean wrapped = FALSE;
   
   adj = spin_button->adjustment;
 
@@ -1609,11 +1609,11 @@ btk_spin_button_real_spin (BtkSpinButton *spin_button,
   btk_widget_queue_draw (BTK_WIDGET (spin_button));
 }
 
-static gint
+static bint
 btk_spin_button_default_input (BtkSpinButton *spin_button,
-			       gdouble       *new_val)
+			       bdouble       *new_val)
 {
-  gchar *err = NULL;
+  bchar *err = NULL;
 
   *new_val = g_strtod (btk_entry_get_text (BTK_ENTRY (spin_button)), &err);
   if (*err)
@@ -1622,10 +1622,10 @@ btk_spin_button_default_input (BtkSpinButton *spin_button,
     return FALSE;
 }
 
-static gint
+static bint
 btk_spin_button_default_output (BtkSpinButton *spin_button)
 {
-  gchar *buf = g_strdup_printf ("%0.*f", spin_button->digits, spin_button->adjustment->value);
+  bchar *buf = g_strdup_printf ("%0.*f", spin_button->digits, spin_button->adjustment->value);
 
   if (strcmp (buf, btk_entry_get_text (BTK_ENTRY (spin_button))))
     btk_entry_set_text (BTK_ENTRY (spin_button), buf);
@@ -1654,8 +1654,8 @@ btk_spin_button_default_output (BtkSpinButton *spin_button)
 void
 btk_spin_button_configure (BtkSpinButton  *spin_button,
 			   BtkAdjustment  *adjustment,
-			   gdouble         climb_rate,
-			   guint           digits)
+			   bdouble         climb_rate,
+			   buint           digits)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1683,8 +1683,8 @@ btk_spin_button_configure (BtkSpinButton  *spin_button,
 
 BtkWidget *
 btk_spin_button_new (BtkAdjustment *adjustment,
-		     gdouble        climb_rate,
-		     guint          digits)
+		     bdouble        climb_rate,
+		     buint          digits)
 {
   BtkSpinButton *spin;
 
@@ -1717,13 +1717,13 @@ btk_spin_button_new (BtkAdjustment *adjustment,
  * Return value: The new spin button as a #BtkWidget.
  **/
 BtkWidget *
-btk_spin_button_new_with_range (gdouble min,
-				gdouble max,
-				gdouble step)
+btk_spin_button_new_with_range (bdouble min,
+				bdouble max,
+				bdouble step)
 {
   BtkObject *adj;
   BtkSpinButton *spin;
-  gint digits;
+  bint digits;
 
   g_return_val_if_fail (min <= max, NULL);
   g_return_val_if_fail (step != 0.0, NULL);
@@ -1735,7 +1735,7 @@ btk_spin_button_new_with_range (gdouble min,
   if (fabs (step) >= 1.0 || step == 0.0)
     digits = 0;
   else {
-    digits = abs ((gint) floor (log10 (fabs (step))));
+    digits = abs ((bint) floor (log10 (fabs (step))));
     if (digits > MAX_DIGITS)
       digits = MAX_DIGITS;
   }
@@ -1758,7 +1758,7 @@ warn_nonzero_page_size (BtkAdjustment *adjustment)
  * the arrows when the adjustment's range changes, and reevaluate our size request.
  */
 static void
-adjustment_changed_cb (BtkAdjustment *adjustment, gpointer data)
+adjustment_changed_cb (BtkAdjustment *adjustment, bpointer data)
 {
   BtkSpinButton *spin_button;
 
@@ -1840,7 +1840,7 @@ btk_spin_button_get_adjustment (BtkSpinButton *spin_button)
  **/
 void
 btk_spin_button_set_digits (BtkSpinButton *spin_button,
-			    guint          digits)
+			    buint          digits)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1863,7 +1863,7 @@ btk_spin_button_set_digits (BtkSpinButton *spin_button,
  *
  * Returns: the current precision
  **/
-guint
+buint
 btk_spin_button_get_digits (BtkSpinButton *spin_button)
 {
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), 0);
@@ -1882,8 +1882,8 @@ btk_spin_button_get_digits (BtkSpinButton *spin_button)
  **/
 void
 btk_spin_button_set_increments (BtkSpinButton *spin_button,
-				gdouble        step,
-				gdouble        page)
+				bdouble        step,
+				bdouble        page)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1902,8 +1902,8 @@ btk_spin_button_set_increments (BtkSpinButton *spin_button,
  **/
 void
 btk_spin_button_get_increments (BtkSpinButton *spin_button,
-				gdouble       *step,
-				gdouble       *page)
+				bdouble       *step,
+				bdouble       *page)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1923,10 +1923,10 @@ btk_spin_button_get_increments (BtkSpinButton *spin_button,
  **/
 void
 btk_spin_button_set_range (BtkSpinButton *spin_button,
-			   gdouble        min,
-			   gdouble        max)
+			   bdouble        min,
+			   bdouble        max)
 {
-  gdouble value;
+  bdouble value;
   
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1954,8 +1954,8 @@ btk_spin_button_set_range (BtkSpinButton *spin_button,
  **/
 void
 btk_spin_button_get_range (BtkSpinButton *spin_button,
-			   gdouble       *min,
-			   gdouble       *max)
+			   bdouble       *min,
+			   bdouble       *max)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -1973,7 +1973,7 @@ btk_spin_button_get_range (BtkSpinButton *spin_button,
  * 
  * Return value: the value of @spin_button
  **/
-gdouble
+bdouble
 btk_spin_button_get_value (BtkSpinButton *spin_button)
 {
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), 0.0);
@@ -1989,10 +1989,10 @@ btk_spin_button_get_value (BtkSpinButton *spin_button)
  * 
  * Return value: the value of @spin_button
  **/
-gint
+bint
 btk_spin_button_get_value_as_int (BtkSpinButton *spin_button)
 {
-  gdouble val;
+  bdouble val;
 
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), 0);
 
@@ -2012,7 +2012,7 @@ btk_spin_button_get_value_as_int (BtkSpinButton *spin_button)
  **/
 void 
 btk_spin_button_set_value (BtkSpinButton *spin_button, 
-			   gdouble        value)
+			   bdouble        value)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -2020,7 +2020,7 @@ btk_spin_button_set_value (BtkSpinButton *spin_button,
     btk_adjustment_set_value (spin_button->adjustment, value);
   else
     {
-      gint return_val = FALSE;
+      bint return_val = FALSE;
       g_signal_emit (spin_button, spinbutton_signals[OUTPUT], 0, &return_val);
       if (return_val == FALSE)
 	btk_spin_button_default_output (spin_button);
@@ -2075,7 +2075,7 @@ btk_spin_button_get_update_policy (BtkSpinButton *spin_button)
  **/
 void
 btk_spin_button_set_numeric (BtkSpinButton  *spin_button,
-			     gboolean        numeric)
+			     bboolean        numeric)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -2097,7 +2097,7 @@ btk_spin_button_set_numeric (BtkSpinButton  *spin_button,
  *
  * Return value: %TRUE if only numeric text can be entered
  **/
-gboolean
+bboolean
 btk_spin_button_get_numeric (BtkSpinButton *spin_button)
 {
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), FALSE);
@@ -2115,7 +2115,7 @@ btk_spin_button_get_numeric (BtkSpinButton *spin_button)
  **/
 void
 btk_spin_button_set_wrap (BtkSpinButton  *spin_button,
-			  gboolean        wrap)
+			  bboolean        wrap)
 {
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -2139,7 +2139,7 @@ btk_spin_button_set_wrap (BtkSpinButton  *spin_button,
  *
  * Return value: %TRUE if the spin button wraps around
  **/
-gboolean
+bboolean
 btk_spin_button_get_wrap (BtkSpinButton *spin_button)
 {
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), FALSE);
@@ -2147,11 +2147,11 @@ btk_spin_button_get_wrap (BtkSpinButton *spin_button)
   return spin_button->wrap;
 }
 
-static gint
+static bint
 spin_button_get_arrow_size (BtkSpinButton *spin_button)
 {
-  gint size = bango_font_description_get_size (BTK_WIDGET (spin_button)->style->font_desc);
-  gint arrow_size;
+  bint size = bango_font_description_get_size (BTK_WIDGET (spin_button)->style->font_desc);
+  bint arrow_size;
 
   arrow_size = MAX (BANGO_PIXELS (size), MIN_ARROW_WIDTH);
 
@@ -2167,7 +2167,7 @@ spin_button_get_arrow_size (BtkSpinButton *spin_button)
  * 
  * Return value: the #BtkShadowType
  **/
-static gint
+static bint
 spin_button_get_shadow_type (BtkSpinButton *spin_button)
 {
   BtkShadowType rc_shadow_type;
@@ -2187,9 +2187,9 @@ spin_button_get_shadow_type (BtkSpinButton *spin_button)
  **/
 void
 btk_spin_button_set_snap_to_ticks (BtkSpinButton *spin_button,
-				   gboolean       snap_to_ticks)
+				   bboolean       snap_to_ticks)
 {
-  guint new_val;
+  buint new_val;
 
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 
@@ -2214,7 +2214,7 @@ btk_spin_button_set_snap_to_ticks (BtkSpinButton *spin_button,
  *
  * Return value: %TRUE if values are snapped to the nearest step.
  **/
-gboolean
+bboolean
 btk_spin_button_get_snap_to_ticks (BtkSpinButton *spin_button)
 {
   g_return_val_if_fail (BTK_IS_SPIN_BUTTON (spin_button), FALSE);
@@ -2234,10 +2234,10 @@ btk_spin_button_get_snap_to_ticks (BtkSpinButton *spin_button)
 void
 btk_spin_button_spin (BtkSpinButton *spin_button,
 		      BtkSpinType    direction,
-		      gdouble        increment)
+		      bdouble        increment)
 {
   BtkAdjustment *adj;
-  gdouble diff;
+  bdouble diff;
 
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
   
@@ -2309,9 +2309,9 @@ btk_spin_button_spin (BtkSpinButton *spin_button,
 void 
 btk_spin_button_update (BtkSpinButton *spin_button)
 {
-  gdouble val;
-  gint error = 0;
-  gint return_val;
+  bdouble val;
+  bint error = 0;
+  bint return_val;
 
   g_return_if_fail (BTK_IS_SPIN_BUTTON (spin_button));
 

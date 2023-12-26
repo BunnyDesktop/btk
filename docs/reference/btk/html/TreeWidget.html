@@ -330,7 +330,7 @@
 10
 11</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="cm">/* Prototype for selection handler callback */</span>
-<span class="k">static</span> <span class="kt">void</span> <span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">data</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">bpointer</span> <span class="n">data</span><span class="p">);</span>
 
 <span class="cm">/* Setup the selection handler */</span>
 <span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">select</span><span class="p">;</span>
@@ -369,11 +369,11 @@
 15
 16</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
-<span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">data</span><span class="p">)</span>
+<span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">bpointer</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="n">BtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
         <span class="n">BtkTreeModel</span> <span class="o">*</span><span class="n">model</span><span class="p">;</span>
-        <span class="n">gchar</span> <span class="o">*</span><span class="n">author</span><span class="p">;</span>
+        <span class="n">bchar</span> <span class="o">*</span><span class="n">author</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">btk_tree_selection_get_selected</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">model</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">))</span>
         <span class="p">{</span>

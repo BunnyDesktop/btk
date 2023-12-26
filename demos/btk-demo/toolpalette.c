@@ -20,7 +20,7 @@ typedef struct _CanvasItem CanvasItem;
 struct _CanvasItem
 {
   BdkPixbuf *pixbuf;
-  gdouble x, y;
+  bdouble x, y;
 };
 
 static CanvasItem *drop_item = NULL;
@@ -33,11 +33,11 @@ static GList *canvas_items = NULL;
 static CanvasItem*
 canvas_item_new (BtkWidget     *widget,
                  BtkToolButton *button,
-                 gdouble        x,
-                 gdouble        y)
+                 bdouble        x,
+                 bdouble        y)
 {
   CanvasItem *item = NULL;
-  const gchar *stock_id;
+  const bchar *stock_id;
   BdkPixbuf *pixbuf;
 
   stock_id = btk_tool_button_get_stock_id (button);
@@ -64,10 +64,10 @@ canvas_item_free (CanvasItem *item)
 static void
 canvas_item_draw (const CanvasItem *item,
                   bairo_t          *cr,
-                  gboolean          preview)
+                  bboolean          preview)
 {
-  gdouble cx = bdk_pixbuf_get_width (item->pixbuf);
-  gdouble cy = bdk_pixbuf_get_height (item->pixbuf);
+  bdouble cx = bdk_pixbuf_get_width (item->pixbuf);
+  bdouble cy = bdk_pixbuf_get_height (item->pixbuf);
 
   bdk_bairo_set_source_pixbuf (cr,
                                item->pixbuf,
@@ -80,7 +80,7 @@ canvas_item_draw (const CanvasItem *item,
     bairo_paint (cr);
 }
 
-static gboolean
+static bboolean
 canvas_expose_event (BtkWidget      *widget,
                      BdkEventExpose *event)
 {
@@ -115,19 +115,19 @@ canvas_expose_event (BtkWidget      *widget,
 static void
 palette_drop_item (BtkToolItem      *drag_item,
                    BtkToolItemGroup *drop_group,
-                   gint              x,
-                   gint              y)
+                   bint              x,
+                   bint              y)
 {
   BtkWidget *drag_group = btk_widget_get_parent (BTK_WIDGET (drag_item));
   BtkToolItem *drop_item = btk_tool_item_group_get_drop_item (drop_group, x, y);
-  gint drop_position = -1;
+  bint drop_position = -1;
 
   if (drop_item)
     drop_position = btk_tool_item_group_get_item_position (BTK_TOOL_ITEM_GROUP (drop_group), drop_item);
 
   if (BTK_TOOL_ITEM_GROUP (drag_group) != drop_group)
     {
-      gboolean homogeneous, expand, fill, new_row;
+      bboolean homogeneous, expand, fill, new_row;
 
       g_object_ref (drag_item);
       btk_container_child_get (BTK_CONTAINER (drag_group), BTK_WIDGET (drag_item),
@@ -157,7 +157,7 @@ palette_drop_group (BtkToolPalette   *palette,
                     BtkToolItemGroup *drag_group,
                     BtkToolItemGroup *drop_group)
 {
-  gint drop_position = -1;
+  bint drop_position = -1;
 
   if (drop_group)
     drop_position = btk_tool_palette_get_group_position (palette, drop_group);
@@ -168,12 +168,12 @@ palette_drop_group (BtkToolPalette   *palette,
 static void
 palette_drag_data_received (BtkWidget        *widget,
                             BdkDragContext   *context,
-                            gint              x,
-                            gint              y,
+                            bint              x,
+                            bint              y,
                             BtkSelectionData *selection,
-                            guint             info,
-                            guint             time,
-                            gpointer          data)
+                            buint             info,
+                            buint             time,
+                            bpointer          data)
 {
   BtkToolItemGroup *drop_group = NULL;
   BtkWidget        *drag_palette = btk_drag_get_source_widget (context);
@@ -210,12 +210,12 @@ palette_drag_data_received (BtkWidget        *widget,
 static void
 passive_canvas_drag_data_received (BtkWidget        *widget,
                                    BdkDragContext   *context,
-                                   gint              x,
-                                   gint              y,
+                                   bint              x,
+                                   bint              y,
                                    BtkSelectionData *selection,
-                                   guint             info,
-                                   guint             time,
-                                   gpointer          data)
+                                   buint             info,
+                                   buint             time,
+                                   bpointer          data)
 {
   /* find the tool button, which is the source of this DnD operation */
 
@@ -248,13 +248,13 @@ passive_canvas_drag_data_received (BtkWidget        *widget,
 /* ====== Interactive Canvas ====== */
 /************************************/
 
-static gboolean
+static bboolean
 interactive_canvas_drag_motion (BtkWidget      *widget,
                                 BdkDragContext *context,
-                                gint            x,
-                                gint            y,
-                                guint           time,
-                                gpointer        data)
+                                bint            x,
+                                bint            y,
+                                buint           time,
+                                bpointer        data)
 {
   if (drop_item)
     {
@@ -284,12 +284,12 @@ interactive_canvas_drag_motion (BtkWidget      *widget,
 static void
 interactive_canvas_drag_data_received (BtkWidget        *widget,
                                        BdkDragContext   *context,
-                                       gint              x,
-                                       gint              y,
+                                       bint              x,
+                                       bint              y,
                                        BtkSelectionData *selection,
-                                       guint             info,
-                                       guint             time,
-                                       gpointer          data)
+                                       buint             info,
+                                       buint             time,
+                                       bpointer          data)
 
 {
   /* find the tool button which is the source of this DnD operation */
@@ -316,13 +316,13 @@ interactive_canvas_drag_data_received (BtkWidget        *widget,
     }
 }
 
-static gboolean
+static bboolean
 interactive_canvas_drag_drop (BtkWidget      *widget,
                               BdkDragContext *context,
-                              gint            x,
-                              gint            y,
-                              guint           time,
-                              gpointer        data)
+                              bint            x,
+                              bint            y,
+                              buint           time,
+                              bpointer        data)
 {
   if (drop_item)
     {
@@ -345,8 +345,8 @@ interactive_canvas_drag_drop (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-interactive_canvas_real_drag_leave (gpointer data)
+static bboolean
+interactive_canvas_real_drag_leave (bpointer data)
 {
   if (drop_item)
     {
@@ -364,8 +364,8 @@ interactive_canvas_real_drag_leave (gpointer data)
 static void
 interactive_canvas_drag_leave (BtkWidget      *widget,
                                BdkDragContext *context,
-                               guint           time,
-                               gpointer        data)
+                               buint           time,
+                               bpointer        data)
 {
   /* defer cleanup until a potential "drag-drop" signal was received */
   g_idle_add (interactive_canvas_real_drag_leave, widget);
@@ -373,13 +373,13 @@ interactive_canvas_drag_leave (BtkWidget      *widget,
 
 static void
 on_combo_orientation_changed (BtkComboBox *combo_box,
-                              gpointer     user_data)
+                              bpointer     user_data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (user_data);
   BtkScrolledWindow *sw = BTK_SCROLLED_WINDOW (btk_widget_get_parent (BTK_WIDGET (palette)));
   BtkTreeModel *model = btk_combo_box_get_model (combo_box);
   BtkTreeIter iter;
-  gint val = 0;
+  bint val = 0;
 
   if (!btk_combo_box_get_active_iter (combo_box, &iter))
     return;
@@ -396,12 +396,12 @@ on_combo_orientation_changed (BtkComboBox *combo_box,
 
 static void
 on_combo_style_changed (BtkComboBox *combo_box,
-                        gpointer     user_data)
+                        bpointer     user_data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (user_data);
   BtkTreeModel *model = btk_combo_box_get_model (combo_box);
   BtkTreeIter iter;
-  gint val = 0;
+  bint val = 0;
 
   if (!btk_combo_box_get_active_iter (combo_box, &iter))
     return;
@@ -658,7 +658,7 @@ load_stock_items (BtkToolPalette *palette)
   for (iter = stock_ids; iter; iter = b_slist_next (iter))
     {
       BtkStockItem stock_item;
-      gchar *id = iter->data;
+      bchar *id = iter->data;
 
       switch (id[4])
         {

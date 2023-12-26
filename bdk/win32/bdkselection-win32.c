@@ -40,9 +40,9 @@
  */
 
 typedef struct {
-  guchar *data;
-  gsize length;
-  gint format;
+  buchar *data;
+  bsize length;
+  bint format;
   BdkAtom type;
 } BdkSelProp;
 
@@ -79,10 +79,10 @@ _bdk_win32_selection_init (void)
   n_known_pixbuf_formats = 0;
   for (rover = pixbuf_formats; rover != NULL; rover = rover->next)
     {
-      gchar **mime_types =
+      bchar **mime_types =
 	bdk_pixbuf_format_get_mime_types ((BdkPixbufFormat *) rover->data);
 
-      gchar **mime_type;
+      bchar **mime_type;
 
       for (mime_type = mime_types; *mime_type != NULL; mime_type++)
 	n_known_pixbuf_formats++;
@@ -93,10 +93,10 @@ _bdk_win32_selection_init (void)
   n_known_pixbuf_formats = 0;
   for (rover = pixbuf_formats; rover != NULL; rover = rover->next)
     {
-      gchar **mime_types =
+      bchar **mime_types =
 	bdk_pixbuf_format_get_mime_types ((BdkPixbufFormat *) rover->data);
 
-      gchar **mime_type;
+      bchar **mime_type;
 
       for (mime_type = mime_types; *mime_type != NULL; mime_type++)
 	known_pixbuf_formats[n_known_pixbuf_formats++] = bdk_atom_intern (*mime_type, FALSE);
@@ -109,11 +109,11 @@ _bdk_win32_selection_init (void)
   text_plain_charset_CP1252 = bdk_atom_intern ("text/plain;charset=CP1252", FALSE);
 
   g_hash_table_replace (_format_atom_table,
-			GINT_TO_POINTER (_cf_png),
+			BINT_TO_POINTER (_cf_png),
 			_image_png);
 
   g_hash_table_replace (_format_atom_table,
-			GINT_TO_POINTER (CF_DIB),
+			BINT_TO_POINTER (CF_DIB),
 			_image_bmp);
 }
 
@@ -124,13 +124,13 @@ _bdk_win32_selection_init (void)
  * This routine strips out all non-allowed C0 and C1 characters
  * from the input string and also canonicalizes \r, and \r\n to \n
  */
-static gchar * 
-sanitize_utf8 (const gchar *src,
-	       gint         length)
+static bchar * 
+sanitize_utf8 (const bchar *src,
+	       bint         length)
 {
   GString *result = g_string_sized_new (length + 1);
-  const gchar *p = src;
-  const gchar *endp = src + length;
+  const bchar *p = src;
+  const bchar *endp = src + length;
 
   while (p < endp)
     {
@@ -146,7 +146,7 @@ sanitize_utf8 (const gchar *src,
 	{
 	  gunichar ch = g_utf8_get_char (p);
 	  char buf[7];
-	  gint buflen;
+	  bint buflen;
 	  
 	  if (!((ch < 0x20 && ch != '\t' && ch != '\n') || (ch >= 0x7f && ch < 0xa0)))
 	    {
@@ -162,14 +162,14 @@ sanitize_utf8 (const gchar *src,
   return g_string_free (result, FALSE);
 }
 
-static gchar *
-_bdk_utf8_to_string_target_internal (const gchar *str,
-				     gint         length)
+static bchar *
+_bdk_utf8_to_string_target_internal (const bchar *str,
+				     bint         length)
 {
   GError *error = NULL;
   
-  gchar *tmp_str = sanitize_utf8 (str, length);
-  gchar *result =  g_convert_with_fallback (tmp_str, -1,
+  bchar *tmp_str = sanitize_utf8 (str, length);
+  bchar *result =  g_convert_with_fallback (tmp_str, -1,
 					    "ISO-8859-1", "UTF-8",
 					    NULL, NULL, NULL, &error);
   if (!result)
@@ -186,9 +186,9 @@ _bdk_utf8_to_string_target_internal (const gchar *str,
 static void
 selection_property_store (BdkWindow *owner,
 			  BdkAtom    type,
-			  gint       format,
-			  guchar    *data,
-			  gint       length)
+			  bint       format,
+			  buchar    *data,
+			  bint       length)
 {
   BdkSelProp *prop;
 
@@ -214,14 +214,14 @@ selection_property_store (BdkWindow *owner,
 }
 
 void
-_bdk_dropfiles_store (gchar *data)
+_bdk_dropfiles_store (bchar *data)
 {
   if (data != NULL)
     {
       g_assert (dropfiles_prop == NULL);
 
       dropfiles_prop = g_new (BdkSelProp, 1);
-      dropfiles_prop->data = (guchar *) data;
+      dropfiles_prop->data = (buchar *) data;
       dropfiles_prop->length = strlen (data) + 1;
       dropfiles_prop->format = 8;
       dropfiles_prop->type = _text_uri_list;
@@ -237,7 +237,7 @@ _bdk_dropfiles_store (gchar *data)
     }
 }
 
-static gchar *
+static bchar *
 get_mapped_bdk_atom_name (BdkAtom bdk_target)
 {
   if (bdk_target == _image_png)
@@ -252,12 +252,12 @@ get_mapped_bdk_atom_name (BdkAtom bdk_target)
   return bdk_atom_name (bdk_target);
 }
 
-gboolean
+bboolean
 bdk_selection_owner_set_for_display (BdkDisplay *display,
                                      BdkWindow  *owner,
                                      BdkAtom     selection,
-                                     guint32     time,
-                                     gboolean    send_event)
+                                     buint32     time,
+                                     bboolean    send_event)
 {
   HWND hwnd;
   BdkEvent tmp_event;
@@ -266,7 +266,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
   g_return_val_if_fail (selection != BDK_NONE, FALSE);
 
   BDK_NOTE (DND, {
-      gchar *sel_name = bdk_atom_name (selection);
+      bchar *sel_name = bdk_atom_name (selection);
 
       g_print ("bdk_selection_owner_set_for_display: %p %s\n",
 	       (owner ? BDK_WINDOW_HWND (owner) : NULL),
@@ -354,7 +354,7 @@ bdk_selection_owner_get_for_display (BdkDisplay *display,
   window = bdk_window_lookup ((BdkNativeWindow) g_hash_table_lookup (sel_owner_table, selection));
 
   BDK_NOTE (DND, {
-      gchar *sel_name = bdk_atom_name (selection);
+      bchar *sel_name = bdk_atom_name (selection);
       
       g_print ("bdk_selection_owner_get: %s = %p\n",
 	       sel_name,
@@ -370,7 +370,7 @@ generate_selection_notify (BdkWindow *requestor,
 			   BdkAtom    selection,
 			   BdkAtom    target,
 			   BdkAtom    property,
-			   guint32    time)
+			   buint32    time)
 {
   BdkEvent tmp_event;
 
@@ -390,7 +390,7 @@ void
 bdk_selection_convert (BdkWindow *requestor,
 		       BdkAtom    selection,
 		       BdkAtom    target,
-		       guint32    time)
+		       buint32    time)
 {
   HGLOBAL hdata;
   BdkAtom property = _bdk_selection;
@@ -402,8 +402,8 @@ bdk_selection_convert (BdkWindow *requestor,
     return;
 
   BDK_NOTE (DND, {
-      gchar *sel_name = bdk_atom_name (selection);
-      gchar *tgt_name = bdk_atom_name (target);
+      bchar *sel_name = bdk_atom_name (selection);
+      bchar *tgt_name = bdk_atom_name (target);
       
       g_print ("bdk_selection_convert: %p %s %s\n",
 	       BDK_WINDOW_HWND (requestor),
@@ -414,11 +414,11 @@ bdk_selection_convert (BdkWindow *requestor,
 
   if (selection == BDK_SELECTION_CLIPBOARD && target == _targets)
     {
-      gint ntargets, fmt;
+      bint ntargets, fmt;
       BdkAtom *targets;
-      gboolean has_text = FALSE;
-      gboolean has_png = FALSE;
-      gboolean has_bmp = FALSE;
+      bboolean has_text = FALSE;
+      bboolean has_png = FALSE;
+      bboolean has_bmp = FALSE;
 
       if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
 	return;
@@ -437,7 +437,7 @@ bdk_selection_convert (BdkWindow *requestor,
 
       for (fmt = 0; 0 != (fmt = EnumClipboardFormats (fmt)); )
 	{
-	  gchar sFormat[80];
+	  bchar sFormat[80];
 
 	  if (fmt == CF_UNICODETEXT || fmt == CF_TEXT)
 	    {
@@ -499,7 +499,7 @@ bdk_selection_convert (BdkWindow *requestor,
 	  g_print ("... ");
 	  for (i = 0; i < ntargets; i++)
 	    {
-	      gchar *atom_name = bdk_atom_name (targets[i]);
+	      bchar *atom_name = bdk_atom_name (targets[i]);
 
 	      g_print ("%s", atom_name);
 	      g_free (atom_name);
@@ -511,7 +511,7 @@ bdk_selection_convert (BdkWindow *requestor,
 
       if (ntargets > 0)
 	selection_property_store (requestor, BDK_SELECTION_TYPE_ATOM,
-				  32, (guchar *) targets,
+				  32, (buchar *) targets,
 				  ntargets * sizeof (BdkAtom));
       else
 	property = BDK_NONE;
@@ -530,8 +530,8 @@ bdk_selection_convert (BdkWindow *requestor,
       if ((hdata = GetClipboardData (CF_UNICODETEXT)) != NULL)
 	{
 	  wchar_t *ptr, *p, *q;
-	  guchar *data;
-	  glong length, wclen;
+	  buchar *data;
+	  blong length, wclen;
 
 	  if ((ptr = GlobalLock (hdata)) != NULL)
 	    {
@@ -605,10 +605,10 @@ bdk_selection_convert (BdkWindow *requestor,
 	       * fixed before this is committed.
 	       */
               BITMAPFILEHEADER *bf;
-	      gpointer data;
-	      gint data_length = GlobalSize (hdata);
-	      gint new_length;
-	      gboolean make_dibv5 = FALSE;
+	      bpointer data;
+	      bint data_length = GlobalSize (hdata);
+	      bint new_length;
+	      bboolean make_dibv5 = FALSE;
 
 	      BDK_NOTE (DND, g_print ("... CF_DIB: %d bytes\n", data_length));
 
@@ -662,7 +662,7 @@ bdk_selection_convert (BdkWindow *requestor,
 		  if (make_dibv5)
 		    {
 		      BITMAPV5HEADER *bV5 = (BITMAPV5HEADER *) ((char *) data + sizeof (BITMAPFILEHEADER));
-		      guchar *p;
+		      buchar *p;
 		      int i;
 
 		      bV5->bV5Size = sizeof (BITMAPV5HEADER);
@@ -692,7 +692,7 @@ bdk_selection_convert (BdkWindow *requestor,
 		      bf->bfOffBits = (sizeof (BITMAPFILEHEADER) +
 				       bV5->bV5Size);
 
-		      p = ((guchar *) data) + sizeof (BITMAPFILEHEADER) + sizeof (BITMAPV5HEADER);
+		      p = ((buchar *) data) + sizeof (BITMAPFILEHEADER) + sizeof (BITMAPV5HEADER);
 		      memcpy (p, ((char *) bi) + bi->biSize,
 			      data_length - sizeof (BITMAPINFOHEADER));
 
@@ -700,7 +700,7 @@ bdk_selection_convert (BdkWindow *requestor,
 			{
 			  if (p[3] != 0)
 			    {
-			      gdouble inverse_alpha = 255./p[3];
+			      bdouble inverse_alpha = 255./p[3];
 			      
 			      p[0] = p[0] * inverse_alpha + 0.5;
 			      p[1] = p[1] * inverse_alpha + 0.5;
@@ -743,7 +743,7 @@ bdk_selection_convert (BdkWindow *requestor,
     }
   else if (selection == BDK_SELECTION_CLIPBOARD)
     {
-      gchar *mapped_target_name;
+      bchar *mapped_target_name;
       UINT fmt = 0;
 
       if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
@@ -767,8 +767,8 @@ bdk_selection_convert (BdkWindow *requestor,
               if ((hdata = GetClipboardData (fmt)) != NULL)
 	        {
 	          /* Simply get it without conversion */
-                  guchar *ptr;
-                  gint length;
+                  buchar *ptr;
+                  bint length;
 
                   if ((ptr = GlobalLock (hdata)) != NULL)
                     {
@@ -812,11 +812,11 @@ bdk_selection_convert (BdkWindow *requestor,
   generate_selection_notify (requestor, selection, target, property, time);
 }
 
-gint
+bint
 bdk_selection_property_get (BdkWindow  *requestor,
-			    guchar    **data,
+			    buchar    **data,
 			    BdkAtom    *ret_type,
-			    gint       *ret_format)
+			    bint       *ret_format)
 {
   BdkSelProp *prop;
 
@@ -845,7 +845,7 @@ bdk_selection_property_get (BdkWindow  *requestor,
     memmove (*data, prop->data, prop->length);
 
   BDK_NOTE (DND, {
-      gchar *type_name = bdk_atom_name (prop->type);
+      bchar *type_name = bdk_atom_name (prop->type);
 
       g_print (" %s format:%d length:%d\n", type_name, prop->format, prop->length);
       g_free (type_name);
@@ -885,14 +885,14 @@ bdk_selection_send_notify_for_display (BdkDisplay      *display,
                                        BdkAtom     	selection,
                                        BdkAtom     	target,
                                        BdkAtom     	property,
-                                       guint32     	time)
+                                       buint32     	time)
 {
   g_return_if_fail (display == _bdk_display);
 
   BDK_NOTE (DND, {
-      gchar *sel_name = bdk_atom_name (selection);
-      gchar *tgt_name = bdk_atom_name (target);
-      gchar *prop_name = bdk_atom_name (property);
+      bchar *sel_name = bdk_atom_name (selection);
+      bchar *tgt_name = bdk_atom_name (target);
+      bchar *prop_name = bdk_atom_name (property);
       
       g_print ("bdk_selection_send_notify_for_display: %p %s %s %s (no-op)\n",
 	       requestor, sel_name, tgt_name, prop_name);
@@ -906,22 +906,22 @@ bdk_selection_send_notify_for_display (BdkDisplay      *display,
  * on the Win32 platform? btk calls only
  * bdk_text_property_to_utf8_list_for_display().
  */
-gint
+bint
 bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
 					    BdkAtom       encoding,
-					    gint          format, 
-					    const guchar *text,
-					    gint          length,
-					    gchar      ***list)
+					    bint          format, 
+					    const buchar *text,
+					    bint          length,
+					    bchar      ***list)
 {
-  gchar *result;
-  const gchar *charset;
-  gchar *source_charset;
+  bchar *result;
+  const bchar *charset;
+  bchar *source_charset;
 
   g_return_val_if_fail (display == _bdk_display, 0);
 
   BDK_NOTE (DND, {
-      gchar *enc_name = bdk_atom_name (encoding);
+      bchar *enc_name = bdk_atom_name (encoding);
       
       g_print ("bdk_text_property_to_text_list_for_display: %s %d %.20s %d\n",
 	       enc_name, format, text, length);
@@ -947,14 +947,14 @@ bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
   if (!result)
     return 0;
 
-  *list = g_new (gchar *, 1);
+  *list = g_new (bchar *, 1);
   **list = result;
   
   return 1;
 }
 
 void
-bdk_free_text_list (gchar **list)
+bdk_free_text_list (bchar **list)
 {
   g_return_if_fail (list != NULL);
 
@@ -962,23 +962,23 @@ bdk_free_text_list (gchar **list)
   g_free (list);
 }
 
-static gint
-make_list (const gchar  *text,
-	   gint          length,
-	   gboolean      latin1,
-	   gchar      ***list)
+static bint
+make_list (const bchar  *text,
+	   bint          length,
+	   bboolean      latin1,
+	   bchar      ***list)
 {
   GSList *strings = NULL;
-  gint n_strings = 0;
-  gint i;
-  const gchar *p = text;
-  const gchar *q;
+  bint n_strings = 0;
+  bint i;
+  const bchar *p = text;
+  const bchar *q;
   GSList *tmp_list;
   GError *error = NULL;
 
   while (p < text + length)
     {
-      gchar *str;
+      bchar *str;
       
       q = p;
       while (*q && q < text + length)
@@ -1010,7 +1010,7 @@ make_list (const gchar  *text,
     }
 
   if (list)
-    *list = g_new (gchar *, n_strings + 1);
+    *list = g_new (bchar *, n_strings + 1);
 
   (*list)[n_strings] = NULL;
   
@@ -1031,13 +1031,13 @@ make_list (const gchar  *text,
   return n_strings;
 }
 
-gint 
+bint 
 bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
                                             BdkAtom        encoding,
-                                            gint           format,
-                                            const guchar  *text,
-                                            gint           length,
-                                            gchar       ***list)
+                                            bint           format,
+                                            const buchar  *text,
+                                            bint           length,
+                                            bchar       ***list)
 {
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
@@ -1045,15 +1045,15 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
 
   if (encoding == BDK_TARGET_STRING)
     {
-      return make_list ((gchar *)text, length, TRUE, list);
+      return make_list ((bchar *)text, length, TRUE, list);
     }
   else if (encoding == _utf8_string)
     {
-      return make_list ((gchar *)text, length, FALSE, list);
+      return make_list ((bchar *)text, length, FALSE, list);
     }
   else
     {
-      gchar *enc_name = bdk_atom_name (encoding);
+      bchar *enc_name = bdk_atom_name (encoding);
 
       g_warning ("bdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
       g_free (enc_name);
@@ -1065,13 +1065,13 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
     }
 }
 
-gint
+bint
 bdk_string_to_compound_text_for_display (BdkDisplay  *display,
-					 const gchar *str,
+					 const bchar *str,
 					 BdkAtom     *encoding,
-					 gint        *format,
-					 guchar     **ctext,
-					 gint        *length)
+					 bint        *format,
+					 buchar     **ctext,
+					 bint        *length)
 {
   g_return_val_if_fail (str != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
@@ -1096,19 +1096,19 @@ bdk_string_to_compound_text_for_display (BdkDisplay  *display,
   return -1;
 }
 
-gchar *
-bdk_utf8_to_string_target (const gchar *str)
+bchar *
+bdk_utf8_to_string_target (const bchar *str)
 {
   return _bdk_utf8_to_string_target_internal (str, strlen (str));
 }
 
-gboolean
+bboolean
 bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
-                                       const gchar *str,
+                                       const bchar *str,
                                        BdkAtom     *encoding,
-                                       gint        *format,
-                                       guchar     **ctext,
-                                       gint        *length)
+                                       bint        *format,
+                                       buchar     **ctext,
+                                       bint        *length)
 {
   g_return_val_if_fail (str != NULL, FALSE);
   g_return_val_if_fail (display == _bdk_display, FALSE);
@@ -1133,7 +1133,7 @@ bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
 }
 
 void
-bdk_free_compound_text (guchar *ctext)
+bdk_free_compound_text (buchar *ctext)
 {
   /* As we never generate anything claimed to be COMPOUND_TEXT, this
    * should never be called. Or if it is called, ctext should be the
@@ -1152,15 +1152,15 @@ bdk_free_compound_text (guchar *ctext)
 void
 bdk_win32_selection_add_targets (BdkWindow  *owner,
 				 BdkAtom     selection,
-				 gint	     n_targets,
+				 bint	     n_targets,
 				 BdkAtom    *targets)
 {
   HWND hwnd = NULL;
-  gboolean has_image = FALSE;
-  gint i;
+  bboolean has_image = FALSE;
+  bint i;
 
   BDK_NOTE (DND, {
-      gchar *sel_name = bdk_atom_name (selection);
+      bchar *sel_name = bdk_atom_name (selection);
       
       g_print ("bdk_win32_selection_add_targets: %p: %s: ",
 	       owner ? BDK_WINDOW_HWND (owner) : NULL,
@@ -1169,7 +1169,7 @@ bdk_win32_selection_add_targets (BdkWindow  *owner,
 
       for (i = 0; i < n_targets; i++)
 	{
-	  gchar *tgt_name = bdk_atom_name (targets[i]);
+	  bchar *tgt_name = bdk_atom_name (targets[i]);
 
 	  g_print ("%s", tgt_name);
 	  g_free (tgt_name);
@@ -1203,7 +1203,7 @@ bdk_win32_selection_add_targets (BdkWindow  *owner,
   for (i = 0; !has_image && i < n_targets; ++i)
     {
       UINT cf;
-      gchar *target_name;
+      bchar *target_name;
       int j;
       
       for (j = 0; j < n_known_pixbuf_formats; j++)
@@ -1254,7 +1254,7 @@ bdk_win32_selection_add_targets (BdkWindow  *owner,
       cf = RegisterClipboardFormat (target_name);
 
       g_hash_table_replace (_format_atom_table,
-			    GINT_TO_POINTER (cf),
+			    BINT_TO_POINTER (cf),
 			    targets[i]);
       
       BDK_NOTE (DND, g_print ("... SetClipboardData(%s,NULL)\n",
@@ -1275,7 +1275,7 @@ _bdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
 				     BdkAtom  target)
 {
   BDK_NOTE (DND, {
-      gchar *target_name = bdk_atom_name (target);
+      bchar *target_name = bdk_atom_name (target);
 
       g_print ("_bdk_win32_selection_convert_to_dib: %p %s\n",
 	       hdata, target_name);
@@ -1286,7 +1286,7 @@ _bdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
     {
       HGLOBAL hdatanew;
       SIZE_T size;
-      guchar *ptr;
+      buchar *ptr;
 
       g_return_val_if_fail (GlobalSize (hdata) >= sizeof (BITMAPFILEHEADER), NULL);
 

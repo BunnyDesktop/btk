@@ -52,11 +52,11 @@ struct _BtkMisc
 {
   BtkWidget widget;
 
-  gfloat GSEAL (xalign);
-  gfloat GSEAL (yalign);
+  bfloat GSEAL (xalign);
+  bfloat GSEAL (yalign);
 
-  guint16 GSEAL (xpad);
-  guint16 GSEAL (ypad);
+  buint16 GSEAL (xpad);
+  buint16 GSEAL (ypad);
 };
 
 struct _BtkMiscClass
@@ -67,17 +67,17 @@ struct _BtkMiscClass
 
 GType   btk_misc_get_type      (void) B_GNUC_CONST;
 void	btk_misc_set_alignment (BtkMisc *misc,
-				gfloat	 xalign,
-				gfloat	 yalign);
+				bfloat	 xalign,
+				bfloat	 yalign);
 void    btk_misc_get_alignment (BtkMisc *misc,
-				gfloat  *xalign,
-				gfloat  *yalign);
+				bfloat  *xalign,
+				bfloat  *yalign);
 void	btk_misc_set_padding   (BtkMisc *misc,
-				gint	 xpad,
-				gint	 ypad);
+				bint	 xpad,
+				bint	 ypad);
 void    btk_misc_get_padding   (BtkMisc *misc,
-				gint    *xpad,
-				gint    *ypad);
+				bint    *xpad,
+				bint    *ypad);
 
 
 B_END_DECLS

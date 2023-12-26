@@ -189,7 +189,7 @@ char_segment_self_check (BtkTextLineSegment *seg)
 }
 
 BtkTextLineSegment*
-_btk_char_segment_new (const gchar *text, guint len)
+_btk_char_segment_new (const bchar *text, buint len)
 {
   BtkTextLineSegment *seg;
 
@@ -211,12 +211,12 @@ _btk_char_segment_new (const gchar *text, guint len)
 }
 
 BtkTextLineSegment*
-_btk_char_segment_new_from_two_strings (const gchar *text1, 
-					guint        len1, 
-					guint        chars1,
-                                        const gchar *text2, 
-					guint        len2, 
-					guint        chars2)
+_btk_char_segment_new_from_two_strings (const bchar *text1, 
+					buint        len1, 
+					buint        chars1,
+                                        const bchar *text2, 
+					buint        len2, 
+					buint        chars2)
 {
   BtkTextLineSegment *seg;
 
@@ -414,7 +414,7 @@ char_segment_check_func (BtkTextLineSegment *segPtr, BtkTextLine *line)
 }
 
 BtkTextLineSegment*
-_btk_toggle_segment_new (BtkTextTagInfo *info, gboolean on)
+_btk_toggle_segment_new (BtkTextTagInfo *info, bboolean on)
 {
   BtkTextLineSegment *seg;
 

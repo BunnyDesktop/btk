@@ -41,18 +41,18 @@ struct _BdkScreenQuartz
   BdkColormap *default_colormap;
 
   /* Origin of "root window" in Cocoa coordinates */
-  gint min_x;
-  gint min_y;
+  bint min_x;
+  bint min_y;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   int n_screens;
   BdkRectangle *screen_rects;
 
-  guint screen_changed_id;
+  buint screen_changed_id;
 
-  guint emit_monitors_changed : 1;
+  buint emit_monitors_changed : 1;
 };
 
 struct _BdkScreenQuartzClass

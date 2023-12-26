@@ -57,16 +57,16 @@ struct _BtkTrayIconClass
 GType          btk_tray_icon_get_type         (void) B_GNUC_CONST;
 
 BtkTrayIcon   *_btk_tray_icon_new_for_screen  (BdkScreen   *screen,
-					       const gchar *name);
+					       const bchar *name);
 
-BtkTrayIcon   *_btk_tray_icon_new             (const gchar *name);
+BtkTrayIcon   *_btk_tray_icon_new             (const bchar *name);
 
-guint          _btk_tray_icon_send_message    (BtkTrayIcon *icon,
-					       gint         timeout,
-					       const gchar *message,
-					       gint         len);
+buint          _btk_tray_icon_send_message    (BtkTrayIcon *icon,
+					       bint         timeout,
+					       const bchar *message,
+					       bint         len);
 void           _btk_tray_icon_cancel_message  (BtkTrayIcon *icon,
-					       guint        id);
+					       buint        id);
 
 BtkOrientation _btk_tray_icon_get_orientation (BtkTrayIcon *icon);
 					    

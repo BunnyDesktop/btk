@@ -61,15 +61,15 @@
 void
 bail_misc_get_extents_from_bango_rectangle (BtkWidget      *widget,
                                             BangoRectangle *char_rect,
-                                            gint           x_layout,
-                                            gint           y_layout,
-                                            gint           *x,
-                                            gint           *y,
-                                            gint           *width,
-                                            gint           *height,
+                                            bint           x_layout,
+                                            bint           y_layout,
+                                            bint           *x,
+                                            bint           *y,
+                                            bint           *width,
+                                            bint           *height,
                                             BatkCoordType   coords)
 {
-  gint x_window, y_window, x_toplevel, y_toplevel;
+  bint x_window, y_window, x_toplevel, y_toplevel;
 
   bail_misc_get_origins (widget, &x_window, &y_window, 
                          &x_toplevel, &y_toplevel);
@@ -115,18 +115,18 @@ bail_misc_get_extents_from_bango_rectangle (BtkWidget      *widget,
  * Returns: the byte offset at the specified @x and @y in a
  *   #BangoLayout
  **/
-gint
+bint
 bail_misc_get_index_at_point_in_layout (BtkWidget   *widget,
                                         BangoLayout *layout,
-                                        gint        x_layout,
-                                        gint        y_layout,
-                                        gint        x,
-                                        gint        y,
+                                        bint        x_layout,
+                                        bint        y_layout,
+                                        bint        x,
+                                        bint        y,
                                         BatkCoordType coords)
 {
-  gint index, x_window, y_window, x_toplevel, y_toplevel;
-  gint x_temp, y_temp;
-  gboolean ret;
+  bint index, x_window, y_window, x_toplevel, y_toplevel;
+  bint x_temp, y_temp;
+  bboolean ret;
 
   bail_misc_get_origins (widget, &x_window, &y_window, 
                          &x_toplevel, &y_toplevel);
@@ -168,7 +168,7 @@ bail_misc_get_index_at_point_in_layout (BtkWidget   *widget,
 BatkAttributeSet*
 bail_misc_add_attribute (BatkAttributeSet *attrib_set,
                          BatkTextAttribute attr,
-                         gchar           *value)
+                         bchar           *value)
 {
   BatkAttributeSet *return_set;
   BatkAttribute *at = g_malloc (sizeof (BatkAttribute));
@@ -195,10 +195,10 @@ bail_misc_add_attribute (BatkAttributeSet *attrib_set,
 BatkAttributeSet* 
 bail_misc_layout_get_run_attributes (BatkAttributeSet *attrib_set,
                                      BangoLayout     *layout,
-                                     gchar           *text,
-                                     gint            offset,
-                                     gint            *start_offset,
-                                     gint            *end_offset)
+                                     bchar           *text,
+                                     bint            offset,
+                                     bint            *start_offset,
+                                     bint            *end_offset)
 {
   BangoAttrIterator *iter;
   BangoAttrList *attr;  
@@ -207,10 +207,10 @@ bail_misc_layout_get_run_attributes (BatkAttributeSet *attrib_set,
   BangoAttrColor *bango_color;
   BangoAttrLanguage *bango_lang;
   BangoAttrFloat *bango_float;
-  gint index, start_index, end_index;
-  gboolean is_next = TRUE;
-  gchar *value = NULL;
-  glong len;
+  bint index, start_index, end_index;
+  bboolean is_next = TRUE;
+  bchar *value = NULL;
+  blong len;
 
   len = g_utf8_strlen (text, -1);
   /* Grab the attributes of the BangoLayout, if any */
@@ -236,7 +236,7 @@ bail_misc_layout_get_run_attributes (BatkAttributeSet *attrib_set,
         {
           *start_offset = g_utf8_pointer_to_offset (text, 
                                                     text + start_index);  
-          if (end_index == G_MAXINT)
+          if (end_index == B_MAXINT)
           /* Last iterator */
             end_index = len;
       
@@ -374,7 +374,7 @@ bail_misc_get_default_attributes (BatkAttributeSet *attrib_set,
 {
   BangoContext *context;
   BtkStyle *style_value;
-  gint int_value;
+  bint int_value;
   BangoWrapMode mode;
 
   attrib_set = bail_misc_add_attribute (attrib_set, 
@@ -457,7 +457,7 @@ bail_misc_get_default_attributes (BatkAttributeSet *attrib_set,
   if (style_value)
     {
       BdkColor color;
-      gchar *value;
+      bchar *value;
 
       color = style_value->base[BTK_STATE_NORMAL];
       value = g_strdup_printf ("%u,%u,%u",
@@ -539,10 +539,10 @@ bail_misc_get_default_attributes (BatkAttributeSet *attrib_set,
  **/
 void
 bail_misc_get_origins (BtkWidget *widget,
-                       gint      *x_window,
-                       gint      *y_window,
-                       gint      *x_toplevel,
-                       gint      *y_toplevel)
+                       bint      *x_window,
+                       bint      *y_window,
+                       bint      *x_toplevel,
+                       bint      *y_toplevel)
 {
   BdkWindow *window;
 
@@ -571,7 +571,7 @@ bail_misc_add_to_attr_set (BatkAttributeSet   *attrib_set,
                            BtkTextAttributes *attrs,
                            BatkTextAttribute  attr)
 {
-  gchar *value;
+  bchar *value;
 
   switch (attr)
     {
@@ -623,7 +623,7 @@ bail_misc_add_to_attr_set (BatkAttributeSet   *attrib_set,
                               bango_font_description_get_weight (attrs->font));
       break;
     case BATK_TEXT_ATTR_LANGUAGE:
-      value = g_strdup ((gchar *)(attrs->language));
+      value = g_strdup ((bchar *)(attrs->language));
       break;
     case BATK_TEXT_ATTR_FAMILY_NAME:
       value = g_strdup (bango_font_description_get_family (attrs->font));
@@ -688,16 +688,16 @@ bail_misc_add_to_attr_set (BatkAttributeSet   *attrib_set,
  **/
 BatkAttributeSet*
 bail_misc_buffer_get_run_attributes (BtkTextBuffer *buffer,
-                                     gint          offset,
-                                     gint	    *start_offset,
-                                     gint          *end_offset)
+                                     bint          offset,
+                                     bint	    *start_offset,
+                                     bint          *end_offset)
 {
   BtkTextIter iter;
   BatkAttributeSet *attrib_set = NULL;
   BatkAttribute *at;
   GSList *tags, *temp_tags;
-  gdouble scale = 1;
-  gboolean val_set = FALSE;
+  bdouble scale = 1;
+  bboolean val_set = FALSE;
   BangoFontMask mask;
 
   btk_text_buffer_get_iter_at_offset (buffer, &iter, offset);

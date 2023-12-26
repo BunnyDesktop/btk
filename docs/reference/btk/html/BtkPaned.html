@@ -115,7 +115,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPaned.html#btk-paned-get-position" title="btk_paned_get_position ()">btk_paned_get_position</a> <span class="c_punctuation">()</span>
@@ -157,7 +157,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPaned.html#BtkPaned--position-set" title="The “position-set” property">position-set</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -174,12 +174,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPaned.html#BtkPaned--c-resize" title="The “resize” child property">resize</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPaned.html#BtkPaned--c-shrink" title="The “shrink” child property">shrink</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -211,32 +211,32 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-accept-position" title="The “accept-position” signal">accept-position</a></td>
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-cancel-position" title="The “cancel-position” signal">cancel-position</a></td>
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-cycle-child-focus" title="The “cycle-child-focus” signal">cycle-child-focus</a></td>
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-cycle-handle-focus" title="The “cycle-handle-focus” signal">cycle-handle-focus</a></td>
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-move-handle" title="The “move-handle” signal">move-handle</a></td>
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkPaned.html#BtkPaned-toggle-handle-focus" title="The “toggle-handle-focus” signal">toggle-handle-focus</a></td>
 <td class="signal_flags">Action</td>
 </tr>
@@ -310,8 +310,8 @@ btk_paned_add2 (<em class="parameter"><code><a class="link" href="BtkPaned.html"
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_paned_pack1 (<em class="parameter"><code><a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *paned</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> resize</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> shrink</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bboolean</span> resize</code></em>,
+                 <em class="parameter"><code><span class="type">bboolean</span> shrink</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -319,8 +319,8 @@ btk_paned_pack1 (<em class="parameter"><code><a class="link" href="BtkPaned.html
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_paned_pack2 (<em class="parameter"><code><a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *paned</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> resize</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> shrink</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bboolean</span> resize</code></em>,
+                 <em class="parameter"><code><span class="type">bboolean</span> shrink</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -390,7 +390,7 @@ btk_paned_get_child2 (<em class="parameter"><code><a class="link" href="BtkPaned
 <a name="btk-paned-set-position"></a><h3>btk_paned_set_position ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_paned_set_position (<em class="parameter"><code><a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *paned</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Sets the position of the divider between the two panes.</p>
 <div class="refsect3">
 <a name="btk-paned-set-position.parameters"></a><h4>Parameters</h4>
@@ -419,7 +419,7 @@ is unset.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-paned-get-position"></a><h3>btk_paned_get_position ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_paned_get_position (<em class="parameter"><code><a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *paned</code></em>);</pre>
 <p>Obtains the position of the divider between the two panes.</p>
 <div class="refsect3">
@@ -519,7 +519,7 @@ size and shrinkability of the widget's children.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned--position-set"></a><h3>The <code class="literal">“position-set”</code> property</h3>
-<pre class="programlisting">  “position-set”             <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “position-set”             <span class="type">bboolean</span></pre>
 <p>TRUE if the Position property should be used.</p>
 <p>Owner: BtkPaned</p>
 <p>Flags: Read / Write</p>
@@ -530,7 +530,7 @@ size and shrinkability of the widget's children.</p>
 <a name="BtkPaned.child-property-details"></a><h2>Child Property Details</h2>
 <div class="refsect2">
 <a name="BtkPaned--c-resize"></a><h3>The <code class="literal">“resize”</code> child property</h3>
-<pre class="programlisting">  “resize”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “resize”                   <span class="type">bboolean</span></pre>
 <p>The "resize" child property determines whether the child expands and
 shrinks along with the paned widget.</p>
 <p>Owner: BtkPaned</p>
@@ -541,7 +541,7 @@ shrinks along with the paned widget.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned--c-shrink"></a><h3>The <code class="literal">“shrink”</code> child property</h3>
-<pre class="programlisting">  “shrink”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “shrink”                   <span class="type">bboolean</span></pre>
 <p>The "shrink" child property determines whether the child can be made
 smaller than its requisition.</p>
 <p>Owner: BtkPaned</p>
@@ -566,9 +566,9 @@ smaller than its requisition.</p>
 <a name="BtkPaned.signal-details"></a><h2>Signal Details</h2>
 <div class="refsect2">
 <a name="BtkPaned-accept-position"></a><h3>The <code class="literal">“accept-position”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *widget,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>The ::accept-position signal is a </p>
 keybinding signal<p>which gets emitted to accept the current position of the handle when
 
@@ -602,9 +602,9 @@ moving it using key bindings.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned-cancel-position"></a><h3>The <code class="literal">“cancel-position”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *widget,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>The ::cancel-position signal is a </p>
 keybinding signal<p>which gets emitted to cancel moving the position of the handle using key
 
@@ -640,10 +640,10 @@ moving it.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned-cycle-child-focus"></a><h3>The <code class="literal">“cycle-child-focus”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *widget,
-               <span class="type">gboolean</span>  reversed,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bboolean</span>  reversed,
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>The ::cycle-child-focus signal is a </p>
 keybinding signal<p>which gets emitted to cycle the focus between the children of the paned.</p>
 <p>The default binding is f6.</p>
@@ -680,10 +680,10 @@ keybinding signal<p>which gets emitted to cycle the focus between the children o
 <hr>
 <div class="refsect2">
 <a name="BtkPaned-cycle-handle-focus"></a><h3>The <code class="literal">“cycle-handle-focus”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *widget,
-               <span class="type">gboolean</span>  reversed,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bboolean</span>  reversed,
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>The ::cycle-handle-focus signal is a </p>
 keybinding signal<p>which gets emitted to cycle whether the paned should grab focus to allow
 the user to change position of the handle by using key bindings.</p>
@@ -721,10 +721,10 @@ the user to change position of the handle by using key bindings.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned-move-handle"></a><h3>The <code class="literal">“move-handle”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a>     *widget,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> scroll_type,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::move-handle signal is a </p>
 keybinding signal<p>which gets emitted to move the handle when the user is using key bindings
 
@@ -762,9 +762,9 @@ to move it.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkPaned-toggle-handle-focus"></a><h3>The <code class="literal">“toggle-handle-focus”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkPaned.html" title="BtkPaned"><span class="type">BtkPaned</span></a> *widget,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>The ::toggle-handle-focus is a </p>
 keybinding signal<p>which gets emitted to accept the current position of the handle and then
 

@@ -87,22 +87,22 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkAlignment.html#BtkAlignment--bottom-padding" title="The “bottom-padding” property">bottom-padding</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkAlignment.html#BtkAlignment--left-padding" title="The “left-padding” property">left-padding</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkAlignment.html#BtkAlignment--right-padding" title="The “right-padding” property">right-padding</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkAlignment.html#BtkAlignment--top-padding" title="The “top-padding” property">top-padding</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -182,10 +182,10 @@ have no effect.</p>
 <div class="refsect2">
 <a name="btk-alignment-new"></a><h3>btk_alignment_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_alignment_new (<em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> xscale</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> yscale</code></em>);</pre>
+btk_alignment_new (<em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> xscale</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> yscale</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkAlignment.html" title="BtkAlignment"><span class="type">BtkAlignment</span></a>.</p>
 <div class="refsect3">
 <a name="btk-alignment-new.parameters"></a><h4>Parameters</h4>
@@ -237,10 +237,10 @@ unused space, from 0 to 1. The values are similar to <em class="parameter"><code
 <a name="btk-alignment-set"></a><h3>btk_alignment_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_alignment_set (<em class="parameter"><code><a class="link" href="BtkAlignment.html" title="BtkAlignment"><span class="type">BtkAlignment</span></a> *alignment</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> xalign</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> yalign</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> xscale</code></em>,
-                   <em class="parameter"><code><span class="type">gfloat</span> yscale</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bfloat</span> xalign</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> yalign</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> xscale</code></em>,
+                   <em class="parameter"><code><span class="type">bfloat</span> yscale</code></em>);</pre>
 <p>Sets the <a class="link" href="BtkAlignment.html" title="BtkAlignment"><span class="type">BtkAlignment</span></a> values.</p>
 <div class="refsect3">
 <a name="btk-alignment-set.parameters"></a><h4>Parameters</h4>
@@ -293,10 +293,10 @@ unused space, from 0 to 1. The values are similar to <em class="parameter"><code
 <a name="btk-alignment-get-padding"></a><h3>btk_alignment_get_padding ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_alignment_get_padding (<em class="parameter"><code><a class="link" href="BtkAlignment.html" title="BtkAlignment"><span class="type">BtkAlignment</span></a> *alignment</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> *padding_top</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> *padding_bottom</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> *padding_left</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> *padding_right</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">buint</span> *padding_top</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> *padding_bottom</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> *padding_left</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> *padding_right</code></em>);</pre>
 <p>Gets the padding on the different sides of the widget.
 See <a class="link" href="BtkAlignment.html#btk-alignment-set-padding" title="btk_alignment_set_padding ()"><code class="function">btk_alignment_set_padding()</code></a>.</p>
 <div class="refsect3">
@@ -347,10 +347,10 @@ for the right of the widget, or <code class="literal">NULL</code>. </p></td>
 <a name="btk-alignment-set-padding"></a><h3>btk_alignment_set_padding ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_alignment_set_padding (<em class="parameter"><code><a class="link" href="BtkAlignment.html" title="BtkAlignment"><span class="type">BtkAlignment</span></a> *alignment</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> padding_top</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> padding_bottom</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> padding_left</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> padding_right</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">buint</span> padding_top</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> padding_bottom</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> padding_left</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> padding_right</code></em>);</pre>
 <p>Sets the padding on the different sides of the widget.
 The padding adds blank space to the sides of the widget. For instance,
 this can be used to indent the child widget towards the right by adding
@@ -406,44 +406,44 @@ padding on the left.</p>
 <a name="BtkAlignment.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkAlignment--bottom-padding"></a><h3>The <code class="literal">“bottom-padding”</code> property</h3>
-<pre class="programlisting">  “bottom-padding”           <span class="type">guint</span></pre>
+<pre class="programlisting">  “bottom-padding”           <span class="type">buint</span></pre>
 <p>The padding to insert at the bottom of the widget.</p>
 <p>Owner: BtkAlignment</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkAlignment--left-padding"></a><h3>The <code class="literal">“left-padding”</code> property</h3>
-<pre class="programlisting">  “left-padding”             <span class="type">guint</span></pre>
+<pre class="programlisting">  “left-padding”             <span class="type">buint</span></pre>
 <p>The padding to insert at the left of the widget.</p>
 <p>Owner: BtkAlignment</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkAlignment--right-padding"></a><h3>The <code class="literal">“right-padding”</code> property</h3>
-<pre class="programlisting">  “right-padding”            <span class="type">guint</span></pre>
+<pre class="programlisting">  “right-padding”            <span class="type">buint</span></pre>
 <p>The padding to insert at the right of the widget.</p>
 <p>Owner: BtkAlignment</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkAlignment--top-padding"></a><h3>The <code class="literal">“top-padding”</code> property</h3>
-<pre class="programlisting">  “top-padding”              <span class="type">guint</span></pre>
+<pre class="programlisting">  “top-padding”              <span class="type">buint</span></pre>
 <p>The padding to insert at the top of the widget.</p>
 <p>Owner: BtkAlignment</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
 </div>

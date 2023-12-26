@@ -70,7 +70,7 @@ struct _ViewColumnModel
   BObject parent;
   BtkTreeView *view;
   GList *columns;
-  gint stamp;
+  bint stamp;
 };
 
 struct _ViewColumnModelClass
@@ -83,7 +83,7 @@ static void view_column_model_init (ViewColumnModel *model)
   model->stamp = g_random_int ();
 }
 
-static gint
+static bint
 view_column_model_get_n_columns (BtkTreeModel *tree_model)
 {
   return 2;
@@ -91,7 +91,7 @@ view_column_model_get_n_columns (BtkTreeModel *tree_model)
 
 static GType
 view_column_model_get_column_type (BtkTreeModel *tree_model,
-				   gint          index)
+				   bint          index)
 {
   switch (index)
     {
@@ -104,7 +104,7 @@ view_column_model_get_column_type (BtkTreeModel *tree_model,
     }
 }
 
-static gboolean
+static bboolean
 view_column_model_get_iter (BtkTreeModel *tree_model,
 			    BtkTreeIter  *iter,
 			    BtkTreePath  *path)
@@ -112,7 +112,7 @@ view_column_model_get_iter (BtkTreeModel *tree_model,
 {
   ViewColumnModel *view_model = (ViewColumnModel *)tree_model;
   GList *list;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (btk_tree_path_get_depth (path) > 0, FALSE);
 
@@ -135,7 +135,7 @@ view_column_model_get_path (BtkTreeModel *tree_model,
   ViewColumnModel *view_model = (ViewColumnModel *)tree_model;
   BtkTreePath *retval;
   GList *list;
-  gint i = 0;
+  bint i = 0;
 
   g_return_val_if_fail (iter->stamp == view_model->stamp, NULL);
 
@@ -156,7 +156,7 @@ view_column_model_get_path (BtkTreeModel *tree_model,
 static void
 view_column_model_get_value (BtkTreeModel *tree_model,
 			     BtkTreeIter  *iter,
-			     gint          column,
+			     bint          column,
 			     BValue       *value)
 {
   ViewColumnModel *view_model = (ViewColumnModel *)tree_model;
@@ -177,7 +177,7 @@ view_column_model_get_value (BtkTreeModel *tree_model,
     }
 }
 
-static gboolean
+static bboolean
 view_column_model_iter_next (BtkTreeModel  *tree_model,
 			     BtkTreeIter   *iter)
 {
@@ -190,7 +190,7 @@ view_column_model_iter_next (BtkTreeModel  *tree_model,
   return iter->user_data != NULL;
 }
 
-static gboolean
+static bboolean
 view_column_model_iter_children (BtkTreeModel *tree_model,
 				 BtkTreeIter  *iter,
 				 BtkTreeIter  *parent)
@@ -215,25 +215,25 @@ view_column_model_iter_children (BtkTreeModel *tree_model,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 view_column_model_iter_has_child (BtkTreeModel *tree_model,
 				  BtkTreeIter  *iter)
 {
   return FALSE;
 }
 
-static gint
+static bint
 view_column_model_iter_n_children (BtkTreeModel *tree_model,
 				   BtkTreeIter  *iter)
 {
   return g_list_length (((ViewColumnModel *)tree_model)->columns);
 }
 
-static gint
+static bint
 view_column_model_iter_nth_child (BtkTreeModel *tree_model,
  				  BtkTreeIter  *iter,
 				  BtkTreeIter  *parent,
-				  gint          n)
+				  bint          n)
 {
   ViewColumnModel *view_model = (ViewColumnModel *)tree_model;
 
@@ -246,7 +246,7 @@ view_column_model_iter_nth_child (BtkTreeModel *tree_model,
   return (iter->user_data != NULL);
 }
 
-static gboolean
+static bboolean
 view_column_model_iter_parent (BtkTreeModel *tree_model,
 			       BtkTreeIter  *iter,
 			       BtkTreeIter  *child)
@@ -270,7 +270,7 @@ view_column_model_tree_model_init (BtkTreeModelIface *iface)
   iface->iter_parent = view_column_model_iter_parent;
 }
 
-static gboolean
+static bboolean
 view_column_model_drag_data_get (BtkTreeDragSource   *drag_source,
 				 BtkTreePath         *path,
 				 BtkSelectionData    *selection_data)
@@ -283,7 +283,7 @@ view_column_model_drag_data_get (BtkTreeDragSource   *drag_source,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 view_column_model_drag_data_delete (BtkTreeDragSource *drag_source,
 				    BtkTreePath       *path)
 {
@@ -292,7 +292,7 @@ view_column_model_drag_data_delete (BtkTreeDragSource *drag_source,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 view_column_model_row_drop_possible (BtkTreeDragDest   *drag_dest,
 				     BtkTreePath       *dest_path,
 				     BtkSelectionData  *selection_data)
@@ -312,14 +312,14 @@ view_column_model_row_drop_possible (BtkTreeDragDest   *drag_dest,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 view_column_model_drag_data_received (BtkTreeDragDest   *drag_dest,
 				      BtkTreePath       *dest,
 				      BtkSelectionData  *selection_data)
 {
   BtkTreeModel *src_model;
   BtkTreePath *src_path = NULL;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   
   if (btk_tree_get_row_drag_data (selection_data,
 				  &src_model,
@@ -327,7 +327,7 @@ view_column_model_drag_data_received (BtkTreeDragDest   *drag_dest,
     {
       BtkTreeIter src_iter;
       BtkTreeIter dest_iter;
-      gboolean have_dest;
+      bboolean have_dest;
 
       /* We are a little lazy here, and assume if we can't convert dest
        * to an iter, we need to append. See btkliststore.c for a more
@@ -427,7 +427,7 @@ static void
 update_columns (BtkTreeView *view, ViewColumnModel *view_model)
 {
   GList *old_columns = view_model->columns;
-  gint old_length, length;
+  bint old_length, length;
   GList *a, *b;
 
   view_model->columns = btk_tree_view_get_columns (view_model->view);
@@ -438,7 +438,7 @@ update_columns (BtkTreeView *view, ViewColumnModel *view_model)
   if (length != old_length)
     {
       BtkTreePath *path;
-      gint i = 0;
+      bint i = 0;
 
       /* where are they different */
       for (a = old_columns, b = view_model->columns; a && b; a = a->next, b = b->next)
@@ -465,9 +465,9 @@ update_columns (BtkTreeView *view, ViewColumnModel *view_model)
     }
   else
     {
-      gint i;
-      gint m = 0, n = 1;
-      gint *new_order;
+      bint i;
+      bint m = 0, n = 1;
+      bint *new_order;
       BtkTreePath *path;
 
       new_order = g_new (int, length);
@@ -545,15 +545,15 @@ view_column_model_new (BtkTreeView *view)
  */
 
 static void
-add_clicked (BtkWidget *button, gpointer data)
+add_clicked (BtkWidget *button, bpointer data)
 {
-  static gint i = 0;
+  static bint i = 0;
 
   BtkTreeIter iter;
   BtkTreeViewColumn *column;
   BtkTreeSelection *selection;
   BtkCellRenderer *cell;
-  gchar *label = g_strdup_printf ("Column %d", i);
+  bchar *label = g_strdup_printf ("Column %d", i);
 
   cell = btk_cell_renderer_text_new ();
   column = btk_tree_view_column_new_with_attributes (label, cell, "text", 0, NULL);
@@ -574,7 +574,7 @@ get_visible (BtkTreeViewColumn *tree_column,
 	     BtkCellRenderer   *cell,
 	     BtkTreeModel      *tree_model,
 	     BtkTreeIter       *iter,
-	     gpointer           data)
+	     bpointer           data)
 {
   BtkTreeViewColumn *column;
 
@@ -588,8 +588,8 @@ get_visible (BtkTreeViewColumn *tree_column,
 
 static void
 set_visible (BtkCellRendererToggle *cell,
-	     gchar                 *path_str,
-	     gpointer               data)
+	     bchar                 *path_str,
+	     bpointer               data)
 {
   BtkTreeView *tree_view = (BtkTreeView *) data;
   BtkTreeViewColumn *column;
@@ -618,7 +618,7 @@ move_to_left (BtkTreeModel *src,
   BtkTreeIter iter;
   BtkTreeViewColumn *column;
   BtkTreeSelection *selection;
-  gchar *label;
+  bchar *label;
 
   btk_tree_model_get (src, src_iter, 0, &label, 1, &column, -1);
 
@@ -648,9 +648,9 @@ move_to_right (BtkTreeIter  *src_iter,
 	       BtkTreeModel *dest,
 	       BtkTreeIter  *dest_iter)
 {
-  gchar *label;
+  bchar *label;
   BtkTreeViewColumn *column;
-  gint before = -1;
+  bint before = -1;
 
   btk_tree_model_get (BTK_TREE_MODEL (left_tree_model),
 		      src_iter, 0, &label, 1, &column, -1);
@@ -678,8 +678,8 @@ move_up_or_down (BtkTreeModel *src,
 		 BtkTreeIter  *dest_iter)
 {
   BtkTreeViewColumn *column;
-  gchar *label;
-  gint before = -1;
+  bchar *label;
+  bint before = -1;
   
   btk_tree_model_get (src, src_iter, 0, &label, 1, &column, -1);
 
@@ -719,7 +719,7 @@ move_row  (BtkTreeModel *src,
 
 static void
 add_left_clicked (BtkWidget *button,
-		  gpointer data)
+		  bpointer data)
 {
   BtkTreeIter iter;
 
@@ -731,7 +731,7 @@ add_left_clicked (BtkWidget *button,
 }
 
 static void
-add_right_clicked (BtkWidget *button, gpointer data)
+add_right_clicked (BtkWidget *button, bpointer data)
 {
   BtkTreeIter iter;
 
@@ -766,7 +766,7 @@ main (int argc, char *argv[])
   BtkCellRenderer *cell;
   BtkWidget *swindow;
   BtkTreeModel *sample_model;
-  gint i;
+  bint i;
 
   btk_init (&argc, &argv);
 
@@ -783,7 +783,7 @@ main (int argc, char *argv[])
   for (i = 0; i < 10; i++)
     {
       BtkTreeIter iter;
-      gchar *string = g_strdup_printf ("%d", i);
+      bchar *string = g_strdup_printf ("%d", i);
       btk_list_store_append (BTK_LIST_STORE (sample_model), &iter);
       btk_list_store_set (BTK_LIST_STORE (sample_model), &iter, 0, string, -1);
       g_free (string);

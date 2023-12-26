@@ -43,15 +43,15 @@ enum {
 static void btk_radio_menu_item_destroy        (BtkObject             *object);
 static void btk_radio_menu_item_activate       (BtkMenuItem           *menu_item);
 static void btk_radio_menu_item_set_property   (BObject               *object,
-						guint                  prop_id,
+						buint                  prop_id,
 						const BValue          *value,
 						BParamSpec            *pspec);
 static void btk_radio_menu_item_get_property   (BObject               *object,
-						guint                  prop_id,
+						buint                  prop_id,
 						BValue                *value,
 						BParamSpec            *pspec);
 
-static guint group_changed_signal = 0;
+static buint group_changed_signal = 0;
 
 G_DEFINE_TYPE (BtkRadioMenuItem, btk_radio_menu_item, BTK_TYPE_CHECK_MENU_ITEM)
 
@@ -69,7 +69,7 @@ btk_radio_menu_item_new (GSList *group)
 
 static void
 btk_radio_menu_item_set_property (BObject      *object,
-				  guint         prop_id,
+				  buint         prop_id,
 				  const BValue *value,
 				  BParamSpec   *pspec)
 {
@@ -96,7 +96,7 @@ btk_radio_menu_item_set_property (BObject      *object,
 
 static void
 btk_radio_menu_item_get_property (BObject    *object,
-				  guint       prop_id,
+				  buint       prop_id,
 				  BValue     *value,
 				  BParamSpec *pspec)
 {
@@ -192,7 +192,7 @@ btk_radio_menu_item_set_group (BtkRadioMenuItem *radio_menu_item,
  */
 BtkWidget*
 btk_radio_menu_item_new_with_label (GSList *group,
-				    const gchar *label)
+				    const bchar *label)
 {
   BtkWidget *radio_menu_item;
   BtkWidget *accel_label;
@@ -221,7 +221,7 @@ btk_radio_menu_item_new_with_label (GSList *group,
  **/
 BtkWidget*
 btk_radio_menu_item_new_with_mnemonic (GSList *group,
-				       const gchar *label)
+				       const bchar *label)
 {
   BtkWidget *radio_menu_item;
   BtkWidget *accel_label;
@@ -279,7 +279,7 @@ btk_radio_menu_item_new_from_widget (BtkRadioMenuItem *group)
  **/
 BtkWidget *
 btk_radio_menu_item_new_with_mnemonic_from_widget (BtkRadioMenuItem *group,
-						   const gchar *label)
+						   const bchar *label)
 {
   GSList *list = NULL;
 
@@ -305,7 +305,7 @@ btk_radio_menu_item_new_with_mnemonic_from_widget (BtkRadioMenuItem *group,
  **/
 BtkWidget *
 btk_radio_menu_item_new_with_label_from_widget (BtkRadioMenuItem *group,
-						const gchar *label)
+						const bchar *label)
 {
   GSList *list = NULL;
 
@@ -404,7 +404,7 @@ btk_radio_menu_item_destroy (BtkObject *object)
   BtkWidget *old_group_singleton = NULL;
   BtkRadioMenuItem *tmp_menu_item;
   GSList *tmp_list;
-  gboolean was_in_group;
+  bboolean was_in_group;
 
   was_in_group = radio_menu_item->group && radio_menu_item->group->next;
   
@@ -442,7 +442,7 @@ btk_radio_menu_item_activate (BtkMenuItem *menu_item)
   BtkCheckMenuItem *tmp_menu_item;
   BtkAction        *action;
   GSList *tmp_list;
-  gint toggled;
+  bint toggled;
 
   action = btk_activatable_get_related_action (BTK_ACTIVATABLE (menu_item));
   if (action && btk_menu_item_get_submenu (menu_item) == NULL)

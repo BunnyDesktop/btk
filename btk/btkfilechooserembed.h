@@ -41,10 +41,10 @@ struct _BtkFileChooserEmbedIface
   /* Methods
    */
   void (*get_default_size)        (BtkFileChooserEmbed *chooser_embed,
-				   gint                *default_width,
-				   gint                *default_height);
+				   bint                *default_width,
+				   bint                *default_height);
 
-  gboolean (*should_respond)      (BtkFileChooserEmbed *chooser_embed);
+  bboolean (*should_respond)      (BtkFileChooserEmbed *chooser_embed);
 
   void (*initial_focus)           (BtkFileChooserEmbed *chooser_embed);
   /* Signals
@@ -56,9 +56,9 @@ struct _BtkFileChooserEmbedIface
 GType _btk_file_chooser_embed_get_type (void) B_GNUC_CONST;
 
 void  _btk_file_chooser_embed_get_default_size    (BtkFileChooserEmbed *chooser_embed,
-						   gint                *default_width,
-						   gint                *default_height);
-gboolean _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed);
+						   bint                *default_width,
+						   bint                *default_height);
+bboolean _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed);
 
 void _btk_file_chooser_embed_initial_focus (BtkFileChooserEmbed *chooser_embed);
 

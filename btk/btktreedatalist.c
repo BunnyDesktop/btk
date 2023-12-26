@@ -42,7 +42,7 @@ _btk_tree_data_list_free (BtkTreeDataList *list,
 			  GType           *column_headers)
 {
   BtkTreeDataList *tmp, *next;
-  gint i = 0;
+  bint i = 0;
 
   tmp = list;
 
@@ -50,11 +50,11 @@ _btk_tree_data_list_free (BtkTreeDataList *list,
     {
       next = tmp->next;
       if (g_type_is_a (column_headers [i], B_TYPE_STRING))
-	g_free ((gchar *) tmp->data.v_pointer);
+	g_free ((bchar *) tmp->data.v_pointer);
       else if (g_type_is_a (column_headers [i], B_TYPE_OBJECT) && tmp->data.v_pointer != NULL)
 	g_object_unref (tmp->data.v_pointer);
       else if (g_type_is_a (column_headers [i], B_TYPE_BOXED) && tmp->data.v_pointer != NULL)
-	g_boxed_free (column_headers [i], (gpointer) tmp->data.v_pointer);
+	g_boxed_free (column_headers [i], (bpointer) tmp->data.v_pointer);
 
       g_slice_free (BtkTreeDataList, tmp);
       i++;
@@ -62,10 +62,10 @@ _btk_tree_data_list_free (BtkTreeDataList *list,
     }
 }
 
-gboolean
+bboolean
 _btk_tree_data_list_check_type (GType type)
 {
-  gint i = 0;
+  bint i = 0;
   static const GType type_list[] =
   {
     B_TYPE_BOOLEAN,
@@ -126,19 +126,19 @@ _btk_tree_data_list_node_to_value (BtkTreeDataList *list,
   switch (get_fundamental_type (type))
     {
     case B_TYPE_BOOLEAN:
-      b_value_set_boolean (value, (gboolean) list->data.v_int);
+      b_value_set_boolean (value, (bboolean) list->data.v_int);
       break;
     case B_TYPE_CHAR:
-      b_value_set_char (value, (gchar) list->data.v_char);
+      b_value_set_char (value, (bchar) list->data.v_char);
       break;
     case B_TYPE_UCHAR:
-      b_value_set_uchar (value, (guchar) list->data.v_uchar);
+      b_value_set_uchar (value, (buchar) list->data.v_uchar);
       break;
     case B_TYPE_INT:
-      b_value_set_int (value, (gint) list->data.v_int);
+      b_value_set_int (value, (bint) list->data.v_int);
       break;
     case B_TYPE_UINT:
-      b_value_set_uint (value, (guint) list->data.v_uint);
+      b_value_set_uint (value, (buint) list->data.v_uint);
       break;
     case B_TYPE_LONG:
       b_value_set_long (value, list->data.v_long);
@@ -159,19 +159,19 @@ _btk_tree_data_list_node_to_value (BtkTreeDataList *list,
       b_value_set_flags (value, list->data.v_uint);
       break;
     case B_TYPE_FLOAT:
-      b_value_set_float (value, (gfloat) list->data.v_float);
+      b_value_set_float (value, (bfloat) list->data.v_float);
       break;
     case B_TYPE_DOUBLE:
-      b_value_set_double (value, (gdouble) list->data.v_double);
+      b_value_set_double (value, (bdouble) list->data.v_double);
       break;
     case B_TYPE_STRING:
-      b_value_set_string (value, (gchar *) list->data.v_pointer);
+      b_value_set_string (value, (bchar *) list->data.v_pointer);
       break;
     case B_TYPE_POINTER:
-      b_value_set_pointer (value, (gpointer) list->data.v_pointer);
+      b_value_set_pointer (value, (bpointer) list->data.v_pointer);
       break;
     case B_TYPE_BOXED:
-      b_value_set_boxed (value, (gpointer) list->data.v_pointer);
+      b_value_set_boxed (value, (bpointer) list->data.v_pointer);
       break;
     case B_TYPE_OBJECT:
       b_value_set_object (value, (BObject *) list->data.v_pointer);
@@ -302,18 +302,18 @@ _btk_tree_data_list_node_copy (BtkTreeDataList *list,
   return new_list;
 }
 
-gint
+bint
 _btk_tree_data_list_compare_func (BtkTreeModel *model,
 				  BtkTreeIter  *a,
 				  BtkTreeIter  *b,
-				  gpointer      user_data)
+				  bpointer      user_data)
 {
-  gint column = GPOINTER_TO_INT (user_data);
+  bint column = BPOINTER_TO_INT (user_data);
   GType type = btk_tree_model_get_column_type (model, column);
   BValue a_value = {0, };
   BValue b_value = {0, };
-  gint retval;
-  const gchar *stra, *strb;
+  bint retval;
+  const bchar *stra, *strb;
 
   btk_tree_model_get_value (model, a, column, &a_value);
   btk_tree_model_get_value (model, b, column, &b_value);
@@ -450,12 +450,12 @@ _btk_tree_data_list_compare_func (BtkTreeModel *model,
 
 
 GList *
-_btk_tree_data_list_header_new (gint   n_columns,
+_btk_tree_data_list_header_new (bint   n_columns,
 				GType *types)
 {
   GList *retval = NULL;
 
-  gint i;
+  bint i;
 
   for (i = 0; i < n_columns; i ++)
     {
@@ -467,7 +467,7 @@ _btk_tree_data_list_header_new (gint   n_columns,
       header->sort_column_id = i;
       header->func = _btk_tree_data_list_compare_func;
       header->destroy = NULL;
-      header->data = GINT_TO_POINTER (i);
+      header->data = BINT_TO_POINTER (i);
     }
   return g_list_reverse (retval);
 }
@@ -496,7 +496,7 @@ _btk_tree_data_list_header_free (GList *list)
 
 BtkTreeDataSortHeader *
 _btk_tree_data_list_get_header (GList   *header_list,
-				gint     sort_column_id)
+				bint     sort_column_id)
 {
   BtkTreeDataSortHeader *header = NULL;
 
@@ -512,9 +512,9 @@ _btk_tree_data_list_get_header (GList   *header_list,
 
 GList *
 _btk_tree_data_list_set_header (GList                  *header_list,
-				gint                    sort_column_id,
+				bint                    sort_column_id,
 				BtkTreeIterCompareFunc  func,
-				gpointer                data,
+				bpointer                data,
 				GDestroyNotify          destroy)
 {
   GList *list = header_list;

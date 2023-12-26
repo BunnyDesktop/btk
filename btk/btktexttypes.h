@@ -70,9 +70,9 @@ extern const BtkTextLineSegmentClass btk_text_child_type;
  */
 
 #define BTK_TEXT_UNKNOWN_CHAR 0xFFFC
-VARIABLE const gchar btk_text_unknown_char_utf8[];
+VARIABLE const bchar btk_text_unknown_char_utf8[];
 
-gboolean btk_text_byte_begins_utf8_char (const gchar *byte);
+bboolean btk_text_byte_begins_utf8_char (const bchar *byte);
 
 B_END_DECLS
 

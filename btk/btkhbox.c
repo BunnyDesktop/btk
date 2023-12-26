@@ -72,8 +72,8 @@ btk_hbox_init (BtkHBox *hbox)
  * Returns: a new #BtkHBox.
  */
 BtkWidget *
-btk_hbox_new (gboolean homogeneous,
-	      gint     spacing)
+btk_hbox_new (bboolean homogeneous,
+	      bint     spacing)
 {
   return g_object_new (BTK_TYPE_HBOX,
                        "spacing",     spacing,

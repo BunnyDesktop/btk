@@ -65,12 +65,12 @@ The <code class="function">bdk_time*</code> functions have been removed. This
 <li class="listitem"><p>
 The signature for <code class="function">BtkPrintFunc</code> (used for 
   <code class="function">btk_item_factory_dump_items()</code>)
-  has been changed to take a <span class="type">const gchar *</span> instead of 
-  <span class="type">gchar *</span>, to match what we do for GLib, and other similar cases.
+  has been changed to take a <span class="type">const bchar *</span> instead of 
+  <span class="type">bchar *</span>, to match what we do for GLib, and other similar cases.
 </p></li>
 <li class="listitem"><p>
 The detail arguments in the <span class="structname">BtkStyleClass</span> structure 
-are now <span class="type">const gchar *</span>.
+are now <span class="type">const bchar *</span>.
 </p></li>
 <li class="listitem"><p>
 <code class="function">btk_paned_set_gutter_size()</code> has been removed, since the 
@@ -604,12 +604,12 @@ The split between <span class="structname">BtkProgress</span> and
 <pre class="programlisting">
   void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
   void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
-                                                    const gchar    *text);
+                                                    const bchar    *text);
   void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
 
   void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
   void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
 						    BtkProgressBarOrientation orientation);
 </pre>

@@ -60,7 +60,7 @@ typedef enum
 } BeaglePropertyType;
 
 /* *static* wrapper function pointers */
-static gboolean (*beagle_client_send_request_async) (BeagleClient   *client,
+static bboolean (*beagle_client_send_request_async) (BeagleClient   *client,
 						     BeagleRequest  *request,
 						     GError        **err) = NULL;
 static const char *(*beagle_hit_get_uri) (BeagleHit *hit) = NULL;
@@ -70,7 +70,7 @@ static BeagleQuery *(*beagle_query_new) (void) = NULL;
 static void (*beagle_query_add_text) (BeagleQuery     *query,
 				      const char      *str) = NULL;
 static void (*beagle_query_set_max_hits) (BeagleQuery *query,
-					  gint         max_hits) = NULL;
+					  bint         max_hits) = NULL;
 static BeagleQueryPartProperty *(*beagle_query_part_property_new) (void) = NULL;
 static void (*beagle_query_part_set_logic) (BeagleQueryPart      *part, 
 					    BeagleQueryPartLogic  logic) = NULL;
@@ -84,16 +84,16 @@ static void (*beagle_query_add_part) (BeagleQuery     *query,
 				      BeagleQueryPart *part) = NULL;
 static GType (*beagle_request_get_type) (void) = NULL;
 static GType (*beagle_query_part_get_type) (void) = NULL;
-static gboolean (*beagle_util_daemon_is_running) (void) = NULL;
+static bboolean (*beagle_util_daemon_is_running) (void) = NULL;
 static BeagleClient *(*beagle_client_new) (const char *client_name) = NULL;
 
 static struct BeagleDlMapping
 {
   const char *fn_name;
-  gpointer *fn_ptr_ref;
+  bpointer *fn_ptr_ref;
 } beagle_dl_mapping[] =
 {
-#define MAP(a) { #a, (gpointer *)&a }
+#define MAP(a) { #a, (bpointer *)&a }
   MAP (beagle_client_send_request_async),
   MAP (beagle_hit_get_uri),
   MAP (beagle_hits_added_response_get_hits),
@@ -117,7 +117,7 @@ static struct BeagleDlMapping
 static void 
 open_libbeagle (void)
 {
-  static gboolean done = FALSE;
+  static bboolean done = FALSE;
 
   if (!done)
     {
@@ -159,7 +159,7 @@ struct _BtkSearchEngineBeaglePrivate
 
   BeagleQuery *current_query;
   char *current_query_uri_prefix;
-  gboolean query_finished;
+  bboolean query_finished;
 };
 
 
@@ -202,7 +202,7 @@ beagle_hits_added (BeagleQuery             *query,
 {
   GSList *hits, *list;
   GList *hit_uris;
-  const gchar *uri;
+  const bchar *uri;
   
   hit_uris = NULL;
   
@@ -273,8 +273,8 @@ btk_search_engine_beagle_start (BtkSearchEngine *engine)
 {
   BtkSearchEngineBeagle *beagle;
   GError *error;
-  gchar *text;
-  gchar *query;
+  bchar *text;
+  bchar *query;
 
   error = NULL;
   beagle = BTK_SEARCH_ENGINE_BEAGLE (engine);
@@ -335,7 +335,7 @@ btk_search_engine_beagle_stop (BtkSearchEngine *engine)
     }
 }
 
-static gboolean
+static bboolean
 btk_search_engine_beagle_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;

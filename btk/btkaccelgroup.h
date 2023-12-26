@@ -61,9 +61,9 @@ typedef struct _BtkAccelGroup	   BtkAccelGroup;
 typedef struct _BtkAccelGroupClass BtkAccelGroupClass;
 typedef struct _BtkAccelKey        BtkAccelKey;
 typedef struct _BtkAccelGroupEntry BtkAccelGroupEntry;
-typedef gboolean (*BtkAccelGroupActivate) (BtkAccelGroup  *accel_group,
+typedef bboolean (*BtkAccelGroupActivate) (BtkAccelGroup  *accel_group,
 					   BObject        *acceleratable,
-					   guint           keyval,
+					   buint           keyval,
 					   BdkModifierType modifier);
 
 /**
@@ -74,9 +74,9 @@ typedef gboolean (*BtkAccelGroupActivate) (BtkAccelGroup  *accel_group,
  * 
  * Since: 2.2
  */
-typedef gboolean (*BtkAccelGroupFindFunc) (BtkAccelKey    *key,
+typedef bboolean (*BtkAccelGroupFindFunc) (BtkAccelKey    *key,
 					   GClosure       *closure,
-					   gpointer        data);
+					   bpointer        data);
 
 /**
  * BtkAccelGroup:
@@ -87,10 +87,10 @@ struct _BtkAccelGroup
 {
   BObject             parent;
 
-  guint               GSEAL (lock_count);
+  buint               GSEAL (lock_count);
   BdkModifierType     GSEAL (modifier_mask);
   GSList             *GSEAL (acceleratables);
-  guint	              GSEAL (n_accels);
+  buint	              GSEAL (n_accels);
   BtkAccelGroupEntry *GSEAL (priv_accels);
 };
 
@@ -99,7 +99,7 @@ struct _BtkAccelGroupClass
   BObjectClass parent_class;
 
   void	(*accel_changed)	(BtkAccelGroup	*accel_group,
-				 guint           keyval,
+				 buint           keyval,
 				 BdkModifierType modifier,
 				 GClosure       *accel_closure);
   
@@ -112,37 +112,37 @@ struct _BtkAccelGroupClass
 
 struct _BtkAccelKey
 {
-  guint           accel_key;
+  buint           accel_key;
   BdkModifierType accel_mods;
-  guint           accel_flags : 16;
+  buint           accel_flags : 16;
 };
 
 
 /* -- Accelerator Groups --- */
 GType          btk_accel_group_get_type           (void) B_GNUC_CONST;
 BtkAccelGroup* btk_accel_group_new	      	  (void);
-gboolean       btk_accel_group_get_is_locked      (BtkAccelGroup  *accel_group);
+bboolean       btk_accel_group_get_is_locked      (BtkAccelGroup  *accel_group);
 BdkModifierType 
                btk_accel_group_get_modifier_mask  (BtkAccelGroup  *accel_group);
 void	       btk_accel_group_lock		  (BtkAccelGroup  *accel_group);
 void	       btk_accel_group_unlock		  (BtkAccelGroup  *accel_group);
 void	       btk_accel_group_connect		  (BtkAccelGroup  *accel_group,
-						   guint	   accel_key,
+						   buint	   accel_key,
 						   BdkModifierType accel_mods,
 						   BtkAccelFlags   accel_flags,
 						   GClosure	  *closure);
 void           btk_accel_group_connect_by_path    (BtkAccelGroup  *accel_group,
-						   const gchar	  *accel_path,
+						   const bchar	  *accel_path,
 						   GClosure	  *closure);
-gboolean       btk_accel_group_disconnect	  (BtkAccelGroup  *accel_group,
+bboolean       btk_accel_group_disconnect	  (BtkAccelGroup  *accel_group,
 						   GClosure	  *closure);
-gboolean       btk_accel_group_disconnect_key	  (BtkAccelGroup  *accel_group,
-						   guint	   accel_key,
+bboolean       btk_accel_group_disconnect_key	  (BtkAccelGroup  *accel_group,
+						   buint	   accel_key,
 						   BdkModifierType accel_mods);
-gboolean       btk_accel_group_activate           (BtkAccelGroup   *accel_group,
+bboolean       btk_accel_group_activate           (BtkAccelGroup   *accel_group,
                                                    GQuark	   accel_quark,
                                                    BObject	  *acceleratable,
-                                                   guint	   accel_key,
+                                                   buint	   accel_key,
                                                    BdkModifierType accel_mods);
 
 
@@ -151,35 +151,35 @@ void		_btk_accel_group_attach		(BtkAccelGroup	*accel_group,
 						 BObject	*object);
 void		_btk_accel_group_detach		(BtkAccelGroup	*accel_group,
 						 BObject	*object);
-gboolean        btk_accel_groups_activate      	(BObject	*object,
-						 guint		 accel_key,
+bboolean        btk_accel_groups_activate      	(BObject	*object,
+						 buint		 accel_key,
 						 BdkModifierType accel_mods);
 GSList*	        btk_accel_groups_from_object    (BObject	*object);
 BtkAccelKey*	btk_accel_group_find		(BtkAccelGroup	      *accel_group,
 						 BtkAccelGroupFindFunc find_func,
-						 gpointer              data);
+						 bpointer              data);
 BtkAccelGroup*	btk_accel_group_from_accel_closure (GClosure    *closure);
 
 
 /* --- Accelerators--- */
-gboolean btk_accelerator_valid		      (guint	        keyval,
+bboolean btk_accelerator_valid		      (buint	        keyval,
 					       BdkModifierType  modifiers) B_GNUC_CONST;
-void	 btk_accelerator_parse		      (const gchar     *accelerator,
-					       guint	       *accelerator_key,
+void	 btk_accelerator_parse		      (const bchar     *accelerator,
+					       buint	       *accelerator_key,
 					       BdkModifierType *accelerator_mods);
-gchar*	 btk_accelerator_name		      (guint	        accelerator_key,
+bchar*	 btk_accelerator_name		      (buint	        accelerator_key,
 					       BdkModifierType  accelerator_mods);
-gchar*   btk_accelerator_get_label            (guint           accelerator_key,
+bchar*   btk_accelerator_get_label            (buint           accelerator_key,
                                                BdkModifierType accelerator_mods);
 void	 btk_accelerator_set_default_mod_mask (BdkModifierType  default_mod_mask);
-guint	 btk_accelerator_get_default_mod_mask (void);
+buint	 btk_accelerator_get_default_mod_mask (void);
 
 
 /* --- internal --- */
 BtkAccelGroupEntry*	btk_accel_group_query	(BtkAccelGroup	*accel_group,
-						 guint		 accel_key,
+						 buint		 accel_key,
 						 BdkModifierType accel_mods,
-						 guint          *n_entries);
+						 buint          *n_entries);
 
 void		     _btk_accel_group_reconnect (BtkAccelGroup *accel_group,
 						 GQuark         accel_path_quark);

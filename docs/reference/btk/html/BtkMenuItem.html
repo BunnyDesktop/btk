@@ -78,14 +78,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenuItem.html#btk-menu-item-get-right-justified" title="btk_menu_item_get_right_justified ()">btk_menu_item_get_right_justified</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenuItem.html#btk-menu-item-get-label" title="btk_menu_item_get_label ()">btk_menu_item_get_label</a> <span class="c_punctuation">()</span>
@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenuItem.html#btk-menu-item-get-use-underline" title="btk_menu_item_get_use_underline ()">btk_menu_item_get_use_underline</a> <span class="c_punctuation">()</span>
@@ -148,7 +148,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenuItem.html#btk-menu-item-get-accel-path" title="btk_menu_item_get_accel_path ()">btk_menu_item_get_accel_path</a> <span class="c_punctuation">()</span>
@@ -225,7 +225,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenuItem.html#BtkMenuItem--right-justified" title="The “right-justified” property">right-justified</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -236,7 +236,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenuItem.html#BtkMenuItem--use-underline" title="The “use-underline” property">use-underline</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -371,13 +371,13 @@ btk_menu_item_new (<em class="parameter"><code><span class="type">void</span></c
 <div class="refsect2">
 <a name="btk-menu-item-new-with-label"></a><h3>btk_menu_item_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_menu_item_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_menu_item_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-new-with-mnemonic"></a><h3>btk_menu_item_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_menu_item_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_menu_item_new_with_mnemonic (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> containing a label. The label
 will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
 in <em class="parameter"><code>label</code></em>
@@ -411,7 +411,7 @@ mnemonic character</p></td>
 <a name="btk-menu-item-set-right-justified"></a><h3>btk_menu_item_set_right_justified ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_set_right_justified (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> right_justified</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> right_justified</code></em>);</pre>
 <p>Sets whether the menu item appears justified at the right
 side of a menu bar. This was traditionally done for "Help" menu
 items, but is now considered a bad idea. (If the widget
@@ -444,7 +444,7 @@ far right if added to a menu bar.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-get-right-justified"></a><h3>btk_menu_item_get_right_justified ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_menu_item_get_right_justified (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>);</pre>
 <p>Gets whether the menu item appears justified at the right
 side of the menu bar.</p>
@@ -472,7 +472,7 @@ far right if added to a menu bar.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-get-label"></a><h3>btk_menu_item_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_menu_item_get_label (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>);</pre>
 <p>Sets <em class="parameter"><code>text</code></em>
  on the <em class="parameter"><code>menu_item</code></em>
@@ -505,7 +505,7 @@ string used by the label, and must not be modified.</p>
 <a name="btk-menu-item-set-label"></a><h3>btk_menu_item_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_set_label (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets <em class="parameter"><code>text</code></em>
  on the <em class="parameter"><code>menu_item</code></em>
  label</p>
@@ -536,7 +536,7 @@ btk_menu_item_set_label (<em class="parameter"><code><a class="link" href="BtkMe
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-get-use-underline"></a><h3>btk_menu_item_get_use_underline ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_menu_item_get_use_underline (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>);</pre>
 <p>Checks if an underline in the text indicates the next character should be
 used for the mnemonic accelerator key.</p>
@@ -567,7 +567,7 @@ the mnemonic accelerator key.</p>
 <a name="btk-menu-item-set-use-underline"></a><h3>btk_menu_item_set_use_underline ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_set_use_underline (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                                 <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <p>If true, an underline in the text indicates the next character should be
 used for the mnemonic accelerator key.</p>
 <div class="refsect3">
@@ -686,7 +686,7 @@ btk_menu_item_remove_submenu (<em class="parameter"><code><a class="link" href="
 <a name="btk-menu-item-set-accel-path"></a><h3>btk_menu_item_set_accel_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_set_accel_path (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>);</pre>
 <p>Set the accelerator path on <em class="parameter"><code>menu_item</code></em>
 , through which runtime changes of the
 menu item's accelerator caused by the user can be identified and saved to
@@ -732,7 +732,7 @@ functionality, or <code class="literal">NULL</code> to unset the current path. <
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-get-accel-path"></a><h3>btk_menu_item_get_accel_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_menu_item_get_accel_path (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>);</pre>
 <p>Retrieve the accelerator path that was previously set on <em class="parameter"><code>menu_item</code></em>
 .</p>
@@ -782,14 +782,14 @@ btk_menu_item_activate (<em class="parameter"><code><a class="link" href="BtkMen
 <a name="btk-menu-item-toggle-size-request"></a><h3>btk_menu_item_toggle_size_request ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_toggle_size_request (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> *requisition</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> *requisition</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-item-toggle-size-allocate"></a><h3>btk_menu_item_toggle_size_allocate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_item_toggle_size_allocate (<em class="parameter"><code><a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menu_item</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> allocation</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> allocation</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -832,7 +832,7 @@ identified and saved to persistant storage.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMenuItem--right-justified"></a><h3>The <code class="literal">“right-justified”</code> property</h3>
-<pre class="programlisting">  “right-justified”          <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “right-justified”          <span class="type">bboolean</span></pre>
 <p>Sets whether the menu item appears justified at the right side of a menu bar.</p>
 <p>Owner: BtkMenuItem</p>
 <p>Flags: Read / Write</p>
@@ -851,7 +851,7 @@ identified and saved to persistant storage.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMenuItem--use-underline"></a><h3>The <code class="literal">“use-underline”</code> property</h3>
-<pre class="programlisting">  “use-underline”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-underline”            <span class="type">bboolean</span></pre>
 <p><code class="literal">TRUE</code> if underlines in the text indicate mnemonics</p>
 <p>Owner: BtkMenuItem</p>
 <p>Flags: Read / Write</p>
@@ -927,7 +927,7 @@ identified and saved to persistant storage.</p>
 <a name="BtkMenuItem-activate"></a><h3>The <code class="literal">“activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menuitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -935,7 +935,7 @@ user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span
 <a name="BtkMenuItem-activate-item"></a><h3>The <code class="literal">“activate-item”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menuitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -944,7 +944,7 @@ user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menuitem,
                <span class="type">int</span>          arg1,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -952,8 +952,8 @@ user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span
 <a name="BtkMenuItem-toggle-size-request"></a><h3>The <code class="literal">“toggle-size-request”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> *menuitem,
-               <span class="type">gpointer</span>     arg1,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     arg1,
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

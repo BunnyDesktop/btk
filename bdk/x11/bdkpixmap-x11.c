@@ -44,21 +44,21 @@
 
 typedef struct
 {
-  gchar *color_string;
+  bchar *color_string;
   BdkColor color;
-  gint transparent;
+  bint transparent;
 } _BdkPixmapColor;
 
 typedef struct
 {
-  guint ncolors;
+  buint ncolors;
   BdkColormap *colormap;
-  gulong pixels[1];
+  bulong pixels[1];
 } _BdkPixmapInfo;
 
 static void bdk_pixmap_impl_x11_get_size   (BdkDrawable        *drawable,
-                                            gint               *width,
-                                            gint               *height);
+                                            bint               *width,
+                                            bint               *height);
 
 static void bdk_pixmap_impl_x11_dispose    (BObject            *object);
 static void bdk_pixmap_impl_x11_finalize   (BObject            *object);
@@ -127,8 +127,8 @@ bdk_pixmap_impl_x11_finalize (BObject *object)
 
 static void
 bdk_pixmap_impl_x11_get_size   (BdkDrawable *drawable,
-                                gint        *width,
-                                gint        *height)
+                                bint        *width,
+                                bint        *height)
 {
   if (width)
     *width = BDK_PIXMAP_IMPL_X11 (drawable)->width;
@@ -138,15 +138,15 @@ bdk_pixmap_impl_x11_get_size   (BdkDrawable *drawable,
 
 BdkPixmap*
 _bdk_pixmap_new (BdkDrawable *drawable,
-                 gint         width,
-                 gint         height,
-                 gint         depth)
+                 bint         width,
+                 bint         height,
+                 bint         depth)
 {
   BdkPixmap *pixmap;
   BdkDrawableImplX11 *draw_impl;
   BdkPixmapImplX11 *pix_impl;
   BdkColormap *cmap;
-  gint window_depth;
+  bint window_depth;
   
   g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail ((drawable != NULL) || (depth != -1), NULL);
@@ -195,9 +195,9 @@ _bdk_pixmap_new (BdkDrawable *drawable,
 
 BdkPixmap *
 _bdk_bitmap_create_from_data (BdkDrawable *drawable,
-                              const gchar *data,
-                              gint         width,
-                              gint         height)
+                              const bchar *data,
+                              bint         width,
+                              bint         height)
 {
   BdkPixmap *pixmap;
   BdkDrawableImplX11 *draw_impl;
@@ -239,10 +239,10 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
 BdkPixmap*
 _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
-			      const gchar    *data,
-			      gint            width,
-			      gint            height,
-			      gint            depth,
+			      const bchar    *data,
+			      bint            width,
+			      bint            height,
+			      bint            depth,
 			      const BdkColor *fg,
 			      const BdkColor *bg)
 {
@@ -363,9 +363,9 @@ bdk_pixmap_foreign_new_for_display (BdkDisplay      *display,
 BdkPixmap *
 bdk_pixmap_foreign_new_for_screen (BdkScreen       *screen,
 				   BdkNativeWindow  anid,
-				   gint             width,
-				   gint             height,
-				   gint             depth)
+				   bint             width,
+				   bint             height,
+				   bint             depth)
 {
   Pixmap xpixmap;
   BdkPixmap *pixmap;

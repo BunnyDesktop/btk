@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIMContext.html#btk-im-context-filter-keypress" title="btk_im_context_filter_keypress ()">btk_im_context_filter_keypress</a> <span class="c_punctuation">()</span>
@@ -115,7 +115,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIMContext.html#btk-im-context-get-surrounding" title="btk_im_context_get_surrounding ()">btk_im_context_get_surrounding</a> <span class="c_punctuation">()</span>
@@ -123,7 +123,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIMContext.html#btk-im-context-delete-surrounding" title="btk_im_context_delete_surrounding ()">btk_im_context_delete_surrounding</a> <span class="c_punctuation">()</span>
@@ -147,7 +147,7 @@
 <td class="signal_flags">Run Last</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkIMContext.html#BtkIMContext-delete-surrounding" title="The “delete-surrounding” signal">delete-surrounding</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -167,7 +167,7 @@
 <td class="signal_flags">Run Last</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkIMContext.html#BtkIMContext-retrieve-surrounding" title="The “retrieve-surrounding” signal">retrieve-surrounding</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -294,7 +294,7 @@ provided input method.</p>
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="cp">#BtkIMContext * im_module_create(const #gchar *context_id);</span></pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="cp">#BtkIMContext * im_module_create(const #bchar *context_id);</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -349,9 +349,9 @@ that the previous client window no longer exists. </p></td>
 <a name="btk-im-context-get-preedit-string"></a><h3>btk_im_context_get_preedit_string ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_im_context_get_preedit_string (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
-                                   <em class="parameter"><code><span class="type">gchar</span> **str</code></em>,
+                                   <em class="parameter"><code><span class="type">bchar</span> **str</code></em>,
                                    <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Text-Attributes.html#BangoAttrList-struct"><span class="type">BangoAttrList</span></a> **attrs</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> *cursor_pos</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> *cursor_pos</code></em>);</pre>
 <p>Retrieve the current preedit string for the input context,
 and a list of attributes to apply to the string.
 This string should be displayed inserted at the insertion
@@ -396,7 +396,7 @@ within the preedit string. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-im-context-filter-keypress"></a><h3>btk_im_context_filter_keypress ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_im_context_filter_keypress (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
                                 <em class="parameter"><code><a href="../html/bdk2-Event-Structures.html#BdkEventKey"><span class="type">BdkEventKey</span></a> *event</code></em>);</pre>
 <p>Allow an input method to internally handle key press and release 
@@ -540,7 +540,7 @@ window.</p>
 <a name="btk-im-context-set-use-preedit"></a><h3>btk_im_context_set_use_preedit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_im_context_set_use_preedit (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> use_preedit</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> use_preedit</code></em>);</pre>
 <p>Sets whether the IM context should use the preedit string
 to display feedback. If <em class="parameter"><code>use_preedit</code></em>
  is FALSE (default
@@ -574,9 +574,9 @@ feedback, such as displaying it in a child of the root window.</p>
 <a name="btk-im-context-set-surrounding"></a><h3>btk_im_context_set_surrounding ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_im_context_set_surrounding (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> len</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> cursor_index</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> len</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> cursor_index</code></em>);</pre>
 <p>Sets surrounding context around the insertion point and preedit
 string. This function is expected to be called in response to the
 BtkIMContext::retrieve_surrounding signal, and will likely have no
@@ -623,10 +623,10 @@ is nul-terminated</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-im-context-get-surrounding"></a><h3>btk_im_context_get_surrounding ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_im_context_get_surrounding (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> **text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *cursor_index</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bchar</span> **text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *cursor_index</code></em>);</pre>
 <p>Retrieves context around the insertion point. Input methods
 typically want context in order to constrain input text based on
 existing text; this is important for languages such as Thai where
@@ -679,10 +679,10 @@ you must free the result stored in *text.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-im-context-delete-surrounding"></a><h3>btk_im_context_delete_surrounding ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_im_context_delete_surrounding (<em class="parameter"><code><a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> n_chars</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> offset</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> n_chars</code></em>);</pre>
 <p>Asks the widget that the input context is attached to to delete
 characters around the cursor position by emitting the
 BtkIMContext::delete_surrounding signal. Note that <em class="parameter"><code>offset</code></em>
@@ -747,20 +747,20 @@ a negative value means start before the cursor.</p></td>
   void     (*preedit_start)        (BtkIMContext *context);
   void     (*preedit_end)          (BtkIMContext *context);
   void     (*preedit_changed)      (BtkIMContext *context);
-  void     (*commit)               (BtkIMContext *context, const gchar *str);
-  gboolean (*retrieve_surrounding) (BtkIMContext *context);
-  gboolean (*delete_surrounding)   (BtkIMContext *context,
-				    gint          offset,
-				    gint          n_chars);
+  void     (*commit)               (BtkIMContext *context, const bchar *str);
+  bboolean (*retrieve_surrounding) (BtkIMContext *context);
+  bboolean (*delete_surrounding)   (BtkIMContext *context,
+				    bint          offset,
+				    bint          n_chars);
 
   /* Virtual functions */
   void     (*set_client_window)   (BtkIMContext   *context,
 				   BdkWindow      *window);
   void     (*get_preedit_string)  (BtkIMContext   *context,
-				   gchar         **str,
+				   bchar         **str,
 				   BangoAttrList **attrs,
-				   gint           *cursor_pos);
-  gboolean (*filter_keypress)     (BtkIMContext   *context,
+				   bint           *cursor_pos);
+  bboolean (*filter_keypress)     (BtkIMContext   *context,
 			           BdkEventKey    *event);
   void     (*focus_in)            (BtkIMContext   *context);
   void     (*focus_out)           (BtkIMContext   *context);
@@ -768,14 +768,14 @@ a negative value means start before the cursor.</p></td>
   void     (*set_cursor_location) (BtkIMContext   *context,
 				   BdkRectangle   *area);
   void     (*set_use_preedit)     (BtkIMContext   *context,
-				   gboolean        use_preedit);
+				   bboolean        use_preedit);
   void     (*set_surrounding)     (BtkIMContext   *context,
-				   const gchar    *text,
-				   gint            len,
-				   gint            cursor_index);
-  gboolean (*get_surrounding)     (BtkIMContext   *context,
-				   gchar         **text,
-				   gint           *cursor_index);
+				   const bchar    *text,
+				   bint            len,
+				   bint            cursor_index);
+  bboolean (*get_surrounding)     (BtkIMContext   *context,
+				   bchar         **text,
+				   bint           *cursor_index);
 };
 </pre>
 <div class="refsect3">
@@ -914,11 +914,11 @@ by the subsequent invocation of <em class="parameter"><code>get_surrounding</cod
 <div class="refsect2">
 <a name="BtkIMContextInfo"></a><h3>struct BtkIMContextInfo</h3>
 <pre class="programlisting">struct BtkIMContextInfo {
-  const gchar *context_id;
-  const gchar *context_name;
-  const gchar *domain;
-  const gchar *domain_dirname;
-  const gchar *default_locales;
+  const bchar *context_id;
+  const bchar *context_name;
+  const bchar *domain;
+  const bchar *domain_dirname;
+  const bchar *default_locales;
 };
 </pre>
 <p>Bookkeeping information about a loadable input method.</p>
@@ -932,27 +932,27 @@ by the subsequent invocation of <em class="parameter"><code>get_surrounding</cod
 </colgroup>
 <tbody>
 <tr>
-<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.context-id"></a>context_id</code></em>;</p></td>
+<td class="struct_member_name"><p>const <span class="type">bchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.context-id"></a>context_id</code></em>;</p></td>
 <td class="struct_member_description"><p>The unique identification string of the input method.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.context-name"></a>context_name</code></em>;</p></td>
+<td class="struct_member_name"><p>const <span class="type">bchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.context-name"></a>context_name</code></em>;</p></td>
 <td class="struct_member_description"><p>The human-readable name of the input method.</p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.domain"></a>domain</code></em>;</p></td>
+<td class="struct_member_name"><p>const <span class="type">bchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.domain"></a>domain</code></em>;</p></td>
 <td class="struct_member_description"><p>Translation domain to be used with <code class="function">dgettext()</code></p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.domain-dirname"></a>domain_dirname</code></em>;</p></td>
+<td class="struct_member_name"><p>const <span class="type">bchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.domain-dirname"></a>domain_dirname</code></em>;</p></td>
 <td class="struct_member_description"><p>Name of locale directory for use with <code class="function">bindtextdomain()</code></p></td>
 <td class="struct_member_annotations"> </td>
 </tr>
 <tr>
-<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.default-locales"></a>default_locales</code></em>;</p></td>
+<td class="struct_member_name"><p>const <span class="type">bchar</span> *<em class="structfield"><code><a name="BtkIMContextInfo.default-locales"></a>default_locales</code></em>;</p></td>
 <td class="struct_member_description"><p>A colon-separated list of locales where this input method
 should be the default. The asterisk "*" sets the default for all locales.</p></td>
 <td class="struct_member_annotations"> </td>
@@ -969,7 +969,7 @@ should be the default. The asterisk "*" sets the default for all locales.</p></t
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
                <span class="type">char</span>         *str,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::commit signal is emitted when a complete input sequence
 has been entered by the user. This can be a single character
 immediately after a key press or the final result of preediting.</p>
@@ -1005,11 +1005,11 @@ immediately after a key press or the final result of preediting.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkIMContext-delete-surrounding"></a><h3>The <code class="literal">“delete-surrounding”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
                <span class="type">int</span>           offset,
                <span class="type">int</span>           n_chars,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::delete-surrounding signal is emitted when the input method
 needs to delete all or part of the context surrounding the cursor.</p>
 <div class="refsect3">
@@ -1057,7 +1057,7 @@ the cursor.</p></td>
 <a name="BtkIMContext-preedit-changed"></a><h3>The <code class="literal">“preedit-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::preedit-changed signal is emitted whenever the preedit sequence
 currently being entered has changed.  It is also emitted at the end of
 a preedit sequence, in which case
@@ -1091,7 +1091,7 @@ a preedit sequence, in which case
 <a name="BtkIMContext-preedit-end"></a><h3>The <code class="literal">“preedit-end”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::preedit-end signal is emitted when a preediting sequence
 has been completed or canceled.</p>
 <div class="refsect3">
@@ -1123,7 +1123,7 @@ has been completed or canceled.</p>
 <a name="BtkIMContext-preedit-start"></a><h3>The <code class="literal">“preedit-start”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::preedit-start signal is emitted when a new preediting sequence
 starts.</p>
 <div class="refsect3">
@@ -1153,9 +1153,9 @@ starts.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkIMContext-retrieve-surrounding"></a><h3>The <code class="literal">“retrieve-surrounding”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> *context,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::retrieve-surrounding signal is emitted when the input method
 requires the context surrounding the cursor.  The callback should set
 the input method surrounding context by calling the

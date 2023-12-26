@@ -57,26 +57,26 @@ struct _BtkStatusbar
   GSList *GSEAL (messages);
   GSList *GSEAL (keys);
 
-  guint GSEAL (seq_context_id);
-  guint GSEAL (seq_message_id);
+  buint GSEAL (seq_context_id);
+  buint GSEAL (seq_message_id);
 
   BdkWindow *GSEAL (grip_window);
 
-  guint GSEAL (has_resize_grip) : 1;
+  buint GSEAL (has_resize_grip) : 1;
 };
 
 struct _BtkStatusbarClass
 {
   BtkHBoxClass parent_class;
 
-  gpointer reserved;
+  bpointer reserved;
 
   void	(*text_pushed)	(BtkStatusbar	*statusbar,
-			 guint		 context_id,
-			 const gchar	*text);
+			 buint		 context_id,
+			 const bchar	*text);
   void	(*text_popped)	(BtkStatusbar	*statusbar,
-			 guint		 context_id,
-			 const gchar	*text);
+			 buint		 context_id,
+			 const bchar	*text);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -91,24 +91,24 @@ BtkWidget* btk_statusbar_new          	(void);
 /* If you don't want to use contexts, 0 is a predefined global
  * context_id you can pass to push/pop/remove
  */
-guint	   btk_statusbar_get_context_id	(BtkStatusbar *statusbar,
-					 const gchar  *context_description);
+buint	   btk_statusbar_get_context_id	(BtkStatusbar *statusbar,
+					 const bchar  *context_description);
 /* Returns message_id used for btk_statusbar_remove */
-guint      btk_statusbar_push          	(BtkStatusbar *statusbar,
-					 guint	       context_id,
-					 const gchar  *text);
+buint      btk_statusbar_push          	(BtkStatusbar *statusbar,
+					 buint	       context_id,
+					 const bchar  *text);
 void       btk_statusbar_pop          	(BtkStatusbar *statusbar,
-					 guint	       context_id);
+					 buint	       context_id);
 void       btk_statusbar_remove        	(BtkStatusbar *statusbar,
-					 guint	       context_id,
-					 guint         message_id);
+					 buint	       context_id,
+					 buint         message_id);
 void       btk_statusbar_remove_all    	(BtkStatusbar *statusbar,
-					 guint	       context_id);
+					 buint	       context_id);
 					 
 
 void     btk_statusbar_set_has_resize_grip (BtkStatusbar *statusbar,
-					    gboolean      setting);
-gboolean btk_statusbar_get_has_resize_grip (BtkStatusbar *statusbar);
+					    bboolean      setting);
+bboolean btk_statusbar_get_has_resize_grip (BtkStatusbar *statusbar);
 
 BtkWidget* btk_statusbar_get_message_area  (BtkStatusbar *statusbar);
 

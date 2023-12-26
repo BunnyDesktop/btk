@@ -66,17 +66,17 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 struct _BtkEntryBufferPrivate
 {
-  gint  max_length;
+  bint  max_length;
 
   /* Only valid if this class is not derived */
-  gchar *normal_text;
-  gsize  normal_text_size;
-  gsize  normal_text_bytes;
-  guint  normal_text_chars;
+  bchar *normal_text;
+  bsize  normal_text_size;
+  bsize  normal_text_bytes;
+  buint  normal_text_chars;
 };
 
 G_DEFINE_TYPE (BtkEntryBuffer, btk_entry_buffer, B_TYPE_OBJECT);
@@ -91,17 +91,17 @@ G_DEFINE_TYPE (BtkEntryBuffer, btk_entry_buffer, B_TYPE_OBJECT);
 
 /* Overwrite a memory that might contain sensitive information. */
 static void
-trash_area (gchar *area,
-            gsize  len)
+trash_area (bchar *area,
+            bsize  len)
 {
-  volatile gchar *varea = (volatile gchar *)area;
+  volatile bchar *varea = (volatile bchar *)area;
   while (len-- > 0)
     *varea++ = 0;
 }
 
-static const gchar*
+static const bchar*
 btk_entry_buffer_normal_get_text (BtkEntryBuffer *buffer,
-                                  gsize          *n_bytes)
+                                  bsize          *n_bytes)
 {
   if (n_bytes)
     *n_bytes = buffer->priv->normal_text_bytes;
@@ -110,29 +110,29 @@ btk_entry_buffer_normal_get_text (BtkEntryBuffer *buffer,
   return buffer->priv->normal_text;
 }
 
-static guint
+static buint
 btk_entry_buffer_normal_get_length (BtkEntryBuffer *buffer)
 {
   return buffer->priv->normal_text_chars;
 }
 
-static guint
+static buint
 btk_entry_buffer_normal_insert_text (BtkEntryBuffer *buffer,
-                                     guint           position,
-                                     const gchar    *chars,
-                                     guint           n_chars)
+                                     buint           position,
+                                     const bchar    *chars,
+                                     buint           n_chars)
 {
   BtkEntryBufferPrivate *pv = buffer->priv;
-  gsize prev_size;
-  gsize n_bytes;
-  gsize at;
+  bsize prev_size;
+  bsize n_bytes;
+  bsize at;
 
   n_bytes = g_utf8_offset_to_pointer (chars, n_chars) - chars;
 
   /* Need more memory */
   if (n_bytes + pv->normal_text_bytes + 1 > pv->normal_text_size)
     {
-      gchar *et_new;
+      bchar *et_new;
 
       prev_size = pv->normal_text_size;
 
@@ -181,13 +181,13 @@ btk_entry_buffer_normal_insert_text (BtkEntryBuffer *buffer,
   return n_chars;
 }
 
-static guint
+static buint
 btk_entry_buffer_normal_delete_text (BtkEntryBuffer *buffer,
-                                     guint           position,
-                                     guint           n_chars)
+                                     buint           position,
+                                     buint           n_chars)
 {
   BtkEntryBufferPrivate *pv = buffer->priv;
-  gsize start, end;
+  bsize start, end;
 
   if (position > pv->normal_text_chars)
     position = pv->normal_text_chars;
@@ -222,9 +222,9 @@ btk_entry_buffer_normal_delete_text (BtkEntryBuffer *buffer,
 
 static void
 btk_entry_buffer_real_inserted_text (BtkEntryBuffer *buffer,
-                                     guint           position,
-                                     const gchar    *chars,
-                                     guint           n_chars)
+                                     buint           position,
+                                     const bchar    *chars,
+                                     buint           n_chars)
 {
   g_object_notify (B_OBJECT (buffer), "text");
   g_object_notify (B_OBJECT (buffer), "length");
@@ -232,8 +232,8 @@ btk_entry_buffer_real_inserted_text (BtkEntryBuffer *buffer,
 
 static void
 btk_entry_buffer_real_deleted_text (BtkEntryBuffer *buffer,
-                                    guint           position,
-                                    guint           n_chars)
+                                    buint           position,
+                                    buint           n_chars)
 {
   g_object_notify (B_OBJECT (buffer), "text");
   g_object_notify (B_OBJECT (buffer), "length");
@@ -276,7 +276,7 @@ btk_entry_buffer_finalize (BObject *obj)
 
 static void
 btk_entry_buffer_set_property (BObject      *obj,
-                               guint         prop_id,
+                               buint         prop_id,
                                const BValue *value,
                                BParamSpec   *pspec)
 {
@@ -298,7 +298,7 @@ btk_entry_buffer_set_property (BObject      *obj,
 
 static void
 btk_entry_buffer_get_property (BObject    *obj,
-                               guint       prop_id,
+                               buint       prop_id,
                                BValue     *value,
                                BParamSpec *pspec)
 {
@@ -446,8 +446,8 @@ btk_entry_buffer_class_init (BtkEntryBufferClass *klass)
  * Since: 2.18
  **/
 BtkEntryBuffer*
-btk_entry_buffer_new (const gchar *initial_chars,
-                      gint         n_initial_chars)
+btk_entry_buffer_new (const bchar *initial_chars,
+                      bint         n_initial_chars)
 {
   BtkEntryBuffer *buffer = g_object_new (BTK_TYPE_ENTRY_BUFFER, NULL);
   if (initial_chars)
@@ -465,7 +465,7 @@ btk_entry_buffer_new (const gchar *initial_chars,
  *
  * Since: 2.18
  **/
-guint
+buint
 btk_entry_buffer_get_length (BtkEntryBuffer *buffer)
 {
   BtkEntryBufferClass *klass;
@@ -489,11 +489,11 @@ btk_entry_buffer_get_length (BtkEntryBuffer *buffer)
  *
  * Since: 2.18
  **/
-gsize
+bsize
 btk_entry_buffer_get_bytes (BtkEntryBuffer *buffer)
 {
   BtkEntryBufferClass *klass;
-  gsize bytes = 0;
+  bsize bytes = 0;
 
   g_return_val_if_fail (BTK_IS_ENTRY_BUFFER (buffer), 0);
 
@@ -520,7 +520,7 @@ btk_entry_buffer_get_bytes (BtkEntryBuffer *buffer)
  *
  * Since: 2.18
  **/
-const gchar*
+const bchar*
 btk_entry_buffer_get_text (BtkEntryBuffer *buffer)
 {
   BtkEntryBufferClass *klass;
@@ -550,8 +550,8 @@ btk_entry_buffer_get_text (BtkEntryBuffer *buffer)
  **/
 void
 btk_entry_buffer_set_text (BtkEntryBuffer *buffer,
-                           const gchar    *chars,
-                           gint            n_chars)
+                           const bchar    *chars,
+                           bint            n_chars)
 {
   g_return_if_fail (BTK_IS_ENTRY_BUFFER (buffer));
   g_return_if_fail (chars != NULL);
@@ -577,7 +577,7 @@ btk_entry_buffer_set_text (BtkEntryBuffer *buffer,
  **/
 void
 btk_entry_buffer_set_max_length (BtkEntryBuffer *buffer,
-                                 gint            max_length)
+                                 bint            max_length)
 {
   g_return_if_fail (BTK_IS_ENTRY_BUFFER (buffer));
 
@@ -602,7 +602,7 @@ btk_entry_buffer_set_max_length (BtkEntryBuffer *buffer,
  *
  * Since: 2.18
  */
-gint
+bint
 btk_entry_buffer_get_max_length (BtkEntryBuffer *buffer)
 {
   g_return_val_if_fail (BTK_IS_ENTRY_BUFFER (buffer), 0);
@@ -630,15 +630,15 @@ btk_entry_buffer_get_max_length (BtkEntryBuffer *buffer)
  *
  * Since: 2.18
  */
-guint
+buint
 btk_entry_buffer_insert_text (BtkEntryBuffer *buffer,
-                              guint           position,
-                              const gchar    *chars,
-                              gint            n_chars)
+                              buint           position,
+                              const bchar    *chars,
+                              bint            n_chars)
 {
   BtkEntryBufferClass *klass;
   BtkEntryBufferPrivate *pv;
-  guint length;
+  buint length;
 
   g_return_val_if_fail (BTK_IS_ENTRY_BUFFER (buffer), 0);
 
@@ -686,13 +686,13 @@ btk_entry_buffer_insert_text (BtkEntryBuffer *buffer,
  *
  * Since: 2.18
  */
-guint
+buint
 btk_entry_buffer_delete_text (BtkEntryBuffer *buffer,
-                              guint           position,
-                              gint            n_chars)
+                              buint           position,
+                              bint            n_chars)
 {
   BtkEntryBufferClass *klass;
-  guint length;
+  buint length;
 
   g_return_val_if_fail (BTK_IS_ENTRY_BUFFER (buffer), 0);
 
@@ -723,9 +723,9 @@ btk_entry_buffer_delete_text (BtkEntryBuffer *buffer,
  */
 void
 btk_entry_buffer_emit_inserted_text (BtkEntryBuffer *buffer,
-                                     guint           position,
-                                     const gchar    *chars,
-                                     guint           n_chars)
+                                     buint           position,
+                                     const bchar    *chars,
+                                     buint           n_chars)
 {
   g_return_if_fail (BTK_IS_ENTRY_BUFFER (buffer));
   g_signal_emit (buffer, signals[INSERTED_TEXT], 0, position, chars, n_chars);
@@ -743,8 +743,8 @@ btk_entry_buffer_emit_inserted_text (BtkEntryBuffer *buffer,
  */
 void
 btk_entry_buffer_emit_deleted_text (BtkEntryBuffer *buffer,
-                                    guint           position,
-                                    guint           n_chars)
+                                    buint           position,
+                                    buint           n_chars)
 {
   g_return_if_fail (BTK_IS_ENTRY_BUFFER (buffer));
   g_signal_emit (buffer, signals[DELETED_TEXT], 0, position, n_chars);

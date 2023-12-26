@@ -4,8 +4,8 @@ typedef struct _Demo Demo;
 
 struct _Demo 
 {
-  gchar *title;
-  gchar *filename;
+  bchar *title;
+  bchar *filename;
   GDoDemoFunc func;
   Demo *children;
 };

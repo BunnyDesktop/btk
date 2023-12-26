@@ -56,7 +56,7 @@ static void btk_menu_tool_button_buildable_interface_init (BtkBuildableIface   *
 static void btk_menu_tool_button_buildable_add_child      (BtkBuildable        *buildable,
 							   BtkBuilder          *builder,
 							   BObject             *child,
-							   const gchar         *type);
+							   const bchar         *type);
 
 enum
 {
@@ -70,7 +70,7 @@ enum
   PROP_MENU
 };
 
-static gint signals[LAST_SIGNAL];
+static bint signals[LAST_SIGNAL];
 
 static BtkBuildableIface *parent_buildable_iface;
 
@@ -119,7 +119,7 @@ btk_menu_tool_button_construct_contents (BtkMenuToolButton *button)
 
   if (priv->box)
     {
-      gchar *tmp;
+      bchar *tmp;
 
       /* Transfer a possible tooltip to the new box */
       g_object_get (priv->box, "tooltip-markup", &tmp, NULL);
@@ -171,7 +171,7 @@ btk_menu_tool_button_state_changed (BtkWidget    *widget,
 
 static void
 btk_menu_tool_button_set_property (BObject      *object,
-                                   guint         prop_id,
+                                   buint         prop_id,
                                    const BValue *value,
                                    BParamSpec   *pspec)
 {
@@ -191,7 +191,7 @@ btk_menu_tool_button_set_property (BObject      *object,
 
 static void
 btk_menu_tool_button_get_property (BObject    *object,
-                                   guint       prop_id,
+                                   buint       prop_id,
                                    BValue     *value,
                                    BParamSpec *pspec)
 {
@@ -265,7 +265,7 @@ static void
 menu_position_func (BtkMenu           *menu,
                     int               *x,
                     int               *y,
-                    gboolean          *push_in,
+                    bboolean          *push_in,
                     BtkMenuToolButton *button)
 {
   BtkMenuToolButtonPrivate *priv = button->priv;
@@ -275,7 +275,7 @@ menu_position_func (BtkMenu           *menu,
   BtkOrientation orientation;
   BtkTextDirection direction;
   BdkRectangle monitor;
-  gint monitor_num;
+  bint monitor_num;
   BdkScreen *screen;
 
   btk_widget_size_request (BTK_WIDGET (priv->menu), &menu_req);
@@ -364,7 +364,7 @@ arrow_button_toggled_cb (BtkToggleButton   *togglebutton,
     }
 }
 
-static gboolean
+static bboolean
 arrow_button_button_press_event_cb (BtkWidget         *widget,
                                     BdkEventButton    *event,
                                     BtkMenuToolButton *button)
@@ -455,7 +455,7 @@ static void
 btk_menu_tool_button_buildable_add_child (BtkBuildable *buildable,
 					  BtkBuilder   *builder,
 					  BObject      *child,
-					  const gchar  *type)
+					  const bchar  *type)
 {
   if (type && strcmp (type, "menu") == 0)
     btk_menu_tool_button_set_menu (BTK_MENU_TOOL_BUTTON (buildable),
@@ -485,7 +485,7 @@ btk_menu_tool_button_buildable_interface_init (BtkBuildableIface *iface)
  **/
 BtkToolItem *
 btk_menu_tool_button_new (BtkWidget   *icon_widget,
-                          const gchar *label)
+                          const bchar *label)
 {
   BtkMenuToolButton *button;
 
@@ -513,7 +513,7 @@ btk_menu_tool_button_new (BtkWidget   *icon_widget,
  * Since: 2.6
  **/
 BtkToolItem *
-btk_menu_tool_button_new_from_stock (const gchar *stock_id)
+btk_menu_tool_button_new_from_stock (const bchar *stock_id)
 {
   BtkMenuToolButton *button;
 
@@ -643,8 +643,8 @@ btk_menu_tool_button_get_menu (BtkMenuToolButton *button)
 void
 btk_menu_tool_button_set_arrow_tooltip (BtkMenuToolButton *button,
                                         BtkTooltips       *tooltips,
-                                        const gchar       *tip_text,
-                                        const gchar       *tip_private)
+                                        const bchar       *tip_text,
+                                        const bchar       *tip_private)
 {
   g_return_if_fail (BTK_IS_MENU_TOOL_BUTTON (button));
 
@@ -664,7 +664,7 @@ btk_menu_tool_button_set_arrow_tooltip (BtkMenuToolButton *button,
  **/
 void
 btk_menu_tool_button_set_arrow_tooltip_text (BtkMenuToolButton *button,
-					     const gchar       *text)
+					     const bchar       *text)
 {
   g_return_if_fail (BTK_IS_MENU_TOOL_BUTTON (button));
 
@@ -684,7 +684,7 @@ btk_menu_tool_button_set_arrow_tooltip_text (BtkMenuToolButton *button,
  **/
 void
 btk_menu_tool_button_set_arrow_tooltip_markup (BtkMenuToolButton *button,
-					       const gchar       *markup)
+					       const bchar       *markup)
 {
   g_return_if_fail (BTK_IS_MENU_TOOL_BUTTON (button));
 

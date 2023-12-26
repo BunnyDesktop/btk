@@ -64,7 +64,7 @@ static BdkKeymap *default_keymap = NULL;
 /* This is a table of all keyvals. Each keycode gets KEYVALS_PER_KEYCODE entries.
  * TThere is 1 keyval per modifier (Nothing, Shift, Alt, Shift+Alt);
  */
-static guint *keyval_array = NULL;
+static buint *keyval_array = NULL;
 
 static inline UniChar
 macroman2ucs (unsigned char c)
@@ -99,8 +99,8 @@ macroman2ucs (unsigned char c)
 }
 
 const static struct {
-  guint keycode;
-  guint keyval;
+  buint keycode;
+  buint keyval;
   unsigned int modmask; /* So we can tell when a mod key is pressed/released */
 } modifier_keys[] = {
   {  54, BDK_Meta_R,    NSCommandKeyMask },
@@ -115,8 +115,8 @@ const static struct {
 };
 
 const static struct {
-  guint keycode;
-  guint keyval;
+  buint keycode;
+  buint keyval;
 } function_keys[] = {
   { 122, BDK_F1 },
   { 120, BDK_F2 },
@@ -137,8 +137,8 @@ const static struct {
 };
 
 const static struct {
-  guint keycode;
-  guint normal_keyval, keypad_keyval;
+  buint keycode;
+  buint normal_keyval, keypad_keyval;
 } known_numeric_keys[] = {
   { 65, BDK_period, BDK_KP_Decimal },
   { 67, BDK_asterisk, BDK_KP_Multiply },
@@ -162,7 +162,7 @@ const static struct {
 /* These values aren't covered by bdk_unicode_to_keyval */
 const static struct {
   gunichar ucs_value;
-  guint keyval;
+  buint keyval;
 } special_ucs_table [] = {
   { 0x0001, BDK_Home },
   { 0x0003, BDK_Return },
@@ -238,7 +238,7 @@ static void
 update_keymap (void)
 {
   const void *chr_data = NULL;
-  guint *p;
+  buint *p;
   int i;
 
   /* Note: we could check only if building against the 10.5 SDK instead, but
@@ -258,7 +258,7 @@ update_keymap (void)
 #endif
 
   g_free (keyval_array);
-  keyval_array = g_new0 (guint, NUM_KEYCODES * KEYVALS_PER_KEYCODE);
+  keyval_array = g_new0 (buint, NUM_KEYCODES * KEYVALS_PER_KEYCODE);
 
 #ifdef __LP64__
   layout_data_ref = (CFDataRef) TISGetInputSourceProperty
@@ -307,7 +307,7 @@ update_keymap (void)
               if (c != 0 && c != 0x10)
                 {
                   int k;
-                  gboolean found = FALSE;
+                  bboolean found = FALSE;
 
                   /* FIXME: some keyboard layouts (e.g. Russian) use a
                    * different 8-bit character set. We should check
@@ -387,7 +387,7 @@ update_keymap (void)
               if (err == noErr && nChars == 1)
                 {
                   int k;
-                  gboolean found = FALSE;
+                  bboolean found = FALSE;
 
                   /* A few <Shift><Option>keys return two characters,
                    * the first of which is U+00a0, which isn't
@@ -509,25 +509,25 @@ bdk_keymap_get_direction (BdkKeymap *keymap)
   return BANGO_DIRECTION_NEUTRAL;
 }
 
-gboolean
+bboolean
 bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
 {
   /* FIXME: Can we implement this? */
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
   /* FIXME: Implement this. */
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
-                                   guint          keyval,
+                                   buint          keyval,
                                    BdkKeymapKey **keys,
-                                   gint          *n_keys)
+                                   bint          *n_keys)
 {
   GArray *keys_array;
   int i;
@@ -564,16 +564,16 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
   return *n_keys > 0;;
 }
 
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
-                                    guint          hardware_keycode,
+                                    buint          hardware_keycode,
                                     BdkKeymapKey **keys,
-                                    guint        **keyvals,
-                                    gint          *n_entries)
+                                    buint        **keyvals,
+                                    bint          *n_entries)
 {
   GArray *keys_array, *keyvals_array;
   int i;
-  guint *p;
+  buint *p;
 
   g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (n_entries != NULL, FALSE);
@@ -592,7 +592,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
     keys_array = NULL;
 
   if (keyvals)
-    keyvals_array = g_array_new (FALSE, FALSE, sizeof (guint));
+    keyvals_array = g_array_new (FALSE, FALSE, sizeof (buint));
   else
     keyvals_array = NULL;
 
@@ -624,12 +624,12 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
     *keys = (BdkKeymapKey *)g_array_free (keys_array, FALSE);
 
   if (keyvals)
-    *keyvals = (guint *)g_array_free (keyvals_array, FALSE);
+    *keyvals = (buint *)g_array_free (keyvals_array, FALSE);
 
   return *n_entries > 0;
 }
 
-guint
+buint
 bdk_keymap_lookup_key (BdkKeymap          *keymap,
                        const BdkKeymapKey *key)
 {
@@ -647,15 +647,15 @@ bdk_keymap_lookup_key (BdkKeymap          *keymap,
 
 #define GET_KEYVAL(keycode, group, level) (keyval_array[(keycode * KEYVALS_PER_KEYCODE + group * 2 + level)])
 
-static guint
-translate_keysym (guint           hardware_keycode,
-		  gint            group,
+static buint
+translate_keysym (buint           hardware_keycode,
+		  bint            group,
 		  BdkModifierType state,
-		  gint           *effective_group,
-		  gint           *effective_level)
+		  bint           *effective_group,
+		  bint           *effective_level)
 {
-  gint level;
-  guint tmp_keyval;
+  bint level;
+  buint tmp_keyval;
 
   level = (state & BDK_SHIFT_MASK) ? 1 : 0;
 
@@ -671,7 +671,7 @@ translate_keysym (guint           hardware_keycode,
 
   if (state & BDK_LOCK_MASK)
     {
-      guint upper = bdk_keyval_to_upper (tmp_keyval);
+      buint upper = bdk_keyval_to_upper (tmp_keyval);
       if (upper != tmp_keyval)
         tmp_keyval = upper;
     }
@@ -684,19 +684,19 @@ translate_keysym (guint           hardware_keycode,
   return tmp_keyval;
 }
 
-gboolean
+bboolean
 bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
-                                     guint            hardware_keycode,
+                                     buint            hardware_keycode,
                                      BdkModifierType  state,
-                                     gint             group,
-                                     guint           *keyval,
-                                     gint            *effective_group,
-                                     gint            *level,
+                                     bint             group,
+                                     buint           *keyval,
+                                     bint            *effective_group,
+                                     bint            *level,
                                      BdkModifierType *consumed_modifiers)
 {
-  guint tmp_keyval;
+  buint tmp_keyval;
   BdkModifierType bit;
-  guint tmp_modifiers = 0;
+  buint tmp_modifiers = 0;
 
   g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (group >= 0 && group <= 1, FALSE);
@@ -749,7 +749,7 @@ bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
     *state |= BDK_META_MASK;
 }
 
-gboolean
+bboolean
 bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
                                   BdkModifierType *state)
 {
@@ -802,10 +802,10 @@ _bdk_quartz_keys_event_type (NSEvent *event)
   return BDK_NOTHING;
 }
 
-gboolean
-_bdk_quartz_keys_is_modifier (guint keycode)
+bboolean
+_bdk_quartz_keys_is_modifier (buint keycode)
 {
-  gint i;
+  bint i;
   
   for (i = 0; i < G_N_ELEMENTS (modifier_keys); i++)
     {

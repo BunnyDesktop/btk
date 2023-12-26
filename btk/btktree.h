@@ -68,12 +68,12 @@ struct _BtkTree
   BtkTree* root_tree; /* owner of selection list */
   BtkWidget* tree_owner;
   GList *selection;
-  guint level;
-  guint indent_value;
-  guint current_indent;
-  guint selection_mode : 2;
-  guint view_mode : 1;
-  guint view_line : 1;
+  buint level;
+  buint indent_value;
+  buint current_indent;
+  buint selection_mode : 2;
+  buint view_mode : 1;
+  buint view_line : 1;
 };
 
 struct _BtkTreeClass
@@ -96,28 +96,28 @@ void       btk_tree_prepend            (BtkTree          *tree,
 				        BtkWidget        *tree_item);
 void       btk_tree_insert             (BtkTree          *tree,
 				        BtkWidget        *tree_item,
-				        gint              position);
+				        bint              position);
 void       btk_tree_remove_items       (BtkTree          *tree,
 				        GList            *items);
 void       btk_tree_clear_items        (BtkTree          *tree,
-				        gint              start,
-				        gint              end);
+				        bint              start,
+				        bint              end);
 void       btk_tree_select_item        (BtkTree          *tree,
-				        gint              item);
+				        bint              item);
 void       btk_tree_unselect_item      (BtkTree          *tree,
-				        gint              item);
+				        bint              item);
 void       btk_tree_select_child       (BtkTree          *tree,
 				        BtkWidget        *tree_item);
 void       btk_tree_unselect_child     (BtkTree          *tree,
 				        BtkWidget        *tree_item);
-gint       btk_tree_child_position     (BtkTree          *tree,
+bint       btk_tree_child_position     (BtkTree          *tree,
 				        BtkWidget        *child);
 void       btk_tree_set_selection_mode (BtkTree          *tree,
 				        BtkSelectionMode  mode);
 void       btk_tree_set_view_mode      (BtkTree          *tree,
 				        BtkTreeViewMode   mode); 
 void       btk_tree_set_view_lines     (BtkTree          *tree,
-					gboolean	  flag);
+					bboolean	  flag);
 
 /* deprecated function, use btk_container_remove instead.
  */

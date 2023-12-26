@@ -47,10 +47,10 @@ typedef struct _BdkRgbInfo     BdkRgbInfo;
 typedef struct _BdkRgbCmapInfo BdkRgbCmapInfo;
 
 typedef void (*BdkRgbConvFunc) (BdkRgbInfo *image_info, BdkImage *image,
-				gint x0, gint y0,
-				gint width, gint height,
-				const guchar *buf, int rowstride,
-				gint x_align, gint y_align,
+				bint x0, bint y0,
+				bint width, bint height,
+				const buchar *buf, int rowstride,
+				bint x_align, bint y_align,
 				BdkRgbCmap *cmap);
 
 #define STAGE_ROWSTRIDE (BDK_SCRATCH_IMAGE_WIDTH * 3)
@@ -62,25 +62,25 @@ struct _BdkRgbInfo
   BdkVisual *visual;
   BdkColormap *cmap;
 
-  guint nred_shades;
-  guint ngreen_shades;
-  guint nblue_shades;
-  guint ngray_shades;
-  guint nreserved;
+  buint nred_shades;
+  buint ngreen_shades;
+  buint nblue_shades;
+  buint ngray_shades;
+  buint nreserved;
 
-  guint bpp;
-  gint cmap_alloced;
-  gdouble gamma;
+  buint bpp;
+  bint cmap_alloced;
+  bdouble gamma;
 
   /* Generally, the stage buffer is used to convert 32bit RGB, gray,
      and indexed images into 24 bit packed RGB. */
-  guchar *stage_buf;
+  buchar *stage_buf;
 
   BdkRgbCmap *gray_cmap;
 
-  gboolean dith_default;
+  bboolean dith_default;
 
-  gboolean bitmap; /* set true if in 1 bit per pixel mode */
+  bboolean bitmap; /* set true if in 1 bit per pixel mode */
   BdkGC *own_gc;
 
   /* Convert functions */
@@ -96,8 +96,8 @@ struct _BdkRgbInfo
   BdkRgbConvFunc conv_indexed;
   BdkRgbConvFunc conv_indexed_d;
 
-  guchar *colorcube;
-  guchar *colorcube_d;
+  buchar *colorcube;
+  buchar *colorcube_d;
 
   /* We need to track LUT's for pairs of BdkRgbInfo / BdkRgbCmap, so we
    * keep a list of pointers to BdkRgbCmapInfo on both structures so we
@@ -111,7 +111,7 @@ struct _BdkRgbCmapInfo
   BdkRgbInfo *image_info;
   BdkRgbCmap *cmap;
 
-  guchar lut[256];		/* For 8-bit modes */
+  buchar lut[256];		/* For 8-bit modes */
 };
 
 static BdkRgbCmapInfo *bdk_rgb_cmap_get_info (BdkRgbCmap *cmap, BdkRgbInfo *image_info);
@@ -119,16 +119,16 @@ static BdkRgbCmapInfo *bdk_rgb_cmap_get_info (BdkRgbCmap *cmap, BdkRgbInfo *imag
 static const char bdk_rgb_key[] = "bdk-rgb-info";
 static GQuark bdk_rgb_quark = 0;
 
-static gboolean bdk_rgb_install_cmap = FALSE;
-static gint bdk_rgb_min_colors = 5 * 5 * 5;
-static gboolean bdk_rgb_verbose = FALSE;
+static bboolean bdk_rgb_install_cmap = FALSE;
+static bint bdk_rgb_min_colors = 5 * 5 * 5;
+static bboolean bdk_rgb_verbose = FALSE;
 
-static gint
-bdk_rgb_cmap_fail (const char *msg, BdkColormap *cmap, gulong *pixels)
+static bint
+bdk_rgb_cmap_fail (const char *msg, BdkColormap *cmap, bulong *pixels)
 {
   BdkColor free_colors[256];
-  gint n_free;
-  gint i;
+  bint n_free;
+  bint i;
 
 #ifdef VERBOSE
   g_print ("%s", msg);
@@ -143,13 +143,13 @@ bdk_rgb_cmap_fail (const char *msg, BdkColormap *cmap, gulong *pixels)
 }
 
 static void
-bdk_rgb_make_colorcube (BdkRgbInfo *image_info, gulong *pixels,
-			gint nr, gint ng, gint nb)
+bdk_rgb_make_colorcube (BdkRgbInfo *image_info, bulong *pixels,
+			bint nr, bint ng, bint nb)
 {
-  guchar rt[16], gt[16], bt[16];
-  gint i;
+  buchar rt[16], gt[16], bt[16];
+  bint i;
 
-  image_info->colorcube = g_new (guchar, 4096);
+  image_info->colorcube = g_new (buchar, 4096);
   for (i = 0; i < 16; i++)
     {
       rt[i] = ng * nb * ((i * 17 * (nr - 1) + 128) >> 8);
@@ -168,13 +168,13 @@ bdk_rgb_make_colorcube (BdkRgbInfo *image_info, gulong *pixels,
 
 /* this is the colorcube suitable for dithering */
 static void
-bdk_rgb_make_colorcube_d (BdkRgbInfo *image_info, gulong *pixels,
-			  gint nr, gint ng, gint nb)
+bdk_rgb_make_colorcube_d (BdkRgbInfo *image_info, bulong *pixels,
+			  bint nr, bint ng, bint nb)
 {
-  gint r, g, b;
-  gint i;
+  bint r, g, b;
+  bint i;
 
-  image_info->colorcube_d = g_new (guchar, 512);
+  image_info->colorcube_d = g_new (buchar, 512);
   for (i = 0; i < 512; i++)
     {
       r = MIN (nr - 1, i >> 6);
@@ -186,21 +186,21 @@ bdk_rgb_make_colorcube_d (BdkRgbInfo *image_info, gulong *pixels,
 
 /* Try installing a color cube of the specified size.
    Make the colorcube and return TRUE on success */
-static gboolean
-bdk_rgb_try_colormap (BdkRgbInfo *image_info, gboolean force,
-		      gint nr, gint ng, gint nb)
+static bboolean
+bdk_rgb_try_colormap (BdkRgbInfo *image_info, bboolean force,
+		      bint nr, bint ng, bint nb)
 {
-  gint r, g, b;
-  gint ri, gi, bi;
-  gint r0, g0, b0;
+  bint r, g, b;
+  bint ri, gi, bi;
+  bint r0, g0, b0;
   BdkColormap *cmap;
   BdkColor color;
-  gulong pixels[256];
-  gint i;
-  gint d2;
-  gint colors_needed;
-  gint idx;
-  gint best[256];
+  bulong pixels[256];
+  bint i;
+  bint d2;
+  bint colors_needed;
+  bint idx;
+  bint best[256];
   BdkScreen *screen;
 
   if (!force && nr * ng * nb < bdk_rgb_min_colors)
@@ -296,10 +296,10 @@ bdk_rgb_try_colormap (BdkRgbInfo *image_info, gboolean force,
 }
 
 /* Return TRUE on success. */
-static gboolean
-bdk_rgb_do_colormaps (BdkRgbInfo *image_info, gboolean force)
+static bboolean
+bdk_rgb_do_colormaps (BdkRgbInfo *image_info, bboolean force)
 {
-  static const gint sizes[][3] = {
+  static const bint sizes[][3] = {
     /*    { 6, 7, 6 }, */
     { 6, 6, 6 }, 
     { 6, 6, 5 }, 
@@ -311,8 +311,8 @@ bdk_rgb_do_colormaps (BdkRgbInfo *image_info, gboolean force)
     { 3, 3, 3 }, 
     { 2, 2, 2 }
   };
-  static const gint n_sizes = G_N_ELEMENTS (sizes);
-  gint i;
+  static const bint n_sizes = G_N_ELEMENTS (sizes);
+  bint i;
 
   /* Try the possible sizes. If the force parameter is set to TRUE
    * and all larger sizes fail, force the larger size to succeed -
@@ -334,7 +334,7 @@ bdk_rgb_colorcube_222 (BdkRgbInfo *image_info)
   int i;
   BdkColor color;
 
-  image_info->colorcube_d = g_new (guchar, 512);
+  image_info->colorcube_d = g_new (buchar, 512);
 
   for (i = 0; i < 8; i++)
     {
@@ -347,19 +347,19 @@ bdk_rgb_colorcube_222 (BdkRgbInfo *image_info)
 }
 
 void
-bdk_rgb_set_verbose (gboolean verbose)
+bdk_rgb_set_verbose (bboolean verbose)
 {
   bdk_rgb_verbose = verbose;
 }
 
 void
-bdk_rgb_set_install (gboolean install)
+bdk_rgb_set_install (bboolean install)
 {
   bdk_rgb_install_cmap = install;
 }
 
 void
-bdk_rgb_set_min_colors (gint min_colors)
+bdk_rgb_set_min_colors (bint min_colors)
 {
   bdk_rgb_min_colors = min_colors;
 }
@@ -379,10 +379,10 @@ bdk_rgb_set_min_colors (gint min_colors)
    quite important. Thus, all of the 8bpp modes should be ranked at
    the same speed.
 */
-static guint32
+static buint32
 bdk_rgb_score_visual (BdkVisual *visual)
 {
-  guint32 quality, speed, sys, pseudo;
+  buint32 quality, speed, sys, pseudo;
 
   quality = 0;
   speed = 1;
@@ -450,7 +450,7 @@ static BdkVisual *
 bdk_rgb_choose_visual (BdkScreen *screen)
 {
   GList *visuals, *tmp_list;
-  guint32 score, best_score;
+  buint32 score, best_score;
   BdkVisual *visual, *best_visual;
 
   visuals = bdk_screen_list_visuals (screen);
@@ -482,11 +482,11 @@ static void
 bdk_rgb_set_gray_cmap (BdkRgbInfo  *image_info,
 		       BdkColormap *cmap)
 {
-  gint i;
+  bint i;
   BdkColor color;
-  gboolean status;
-  gulong pixels[256];
-  gint r, g, b, gray;
+  bboolean status;
+  bulong pixels[256];
+  bint r, g, b, gray;
 
   for (i = 0; i < 256; i++)
     {
@@ -505,7 +505,7 @@ bdk_rgb_set_gray_cmap (BdkRgbInfo  *image_info,
   /* Now, we make fake colorcubes - we ultimately just use the pseudocolor
      methods. */
 
-  image_info->colorcube = g_new (guchar, 4096);
+  image_info->colorcube = g_new (buchar, 4096);
 
   for (i = 0; i < 4096; i++)
     {
@@ -675,7 +675,7 @@ bdk_rgb_create_info (BdkVisual *visual, BdkColormap *colormap)
 void
 bdk_rgb_init (void)
 {
-  static const gint byte_order[1] = { 1 };
+  static const bint byte_order[1] = { 1 };
 
   /* check endian sanity */
 #if G_BYTE_ORDER == G_BIG_ENDIAN
@@ -702,16 +702,16 @@ bdk_rgb_get_info_from_colormap (BdkColormap *cmap)
   return image_info;
 }
 
-static guint32
+static buint32
 bdk_rgb_alpha_mask (BdkRgbInfo *image_info)
 {
-  guint padding;
+  buint padding;
   
   /* Shifting by >= width-of-type isn't defined in C */
   if (image_info->visual->depth >= 32)
     padding = 0;
   else
-    padding = ((~(guint32)0)) << image_info->visual->depth;
+    padding = ((~(buint32)0)) << image_info->visual->depth;
 	  
   return ~(image_info->visual->red_mask |
 	   image_info->visual->green_mask |
@@ -719,11 +719,11 @@ bdk_rgb_alpha_mask (BdkRgbInfo *image_info)
 	   padding);
 }
 
-static gulong
+static bulong
 bdk_rgb_xpixel_from_rgb_internal (BdkColormap *colormap,
-				  guint16 r, guint16 g, guint16 b)
+				  buint16 r, buint16 g, buint16 b)
 {
-  gulong pixel = 0;
+  bulong pixel = 0;
 
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_colormap (colormap);
 
@@ -745,7 +745,7 @@ bdk_rgb_xpixel_from_rgb_internal (BdkColormap *colormap,
   else if (image_info->visual->type == BDK_VISUAL_TRUE_COLOR ||
 	   image_info->visual->type == BDK_VISUAL_DIRECT_COLOR)
     {
-      guint32 unused;
+      buint32 unused;
 
 #ifdef VERBOSE
       g_print ("shift, prec: r %d %d g %d %d b %d %d\n",
@@ -762,7 +762,7 @@ bdk_rgb_xpixel_from_rgb_internal (BdkColormap *colormap,
       unused = ~ (image_info->visual->red_mask | 
 		  image_info->visual->green_mask | 
 		  image_info->visual->blue_mask |
-		  (((~(guint32)0)) << image_info->visual->depth));
+		  (((~(buint32)0)) << image_info->visual->depth));
 
       pixel = (unused + ((r >> (16 - image_info->visual->red_prec)) << image_info->visual->red_shift) +
 	       ((g >> (16 - image_info->visual->green_prec)) << image_info->visual->green_shift) +
@@ -780,19 +780,19 @@ bdk_rgb_xpixel_from_rgb_internal (BdkColormap *colormap,
 }
 
 /* convert an rgb value into an X pixel code */
-gulong
-bdk_rgb_xpixel_from_rgb (guint32 rgb)
+bulong
+bdk_rgb_xpixel_from_rgb (buint32 rgb)
 {
-  guint32 r = rgb & 0xff0000;
-  guint32 g = rgb & 0xff00;
-  guint32 b = rgb & 0xff;
+  buint32 r = rgb & 0xff0000;
+  buint32 g = rgb & 0xff00;
+  buint32 b = rgb & 0xff;
 
   return bdk_rgb_xpixel_from_rgb_internal (bdk_screen_get_rgb_colormap (bdk_screen_get_default ()),
 					   (r >> 8) + (r >> 16), g + (g >> 8), b + (b << 8));
 }
 
 void
-bdk_rgb_gc_set_foreground (BdkGC *gc, guint32 rgb)
+bdk_rgb_gc_set_foreground (BdkGC *gc, buint32 rgb)
 {
   BdkColor color;
 
@@ -801,7 +801,7 @@ bdk_rgb_gc_set_foreground (BdkGC *gc, guint32 rgb)
 }
 
 void
-bdk_rgb_gc_set_background (BdkGC *gc, guint32 rgb)
+bdk_rgb_gc_set_background (BdkGC *gc, buint32 rgb)
 {
   BdkColor color;
 
@@ -845,25 +845,25 @@ bdk_rgb_find_color (BdkColormap *colormap, BdkColor *color)
 #ifdef HAIRY_CONVERT_8
 static void
 bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
-		   gint x0, gint y0, gint width, gint height,
-		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align, BdkRgbCmap *cmap)
+		   bint x0, bint y0, bint width, bint height,
+		   const buchar *buf, int rowstride,
+		   bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  guchar *colorcube = image_info->colorcube;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  buchar *colorcube = image_info->colorcube;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
       obptr = obuf;
-      if (((guintptr)obuf | (guintptr) bp2) & 3)
+      if (((buintptr)obuf | (buintptr) bp2) & 3)
 	{
 	  for (x = 0; x < width; x++)
 	    {
@@ -880,14 +880,14 @@ bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
 	{
 	  for (x = 0; x < width - 3; x += 4)
 	    {
-	      guint32 r1b0g0r0;
-	      guint32 g2r2b1g1;
-	      guint32 b3g3r3b2;
+	      buint32 r1b0g0r0;
+	      buint32 g2r2b1g1;
+	      buint32 b3g3r3b2;
 
-	      r1b0g0r0 = ((guint32 *)bp2)[0];
-	      g2r2b1g1 = ((guint32 *)bp2)[1];
-	      b3g3r3b2 = ((guint32 *)bp2)[2];
-	      ((guint32 *)obptr)[0] =
+	      r1b0g0r0 = ((buint32 *)bp2)[0];
+	      g2r2b1g1 = ((buint32 *)bp2)[1];
+	      b3g3r3b2 = ((buint32 *)bp2)[2];
+	      ((buint32 *)obptr)[0] =
 		colorcube[((r1b0g0r0 & 0xf0) << 4) | 
 			 ((r1b0g0r0 & 0xf000) >> 8) |
 			 ((r1b0g0r0 & 0xf00000) >> 20)] |
@@ -921,20 +921,20 @@ bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
 #else
 static void
 bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
-		   gint x0, gint y0, gint width, gint height,
-		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align, BdkRgbCmap *cmap)
+		   bint x0, bint y0, bint width, bint height,
+		   const buchar *buf, int rowstride,
+		   bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  guchar *colorcube = image_info->colorcube;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  buchar *colorcube = image_info->colorcube;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -974,7 +974,7 @@ bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
 #define DM_WIDTH 128
 #define DM_WIDTH_SHIFT 7
 #define DM_HEIGHT 128
-static const guchar DM[128][128] =
+static const buchar DM[128][128] =
 {
   { 0, 41, 23, 5, 17, 39, 7, 15, 62, 23, 40, 51, 31, 47, 9, 32, 52, 27, 57, 25, 6, 61, 27, 52, 37, 7, 40, 63, 18, 36, 10, 42, 25, 62, 45, 34, 20, 42, 37, 14, 35, 29, 50, 10, 61, 2, 40, 8, 37, 12, 58, 22, 5, 41, 10, 39, 0, 60, 11, 46, 2, 55, 38, 17, 36, 59, 13, 54, 37, 56, 8, 29, 16, 13, 63, 22, 41, 55, 7, 20, 49, 14, 23, 55, 37, 23, 19, 36, 15, 49, 23, 63, 30, 14, 38, 27, 53, 13, 22, 41, 19, 31, 7, 19, 50, 30, 49, 16, 3, 32, 56, 40, 29, 34, 8, 48, 19, 45, 4, 51, 12, 46, 35, 49, 16, 42, 12, 62 },
   { 30, 57, 36, 54, 47, 34, 52, 27, 43, 4, 28, 7, 17, 36, 62, 13, 44, 7, 18, 48, 33, 21, 44, 14, 30, 47, 12, 33, 5, 55, 31, 58, 13, 30, 4, 17, 52, 10, 60, 26, 46, 0, 39, 27, 42, 22, 47, 25, 60, 32, 9, 38, 48, 17, 59, 30, 49, 18, 34, 25, 51, 19, 5, 48, 21, 8, 28, 46, 1, 32, 41, 19, 54, 47, 37, 18, 28, 11, 44, 30, 39, 56, 2, 33, 8, 42, 61, 28, 58, 8, 46, 9, 41, 4, 58, 7, 21, 48, 59, 10, 52, 14, 42, 57, 12, 25, 7, 53, 42, 24, 11, 50, 17, 59, 42, 2, 36, 60, 32, 17, 63, 29, 21, 7, 59, 32, 24, 39 },
@@ -1106,7 +1106,7 @@ static const guchar DM[128][128] =
   { 51, 14, 61, 29, 59, 20, 55, 31, 0, 49, 11, 60, 3, 26, 22, 56, 0, 40, 12, 43, 41, 8, 36, 0, 17, 57, 24, 2, 46, 26, 61, 18, 0, 38, 12, 59, 6, 49, 3, 57, 19, 63, 5, 33, 18, 54, 28, 56, 0, 43, 26, 46, 63, 27, 56, 22, 27, 54, 38, 28, 63, 24, 10, 45, 0, 31, 42, 21, 12, 25, 44, 49, 59, 6, 26, 50, 3, 34, 27, 59, 0, 35, 62, 16, 4, 58, 47, 0, 43, 24, 37, 2, 54, 20, 46, 31, 0, 56, 34, 5, 55, 45, 60, 37, 0, 40, 10, 38, 63, 46, 15, 20, 0, 53, 21, 62, 30, 11, 24, 27, 40, 0, 57, 26, 3, 45, 27, 35 },
 };
 
-static const guint32 DM_565[128 * 128] =
+static const buint32 DM_565[128 * 128] =
 {
   3072, 5243909, 2099202, 3072, 2099202, 4195332, 3072, 1051649, 7340039, 2099202, 5243909, 6291462, 3147779, 5243909, 1051649, 4195332, 6291462, 3147779, 7340039, 3147779, 3072, 7340039, 3147779, 6291462, 4195332, 3072, 5243909, 7340039, 2099202, 4195332, 1051649, 5243909, 3147779, 7340039, 5243909, 4195332, 2099202, 5243909, 4195332, 1051649, 4195332, 3147779, 6291462, 1051649, 7340039, 3072, 5243909, 1051649, 4195332, 1051649, 7340039, 2099202, 3072, 5243909, 1051649, 4195332, 3072, 7340039, 1051649, 5243909, 3072, 6291462, 4195332, 2099202, 4195332, 7340039, 1051649, 6291462, 4195332, 7340039, 1051649, 3147779, 2099202, 1051649, 7340039, 2099202, 5243909, 6291462, 3072, 2099202, 6291462, 1051649, 2099202, 6291462, 4195332, 2099202, 2099202, 4195332, 1051649, 6291462, 2099202, 7340039, 3147779, 1051649, 4195332, 3147779, 6291462, 1051649, 2099202, 5243909, 2099202, 3147779, 3072, 2099202, 6291462, 3147779, 6291462, 2099202, 3072, 4195332, 7340039, 5243909, 3147779, 4195332, 1051649, 6291462, 2099202, 5243909, 3072, 6291462, 1051649, 5243909, 4195332, 6291462, 2099202, 5243909, 1051649, 7340039,
   3147779, 7340039, 4195332, 6291462, 5243909, 4195332, 6291462, 3147779, 5243909, 3072, 3147779, 3072, 2099202, 4195332, 7340039, 1051649, 5243909, 3072, 2099202, 6291462, 4195332, 2099202, 5243909, 1051649, 3147779, 5243909, 1051649, 4195332, 3072, 6291462, 3147779, 7340039, 1051649, 3147779, 3072, 2099202, 6291462, 1051649, 7340039, 3147779, 5243909, 3072, 4195332, 3147779, 5243909, 2099202, 5243909, 3147779, 7340039, 4195332, 1051649, 4195332, 6291462, 2099202, 7340039, 3147779, 6291462, 2099202, 4195332, 3147779, 6291462, 2099202, 3072, 6291462, 2099202, 1051649, 3147779, 5243909, 3072, 4195332, 5243909, 2099202, 6291462, 5243909, 4195332, 2099202, 3147779, 1051649, 5243909, 3147779, 4195332, 7340039, 3072, 4195332, 1051649, 5243909, 7340039, 3147779, 7340039, 1051649, 5243909, 1051649, 5243909, 3072, 7340039, 3072, 2099202, 6291462, 7340039, 1051649, 6291462, 1051649, 5243909, 7340039, 1051649, 3147779, 3072, 6291462, 5243909, 3147779, 1051649, 6291462, 2099202, 7340039, 5243909, 3072, 4195332, 7340039, 4195332, 2099202, 7340039, 3147779, 2099202, 3072, 7340039, 4195332, 3147779, 4195332,
@@ -1242,7 +1242,7 @@ static const guint32 DM_565[128 * 128] =
 #define DM_WIDTH 8
 #define DM_WIDTH_SHIFT 3
 #define DM_HEIGHT 8
-static const guchar DM[8][8] =
+static const buchar DM[8][8] =
 {
   { 0,  32, 8,  40, 2,  34, 10, 42 },
   { 48, 16, 56, 24, 50, 18, 58, 26 },
@@ -1254,7 +1254,7 @@ static const guchar DM[8][8] =
   { 63, 31, 55, 23, 61, 29, 53, 21 }
 };
 
-static const guint32 DM_565[8 * 8] =
+static const buint32 DM_565[8 * 8] =
 {
   3072, 4195332, 1051649, 5243909, 3072, 4195332, 1051649, 5243909,
   6291462, 2099202, 7340039, 3147779, 6291462, 2099202, 7340039, 3147779,
@@ -1273,11 +1273,11 @@ static void
 bdk_rgb_preprocess_dm_565 (void)
 {
   int i;
-  guint32 dith;
+  buint32 dith;
 
   if (DM_565 == NULL)
     {
-      DM_565 = g_new (guint32, DM_WIDTH * DM_HEIGHT);
+      DM_565 = g_new (buint32, DM_WIDTH * DM_HEIGHT);
       for (i = 0; i < DM_WIDTH * DM_HEIGHT; i++)
 	{
 	  dith = DM[0][i] >> 3;
@@ -1294,22 +1294,22 @@ bdk_rgb_preprocess_dm_565 (void)
 
 static void
 bdk_rgb_convert_8_d666 (BdkRgbInfo *image_info, BdkImage *image,
-			gint x0, gint y0, gint width, gint height,
-			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, BdkRgbCmap *cmap)
+			bint x0, bint y0, bint width, bint height,
+			const buchar *buf, int rowstride,
+			bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint dith;
-  guchar *colorcube_d = image_info->colorcube_d;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint dith;
+  buchar *colorcube_d = image_info->colorcube_d;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       dmp = DM[(y_align + y) & (DM_HEIGHT - 1)];
@@ -1334,27 +1334,27 @@ bdk_rgb_convert_8_d666 (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_8_d (BdkRgbInfo *image_info, BdkImage *image,
-		     gint x0, gint y0, gint width, gint height,
-		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align,
+		     bint x0, bint y0, bint width, bint height,
+		     const buchar *buf, int rowstride,
+		     bint x_align, bint y_align,
 		     BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint dith;
-  gint rs, gs, bs;
-  guchar *colorcube_d = image_info->colorcube_d;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint dith;
+  bint rs, gs, bs;
+  buchar *colorcube_d = image_info->colorcube_d;
 
   bptr = buf;
   bpl = image->bpl;
   rs = image_info->nred_shades - 1;
   gs = image_info->ngreen_shades - 1;
   bs = image_info->nblue_shades - 1;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       dmp = DM[(y_align + y) & (DM_HEIGHT - 1)];
@@ -1379,22 +1379,22 @@ bdk_rgb_convert_8_d (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_8_indexed (BdkRgbInfo *image_info, BdkImage *image,
-			   gint x0, gint y0, gint width, gint height,
-			   const guchar *buf, int rowstride,
-			   gint x_align, gint y_align, BdkRgbCmap *cmap)
+			   bint x0, bint y0, bint width, bint height,
+			   const buchar *buf, int rowstride,
+			   bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  guchar c;
-  guchar *lut;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  buchar c;
+  buchar *lut;
   BdkRgbCmapInfo *cmap_info = bdk_rgb_cmap_get_info (cmap, image_info);
 
   lut = cmap_info->lut;
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1412,19 +1412,19 @@ bdk_rgb_convert_8_indexed (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_gray8 (BdkRgbInfo *image_info, BdkImage *image,
-		       gint x0, gint y0, gint width, gint height,
-		       const guchar *buf, int rowstride,
-		       gint x_align, gint y_align, BdkRgbCmap *cmap)
+		       bint x0, bint y0, bint width, bint height,
+		       const buchar *buf, int rowstride,
+		       bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1444,18 +1444,18 @@ bdk_rgb_convert_gray8 (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_gray8_gray (BdkRgbInfo *image_info, BdkImage *image,
-			    gint x0, gint y0, gint width, gint height,
-			    const guchar *buf, int rowstride,
-			    gint x_align, gint y_align, BdkRgbCmap *cmap)
+			    bint x0, bint y0, bint width, bint height,
+			    const buchar *buf, int rowstride,
+			    bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int y;
-  gint bpl;
-  guchar *obuf;
-  const guchar *bptr;
+  bint bpl;
+  buchar *obuf;
+  const buchar *bptr;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       memcpy (obuf, bptr, width);
@@ -1479,31 +1479,31 @@ bdk_rgb_convert_gray8_gray (BdkRgbInfo *image_info, BdkImage *image,
    then writes 2 words. */
 static void
 bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
-		     gint x0, gint y0, gint width, gint height,
-		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, BdkRgbCmap *cmap)
+		     bint x0, bint y0, bint width, bint height,
+		     const buchar *buf, int rowstride,
+		     bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar r, g, b;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
       obptr = obuf;
-      if (((guintptr)obuf | (guintptr) bp2) & 3)
+      if (((buintptr)obuf | (buintptr) bp2) & 3)
 	{
 	  for (x = 0; x < width; x++)
 	    {
 	      r = *bp2++;
 	      g = *bp2++;
 	      b = *bp2++;
-	      ((guint16 *)obptr)[0] = ((r & 0xf8) << 8) |
+	      ((buint16 *)obptr)[0] = ((r & 0xf8) << 8) |
 		((g & 0xfc) << 3) |
 		(b >> 3);
 	      obptr += 2;
@@ -1513,21 +1513,21 @@ bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 	{
 	  for (x = 0; x < width - 3; x += 4)
 	    {
-	      guint32 r1b0g0r0;
-	      guint32 g2r2b1g1;
-	      guint32 b3g3r3b2;
+	      buint32 r1b0g0r0;
+	      buint32 g2r2b1g1;
+	      buint32 b3g3r3b2;
 
-	      r1b0g0r0 = ((guint32 *)bp2)[0];
-	      g2r2b1g1 = ((guint32 *)bp2)[1];
-	      b3g3r3b2 = ((guint32 *)bp2)[2];
-	      ((guint32 *)obptr)[0] =
+	      r1b0g0r0 = ((buint32 *)bp2)[0];
+	      g2r2b1g1 = ((buint32 *)bp2)[1];
+	      b3g3r3b2 = ((buint32 *)bp2)[2];
+	      ((buint32 *)obptr)[0] =
 		((r1b0g0r0 & 0xf8) << 8) |
 		((r1b0g0r0 & 0xfc00) >> 5) |
 		((r1b0g0r0 & 0xf80000) >> 19) |
 		(r1b0g0r0 & 0xf8000000) |
 		((g2r2b1g1 & 0xfc) << 19) |
 		((g2r2b1g1 & 0xf800) << 5);
-	      ((guint32 *)obptr)[1] =
+	      ((buint32 *)obptr)[1] =
 		((g2r2b1g1 & 0xf80000) >> 8) |
 		((g2r2b1g1 & 0xfc000000) >> 21) |
 		((b3g3r3b2 & 0xf8) >> 3) |
@@ -1542,7 +1542,7 @@ bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 	      r = *bp2++;
 	      g = *bp2++;
 	      b = *bp2++;
-	      ((guint16 *)obptr)[0] = ((r & 0xf8) << 8) |
+	      ((buint16 *)obptr)[0] = ((r & 0xf8) << 8) |
 		((g & 0xfc) << 3) |
 		(b >> 3);
 	      obptr += 2;
@@ -1576,19 +1576,19 @@ bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 */
 static void
 bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
-		     gint x0, gint y0, gint width, gint height,
-		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, BdkRgbCmap *cmap)
+		     bint x0, bint y0, bint width, bint height,
+		     const buchar *buf, int rowstride,
+		     bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar r, g, b;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1610,29 +1610,29 @@ bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 #ifdef HAIRY_CONVERT_565
 static void
 bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
-			  gint x0, gint y0, gint width, gint height,
-			  const guchar *buf, int rowstride,
-			  gint x_align, gint y_align, BdkRgbCmap *cmap)
+			  bint x0, bint y0, bint width, bint height,
+			  const buchar *buf, int rowstride,
+			  bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar g;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar g;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
       obptr = obuf;
-      if (((guintptr)obuf | (guintptr) bp2) & 3)
+      if (((buintptr)obuf | (buintptr) bp2) & 3)
 	{
 	  for (x = 0; x < width; x++)
 	    {
 	      g = *bp2++;
-	      ((guint16 *)obptr)[0] = ((g & 0xf8) << 8) |
+	      ((buint16 *)obptr)[0] = ((g & 0xf8) << 8) |
 		((g & 0xfc) << 3) |
 		(g >> 3);
 	      obptr += 2;
@@ -1642,17 +1642,17 @@ bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 	{
 	  for (x = 0; x < width - 3; x += 4)
 	    {
-	      guint32 g3g2g1g0;
+	      buint32 g3g2g1g0;
 
-	      g3g2g1g0 = ((guint32 *)bp2)[0];
-	      ((guint32 *)obptr)[0] =
+	      g3g2g1g0 = ((buint32 *)bp2)[0];
+	      ((buint32 *)obptr)[0] =
 		((g3g2g1g0 & 0xf8) << 8) |
 		((g3g2g1g0 & 0xfc) << 3) |
 		((g3g2g1g0 & 0xf8) >> 3) |
 		(g3g2g1g0 & 0xf800) << 16 |
 		((g3g2g1g0 & 0xfc00) << 11) |
 		((g3g2g1g0 & 0xf800) << 5);
-	      ((guint32 *)obptr)[1] =
+	      ((buint32 *)obptr)[1] =
 		((g3g2g1g0 & 0xf80000) >> 8) |
 		((g3g2g1g0 & 0xfc0000) >> 13) |
 		((g3g2g1g0 & 0xf80000) >> 19) |
@@ -1665,7 +1665,7 @@ bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 	  for (; x < width; x++)
 	    {
 	      g = *bp2++;
-	      ((guint16 *)obptr)[0] = ((g & 0xf8) << 8) |
+	      ((buint16 *)obptr)[0] = ((g & 0xf8) << 8) |
 		((g & 0xfc) << 3) |
 		(g >> 3);
 	      obptr += 2;
@@ -1678,26 +1678,26 @@ bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 #else
 static void
 bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
-			  gint x0, gint y0, gint width, gint height,
-			  const guchar *buf, int rowstride,
-			  gint x_align, gint y_align, BdkRgbCmap *cmap)
+			  bint x0, bint y0, bint width, bint height,
+			  const buchar *buf, int rowstride,
+			  bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar g;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar g;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
       for (x = 0; x < width; x++)
 	{
 	  g = *bp2++;
-	  ((guint16 *)obuf)[x] = ((g & 0xf8) << 8) |
+	  ((buint16 *)obuf)[x] = ((g & 0xf8) << 8) |
 	    ((g & 0xfc) << 3) |
 	    (g >> 3);
 	}
@@ -1709,19 +1709,19 @@ bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_565_br (BdkRgbInfo *image_info, BdkImage *image,
-			gint x0, gint y0, gint width, gint height,
-			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, BdkRgbCmap *cmap)
+			bint x0, bint y0, bint width, bint height,
+			const buchar *buf, int rowstride,
+			bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar r, g, b;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1748,32 +1748,32 @@ bdk_rgb_convert_565_br (BdkRgbInfo *image_info, BdkImage *image,
 #ifdef HAIRY_CONVERT_565
 static void
 bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
-                       gint x0, gint y0, gint width, gint height,
-                       const guchar *buf, int rowstride,
-                       gint x_align, gint y_align, BdkRgbCmap *cmap)
+                       bint x0, bint y0, bint width, bint height,
+                       const buchar *buf, int rowstride,
+                       bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   /* Now this is what I'd call some highly tuned code! */
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
 
   width += x_align;
   height += y_align;
   
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = y_align; y < height; y++)
     {
-      const guint32 *dmp = DM_565 + ((y & (DM_HEIGHT - 1)) << DM_WIDTH_SHIFT);
+      const buint32 *dmp = DM_565 + ((y & (DM_HEIGHT - 1)) << DM_WIDTH_SHIFT);
       bp2 = bptr;
       obptr = obuf;
-      if (((guintptr)obuf | (guintptr) bp2) & 3)
+      if (((buintptr)obuf | (buintptr) bp2) & 3)
 	{
 	  for (x = x_align; x < width; x++)
 	    {
-	      gint32 rgb = *bp2++ << 20;
+	      bint32 rgb = *bp2++ << 20;
 	      rgb += *bp2++ << 10;
 	      rgb += *bp2++;
 	      rgb += dmp[x & (DM_WIDTH - 1)];
@@ -1792,14 +1792,14 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 	{
 	  for (x = x_align; x < width - 3; x += 4)
 	    {
-	      guint32 r1b0g0r0;
-	      guint32 g2r2b1g1;
-	      guint32 b3g3r3b2;
-	      guint32 rgb02, rgb13;
+	      buint32 r1b0g0r0;
+	      buint32 g2r2b1g1;
+	      buint32 b3g3r3b2;
+	      buint32 rgb02, rgb13;
 
-	      r1b0g0r0 = ((guint32 *)bp2)[0];
-	      g2r2b1g1 = ((guint32 *)bp2)[1];
-	      b3g3r3b2 = ((guint32 *)bp2)[2];
+	      r1b0g0r0 = ((buint32 *)bp2)[0];
+	      g2r2b1g1 = ((buint32 *)bp2)[1];
+	      b3g3r3b2 = ((buint32 *)bp2)[2];
 	      rgb02 =
 		((r1b0g0r0 & 0xff) << 20) +
 		((r1b0g0r0 & 0xff00) << 2) +
@@ -1816,7 +1816,7 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 	      rgb13 += 0x10040100
 		- ((rgb13 & 0x1e0001e0) >> 5)
 		- ((rgb13 & 0x00070000) >> 6);
-	      ((guint32 *)obptr)[0] =
+	      ((buint32 *)obptr)[0] =
 		((rgb02 & 0x0f800000) >> 12) |
 		((rgb02 & 0x0003f000) >> 7) |
 		((rgb02 & 0x000000f8) >> 3) |
@@ -1839,7 +1839,7 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 	      rgb13 += 0x10040100
 		- ((rgb13 & 0x1e0001e0) >> 5)
 		- ((rgb13 & 0x00070000) >> 6);
-	      ((guint32 *)obptr)[1] =
+	      ((buint32 *)obptr)[1] =
 		((rgb02 & 0x0f800000) >> 12) |
 		((rgb02 & 0x0003f000) >> 7) |
 		((rgb02 & 0x000000f8) >> 3) |
@@ -1851,7 +1851,7 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 	    }
 	  for (; x < width; x++)
 	    {
-	      gint32 rgb = *bp2++ << 20;
+	      bint32 rgb = *bp2++ << 20;
 	      rgb += *bp2++ << 10;
 	      rgb += *bp2++;
 	      rgb += dmp[x & (DM_WIDTH - 1)];
@@ -1873,30 +1873,30 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 #else
 static void
 bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
-                       gint x0, gint y0, gint width, gint height,
-                       const guchar *buf, int rowstride,
-                       gint x_align, gint y_align, BdkRgbCmap *cmap)
+                       bint x0, bint y0, bint width, bint height,
+                       const buchar *buf, int rowstride,
+                       bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr;
 
   width += x_align;
   height += y_align;
   
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + (x0 - x_align) * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + (x0 - x_align) * 2;
 
   for (y = y_align; y < height; y++)
     {
-      const guint32 *dmp = DM_565 + ((y & (DM_HEIGHT - 1)) << DM_WIDTH_SHIFT);
-      guchar *bp2 = bptr;
+      const buint32 *dmp = DM_565 + ((y & (DM_HEIGHT - 1)) << DM_WIDTH_SHIFT);
+      buchar *bp2 = bptr;
 
       for (x = x_align; x < width; x++)
         {
-          gint32 rgb = *bp2++ << 20;
+          bint32 rgb = *bp2++ << 20;
           rgb += *bp2++ << 10;
           rgb += *bp2++;
 	  rgb += dmp[x & (DM_WIDTH - 1)];
@@ -1918,19 +1918,19 @@ bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_555 (BdkRgbInfo *image_info, BdkImage *image,
-		     gint x0, gint y0, gint width, gint height,
-		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, BdkRgbCmap *cmap)
+		     bint x0, bint y0, bint width, bint height,
+		     const buchar *buf, int rowstride,
+		     bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar r, g, b;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1950,19 +1950,19 @@ bdk_rgb_convert_555 (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_555_br (BdkRgbInfo *image_info, BdkImage *image,
-			gint x0, gint y0, gint width, gint height,
-			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, BdkRgbCmap *cmap)
+			bint x0, bint y0, bint width, bint height,
+			const buchar *buf, int rowstride,
+			bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  guchar r, g, b;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  buchar r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 2;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 2;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -1986,18 +1986,18 @@ bdk_rgb_convert_555_br (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_888_msb (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 3;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 3;
   for (y = 0; y < height; y++)
     {
       memcpy (obuf, bptr, width + width + width);
@@ -2014,24 +2014,24 @@ bdk_rgb_convert_888_msb (BdkRgbInfo *image_info, BdkImage *image,
 #ifdef HAIRY_CONVERT_888
 static void
 bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
   int r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 3;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 3;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
       obptr = obuf;
-      if (((guintptr)obuf | (guintptr) bp2) & 3)
+      if (((buintptr)obuf | (buintptr) bp2) & 3)
 	{
 	  for (x = 0; x < width; x++)
 	    {
@@ -2048,22 +2048,22 @@ bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
 	{
 	  for (x = 0; x < width - 3; x += 4)
 	    {
-	      guint32 r1b0g0r0;
-	      guint32 g2r2b1g1;
-	      guint32 b3g3r3b2;
+	      buint32 r1b0g0r0;
+	      buint32 g2r2b1g1;
+	      buint32 b3g3r3b2;
 
-	      r1b0g0r0 = ((guint32 *)bp2)[0];
-	      g2r2b1g1 = ((guint32 *)bp2)[1];
-	      b3g3r3b2 = ((guint32 *)bp2)[2];
-	      ((guint32 *)obptr)[0] =
+	      r1b0g0r0 = ((buint32 *)bp2)[0];
+	      g2r2b1g1 = ((buint32 *)bp2)[1];
+	      b3g3r3b2 = ((buint32 *)bp2)[2];
+	      ((buint32 *)obptr)[0] =
 		(r1b0g0r0 & 0xff00) |
 		((r1b0g0r0 & 0xff0000) >> 16) |
 		(((g2r2b1g1 & 0xff00) | (r1b0g0r0 & 0xff)) << 16);
-	      ((guint32 *)obptr)[1] =
+	      ((buint32 *)obptr)[1] =
 		(g2r2b1g1 & 0xff0000ff) |
 		((r1b0g0r0 & 0xff000000) >> 16) |
 		((b3g3r3b2 & 0xff) << 16);
-	      ((guint32 *)obptr)[2] =
+	      ((buint32 *)obptr)[2] =
 		(((g2r2b1g1 & 0xff0000) | (b3g3r3b2 & 0xff000000)) >> 16) |
 		((b3g3r3b2 & 0xff00) << 16) |
 		((b3g3r3b2 & 0xff0000));
@@ -2088,19 +2088,19 @@ bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
 #else
 static void
 bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
   int r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 3;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 3;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -2124,18 +2124,18 @@ bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
 /* todo: optimize this */
 static void
 bdk_rgb_convert_0888 (BdkRgbInfo *image_info, BdkImage *image,
-		      gint x0, gint y0, gint width, gint height,
-		      const guchar *buf, int rowstride,
-		      gint x_align, gint y_align, BdkRgbCmap *cmap)
+		      bint x0, bint y0, bint width, bint height,
+		      const buchar *buf, int rowstride,
+		      bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
-  guchar *obuf, *p;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf, *p;
+  bint bpl;
+  const buchar *bptr, *bp2;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 4;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 4;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -2159,18 +2159,18 @@ bdk_rgb_convert_0888 (BdkRgbInfo *image_info, BdkImage *image,
 /* convert 24-bit packed to 32-bit unpacked */
 static void
 bdk_rgb_convert_0888_medialib (BdkRgbInfo *image_info, BdkImage *image,
-			       gint x0, gint y0, gint width, gint height,
-			       const guchar *buf, int rowstride,
-			       gint x_align, gint y_align, BdkRgbCmap *cmap)
+			       bint x0, bint y0, bint width, bint height,
+			       const buchar *buf, int rowstride,
+			       bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
-  guchar *obuf, *p;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf, *p;
+  bint bpl;
+  const buchar *bptr, *bp2;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 4;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 4;
 
   mlib_VideoColorRGBint_to_BGRAint (obuf, bptr, NULL, 0xff,
                                     width, height, bpl, 
@@ -2180,18 +2180,18 @@ bdk_rgb_convert_0888_medialib (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_0888_br (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
-  guchar *obuf, *p;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf, *p;
+  bint bpl;
+  const buchar *bptr, *bp2;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 4;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 4;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -2213,19 +2213,19 @@ bdk_rgb_convert_0888_br (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_8880_br (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf;
-  gint bpl;
-  const guchar *bptr, *bp2;
+  buchar *obuf;
+  bint bpl;
+  const buchar *bptr, *bp2;
   int r, g, b;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * 4;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * 4;
   for (y = 0; y < height; y++)
     {
       bp2 = bptr;
@@ -2234,7 +2234,7 @@ bdk_rgb_convert_8880_br (BdkRgbInfo *image_info, BdkImage *image,
 	  r = bp2[0];
 	  g = bp2[1];
 	  b = bp2[2];
-	  ((guint32 *)obuf)[x] = (b << 16) | (g << 8) | r;
+	  ((buint32 *)obuf)[x] = (b << 16) | (g << 8) | r;
 	  bp2 += 3;
 	}
       bptr += rowstride;
@@ -2246,23 +2246,23 @@ bdk_rgb_convert_8880_br (BdkRgbInfo *image_info, BdkImage *image,
    are oddball modes. */
 static void
 bdk_rgb_convert_truecolor_lsb (BdkRgbInfo *image_info, BdkImage *image,
-			       gint x0, gint y0, gint width, gint height,
-			       const guchar *buf, int rowstride,
-			       gint x_align, gint y_align,
+			       bint x0, bint y0, bint width, bint height,
+			       const buchar *buf, int rowstride,
+			       bint x_align, bint y_align,
 			       BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint r_right, r_left;
-  gint g_right, g_left;
-  gint b_right, b_left;
-  gint bpp;
-  guint32 pixel;
-  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
-  gint i;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint r_right, r_left;
+  bint g_right, g_left;
+  bint b_right, b_left;
+  bint bpp;
+  buint32 pixel;
+  buint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
+  bint i;
 
   r_right = 8 - image_info->visual->red_prec;
   r_left = image_info->visual->red_shift;
@@ -2273,7 +2273,7 @@ bdk_rgb_convert_truecolor_lsb (BdkRgbInfo *image_info, BdkImage *image,
   bpp = image_info->bpp;
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * bpp;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * bpp;
   for (y = 0; y < height; y++)
     {
       obptr = obuf;
@@ -2300,26 +2300,26 @@ bdk_rgb_convert_truecolor_lsb (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_truecolor_lsb_d (BdkRgbInfo *image_info, BdkImage *image,
-				 gint x0, gint y0, gint width, gint height,
-				 const guchar *buf, int rowstride,
-				 gint x_align, gint y_align,
+				 bint x0, bint y0, bint width, bint height,
+				 const buchar *buf, int rowstride,
+				 bint x_align, bint y_align,
 				 BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint r_right, r_left, r_prec;
-  gint g_right, g_left, g_prec;
-  gint b_right, b_left, b_prec;
-  gint bpp;
-  guint32 pixel;
-  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
-  gint i;
-  gint dith;
-  gint r1, g1, b1;
-  const guchar *dmp;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint r_right, r_left, r_prec;
+  bint g_right, g_left, g_prec;
+  bint b_right, b_left, b_prec;
+  bint bpp;
+  buint32 pixel;
+  buint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
+  bint i;
+  bint dith;
+  bint r1, g1, b1;
+  const buchar *dmp;
 
   r_right = 8 - image_info->visual->red_prec;
   r_left = image_info->visual->red_shift;
@@ -2333,7 +2333,7 @@ bdk_rgb_convert_truecolor_lsb_d (BdkRgbInfo *image_info, BdkImage *image,
   bpp = image_info->bpp;
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * bpp;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * bpp;
   for (y = 0; y < height; y++)
     {
       dmp = DM[(y_align + y) & (DM_HEIGHT - 1)];
@@ -2365,23 +2365,23 @@ bdk_rgb_convert_truecolor_lsb_d (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_truecolor_msb (BdkRgbInfo *image_info, BdkImage *image,
-			       gint x0, gint y0, gint width, gint height,
-			       const guchar *buf, int rowstride,
-			       gint x_align, gint y_align,
+			       bint x0, bint y0, bint width, bint height,
+			       const buchar *buf, int rowstride,
+			       bint x_align, bint y_align,
 			       BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint r_right, r_left;
-  gint g_right, g_left;
-  gint b_right, b_left;
-  gint bpp;
-  guint32 pixel;
-  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
-  gint shift, shift_init;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint r_right, r_left;
+  bint g_right, g_left;
+  bint b_right, b_left;
+  bint bpp;
+  buint32 pixel;
+  buint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
+  bint shift, shift_init;
 
   r_right = 8 - image_info->visual->red_prec;
   r_left = image_info->visual->red_shift;
@@ -2392,7 +2392,7 @@ bdk_rgb_convert_truecolor_msb (BdkRgbInfo *image_info, BdkImage *image,
   bpp = image_info->bpp;
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * bpp;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * bpp;
   shift_init = (bpp - 1) << 3;
   for (y = 0; y < height; y++)
     {
@@ -2419,26 +2419,26 @@ bdk_rgb_convert_truecolor_msb (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_truecolor_msb_d (BdkRgbInfo *image_info, BdkImage *image,
-				 gint x0, gint y0, gint width, gint height,
-				 const guchar *buf, int rowstride,
-				 gint x_align, gint y_align,
+				 bint x0, bint y0, bint width, bint height,
+				 const buchar *buf, int rowstride,
+				 bint x_align, bint y_align,
 				 BdkRgbCmap *cmap)
 {
   int x, y;
-  guchar *obuf, *obptr;
-  gint bpl;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint r_right, r_left, r_prec;
-  gint g_right, g_left, g_prec;
-  gint b_right, b_left, b_prec;
-  gint bpp;
-  guint32 pixel;
-  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
-  gint shift, shift_init;
-  gint dith;
-  gint r1, g1, b1;
-  const guchar *dmp;
+  buchar *obuf, *obptr;
+  bint bpl;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint r_right, r_left, r_prec;
+  bint g_right, g_left, g_prec;
+  bint b_right, b_left, b_prec;
+  bint bpp;
+  buint32 pixel;
+  buint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
+  bint shift, shift_init;
+  bint dith;
+  bint r1, g1, b1;
+  const buchar *dmp;
 
   r_right = 8 - image_info->visual->red_prec;
   r_left = image_info->visual->red_shift;
@@ -2452,7 +2452,7 @@ bdk_rgb_convert_truecolor_msb_d (BdkRgbInfo *image_info, BdkImage *image,
   bpp = image_info->bpp;
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0 * bpp;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0 * bpp;
   shift_init = (bpp - 1) << 3;
   for (y = 0; y < height; y++)
     {
@@ -2485,23 +2485,23 @@ bdk_rgb_convert_truecolor_msb_d (BdkRgbInfo *image_info, BdkImage *image,
 /* This actually works for depths from 3 to 7 */
 static void
 bdk_rgb_convert_4 (BdkRgbInfo *image_info, BdkImage *image,
-		   gint x0, gint y0, gint width, gint height,
-		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align,
+		   bint x0, bint y0, bint width, bint height,
+		   const buchar *buf, int rowstride,
+		   bint x_align, bint y_align,
 		   BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint dith;
-  guchar *colorcube_d = image_info->colorcube_d;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint dith;
+  buchar *colorcube_d = image_info->colorcube_d;
   
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   for (y = 0; y < height; y++)
     {
       dmp = DM[(y_align + y) & (DM_HEIGHT - 1)];
@@ -2525,24 +2525,24 @@ bdk_rgb_convert_4 (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_4_pack (BdkRgbInfo *image_info, BdkImage *image,
-			gint x0, gint y0, gint width, gint height,
-			const guchar *buf, int rowstride,
-			gint x_align, gint y_align,
+			bint x0, bint y0, bint width, bint height,
+			const buchar *buf, int rowstride,
+			bint x_align, bint y_align,
 			BdkRgbCmap *cmap)
 {
   int x, y, ix;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint dith;
-  guchar *colorcube_d = image_info->colorcube_d;
-  guchar pix0, pix1;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint dith;
+  buchar *colorcube_d = image_info->colorcube_d;
+  buchar pix0, pix1;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + (x0 >> 1);
+  obuf = ((buchar *)image->mem) + y0 * bpl + (x0 >> 1);
   for (y = 0; y < height; y++)
     {
       dmp = DM[(y_align + y) & (DM_HEIGHT - 1)];
@@ -2599,20 +2599,20 @@ bdk_rgb_convert_4_pack (BdkRgbInfo *image_info, BdkImage *image,
 /* This actually works for depths from 3 to 7 */
 static void
 bdk_rgb_convert_gray4 (BdkRgbInfo *image_info, BdkImage *image,
-		       gint x0, gint y0, gint width, gint height,
-		       const guchar *buf, int rowstride,
-		       gint x_align, gint y_align, BdkRgbCmap *cmap)
+		       bint x0, bint y0, bint width, bint height,
+		       const buchar *buf, int rowstride,
+		       bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint shift;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint shift;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   shift = 9 - image_info->visual->depth;
   for (y = 0; y < height; y++)
     {
@@ -2633,22 +2633,22 @@ bdk_rgb_convert_gray4 (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_gray4_pack (BdkRgbInfo *image_info, BdkImage *image,
-			    gint x0, gint y0, gint width, gint height,
-			    const guchar *buf, int rowstride,
-			    gint x_align, gint y_align, BdkRgbCmap *cmap)
+			    bint x0, bint y0, bint width, bint height,
+			    const buchar *buf, int rowstride,
+			    bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  gint shift;
-  guchar pix0, pix1;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  bint shift;
+  buchar pix0, pix1;
   /* todo: this is hardcoded to big-endian. Make endian-agile. */
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + (x0 >> 1);
+  obuf = ((buchar *)image->mem) + y0 * bpl + (x0 >> 1);
   shift = 9 - image_info->visual->depth;
   for (y = 0; y < height; y++)
     {
@@ -2693,22 +2693,22 @@ bdk_rgb_convert_gray4_pack (BdkRgbInfo *image_info, BdkImage *image,
 /* This actually works for depths from 3 to 7 */
 static void
 bdk_rgb_convert_gray4_d (BdkRgbInfo *image_info, BdkImage *image,
-			 gint x0, gint y0, gint width, gint height,
-			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, BdkRgbCmap *cmap)
+			 bint x0, bint y0, bint width, bint height,
+			 const buchar *buf, int rowstride,
+			 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint prec, right;
-  gint gray;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint prec, right;
+  bint gray;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + x0;
+  obuf = ((buchar *)image->mem) + y0 * bpl + x0;
   prec = image_info->visual->depth;
   right = 8 - prec;
   for (y = 0; y < height; y++)
@@ -2733,24 +2733,24 @@ bdk_rgb_convert_gray4_d (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_gray4_d_pack (BdkRgbInfo *image_info, BdkImage *image,
-			      gint x0, gint y0, gint width, gint height,
-			      const guchar *buf, int rowstride,
-			      gint x_align, gint y_align, BdkRgbCmap *cmap)
+			      bint x0, bint y0, bint width, bint height,
+			      const buchar *buf, int rowstride,
+			      bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint prec, right;
-  gint gray;
-  guchar pix0, pix1;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint prec, right;
+  bint gray;
+  buchar pix0, pix1;
   /* todo: this is hardcoded to big-endian. Make endian-agile. */
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + (x0 >> 1);
+  obuf = ((buchar *)image->mem) + y0 * bpl + (x0 >> 1);
   prec = image_info->visual->depth;
   right = 8 - prec;
   for (y = 0; y < height; y++)
@@ -2802,23 +2802,23 @@ bdk_rgb_convert_gray4_d_pack (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_1 (BdkRgbInfo *image_info, BdkImage *image,
-		   gint x0, gint y0, gint width, gint height,
-		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align,
+		   bint x0, bint y0, bint width, bint height,
+		   const buchar *buf, int rowstride,
+		   bint x_align, bint y_align,
 		   BdkRgbCmap *cmap)
 {
   int x, y;
-  gint bpl;
-  guchar *obuf, *obptr;
-  const guchar *bptr, *bp2;
-  gint r, g, b;
-  const guchar *dmp;
-  gint dith;
-  guchar byte;
+  bint bpl;
+  buchar *obuf, *obptr;
+  const buchar *bptr, *bp2;
+  bint r, g, b;
+  const buchar *dmp;
+  bint dith;
+  buchar byte;
 
   bptr = buf;
   bpl = image->bpl;
-  obuf = ((guchar *)image->mem) + y0 * bpl + (x0 >> 3);
+  obuf = ((buchar *)image->mem) + y0 * bpl + (x0 >> 3);
   byte = 0; /* unnecessary, but it keeps gcc from complaining */
   for (y = 0; y < height; y++)
     {
@@ -2846,7 +2846,7 @@ bdk_rgb_convert_1 (BdkRgbInfo *image_info, BdkImage *image,
 }
 
 /* Returns a pointer to the stage buffer. */
-static guchar *
+static buchar *
 bdk_rgb_ensure_stage (BdkRgbInfo *image_info)
 {
   if (image_info->stage_buf == NULL)
@@ -2857,13 +2857,13 @@ bdk_rgb_ensure_stage (BdkRgbInfo *image_info)
 /* This is slow. Speed me up, please. */
 static void
 bdk_rgb_32_to_stage (BdkRgbInfo *image_info,
-		     const guchar *buf, gint rowstride, gint width, gint height)
+		     const buchar *buf, bint rowstride, bint width, bint height)
 {
-  gint x, y;
-  const guchar *pi_start;
-  guchar *po_start;
-  const guchar *pi;
-  guchar *po;
+  bint x, y;
+  const buchar *pi_start;
+  buchar *po_start;
+  const buchar *pi;
+  buchar *po;
 
   pi_start = buf;
   po_start = bdk_rgb_ensure_stage (image_info);
@@ -2887,9 +2887,9 @@ bdk_rgb_32_to_stage (BdkRgbInfo *image_info,
    go from there. */
 static void
 bdk_rgb_convert_32_generic (BdkRgbInfo *image_info, BdkImage *image,
-			    gint x0, gint y0, gint width, gint height,
-			    const guchar *buf, gint rowstride,
-			    gint x_align, gint y_align, BdkRgbCmap *cmap)
+			    bint x0, bint y0, bint width, bint height,
+			    const buchar *buf, bint rowstride,
+			    bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   bdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
 
@@ -2902,9 +2902,9 @@ bdk_rgb_convert_32_generic (BdkRgbInfo *image_info, BdkImage *image,
    go from there. */
 static void
 bdk_rgb_convert_32_generic_d (BdkRgbInfo *image_info, BdkImage *image,
-			      gint x0, gint y0, gint width, gint height,
-			      const guchar *buf, gint rowstride,
-			      gint x_align, gint y_align, BdkRgbCmap *cmap)
+			      bint x0, bint y0, bint width, bint height,
+			      const buchar *buf, bint rowstride,
+			      bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   bdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
 
@@ -2916,14 +2916,14 @@ bdk_rgb_convert_32_generic_d (BdkRgbInfo *image_info, BdkImage *image,
 /* This is slow. Speed me up, please. */
 static void
 bdk_rgb_gray_to_stage (BdkRgbInfo *image_info,
-		       const guchar *buf, gint rowstride, gint width, gint height)
+		       const buchar *buf, bint rowstride, bint width, bint height)
 {
-  gint x, y;
-  const guchar *pi_start;
-  guchar *po_start;
-  const guchar *pi;
-  guchar *po;
-  guchar gray;
+  bint x, y;
+  const buchar *pi_start;
+  buchar *po_start;
+  const buchar *pi;
+  buchar *po;
+  buchar gray;
 
   pi_start = buf;
   po_start = bdk_rgb_ensure_stage (image_info);
@@ -2947,9 +2947,9 @@ bdk_rgb_gray_to_stage (BdkRgbInfo *image_info,
    from there. */
 static void
 bdk_rgb_convert_gray_generic (BdkRgbInfo *image_info, BdkImage *image,
-			      gint x0, gint y0, gint width, gint height,
-			      const guchar *buf, gint rowstride,
-			      gint x_align, gint y_align, BdkRgbCmap *cmap)
+			      bint x0, bint y0, bint width, bint height,
+			      const buchar *buf, bint rowstride,
+			      bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   bdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
 
@@ -2960,9 +2960,9 @@ bdk_rgb_convert_gray_generic (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_gray_generic_d (BdkRgbInfo *image_info, BdkImage *image,
-				gint x0, gint y0, gint width, gint height,
-				const guchar *buf, gint rowstride,
-				gint x_align, gint y_align, BdkRgbCmap *cmap)
+				bint x0, bint y0, bint width, bint height,
+				const buchar *buf, bint rowstride,
+				bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   bdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
 
@@ -2974,9 +2974,9 @@ bdk_rgb_convert_gray_generic_d (BdkRgbInfo *image_info, BdkImage *image,
 /* Render grayscale using indexed method. */
 static void
 bdk_rgb_convert_gray_cmap (BdkRgbInfo *image_info, BdkImage *image,
-			   gint x0, gint y0, gint width, gint height,
-			   const guchar *buf, gint rowstride,
-			   gint x_align, gint y_align, BdkRgbCmap *cmap)
+			   bint x0, bint y0, bint width, bint height,
+			   const buchar *buf, bint rowstride,
+			   bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   (*image_info->conv_indexed) (image_info, image, x0, y0, width, height,
 			       buf, rowstride,
@@ -2986,9 +2986,9 @@ bdk_rgb_convert_gray_cmap (BdkRgbInfo *image_info, BdkImage *image,
 #if 0
 static void
 bdk_rgb_convert_gray_cmap_d (BdkRgbInfo *image_info, BdkImage *image,
-			     gint x0, gint y0, gint width, gint height,
-			     const guchar *buf, gint rowstride,
-			     gint x_align, gint y_align, BdkRgbCmap *cmap)
+			     bint x0, bint y0, bint width, bint height,
+			     const buchar *buf, bint rowstride,
+			     bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   (*image_info->conv_indexed_d) (image_info, image, x0, y0, width, height,
 				 buf, rowstride,
@@ -2999,15 +2999,15 @@ bdk_rgb_convert_gray_cmap_d (BdkRgbInfo *image_info, BdkImage *image,
 /* This is slow. Speed me up, please. */
 static void
 bdk_rgb_indexed_to_stage (BdkRgbInfo *image_info,
-			  const guchar *buf, gint rowstride, gint width, gint height,
+			  const buchar *buf, bint rowstride, bint width, bint height,
 			  BdkRgbCmap *cmap)
 {
-  gint x, y;
-  const guchar *pi_start;
-  guchar *po_start;
-  const guchar *pi;
-  guchar *po;
-  gint rgb;
+  bint x, y;
+  const buchar *pi_start;
+  buchar *po_start;
+  const buchar *pi;
+  buchar *po;
+  bint rgb;
 
   pi_start = buf;
   po_start = bdk_rgb_ensure_stage (image_info);
@@ -3031,9 +3031,9 @@ bdk_rgb_indexed_to_stage (BdkRgbInfo *image_info,
    from there. */
 static void
 bdk_rgb_convert_indexed_generic (BdkRgbInfo *image_info, BdkImage *image,
-				 gint x0, gint y0, gint width, gint height,
-				 const guchar *buf, gint rowstride,
-				 gint x_align, gint y_align, BdkRgbCmap *cmap)
+				 bint x0, bint y0, bint width, bint height,
+				 const buchar *buf, bint rowstride,
+				 bint x_align, bint y_align, BdkRgbCmap *cmap)
 {
   bdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
 
@@ -3044,9 +3044,9 @@ bdk_rgb_convert_indexed_generic (BdkRgbInfo *image_info, BdkImage *image,
 
 static void
 bdk_rgb_convert_indexed_generic_d (BdkRgbInfo *image_info, BdkImage *image,
-				   gint x0, gint y0, gint width, gint height,
-				   const guchar *buf, gint rowstride,
-				   gint x_align, gint y_align,
+				   bint x0, bint y0, bint width, bint height,
+				   const buchar *buf, bint rowstride,
+				   bint x_align, bint y_align,
 				   BdkRgbCmap *cmap)
 {
   bdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
@@ -3062,14 +3062,14 @@ static void
 bdk_rgb_select_conv (BdkRgbInfo *image_info)
 {
   BdkByteOrder byte_order;
-  gint depth, bpp, byterev;
+  bint depth, bpp, byterev;
   BdkVisualType vtype;
-  guint32 red_mask, green_mask, blue_mask;
+  buint32 red_mask, green_mask, blue_mask;
   BdkRgbConvFunc conv, conv_d;
   BdkRgbConvFunc conv_32, conv_32_d;
   BdkRgbConvFunc conv_gray, conv_gray_d;
   BdkRgbConvFunc conv_indexed, conv_indexed_d;
-  gboolean mask_rgb, mask_bgr;
+  bboolean mask_rgb, mask_bgr;
   BdkScreen *screen = bdk_visual_get_screen (image_info->visual);
 
   depth = image_info->visual->depth;
@@ -3292,23 +3292,23 @@ static void
 bdk_draw_rgb_image_core (BdkRgbInfo     *image_info,
 			 BdkDrawable    *drawable,
 			 BdkGC          *gc,
-			 gint            x,
-			 gint            y,
-			 gint            width,
-			 gint            height,
-			 const guchar   *buf,
-			 gint            pixstride,
-			 gint            rowstride,
+			 bint            x,
+			 bint            y,
+			 bint            width,
+			 bint            height,
+			 const buchar   *buf,
+			 bint            pixstride,
+			 bint            rowstride,
 			 BdkRgbConvFunc  conv,
 			 BdkRgbCmap     *cmap,
-			 gint            xdith,
-			 gint            ydith)
+			 bint            xdith,
+			 bint            ydith)
 {
-  gint y0, x0;
-  gint xs0, ys0;
+  bint y0, x0;
+  bint xs0, ys0;
   BdkImage *image;
-  gint width1, height1;
-  const guchar *buf_ptr;
+  bint width1, height1;
+  const buchar *buf_ptr;
 
   if (image_info->bitmap)
     {
@@ -3351,7 +3351,7 @@ bdk_rgb_get_info_from_drawable (BdkDrawable *drawable)
        * but would otherwise be a bad thing
        */
 
-      gint depth = bdk_drawable_get_depth (drawable);
+      bint depth = bdk_drawable_get_depth (drawable);
       BdkColormap *rgb_cmap = bdk_screen_get_rgb_colormap (screen);
       if (depth == bdk_colormap_get_visual (rgb_cmap)->depth)
 	cmap = rgb_cmap;
@@ -3372,13 +3372,13 @@ bdk_rgb_get_info_from_drawable (BdkDrawable *drawable)
 void
 bdk_draw_rgb_image (BdkDrawable  *drawable,
 		    BdkGC        *gc,
-		    gint          x,
-		    gint          y,
-		    gint          width,
-		    gint          height,
+		    bint          x,
+		    bint          y,
+		    bint          width,
+		    bint          height,
 		    BdkRgbDither  dith,
-		    const guchar *rgb_buf,
-		    gint          rowstride)
+		    const buchar *rgb_buf,
+		    bint          rowstride)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
@@ -3398,15 +3398,15 @@ bdk_draw_rgb_image (BdkDrawable  *drawable,
 void
 bdk_draw_rgb_image_dithalign (BdkDrawable  *drawable,
 			      BdkGC        *gc,
-			      gint          x,
-			      gint          y,
-			      gint          width,
-			      gint          height,
+			      bint          x,
+			      bint          y,
+			      bint          width,
+			      bint          height,
 			      BdkRgbDither  dith,
-			      const guchar *rgb_buf,
-			      gint          rowstride,
-			      gint          xdith,
-			      gint          ydith)
+			      const buchar *rgb_buf,
+			      bint          rowstride,
+			      bint          xdith,
+			      bint          ydith)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
@@ -3426,13 +3426,13 @@ bdk_draw_rgb_image_dithalign (BdkDrawable  *drawable,
 void
 bdk_draw_rgb_32_image (BdkDrawable  *drawable,
 		       BdkGC        *gc,
-		       gint          x,
-		       gint          y,
-		       gint          width,
-		       gint          height,
+		       bint          x,
+		       bint          y,
+		       bint          width,
+		       bint          height,
 		       BdkRgbDither  dith,
-		       const guchar *buf,
-		       gint          rowstride)
+		       const buchar *buf,
+		       bint          rowstride)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
@@ -3471,15 +3471,15 @@ bdk_draw_rgb_32_image (BdkDrawable  *drawable,
 void
 bdk_draw_rgb_32_image_dithalign (BdkDrawable  *drawable,
 				 BdkGC        *gc,
-				 gint          x,
-				 gint          y,
-				 gint          width,
-				 gint          height,
+				 bint          x,
+				 bint          y,
+				 bint          width,
+				 bint          height,
 				 BdkRgbDither  dith,
-				 const guchar *buf,
-				 gint          rowstride,
-				 gint          xdith,
-				 gint          ydith)
+				 const buchar *buf,
+				 bint          rowstride,
+				 bint          xdith,
+				 bint          ydith)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
@@ -3499,8 +3499,8 @@ bdk_draw_rgb_32_image_dithalign (BdkDrawable  *drawable,
 static void
 bdk_rgb_make_gray_cmap (BdkRgbInfo *info)
 {
-  guint32 rgb[256];
-  gint i;
+  buint32 rgb[256];
+  bint i;
 
   for (i = 0; i < 256; i++)
     rgb[i] = (i << 16)  | (i << 8) | i;
@@ -3510,13 +3510,13 @@ bdk_rgb_make_gray_cmap (BdkRgbInfo *info)
 void
 bdk_draw_gray_image (BdkDrawable  *drawable,
 		     BdkGC        *gc,
-		     gint          x,
-		     gint          y,
-		     gint          width,
-		     gint          height,
+		     bint          x,
+		     bint          y,
+		     bint          width,
+		     bint          height,
 		     BdkRgbDither  dith,
-		     const guchar *buf,
-		     gint          rowstride)
+		     const buchar *buf,
+		     bint          rowstride)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
@@ -3547,7 +3547,7 @@ bdk_rgb_cmap_get_info (BdkRgbCmap *cmap,
   GSList *tmp_list;
   BdkRgbCmapInfo *cmap_info;
   int i, j;
-  guint32 rgb;
+  buint32 rgb;
 
   /* We don't need a LUT for TrueColor or DirectColor visuals */
   if (image_info->bpp != 1 ||
@@ -3588,7 +3588,7 @@ bdk_rgb_cmap_get_info (BdkRgbCmap *cmap,
 }
 
 BdkRgbCmap *
-bdk_rgb_cmap_new (guint32 *colors, gint n_colors)
+bdk_rgb_cmap_new (buint32 *colors, bint n_colors)
 {
   BdkRgbCmap *cmap;
     
@@ -3598,7 +3598,7 @@ bdk_rgb_cmap_new (guint32 *colors, gint n_colors)
   cmap = g_new (BdkRgbCmap, 1);
 
   cmap->n_colors = n_colors;
-  memcpy (cmap->colors, colors, n_colors * sizeof(guint32));
+  memcpy (cmap->colors, colors, n_colors * sizeof(buint32));
 
   cmap->info_list = NULL;
   
@@ -3626,13 +3626,13 @@ bdk_rgb_cmap_free (BdkRgbCmap *cmap)
 void
 bdk_draw_indexed_image (BdkDrawable  *drawable,
 			BdkGC        *gc,
-			gint          x,
-			gint          y,
-			gint          width,
-			gint          height,
+			bint          x,
+			bint          y,
+			bint          width,
+			bint          height,
 			BdkRgbDither  dith,
-			const guchar *buf,
-			gint          rowstride,
+			const buchar *buf,
+			bint          rowstride,
 			BdkRgbCmap   *cmap)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
@@ -3650,7 +3650,7 @@ bdk_draw_indexed_image (BdkDrawable  *drawable,
 			     image_info->conv_indexed_d, cmap, 0, 0);
 }
 
-gboolean
+bboolean
 bdk_rgb_colormap_ditherable (BdkColormap *cmap)
 {
   BdkRgbInfo *image_info = bdk_rgb_get_info_from_colormap (cmap);
@@ -3658,7 +3658,7 @@ bdk_rgb_colormap_ditherable (BdkColormap *cmap)
   return (image_info->conv != image_info->conv_d);
 }
 
-gboolean
+bboolean
 bdk_rgb_ditherable (void)
 {
   return bdk_rgb_colormap_ditherable (bdk_rgb_get_colormap ());

@@ -38,8 +38,8 @@ struct _BailWindow
 {
   BailContainer parent;
 
-  guint name_change_handler;
-  gchar *previous_name;
+  buint name_change_handler;
+  bchar *previous_name;
 };
 
 GType bail_window_get_type (void);

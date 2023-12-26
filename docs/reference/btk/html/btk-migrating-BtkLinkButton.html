@@ -75,9 +75,9 @@
 17</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
 <span class="nf">link_button_clicked_cb</span> <span class="p">(</span><span class="n">BtkWidget</span> <span class="o">*</span><span class="n">widget</span><span class="p">,</span>
-                        <span class="n">gpointer</span>   <span class="n">data</span><span class="p">)</span>
+                        <span class="n">bpointer</span>   <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">const</span> <span class="n">gchar</span> <span class="o">*</span><span class="n">link</span><span class="p">;</span>
+  <span class="k">const</span> <span class="n">bchar</span> <span class="o">*</span><span class="n">link</span><span class="p">;</span>
 
 	<span class="n">link</span> <span class="o">=</span> <span class="n">btk_link_button_get_uri</span> <span class="p">(</span><span class="n">BTK_LINK_BUTTON</span> <span class="p">(</span><span class="n">widget</span><span class="p">));</span>
 	<span class="n">open_browser_at_url</span> <span class="p">(</span><span class="n">link</span><span class="p">);</span>
@@ -121,8 +121,8 @@
 15</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
 <span class="nf">link_button_hook</span> <span class="p">(</span><span class="n">BtkLinkButton</span> <span class="o">*</span><span class="n">button</span><span class="p">,</span>
-                  <span class="k">const</span> <span class="n">gchar</span>   <span class="o">*</span><span class="n">link</span><span class="p">,</span>
-			<span class="n">gpointer</span>       <span class="n">user_data</span><span class="p">)</span>
+                  <span class="k">const</span> <span class="n">bchar</span>   <span class="o">*</span><span class="n">link</span><span class="p">,</span>
+			<span class="n">bpointer</span>       <span class="n">user_data</span><span class="p">)</span>
 
 <span class="p">{</span>
   <span class="n">open_browser_at_url</span> <span class="p">(</span><span class="n">link</span><span class="p">);</span>

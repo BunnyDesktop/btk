@@ -42,85 +42,85 @@ typedef enum
   BDK_PROP_MODE_APPEND
 } BdkPropMode;
 
-BdkAtom bdk_atom_intern (const gchar *atom_name,
-			 gboolean     only_if_exists);
-BdkAtom bdk_atom_intern_static_string (const gchar *atom_name);
-gchar*  bdk_atom_name   (BdkAtom      atom);
+BdkAtom bdk_atom_intern (const bchar *atom_name,
+			 bboolean     only_if_exists);
+BdkAtom bdk_atom_intern_static_string (const bchar *atom_name);
+bchar*  bdk_atom_name   (BdkAtom      atom);
 
-gboolean bdk_property_get    (BdkWindow     *window,
+bboolean bdk_property_get    (BdkWindow     *window,
 			      BdkAtom        property,
 			      BdkAtom        type,
-			      gulong         offset,
-			      gulong         length,
-			      gint           pdelete,
+			      bulong         offset,
+			      bulong         length,
+			      bint           pdelete,
 			      BdkAtom       *actual_property_type,
-			      gint          *actual_format,
-			      gint          *actual_length,
-			      guchar       **data);
+			      bint          *actual_format,
+			      bint          *actual_length,
+			      buchar       **data);
 void     bdk_property_change (BdkWindow     *window,
 			      BdkAtom        property,
 			      BdkAtom        type,
-			      gint           format,
+			      bint           format,
 			      BdkPropMode    mode,
-			      const guchar  *data,
-			      gint           nelements);
+			      const buchar  *data,
+			      bint           nelements);
 void     bdk_property_delete (BdkWindow     *window,
 			      BdkAtom        property);
 #ifndef BDK_MULTIHEAD_SAFE
 #ifndef BDK_DISABLE_DEPRECATED
-gint bdk_text_property_to_text_list (BdkAtom        encoding,
-				     gint           format,
-				     const guchar  *text,
-				     gint           length,
-				     gchar       ***list);
-gboolean bdk_utf8_to_compound_text (const gchar *str,
+bint bdk_text_property_to_text_list (BdkAtom        encoding,
+				     bint           format,
+				     const buchar  *text,
+				     bint           length,
+				     bchar       ***list);
+bboolean bdk_utf8_to_compound_text (const bchar *str,
 				    BdkAtom     *encoding,
-				    gint        *format,
-				    guchar     **ctext,
-				    gint        *length);
-gint bdk_string_to_compound_text    (const gchar   *str,
+				    bint        *format,
+				    buchar     **ctext,
+				    bint        *length);
+bint bdk_string_to_compound_text    (const bchar   *str,
 				     BdkAtom       *encoding,
-				     gint          *format,
-				     guchar       **ctext,
-				     gint          *length);
-gint bdk_text_property_to_utf8_list (BdkAtom        encoding,
-				     gint           format,
-				     const guchar  *text,
-				     gint           length,
-				     gchar       ***list);
+				     bint          *format,
+				     buchar       **ctext,
+				     bint          *length);
+bint bdk_text_property_to_utf8_list (BdkAtom        encoding,
+				     bint           format,
+				     const buchar  *text,
+				     bint           length,
+				     bchar       ***list);
 #endif
 #endif
 
-gint bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
+bint bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
 						 BdkAtom         encoding,
-						 gint            format,
-						 const guchar   *text,
-						 gint            length,
-						 gchar        ***list);
+						 bint            format,
+						 const buchar   *text,
+						 bint            length,
+						 bchar        ***list);
 
-gchar   *bdk_utf8_to_string_target   (const gchar *str);
+bchar   *bdk_utf8_to_string_target   (const bchar *str);
 #ifndef BDK_DISABLE_DEPRECATED
-gint bdk_text_property_to_text_list_for_display (BdkDisplay     *display,
+bint bdk_text_property_to_text_list_for_display (BdkDisplay     *display,
 						 BdkAtom         encoding,
-						 gint            format,
-						 const guchar   *text,
-						 gint            length,
-						 gchar        ***list);
-gint     bdk_string_to_compound_text_for_display (BdkDisplay   *display,
-						  const gchar  *str,
+						 bint            format,
+						 const buchar   *text,
+						 bint            length,
+						 bchar        ***list);
+bint     bdk_string_to_compound_text_for_display (BdkDisplay   *display,
+						  const bchar  *str,
 						  BdkAtom      *encoding,
-						  gint         *format,
-						  guchar      **ctext,
-						  gint         *length);
-gboolean bdk_utf8_to_compound_text_for_display   (BdkDisplay   *display,
-						  const gchar  *str,
+						  bint         *format,
+						  buchar      **ctext,
+						  bint         *length);
+bboolean bdk_utf8_to_compound_text_for_display   (BdkDisplay   *display,
+						  const bchar  *str,
 						  BdkAtom      *encoding,
-						  gint         *format,
-						  guchar      **ctext,
-						  gint         *length);
+						  bint         *format,
+						  buchar      **ctext,
+						  bint         *length);
 
-void bdk_free_text_list             (gchar        **list);
-void bdk_free_compound_text         (guchar        *ctext);
+void bdk_free_text_list             (bchar        **list);
+void bdk_free_compound_text         (buchar        *ctext);
 #endif
 
 B_END_DECLS

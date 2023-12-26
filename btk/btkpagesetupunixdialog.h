@@ -62,7 +62,7 @@ struct _BtkPageSetupUnixDialogClass
 };
 
 GType 		  btk_page_setup_unix_dialog_get_type	        (void) B_GNUC_CONST;
-BtkWidget *       btk_page_setup_unix_dialog_new                (const gchar            *title,
+BtkWidget *       btk_page_setup_unix_dialog_new                (const bchar            *title,
 								 BtkWindow              *parent);
 void              btk_page_setup_unix_dialog_set_page_setup     (BtkPageSetupUnixDialog *dialog,
 								 BtkPageSetup           *page_setup);

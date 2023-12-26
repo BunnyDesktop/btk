@@ -24,7 +24,7 @@
 #include "btkbuilder.h"
 
 typedef struct {
-  const gchar *name;
+  const bchar *name;
 } TagInfo;
 
 typedef struct {
@@ -33,9 +33,9 @@ typedef struct {
 
 typedef struct {
   TagInfo tag;
-  gchar *class_name;
-  gchar *id;
-  gchar *constructor;
+  bchar *class_name;
+  bchar *id;
+  bchar *constructor;
   GSList *properties;
   GSList *signals;
   BObject *object;
@@ -47,60 +47,60 @@ typedef struct {
   GSList *packing_properties;
   BObject *object;
   CommonInfo *parent;
-  gchar *type;
-  gchar *internal_child;
-  gboolean added;
+  bchar *type;
+  bchar *internal_child;
+  bboolean added;
 } ChildInfo;
 
 typedef struct {
   TagInfo tag;
-  gchar *name;
+  bchar *name;
   GString *text;
-  gchar *data;
-  gboolean translatable;
-  gchar *context;
+  bchar *data;
+  bboolean translatable;
+  bchar *context;
 } PropertyInfo;
 
 typedef struct {
   TagInfo tag;
-  gchar *object_name;
-  gchar *name;
-  gchar *handler;
+  bchar *object_name;
+  bchar *name;
+  bchar *handler;
   GConnectFlags flags;
-  gchar *connect_object_name;
+  bchar *connect_object_name;
 } SignalInfo;
 
 typedef struct {
   TagInfo  tag;
-  gchar   *library;
-  gint     major;
-  gint     minor;
+  bchar   *library;
+  bint     major;
+  bint     minor;
 } RequiresInfo;
 
 typedef struct {
   GMarkupParser *parser;
-  gchar *tagname;
-  const gchar *start;
-  gpointer data;
+  bchar *tagname;
+  const bchar *start;
+  bpointer data;
   BObject *object;
   BObject *child;
 } SubParser;
 
 typedef struct {
-  const gchar *last_element;
+  const bchar *last_element;
   BtkBuilder *builder;
-  gchar *domain;
+  bchar *domain;
   GSList *stack;
   SubParser *subparser;
   GMarkupParseContext *ctx;
-  const gchar *filename;
+  const bchar *filename;
   GSList *finalizers;
   GSList *custom_finalizers;
 
   GSList *requested_objects; /* NULL if all the objects are requested */
-  gboolean inside_requested_object;
-  gint requested_object_level;
-  gint cur_object_level;
+  bboolean inside_requested_object;
+  bint requested_object_level;
+  bint cur_object_level;
 
   GHashTable *object_ids;
 } ParserData;
@@ -109,10 +109,10 @@ typedef GType (*GTypeGetFunc) (void);
 
 /* Things only BtkBuilder should use */
 void _btk_builder_parser_parse_buffer (BtkBuilder *builder,
-                                       const gchar *filename,
-                                       const gchar *buffer,
-                                       gsize length,
-                                       gchar **requested_objs,
+                                       const bchar *filename,
+                                       const bchar *buffer,
+                                       bsize length,
+                                       bchar **requested_objs,
                                        GError **error);
 BObject * _btk_builder_construct (BtkBuilder *builder,
                                   ObjectInfo *info,
@@ -123,24 +123,24 @@ void      _btk_builder_add_signals (BtkBuilder *builder,
 				    GSList     *signals);
 void      _btk_builder_finish (BtkBuilder *builder);
 void _free_signal_info (SignalInfo *info,
-                        gpointer user_data);
+                        bpointer user_data);
 
 /* Internal API which might be made public at some point */
-gboolean _btk_builder_boolean_from_string (const gchar  *string,
-					   gboolean     *value,
+bboolean _btk_builder_boolean_from_string (const bchar  *string,
+					   bboolean     *value,
 					   GError      **error);
-gboolean _btk_builder_enum_from_string (GType         type,
-                                        const gchar  *string,
-                                        gint         *enum_value,
+bboolean _btk_builder_enum_from_string (GType         type,
+                                        const bchar  *string,
+                                        bint         *enum_value,
                                         GError      **error);
-gboolean  _btk_builder_flags_from_string (GType       type,
+bboolean  _btk_builder_flags_from_string (GType       type,
 					  const char *string,
-					  guint      *value,
+					  buint      *value,
 					  GError    **error);
-gchar * _btk_builder_parser_translate (const gchar *domain,
-				       const gchar *context,
-				       const gchar *text);
-gchar *   _btk_builder_get_absolute_filename (BtkBuilder *builder,
-					      const gchar *string);
+bchar * _btk_builder_parser_translate (const bchar *domain,
+				       const bchar *context,
+				       const bchar *text);
+bchar *   _btk_builder_get_absolute_filename (BtkBuilder *builder,
+					      const bchar *string);
 
 #endif /* __BTK_BUILDER_PRIVATE_H__ */

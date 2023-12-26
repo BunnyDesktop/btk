@@ -10,10 +10,10 @@ B_BEGIN_DECLS
 extern
 void _btk_marshal_BOOLEAN__BOXED (GClosure     *closure,
                                   BValue       *return_value,
-                                  guint         n_param_values,
+                                  buint         n_param_values,
                                   const BValue *param_values,
-                                  gpointer      invocation_hint,
-                                  gpointer      marshal_data);
+                                  bpointer      invocation_hint,
+                                  bpointer      marshal_data);
 
 /* BOOLEAN:BOXED,BOXED (./btkmarshalers.list:25) */
 #define _btk_marshal_BOOLEAN__BOXED_BOXED	g_cclosure_marshal_BOOLEAN__BOXED_BOXED
@@ -22,244 +22,244 @@ void _btk_marshal_BOOLEAN__BOXED (GClosure     *closure,
 extern
 void _btk_marshal_BOOLEAN__ENUM (GClosure     *closure,
                                  BValue       *return_value,
-                                 guint         n_param_values,
+                                 buint         n_param_values,
                                  const BValue *param_values,
-                                 gpointer      invocation_hint,
-                                 gpointer      marshal_data);
+                                 bpointer      invocation_hint,
+                                 bpointer      marshal_data);
 
 /* BOOLEAN:ENUM,BOOLEAN (./btkmarshalers.list:27) */
 extern
 void _btk_marshal_BOOLEAN__ENUM_BOOLEAN (GClosure     *closure,
                                          BValue       *return_value,
-                                         guint         n_param_values,
+                                         buint         n_param_values,
                                          const BValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* BOOLEAN:ENUM,DOUBLE (./btkmarshalers.list:28) */
 extern
 void _btk_marshal_BOOLEAN__ENUM_DOUBLE (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 /* BOOLEAN:ENUM,INT (./btkmarshalers.list:29) */
 extern
 void _btk_marshal_BOOLEAN__ENUM_INT (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT (./btkmarshalers.list:30) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,UINT,FLAGS (./btkmarshalers.list:31) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_UINT_FLAGS (GClosure     *closure,
                                               BValue       *return_value,
-                                              guint         n_param_values,
+                                              buint         n_param_values,
                                               const BValue *param_values,
-                                              gpointer      invocation_hint,
-                                              gpointer      marshal_data);
+                                              bpointer      invocation_hint,
+                                              bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,INT,INT,UINT (./btkmarshalers.list:32) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_INT_INT_UINT (GClosure     *closure,
                                                 BValue       *return_value,
-                                                guint         n_param_values,
+                                                buint         n_param_values,
                                                 const BValue *param_values,
-                                                gpointer      invocation_hint,
-                                                gpointer      marshal_data);
+                                                bpointer      invocation_hint,
+                                                bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,STRING,STRING,BOXED (./btkmarshalers.list:33) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_STRING_STRING_BOXED (GClosure     *closure,
                                                        BValue       *return_value,
-                                                       guint         n_param_values,
+                                                       buint         n_param_values,
                                                        const BValue *param_values,
-                                                       gpointer      invocation_hint,
-                                                       gpointer      marshal_data);
+                                                       bpointer      invocation_hint,
+                                                       bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,BOXED (./btkmarshalers.list:34) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_BOXED (GClosure     *closure,
                                          BValue       *return_value,
-                                         guint         n_param_values,
+                                         buint         n_param_values,
                                          const BValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,BOXED,BOXED (./btkmarshalers.list:35) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_BOXED_BOXED (GClosure     *closure,
                                                BValue       *return_value,
-                                               guint         n_param_values,
+                                               buint         n_param_values,
                                                const BValue *param_values,
-                                               gpointer      invocation_hint,
-                                               gpointer      marshal_data);
+                                               bpointer      invocation_hint,
+                                               bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,OBJECT,OBJECT (./btkmarshalers.list:36) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_OBJECT_OBJECT (GClosure     *closure,
                                                  BValue       *return_value,
-                                                 guint         n_param_values,
+                                                 buint         n_param_values,
                                                  const BValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,STRING,STRING (./btkmarshalers.list:37) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_STRING_STRING (GClosure     *closure,
                                                  BValue       *return_value,
-                                                 guint         n_param_values,
+                                                 buint         n_param_values,
                                                  const BValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* BOOLEAN:OBJECT,ENUM (./btkmarshalers.list:38) */
 extern
 void _btk_marshal_BOOLEAN__OBJECT_ENUM (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 /* BOOLEAN:INT (./btkmarshalers.list:39) */
 extern
 void _btk_marshal_BOOLEAN__INT (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 /* BOOLEAN:INT,INT (./btkmarshalers.list:40) */
 extern
 void _btk_marshal_BOOLEAN__INT_INT (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* BOOLEAN:INT,INT,INT (./btkmarshalers.list:41) */
 extern
 void _btk_marshal_BOOLEAN__INT_INT_INT (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 /* BOOLEAN:INT,INT,BOOLEAN,OBJECT (./btkmarshalers.list:42) */
 extern
 void _btk_marshal_BOOLEAN__INT_INT_BOOLEAN_OBJECT (GClosure     *closure,
                                                    BValue       *return_value,
-                                                   guint         n_param_values,
+                                                   buint         n_param_values,
                                                    const BValue *param_values,
-                                                   gpointer      invocation_hint,
-                                                   gpointer      marshal_data);
+                                                   bpointer      invocation_hint,
+                                                   bpointer      marshal_data);
 
 /* BOOLEAN:UINT (./btkmarshalers.list:43) */
 extern
 void _btk_marshal_BOOLEAN__UINT (GClosure     *closure,
                                  BValue       *return_value,
-                                 guint         n_param_values,
+                                 buint         n_param_values,
                                  const BValue *param_values,
-                                 gpointer      invocation_hint,
-                                 gpointer      marshal_data);
+                                 bpointer      invocation_hint,
+                                 bpointer      marshal_data);
 
 /* BOOLEAN:VOID (./btkmarshalers.list:44) */
 extern
 void _btk_marshal_BOOLEAN__VOID (GClosure     *closure,
                                  BValue       *return_value,
-                                 guint         n_param_values,
+                                 buint         n_param_values,
                                  const BValue *param_values,
-                                 gpointer      invocation_hint,
-                                 gpointer      marshal_data);
+                                 bpointer      invocation_hint,
+                                 bpointer      marshal_data);
 
 /* BOOLEAN:BOOLEAN (./btkmarshalers.list:45) */
 extern
 void _btk_marshal_BOOLEAN__BOOLEAN (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* BOOLEAN:BOOLEAN,BOOLEAN,BOOLEAN (./btkmarshalers.list:46) */
 extern
 void _btk_marshal_BOOLEAN__BOOLEAN_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                     BValue       *return_value,
-                                                    guint         n_param_values,
+                                                    buint         n_param_values,
                                                     const BValue *param_values,
-                                                    gpointer      invocation_hint,
-                                                    gpointer      marshal_data);
+                                                    bpointer      invocation_hint,
+                                                    bpointer      marshal_data);
 
 /* BOOLEAN:STRING (./btkmarshalers.list:47) */
 extern
 void _btk_marshal_BOOLEAN__STRING (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 /* ENUM:ENUM (./btkmarshalers.list:48) */
 extern
 void _btk_marshal_ENUM__ENUM (GClosure     *closure,
                               BValue       *return_value,
-                              guint         n_param_values,
+                              buint         n_param_values,
                               const BValue *param_values,
-                              gpointer      invocation_hint,
-                              gpointer      marshal_data);
+                              bpointer      invocation_hint,
+                              bpointer      marshal_data);
 
 /* ENUM:VOID (./btkmarshalers.list:49) */
 extern
 void _btk_marshal_ENUM__VOID (GClosure     *closure,
                               BValue       *return_value,
-                              guint         n_param_values,
+                              buint         n_param_values,
                               const BValue *param_values,
-                              gpointer      invocation_hint,
-                              gpointer      marshal_data);
+                              bpointer      invocation_hint,
+                              bpointer      marshal_data);
 
 /* INT:POINTER (./btkmarshalers.list:50) */
 extern
 void _btk_marshal_INT__POINTER (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 /* OBJECT:VOID (./btkmarshalers.list:51) */
 extern
 void _btk_marshal_OBJECT__VOID (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 /* STRING:DOUBLE (./btkmarshalers.list:52) */
 extern
 void _btk_marshal_STRING__DOUBLE (GClosure     *closure,
                                   BValue       *return_value,
-                                  guint         n_param_values,
+                                  buint         n_param_values,
                                   const BValue *param_values,
-                                  gpointer      invocation_hint,
-                                  gpointer      marshal_data);
+                                  bpointer      invocation_hint,
+                                  bpointer      marshal_data);
 
 /* VOID:DOUBLE (./btkmarshalers.list:53) */
 #define _btk_marshal_VOID__DOUBLE	g_cclosure_marshal_VOID__DOUBLE
@@ -271,10 +271,10 @@ void _btk_marshal_STRING__DOUBLE (GClosure     *closure,
 extern
 void _btk_marshal_VOID__BOOLEAN_BOOLEAN_BOOLEAN (GClosure     *closure,
                                                  BValue       *return_value,
-                                                 guint         n_param_values,
+                                                 buint         n_param_values,
                                                  const BValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* VOID:BOXED (./btkmarshalers.list:56) */
 #define _btk_marshal_VOID__BOXED	g_cclosure_marshal_VOID__BOXED
@@ -283,64 +283,64 @@ void _btk_marshal_VOID__BOOLEAN_BOOLEAN_BOOLEAN (GClosure     *closure,
 extern
 void _btk_marshal_VOID__BOXED_BOXED (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:BOXED,BOXED,POINTER (./btkmarshalers.list:58) */
 extern
 void _btk_marshal_VOID__BOXED_BOXED_POINTER (GClosure     *closure,
                                              BValue       *return_value,
-                                             guint         n_param_values,
+                                             buint         n_param_values,
                                              const BValue *param_values,
-                                             gpointer      invocation_hint,
-                                             gpointer      marshal_data);
+                                             bpointer      invocation_hint,
+                                             bpointer      marshal_data);
 
 /* VOID:BOXED,OBJECT (./btkmarshalers.list:59) */
 extern
 void _btk_marshal_VOID__BOXED_OBJECT (GClosure     *closure,
                                       BValue       *return_value,
-                                      guint         n_param_values,
+                                      buint         n_param_values,
                                       const BValue *param_values,
-                                      gpointer      invocation_hint,
-                                      gpointer      marshal_data);
+                                      bpointer      invocation_hint,
+                                      bpointer      marshal_data);
 
 /* VOID:BOXED,STRING,INT (./btkmarshalers.list:60) */
 extern
 void _btk_marshal_VOID__BOXED_STRING_INT (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:BOXED,UINT (./btkmarshalers.list:61) */
 extern
 void _btk_marshal_VOID__BOXED_UINT (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* VOID:BOXED,UINT,FLAGS (./btkmarshalers.list:62) */
 extern
 void _btk_marshal_VOID__BOXED_UINT_FLAGS (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:BOXED,UINT,UINT (./btkmarshalers.list:63) */
 extern
 void _btk_marshal_VOID__BOXED_UINT_UINT (GClosure     *closure,
                                          BValue       *return_value,
-                                         guint         n_param_values,
+                                         buint         n_param_values,
                                          const BValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* VOID:ENUM (./btkmarshalers.list:64) */
 #define _btk_marshal_VOID__ENUM	g_cclosure_marshal_VOID__ENUM
@@ -349,64 +349,64 @@ void _btk_marshal_VOID__BOXED_UINT_UINT (GClosure     *closure,
 extern
 void _btk_marshal_VOID__ENUM_BOOLEAN (GClosure     *closure,
                                       BValue       *return_value,
-                                      guint         n_param_values,
+                                      buint         n_param_values,
                                       const BValue *param_values,
-                                      gpointer      invocation_hint,
-                                      gpointer      marshal_data);
+                                      bpointer      invocation_hint,
+                                      bpointer      marshal_data);
 
 /* VOID:ENUM,ENUM (./btkmarshalers.list:66) */
 extern
 void _btk_marshal_VOID__ENUM_ENUM (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 /* VOID:ENUM,FLOAT (./btkmarshalers.list:67) */
 extern
 void _btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* VOID:ENUM,FLOAT,BOOLEAN (./btkmarshalers.list:68) */
 extern
 void _btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
                                             BValue       *return_value,
-                                            guint         n_param_values,
+                                            buint         n_param_values,
                                             const BValue *param_values,
-                                            gpointer      invocation_hint,
-                                            gpointer      marshal_data);
+                                            bpointer      invocation_hint,
+                                            bpointer      marshal_data);
 
 /* VOID:ENUM,INT (./btkmarshalers.list:69) */
 extern
 void _btk_marshal_VOID__ENUM_INT (GClosure     *closure,
                                   BValue       *return_value,
-                                  guint         n_param_values,
+                                  buint         n_param_values,
                                   const BValue *param_values,
-                                  gpointer      invocation_hint,
-                                  gpointer      marshal_data);
+                                  bpointer      invocation_hint,
+                                  bpointer      marshal_data);
 
 /* VOID:ENUM,INT,BOOLEAN (./btkmarshalers.list:70) */
 extern
 void _btk_marshal_VOID__ENUM_INT_BOOLEAN (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:ENUM,BOXED (./btkmarshalers.list:71) */
 extern
 void _btk_marshal_VOID__ENUM_BOXED (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* VOID:INT (./btkmarshalers.list:72) */
 #define _btk_marshal_VOID__INT	g_cclosure_marshal_VOID__INT
@@ -415,37 +415,37 @@ void _btk_marshal_VOID__ENUM_BOXED (GClosure     *closure,
 extern
 void _btk_marshal_VOID__INT_BOOLEAN (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:INT,INT (./btkmarshalers.list:74) */
 extern
 void _btk_marshal_VOID__INT_INT (GClosure     *closure,
                                  BValue       *return_value,
-                                 guint         n_param_values,
+                                 buint         n_param_values,
                                  const BValue *param_values,
-                                 gpointer      invocation_hint,
-                                 gpointer      marshal_data);
+                                 bpointer      invocation_hint,
+                                 bpointer      marshal_data);
 
 /* VOID:INT,INT,BOXED (./btkmarshalers.list:75) */
 extern
 void _btk_marshal_VOID__INT_INT_BOXED (GClosure     *closure,
                                        BValue       *return_value,
-                                       guint         n_param_values,
+                                       buint         n_param_values,
                                        const BValue *param_values,
-                                       gpointer      invocation_hint,
-                                       gpointer      marshal_data);
+                                       bpointer      invocation_hint,
+                                       bpointer      marshal_data);
 
 /* VOID:INT,INT,INT (./btkmarshalers.list:76) */
 extern
 void _btk_marshal_VOID__INT_INT_INT (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:OBJECT (./btkmarshalers.list:77) */
 #define _btk_marshal_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
@@ -454,118 +454,118 @@ void _btk_marshal_VOID__INT_INT_INT (GClosure     *closure,
 extern
 void _btk_marshal_VOID__OBJECT_BOOLEAN (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 /* VOID:OBJECT,BOXED,BOXED (./btkmarshalers.list:79) */
 extern
 void _btk_marshal_VOID__OBJECT_BOXED_BOXED (GClosure     *closure,
                                             BValue       *return_value,
-                                            guint         n_param_values,
+                                            buint         n_param_values,
                                             const BValue *param_values,
-                                            gpointer      invocation_hint,
-                                            gpointer      marshal_data);
+                                            bpointer      invocation_hint,
+                                            bpointer      marshal_data);
 
 /* VOID:OBJECT,BOXED,UINT,UINT (./btkmarshalers.list:80) */
 extern
 void _btk_marshal_VOID__OBJECT_BOXED_UINT_UINT (GClosure     *closure,
                                                 BValue       *return_value,
-                                                guint         n_param_values,
+                                                buint         n_param_values,
                                                 const BValue *param_values,
-                                                gpointer      invocation_hint,
-                                                gpointer      marshal_data);
+                                                bpointer      invocation_hint,
+                                                bpointer      marshal_data);
 
 /* VOID:OBJECT,INT (./btkmarshalers.list:81) */
 extern
 void _btk_marshal_VOID__OBJECT_INT (GClosure     *closure,
                                     BValue       *return_value,
-                                    guint         n_param_values,
+                                    buint         n_param_values,
                                     const BValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data);
+                                    bpointer      invocation_hint,
+                                    bpointer      marshal_data);
 
 /* VOID:OBJECT,INT,OBJECT (./btkmarshalers.list:82) */
 extern
 void _btk_marshal_VOID__OBJECT_INT_OBJECT (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 /* VOID:OBJECT,INT,INT (./btkmarshalers.list:83) */
 extern
 void _btk_marshal_VOID__OBJECT_INT_INT (GClosure     *closure,
                                         BValue       *return_value,
-                                        guint         n_param_values,
+                                        buint         n_param_values,
                                         const BValue *param_values,
-                                        gpointer      invocation_hint,
-                                        gpointer      marshal_data);
+                                        bpointer      invocation_hint,
+                                        bpointer      marshal_data);
 
 /* VOID:OBJECT,INT,INT,BOXED,UINT,UINT (./btkmarshalers.list:84) */
 extern
 void _btk_marshal_VOID__OBJECT_INT_INT_BOXED_UINT_UINT (GClosure     *closure,
                                                         BValue       *return_value,
-                                                        guint         n_param_values,
+                                                        buint         n_param_values,
                                                         const BValue *param_values,
-                                                        gpointer      invocation_hint,
-                                                        gpointer      marshal_data);
+                                                        bpointer      invocation_hint,
+                                                        bpointer      marshal_data);
 
 /* VOID:OBJECT,OBJECT (./btkmarshalers.list:85) */
 extern
 void _btk_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
                                        BValue       *return_value,
-                                       guint         n_param_values,
+                                       buint         n_param_values,
                                        const BValue *param_values,
-                                       gpointer      invocation_hint,
-                                       gpointer      marshal_data);
+                                       bpointer      invocation_hint,
+                                       bpointer      marshal_data);
 
 /* VOID:OBJECT,STRING (./btkmarshalers.list:86) */
 extern
 void _btk_marshal_VOID__OBJECT_STRING (GClosure     *closure,
                                        BValue       *return_value,
-                                       guint         n_param_values,
+                                       buint         n_param_values,
                                        const BValue *param_values,
-                                       gpointer      invocation_hint,
-                                       gpointer      marshal_data);
+                                       bpointer      invocation_hint,
+                                       bpointer      marshal_data);
 
 /* VOID:OBJECT,STRING,STRING (./btkmarshalers.list:87) */
 extern
 void _btk_marshal_VOID__OBJECT_STRING_STRING (GClosure     *closure,
                                               BValue       *return_value,
-                                              guint         n_param_values,
+                                              buint         n_param_values,
                                               const BValue *param_values,
-                                              gpointer      invocation_hint,
-                                              gpointer      marshal_data);
+                                              bpointer      invocation_hint,
+                                              bpointer      marshal_data);
 
 /* VOID:OBJECT,UINT (./btkmarshalers.list:88) */
 extern
 void _btk_marshal_VOID__OBJECT_UINT (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:OBJECT,UINT,FLAGS (./btkmarshalers.list:89) */
 extern
 void _btk_marshal_VOID__OBJECT_UINT_FLAGS (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 /* VOID:OBJECT,OBJECT,OBJECT (./btkmarshalers.list:91) */
 extern
 void _btk_marshal_VOID__OBJECT_OBJECT_OBJECT (GClosure     *closure,
                                               BValue       *return_value,
-                                              guint         n_param_values,
+                                              buint         n_param_values,
                                               const BValue *param_values,
-                                              gpointer      invocation_hint,
-                                              gpointer      marshal_data);
+                                              bpointer      invocation_hint,
+                                              bpointer      marshal_data);
 
 /* VOID:POINTER (./btkmarshalers.list:92) */
 #define _btk_marshal_VOID__POINTER	g_cclosure_marshal_VOID__POINTER
@@ -574,46 +574,46 @@ void _btk_marshal_VOID__OBJECT_OBJECT_OBJECT (GClosure     *closure,
 extern
 void _btk_marshal_VOID__POINTER_INT (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:POINTER,BOOLEAN (./btkmarshalers.list:94) */
 extern
 void _btk_marshal_VOID__POINTER_BOOLEAN (GClosure     *closure,
                                          BValue       *return_value,
-                                         guint         n_param_values,
+                                         buint         n_param_values,
                                          const BValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* VOID:POINTER,POINTER,BOOLEAN (./btkmarshalers.list:95) */
 extern
 void _btk_marshal_VOID__POINTER_POINTER_BOOLEAN (GClosure     *closure,
                                                  BValue       *return_value,
-                                                 guint         n_param_values,
+                                                 buint         n_param_values,
                                                  const BValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* VOID:POINTER,POINTER,POINTER (./btkmarshalers.list:96) */
 extern
 void _btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
                                                  BValue       *return_value,
-                                                 guint         n_param_values,
+                                                 buint         n_param_values,
                                                  const BValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* VOID:POINTER,UINT (./btkmarshalers.list:97) */
 extern
 void _btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
                                       BValue       *return_value,
-                                      guint         n_param_values,
+                                      buint         n_param_values,
                                       const BValue *param_values,
-                                      gpointer      invocation_hint,
-                                      gpointer      marshal_data);
+                                      bpointer      invocation_hint,
+                                      bpointer      marshal_data);
 
 /* VOID:STRING (./btkmarshalers.list:98) */
 #define _btk_marshal_VOID__STRING	g_cclosure_marshal_VOID__STRING
@@ -622,109 +622,109 @@ void _btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
 extern
 void _btk_marshal_VOID__STRING_BOXED (GClosure     *closure,
                                       BValue       *return_value,
-                                      guint         n_param_values,
+                                      buint         n_param_values,
                                       const BValue *param_values,
-                                      gpointer      invocation_hint,
-                                      gpointer      marshal_data);
+                                      bpointer      invocation_hint,
+                                      bpointer      marshal_data);
 
 /* VOID:STRING,STRING (./btkmarshalers.list:100) */
 extern
 void _btk_marshal_VOID__STRING_STRING (GClosure     *closure,
                                        BValue       *return_value,
-                                       guint         n_param_values,
+                                       buint         n_param_values,
                                        const BValue *param_values,
-                                       gpointer      invocation_hint,
-                                       gpointer      marshal_data);
+                                       bpointer      invocation_hint,
+                                       bpointer      marshal_data);
 
 /* VOID:STRING,STRING,STRING (./btkmarshalers.list:101) */
 extern
 void _btk_marshal_VOID__STRING_STRING_STRING (GClosure     *closure,
                                               BValue       *return_value,
-                                              guint         n_param_values,
+                                              buint         n_param_values,
                                               const BValue *param_values,
-                                              gpointer      invocation_hint,
-                                              gpointer      marshal_data);
+                                              bpointer      invocation_hint,
+                                              bpointer      marshal_data);
 
 /* VOID:STRING,INT,POINTER (./btkmarshalers.list:102) */
 extern
 void _btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
                                             BValue       *return_value,
-                                            guint         n_param_values,
+                                            buint         n_param_values,
                                             const BValue *param_values,
-                                            gpointer      invocation_hint,
-                                            gpointer      marshal_data);
+                                            bpointer      invocation_hint,
+                                            bpointer      marshal_data);
 
 /* VOID:STRING,UINT,FLAGS (./btkmarshalers.list:103) */
 extern
 void _btk_marshal_VOID__STRING_UINT_FLAGS (GClosure     *closure,
                                            BValue       *return_value,
-                                           guint         n_param_values,
+                                           buint         n_param_values,
                                            const BValue *param_values,
-                                           gpointer      invocation_hint,
-                                           gpointer      marshal_data);
+                                           bpointer      invocation_hint,
+                                           bpointer      marshal_data);
 
 /* VOID:STRING,UINT,FLAGS,UINT (./btkmarshalers.list:104) */
 extern
 void _btk_marshal_VOID__STRING_UINT_FLAGS_UINT (GClosure     *closure,
                                                 BValue       *return_value,
-                                                guint         n_param_values,
+                                                buint         n_param_values,
                                                 const BValue *param_values,
-                                                gpointer      invocation_hint,
-                                                gpointer      marshal_data);
+                                                bpointer      invocation_hint,
+                                                bpointer      marshal_data);
 
 /* VOID:UINT,FLAGS,BOXED (./btkmarshalers.list:105) */
 extern
 void _btk_marshal_VOID__UINT_FLAGS_BOXED (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:UINT,UINT (./btkmarshalers.list:106) */
 extern
 void _btk_marshal_VOID__UINT_UINT (GClosure     *closure,
                                    BValue       *return_value,
-                                   guint         n_param_values,
+                                   buint         n_param_values,
                                    const BValue *param_values,
-                                   gpointer      invocation_hint,
-                                   gpointer      marshal_data);
+                                   bpointer      invocation_hint,
+                                   bpointer      marshal_data);
 
 /* VOID:UINT,STRING (./btkmarshalers.list:107) */
 extern
 void _btk_marshal_VOID__UINT_STRING (GClosure     *closure,
                                      BValue       *return_value,
-                                     guint         n_param_values,
+                                     buint         n_param_values,
                                      const BValue *param_values,
-                                     gpointer      invocation_hint,
-                                     gpointer      marshal_data);
+                                     bpointer      invocation_hint,
+                                     bpointer      marshal_data);
 
 /* VOID:UINT,BOXED,UINT,FLAGS,FLAGS (./btkmarshalers.list:108) */
 extern
 void _btk_marshal_VOID__UINT_BOXED_UINT_FLAGS_FLAGS (GClosure     *closure,
                                                      BValue       *return_value,
-                                                     guint         n_param_values,
+                                                     buint         n_param_values,
                                                      const BValue *param_values,
-                                                     gpointer      invocation_hint,
-                                                     gpointer      marshal_data);
+                                                     bpointer      invocation_hint,
+                                                     bpointer      marshal_data);
 
 /* VOID:UINT,OBJECT,UINT,FLAGS,FLAGS (./btkmarshalers.list:109) */
 extern
 void _btk_marshal_VOID__UINT_OBJECT_UINT_FLAGS_FLAGS (GClosure     *closure,
                                                       BValue       *return_value,
-                                                      guint         n_param_values,
+                                                      buint         n_param_values,
                                                       const BValue *param_values,
-                                                      gpointer      invocation_hint,
-                                                      gpointer      marshal_data);
+                                                      bpointer      invocation_hint,
+                                                      bpointer      marshal_data);
 
 /* VOID:UINT,STRING,UINT (./btkmarshalers.list:110) */
 extern
 void _btk_marshal_VOID__UINT_STRING_UINT (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:VOID (./btkmarshalers.list:112) */
 #define _btk_marshal_VOID__VOID	g_cclosure_marshal_VOID__VOID
@@ -733,19 +733,19 @@ void _btk_marshal_VOID__UINT_STRING_UINT (GClosure     *closure,
 extern
 void _btk_marshal_OBJECT__OBJECT_INT_INT (GClosure     *closure,
                                           BValue       *return_value,
-                                          guint         n_param_values,
+                                          buint         n_param_values,
                                           const BValue *param_values,
-                                          gpointer      invocation_hint,
-                                          gpointer      marshal_data);
+                                          bpointer      invocation_hint,
+                                          bpointer      marshal_data);
 
 /* VOID:POINTER,POINTER,POINTER,POINTER,STRING (./btkmarshalers.list:114) */
 extern
 void _btk_marshal_VOID__POINTER_POINTER_POINTER_POINTER_STRING (GClosure     *closure,
                                                                 BValue       *return_value,
-                                                                guint         n_param_values,
+                                                                buint         n_param_values,
                                                                 const BValue *param_values,
-                                                                gpointer      invocation_hint,
-                                                                gpointer      marshal_data);
+                                                                bpointer      invocation_hint,
+                                                                bpointer      marshal_data);
 
 
 B_END_DECLS

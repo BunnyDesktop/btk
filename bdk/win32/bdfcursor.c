@@ -27,29 +27,29 @@
 #include <bunnylib.h>
 
 typedef struct {
-	gchar	*name;
-	gint	id;
-	gchar	*bitmap;
-	gint	hotx;
-	gint	hoty;
+	bchar	*name;
+	bint	id;
+	bchar	*bitmap;
+	bint	hotx;
+	bint	hoty;
 } font_info_t;
 
 typedef struct {
-	gchar	*name;
-	gint	id;
-	gint	width;
-	gint	height;
-	gint	hotx;
-	gint	hoty;
-	gchar	*data;
+	bchar	*name;
+	bint	id;
+	bint	width;
+	bint	height;
+	bint	hotx;
+	bint	hoty;
+	bchar	*data;
 } cursor_info_t;
 
 static GSList *fonts = NULL;
 static GSList *cursors = NULL;
 
-static gint dw,dh;
+static bint dw,dh;
 
-static gboolean debug = FALSE;
+static bboolean debug = FALSE;
 
 #define HEX(c) (((c) >= '0' && (c) <= '9') ? \
 	((c) - '0') : (toupper(c) - 'A' + 10))
@@ -99,17 +99,17 @@ cursor_info_t *ci;
 	}
 }
 
-static gint read_bdf_font(fname)
-gchar *fname;
+static bint read_bdf_font(fname)
+bchar *fname;
 {
 	FILE *f;
-	gchar line[2048];
-	gint rv = 0;
-	gboolean startchar = FALSE, startbitmap = FALSE;
-	gchar *charname,*p,*bitmap;
-	gint dx = 0,dy = 0;
-	gint w,h,x,y,py;
-	gint id,tmp;
+	bchar line[2048];
+	bint rv = 0;
+	bboolean startchar = FALSE, startbitmap = FALSE;
+	bchar *charname,*p,*bitmap;
+	bint dx = 0,dy = 0;
+	bint w,h,x,y,py;
+	bint id,tmp;
 
 	dw = 0;
 	dh = 0;
@@ -166,7 +166,7 @@ gchar *fname;
 			else if (startbitmap)
 			{
 				int px,cx;
-				guchar mask;
+				buchar mask;
 
 				px = x - dx + py * dw;
 				for (cx = 0; cx < w; cx++)
@@ -212,7 +212,7 @@ gchar *fname;
 	return rv;
 }
 
-static gint font_info_compare(fi, name)
+static bint font_info_compare(fi, name)
 font_info_t *fi;
 char *name;
 {
@@ -229,7 +229,7 @@ font_info_t *mask;
 
 	for (j = 0; j < dh; j++)
 	{
-		gboolean havep = FALSE;
+		bboolean havep = FALSE;
 
 		for (i = 0; i < dw; i++)
 		{
@@ -282,7 +282,7 @@ static void compose_cursors_from_fonts()
 	for (l = b_slist_copy (fonts); l; l = b_slist_delete_link (l,l))
 	{
 		font_info_t *fi = l->data;
-		gchar *name;
+		bchar *name;
 		GSList *ml;
 
 		name = g_strconcat(fi->name, "_mask", NULL);
@@ -303,11 +303,11 @@ static char *dump_cursor(ci, id)
 cursor_info_t *ci;
 int id;
 {
-	static gchar cdata[8192];
-	gchar *p;
-	gint i;
-	gint c;
-	gboolean flushed;
+	static bchar cdata[8192];
+	bchar *p;
+	bint i;
+	bint c;
+	bboolean flushed;
 
 	sprintf(cdata, "  { \"%s\", %d, %d, %d, %d, %d, \n    \"",
 		ci->name, ci->id, ci->width, ci->height, ci->hotx, ci->hoty);
@@ -353,7 +353,7 @@ static int dump_cursors()
 	GSList *ptr;
 	FILE *f = stdout;
 
-	fprintf(f, "static const struct { const gchar *name; gint type; guchar width; guchar height; guchar hotx; guchar hoty; guchar *data; } cursors[] = {\n");
+	fprintf(f, "static const struct { const bchar *name; bint type; buchar width; buchar height; buchar hotx; buchar hoty; buchar *data; } cursors[] = {\n");
 
 	for (ptr = cursors; ptr; ptr = ptr->next)
 	{
@@ -367,9 +367,9 @@ static int dump_cursors()
 	return 0;
 }
 
-gint main(argc, argv)
-gint argc;
-gchar **argv;
+bint main(argc, argv)
+bint argc;
+bchar **argv;
 {
 	if (argc != 2)
 	{

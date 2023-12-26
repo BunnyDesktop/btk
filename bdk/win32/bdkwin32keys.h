@@ -58,10 +58,10 @@ typedef struct _BdkWin32KeymapClass BdkWin32KeymapClass;
 GType bdk_win32_keymap_get_type (void);
 
 BdkWin32KeymapMatch bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
-                                                    guint          *compose_buffer,
-                                                    gsize           compose_buffer_len,
-                                                    guint16        *output,
-                                                    gsize          *output_len);
+                                                    buint          *compose_buffer,
+                                                    bsize           compose_buffer_len,
+                                                    buint16        *output,
+                                                    bsize          *output_len);
 
 B_END_DECLS
 

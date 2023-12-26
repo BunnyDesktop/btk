@@ -53,7 +53,7 @@ struct _BtkSearchEngineQuartzPrivate
   ResultReceiver *receiver;
   NSMetadataQuery *ns_query;
 
-  gboolean query_finished;
+  bboolean query_finished;
 };
 
 G_DEFINE_TYPE (BtkSearchEngineQuartz, _btk_search_engine_quartz, BTK_TYPE_SEARCH_ENGINE);
@@ -180,7 +180,7 @@ btk_search_engine_quartz_stop (BtkSearchEngine *engine)
   QUARTZ_POOL_RELEASE;
 }
 
-static gboolean
+static bboolean
 btk_search_engine_quartz_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;

@@ -50,12 +50,12 @@ static BdkWindow   *current_keyboard_window;
 static BdkEventMask current_event_mask;
 
 static void append_event                        (BdkEvent  *event,
-                                                 gboolean   windowing);
+                                                 bboolean   windowing);
 
 static BdkWindow *find_toplevel_under_pointer   (BdkDisplay *display,
                                                  NSPoint     screen_point,
-                                                 gint       *x,
-                                                 gint       *y);
+                                                 bint       *x,
+                                                 bint       *y);
 
 
 NSEvent *
@@ -95,7 +95,7 @@ bdk_quartz_ns_notification_callback (CFNotificationCenterRef  center,
 static void
 bdk_quartz_events_init_notifications (void)
 {
-  static gboolean notifications_initialized = FALSE;
+  static bboolean notifications_initialized = FALSE;
 
   if (notifications_initialized)
     return;
@@ -125,7 +125,7 @@ _bdk_events_init (void)
   current_keyboard_window = g_object_ref (_bdk_root);
 }
 
-gboolean
+bboolean
 bdk_events_pending (void)
 {
   return (_bdk_event_queue_find_first (_bdk_display) ||
@@ -141,8 +141,8 @@ bdk_event_get_graphics_expose (BdkWindow *window)
 
 BdkGrabStatus
 bdk_keyboard_grab (BdkWindow  *window,
-		   gint        owner_events,
-		   guint32     time)
+		   bint        owner_events,
+		   buint32     time)
 {
   BdkDisplay *display;
   BdkWindow  *toplevel;
@@ -165,14 +165,14 @@ bdk_keyboard_grab (BdkWindow  *window,
 
 void
 bdk_display_keyboard_ungrab (BdkDisplay *display,
-			     guint32     time)
+			     buint32     time)
 {
   _bdk_display_unset_has_keyboard_grab (display, FALSE);
 }
 
 void
 bdk_display_pointer_ungrab (BdkDisplay *display,
-			    guint32     time)
+			    buint32     time)
 {
   BdkPointerGrabInfo *grab;
 
@@ -186,11 +186,11 @@ bdk_display_pointer_ungrab (BdkDisplay *display,
 BdkGrabStatus
 _bdk_windowing_pointer_grab (BdkWindow    *window,
                              BdkWindow    *native,
-                             gboolean	   owner_events,
+                             bboolean	   owner_events,
                              BdkEventMask  event_mask,
                              BdkWindow    *confine_to,
                              BdkCursor    *cursor,
-                             guint32       time)
+                             buint32       time)
 {
   g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
   g_return_val_if_fail (confine_to == NULL || BDK_IS_WINDOW (confine_to), 0);
@@ -208,7 +208,7 @@ _bdk_windowing_pointer_grab (BdkWindow    *window,
 }
 
 void
-_bdk_quartz_events_break_all_grabs (guint32 time)
+_bdk_quartz_events_break_all_grabs (buint32 time)
 {
   BdkPointerGrabInfo *grab;
 
@@ -239,7 +239,7 @@ fixup_event (BdkEvent *event)
 
 static void
 append_event (BdkEvent *event,
-              gboolean  windowing)
+              bboolean  windowing)
 {
   GList *node;
 
@@ -250,7 +250,7 @@ append_event (BdkEvent *event,
     _bdk_windowing_got_event (_bdk_display, node, event, 0);
 }
 
-static gint
+static bint
 bdk_event_apply_filters (NSEvent *nsevent,
 			 BdkEvent *event,
 			 GList **filters)
@@ -294,7 +294,7 @@ bdk_event_apply_filters (NSEvent *nsevent,
   return BDK_FILTER_CONTINUE;
 }
 
-static guint32
+static buint32
 get_time_from_ns_event (NSEvent *event)
 {
   double time = [event timestamp];
@@ -302,7 +302,7 @@ get_time_from_ns_event (NSEvent *event)
   /* cast via double->uint64 conversion to make sure that it is
    * wrapped on 32-bit machines when it overflows
    */
-  return (guint32) (guint64) (time * 1000.0);
+  return (buint32) (buint64) (time * 1000.0);
 }
 
 static int
@@ -461,8 +461,8 @@ get_event_mask_from_ns_event (NSEvent *nsevent)
 static void
 get_window_point_from_screen_point (BdkWindow *window,
                                     NSPoint    screen_point,
-                                    gint      *x,
-                                    gint      *y)
+                                    bint      *x,
+                                    bint      *y)
 {
   NSPoint point;
   NSWindow *nswindow;
@@ -477,7 +477,7 @@ get_window_point_from_screen_point (BdkWindow *window,
   *y = private->height - point.y;
 }
 
-static gboolean
+static bboolean
 is_mouse_button_press_event (NSEventType type)
 {
   switch (type)
@@ -494,8 +494,8 @@ is_mouse_button_press_event (NSEventType type)
 static BdkWindow *
 get_toplevel_from_ns_event (NSEvent *nsevent,
                             NSPoint *screen_point,
-                            gint    *x,
-                            gint    *y)
+                            bint    *x,
+                            bint    *y)
 {
   BdkWindow *toplevel = NULL;
 
@@ -574,7 +574,7 @@ get_toplevel_from_ns_event (NSEvent *nsevent,
 
 static BdkEvent *
 create_focus_event (BdkWindow *window,
-		    gboolean   in)
+		    bboolean   in)
 {
   BdkEvent *event;
 
@@ -591,7 +591,7 @@ generate_motion_event (BdkWindow *window)
 {
   NSPoint screen_point;
   BdkEvent *event;
-  gint x, y, x_root, y_root;
+  bint x, y, x_root, y_root;
 
   event = bdk_event_new (BDK_MOTION_NOTIFY);
   event->any.window = NULL;
@@ -621,7 +621,7 @@ generate_motion_event (BdkWindow *window)
 /* Note: Used to both set a new focus window and to unset the old one. */
 void
 _bdk_quartz_events_update_focus_window (BdkWindow *window,
-					gboolean   got_focus)
+					bboolean   got_focus)
 {
   BdkEvent *event;
 
@@ -686,8 +686,8 @@ _bdk_quartz_events_send_map_event (BdkWindow *window)
 static BdkWindow *
 find_toplevel_under_pointer (BdkDisplay *display,
                              NSPoint     screen_point,
-                             gint       *x,
-                             gint       *y)
+                             bint       *x,
+                             bint       *y)
 {
   BdkWindow *toplevel;
 
@@ -716,10 +716,10 @@ find_toplevel_under_pointer (BdkDisplay *display,
  */
 static BdkWindow *
 find_window_for_ns_event (NSEvent *nsevent, 
-                          gint    *x, 
-                          gint    *y,
-                          gint    *x_root,
-                          gint    *y_root)
+                          bint    *x, 
+                          bint    *y,
+                          bint    *x_root,
+                          bint    *y_root)
 {
   BdkQuartzView *view;
   BdkWindow *toplevel;
@@ -781,7 +781,7 @@ find_window_for_ns_event (NSEvent *nsevent,
                  * wrong.
                  */
                 BdkWindow *toplevel_under_pointer;
-                gint x_tmp, y_tmp;
+                bint x_tmp, y_tmp;
 
                 toplevel_under_pointer = find_toplevel_under_pointer (display,
                                                                       screen_point,
@@ -813,7 +813,7 @@ find_window_for_ns_event (NSEvent *nsevent,
 	  {
 	    /* The non-grabbed case. */
             BdkWindow *toplevel_under_pointer;
-            gint x_tmp, y_tmp;
+            bint x_tmp, y_tmp;
 
             /* Ignore all events but mouse moved that might be on the title
              * bar (above the content view). The reason is that otherwise
@@ -880,10 +880,10 @@ static void
 fill_crossing_event (BdkWindow       *toplevel,
                      BdkEvent        *event,
                      NSEvent         *nsevent,
-                     gint             x,
-                     gint             y,
-                     gint             x_root,
-                     gint             y_root,
+                     bint             x,
+                     bint             y,
+                     bint             x_root,
+                     bint             y_root,
                      BdkEventType     event_type,
                      BdkCrossingMode  mode,
                      BdkNotifyType    detail)
@@ -908,13 +908,13 @@ static void
 fill_button_event (BdkWindow *window,
                    BdkEvent  *event,
                    NSEvent   *nsevent,
-                   gint       x,
-                   gint       y,
-                   gint       x_root,
-                   gint       y_root)
+                   bint       x,
+                   bint       y,
+                   bint       x_root,
+                   bint       y_root)
 {
   BdkEventType type;
-  gint state;
+  bint state;
 
   state = get_keyboard_modifiers_from_ns_event (nsevent) |
          _bdk_quartz_events_get_current_mouse_modifiers ();
@@ -956,10 +956,10 @@ static void
 fill_motion_event (BdkWindow *window,
                    BdkEvent  *event,
                    NSEvent   *nsevent,
-                   gint       x,
-                   gint       y,
-                   gint       x_root,
-                   gint       y_root)
+                   bint       x,
+                   bint       y,
+                   bint       x_root,
+                   bint       y_root)
 {
   event->any.type = BDK_MOTION_NOTIFY;
   event->motion.window = window;
@@ -979,10 +979,10 @@ static void
 fill_scroll_event (BdkWindow          *window,
                    BdkEvent           *event,
                    NSEvent            *nsevent,
-                   gint                x,
-                   gint                y,
-                   gint                x_root,
-                   gint                y_root,
+                   bint                x,
+                   bint                y,
+                   bint                x_root,
+                   bint                y_root,
                    BdkScrollDirection  direction)
 {
   BdkWindowObject *private;
@@ -1011,7 +1011,7 @@ fill_key_event (BdkWindow    *window,
                 BdkEventType  type)
 {
   BdkEventPrivate *priv;
-  gchar buf[7];
+  bchar buf[7];
   gunichar c = 0;
 
   priv = (BdkEventPrivate *) event;
@@ -1089,8 +1089,8 @@ fill_key_event (BdkWindow    *window,
 
   if (c)
     {
-      gsize bytes_written;
-      gint len;
+      bsize bytes_written;
+      bint len;
 
       len = g_unichar_to_utf8 (c, buf);
       buf[len] = '\0';
@@ -1127,14 +1127,14 @@ fill_key_event (BdkWindow    *window,
 	  event->key.keyval));
 }
 
-static gboolean
+static bboolean
 synthesize_crossing_event (BdkWindow *window,
                            BdkEvent  *event,
                            NSEvent   *nsevent,
-                           gint       x,
-                           gint       y,
-                           gint       x_root,
-                           gint       y_root)
+                           bint       x,
+                           bint       y,
+                           bint       x_root,
+                           bint       y_root)
 {
   BdkWindowObject *private;
 
@@ -1208,7 +1208,7 @@ _bdk_quartz_events_get_current_keyboard_modifiers (void)
     }
   else
     {
-      guint carbon_modifiers = GetCurrentKeyModifiers ();
+      buint carbon_modifiers = GetCurrentKeyModifiers ();
       BdkModifierType modifiers = 0;
 
       if (carbon_modifiers & alphaLock)
@@ -1241,12 +1241,12 @@ _bdk_quartz_events_get_current_mouse_modifiers (void)
 
 /* Detect window resizing */
 
-static gboolean
-test_resize (NSEvent *event, BdkWindow *toplevel, gint x, gint y)
+static bboolean
+test_resize (NSEvent *event, BdkWindow *toplevel, bint x, bint y)
 {
   BdkWindowObject *toplevel_private;
   BdkWindowImplQuartz *toplevel_impl;
-  gboolean lion;
+  bboolean lion;
 
   /* Resizing from the resize indicator only begins if an NSLeftMouseButton
    * event is received in the resizing area.
@@ -1305,7 +1305,7 @@ test_resize (NSEvent *event, BdkWindow *toplevel, gint x, gint y)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 bdk_event_translate (BdkEvent *event,
                      NSEvent  *nsevent)
 {
@@ -1314,7 +1314,7 @@ bdk_event_translate (BdkEvent *event,
   BdkWindow *window;
   int x, y;
   int x_root, y_root;
-  gboolean return_val;
+  bboolean return_val;
   BdkEvent *input_event;
 
   /* There is no support for real desktop wide grabs, so we break
@@ -1366,7 +1366,7 @@ bdk_event_translate (BdkEvent *event,
            * we first check whether this event is within our window bounds.
            */
           NSPoint screen_point = [NSEvent mouseLocation];
-          gint x_tmp, y_tmp;
+          bint x_tmp, y_tmp;
 
           toplevel = find_toplevel_under_pointer (_bdk_display,
                                                   screen_point,
@@ -1618,7 +1618,7 @@ void
 bdk_display_add_client_message_filter (BdkDisplay   *display,
 				       BdkAtom       message_type,
 				       BdkFilterFunc func,
-				       gpointer      data)
+				       bpointer      data)
 {
   /* Not supported. */
 }
@@ -1626,7 +1626,7 @@ bdk_display_add_client_message_filter (BdkDisplay   *display,
 void
 bdk_add_client_message_filter (BdkAtom       message_type,
 			       BdkFilterFunc func,
-			       gpointer      data)
+			       bpointer      data)
 {
   /* Not supported. */
 }
@@ -1643,7 +1643,7 @@ bdk_display_flush (BdkDisplay *display)
   /* Not supported. */
 }
 
-gboolean
+bboolean
 bdk_event_send_client_message_for_display (BdkDisplay      *display,
 					   BdkEvent        *event,
 					   BdkNativeWindow  winid)
@@ -1659,9 +1659,9 @@ bdk_screen_broadcast_client_message (BdkScreen *screen,
   /* Not supported. */
 }
 
-gboolean
+bboolean
 bdk_screen_get_setting (BdkScreen   *screen,
-			const gchar *name,
+			const bchar *name,
 			BValue      *value)
 {
   if (strcmp (name, "btk-double-click-time") == 0)

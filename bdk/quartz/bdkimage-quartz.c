@@ -29,12 +29,12 @@ static BObjectClass *parent_class;
 BdkImage *
 _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
 				 BdkImage    *image,
-				 gint         src_x,
-				 gint         src_y,
-				 gint         dest_x,
-				 gint         dest_y,
-				 gint         width,
-				 gint         height)
+				 bint         src_x,
+				 bint         src_y,
+				 bint         dest_x,
+				 bint         dest_y,
+				 bint         width,
+				 bint         height)
 {
   BdkScreen *screen;
   
@@ -50,12 +50,12 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
   if (BDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
     {
       BdkPixmapImplQuartz *pix_impl;
-      gint bytes_per_row;
-      guchar *data;
+      bint bytes_per_row;
+      buchar *data;
       int x, y;
 
       pix_impl = BDK_PIXMAP_IMPL_QUARTZ (drawable);
-      data = (guchar *)(pix_impl->data);
+      data = (buchar *)(pix_impl->data);
 
       if (src_x + width > pix_impl->width || src_y + height > pix_impl->height)
       	{
@@ -69,11 +69,11 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
           bytes_per_row = pix_impl->width * 4;
           for (y = 0; y < height; y++)
             {
-              guchar *src = data + ((y + src_y) * bytes_per_row) + (src_x * 4);
+              buchar *src = data + ((y + src_y) * bytes_per_row) + (src_x * 4);
 
               for (x = 0; x < width; x++)
                 {
-                  gint32 pixel;
+                  bint32 pixel;
 	  
                   /* RGB24, 4 bytes per pixel, skip first. */
                   pixel = src[0] << 16 | src[1] << 8 | src[2];
@@ -88,11 +88,11 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
           bytes_per_row = pix_impl->width * 4;
           for (y = 0; y < height; y++)
             {
-              guchar *src = data + ((y + src_y) * bytes_per_row) + (src_x * 4);
+              buchar *src = data + ((y + src_y) * bytes_per_row) + (src_x * 4);
 
               for (x = 0; x < width; x++)
                 {
-                  gint32 pixel;
+                  bint32 pixel;
 	  
                   /* ARGB32, 4 bytes per pixel. */
                   pixel = src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3];
@@ -107,11 +107,11 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
           bytes_per_row = pix_impl->width;
           for (y = 0; y < height; y++)
             {
-              guchar *src = data + ((y + src_y) * bytes_per_row) + src_x;
+              buchar *src = data + ((y + src_y) * bytes_per_row) + src_x;
 
               for (x = 0; x < width; x++)
                 {
-                  gint32 pixel;
+                  bint32 pixel;
 	  
                   /* 8 bits */
                   pixel = src[0];
@@ -131,17 +131,17 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
     {
       BdkQuartzView *view;
       NSBitmapImageRep *rep;
-      guchar *data;
+      buchar *data;
       int x, y;
       NSSize size;
       NSBitmapFormat format;
-      gboolean has_alpha;
-      gint bpp;
-      gint r_byte = 0;
-      gint g_byte = 1;
-      gint b_byte = 2;
-      gint a_byte = 3;
-      gboolean le_image_data = FALSE;
+      bboolean has_alpha;
+      bint bpp;
+      bint r_byte = 0;
+      bint g_byte = 1;
+      bint b_byte = 2;
+      bint a_byte = 3;
+      bboolean le_image_data = FALSE;
 
       if (BDK_WINDOW_IMPL_QUARTZ (drawable) == BDK_WINDOW_IMPL_QUARTZ (BDK_WINDOW_OBJECT (_bdk_root)->impl))
         {
@@ -204,18 +204,18 @@ _bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
 
       for (y = 0; y < size.height; y++)
         {
-          guchar *src = data + y * [rep bytesPerRow];
+          buchar *src = data + y * [rep bytesPerRow];
 
           for (x = 0; x < size.width; x++)
             {
-              guchar r = src[r_byte];
-              guchar g = src[g_byte];
-              guchar b = src[b_byte];
-              gint32 pixel;
+              buchar r = src[r_byte];
+              buchar g = src[g_byte];
+              buchar b = src[b_byte];
+              bint32 pixel;
 
               if (has_alpha)
                 {
-                  guchar alpha = src[a_byte];
+                  buchar alpha = src[a_byte];
 
                   /* unpremultiply if alpha > 0 */
                   if (! (format & NSAlphaNonpremultipliedBitmapFormat) && alpha)
@@ -300,7 +300,7 @@ bdk_image_get_type (void)
 }
 
 BdkImage *
-bdk_image_new_bitmap (BdkVisual *visual, gpointer data, gint width, gint height)
+bdk_image_new_bitmap (BdkVisual *visual, bpointer data, bint width, bint height)
 {
   /* We don't implement this function because it's broken, deprecated and 
    * tricky to implement. */
@@ -313,9 +313,9 @@ BdkImage*
 _bdk_image_new_for_depth (BdkScreen    *screen,
 			  BdkImageType  type,
 			  BdkVisual    *visual,
-			  gint          width,
-			  gint          height,
-			  gint          depth)
+			  bint          width,
+			  bint          height,
+			  bint          depth)
 {
   BdkImage *image;
 
@@ -344,12 +344,12 @@ _bdk_image_new_for_depth (BdkScreen    *screen,
   return image;
 }
 
-guint32
+buint32
 bdk_image_get_pixel (BdkImage *image,
-		     gint x,
-		     gint y)
+		     bint x,
+		     bint y)
 {
-  guchar *ptr;
+  buchar *ptr;
 
   g_return_val_if_fail (image != NULL, 0);
   g_return_val_if_fail (x >= 0 && x < image->width, 0);
@@ -357,25 +357,25 @@ bdk_image_get_pixel (BdkImage *image,
 
   ptr = image->mem + y * image->bpl + x * image->bpp;
 
-  return *(guint32 *)ptr;
+  return *(buint32 *)ptr;
 }
 
 void
 bdk_image_put_pixel (BdkImage *image,
-		     gint x,
-		     gint y,
-		     guint32 pixel)
+		     bint x,
+		     bint y,
+		     buint32 pixel)
 {
-  guchar *ptr;
+  buchar *ptr;
 
   ptr = image->mem + y * image->bpl + x * image->bpp;
 
-  *(guint32 *)ptr = pixel;
+  *(buint32 *)ptr = pixel;
 }
 
-gint
+bint
 _bdk_windowing_get_bits_for_depth (BdkDisplay *display,
-				   gint        depth)
+				   bint        depth)
 {
   if (depth == 24 || depth == 32)
     return 32;

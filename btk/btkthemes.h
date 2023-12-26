@@ -40,7 +40,7 @@ B_BEGIN_DECLS
 #define BTK_IS_THEME_ENGINE(theme_engine) (B_TYPE_CHECK_INSTANCE_TYPE ((theme_engine), BTK_TYPE_THEME_ENGINE))
 
 GType           btk_theme_engine_get_type        (void) B_GNUC_CONST;
-BtkThemeEngine *btk_theme_engine_get             (const gchar     *name);
+BtkThemeEngine *btk_theme_engine_get             (const bchar     *name);
 BtkRcStyle     *btk_theme_engine_create_rc_style (BtkThemeEngine  *engine);
 
 B_END_DECLS

@@ -66,9 +66,9 @@ static void btk_list_item_size_allocate     (BtkWidget        *widget,
 					     BtkAllocation    *allocation);
 static void btk_list_item_style_set         (BtkWidget        *widget,
 					     BtkStyle         *previous_style);
-static gint btk_list_item_button_press      (BtkWidget        *widget,
+static bint btk_list_item_button_press      (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gint btk_list_item_expose            (BtkWidget        *widget,
+static bint btk_list_item_expose            (BtkWidget        *widget,
 					     BdkEventExpose   *event);
 static void btk_real_list_item_select       (BtkItem          *item);
 static void btk_real_list_item_deselect     (BtkItem          *item);
@@ -76,7 +76,7 @@ static void btk_real_list_item_toggle       (BtkItem          *item);
 
 
 static BtkItemClass *parent_class = NULL;
-static guint list_item_signals[LAST_SIGNAL] = {0};
+static buint list_item_signals[LAST_SIGNAL] = {0};
 
 
 BtkType
@@ -392,7 +392,7 @@ btk_list_item_new (void)
 }
 
 BtkWidget*
-btk_list_item_new_with_label (const gchar *label)
+btk_list_item_new_with_label (const bchar *label)
 {
   BtkWidget *list_item;
   BtkWidget *label_widget;
@@ -425,7 +425,7 @@ static void
 btk_list_item_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   /*BTK_WIDGET_CLASS (parent_class)->realize (widget);*/
 
@@ -467,8 +467,8 @@ btk_list_item_size_request (BtkWidget      *widget,
 {
   BtkBin *bin;
   BtkRequisition child_requisition;
-  gint focus_width;
-  gint focus_pad;
+  bint focus_width;
+  bint focus_pad;
 
   g_return_if_fail (BTK_IS_LIST_ITEM (widget));
   g_return_if_fail (requisition != NULL);
@@ -539,7 +539,7 @@ btk_list_item_style_set	(BtkWidget      *widget,
     }
 }
 
-static gint
+static bint
 btk_list_item_button_press (BtkWidget      *widget,
 			    BdkEventButton *event)
 {
@@ -549,7 +549,7 @@ btk_list_item_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_list_item_expose (BtkWidget      *widget,
 		      BdkEventExpose *event)
 {

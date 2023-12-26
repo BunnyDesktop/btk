@@ -102,13 +102,13 @@ typedef enum {
  * this is used on both source and destination sides.
  */
 struct _BdkDragContextPrivateWin32 {
-  gboolean being_finalized;
-  gint ref_count;
+  bboolean being_finalized;
+  bint ref_count;
   IUnknown *iface;
   DWORD last_key_state;
   POINT last_pt;		/* Coordinates from last event */
-  guint drag_status : 4;	/* Current status of drag */
-  guint drop_failed : 1;	/* Whether the drop was unsuccessful */
+  buint drag_status : 4;	/* Current status of drag */
+  buint drop_failed : 1;	/* Whether the drop was unsuccessful */
 };
 
 #define PRIVATE_DATA(context) ((BdkDragContextPrivateWin32 *) BDK_DRAG_CONTEXT (context)->windowing_data)
@@ -120,9 +120,9 @@ static void bdk_drag_context_init       (BdkDragContext      *dragcontext);
 static void bdk_drag_context_class_init (BdkDragContextClass *klass);
 static void bdk_drag_context_finalize   (BObject              *object);
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
-static gboolean use_ole2_dnd = FALSE;
+static bboolean use_ole2_dnd = FALSE;
 
 G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
@@ -224,7 +224,7 @@ bdk_drag_context_unref (BdkDragContext *context)
 }
 
 static BdkDragContext *
-bdk_drag_context_find (gboolean   is_source,
+bdk_drag_context_find (bboolean   is_source,
 		       BdkWindow *source,
 		       BdkWindow *dest)
 {
@@ -250,17 +250,17 @@ bdk_drag_context_find (gboolean   is_source,
 
 #define PRINT_GUID(guid) \
   g_print ("%.08lx-%.04x-%.04x-%.02x%.02x-%.02x%.02x%.02x%.02x%.02x%.02x", \
-	   ((gulong *)  guid)[0], \
-	   ((gushort *) guid)[2], \
-	   ((gushort *) guid)[3], \
-	   ((guchar *)  guid)[8], \
-	   ((guchar *)  guid)[9], \
-	   ((guchar *)  guid)[10], \
-	   ((guchar *)  guid)[11], \
-	   ((guchar *)  guid)[12], \
-	   ((guchar *)  guid)[13], \
-	   ((guchar *)  guid)[14], \
-	   ((guchar *)  guid)[15]);
+	   ((bulong *)  guid)[0], \
+	   ((bushort *) guid)[2], \
+	   ((bushort *) guid)[3], \
+	   ((buchar *)  guid)[8], \
+	   ((buchar *)  guid)[9], \
+	   ((buchar *)  guid)[10], \
+	   ((buchar *)  guid)[11], \
+	   ((buchar *)  guid)[12], \
+	   ((buchar *)  guid)[13], \
+	   ((buchar *)  guid)[14], \
+	   ((buchar *)  guid)[15]);
 
 
 static FORMATETC *formats;
@@ -443,7 +443,7 @@ static void
 dnd_event_put (BdkEventType    type,
 	       BdkDragContext *context,
 	       const POINTL    pt,
-	       gboolean        to_dest_window)
+	       bboolean        to_dest_window)
 {
   BdkEvent e;
   e.type = type;
@@ -623,14 +623,14 @@ idropsource_release (LPDROPSOURCE This)
  * state since the last recorded state. Return true if any events
  * have been emitted and false otherwise.
  */
-static gboolean
+static bboolean
 send_change_events (BdkDragContext *ctx,
 		    DWORD           key_state,
-		    gboolean        esc_pressed)
+		    bboolean        esc_pressed)
 {
   BdkDragContextPrivateWin32 *private = PRIVATE_DATA (ctx);
   POINT pt;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
   HWND hwnd = BDK_WINDOW_HWND (ctx->source_window);
   LPARAM lparam;
   WPARAM wparam;
@@ -1284,9 +1284,9 @@ enum_formats_new (void)
 
 void
 _bdk_win32_ole2_dnd_property_change (BdkAtom       type,
-				     gint          format,
-				     const guchar *data,
-				     gint          nelements)
+				     bint          format,
+				     const buchar *data,
+				     bint          nelements)
 {
   if (use_ole2_dnd)
     {
@@ -1299,7 +1299,7 @@ _bdk_win32_ole2_dnd_property_change (BdkAtom       type,
       if (active_pFormatEtc->cfFormat == CF_UNICODETEXT)
 	{
 	  gunichar2 *wdata;
-	  glong wlen;
+	  blong wlen;
 
 	  wdata = g_utf8_to_utf16 ((const char *) data, -1, NULL, &wlen, NULL);
 	  hdata = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, (wlen + 1) * 2);
@@ -1323,10 +1323,10 @@ _bdk_win32_ole2_dnd_property_change (BdkAtom       type,
 
 /* From MS Knowledge Base article Q130698 */
 
-static gboolean
+static bboolean
 resolve_link (HWND     hWnd,
 	      wchar_t *link,
-	      gchar  **lpszPath)
+	      bchar  **lpszPath)
 {
   WIN32_FILE_ATTRIBUTE_DATA wfad;
   HRESULT hr;
@@ -1400,13 +1400,13 @@ resolve_link (HWND     hWnd,
 #if 0
 
 /* Check for filenames like C:\Users\tml\AppData\Local\Temp\d5qtkvvs.bmp */
-static gboolean
+static bboolean
 filename_looks_tempish (const char *filename)
 {
   char *dirname;
   char *p;
   const char *q;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   dirname = g_path_get_dirname (filename);
 
@@ -1426,10 +1426,10 @@ filename_looks_tempish (const char *filename)
   return retval;
 }
 
-static gboolean
-close_it (gpointer data)
+static bboolean
+close_it (bpointer data)
 {
-  close (GPOINTER_TO_INT (data));
+  close (BPOINTER_TO_INT (data));
 
   return FALSE;
 }
@@ -1439,15 +1439,15 @@ close_it (gpointer data)
 static BdkFilterReturn
 bdk_dropfiles_filter (BdkXEvent *xev,
 		      BdkEvent  *event,
-		      gpointer   data)
+		      bpointer   data)
 {
   BdkDragContext *context;
   GString *result;
   MSG *msg = (MSG *) xev;
   HANDLE hdrop;
   POINT pt;
-  gint nfiles, i;
-  gchar *fileName, *linkedFile;
+  bint nfiles, i;
+  bchar *fileName, *linkedFile;
 
   if (msg->message == WM_DROPFILES)
     {
@@ -1486,7 +1486,7 @@ bdk_dropfiles_filter (BdkXEvent *xev,
       result = g_string_new (NULL);
       for (i = 0; i < nfiles; i++)
 	{
-	  gchar *uri;
+	  bchar *uri;
 	  wchar_t wfn[MAX_PATH];
 
 	  DragQueryFileW (hdrop, i, wfn, MAX_PATH);
@@ -1543,7 +1543,7 @@ bdk_dropfiles_filter (BdkXEvent *xev,
 	      else
 		{
 		  BDK_NOTE (DND, g_print ("Opened %s as %d so that Firefox won't delete it\n", fileName, fd));
-		  g_timeout_add_seconds (1, close_it, GINT_TO_POINTER (fd));
+		  g_timeout_add_seconds (1, close_it, BINT_TO_POINTER (fd));
 		}
 	    }
 #endif
@@ -1633,7 +1633,7 @@ _bdk_win32_dnd_exit (void)
 
 static void
 local_send_leave (BdkDragContext *context,
-		  guint32         time)
+		  buint32         time)
 {
   BdkEvent tmp_event;
 
@@ -1661,7 +1661,7 @@ local_send_leave (BdkDragContext *context,
 
 static void
 local_send_enter (BdkDragContext *context,
-		  guint32         time)
+		  buint32         time)
 {
   BdkEvent tmp_event;
   BdkDragContextPrivateWin32 *private;
@@ -1710,10 +1710,10 @@ local_send_enter (BdkDragContext *context,
 
 static void
 local_send_motion (BdkDragContext *context,
-		   gint            x_root,
-		   gint            y_root,
+		   bint            x_root,
+		   bint            y_root,
 		   BdkDragAction   action,
-		   guint32         time)
+		   buint32         time)
 {
   BdkEvent tmp_event;
 
@@ -1748,7 +1748,7 @@ local_send_motion (BdkDragContext *context,
 
 static void
 local_send_drop (BdkDragContext *context,
-		 guint32         time)
+		 buint32         time)
 {
   BdkEvent tmp_event;
 
@@ -1783,7 +1783,7 @@ local_send_drop (BdkDragContext *context,
 
 static void
 bdk_drag_do_leave (BdkDragContext *context,
-		   guint32         time)
+		   buint32         time)
 {
   if (context->dest_window)
     {
@@ -1975,8 +1975,8 @@ bdk_drag_get_protocol_for_display (BdkDisplay      *display,
 }
 
 typedef struct {
-  gint x;
-  gint y;
+  bint x;
+  bint y;
   HWND ignore;
   HWND result;
 } find_window_enum_arg;
@@ -2015,8 +2015,8 @@ void
 bdk_drag_find_window_for_screen (BdkDragContext  *context,
 				 BdkWindow       *drag_window,
 				 BdkScreen       *screen,
-				 gint             x_root,
-				 gint             y_root,
+				 bint             x_root,
+				 bint             y_root,
 				 BdkWindow      **dest_window,
 				 BdkDragProtocol *protocol)
 {
@@ -2060,15 +2060,15 @@ bdk_drag_find_window_for_screen (BdkDragContext  *context,
 		     _bdk_win32_drag_protocol_to_string (*protocol)));
 }
 
-gboolean
+bboolean
 bdk_drag_motion (BdkDragContext *context,
 		 BdkWindow      *dest_window,
 		 BdkDragProtocol protocol,
-		 gint            x_root,
-		 gint            y_root,
+		 bint            x_root,
+		 bint            y_root,
 		 BdkDragAction   suggested_action,
 		 BdkDragAction   possible_actions,
-		 guint32         time)
+		 buint32         time)
 {
   BdkDragContextPrivateWin32 *private;
 
@@ -2199,7 +2199,7 @@ bdk_drag_motion (BdkDragContext *context,
 
 void
 bdk_drag_drop (BdkDragContext *context,
-	       guint32         time)
+	       buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -2219,7 +2219,7 @@ bdk_drag_drop (BdkDragContext *context,
 
 void
 bdk_drag_abort (BdkDragContext *context,
-		guint32         time)
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -2234,7 +2234,7 @@ bdk_drag_abort (BdkDragContext *context,
 void
 bdk_drag_status (BdkDragContext *context,
 		 BdkDragAction   action,
-		 guint32         time)
+		 buint32         time)
 {
   BdkDragContextPrivateWin32 *private;
   BdkDragContext *src_context;
@@ -2286,8 +2286,8 @@ bdk_drag_status (BdkDragContext *context,
 
 void
 bdk_drop_reply (BdkDragContext *context,
-		gboolean        ok,
-		guint32         time)
+		bboolean        ok,
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -2303,8 +2303,8 @@ bdk_drop_reply (BdkDragContext *context,
 
 void
 bdk_drop_finish (BdkDragContext *context,
-		 gboolean        success,
-		 guint32         time)
+		 bboolean        success,
+		 buint32         time)
 {
   BdkDragContextPrivateWin32 *private;
   BdkDragContext *src_context;
@@ -2348,7 +2348,7 @@ bdk_drop_finish (BdkDragContext *context,
 static BdkFilterReturn
 bdk_destroy_filter (BdkXEvent *xev,
 		    BdkEvent  *event,
-		    gpointer   data)
+		    bpointer   data)
 {
   MSG *msg = (MSG *) xev;
 
@@ -2382,7 +2382,7 @@ bdk_window_register_dnd (BdkWindow *window)
   if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
     return;
   else
-    g_object_set_data (B_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
+    g_object_set_data (B_OBJECT (window), "bdk-dnd-registered", BINT_TO_POINTER (TRUE));
 
   BDK_NOTE (DND, g_print ("bdk_window_register_dnd: %p\n", BDK_WINDOW_HWND (window)));
 
@@ -2447,7 +2447,7 @@ bdk_drag_get_selection (BdkDragContext *context)
     }
 }
 
-gboolean
+bboolean
 bdk_drag_drop_succeeded (BdkDragContext *context)
 {
   BdkDragContextPrivateWin32 *private;

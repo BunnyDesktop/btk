@@ -37,12 +37,12 @@ static void free_property_info (PropertyInfo *info);
 static void free_object_info (ObjectInfo *info);
 
 static inline void
-state_push (ParserData *data, gpointer info)
+state_push (ParserData *data, bpointer info)
 {
   data->stack = b_slist_prepend (data->stack, info);
 }
 
-static inline gpointer
+static inline bpointer
 state_peek (ParserData *data)
 {
   if (!data->stack)
@@ -51,10 +51,10 @@ state_peek (ParserData *data)
   return data->stack->data;
 }
 
-static inline gpointer
+static inline bpointer
 state_pop (ParserData *data)
 {
-  gpointer old = NULL;
+  bpointer old = NULL;
 
   if (!data->stack)
     return NULL;
@@ -68,11 +68,11 @@ state_pop (ParserData *data)
 
 static void
 error_missing_attribute (ParserData *data,
-                         const gchar *tag,
-                         const gchar *attribute,
+                         const bchar *tag,
+                         const bchar *attribute,
                          GError **error)
 {
-  gint line_number, char_number;
+  bint line_number, char_number;
 
   g_markup_parse_context_get_position (data->ctx,
                                        &line_number,
@@ -88,11 +88,11 @@ error_missing_attribute (ParserData *data,
 
 static void
 error_invalid_attribute (ParserData *data,
-                         const gchar *tag,
-                         const gchar *attribute,
+                         const bchar *tag,
+                         const bchar *attribute,
                          GError **error)
 {
-  gint line_number, char_number;
+  bint line_number, char_number;
 
   g_markup_parse_context_get_position (data->ctx,
                                        &line_number,
@@ -108,11 +108,11 @@ error_invalid_attribute (ParserData *data,
 
 static void
 error_invalid_tag (ParserData *data,
-		   const gchar *tag,
-		   const gchar *expected,
+		   const bchar *tag,
+		   const bchar *expected,
 		   GError **error)
 {
-  gint line_number, char_number;
+  bint line_number, char_number;
 
   g_markup_parse_context_get_position (data->ctx,
                                        &line_number,
@@ -134,12 +134,12 @@ error_invalid_tag (ParserData *data,
 		 line_number, char_number, tag);
 }
 
-gboolean
-_btk_builder_boolean_from_string (const gchar  *string,
-				  gboolean     *value,
+bboolean
+_btk_builder_boolean_from_string (const bchar  *string,
+				  bboolean     *value,
 				  GError      **error)
 {
-  gboolean retval = TRUE;
+  bboolean retval = TRUE;
   int length;
   
   g_assert (string != NULL);
@@ -149,7 +149,7 @@ _btk_builder_boolean_from_string (const gchar  *string,
     retval = FALSE;
   else if (length == 1)
     {
-      gchar c = g_ascii_tolower (string[0]);
+      bchar c = g_ascii_tolower (string[0]);
       if (c == 'y' || c == 't' || c == '1')
 	*value = TRUE;
       else if (c == 'n' || c == 'f' || c == '0')
@@ -159,7 +159,7 @@ _btk_builder_boolean_from_string (const gchar  *string,
     }
   else
     {
-      gchar *lower = g_ascii_strdown (string, length);
+      bchar *lower = g_ascii_strdown (string, length);
       
       if (strcmp (lower, "yes") == 0 || strcmp (lower, "true") == 0)
 	*value = TRUE;
@@ -205,8 +205,8 @@ builder_construct (ParserData  *data,
   return object;
 }
 
-static gchar *
-_get_type_by_symbol (const gchar* symbol)
+static bchar *
+_get_type_by_symbol (const bchar* symbol)
 {
   static GModule *module = NULL;
   GTypeGetFunc func;
@@ -215,7 +215,7 @@ _get_type_by_symbol (const gchar* symbol)
   if (!module)
     module = g_module_open (NULL, 0);
 
-  if (!g_module_symbol (module, symbol, (gpointer)&func))
+  if (!g_module_symbol (module, symbol, (bpointer)&func))
     return NULL;
   
   type = func ();
@@ -227,17 +227,17 @@ _get_type_by_symbol (const gchar* symbol)
 
 static void
 parse_requires (ParserData   *data,
-		const gchar  *element_name,
-		const gchar **names,
-		const gchar **values,
+		const bchar  *element_name,
+		const bchar **names,
+		const bchar **values,
 		GError      **error)
 {
   RequiresInfo *req_info;
-  const gchar  *library = NULL;
-  const gchar  *version = NULL;
-  gchar       **split;
-  gint          i, version_major = 0, version_minor = 0;
-  gint          line_number, char_number;
+  const bchar  *library = NULL;
+  const bchar  *version = NULL;
+  bchar       **split;
+  bint          i, version_major = 0, version_minor = 0;
+  bint          line_number, char_number;
 
   g_markup_parse_context_get_position (data->ctx,
                                        &line_number,
@@ -282,8 +282,8 @@ parse_requires (ParserData   *data,
   req_info->tag.name = element_name;
 }
 
-static gboolean
-is_requested_object (const gchar *object,
+static bboolean
+is_requested_object (const bchar *object,
                      ParserData  *data)
 {
   GSList *l;
@@ -300,18 +300,18 @@ is_requested_object (const gchar *object,
 static void
 parse_object (GMarkupParseContext  *context,
               ParserData           *data,
-              const gchar          *element_name,
-              const gchar         **names,
-              const gchar         **values,
+              const bchar          *element_name,
+              const bchar         **names,
+              const bchar         **values,
               GError              **error)
 {
   ObjectInfo *object_info;
   ChildInfo* child_info;
   int i;
-  gchar *object_class = NULL;
-  gchar *object_id = NULL;
-  gchar *constructor = NULL;
-  gint line, line2;
+  bchar *object_class = NULL;
+  bchar *object_id = NULL;
+  bchar *constructor = NULL;
+  bint line, line2;
 
   child_info = state_peek_info (data, ChildInfo);
   if (child_info && strcmp (child_info->tag.name, "object") == 0)
@@ -399,7 +399,7 @@ parse_object (GMarkupParseContext  *context,
     object_info->parent = (CommonInfo*)child_info;
 
   g_markup_parse_context_get_position (context, &line, NULL);
-  line2 = GPOINTER_TO_INT (g_hash_table_lookup (data->object_ids, object_id));
+  line2 = BPOINTER_TO_INT (g_hash_table_lookup (data->object_ids, object_id));
   if (line2 != 0)
     {
       g_set_error (error, BTK_BUILDER_ERROR,
@@ -410,7 +410,7 @@ parse_object (GMarkupParseContext  *context,
     }
 
 
-  g_hash_table_insert (data->object_ids, g_strdup (object_id), GINT_TO_POINTER (line));
+  g_hash_table_insert (data->object_ids, g_strdup (object_id), BINT_TO_POINTER (line));
 }
 
 static void
@@ -429,15 +429,15 @@ free_object_info (ObjectInfo *info)
 
 static void
 parse_child (ParserData   *data,
-             const gchar  *element_name,
-             const gchar **names,
-             const gchar **values,
+             const bchar  *element_name,
+             const bchar **names,
+             const bchar **values,
              GError      **error)
 
 {
   ObjectInfo* object_info;
   ChildInfo *child_info;
-  guint i;
+  buint i;
 
   object_info = state_peek_info (data, ObjectInfo);
   if (!object_info || strcmp (object_info->tag.name, "object") != 0)
@@ -474,15 +474,15 @@ free_child_info (ChildInfo *info)
 
 static void
 parse_property (ParserData   *data,
-                const gchar  *element_name,
-                const gchar **names,
-                const gchar **values,
+                const bchar  *element_name,
+                const bchar **names,
+                const bchar **values,
                 GError      **error)
 {
   PropertyInfo *info;
-  gchar *name = NULL;
-  gchar *context = NULL;
-  gboolean translatable = FALSE;
+  bchar *name = NULL;
+  bchar *context = NULL;
+  bboolean translatable = FALSE;
   ObjectInfo *object_info;
   int i;
 
@@ -544,18 +544,18 @@ free_property_info (PropertyInfo *info)
 
 static void
 parse_signal (ParserData   *data,
-              const gchar  *element_name,
-              const gchar **names,
-              const gchar **values,
+              const bchar  *element_name,
+              const bchar **names,
+              const bchar **values,
               GError      **error)
 {
   SignalInfo *info;
-  gchar *name = NULL;
-  gchar *handler = NULL;
-  gchar *object = NULL;
-  gboolean after = FALSE;
-  gboolean swapped = FALSE;
-  gboolean swapped_set = FALSE;
+  bchar *name = NULL;
+  bchar *handler = NULL;
+  bchar *object = NULL;
+  bboolean after = FALSE;
+  bboolean swapped = FALSE;
+  bboolean swapped_set = FALSE;
   ObjectInfo *object_info;
   int i;
 
@@ -626,7 +626,7 @@ parse_signal (ParserData   *data,
 /* Called by BtkBuilder */
 void
 _free_signal_info (SignalInfo *info,
-                   gpointer user_data)
+                   bpointer user_data)
 {
   g_free (info->name);
   g_free (info->handler);
@@ -637,7 +637,7 @@ _free_signal_info (SignalInfo *info,
 
 void
 _free_requires_info (RequiresInfo *info,
-		     gpointer user_data)
+		     bpointer user_data)
 {
   g_free (info->library);
   g_slice_free (RequiresInfo, info);
@@ -645,9 +645,9 @@ _free_requires_info (RequiresInfo *info,
 
 static void
 parse_interface (ParserData   *data,
-		 const gchar  *element_name,
-		 const gchar **names,
-		 const gchar **values,
+		 const bchar  *element_name,
+		 const bchar **names,
+		 const bchar **values,
 		 GError      **error)
 {
   int i;
@@ -682,9 +682,9 @@ parse_interface (ParserData   *data,
 static SubParser *
 create_subparser (BObject       *object,
 		  BObject       *child,
-		  const gchar   *element_name,
+		  const bchar   *element_name,
 		  GMarkupParser *parser,
-		  gpointer       user_data)
+		  bpointer       user_data)
 {
   SubParser *subparser;
 
@@ -706,11 +706,11 @@ free_subparser (SubParser *subparser)
   g_slice_free (SubParser, subparser);
 }
 
-static gboolean
+static bboolean
 subparser_start (GMarkupParseContext *context,
-		 const gchar         *element_name,
-		 const gchar        **names,
-		 const gchar        **values,
+		 const bchar         *element_name,
+		 const bchar        **names,
+		 const bchar        **values,
 		 ParserData          *data,
 		 GError             **error)
 {
@@ -733,7 +733,7 @@ subparser_start (GMarkupParseContext *context,
 
 static void
 subparser_end (GMarkupParseContext *context,
-	       const gchar         *element_name,
+	       const bchar         *element_name,
 	       ParserData          *data,
 	       GError             **error)
 {
@@ -760,17 +760,17 @@ subparser_end (GMarkupParseContext *context,
   data->subparser = NULL;
 }
 
-static gboolean
+static bboolean
 parse_custom (GMarkupParseContext *context,
-	      const gchar         *element_name,
-	      const gchar        **names,
-	      const gchar        **values,
+	      const bchar         *element_name,
+	      const bchar        **names,
+	      const bchar        **values,
 	      ParserData          *data,
 	      GError             **error)
 {
   CommonInfo* parent_info;
   GMarkupParser parser;
-  gpointer subparser_data;
+  bpointer subparser_data;
   BObject *object;
   BObject *child;
 
@@ -826,10 +826,10 @@ parse_custom (GMarkupParseContext *context,
 
 static void
 start_element (GMarkupParseContext *context,
-               const gchar         *element_name,
-               const gchar        **names,
-               const gchar        **values,
-               gpointer             user_data,
+               const bchar         *element_name,
+               const bchar        **names,
+               const bchar        **values,
+               bpointer             user_data,
                GError             **error)
 {
   ParserData *data = (ParserData*)user_data;
@@ -899,10 +899,10 @@ start_element (GMarkupParseContext *context,
 		   element_name);
 }
 
-gchar *
-_btk_builder_parser_translate (const gchar *domain,
-			       const gchar *context,
-			       const gchar *text)
+bchar *
+_btk_builder_parser_translate (const bchar *domain,
+			       const bchar *context,
+			       const bchar *text)
 {
   const char *s;
 
@@ -917,8 +917,8 @@ _btk_builder_parser_translate (const gchar *domain,
 /* Called for close tags </foo> */
 static void
 end_element (GMarkupParseContext *context,
-             const gchar         *element_name,
-             gpointer             user_data,
+             const bchar         *element_name,
+             bpointer             user_data,
              GError             **error)
 {
   ParserData *data = (ParserData*)user_data;
@@ -1052,9 +1052,9 @@ end_element (GMarkupParseContext *context,
 /* text is not nul-terminated */
 static void
 text (GMarkupParseContext *context,
-      const gchar         *text,
-      gsize                text_len,
-      gpointer             user_data,
+      const bchar         *text,
+      bsize                text_len,
+      bpointer             user_data,
       GError             **error)
 {
   ParserData *data = (ParserData*)user_data;
@@ -1113,13 +1113,13 @@ static const GMarkupParser parser = {
 
 void
 _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
-                                  const gchar  *filename,
-                                  const gchar  *buffer,
-                                  gsize         length,
-                                  gchar       **requested_objs,
+                                  const bchar  *filename,
+                                  const bchar  *buffer,
+                                  bsize         length,
+                                  bchar       **requested_objs,
                                   GError      **error)
 {
-  const gchar* domain;
+  const bchar* domain;
   ParserData *data;
   GSList *l;
   
@@ -1140,7 +1140,7 @@ _btk_builder_parser_parse_buffer (BtkBuilder   *builder,
   data->requested_objects = NULL;
   if (requested_objs)
     {
-      gint i;
+      bint i;
 
       data->inside_requested_object = FALSE;
       for (i = 0; requested_objs[i]; ++i)

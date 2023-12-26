@@ -61,19 +61,19 @@ struct _BtkTooltip
   BtkWidget *tooltip_widget;
   BdkWindow *toplevel_window;
 
-  gdouble last_x;
-  gdouble last_y;
+  bdouble last_x;
+  bdouble last_y;
   BdkWindow *last_window;
 
-  guint timeout_id;
-  guint browse_mode_timeout_id;
+  buint timeout_id;
+  buint browse_mode_timeout_id;
 
   BdkRectangle tip_area;
 
-  guint browse_mode_enabled : 1;
-  guint keyboard_mode_enabled : 1;
-  guint tip_area_set : 1;
-  guint custom_was_reset : 1;
+  buint browse_mode_enabled : 1;
+  buint keyboard_mode_enabled : 1;
+  buint tip_area_set : 1;
+  buint custom_was_reset : 1;
 };
 
 struct _BtkTooltipClass
@@ -89,11 +89,11 @@ static void       btk_tooltip_init                 (BtkTooltip      *tooltip);
 static void       btk_tooltip_dispose              (BObject         *object);
 
 static void       btk_tooltip_window_style_set     (BtkTooltip      *tooltip);
-static gboolean   btk_tooltip_paint_window         (BtkTooltip      *tooltip);
+static bboolean   btk_tooltip_paint_window         (BtkTooltip      *tooltip);
 static void       btk_tooltip_window_hide          (BtkWidget       *widget,
-						    gpointer         user_data);
+						    bpointer         user_data);
 static void       btk_tooltip_display_closed       (BdkDisplay      *display,
-						    gboolean         was_error,
+						    bboolean         was_error,
 						    BtkTooltip      *tooltip);
 static void       btk_tooltip_set_last_window      (BtkTooltip      *tooltip,
 						    BdkWindow       *window);
@@ -263,7 +263,7 @@ btk_tooltip_dispose (BObject *object)
  */
 void
 btk_tooltip_set_markup (BtkTooltip  *tooltip,
-			const gchar *markup)
+			const bchar *markup)
 {
   g_return_if_fail (BTK_IS_TOOLTIP (tooltip));
 
@@ -287,7 +287,7 @@ btk_tooltip_set_markup (BtkTooltip  *tooltip,
  */
 void
 btk_tooltip_set_text (BtkTooltip  *tooltip,
-                      const gchar *text)
+                      const bchar *text)
 {
   g_return_if_fail (BTK_IS_TOOLTIP (tooltip));
 
@@ -339,7 +339,7 @@ btk_tooltip_set_icon (BtkTooltip *tooltip,
  */
 void
 btk_tooltip_set_icon_from_stock (BtkTooltip  *tooltip,
-				 const gchar *stock_id,
+				 const bchar *stock_id,
 				 BtkIconSize  size)
 {
   g_return_if_fail (BTK_IS_TOOLTIP (tooltip));
@@ -366,7 +366,7 @@ btk_tooltip_set_icon_from_stock (BtkTooltip  *tooltip,
  */
 void
 btk_tooltip_set_icon_from_icon_name (BtkTooltip  *tooltip,
-				     const gchar *icon_name,
+				     const bchar *icon_name,
 				     BtkIconSize  size)
 {
   g_return_if_fail (BTK_IS_TOOLTIP (tooltip));
@@ -504,7 +504,7 @@ btk_tooltip_set_tip_area (BtkTooltip         *tooltip,
 void
 btk_tooltip_trigger_tooltip_query (BdkDisplay *display)
 {
-  gint x, y;
+  bint x, y;
   BdkWindow *window;
   BdkEvent event;
 
@@ -557,14 +557,14 @@ btk_tooltip_window_style_set (BtkTooltip *tooltip)
 
 static void
 draw_round_rect (bairo_t *cr,
-                 gdouble  aspect,
-                 gdouble  x,
-                 gdouble  y,
-                 gdouble  corner_radius,
-                 gdouble  width,
-                 gdouble  height)
+                 bdouble  aspect,
+                 bdouble  x,
+                 bdouble  y,
+                 bdouble  corner_radius,
+                 bdouble  width,
+                 bdouble  height)
 {
-  gdouble radius = corner_radius / aspect;
+  bdouble radius = corner_radius / aspect;
 
   bairo_move_to (cr, x + radius, y);
 
@@ -608,9 +608,9 @@ fill_background (BtkWidget  *widget,
                  bairo_t    *cr,
                  BdkColor   *bg_color,
                  BdkColor   *border_color,
-                 guchar      alpha)
+                 buchar      alpha)
 {
-  gint tooltip_radius;
+  bint tooltip_radius;
 
   if (!btk_widget_is_composited (widget))
     alpha = 255;
@@ -649,7 +649,7 @@ update_shape (BtkTooltip *tooltip)
 {
   BdkBitmap *mask;
   bairo_t *cr;
-  gint width, height, tooltip_radius;
+  bint width, height, tooltip_radius;
 
   btk_widget_style_get (tooltip->window,
                         "tooltip-radius", &tooltip_radius,
@@ -676,11 +676,11 @@ update_shape (BtkTooltip *tooltip)
   g_object_unref (mask);
 }
 
-static gboolean
+static bboolean
 btk_tooltip_paint_window (BtkTooltip *tooltip)
 {
-  guchar tooltip_alpha;
-  gint tooltip_radius;
+  buchar tooltip_alpha;
+  bint tooltip_radius;
 
   btk_widget_style_get (tooltip->window,
                         "tooltip-alpha", &tooltip_alpha,
@@ -719,7 +719,7 @@ btk_tooltip_paint_window (BtkTooltip *tooltip)
 
 static void
 btk_tooltip_window_hide (BtkWidget *widget,
-			 gpointer   user_data)
+			 bpointer   user_data)
 {
   BtkTooltip *tooltip = BTK_TOOLTIP (user_data);
 
@@ -733,15 +733,15 @@ struct ChildLocation
   BtkWidget *child;
   BtkWidget *container;
 
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 static void
 child_location_foreach (BtkWidget *child,
-			gpointer   data)
+			bpointer   data)
 {
-  gint x, y;
+  bint x, y;
   struct ChildLocation *child_loc = data;
 
   /* Ignore invisible widgets */
@@ -805,15 +805,15 @@ child_location_foreach (BtkWidget *child,
  */
 static void
 window_to_alloc (BtkWidget *dest_widget,
-		 gint       src_x,
-		 gint       src_y,
-		 gint      *dest_x,
-		 gint      *dest_y)
+		 bint       src_x,
+		 bint       src_y,
+		 bint      *dest_x,
+		 bint      *dest_y)
 {
   /* Translate from window relative to allocation relative */
   if (btk_widget_get_has_window (dest_widget) && dest_widget->parent)
     {
-      gint wx, wy;
+      bint wx, wy;
       bdk_window_get_position (dest_widget->window, &wx, &wy);
 
       /* Offset coordinates if widget->window is smaller than
@@ -839,10 +839,10 @@ window_to_alloc (BtkWidget *dest_widget,
  */
 BtkWidget *
 _btk_widget_find_at_coords (BdkWindow *window,
-                            gint       window_x,
-                            gint       window_y,
-                            gint      *widget_x,
-                            gint      *widget_y)
+                            bint       window_x,
+                            bint       window_y,
+                            bint      *widget_x,
+                            bint      *widget_y)
 {
   BtkWidget *event_widget;
   struct ChildLocation child_loc = { NULL, NULL, 0, 0 };
@@ -870,7 +870,7 @@ _btk_widget_find_at_coords (BdkWindow *window,
    */
   while (window && window != event_widget->window)
     {
-      gdouble px, py;
+      bdouble px, py;
 
       bdk_window_coords_to_parent (window,
                                    child_loc.x, child_loc.y,
@@ -935,11 +935,11 @@ _btk_widget_find_at_coords (BdkWindow *window,
  */
 static BtkWidget *
 find_topmost_widget_coords_from_event (BdkEvent *event,
-				       gint     *x,
-				       gint     *y)
+				       bint     *x,
+				       bint     *y)
 {
-  gint tx, ty;
-  gdouble dx, dy;
+  bint tx, ty;
+  bdouble dx, dy;
   BtkWidget *tmp;
 
   bdk_event_get_coords (event, &dx, &dy);
@@ -963,8 +963,8 @@ find_topmost_widget_coords_from_event (BdkEvent *event,
   return tmp;
 }
 
-static gint
-tooltip_browse_mode_expired (gpointer data)
+static bint
+tooltip_browse_mode_expired (bpointer data)
 {
   BtkTooltip *tooltip;
 
@@ -982,7 +982,7 @@ tooltip_browse_mode_expired (gpointer data)
 
 static void
 btk_tooltip_display_closed (BdkDisplay *display,
-			    gboolean    was_error,
+			    bboolean    was_error,
 			    BtkTooltip *tooltip)
 {
   g_object_set_data (B_OBJECT (display), "bdk-display-current-tooltip", NULL);
@@ -997,23 +997,23 @@ btk_tooltip_set_last_window (BtkTooltip *tooltip,
 
   if (tooltip->last_window)
     g_object_remove_weak_pointer (B_OBJECT (tooltip->last_window),
-				  (gpointer *) &tooltip->last_window);
+				  (bpointer *) &tooltip->last_window);
 
   tooltip->last_window = window;
 
   if (window)
     g_object_add_weak_pointer (B_OBJECT (tooltip->last_window),
-			       (gpointer *) &tooltip->last_window);
+			       (bpointer *) &tooltip->last_window);
 }
 
-static gboolean
+static bboolean
 btk_tooltip_run_requery (BtkWidget  **widget,
 			 BtkTooltip  *tooltip,
-			 gint        *x,
-			 gint        *y)
+			 bint        *x,
+			 bint        *y)
 {
-  gboolean has_tooltip = FALSE;
-  gboolean return_value = FALSE;
+  bboolean has_tooltip = FALSE;
+  bboolean return_value = FALSE;
 
   btk_tooltip_reset (tooltip);
 
@@ -1059,12 +1059,12 @@ get_bounding_box (BtkWidget    *widget,
                   BdkRectangle *bounds)
 {
   BdkWindow *window;
-  gint x, y;
-  gint w, h;
-  gint x1, y1;
-  gint x2, y2;
-  gint x3, y3;
-  gint x4, y4;
+  bint x, y;
+  bint w, h;
+  bint x1, y1;
+  bint x2, y2;
+  bint x3, y3;
+  bint x4, y4;
 
   window = btk_widget_get_parent_window (widget);
 
@@ -1092,7 +1092,7 @@ btk_tooltip_position (BtkTooltip *tooltip,
 		      BdkDisplay *display,
 		      BtkWidget  *new_tooltip_widget)
 {
-  gint x, y;
+  bint x, y;
   BdkScreen *screen;
 
   tooltip->tooltip_widget = new_tooltip_widget;
@@ -1113,7 +1113,7 @@ btk_tooltip_position (BtkTooltip *tooltip,
     }
   else
     {
-      guint cursor_size;
+      buint cursor_size;
 
       x = tooltip->last_x;
       y = tooltip->last_y;
@@ -1131,7 +1131,7 @@ btk_tooltip_position (BtkTooltip *tooltip,
   /* Show it */
   if (tooltip->current_window)
     {
-      gint monitor_num;
+      bint monitor_num;
       BdkRectangle monitor;
       BtkRequisition requisition;
 
@@ -1165,15 +1165,15 @@ btk_tooltip_position (BtkTooltip *tooltip,
 static void
 btk_tooltip_show_tooltip (BdkDisplay *display)
 {
-  gint x, y;
+  bint x, y;
   BdkScreen *screen;
 
   BdkWindow *window;
   BtkWidget *tooltip_widget;
   BtkWidget *pointer_widget;
   BtkTooltip *tooltip;
-  gboolean has_tooltip;
-  gboolean return_value = FALSE;
+  bboolean has_tooltip;
+  bboolean return_value = FALSE;
 
   tooltip = g_object_get_data (B_OBJECT (display),
 			       "bdk-display-current-tooltip");
@@ -1185,7 +1185,7 @@ btk_tooltip_show_tooltip (BdkDisplay *display)
     }
   else
     {
-      gint tx, ty;
+      bint tx, ty;
 
       window = tooltip->last_window;
 
@@ -1267,7 +1267,7 @@ btk_tooltip_hide_tooltip (BtkTooltip *tooltip)
 
   if (!tooltip->keyboard_mode_enabled)
     {
-      guint timeout;
+      buint timeout;
       BtkSettings *settings;
 
       settings = btk_widget_get_settings (BTK_WIDGET (tooltip->window));
@@ -1302,8 +1302,8 @@ btk_tooltip_hide_tooltip (BtkTooltip *tooltip)
     }
 }
 
-static gint
-tooltip_popup_timeout (gpointer data)
+static bint
+tooltip_popup_timeout (bpointer data)
 {
   BdkDisplay *display;
   BtkTooltip *tooltip;
@@ -1328,7 +1328,7 @@ tooltip_popup_timeout (gpointer data)
 static void
 btk_tooltip_start_delay (BdkDisplay *display)
 {
-  guint timeout;
+  buint timeout;
   BtkTooltip *tooltip;
   BtkSettings *settings;
 
@@ -1357,8 +1357,8 @@ btk_tooltip_start_delay (BdkDisplay *display)
 void
 _btk_tooltip_focus_in (BtkWidget *widget)
 {
-  gint x, y;
-  gboolean return_value = FALSE;
+  bint x, y;
+  bboolean return_value = FALSE;
   BdkDisplay *display;
   BtkTooltip *tooltip;
 
@@ -1480,11 +1480,11 @@ _btk_tooltip_hide (BtkWidget *widget)
     btk_tooltip_hide_tooltip (tooltip);
 }
 
-static gboolean
+static bboolean
 tooltips_enabled (BdkWindow *window)
 {
-  gboolean enabled;
-  gboolean touchscreen;
+  bboolean enabled;
+  bboolean touchscreen;
   BdkScreen *screen;
   BtkSettings *settings;
 
@@ -1502,8 +1502,8 @@ tooltips_enabled (BdkWindow *window)
 void
 _btk_tooltip_handle_event (BdkEvent *event)
 {
-  gint x, y;
-  gboolean return_value = FALSE;
+  bint x, y;
+  bboolean return_value = FALSE;
   BtkWidget *has_tooltip_widget = NULL;
   BdkDisplay *display;
   BtkTooltip *current_tooltip;
@@ -1580,9 +1580,9 @@ _btk_tooltip_handle_event (BdkEvent *event)
       case BDK_SCROLL:
 	if (current_tooltip)
 	  {
-	    gboolean tip_area_set;
+	    bboolean tip_area_set;
 	    BdkRectangle tip_area;
-	    gboolean hide_tooltip;
+	    bboolean hide_tooltip;
 
 	    tip_area_set = current_tooltip->tip_area_set;
 	    tip_area = current_tooltip->tip_area;

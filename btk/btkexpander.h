@@ -62,36 +62,36 @@ struct _BtkExpanderClass
 
 GType                 btk_expander_get_type          (void) B_GNUC_CONST;
 
-BtkWidget            *btk_expander_new               (const gchar *label);
-BtkWidget            *btk_expander_new_with_mnemonic (const gchar *label);
+BtkWidget            *btk_expander_new               (const bchar *label);
+BtkWidget            *btk_expander_new_with_mnemonic (const bchar *label);
 
 void                  btk_expander_set_expanded      (BtkExpander *expander,
-						      gboolean     expanded);
-gboolean              btk_expander_get_expanded      (BtkExpander *expander);
+						      bboolean     expanded);
+bboolean              btk_expander_get_expanded      (BtkExpander *expander);
 
 /* Spacing between the expander/label and the child */
 void                  btk_expander_set_spacing       (BtkExpander *expander,
-						      gint         spacing);
-gint                  btk_expander_get_spacing       (BtkExpander *expander);
+						      bint         spacing);
+bint                  btk_expander_get_spacing       (BtkExpander *expander);
 
 void                  btk_expander_set_label         (BtkExpander *expander,
-						      const gchar *label);
-const gchar *         btk_expander_get_label         (BtkExpander *expander);
+						      const bchar *label);
+const bchar *         btk_expander_get_label         (BtkExpander *expander);
 
 void                  btk_expander_set_use_underline (BtkExpander *expander,
-						      gboolean     use_underline);
-gboolean              btk_expander_get_use_underline (BtkExpander *expander);
+						      bboolean     use_underline);
+bboolean              btk_expander_get_use_underline (BtkExpander *expander);
 
 void                  btk_expander_set_use_markup    (BtkExpander *expander,
-						      gboolean    use_markup);
-gboolean              btk_expander_get_use_markup    (BtkExpander *expander);
+						      bboolean    use_markup);
+bboolean              btk_expander_get_use_markup    (BtkExpander *expander);
 
 void                  btk_expander_set_label_widget  (BtkExpander *expander,
 						      BtkWidget   *label_widget);
 BtkWidget            *btk_expander_get_label_widget  (BtkExpander *expander);
 void                  btk_expander_set_label_fill    (BtkExpander *expander,
-						      gboolean     label_fill);
-gboolean              btk_expander_get_label_fill    (BtkExpander *expander);
+						      bboolean     label_fill);
+bboolean              btk_expander_get_label_fill    (BtkExpander *expander);
 
 B_END_DECLS
 

@@ -3,14 +3,14 @@
 
 /* Obligatory basic callback */
 static void print_hello( BtkWidget *w,
-                         gpointer   data )
+                         bpointer   data )
 {
   g_message ("Hello, World!\n");
 }
 
 /* For the check button */
-static void print_toggle( gpointer   callback_data,
-                          guint      callback_action,
+static void print_toggle( bpointer   callback_data,
+                          buint      callback_action,
                           BtkWidget *menu_item )
 {
    g_message ("Check button state - %d\n",
@@ -18,8 +18,8 @@ static void print_toggle( gpointer   callback_data,
 }
 
 /* For the radio buttons */
-static void print_selected( gpointer   callback_data,
-                            guint      callback_action,
+static void print_selected( bpointer   callback_data,
+                            buint      callback_action,
                             BtkWidget *menu_item )
 {
    if(BTK_CHECK_MENU_ITEM(menu_item)->active)
@@ -46,7 +46,7 @@ static BtkItemFactoryEntry menu_items[] = {
   { "/_Help/About",   NULL,         NULL,           0, "<Item>" },
 };
 
-static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
+static bint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
 /* Returns a menubar widget made from the above menu */
 static BtkWidget *get_menubar_menu( BtkWidget  *window )
@@ -74,7 +74,7 @@ static BtkWidget *get_menubar_menu( BtkWidget  *window )
 }
 
 /* Popup the menu when the popup button is pressed */
-static gboolean popup_cb( BtkWidget *widget,
+static bboolean popup_cb( BtkWidget *widget,
                           BdkEvent *event,
                           BtkWidget *menu )
 {
@@ -110,7 +110,7 @@ BtkWidget *get_popup_menu( void )
    g_signal_connect (B_OBJECT(button),
                      "event",
                      G_CALLBACK(popup_cb),
-                     (gpointer) menu);
+                     (bpointer) menu);
 
    return button;
 }

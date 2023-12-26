@@ -51,8 +51,8 @@ print ";\n\n";
 
 print <<EOT;
 typedef struct {
-    guint  keyval;
-    guint  offset;
+    buint  keyval;
+    buint  offset;
 } bdk_key;
 
 static const bdk_key bdk_keys_by_keyval[] = {

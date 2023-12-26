@@ -109,9 +109,9 @@ bail_radio_menu_item_ref_relation_set (BatkObject *obj)
     if (list)
     {
       BatkObject **accessible_array;
-      guint list_length;
+      buint list_length;
       BatkRelation* relation;
-      gint i = 0;
+      bint i = 0;
 
       list_length = b_slist_length (list);
       accessible_array = (BatkObject**) g_malloc (sizeof (BatkObject *) * 

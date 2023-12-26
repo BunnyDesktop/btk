@@ -17,7 +17,7 @@ static Window
 find_toplevel_window (Window xid)
 {
   Window root, parent, *children;
-  guint nchildren;
+  buint nchildren;
 
   do
     {
@@ -37,19 +37,19 @@ find_toplevel_window (Window xid)
 }
 
 
-static gboolean
+static bboolean
 adjust_size_callback (WidgetInfo *info)
 {
   Window toplevel;
   Window root;
-  gint tx;
-  gint ty;
-  guint twidth;
-  guint theight;
-  guint tborder_width;
-  guint tdepth;
-  gint target_width = 0;
-  gint target_height = 0;
+  bint tx;
+  bint ty;
+  buint twidth;
+  buint theight;
+  buint tborder_width;
+  buint tdepth;
+  bint target_width = 0;
+  bint target_height = 0;
 
   toplevel = find_toplevel_window (BDK_WINDOW_XID (info->window->window));
   XGetGeometry (BDK_WINDOW_XDISPLAY (info->window->window),
@@ -815,7 +815,7 @@ static WidgetInfo *
 create_about_dialog (void)
 {
   BtkWidget *widget;
-  const gchar *authors[] = {
+  const bchar *authors[] = {
     "Peter Mattis",
     "Spencer Kimball",
     "Josh MacDonald",

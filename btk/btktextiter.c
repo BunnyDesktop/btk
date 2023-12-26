@@ -34,7 +34,7 @@
 #include "btkalias.h"
 #include <string.h>
 
-#define FIX_OVERFLOWS(varname) if ((varname) == G_MININT) (varname) = G_MININT + 1
+#define FIX_OVERFLOWS(varname) if ((varname) == B_MININT) (varname) = B_MININT + 1
 
 typedef struct _BtkTextRealIter BtkTextRealIter;
 
@@ -48,14 +48,14 @@ struct B_GNUC_MAY_ALIAS _BtkTextRealIter
 
      If the line byte offset is valid, so is the segment byte offset;
      and ditto for char offsets. */
-  gint line_byte_offset;
-  gint line_char_offset;
+  bint line_byte_offset;
+  bint line_char_offset;
   /* These two are valid if >= 0 */
-  gint cached_char_index;
-  gint cached_line_number;
+  bint cached_char_index;
+  bint cached_line_number;
   /* Stamps to detect the buffer changing under us */
-  gint chars_changed_stamp;
-  gint segments_changed_stamp;
+  bint chars_changed_stamp;
+  bint segments_changed_stamp;
   /* Valid if the segments_changed_stamp is up-to-date */
   BtkTextLineSegment *segment;     /* indexable segment we index */
   BtkTextLineSegment *any_segment; /* first segment in our location,
@@ -65,12 +65,12 @@ struct B_GNUC_MAY_ALIAS _BtkTextRealIter
 
      If the line byte offset is valid, so is the segment byte offset;
      and ditto for char offsets. */
-  gint segment_byte_offset;
-  gint segment_char_offset;
+  bint segment_byte_offset;
+  bint segment_char_offset;
 
   /* padding */
-  gint pad1;
-  gpointer pad2;
+  bint pad1;
+  bpointer pad2;
 };
 
 /* These "set" functions should not assume any fields
@@ -97,7 +97,7 @@ iter_set_common (BtkTextRealIter *iter,
 static void
 iter_set_from_byte_offset (BtkTextRealIter *iter,
                            BtkTextLine *line,
-                           gint byte_offset)
+                           bint byte_offset)
 {
   iter_set_common (iter, line);
 
@@ -114,7 +114,7 @@ iter_set_from_byte_offset (BtkTextRealIter *iter,
 static void
 iter_set_from_char_offset (BtkTextRealIter *iter,
                            BtkTextLine *line,
-                           gint char_offset)
+                           bint char_offset)
 {
   iter_set_common (iter, line);
 
@@ -134,7 +134,7 @@ iter_set_from_segment (BtkTextRealIter *iter,
                        BtkTextLineSegment *segment)
 {
   BtkTextLineSegment *seg;
-  gint byte_offset;
+  bint byte_offset;
 
   /* This could theoretically be optimized by computing all the iter
      fields in this same loop, but I'm skipping it for now. */
@@ -263,7 +263,7 @@ static BtkTextRealIter*
 iter_init_from_byte_offset (BtkTextIter *iter,
                             BtkTextBTree *tree,
                             BtkTextLine *line,
-                            gint line_byte_offset)
+                            bint line_byte_offset)
 {
   BtkTextRealIter *real;
 
@@ -287,7 +287,7 @@ static BtkTextRealIter*
 iter_init_from_char_offset (BtkTextIter *iter,
                             BtkTextBTree *tree,
                             BtkTextLine *line,
-                            gint line_char_offset)
+                            bint line_char_offset)
 {
   BtkTextRealIter *real;
 
@@ -307,14 +307,14 @@ invalidate_char_index (BtkTextRealIter *iter)
 }
 
 static inline void
-adjust_char_index (BtkTextRealIter *iter, gint count)
+adjust_char_index (BtkTextRealIter *iter, bint count)
 {
   if (iter->cached_char_index >= 0)
     iter->cached_char_index += count;
 }
 
 static inline void
-adjust_line_number (BtkTextRealIter *iter, gint count)
+adjust_line_number (BtkTextRealIter *iter, bint count)
 {
   if (iter->cached_line_number >= 0)
     iter->cached_line_number += count;
@@ -348,7 +348,7 @@ ensure_byte_offsets (BtkTextRealIter *iter)
     }
 }
 
-static inline gboolean
+static inline bboolean
 is_segment_start (BtkTextRealIter *real)
 {
   return real->segment_byte_offset == 0 || real->segment_char_offset == 0;
@@ -483,7 +483,7 @@ _btk_text_iter_get_any_segment (const BtkTextIter *iter)
   return real->any_segment;
 }
 
-gint
+bint
 _btk_text_iter_get_segment_byte (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -502,7 +502,7 @@ _btk_text_iter_get_segment_byte (const BtkTextIter *iter)
   return real->segment_byte_offset;
 }
 
-gint
+bint
 _btk_text_iter_get_segment_char (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -565,7 +565,7 @@ _btk_text_iter_get_btree (const BtkTextIter *iter)
  *
  * Return value: a character offset
  **/
-gint
+bint
 btk_text_iter_get_offset (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -603,7 +603,7 @@ btk_text_iter_get_offset (const BtkTextIter *iter)
  *
  * Return value: a line number
  **/
-gint
+bint
 btk_text_iter_get_line (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -634,7 +634,7 @@ btk_text_iter_get_line (const BtkTextIter *iter)
  *
  * Return value: offset from start of line
  **/
-gint
+bint
 btk_text_iter_get_line_offset (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -665,7 +665,7 @@ btk_text_iter_get_line_offset (const BtkTextIter *iter)
  *
  * Return value: distance from start of line, in bytes
  **/
-gint
+bint
 btk_text_iter_get_line_index (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -695,11 +695,11 @@ btk_text_iter_get_line_index (const BtkTextIter *iter)
  * 
  * Return value: offset in visible characters from the start of the line 
  **/
-gint
+bint
 btk_text_iter_get_visible_line_offset (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
-  gint vis_offset;
+  bint vis_offset;
   BtkTextLineSegment *seg;
   BtkTextIter pos;
   
@@ -760,11 +760,11 @@ btk_text_iter_get_visible_line_offset (const BtkTextIter *iter)
  * 
  * Return value: byte index of @iter with respect to the start of the line
  **/
-gint
+bint
 btk_text_iter_get_visible_line_index (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
-  gint vis_offset;
+  bint vis_offset;
   BtkTextLineSegment *seg;
   BtkTextIter pos;
   
@@ -877,7 +877,7 @@ btk_text_iter_get_char (const BtkTextIter *iter)
  *
  * Return value: slice of text from the buffer
  **/
-gchar*
+bchar*
 btk_text_iter_get_slice       (const BtkTextIter *start,
                                const BtkTextIter *end)
 {
@@ -903,7 +903,7 @@ btk_text_iter_get_slice       (const BtkTextIter *start,
  *
  * Return value: array of characters from the buffer
  **/
-gchar*
+bchar*
 btk_text_iter_get_text       (const BtkTextIter *start,
                               const BtkTextIter *end)
 {
@@ -927,7 +927,7 @@ btk_text_iter_get_text       (const BtkTextIter *start,
  *
  * Return value: slice of text from the buffer
  **/
-gchar*
+bchar*
 btk_text_iter_get_visible_slice (const BtkTextIter  *start,
                                  const BtkTextIter  *end)
 {
@@ -951,7 +951,7 @@ btk_text_iter_get_visible_slice (const BtkTextIter  *start,
  *
  * Return value: string containing visible text in the range
  **/
-gchar*
+bchar*
 btk_text_iter_get_visible_text (const BtkTextIter  *start,
                                 const BtkTextIter  *end)
 {
@@ -1084,7 +1084,7 @@ btk_text_iter_get_marks (const BtkTextIter *iter)
  **/
 GSList*
 btk_text_iter_get_toggled_tags  (const BtkTextIter  *iter,
-                                 gboolean            toggled_on)
+                                 bboolean            toggled_on)
 {
   BtkTextRealIter *real;
   BtkTextLineSegment *seg;
@@ -1140,7 +1140,7 @@ btk_text_iter_get_toggled_tags  (const BtkTextIter  *iter,
  *
  * Return value: whether @iter is the start of a range tagged with @tag
  **/
-gboolean
+bboolean
 btk_text_iter_begins_tag    (const BtkTextIter  *iter,
                              BtkTextTag         *tag)
 {
@@ -1187,7 +1187,7 @@ btk_text_iter_begins_tag    (const BtkTextIter  *iter,
  * Return value: whether @iter is the end of a range tagged with @tag
  *
  **/
-gboolean
+bboolean
 btk_text_iter_ends_tag   (const BtkTextIter  *iter,
                           BtkTextTag         *tag)
 {
@@ -1230,7 +1230,7 @@ btk_text_iter_ends_tag   (const BtkTextIter  *iter,
  *
  * Return value: whether @tag is toggled on or off at @iter
  **/
-gboolean
+bboolean
 btk_text_iter_toggles_tag (const BtkTextIter  *iter,
                            BtkTextTag         *tag)
 {
@@ -1270,7 +1270,7 @@ btk_text_iter_toggles_tag (const BtkTextIter  *iter,
  *
  * Return value: whether @iter is tagged with @tag
  **/
-gboolean
+bboolean
 btk_text_iter_has_tag (const BtkTextIter   *iter,
                        BtkTextTag          *tag)
 {
@@ -1314,8 +1314,8 @@ GSList*
 btk_text_iter_get_tags (const BtkTextIter *iter)
 {
   BtkTextTag** tags;
-  gint tag_count = 0;
-  gint i;
+  bint tag_count = 0;
+  bint i;
   GSList *retval;
   
   g_return_val_if_fail (iter != NULL, NULL);
@@ -1365,12 +1365,12 @@ btk_text_iter_get_tags (const BtkTextIter *iter)
  * 
  * Return value: whether @iter is inside an editable range
  **/
-gboolean
+bboolean
 btk_text_iter_editable (const BtkTextIter *iter,
-                        gboolean           default_setting)
+                        bboolean           default_setting)
 {
   BtkTextAttributes *values;
-  gboolean retval;
+  bboolean retval;
 
   g_return_val_if_fail (iter != NULL, FALSE);
   
@@ -1401,9 +1401,9 @@ btk_text_iter_editable (const BtkTextIter *iter,
  * 
  * Return value: whether text inserted at @iter would be editable
  **/
-gboolean
+bboolean
 btk_text_iter_can_insert (const BtkTextIter *iter,
-                          gboolean           default_editability)
+                          bboolean           default_editability)
 {
   g_return_val_if_fail (iter != NULL, FALSE);
   
@@ -1467,7 +1467,7 @@ btk_text_iter_get_language (const BtkTextIter *iter)
  *
  * Return value: whether @iter begins a line
  **/
-gboolean
+bboolean
 btk_text_iter_starts_line (const BtkTextIter   *iter)
 {
   BtkTextRealIter *real;
@@ -1507,7 +1507,7 @@ btk_text_iter_starts_line (const BtkTextIter   *iter)
  *
  * Return value: whether @iter is at the end of a line
  **/
-gboolean
+bboolean
 btk_text_iter_ends_line (const BtkTextIter   *iter)
 {
   gunichar wc;
@@ -1564,7 +1564,7 @@ btk_text_iter_ends_line (const BtkTextIter   *iter)
  *
  * Return value: whether @iter is the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_is_end (const BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -1602,7 +1602,7 @@ btk_text_iter_is_end (const BtkTextIter *iter)
  *
  * Return value: whether @iter is the first in the buffer
  **/
-gboolean
+bboolean
 btk_text_iter_is_start (const BtkTextIter *iter)
 {
   return btk_text_iter_get_offset (iter) == 0;
@@ -1617,11 +1617,11 @@ btk_text_iter_is_start (const BtkTextIter *iter)
  *
  * Return value: number of characters in the line
  **/
-gint
+bint
 btk_text_iter_get_chars_in_line (const BtkTextIter   *iter)
 {
   BtkTextRealIter *real;
-  gint count;
+  bint count;
   BtkTextLineSegment *seg;
 
   g_return_val_if_fail (iter != NULL, 0);
@@ -1669,11 +1669,11 @@ btk_text_iter_get_chars_in_line (const BtkTextIter   *iter)
  *
  * Return value: number of bytes in the line
  **/
-gint
+bint
 btk_text_iter_get_bytes_in_line (const BtkTextIter   *iter)
 {
   BtkTextRealIter *real;
-  gint count;
+  bint count;
   BtkTextLineSegment *seg;
 
   g_return_val_if_fail (iter != NULL, 0);
@@ -1727,12 +1727,12 @@ btk_text_iter_get_bytes_in_line (const BtkTextIter   *iter)
  *
  * Return value: %TRUE if @values was modified
  **/
-gboolean
+bboolean
 btk_text_iter_get_attributes (const BtkTextIter  *iter,
                               BtkTextAttributes  *values)
 {
   BtkTextTag** tags;
-  gint tag_count = 0;
+  bint tag_count = 0;
 
   /* Get the tags at this spot */
   tags = _btk_text_btree_get_tags (iter, &tag_count);
@@ -1766,7 +1766,7 @@ btk_text_iter_get_attributes (const BtkTextIter  *iter,
  * it's already on the last (end iter) line, i.e. it
  * won't move to the end of the last line.
  */
-static gboolean
+static bboolean
 forward_line_leaving_caches_unmodified (BtkTextRealIter *real)
 {
   if (!_btk_text_line_contains_end_iter (real->line, real->tree))
@@ -1814,7 +1814,7 @@ forward_line_leaving_caches_unmodified (BtkTextRealIter *real)
  * left here, since it's non-trivial code that might be useful in
  * the future.
  */
-static gboolean
+static bboolean
 backward_line_leaving_caches_unmodified (BtkTextRealIter *real)
 {
   BtkTextLine *new_line;
@@ -1858,7 +1858,7 @@ backward_line_leaving_caches_unmodified (BtkTextRealIter *real)
 /* The return value indicates (MOVEMENT OCCURRED && NEW ITER IS
  * DEREFERENCEABLE)
  */
-static gboolean
+static bboolean
 forward_char (BtkTextRealIter *real)
 {
   BtkTextIter *iter = (BtkTextIter*)real;
@@ -1882,7 +1882,7 @@ forward_char (BtkTextRealIter *real)
 
       if (real->line_byte_offset >= 0)
         {
-          gint bytes;
+          bint bytes;
           const char * start =
             real->segment->body.chars + real->segment_byte_offset;
 
@@ -1914,7 +1914,7 @@ forward_char (BtkTextRealIter *real)
     }
 }
 
-gboolean
+bboolean
 _btk_text_iter_forward_indexable_segment (BtkTextIter *iter)
 {
   /* Need to move to the next segment; if no next segment,
@@ -1922,8 +1922,8 @@ _btk_text_iter_forward_indexable_segment (BtkTextIter *iter)
   BtkTextLineSegment *seg;
   BtkTextLineSegment *any_seg;
   BtkTextRealIter *real;
-  gint chars_skipped;
-  gint bytes_skipped;
+  bint chars_skipped;
+  bint bytes_skipped;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 
@@ -2020,7 +2020,7 @@ _btk_text_iter_forward_indexable_segment (BtkTextIter *iter)
     }
 }
 
-static gboolean
+static bboolean
 at_last_indexable_segment (BtkTextRealIter *real)
 {
   BtkTextLineSegment *seg;
@@ -2043,7 +2043,7 @@ at_last_indexable_segment (BtkTextRealIter *real)
  * we're not at the start of the current segment (always
  * ends up on a different segment if it returns TRUE)
  */
-gboolean
+bboolean
 _btk_text_iter_backward_indexable_segment (BtkTextIter *iter)
 {
   /* Move to the start of the previous segment; if no previous
@@ -2056,8 +2056,8 @@ _btk_text_iter_backward_indexable_segment (BtkTextIter *iter)
   BtkTextLineSegment *any_seg;
   BtkTextLineSegment *prev_seg;
   BtkTextLineSegment *prev_any_seg;
-  gint bytes_skipped;
-  gint chars_skipped;
+  bint bytes_skipped;
+  bint chars_skipped;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 
@@ -2187,7 +2187,7 @@ _btk_text_iter_backward_indexable_segment (BtkTextIter *iter)
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_forward_char (BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -2216,7 +2216,7 @@ btk_text_iter_forward_char (BtkTextIter *iter)
  *
  * Return value: whether movement was possible
  **/
-gboolean
+bboolean
 btk_text_iter_backward_char (BtkTextIter *iter)
 {
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -2255,8 +2255,8 @@ btk_text_iter_backward_char (BtkTextIter *iter)
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
-btk_text_iter_forward_chars (BtkTextIter *iter, gint count)
+bboolean
+btk_text_iter_forward_chars (BtkTextIter *iter, bint count)
 {
   BtkTextRealIter *real;
 
@@ -2287,8 +2287,8 @@ btk_text_iter_forward_chars (BtkTextIter *iter, gint count)
     }
   else
     {
-      gint current_char_index;
-      gint new_char_index;
+      bint current_char_index;
+      bint new_char_index;
 
       check_invariants (iter);
 
@@ -2327,8 +2327,8 @@ btk_text_iter_forward_chars (BtkTextIter *iter, gint count)
  * Return value: whether @iter moved and is dereferenceable
  *
  **/
-gboolean
-btk_text_iter_backward_chars (BtkTextIter *iter, gint count)
+bboolean
+btk_text_iter_backward_chars (BtkTextIter *iter, bint count)
 {
   BtkTextRealIter *real;
 
@@ -2361,7 +2361,7 @@ btk_text_iter_backward_chars (BtkTextIter *iter, gint count)
       if (real->line_byte_offset >= 0)
         {
           const char *p;
-          gint new_byte_offset;
+          bint new_byte_offset;
 
           /* if in the last fourth of the segment walk backwards */
           if (count < real->segment_char_offset / 4)
@@ -2393,8 +2393,8 @@ btk_text_iter_backward_chars (BtkTextIter *iter, gint count)
        */
       if (TRUE || count > MAX_LINEAR_SCAN)
         {
-          gint current_char_index;
-          gint new_char_index;
+          bint current_char_index;
+          bint new_char_index;
 
           current_char_index = btk_text_iter_get_offset (iter);
 
@@ -2439,9 +2439,9 @@ btk_text_iter_backward_chars (BtkTextIter *iter, gint count)
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_forward_text_chars  (BtkTextIter *iter,
-                                   gint         count)
+                                   bint         count)
 {
 
 
@@ -2460,9 +2460,9 @@ btk_text_iter_forward_text_chars  (BtkTextIter *iter,
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_backward_text_chars (BtkTextIter *iter,
-                                   gint         count)
+                                   bint         count)
 {
 
 
@@ -2480,7 +2480,7 @@ btk_text_iter_backward_text_chars (BtkTextIter *iter,
  *
  * Return value: whether @iter can be dereferenced
  **/
-gboolean
+bboolean
 btk_text_iter_forward_line (BtkTextIter *iter)
 {
   BtkTextRealIter *real;
@@ -2532,13 +2532,13 @@ btk_text_iter_forward_line (BtkTextIter *iter)
  *
  * Return value: whether @iter moved
  **/
-gboolean
+bboolean
 btk_text_iter_backward_line (BtkTextIter *iter)
 {
   BtkTextLine *new_line;
   BtkTextRealIter *real;
-  gboolean offset_will_change;
-  gint offset;
+  bboolean offset_will_change;
+  bint offset;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 
@@ -2611,8 +2611,8 @@ btk_text_iter_backward_line (BtkTextIter *iter)
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
-btk_text_iter_forward_lines (BtkTextIter *iter, gint count)
+bboolean
+btk_text_iter_forward_lines (BtkTextIter *iter, bint count)
 {
   FIX_OVERFLOWS (count);
   
@@ -2627,7 +2627,7 @@ btk_text_iter_forward_lines (BtkTextIter *iter, gint count)
     }
   else
     {
-      gint old_line;
+      bint old_line;
 
       if (btk_text_iter_is_end (iter))
         return FALSE;
@@ -2662,8 +2662,8 @@ btk_text_iter_forward_lines (BtkTextIter *iter, gint count)
  *
  * Return value: whether @iter moved and is dereferenceable
  **/
-gboolean
-btk_text_iter_backward_lines (BtkTextIter *iter, gint count)
+bboolean
+btk_text_iter_backward_lines (BtkTextIter *iter, bint count)
 {
   FIX_OVERFLOWS (count);
   
@@ -2677,7 +2677,7 @@ btk_text_iter_backward_lines (BtkTextIter *iter, gint count)
     }
   else
     {
-      gint old_line;
+      bint old_line;
 
       old_line = btk_text_iter_get_line (iter);
 
@@ -2700,7 +2700,7 @@ btk_text_iter_backward_lines (BtkTextIter *iter, gint count)
  * 
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_line (BtkTextIter *iter)
 {
   while (btk_text_iter_forward_line (iter))
@@ -2740,7 +2740,7 @@ btk_text_iter_forward_visible_line (BtkTextIter *iter)
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_line (BtkTextIter *iter)
 {
   while (btk_text_iter_backward_line (iter))
@@ -2781,9 +2781,9 @@ btk_text_iter_backward_visible_line (BtkTextIter *iter)
  * 
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_lines (BtkTextIter *iter,
-                                     gint         count)
+                                     bint         count)
 {
   FIX_OVERFLOWS (count);
   
@@ -2821,9 +2821,9 @@ btk_text_iter_forward_visible_lines (BtkTextIter *iter,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_lines (BtkTextIter *iter,
-                                      gint         count)
+                                      bint         count)
 {
   FIX_OVERFLOWS (count);
   
@@ -2843,27 +2843,27 @@ btk_text_iter_backward_visible_lines (BtkTextIter *iter,
     }
 }
 
-typedef gboolean (* FindLogAttrFunc) (const BangoLogAttr *attrs,
-                                      gint                offset,
-                                      gint                min_offset,
-                                      gint                len,
-                                      gint               *found_offset,
-                                      gboolean            already_moved_initially);
+typedef bboolean (* FindLogAttrFunc) (const BangoLogAttr *attrs,
+                                      bint                offset,
+                                      bint                min_offset,
+                                      bint                len,
+                                      bint               *found_offset,
+                                      bboolean            already_moved_initially);
 
-typedef gboolean (* TestLogAttrFunc) (const BangoLogAttr *attrs,
-                                      gint                offset,
-                                      gint                min_offset,
-                                      gint                len);
+typedef bboolean (* TestLogAttrFunc) (const BangoLogAttr *attrs,
+                                      bint                offset,
+                                      bint                min_offset,
+                                      bint                len);
 
 /* Word funcs */
 
-static gboolean
+static bboolean
 find_word_end_func (const BangoLogAttr *attrs,
-                    gint          offset,
-                    gint          min_offset,
-                    gint          len,
-                    gint         *found_offset,
-                    gboolean      already_moved_initially)
+                    bint          offset,
+                    bint          min_offset,
+                    bint          len,
+                    bint         *found_offset,
+                    bboolean      already_moved_initially)
 {
   if (!already_moved_initially)
     ++offset;
@@ -2878,22 +2878,22 @@ find_word_end_func (const BangoLogAttr *attrs,
   return offset < min_offset + len;
 }
 
-static gboolean
+static bboolean
 is_word_end_func (const BangoLogAttr *attrs,
-                  gint          offset,
-                  gint          min_offset,
-                  gint          len)
+                  bint          offset,
+                  bint          min_offset,
+                  bint          len)
 {
   return attrs[offset].is_word_end;
 }
 
-static gboolean
+static bboolean
 find_word_start_func (const BangoLogAttr *attrs,
-                      gint          offset,
-                      gint          min_offset,
-                      gint          len,
-                      gint         *found_offset,
-                      gboolean      already_moved_initially)
+                      bint          offset,
+                      bint          min_offset,
+                      bint          len,
+                      bint         *found_offset,
+                      bboolean      already_moved_initially)
 {
   if (!already_moved_initially)
     --offset;
@@ -2908,20 +2908,20 @@ find_word_start_func (const BangoLogAttr *attrs,
   return offset >= min_offset;
 }
 
-static gboolean
+static bboolean
 is_word_start_func (const BangoLogAttr *attrs,
-                    gint          offset,
-                    gint          min_offset,
-                    gint          len)
+                    bint          offset,
+                    bint          min_offset,
+                    bint          len)
 {
   return attrs[offset].is_word_start;
 }
 
-static gboolean
+static bboolean
 inside_word_func (const BangoLogAttr *attrs,
-                  gint          offset,
-                  gint          min_offset,
-                  gint          len)
+                  bint          offset,
+                  bint          min_offset,
+                  bint          len)
 {
   /* Find next word start or end */
   while (offset >= min_offset &&
@@ -2936,13 +2936,13 @@ inside_word_func (const BangoLogAttr *attrs,
 
 /* Sentence funcs */
 
-static gboolean
+static bboolean
 find_sentence_end_func (const BangoLogAttr *attrs,
-                        gint          offset,
-                        gint          min_offset,
-                        gint          len,
-                        gint         *found_offset,
-                        gboolean      already_moved_initially)
+                        bint          offset,
+                        bint          min_offset,
+                        bint          len,
+                        bint         *found_offset,
+                        bboolean      already_moved_initially)
 {
   if (!already_moved_initially)
     ++offset;
@@ -2957,22 +2957,22 @@ find_sentence_end_func (const BangoLogAttr *attrs,
   return offset < min_offset + len;
 }
 
-static gboolean
+static bboolean
 is_sentence_end_func (const BangoLogAttr *attrs,
-                      gint          offset,
-                      gint          min_offset,
-                      gint          len)
+                      bint          offset,
+                      bint          min_offset,
+                      bint          len)
 {
   return attrs[offset].is_sentence_end;
 }
 
-static gboolean
+static bboolean
 find_sentence_start_func (const BangoLogAttr *attrs,
-                          gint          offset,
-                          gint          min_offset,
-                          gint          len,
-                          gint         *found_offset,
-                          gboolean      already_moved_initially)
+                          bint          offset,
+                          bint          min_offset,
+                          bint          len,
+                          bint         *found_offset,
+                          bboolean      already_moved_initially)
 {
   if (!already_moved_initially)
     --offset;
@@ -2987,20 +2987,20 @@ find_sentence_start_func (const BangoLogAttr *attrs,
   return offset >= min_offset;
 }
 
-static gboolean
+static bboolean
 is_sentence_start_func (const BangoLogAttr *attrs,
-                        gint          offset,
-                        gint          min_offset,
-                        gint          len)
+                        bint          offset,
+                        bint          min_offset,
+                        bint          len)
 {
   return attrs[offset].is_sentence_start;
 }
 
-static gboolean
+static bboolean
 inside_sentence_func (const BangoLogAttr *attrs,
-                      gint          offset,
-                      gint          min_offset,
-                      gint          len)
+                      bint          offset,
+                      bint          min_offset,
+                      bint          len)
 {
   /* Find next sentence start or end */
   while (offset >= min_offset &&
@@ -3010,14 +3010,14 @@ inside_sentence_func (const BangoLogAttr *attrs,
   return attrs[offset].is_sentence_start;
 }
 
-static gboolean
+static bboolean
 test_log_attrs (const BtkTextIter *iter,
                 TestLogAttrFunc    func)
 {
-  gint char_len;
+  bint char_len;
   const BangoLogAttr *attrs;
   int offset;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 
@@ -3039,16 +3039,16 @@ test_log_attrs (const BtkTextIter *iter,
   return result;
 }
 
-static gboolean
+static bboolean
 find_line_log_attrs (const BtkTextIter *iter,
                      FindLogAttrFunc    func,
-                     gint              *found_offset,
-                     gboolean           already_moved_initially)
+                     bint              *found_offset,
+                     bboolean           already_moved_initially)
 {
-  gint char_len;
+  bint char_len;
   const BangoLogAttr *attrs;
   int offset;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (iter != NULL, FALSE);
   
@@ -3069,15 +3069,15 @@ find_line_log_attrs (const BtkTextIter *iter,
 }
 
 /* FIXME this function is very, very gratuitously slow */
-static gboolean
+static bboolean
 find_by_log_attrs (BtkTextIter    *iter,
                    FindLogAttrFunc func,
-                   gboolean        forward,
-                   gboolean        already_moved_initially)
+                   bboolean        forward,
+                   bboolean        already_moved_initially)
 {
   BtkTextIter orig;
-  gint offset = 0;
-  gboolean found = FALSE;
+  bint offset = 0;
+  bboolean found = FALSE;
 
   g_return_val_if_fail (iter != NULL, FALSE);
 
@@ -3124,11 +3124,11 @@ find_by_log_attrs (BtkTextIter    *iter,
     }
 }
 
-static gboolean 
+static bboolean 
 find_visible_by_log_attrs (BtkTextIter    *iter,
 			   FindLogAttrFunc func,
-			   gboolean        forward,
-			   gboolean        already_moved_initially)
+			   bboolean        forward,
+			   bboolean        already_moved_initially)
 {
   BtkTextIter pos;
 
@@ -3148,12 +3148,12 @@ find_visible_by_log_attrs (BtkTextIter    *iter,
   return FALSE;
 }
 
-typedef gboolean (* OneStepFunc) (BtkTextIter *iter);
-typedef gboolean (* MultipleStepFunc) (BtkTextIter *iter, gint count);
+typedef bboolean (* OneStepFunc) (BtkTextIter *iter);
+typedef bboolean (* MultipleStepFunc) (BtkTextIter *iter, bint count);
 				  
-static gboolean 
+static bboolean 
 move_multiple_steps (BtkTextIter *iter, 
-		     gint count,
+		     bint count,
 		     OneStepFunc step_forward,
 		     MultipleStepFunc n_steps_backward)
 {
@@ -3194,7 +3194,7 @@ move_multiple_steps (BtkTextIter *iter,
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator 
  **/
-gboolean
+bboolean
 btk_text_iter_forward_word_end (BtkTextIter *iter)
 {
   return find_by_log_attrs (iter, find_word_end_func, TRUE, FALSE);
@@ -3212,7 +3212,7 @@ btk_text_iter_forward_word_end (BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator 
  **/
-gboolean
+bboolean
 btk_text_iter_backward_word_start (BtkTextIter      *iter)
 {
   return find_by_log_attrs (iter, find_word_start_func, FALSE, FALSE);
@@ -3231,9 +3231,9 @@ btk_text_iter_backward_word_start (BtkTextIter      *iter)
  *
  * Return value: %TRUE if @iter moved and is not the end iterator 
  **/
-gboolean
+bboolean
 btk_text_iter_forward_word_ends (BtkTextIter      *iter,
-                                 gint              count)
+                                 bint              count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_forward_word_end,
@@ -3249,9 +3249,9 @@ btk_text_iter_forward_word_ends (BtkTextIter      *iter,
  *
  * Return value: %TRUE if @iter moved and is not the end iterator 
  **/
-gboolean
+bboolean
 btk_text_iter_backward_word_starts (BtkTextIter      *iter,
-                                    gint               count)
+                                    bint               count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_backward_word_start,
@@ -3272,7 +3272,7 @@ btk_text_iter_backward_word_starts (BtkTextIter      *iter,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_word_end (BtkTextIter *iter)
 {
   return find_visible_by_log_attrs (iter, find_word_end_func, TRUE, FALSE);
@@ -3292,7 +3292,7 @@ btk_text_iter_forward_visible_word_end (BtkTextIter *iter)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_word_start (BtkTextIter      *iter)
 {
   return find_visible_by_log_attrs (iter, find_word_start_func, FALSE, FALSE);
@@ -3309,9 +3309,9 @@ btk_text_iter_backward_visible_word_start (BtkTextIter      *iter)
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_word_ends (BtkTextIter *iter,
-					 gint         count)
+					 bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_forward_visible_word_end,
@@ -3329,9 +3329,9 @@ btk_text_iter_forward_visible_word_ends (BtkTextIter *iter,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_word_starts (BtkTextIter *iter,
-					    gint         count)
+					    bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_backward_visible_word_start,
@@ -3349,7 +3349,7 @@ btk_text_iter_backward_visible_word_starts (BtkTextIter *iter,
  *
  * Return value: %TRUE if @iter is at the start of a word
  **/
-gboolean
+bboolean
 btk_text_iter_starts_word (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, is_word_start_func);
@@ -3366,7 +3366,7 @@ btk_text_iter_starts_word (const BtkTextIter *iter)
  *
  * Return value: %TRUE if @iter is at the end of a word
  **/
-gboolean
+bboolean
 btk_text_iter_ends_word (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, is_word_end_func);
@@ -3383,7 +3383,7 @@ btk_text_iter_ends_word (const BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter is inside a word
  **/
-gboolean
+bboolean
 btk_text_iter_inside_word (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, inside_word_func);
@@ -3400,7 +3400,7 @@ btk_text_iter_inside_word (const BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter is at the start of a sentence.
  **/
-gboolean
+bboolean
 btk_text_iter_starts_sentence (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, is_sentence_start_func);
@@ -3417,7 +3417,7 @@ btk_text_iter_starts_sentence (const BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter is at the end of a sentence.
  **/
-gboolean
+bboolean
 btk_text_iter_ends_sentence (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, is_sentence_end_func);
@@ -3435,7 +3435,7 @@ btk_text_iter_ends_sentence (const BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter is inside a sentence.
  **/
-gboolean
+bboolean
 btk_text_iter_inside_sentence (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, inside_sentence_func);
@@ -3453,7 +3453,7 @@ btk_text_iter_inside_sentence (const BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_forward_sentence_end (BtkTextIter *iter)
 {
   return find_by_log_attrs (iter, find_sentence_end_func, TRUE, FALSE);
@@ -3471,7 +3471,7 @@ btk_text_iter_forward_sentence_end (BtkTextIter *iter)
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_backward_sentence_start (BtkTextIter      *iter)
 {
   return find_by_log_attrs (iter, find_sentence_start_func, FALSE, FALSE);
@@ -3491,9 +3491,9 @@ btk_text_iter_backward_sentence_start (BtkTextIter      *iter)
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_forward_sentence_ends (BtkTextIter      *iter,
-                                     gint              count)
+                                     bint              count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_forward_sentence_end,
@@ -3511,22 +3511,22 @@ btk_text_iter_forward_sentence_ends (BtkTextIter      *iter,
  * 
  * Return value: %TRUE if @iter moved and is not the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_backward_sentence_starts (BtkTextIter      *iter,
-                                        gint               count)
+                                        bint               count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_backward_sentence_start,
 			      btk_text_iter_forward_sentence_ends);
 }
 
-static gboolean
+static bboolean
 find_forward_cursor_pos_func (const BangoLogAttr *attrs,
-                              gint          offset,
-                              gint          min_offset,
-                              gint          len,
-                              gint         *found_offset,
-                              gboolean      already_moved_initially)
+                              bint          offset,
+                              bint          min_offset,
+                              bint          len,
+                              bint         *found_offset,
+                              bboolean      already_moved_initially)
 {
   if (!already_moved_initially)
     ++offset;
@@ -3540,13 +3540,13 @@ find_forward_cursor_pos_func (const BangoLogAttr *attrs,
   return offset < (min_offset + len);
 }
 
-static gboolean
+static bboolean
 find_backward_cursor_pos_func (const BangoLogAttr *attrs,
-                               gint          offset,
-                               gint          min_offset,
-                               gint          len,
-                               gint         *found_offset,
-                               gboolean      already_moved_initially)
+                               bint          offset,
+                               bint          min_offset,
+                               bint          len,
+                               bint         *found_offset,
+                               bboolean      already_moved_initially)
 {  
   if (!already_moved_initially)
     --offset;
@@ -3560,11 +3560,11 @@ find_backward_cursor_pos_func (const BangoLogAttr *attrs,
   return offset >= min_offset;
 }
 
-static gboolean
+static bboolean
 is_cursor_pos_func (const BangoLogAttr *attrs,
-                    gint          offset,
-                    gint          min_offset,
-                    gint          len)
+                    bint          offset,
+                    bint          min_offset,
+                    bint          len)
 {
   return attrs[offset].is_cursor_position;
 }
@@ -3586,7 +3586,7 @@ is_cursor_pos_func (const BangoLogAttr *attrs,
  * 
  * Return value: %TRUE if we moved and the new position is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_forward_cursor_position (BtkTextIter *iter)
 {
   return find_by_log_attrs (iter, find_forward_cursor_pos_func, TRUE, FALSE);
@@ -3600,7 +3600,7 @@ btk_text_iter_forward_cursor_position (BtkTextIter *iter)
  * 
  * Return value: %TRUE if we moved
  **/
-gboolean
+bboolean
 btk_text_iter_backward_cursor_position (BtkTextIter *iter)
 {
   return find_by_log_attrs (iter, find_backward_cursor_pos_func, FALSE, FALSE);
@@ -3616,9 +3616,9 @@ btk_text_iter_backward_cursor_position (BtkTextIter *iter)
  * 
  * Return value: %TRUE if we moved and the new position is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_forward_cursor_positions (BtkTextIter *iter,
-                                        gint         count)
+                                        bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_forward_cursor_position,
@@ -3635,9 +3635,9 @@ btk_text_iter_forward_cursor_positions (BtkTextIter *iter,
  * 
  * Return value: %TRUE if we moved and the new position is dereferenceable
  **/
-gboolean
+bboolean
 btk_text_iter_backward_cursor_positions (BtkTextIter *iter,
-                                         gint         count)
+                                         bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_backward_cursor_position,
@@ -3655,7 +3655,7 @@ btk_text_iter_backward_cursor_positions (BtkTextIter *iter,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_cursor_position (BtkTextIter *iter)
 {
   return find_visible_by_log_attrs (iter, find_forward_cursor_pos_func, TRUE, FALSE);
@@ -3672,7 +3672,7 @@ btk_text_iter_forward_visible_cursor_position (BtkTextIter *iter)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_cursor_position (BtkTextIter *iter)
 {
   return find_visible_by_log_attrs (iter, find_backward_cursor_pos_func, FALSE, FALSE);
@@ -3690,9 +3690,9 @@ btk_text_iter_backward_visible_cursor_position (BtkTextIter *iter)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_forward_visible_cursor_positions (BtkTextIter *iter,
-						gint         count)
+						bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_forward_visible_cursor_position,
@@ -3711,9 +3711,9 @@ btk_text_iter_forward_visible_cursor_positions (BtkTextIter *iter,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_iter_backward_visible_cursor_positions (BtkTextIter *iter,
-						 gint         count)
+						 bint         count)
 {
   return move_multiple_steps (iter, count, 
 			      btk_text_iter_backward_visible_cursor_position,
@@ -3729,7 +3729,7 @@ btk_text_iter_backward_visible_cursor_positions (BtkTextIter *iter,
  * 
  * Return value: %TRUE if the cursor can be placed at @iter
  **/
-gboolean
+bboolean
 btk_text_iter_is_cursor_position (const BtkTextIter *iter)
 {
   return test_log_attrs (iter, is_cursor_pos_func);
@@ -3750,10 +3750,10 @@ btk_text_iter_is_cursor_position (const BtkTextIter *iter)
  **/
 void
 btk_text_iter_set_line_offset (BtkTextIter *iter,
-                               gint         char_on_line)
+                               bint         char_on_line)
 {
   BtkTextRealIter *real;
-  gint chars_in_line;
+  bint chars_in_line;
   
   g_return_if_fail (iter != NULL);
 
@@ -3789,10 +3789,10 @@ btk_text_iter_set_line_offset (BtkTextIter *iter,
  **/
 void
 btk_text_iter_set_line_index (BtkTextIter *iter,
-                              gint         byte_on_line)
+                              bint         byte_on_line)
 {
   BtkTextRealIter *real;
-  gint bytes_in_line;
+  bint bytes_in_line;
   
   g_return_if_fail (iter != NULL);
 
@@ -3834,9 +3834,9 @@ btk_text_iter_set_line_index (BtkTextIter *iter,
  **/
 void
 btk_text_iter_set_visible_line_offset (BtkTextIter *iter,
-                                       gint         char_on_line)
+                                       bint         char_on_line)
 {
-  gint chars_seen = 0;
+  bint chars_seen = 0;
   BtkTextIter pos;
 
   g_return_if_fail (iter != NULL);
@@ -3875,10 +3875,10 @@ btk_text_iter_set_visible_line_offset (BtkTextIter *iter,
  **/
 void
 btk_text_iter_set_visible_line_index (BtkTextIter *iter,
-                                      gint         byte_on_line)
+                                      bint         byte_on_line)
 {
   BtkTextRealIter *real;
-  gint offset = 0;
+  bint offset = 0;
   BtkTextIter pos;
   BtkTextLineSegment *seg;
   
@@ -3936,10 +3936,10 @@ btk_text_iter_set_visible_line_index (BtkTextIter *iter,
  **/
 void
 btk_text_iter_set_line (BtkTextIter *iter,
-                        gint         line_number)
+                        bint         line_number)
 {
   BtkTextLine *line;
-  gint real_line;
+  bint real_line;
   BtkTextRealIter *real;
 
   g_return_if_fail (iter != NULL);
@@ -3971,12 +3971,12 @@ btk_text_iter_set_line (BtkTextIter *iter,
  **/
 void
 btk_text_iter_set_offset (BtkTextIter *iter,
-                          gint         char_offset)
+                          bint         char_offset)
 {
   BtkTextLine *line;
   BtkTextRealIter *real;
-  gint line_start;
-  gint real_char_index;
+  bint line_start;
+  bint real_char_index;
 
   g_return_if_fail (iter != NULL);
 
@@ -4075,11 +4075,11 @@ find_paragraph_delimiter_for_line (BtkTextIter *iter)
  * 
  * Return value: %TRUE if we moved and the new location is not the end iterator
  **/
-gboolean
+bboolean
 btk_text_iter_forward_to_line_end (BtkTextIter *iter)
 {
-  gint current_offset;
-  gint new_offset;
+  bint current_offset;
+  bint new_offset;
 
   
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -4125,7 +4125,7 @@ btk_text_iter_forward_to_line_end (BtkTextIter *iter)
  *
  * Return value: whether we found a tag toggle after @iter
  **/
-gboolean
+bboolean
 btk_text_iter_forward_to_tag_toggle (BtkTextIter *iter,
                                      BtkTextTag  *tag)
 {
@@ -4207,7 +4207,7 @@ btk_text_iter_forward_to_tag_toggle (BtkTextIter *iter,
  *
  * Return value: whether we found a tag toggle before @iter
  **/
-gboolean
+bboolean
 btk_text_iter_backward_to_tag_toggle (BtkTextIter *iter,
                                       BtkTextTag  *tag)
 {
@@ -4293,12 +4293,12 @@ btk_text_iter_backward_to_tag_toggle (BtkTextIter *iter,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 matches_pred (BtkTextIter *iter,
               BtkTextCharPredicate pred,
-              gpointer user_data)
+              bpointer user_data)
 {
-  gint ch;
+  bint ch;
 
   ch = btk_text_iter_get_char (iter);
 
@@ -4319,10 +4319,10 @@ matches_pred (BtkTextIter *iter,
  * 
  * Return value: whether a match was found
  **/
-gboolean
+bboolean
 btk_text_iter_forward_find_char (BtkTextIter         *iter,
                                  BtkTextCharPredicate pred,
-                                 gpointer             user_data,
+                                 bpointer             user_data,
                                  const BtkTextIter   *limit)
 {
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -4354,10 +4354,10 @@ btk_text_iter_forward_find_char (BtkTextIter         *iter,
  * 
  * Return value: whether a match was found
  **/
-gboolean
+bboolean
 btk_text_iter_backward_find_char (BtkTextIter         *iter,
                                   BtkTextCharPredicate pred,
-                                  gpointer             user_data,
+                                  bpointer             user_data,
                                   const BtkTextIter   *limit)
 {
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -4380,12 +4380,12 @@ btk_text_iter_backward_find_char (BtkTextIter         *iter,
 
 static void
 forward_chars_with_skipping (BtkTextIter *iter,
-                             gint         count,
-                             gboolean     skip_invisible,
-                             gboolean     skip_nontext)
+                             bint         count,
+                             bboolean     skip_invisible,
+                             bboolean     skip_nontext)
 {
 
-  gint i;
+  bint i;
 
   g_return_if_fail (count >= 0);
 
@@ -4393,7 +4393,7 @@ forward_chars_with_skipping (BtkTextIter *iter,
 
   while (i > 0)
     {
-      gboolean ignored = FALSE;
+      bboolean ignored = FALSE;
 
       if (skip_nontext &&
           btk_text_iter_get_char (iter) == BTK_TEXT_UNKNOWN_CHAR)
@@ -4411,18 +4411,18 @@ forward_chars_with_skipping (BtkTextIter *iter,
     }
 }
 
-static gboolean
+static bboolean
 lines_match (const BtkTextIter *start,
-             const gchar **lines,
-             gboolean visible_only,
-             gboolean slice,
+             const bchar **lines,
+             bboolean visible_only,
+             bboolean slice,
              BtkTextIter *match_start,
              BtkTextIter *match_end)
 {
   BtkTextIter next;
-  gchar *line_text;
-  const gchar *found;
-  gint offset;
+  bchar *line_text;
+  const bchar *found;
+  bint offset;
 
   if (*lines == NULL || **lines == '\0')
     {
@@ -4513,33 +4513,33 @@ lines_match (const BtkTextIter *start,
 }
 
 /* strsplit () that retains the delimiter as part of the string. */
-static gchar **
+static bchar **
 strbreakup (const char *string,
             const char *delimiter,
-            gint        max_tokens)
+            bint        max_tokens)
 {
   GSList *string_list = NULL, *slist;
-  gchar **str_array, *s;
-  guint i, n = 1;
+  bchar **str_array, *s;
+  buint i, n = 1;
 
   g_return_val_if_fail (string != NULL, NULL);
   g_return_val_if_fail (delimiter != NULL, NULL);
 
   if (max_tokens < 1)
-    max_tokens = G_MAXINT;
+    max_tokens = B_MAXINT;
 
   s = strstr (string, delimiter);
   if (s)
     {
-      guint delimiter_len = strlen (delimiter);
+      buint delimiter_len = strlen (delimiter);
 
       do
         {
-          guint len;
-          gchar *new_string;
+          buint len;
+          bchar *new_string;
 
           len = s - string + delimiter_len;
-          new_string = g_new (gchar, len + 1);
+          new_string = g_new (bchar, len + 1);
           strncpy (new_string, string, len);
           new_string[len] = 0;
           string_list = b_slist_prepend (string_list, new_string);
@@ -4555,7 +4555,7 @@ strbreakup (const char *string,
       string_list = b_slist_prepend (string_list, g_strdup (string));
     }
 
-  str_array = g_new (gchar*, n);
+  str_array = g_new (bchar*, n);
 
   i = n - 1;
 
@@ -4594,20 +4594,20 @@ strbreakup (const char *string,
  *
  * Return value: whether a match was found
  **/
-gboolean
+bboolean
 btk_text_iter_forward_search (const BtkTextIter *iter,
-                              const gchar       *str,
+                              const bchar       *str,
                               BtkTextSearchFlags flags,
                               BtkTextIter       *match_start,
                               BtkTextIter       *match_end,
                               const BtkTextIter *limit)
 {
-  gchar **lines = NULL;
+  bchar **lines = NULL;
   BtkTextIter match;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   BtkTextIter search;
-  gboolean visible_only;
-  gboolean slice;
+  bboolean visible_only;
+  bboolean slice;
   
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (str != NULL, FALSE);
@@ -4658,7 +4658,7 @@ btk_text_iter_forward_search (const BtkTextIter *iter,
           btk_text_iter_compare (&search, limit) >= 0)
         break;
       
-      if (lines_match (&search, (const gchar**)lines,
+      if (lines_match (&search, (const bchar**)lines,
                        visible_only, slice, &match, &end))
         {
           if (limit == NULL ||
@@ -4679,18 +4679,18 @@ btk_text_iter_forward_search (const BtkTextIter *iter,
     }
   while (btk_text_iter_forward_line (&search));
 
-  g_strfreev ((gchar**)lines);
+  g_strfreev ((bchar**)lines);
 
   return retval;
 }
 
-static gboolean
-vectors_equal_ignoring_trailing (gchar **vec1,
-                                 gchar **vec2)
+static bboolean
+vectors_equal_ignoring_trailing (bchar **vec1,
+                                 bchar **vec2)
 {
   /* Ignores trailing chars in vec2's last line */
 
-  gchar **i1, **i2;
+  bchar **i1, **i2;
 
   i1 = vec1;
   i2 = vec2;
@@ -4701,8 +4701,8 @@ vectors_equal_ignoring_trailing (gchar **vec1,
         {
           if (*(i2 + 1) == NULL) /* if this is the last line */
             {
-              gint len1 = strlen (*i1);
-              gint len2 = strlen (*i2);
+              bint len1 = strlen (*i1);
+              bint len2 = strlen (*i2);
 
               if (len2 >= len1 &&
                   strncmp (*i1, *i2, len1) == 0)
@@ -4736,19 +4736,19 @@ typedef struct _LinesWindow LinesWindow;
 
 struct _LinesWindow
 {
-  gint n_lines;
-  gchar **lines;
+  bint n_lines;
+  bchar **lines;
   BtkTextIter first_line_start;
   BtkTextIter first_line_end;
-  gboolean slice;
-  gboolean visible_only;
+  bboolean slice;
+  bboolean visible_only;
 };
 
 static void
 lines_window_init (LinesWindow       *win,
                    const BtkTextIter *start)
 {
-  gint i;
+  bint i;
   BtkTextIter line_start;
   BtkTextIter line_end;
 
@@ -4759,7 +4759,7 @@ lines_window_init (LinesWindow       *win,
       btk_text_iter_get_line (start) + 1 < win->n_lines)
     {
       /* Already at the end, or not enough lines to match */
-      win->lines = g_new0 (gchar*, 1);
+      win->lines = g_new0 (bchar*, 1);
       *win->lines = NULL;
       return;
     }
@@ -4779,12 +4779,12 @@ lines_window_init (LinesWindow       *win,
   win->first_line_start = line_start;
   win->first_line_end = line_end;
 
-  win->lines = g_new0 (gchar*, win->n_lines + 1);
+  win->lines = g_new0 (bchar*, win->n_lines + 1);
 
   i = win->n_lines - 1;
   while (i >= 0)
     {
-      gchar *line_text;
+      bchar *line_text;
 
       if (win->slice)
         {
@@ -4810,11 +4810,11 @@ lines_window_init (LinesWindow       *win,
     }
 }
 
-static gboolean
+static bboolean
 lines_window_back (LinesWindow *win)
 {
   BtkTextIter new_start;
-  gchar *line_text;
+  bchar *line_text;
 
   new_start = win->first_line_start;
 
@@ -4848,7 +4848,7 @@ lines_window_back (LinesWindow *win)
     }
 
   /* Move lines to make room for first line. */
-  g_memmove (win->lines + 1, win->lines, win->n_lines * sizeof (gchar*));
+  g_memmove (win->lines + 1, win->lines, win->n_lines * sizeof (bchar*));
 
   *win->lines = line_text;
 
@@ -4878,21 +4878,21 @@ lines_window_free (LinesWindow *win)
  *
  * Return value: whether a match was found
  **/
-gboolean
+bboolean
 btk_text_iter_backward_search (const BtkTextIter *iter,
-                               const gchar       *str,
+                               const bchar       *str,
                                BtkTextSearchFlags flags,
                                BtkTextIter       *match_start,
                                BtkTextIter       *match_end,
                                const BtkTextIter *limit)
 {
-  gchar **lines = NULL;
-  gchar **l;
-  gint n_lines;
+  bchar **lines = NULL;
+  bchar **l;
+  bint n_lines;
   LinesWindow win;
-  gboolean retval = FALSE;
-  gboolean visible_only;
-  gboolean slice;
+  bboolean retval = FALSE;
+  bboolean visible_only;
+  bboolean slice;
   
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (str != NULL, FALSE);
@@ -4947,7 +4947,7 @@ btk_text_iter_backward_search (const BtkTextIter *iter,
 
   do
     {
-      gchar *first_line_match;
+      bchar *first_line_match;
 
       if (limit &&
           btk_text_iter_compare (limit, &win.first_line_end) > 0)
@@ -4966,7 +4966,7 @@ btk_text_iter_backward_search (const BtkTextIter *iter,
           vectors_equal_ignoring_trailing (lines + 1, win.lines + 1))
         {
           /* Match! */
-          gint offset;
+          bint offset;
           BtkTextIter next;
           BtkTextIter start_tmp;
           
@@ -5029,7 +5029,7 @@ btk_text_iter_backward_search (const BtkTextIter *iter,
  * 
  * Return value: %TRUE if the iterators point to the same place in the buffer
  **/
-gboolean
+bboolean
 btk_text_iter_equal (const BtkTextIter *lhs,
                      const BtkTextIter *rhs)
 {
@@ -5069,7 +5069,7 @@ btk_text_iter_equal (const BtkTextIter *lhs,
  * 
  * Return value: -1 if @lhs is less than @rhs, 1 if @lhs is greater, 0 if they are equal
  **/
-gint
+bint
 btk_text_iter_compare (const BtkTextIter *lhs,
                        const BtkTextIter *rhs)
 {
@@ -5088,7 +5088,7 @@ btk_text_iter_compare (const BtkTextIter *lhs,
   
   if (real_lhs->line == real_rhs->line)
     {
-      gint left_index, right_index;
+      bint left_index, right_index;
 
       if (real_lhs->line_byte_offset >= 0 &&
           real_rhs->line_byte_offset >= 0)
@@ -5115,7 +5115,7 @@ btk_text_iter_compare (const BtkTextIter *lhs,
     }
   else
     {
-      gint line1, line2;
+      bint line1, line2;
 
       line1 = btk_text_iter_get_line (lhs);
       line2 = btk_text_iter_get_line (rhs);
@@ -5139,7 +5139,7 @@ btk_text_iter_compare (const BtkTextIter *lhs,
  * 
  * Return value: %TRUE if @iter is in the range
  **/
-gboolean
+bboolean
 btk_text_iter_in_range (const BtkTextIter *iter,
                         const BtkTextIter *start,
                         const BtkTextIter *end)
@@ -5190,11 +5190,11 @@ btk_text_iter_order (BtkTextIter *first,
 void
 _btk_text_btree_get_iter_at_char (BtkTextBTree *tree,
                                   BtkTextIter *iter,
-                                  gint char_index)
+                                  bint char_index)
 {
   BtkTextRealIter *real = (BtkTextRealIter*)iter;
-  gint real_char_index;
-  gint line_start;
+  bint real_char_index;
+  bint line_start;
   BtkTextLine *line;
 
   g_return_if_fail (iter != NULL);
@@ -5213,12 +5213,12 @@ _btk_text_btree_get_iter_at_char (BtkTextBTree *tree,
 void
 _btk_text_btree_get_iter_at_line_char (BtkTextBTree *tree,
                                        BtkTextIter  *iter,
-                                       gint          line_number,
-                                       gint          char_on_line)
+                                       bint          line_number,
+                                       bint          char_on_line)
 {
   BtkTextRealIter *real = (BtkTextRealIter*)iter;
   BtkTextLine *line;
-  gint real_line;
+  bint real_line;
 
   g_return_if_fail (iter != NULL);
   g_return_if_fail (tree != NULL);
@@ -5236,12 +5236,12 @@ _btk_text_btree_get_iter_at_line_char (BtkTextBTree *tree,
 void
 _btk_text_btree_get_iter_at_line_byte (BtkTextBTree   *tree,
                                        BtkTextIter    *iter,
-                                       gint            line_number,
-                                       gint            byte_index)
+                                       bint            line_number,
+                                       bint            byte_index)
 {
   BtkTextRealIter *real = (BtkTextRealIter*)iter;
   BtkTextLine *line;
-  gint real_line;
+  bint real_line;
 
   g_return_if_fail (iter != NULL);
   g_return_if_fail (tree != NULL);
@@ -5260,7 +5260,7 @@ void
 _btk_text_btree_get_iter_at_line      (BtkTextBTree   *tree,
                                        BtkTextIter    *iter,
                                        BtkTextLine    *line,
-                                       gint            byte_offset)
+                                       bint            byte_offset)
 {
   g_return_if_fail (iter != NULL);
   g_return_if_fail (tree != NULL);
@@ -5271,7 +5271,7 @@ _btk_text_btree_get_iter_at_line      (BtkTextBTree   *tree,
   check_invariants (iter);
 }
 
-gboolean
+bboolean
 _btk_text_btree_get_iter_at_first_toggle (BtkTextBTree   *tree,
                                           BtkTextIter    *iter,
                                           BtkTextTag     *tag)
@@ -5302,7 +5302,7 @@ _btk_text_btree_get_iter_at_first_toggle (BtkTextBTree   *tree,
     }
 }
 
-gboolean
+bboolean
 _btk_text_btree_get_iter_at_last_toggle  (BtkTextBTree   *tree,
                                           BtkTextIter    *iter,
                                           BtkTextTag     *tag)
@@ -5317,10 +5317,10 @@ _btk_text_btree_get_iter_at_last_toggle  (BtkTextBTree   *tree,
   return TRUE;
 }
 
-gboolean
+bboolean
 _btk_text_btree_get_iter_at_mark_name (BtkTextBTree *tree,
                                        BtkTextIter *iter,
-                                       const gchar *mark_name)
+                                       const bchar *mark_name)
 {
   BtkTextMark *mark;
 
@@ -5396,12 +5396,12 @@ void
 _btk_text_iter_check (const BtkTextIter *iter)
 {
   const BtkTextRealIter *real = (const BtkTextRealIter*)iter;
-  gint line_char_offset, line_byte_offset, seg_char_offset, seg_byte_offset;
+  bint line_char_offset, line_byte_offset, seg_char_offset, seg_byte_offset;
   BtkTextLineSegment *byte_segment = NULL;
   BtkTextLineSegment *byte_any_segment = NULL;
   BtkTextLineSegment *char_segment = NULL;
   BtkTextLineSegment *char_any_segment = NULL;
-  gboolean segments_updated;
+  bboolean segments_updated;
 
   /* This function checks our class invariants for the Iter class. */
 
@@ -5469,7 +5469,7 @@ _btk_text_iter_check (const BtkTextIter *iter)
 
           if (byte_segment->type == &btk_text_char_type)
             {
-              const gchar *p;
+              const bchar *p;
               p = byte_segment->body.chars + seg_byte_offset;
               
               if (!btk_text_byte_begins_utf8_char (p))
@@ -5500,7 +5500,7 @@ _btk_text_iter_check (const BtkTextIter *iter)
 
           if (char_segment->type == &btk_text_char_type)
             {
-              const gchar *p;
+              const bchar *p;
               p = g_utf8_offset_to_pointer (char_segment->body.chars,
                                             seg_char_offset);
 
@@ -5523,8 +5523,8 @@ _btk_text_iter_check (const BtkTextIter *iter)
          segment. */
       if (char_segment->type == &btk_text_char_type)
         {
-          gint byte_offset = 0;
-          gint char_offset = 0;
+          bint byte_offset = 0;
+          bint char_offset = 0;
           while (char_offset < seg_char_offset)
             {
               const char * start = char_segment->body.chars + byte_offset;
@@ -5548,7 +5548,7 @@ _btk_text_iter_check (const BtkTextIter *iter)
 
   if (real->cached_line_number >= 0)
     {
-      gint should_be;
+      bint should_be;
 
       should_be = _btk_text_line_get_number (real->line);
       if (real->cached_line_number != should_be)
@@ -5561,7 +5561,7 @@ _btk_text_iter_check (const BtkTextIter *iter)
                                           efficiently, not a real
                                           invariant. */
         {
-          gint char_index;
+          bint char_index;
 
           char_index = _btk_text_line_char_index (real->line);
           char_index += real->line_char_offset;

@@ -8,7 +8,7 @@
  * option.
  */
 static void _do_selection (BatkObject *obj);
-static gint _finish_selection (gpointer data);
+static bint _finish_selection (bpointer data);
 static BatkObject* _find_object (BatkObject* obj, BatkRole role);
 static void _print_type (BatkObject *obj);
 
@@ -23,8 +23,8 @@ _find_object (BatkObject *obj,
    * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
-  gint i;
-  gint n_children;
+  bint i;
+  bint n_children;
   BatkObject *child;
 
   n_children = batk_object_get_n_accessible_children (obj);
@@ -49,8 +49,8 @@ _find_object (BatkObject *obj,
 
 static void _print_type (BatkObject *obj)
 {
-  const gchar * typename = NULL;
-  const gchar * name = NULL;
+  const bchar * typename = NULL;
+  const bchar * name = NULL;
   BatkRole role;
 
   if (BTK_IS_ACCESSIBLE (obj))
@@ -72,7 +72,7 @@ static void _print_type (BatkObject *obj)
 static void 
 _do_selection (BatkObject *obj)
 {
-  gint i;
+  bint i;
   BatkObject *selected;
   BatkRole role;
   BatkObject *selection_obj;
@@ -142,12 +142,12 @@ _do_selection (BatkObject *obj)
   g_print ("*** End _do_selection ***\n");
 } 
 
-static gint _finish_selection (gpointer data)
+static bint _finish_selection (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
   BatkObject *selected;
-  gint      i;
-  gboolean is_selected;
+  bint      i;
+  bboolean is_selected;
 
   g_print ("*** Start Finish selection ***\n");
 
@@ -188,7 +188,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testselection Module loaded\n");
 

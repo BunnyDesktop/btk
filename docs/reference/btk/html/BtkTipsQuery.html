@@ -102,7 +102,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkTipsQuery.html#BtkTipsQuery--emit-always" title="The “emit-always” property">emit-always</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -146,7 +146,7 @@
 <td class="signal_flags">Run Last</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkTipsQuery.html#BtkTipsQuery-widget-selected" title="The “widget-selected” signal">widget-selected</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -226,8 +226,8 @@ btk_tips_query_set_caller (<em class="parameter"><code><a class="link" href="Btk
 <a name="btk-tips-query-set-labels"></a><h3>btk_tips_query_set_labels ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tips_query_set_labels (<em class="parameter"><code><a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><span class="type">BtkTipsQuery</span></a> *tips_query</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *label_inactive</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *label_no_tip</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *label_inactive</code></em>,
+                           <em class="parameter"><code>const <span class="type">bchar</span> *label_no_tip</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tips_query_set_labels</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 </div>
@@ -250,7 +250,7 @@ btk_tips_query_set_labels (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="BtkTipsQuery--emit-always"></a><h3>The <code class="literal">“emit-always”</code> property</h3>
-<pre class="programlisting">  “emit-always”              <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “emit-always”              <span class="type">bboolean</span></pre>
 <p>Owner: BtkTipsQuery</p>
 <p>Flags: Read / Write</p>
 <p>Default value: FALSE</p>
@@ -278,7 +278,7 @@ btk_tips_query_set_labels (<em class="parameter"><code><a class="link" href="Btk
 <a name="BtkTipsQuery-start-query"></a><h3>The <code class="literal">“start-query”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><span class="type">BtkTipsQuery</span></a> *tipsquery,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -286,7 +286,7 @@ user_function (<a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><sp
 <a name="BtkTipsQuery-stop-query"></a><h3>The <code class="literal">“stop-query”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><span class="type">BtkTipsQuery</span></a> *tipsquery,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -297,19 +297,19 @@ user_function (<a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><sp
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>    *widget,
                <span class="type">char</span>         *arg1,
                <span class="type">char</span>         *arg2,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkTipsQuery-widget-selected"></a><h3>The <code class="literal">“widget-selected”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkTipsQuery.html" title="BtkTipsQuery"><span class="type">BtkTipsQuery</span></a> *tipsquery,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>    *widget,
                <span class="type">char</span>         *arg1,
                <span class="type">char</span>         *arg2,
                <a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a>     *arg3,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 </div>

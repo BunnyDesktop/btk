@@ -56,7 +56,7 @@ struct _BtkTextChildAnchor
 {
   BObject parent_instance;
 
-  gpointer GSEAL (segment);
+  bpointer GSEAL (segment);
 };
 
 struct _BtkTextChildAnchorClass
@@ -75,7 +75,7 @@ GType btk_text_child_anchor_get_type (void) B_GNUC_CONST;
 BtkTextChildAnchor* btk_text_child_anchor_new (void);
 
 GList*   btk_text_child_anchor_get_widgets (BtkTextChildAnchor *anchor);
-gboolean btk_text_child_anchor_get_deleted (BtkTextChildAnchor *anchor);
+bboolean btk_text_child_anchor_get_deleted (BtkTextChildAnchor *anchor);
 
 B_END_DECLS
 

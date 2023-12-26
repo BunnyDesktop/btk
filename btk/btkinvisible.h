@@ -50,7 +50,7 @@ struct _BtkInvisible
 {
   BtkWidget widget;
 
-  gboolean   GSEAL (has_user_ref_count);
+  bboolean   GSEAL (has_user_ref_count);
   BdkScreen *GSEAL (screen);
 };
 

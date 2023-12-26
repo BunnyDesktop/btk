@@ -25,7 +25,7 @@
 static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean configure_event( BtkWidget         *widget,
+static bboolean configure_event( BtkWidget         *widget,
                                  BdkEventConfigure *event )
 {
   if (pixmap)
@@ -46,7 +46,7 @@ static gboolean configure_event( BtkWidget         *widget,
 }
 
 /* Redraw the screen from the backing pixmap */
-static gboolean expose_event( BtkWidget      *widget,
+static bboolean expose_event( BtkWidget      *widget,
                               BdkEventExpose *event )
 {
   bdk_draw_drawable (widget->window,
@@ -61,8 +61,8 @@ static gboolean expose_event( BtkWidget      *widget,
 
 /* Draw a rectangle on the screen */
 static void draw_brush( BtkWidget *widget,
-                        gdouble    x,
-                        gdouble    y)
+                        bdouble    x,
+                        bdouble    y)
 {
   BdkRectangle update_rect;
 
@@ -80,7 +80,7 @@ static void draw_brush( BtkWidget *widget,
 		              update_rect.width, update_rect.height);
 }
 
-static gboolean button_press_event( BtkWidget      *widget,
+static bboolean button_press_event( BtkWidget      *widget,
                                     BdkEventButton *event )
 {
   if (event->button == 1 && pixmap != NULL)
@@ -89,7 +89,7 @@ static gboolean button_press_event( BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean motion_notify_event( BtkWidget *widget,
+static bboolean motion_notify_event( BtkWidget *widget,
                                      BdkEventMotion *event )
 {
   int x, y;

@@ -88,7 +88,7 @@
  * provided input method.
  *
  * <informalexample><programlisting>
- * #BtkIMContext * im_module_create(const #gchar *context_id);
+ * #BtkIMContext * im_module_create(const #bchar *context_id);
  * </programlisting></informalexample>
  * This function should return a pointer to a newly created instance of the
  * #BtkIMContext subclass identified by @context_id. The context ID is the same
@@ -110,21 +110,21 @@ enum {
   LAST_SIGNAL
 };
 
-static guint im_context_signals[LAST_SIGNAL] = { 0 };
+static buint im_context_signals[LAST_SIGNAL] = { 0 };
 
 static void     btk_im_context_real_get_preedit_string (BtkIMContext   *context,
-							gchar         **str,
+							bchar         **str,
 							BangoAttrList **attrs,
-							gint           *cursor_pos);
-static gboolean btk_im_context_real_filter_keypress    (BtkIMContext   *context,
+							bint           *cursor_pos);
+static bboolean btk_im_context_real_filter_keypress    (BtkIMContext   *context,
 							BdkEventKey    *event);
-static gboolean btk_im_context_real_get_surrounding    (BtkIMContext   *context,
-							gchar         **text,
-							gint           *cursor_index);
+static bboolean btk_im_context_real_get_surrounding    (BtkIMContext   *context,
+							bchar         **text,
+							bint           *cursor_index);
 static void     btk_im_context_real_set_surrounding    (BtkIMContext   *context,
 							const char     *text,
-							gint            len,
-							gint            cursor_index);
+							bint            len,
+							bint            cursor_index);
 
 G_DEFINE_ABSTRACT_TYPE (BtkIMContext, btk_im_context, B_TYPE_OBJECT)
 
@@ -309,9 +309,9 @@ btk_im_context_init (BtkIMContext *im_context)
 
 static void
 btk_im_context_real_get_preedit_string (BtkIMContext       *context,
-					gchar             **str,
+					bchar             **str,
 					BangoAttrList     **attrs,
-					gint               *cursor_pos)
+					bint               *cursor_pos)
 {
   if (str)
     *str = g_strdup ("");
@@ -321,7 +321,7 @@ btk_im_context_real_get_preedit_string (BtkIMContext       *context,
     *cursor_pos = 0;
 }
 
-static gboolean
+static bboolean
 btk_im_context_real_filter_keypress (BtkIMContext       *context,
 				     BdkEventKey        *event)
 {
@@ -330,15 +330,15 @@ btk_im_context_real_filter_keypress (BtkIMContext       *context,
 
 typedef struct
 {
-  gchar *text;
-  gint cursor_index;
+  bchar *text;
+  bint cursor_index;
 } SurroundingInfo;
 
 static void
 btk_im_context_real_set_surrounding (BtkIMContext  *context,
-				     const gchar   *text,
-				     gint           len,
-				     gint           cursor_index)
+				     const bchar   *text,
+				     bint           len,
+				     bint           cursor_index)
 {
   SurroundingInfo *info = g_object_get_data (B_OBJECT (context),
                                              "btk-im-surrounding-info");
@@ -351,13 +351,13 @@ btk_im_context_real_set_surrounding (BtkIMContext  *context,
     }
 }
 
-static gboolean
+static bboolean
 btk_im_context_real_get_surrounding (BtkIMContext *context,
-				     gchar       **text,
-				     gint         *cursor_index)
+				     bchar       **text,
+				     bint         *cursor_index)
 {
-  gboolean result;
-  gboolean info_is_local = FALSE;
+  bboolean result;
+  bboolean info_is_local = FALSE;
   SurroundingInfo local_info = { NULL, 0 };
   SurroundingInfo *info;
   
@@ -435,9 +435,9 @@ btk_im_context_set_client_window (BtkIMContext *context,
  **/
 void
 btk_im_context_get_preedit_string (BtkIMContext   *context,
-				   gchar         **str,
+				   bchar         **str,
 				   BangoAttrList **attrs,
-				   gint           *cursor_pos)
+				   bint           *cursor_pos)
 {
   BtkIMContextClass *klass;
   
@@ -460,7 +460,7 @@ btk_im_context_get_preedit_string (BtkIMContext   *context,
  * Return value: %TRUE if the input method handled the key event.
  *
  **/
-gboolean
+bboolean
 btk_im_context_filter_keypress (BtkIMContext *context,
 				BdkEventKey  *key)
 {
@@ -570,7 +570,7 @@ btk_im_context_set_cursor_location (BtkIMContext       *context,
  **/
 void
 btk_im_context_set_use_preedit (BtkIMContext *context,
-				gboolean      use_preedit)
+				bboolean      use_preedit)
 {
   BtkIMContextClass *klass;
   
@@ -597,9 +597,9 @@ btk_im_context_set_use_preedit (BtkIMContext *context,
  **/
 void
 btk_im_context_set_surrounding (BtkIMContext  *context,
-				const gchar   *text,
-				gint           len,
-				gint           cursor_index)
+				const bchar   *text,
+				bint           len,
+				bint           cursor_index)
 {
   BtkIMContextClass *klass;
   
@@ -644,15 +644,15 @@ btk_im_context_set_surrounding (BtkIMContext  *context,
  * Return value: %TRUE if surrounding text was provided; in this case
  *    you must free the result stored in *text.
  **/
-gboolean
+bboolean
 btk_im_context_get_surrounding (BtkIMContext *context,
-				gchar       **text,
-				gint         *cursor_index)
+				bchar       **text,
+				bint         *cursor_index)
 {
   BtkIMContextClass *klass;
-  gchar *local_text = NULL;
-  gint local_index;
-  gboolean result = FALSE;
+  bchar *local_text = NULL;
+  bint local_index;
+  bboolean result = FALSE;
   
   g_return_val_if_fail (BTK_IS_IM_CONTEXT (context), FALSE);
 
@@ -694,12 +694,12 @@ btk_im_context_get_surrounding (BtkIMContext *context,
  * 
  * Return value: %TRUE if the signal was handled.
  **/
-gboolean
+bboolean
 btk_im_context_delete_surrounding (BtkIMContext *context,
-				   gint          offset,
-				   gint          n_chars)
+				   bint          offset,
+				   bint          n_chars)
 {
-  gboolean result;
+  bboolean result;
   
   g_return_val_if_fail (BTK_IS_IM_CONTEXT (context), FALSE);
 

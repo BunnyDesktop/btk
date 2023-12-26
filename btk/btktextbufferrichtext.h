@@ -30,36 +30,36 @@
 
 B_BEGIN_DECLS
 
-typedef guint8 * (* BtkTextBufferSerializeFunc)   (BtkTextBuffer     *register_buffer,
+typedef buint8 * (* BtkTextBufferSerializeFunc)   (BtkTextBuffer     *register_buffer,
                                                    BtkTextBuffer     *content_buffer,
                                                    const BtkTextIter *start,
                                                    const BtkTextIter *end,
-                                                   gsize             *length,
-                                                   gpointer           user_data);
-typedef gboolean (* BtkTextBufferDeserializeFunc) (BtkTextBuffer     *register_buffer,
+                                                   bsize             *length,
+                                                   bpointer           user_data);
+typedef bboolean (* BtkTextBufferDeserializeFunc) (BtkTextBuffer     *register_buffer,
                                                    BtkTextBuffer     *content_buffer,
                                                    BtkTextIter       *iter,
-                                                   const guint8      *data,
-                                                   gsize              length,
-                                                   gboolean           create_tags,
-                                                   gpointer           user_data,
+                                                   const buint8      *data,
+                                                   bsize              length,
+                                                   bboolean           create_tags,
+                                                   bpointer           user_data,
                                                    GError           **error);
 
 BdkAtom   btk_text_buffer_register_serialize_format   (BtkTextBuffer                *buffer,
-                                                       const gchar                  *mime_type,
+                                                       const bchar                  *mime_type,
                                                        BtkTextBufferSerializeFunc    function,
-                                                       gpointer                      user_data,
+                                                       bpointer                      user_data,
                                                        GDestroyNotify                user_data_destroy);
 BdkAtom   btk_text_buffer_register_serialize_tagset   (BtkTextBuffer                *buffer,
-                                                       const gchar                  *tagset_name);
+                                                       const bchar                  *tagset_name);
 
 BdkAtom   btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffer,
-                                                       const gchar                  *mime_type,
+                                                       const bchar                  *mime_type,
                                                        BtkTextBufferDeserializeFunc  function,
-                                                       gpointer                      user_data,
+                                                       bpointer                      user_data,
                                                        GDestroyNotify                user_data_destroy);
 BdkAtom   btk_text_buffer_register_deserialize_tagset (BtkTextBuffer                *buffer,
-                                                       const gchar                  *tagset_name);
+                                                       const bchar                  *tagset_name);
 
 void    btk_text_buffer_unregister_serialize_format   (BtkTextBuffer                *buffer,
                                                        BdkAtom                       format);
@@ -68,27 +68,27 @@ void    btk_text_buffer_unregister_deserialize_format (BtkTextBuffer            
 
 void     btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer             *buffer,
                                                           BdkAtom                    format,
-                                                          gboolean                   can_create_tags);
-gboolean btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer             *buffer,
+                                                          bboolean                   can_create_tags);
+bboolean btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer             *buffer,
                                                           BdkAtom                    format);
 
 BdkAtom * btk_text_buffer_get_serialize_formats       (BtkTextBuffer                *buffer,
-                                                       gint                         *n_formats);
+                                                       bint                         *n_formats);
 BdkAtom * btk_text_buffer_get_deserialize_formats     (BtkTextBuffer                *buffer,
-                                                       gint                         *n_formats);
+                                                       bint                         *n_formats);
 
-guint8  * btk_text_buffer_serialize                   (BtkTextBuffer                *register_buffer,
+buint8  * btk_text_buffer_serialize                   (BtkTextBuffer                *register_buffer,
                                                        BtkTextBuffer                *content_buffer,
                                                        BdkAtom                       format,
                                                        const BtkTextIter            *start,
                                                        const BtkTextIter            *end,
-                                                       gsize                        *length);
-gboolean  btk_text_buffer_deserialize                 (BtkTextBuffer                *register_buffer,
+                                                       bsize                        *length);
+bboolean  btk_text_buffer_deserialize                 (BtkTextBuffer                *register_buffer,
                                                        BtkTextBuffer                *content_buffer,
                                                        BdkAtom                       format,
                                                        BtkTextIter                  *iter,
-                                                       const guint8                 *data,
-                                                       gsize                         length,
+                                                       const buint8                 *data,
+                                                       bsize                         length,
                                                        GError                      **error);
 
 B_END_DECLS

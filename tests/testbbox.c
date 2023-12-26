@@ -51,7 +51,7 @@ populate_combo_with (BtkComboBoxText *combo, const char** elements)
 
 static void
 combo_changed_cb (BtkComboBoxText *combo,
-		  gpointer user_data)
+		  bpointer user_data)
 {
   char *text;
   int i;
@@ -111,7 +111,7 @@ static void
 option_cb (BtkToggleButton *option,
 	   BtkWidget *button)
 {
-  gboolean active = btk_toggle_button_get_active (option);
+  bboolean active = btk_toggle_button_get_active (option);
   
   btk_button_box_set_child_secondary (BTK_BUTTON_BOX (bbox),
 				      button, active);

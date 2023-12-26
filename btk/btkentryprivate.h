@@ -36,17 +36,17 @@ struct _BtkEntryCompletionPrivate
   BtkTreeViewColumn *column;
   BtkTreeModelFilter *filter_model;
   BtkListStore *actions;
-  gboolean first_sel_changed;
+  bboolean first_sel_changed;
 
   BtkEntryCompletionMatchFunc match_func;
-  gpointer match_data;
+  bpointer match_data;
   GDestroyNotify match_notify;
 
-  gint minimum_key_length;
-  gint text_column;
-  gint current_selected;
+  bint minimum_key_length;
+  bint text_column;
+  bint current_selected;
 
-  gchar *case_normalized_key;
+  bchar *case_normalized_key;
 
   /* only used by BtkEntry when attached: */
   BtkWidget *popup_window;
@@ -54,32 +54,32 @@ struct _BtkEntryCompletionPrivate
   BtkWidget *scrolled_window;
   BtkWidget *action_view;
 
-  gulong completion_timeout;
-  gulong changed_id;
-  gulong insert_text_id;
+  bulong completion_timeout;
+  bulong changed_id;
+  bulong insert_text_id;
 
-  guint ignore_enter      : 1;
-  guint has_completion    : 1;
-  guint inline_completion : 1;
-  guint popup_completion  : 1;
-  guint popup_set_width   : 1;
-  guint popup_single_match : 1;
-  guint inline_selection   : 1;
+  buint ignore_enter      : 1;
+  buint has_completion    : 1;
+  buint inline_completion : 1;
+  buint popup_completion  : 1;
+  buint popup_set_width   : 1;
+  buint popup_single_match : 1;
+  buint inline_selection   : 1;
 
-  gchar *completion_prefix;
+  bchar *completion_prefix;
 
   GSource *check_completion_idle;
 };
 
-gboolean _btk_entry_completion_resize_popup (BtkEntryCompletion *completion);
+bboolean _btk_entry_completion_resize_popup (BtkEntryCompletion *completion);
 void     _btk_entry_completion_popup        (BtkEntryCompletion *completion);
 void     _btk_entry_completion_popdown      (BtkEntryCompletion *completion);
-gchar *  _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
+bchar *  _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
 					       const char         *key);
 
 void      _btk_entry_get_borders            (BtkEntry  *entry,
-					     gint      *xborder,
-					     gint      *yborder);
+					     bint      *xborder,
+					     bint      *yborder);
 void     _btk_entry_effective_inner_border (BtkEntry  *entry,
 					    BtkBorder *border);
 void     _btk_entry_reset_im_context       (BtkEntry  *entry);

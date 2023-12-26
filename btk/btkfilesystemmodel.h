@@ -35,31 +35,31 @@ typedef struct _BtkFileSystemModel      BtkFileSystemModel;
 
 GType _btk_file_system_model_get_type (void) B_GNUC_CONST;
 
-typedef gboolean (*BtkFileSystemModelGetValue)   (BtkFileSystemModel *model,
+typedef bboolean (*BtkFileSystemModelGetValue)   (BtkFileSystemModel *model,
                                                   GFile              *file,
                                                   GFileInfo          *info,
                                                   int                 column,
                                                   BValue             *value,
-                                                  gpointer            user_data);
+                                                  bpointer            user_data);
 
 BtkFileSystemModel *_btk_file_system_model_new              (BtkFileSystemModelGetValue get_func,
-                                                             gpointer            get_data,
-                                                             guint               n_columns,
+                                                             bpointer            get_data,
+                                                             buint               n_columns,
                                                              ...);
 BtkFileSystemModel *_btk_file_system_model_new_for_directory(GFile *             dir,
-                                                             const gchar *       attributes,
+                                                             const bchar *       attributes,
                                                              BtkFileSystemModelGetValue get_func,
-                                                             gpointer            get_data,
-                                                             guint               n_columns,
+                                                             bpointer            get_data,
+                                                             buint               n_columns,
                                                              ...);
 GCancellable *      _btk_file_system_model_get_cancellable  (BtkFileSystemModel *model);
-gboolean            _btk_file_system_model_iter_is_visible  (BtkFileSystemModel *model,
+bboolean            _btk_file_system_model_iter_is_visible  (BtkFileSystemModel *model,
 							     BtkTreeIter        *iter);
-gboolean            _btk_file_system_model_iter_is_filtered_out (BtkFileSystemModel *model,
+bboolean            _btk_file_system_model_iter_is_filtered_out (BtkFileSystemModel *model,
 								 BtkTreeIter        *iter);
 GFileInfo *         _btk_file_system_model_get_info         (BtkFileSystemModel *model,
 							     BtkTreeIter        *iter);
-gboolean            _btk_file_system_model_get_iter_for_file(BtkFileSystemModel *model,
+bboolean            _btk_file_system_model_get_iter_for_file(BtkFileSystemModel *model,
 							     BtkTreeIter        *iter,
 							     GFile              *file);
 GFile *             _btk_file_system_model_get_file         (BtkFileSystemModel *model,
@@ -76,13 +76,13 @@ void                _btk_file_system_model_update_file      (BtkFileSystemModel 
                                                              GFileInfo          *info);
 
 void                _btk_file_system_model_set_show_hidden  (BtkFileSystemModel *model,
-							     gboolean            show_hidden);
+							     bboolean            show_hidden);
 void                _btk_file_system_model_set_show_folders (BtkFileSystemModel *model,
-							     gboolean            show_folders);
+							     bboolean            show_folders);
 void                _btk_file_system_model_set_show_files   (BtkFileSystemModel *model,
-							     gboolean            show_files);
+							     bboolean            show_files);
 void                _btk_file_system_model_set_filter_folders (BtkFileSystemModel *model,
-							     gboolean            show_folders);
+							     bboolean            show_folders);
 void                _btk_file_system_model_clear_cache      (BtkFileSystemModel *model,
                                                              int                 column);
 

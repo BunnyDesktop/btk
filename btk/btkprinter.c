@@ -38,23 +38,23 @@ static void btk_printer_finalize     (BObject *object);
 
 struct _BtkPrinterPrivate
 {
-  gchar *name;
-  gchar *location;
-  gchar *description;
-  gchar *icon_name;
+  bchar *name;
+  bchar *location;
+  bchar *description;
+  bchar *icon_name;
 
-  guint is_active         : 1;
-  guint is_paused         : 1;
-  guint is_accepting_jobs : 1;
-  guint is_new            : 1;
-  guint is_virtual        : 1;
-  guint is_default        : 1;
-  guint has_details       : 1;
-  guint accepts_pdf       : 1;
-  guint accepts_ps        : 1;
+  buint is_active         : 1;
+  buint is_paused         : 1;
+  buint is_accepting_jobs : 1;
+  buint is_new            : 1;
+  buint is_virtual        : 1;
+  buint is_default        : 1;
+  buint has_details       : 1;
+  buint accepts_pdf       : 1;
+  buint accepts_ps        : 1;
 
-  gchar *state_message;  
-  gint job_count;
+  bchar *state_message;  
+  bint job_count;
 
   BtkPrintBackend *backend;
 };
@@ -79,14 +79,14 @@ enum {
   PROP_ACCEPTING_JOBS
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 static void btk_printer_set_property (BObject      *object,
-				      guint         prop_id,
+				      buint         prop_id,
 				      const BValue *value,
 				      BParamSpec   *pspec);
 static void btk_printer_get_property (BObject      *object,
-				      guint         prop_id,
+				      buint         prop_id,
 				      BValue       *value,
 				      BParamSpec   *pspec);
 
@@ -167,7 +167,7 @@ btk_printer_class_init (BtkPrinterClass *class)
  						     P_("Job Count"),
  						     P_("Number of jobs queued in the printer"),
  						     0,
- 						     G_MAXINT,
+ 						     B_MAXINT,
  						     0,
  						     BTK_PARAM_READABLE));
 
@@ -267,7 +267,7 @@ btk_printer_finalize (BObject *object)
 
 static void
 btk_printer_set_property (BObject         *object,
-			  guint            prop_id,
+			  buint            prop_id,
 			  const BValue    *value,
 			  BParamSpec      *pspec)
 {
@@ -304,7 +304,7 @@ btk_printer_set_property (BObject         *object,
 
 static void
 btk_printer_get_property (BObject    *object,
-			  guint       prop_id,
+			  buint       prop_id,
 			  BValue     *value,
 			  BParamSpec *pspec)
 {
@@ -377,9 +377,9 @@ btk_printer_get_property (BObject    *object,
  * Since: 2.10
  **/
 BtkPrinter *
-btk_printer_new (const gchar     *name,
+btk_printer_new (const bchar     *name,
 		 BtkPrintBackend *backend,
-		 gboolean         virtual_)
+		 bboolean         virtual_)
 {
   BObject *result;
   
@@ -420,7 +420,7 @@ btk_printer_get_backend (BtkPrinter *printer)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_printer_get_name (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), NULL);
@@ -438,7 +438,7 @@ btk_printer_get_name (BtkPrinter *printer)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_printer_get_description (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), NULL);
@@ -446,9 +446,9 @@ btk_printer_get_description (BtkPrinter *printer)
   return printer->priv->description;
 }
 
-gboolean
+bboolean
 btk_printer_set_description (BtkPrinter  *printer,
-			     const gchar *description)
+			     const bchar *description)
 {
   BtkPrinterPrivate *priv;
 
@@ -476,7 +476,7 @@ btk_printer_set_description (BtkPrinter  *printer,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_printer_get_state_message (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), NULL);
@@ -484,9 +484,9 @@ btk_printer_get_state_message (BtkPrinter *printer)
   return printer->priv->state_message;
 }
 
-gboolean
+bboolean
 btk_printer_set_state_message (BtkPrinter  *printer,
-			       const gchar *message)
+			       const bchar *message)
 {
   BtkPrinterPrivate *priv;
 
@@ -514,7 +514,7 @@ btk_printer_set_state_message (BtkPrinter  *printer,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_printer_get_location (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), NULL);
@@ -522,9 +522,9 @@ btk_printer_get_location (BtkPrinter *printer)
   return printer->priv->location;
 }
 
-gboolean
+bboolean
 btk_printer_set_location (BtkPrinter  *printer,
-			  const gchar *location)
+			  const bchar *location)
 {
   BtkPrinterPrivate *priv;
 
@@ -552,7 +552,7 @@ btk_printer_set_location (BtkPrinter  *printer,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_printer_get_icon_name (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), NULL);
@@ -562,7 +562,7 @@ btk_printer_get_icon_name (BtkPrinter *printer)
 
 void
 btk_printer_set_icon_name (BtkPrinter  *printer,
-			   const gchar *icon)
+			   const bchar *icon)
 {
   BtkPrinterPrivate *priv;
 
@@ -585,7 +585,7 @@ btk_printer_set_icon_name (BtkPrinter  *printer,
  *
  * Since: 2.10
  */
-gint 
+bint 
 btk_printer_get_job_count (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), 0);
@@ -593,9 +593,9 @@ btk_printer_get_job_count (BtkPrinter *printer)
   return printer->priv->job_count;
 }
 
-gboolean
+bboolean
 btk_printer_set_job_count (BtkPrinter *printer,
-			   gint        count)
+			   bint        count)
 {
   BtkPrinterPrivate *priv;
 
@@ -623,7 +623,7 @@ btk_printer_set_job_count (BtkPrinter *printer,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_printer_has_details (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), FALSE);
@@ -633,7 +633,7 @@ btk_printer_has_details (BtkPrinter *printer)
 
 void
 btk_printer_set_has_details (BtkPrinter *printer,
-			     gboolean val)
+			     bboolean val)
 {
   printer->priv->has_details = val;
 }
@@ -649,7 +649,7 @@ btk_printer_set_has_details (BtkPrinter *printer,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_printer_is_active (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -659,7 +659,7 @@ btk_printer_is_active (BtkPrinter *printer)
 
 void
 btk_printer_set_is_active (BtkPrinter *printer,
-			   gboolean val)
+			   bboolean val)
 {
   g_return_if_fail (BTK_IS_PRINTER (printer));
 
@@ -678,7 +678,7 @@ btk_printer_set_is_active (BtkPrinter *printer,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_printer_is_paused (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -686,9 +686,9 @@ btk_printer_is_paused (BtkPrinter *printer)
   return printer->priv->is_paused;
 }
 
-gboolean
+bboolean
 btk_printer_set_is_paused (BtkPrinter *printer,
-			   gboolean    val)
+			   bboolean    val)
 {
   BtkPrinterPrivate *priv;
 
@@ -714,7 +714,7 @@ btk_printer_set_is_paused (BtkPrinter *printer,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_printer_is_accepting_jobs (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -722,9 +722,9 @@ btk_printer_is_accepting_jobs (BtkPrinter *printer)
   return printer->priv->is_accepting_jobs;
 }
 
-gboolean
+bboolean
 btk_printer_set_is_accepting_jobs (BtkPrinter *printer,
-				   gboolean val)
+				   bboolean val)
 {
   BtkPrinterPrivate *priv;
 
@@ -752,7 +752,7 @@ btk_printer_set_is_accepting_jobs (BtkPrinter *printer,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_printer_is_virtual (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -771,7 +771,7 @@ btk_printer_is_virtual (BtkPrinter *printer)
  *
  * Since: 2.10
  */
-gboolean 
+bboolean 
 btk_printer_accepts_pdf (BtkPrinter *printer)
 { 
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -781,7 +781,7 @@ btk_printer_accepts_pdf (BtkPrinter *printer)
 
 void
 btk_printer_set_accepts_pdf (BtkPrinter *printer,
-			     gboolean val)
+			     bboolean val)
 {
   g_return_if_fail (BTK_IS_PRINTER (printer));
 
@@ -799,7 +799,7 @@ btk_printer_set_accepts_pdf (BtkPrinter *printer,
  *
  * Since: 2.10
  */
-gboolean 
+bboolean 
 btk_printer_accepts_ps (BtkPrinter *printer)
 { 
   g_return_val_if_fail (BTK_IS_PRINTER (printer), TRUE);
@@ -809,14 +809,14 @@ btk_printer_accepts_ps (BtkPrinter *printer)
 
 void
 btk_printer_set_accepts_ps (BtkPrinter *printer,
-			    gboolean val)
+			    bboolean val)
 {
   g_return_if_fail (BTK_IS_PRINTER (printer));
 
   printer->priv->accepts_ps = val;
 }
 
-gboolean
+bboolean
 btk_printer_is_new (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), FALSE);
@@ -826,7 +826,7 @@ btk_printer_is_new (BtkPrinter *printer)
 
 void
 btk_printer_set_is_new (BtkPrinter *printer,
-			gboolean val)
+			bboolean val)
 {
   g_return_if_fail (BTK_IS_PRINTER (printer));
 
@@ -844,7 +844,7 @@ btk_printer_set_is_new (BtkPrinter *printer,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_printer_is_default (BtkPrinter *printer)
 {
   g_return_val_if_fail (BTK_IS_PRINTER (printer), FALSE);
@@ -854,7 +854,7 @@ btk_printer_is_default (BtkPrinter *printer)
 
 void
 btk_printer_set_is_default (BtkPrinter *printer,
-			    gboolean    val)
+			    bboolean    val)
 {
   g_return_if_fail (BTK_IS_PRINTER (printer));
 
@@ -891,7 +891,7 @@ _btk_printer_get_options (BtkPrinter           *printer,
   return backend_class->printer_get_options (printer, settings, page_setup, capabilities);
 }
 
-gboolean
+bboolean
 _btk_printer_mark_conflicts (BtkPrinter          *printer,
 			     BtkPrinterOptionSet *options)
 {
@@ -921,8 +921,8 @@ _btk_printer_prepare_for_print (BtkPrinter       *printer,
 bairo_surface_t *
 _btk_printer_create_bairo_surface (BtkPrinter       *printer,
 				   BtkPrintSettings *settings,
-				   gdouble           width, 
-				   gdouble           height,
+				   bdouble           width, 
+				   bdouble           height,
 				   BUNNYIOChannel       *cache_io)
 {
   BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_GET_CLASS (printer->priv->backend);
@@ -993,12 +993,12 @@ btk_printer_get_default_page_size (BtkPrinter *printer)
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_printer_get_hard_margins (BtkPrinter *printer,
-			      gdouble    *top,
-			      gdouble    *bottom,
-			      gdouble    *left,
-			      gdouble    *right)
+			      bdouble    *top,
+			      bdouble    *bottom,
+			      bdouble    *left,
+			      bdouble    *right)
 {
   BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_GET_CLASS (printer->priv->backend);
 
@@ -1045,7 +1045,7 @@ btk_printer_get_capabilities (BtkPrinter *printer)
  *
  * Since: 2.10
  */
-gint
+bint
 btk_printer_compare (BtkPrinter *a, 
                      BtkPrinter *b)
 {
@@ -1058,9 +1058,9 @@ btk_printer_compare (BtkPrinter *a,
   if (name_a == NULL  && name_b == NULL)
     return 0;
   else if (name_a == NULL)
-    return G_MAXINT;
+    return B_MAXINT;
   else if (name_b == NULL)
-    return G_MININT;
+    return B_MININT;
   else
     return g_ascii_strcasecmp (name_a, name_b);
 }
@@ -1070,7 +1070,7 @@ typedef struct
 {
   GList *backends;
   BtkPrinterFunc func;
-  gpointer data;
+  bpointer data;
   GDestroyNotify destroy;
   GMainLoop *loop;
 } PrinterList;
@@ -1107,7 +1107,7 @@ free_printer_list (PrinterList *printer_list)
   g_free (printer_list);
 }
 
-static gboolean
+static bboolean
 list_added_cb (BtkPrintBackend *backend, 
 	       BtkPrinter      *printer, 
 	       PrinterList     *printer_list)
@@ -1124,7 +1124,7 @@ list_added_cb (BtkPrintBackend *backend,
 static void
 backend_status_changed (BObject    *object,
                         BParamSpec *pspec,
-                        gpointer    data)
+                        bpointer    data)
 {
   BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);
   PrinterList *printer_list = data;
@@ -1159,7 +1159,7 @@ list_done_cb (BtkPrintBackend *backend,
   list_printers_remove_backend(printer_list, backend);
 }
 
-static gboolean
+static bboolean
 list_printers_init (PrinterList     *printer_list,
 		    BtkPrintBackend *backend)
 {
@@ -1215,9 +1215,9 @@ list_printers_init (PrinterList     *printer_list,
  */
 void
 btk_enumerate_printers (BtkPrinterFunc func,
-			gpointer       data,
+			bpointer       data,
 			GDestroyNotify destroy,
-			gboolean       wait)
+			bboolean       wait)
 {
   PrinterList *printer_list;
   GList *node, *next;

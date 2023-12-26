@@ -55,11 +55,11 @@
 #include "btkalias.h"
 
 static void btk_text_mark_set_property (BObject         *object,
-				        guint            prop_id,
+				        buint            prop_id,
 					const BValue    *value,
 					BParamSpec      *pspec);
 static void btk_text_mark_get_property (BObject         *object,
-					guint            prop_id,
+					buint            prop_id,
 					BValue          *value,
 					BParamSpec      *pspec);
 static void btk_text_mark_finalize     (BObject         *object);
@@ -135,11 +135,11 @@ btk_text_mark_finalize (BObject *obj)
 
 static void
 btk_text_mark_set_property (BObject      *object,
-			    guint         prop_id,
+			    buint         prop_id,
 			    const BValue *value,
 			    BParamSpec   *pspec)
 {
-  gchar *tmp;
+  bchar *tmp;
   BtkTextMark *mark = BTK_TEXT_MARK (object);
   BtkTextLineSegment *seg = mark->segment;
 
@@ -165,7 +165,7 @@ btk_text_mark_set_property (BObject      *object,
 
 static void
 btk_text_mark_get_property (BObject    *object,
-			    guint       prop_id,
+			    buint       prop_id,
 			    BValue     *value,
 			    BParamSpec *pspec)
 {
@@ -206,8 +206,8 @@ btk_text_mark_get_property (BObject    *object,
  * Since: 2.12
  **/
 BtkTextMark *
-btk_text_mark_new (const gchar *name,
-		   gboolean     left_gravity)
+btk_text_mark_new (const bchar *name,
+		   bboolean     left_gravity)
 {
   return g_object_new (BTK_TYPE_TEXT_MARK,
 		       "name", name,
@@ -224,7 +224,7 @@ btk_text_mark_new (const gchar *name,
  * 
  * Return value: %TRUE if visible
  **/
-gboolean
+bboolean
 btk_text_mark_get_visible (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -262,7 +262,7 @@ btk_text_mark_get_name (BtkTextMark *mark)
  * 
  * Return value: whether the mark is deleted
  **/
-gboolean
+bboolean
 btk_text_mark_get_deleted (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -309,7 +309,7 @@ btk_text_mark_get_buffer (BtkTextMark *mark)
  * 
  * Return value: %TRUE if the mark has left gravity, %FALSE otherwise
  **/
-gboolean
+bboolean
 btk_text_mark_get_left_gravity (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -425,10 +425,10 @@ const BtkTextLineSegmentClass btk_text_left_mark_type = {
  *--------------------------------------------------------------
  */
 
-static gboolean
+static bboolean
 mark_segment_delete_func (BtkTextLineSegment *seg,
                           BtkTextLine        *line,
-                          gboolean            tree_gone)
+                          bboolean            tree_gone)
 {
   if (tree_gone)
     {

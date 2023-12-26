@@ -71,18 +71,18 @@ struct _BdkImage
   BdkImageType	GSEAL (type); /* read only. */
   BdkVisual    *GSEAL (visual);	    /* read only. visual used to create the image */
   BdkByteOrder	GSEAL (byte_order); /* read only. */
-  gint		GSEAL (width);  /* read only. */
-  gint		GSEAL (height); /* read only. */
-  guint16	GSEAL (depth);  /* read only. */
-  guint16	GSEAL (bpp);    /* read only. bytes per pixel */
-  guint16	GSEAL (bpl);    /* read only. bytes per line */
-  guint16       GSEAL (bits_per_pixel); /* read only. bits per pixel */
-  gpointer	GSEAL (mem);
+  bint		GSEAL (width);  /* read only. */
+  bint		GSEAL (height); /* read only. */
+  buint16	GSEAL (depth);  /* read only. */
+  buint16	GSEAL (bpp);    /* read only. bytes per pixel */
+  buint16	GSEAL (bpl);    /* read only. bytes per line */
+  buint16       GSEAL (bits_per_pixel); /* read only. bits per pixel */
+  bpointer	GSEAL (mem);
 
   BdkColormap  *GSEAL (colormap); /* read only. */
 
   /*< private >*/
-  gpointer GSEAL (windowing_data); /* read only. */
+  bpointer GSEAL (windowing_data); /* read only. */
 };
 
 struct _BdkImageClass
@@ -95,25 +95,25 @@ GType     bdk_image_get_type   (void) B_GNUC_CONST;
 #ifndef BDK_DISABLE_DEPRECATED
 BdkImage*  bdk_image_new       (BdkImageType  type,
 				BdkVisual    *visual,
-				gint	      width,
-				gint	      height);
+				bint	      width,
+				bint	      height);
 
 BdkImage*  bdk_image_get       (BdkDrawable  *drawable,
-				gint	      x,
-				gint	      y,
-				gint	      width,
-				gint	      height);
+				bint	      x,
+				bint	      y,
+				bint	      width,
+				bint	      height);
 
 BdkImage * bdk_image_ref       (BdkImage     *image);
 void       bdk_image_unref     (BdkImage     *image);
 
 void	   bdk_image_put_pixel (BdkImage     *image,
-				gint	      x,
-				gint	      y,
-				guint32	      pixel);
-guint32	   bdk_image_get_pixel (BdkImage     *image,
-				gint	      x,
-				gint	      y);
+				bint	      x,
+				bint	      y,
+				buint32	      pixel);
+buint32	   bdk_image_get_pixel (BdkImage     *image,
+				bint	      x,
+				bint	      y);
 
 void       bdk_image_set_colormap (BdkImage    *image,
                                    BdkColormap *colormap);
@@ -122,19 +122,19 @@ BdkColormap* bdk_image_get_colormap (BdkImage    *image);
 BdkImageType  bdk_image_get_image_type     (BdkImage *image);
 BdkVisual    *bdk_image_get_visual         (BdkImage *image);
 BdkByteOrder  bdk_image_get_byte_order     (BdkImage *image);
-gint          bdk_image_get_width          (BdkImage *image);
-gint          bdk_image_get_height         (BdkImage *image);
-guint16       bdk_image_get_depth          (BdkImage *image);
-guint16       bdk_image_get_bytes_per_pixel(BdkImage *image);
-guint16       bdk_image_get_bytes_per_line (BdkImage *image);
-guint16       bdk_image_get_bits_per_pixel (BdkImage *image);
-gpointer      bdk_image_get_pixels         (BdkImage *image);
+bint          bdk_image_get_width          (BdkImage *image);
+bint          bdk_image_get_height         (BdkImage *image);
+buint16       bdk_image_get_depth          (BdkImage *image);
+buint16       bdk_image_get_bytes_per_pixel(BdkImage *image);
+buint16       bdk_image_get_bytes_per_line (BdkImage *image);
+buint16       bdk_image_get_bits_per_pixel (BdkImage *image);
+bpointer      bdk_image_get_pixels         (BdkImage *image);
 
 #ifdef BDK_ENABLE_BROKEN
 BdkImage* bdk_image_new_bitmap (BdkVisual     *visual,
-				gpointer      data,
-				gint          width,
-				gint          height);
+				bpointer      data,
+				bint          width,
+				bint          height);
 #endif /* BDK_ENABLE_BROKEN */
 
 #define bdk_image_destroy              g_object_unref

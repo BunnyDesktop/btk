@@ -35,7 +35,7 @@
 
 B_BEGIN_DECLS
 
-typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, gpointer data);
+typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, bpointer data);
 
 #define BTK_TYPE_TEXT_TAG_TABLE            (btk_text_tag_table_get_type ())
 #define BTK_TEXT_TAG_TABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTable))
@@ -52,7 +52,7 @@ struct _BtkTextTagTable
 
   GHashTable *GSEAL (hash);
   GSList *GSEAL (anonymous);
-  gint GSEAL (anon_count);
+  bint GSEAL (anon_count);
 
   GSList *GSEAL (buffers);
 };
@@ -61,7 +61,7 @@ struct _BtkTextTagTableClass
 {
   BObjectClass parent_class;
 
-  void (* tag_changed) (BtkTextTagTable *table, BtkTextTag *tag, gboolean size_changed);
+  void (* tag_changed) (BtkTextTagTable *table, BtkTextTag *tag, bboolean size_changed);
   void (* tag_added) (BtkTextTagTable *table, BtkTextTag *tag);
   void (* tag_removed) (BtkTextTagTable *table, BtkTextTag *tag);
 
@@ -80,20 +80,20 @@ void             btk_text_tag_table_add      (BtkTextTagTable        *table,
 void             btk_text_tag_table_remove   (BtkTextTagTable        *table,
                                               BtkTextTag             *tag);
 BtkTextTag      *btk_text_tag_table_lookup   (BtkTextTagTable        *table,
-                                              const gchar            *name);
+                                              const bchar            *name);
 void             btk_text_tag_table_foreach  (BtkTextTagTable        *table,
                                               BtkTextTagTableForeach  func,
-                                              gpointer                data);
-gint             btk_text_tag_table_get_size (BtkTextTagTable        *table);
+                                              bpointer                data);
+bint             btk_text_tag_table_get_size (BtkTextTagTable        *table);
 
 
 /* INTERNAL private stuff - not even exported from the library on
  * many platforms
  */
 void _btk_text_tag_table_add_buffer    (BtkTextTagTable *table,
-                                        gpointer         buffer);
+                                        bpointer         buffer);
 void _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
-                                        gpointer         buffer);
+                                        bpointer         buffer);
 
 B_END_DECLS
 

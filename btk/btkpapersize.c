@@ -40,12 +40,12 @@ struct _BtkPaperSize
   const PaperInfo *info;
 
   /* If these are not set we fall back to info */
-  gchar *name;
-  gchar *display_name;
-  gchar *ppd_name;
+  bchar *name;
+  bchar *display_name;
+  bchar *ppd_name;
   
-  gdouble width, height; /* Stored in mm */
-  gboolean is_custom;
+  bdouble width, height; /* Stored in mm */
+  bboolean is_custom;
 };
 
 GType
@@ -61,7 +61,7 @@ btk_paper_size_get_type (void)
 }
 
 static const PaperInfo *
-lookup_paper_info (const gchar *name)
+lookup_paper_info (const bchar *name)
 {
   int lower = 0;
   int upper = G_N_ELEMENTS (standard_names_offsets) - 1;
@@ -84,10 +84,10 @@ lookup_paper_info (const gchar *name)
   return NULL;
 }
 
-static gboolean
-parse_media_size (const gchar *size,
-		  gdouble     *width_mm, 
-		  gdouble     *height_mm)
+static bboolean
+parse_media_size (const bchar *size,
+		  bdouble     *width_mm, 
+		  bdouble     *height_mm)
 {
   const char *p;
   char *e;
@@ -125,11 +125,11 @@ parse_media_size (const gchar *size,
   return TRUE;  
 }
 
-static gboolean
-parse_full_media_size_name (const gchar  *full_name,
-			    gchar       **name,
-			    gdouble      *width_mm, 
-			    gdouble      *height_mm)
+static bboolean
+parse_full_media_size_name (const bchar  *full_name,
+			    bchar       **name,
+			    bdouble      *width_mm, 
+			    bdouble      *height_mm)
 {
   const char *p;
   const char *end_of_name;
@@ -206,7 +206,7 @@ btk_paper_size_new_from_info (const PaperInfo *info)
  * Since: 2.10
  */
 BtkPaperSize *
-btk_paper_size_new (const gchar *name)
+btk_paper_size_new (const bchar *name)
 {
   BtkPaperSize *size;
   char *short_name;
@@ -267,10 +267,10 @@ btk_paper_size_new (const gchar *name)
  * Since: 2.10
  */
 BtkPaperSize *
-btk_paper_size_new_from_ppd (const gchar *ppd_name,
-			     const gchar *ppd_display_name,
-			     gdouble      width,
-			     gdouble      height)
+btk_paper_size_new_from_ppd (const bchar *ppd_name,
+			     const bchar *ppd_display_name,
+			     bdouble      width,
+			     bdouble      height)
 {
   char *name;
   const char *lookup_ppd_name;
@@ -340,10 +340,10 @@ btk_paper_size_new_from_ppd (const gchar *ppd_name,
  * Since: 2.10
  */
 BtkPaperSize *
-btk_paper_size_new_custom (const gchar *name, 
-			   const gchar *display_name,
-			   gdouble      width, 
-			   gdouble      height, 
+btk_paper_size_new_custom (const bchar *name, 
+			   const bchar *display_name,
+			   bdouble      width, 
+			   bdouble      height, 
 			   BtkUnit      unit)
 {
   BtkPaperSize *size;
@@ -424,7 +424,7 @@ btk_paper_size_free (BtkPaperSize *size)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_paper_size_is_equal (BtkPaperSize *size1,
 			 BtkPaperSize *size2)
 {
@@ -450,10 +450,10 @@ GList * _btk_load_custom_papers (void);
  * Since: 2.12
  */
 GList *
-btk_paper_size_get_paper_sizes (gboolean include_custom)
+btk_paper_size_get_paper_sizes (bboolean include_custom)
 {
   GList *list = NULL;
-  guint i;
+  buint i;
 #ifdef G_OS_UNIX		/* _btk_load_custom_papers() only on Unix so far  */
   if (include_custom)
     {
@@ -495,7 +495,7 @@ btk_paper_size_get_paper_sizes (gboolean include_custom)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_paper_size_get_name (BtkPaperSize *size)
 {
   if (size->name)
@@ -514,10 +514,10 @@ btk_paper_size_get_name (BtkPaperSize *size)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_paper_size_get_display_name (BtkPaperSize *size)
 {
-  const gchar *display_name;
+  const bchar *display_name;
 
   if (size->display_name)
     return size->display_name;
@@ -539,7 +539,7 @@ btk_paper_size_get_display_name (BtkPaperSize *size)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_paper_size_get_ppd_name (BtkPaperSize *size)
 {
   if (size->ppd_name)
@@ -561,7 +561,7 @@ btk_paper_size_get_ppd_name (BtkPaperSize *size)
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_width (BtkPaperSize *size, 
 			  BtkUnit       unit)
 {
@@ -580,7 +580,7 @@ btk_paper_size_get_width (BtkPaperSize *size,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_height (BtkPaperSize *size, 
 			   BtkUnit       unit)
 {
@@ -595,7 +595,7 @@ btk_paper_size_get_height (BtkPaperSize *size,
  * 
  * Return value: whether @size is a custom paper size.
  **/
-gboolean
+bboolean
 btk_paper_size_is_custom (BtkPaperSize *size)
 {
   return size->is_custom;
@@ -614,8 +614,8 @@ btk_paper_size_is_custom (BtkPaperSize *size)
  */
 void
 btk_paper_size_set_size (BtkPaperSize *size, 
-			 gdouble       width, 
-			 gdouble       height, 
+			 bdouble       width, 
+			 bdouble       height, 
 			 BtkUnit       unit)
 {
   g_return_if_fail (size != NULL);
@@ -639,7 +639,7 @@ btk_paper_size_set_size (BtkPaperSize *size,
  * 
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_paper_size_get_default (void)
 {
   char *locale, *freeme = NULL;
@@ -707,11 +707,11 @@ btk_paper_size_get_default (void)
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_default_top_margin (BtkPaperSize *size, 
 				       BtkUnit       unit)
 {
-  gdouble margin;
+  bdouble margin;
 
   margin = _btk_print_convert_to_mm (0.25, BTK_UNIT_INCH);
   return _btk_print_convert_from_mm (margin, unit);
@@ -728,12 +728,12 @@ btk_paper_size_get_default_top_margin (BtkPaperSize *size,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_default_bottom_margin (BtkPaperSize *size, 
 					  BtkUnit       unit)
 {
-  gdouble margin;
-  const gchar *name;
+  bdouble margin;
+  const bchar *name;
 
   margin = _btk_print_convert_to_mm (0.25, BTK_UNIT_INCH);
 
@@ -757,11 +757,11 @@ btk_paper_size_get_default_bottom_margin (BtkPaperSize *size,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_default_left_margin (BtkPaperSize *size, 
 					BtkUnit       unit)
 {
-  gdouble margin;
+  bdouble margin;
 
   margin = _btk_print_convert_to_mm (0.25, BTK_UNIT_INCH);
   return _btk_print_convert_from_mm (margin, unit);
@@ -778,11 +778,11 @@ btk_paper_size_get_default_left_margin (BtkPaperSize *size,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_paper_size_get_default_right_margin (BtkPaperSize *size, 
 					 BtkUnit       unit)
 {
-  gdouble margin;
+  bdouble margin;
 
   margin = _btk_print_convert_to_mm (0.25, BTK_UNIT_INCH);
   return _btk_print_convert_from_mm (margin, unit);
@@ -805,13 +805,13 @@ btk_paper_size_get_default_right_margin (BtkPaperSize *size,
  */
 BtkPaperSize *
 btk_paper_size_new_from_key_file (GKeyFile    *key_file,
-				  const gchar *group_name,
+				  const bchar *group_name,
 				  GError     **error)
 {
   BtkPaperSize *paper_size = NULL;
   char *name = NULL, *ppd_name = NULL, *display_name = NULL, *freeme = NULL;
-  gdouble width, height;
-  gboolean retval = TRUE;
+  bdouble width, height;
+  bboolean retval = TRUE;
   GError *err = NULL;
 
   g_return_val_if_fail (key_file != NULL, NULL);
@@ -893,7 +893,7 @@ out:
 void
 btk_paper_size_to_key_file (BtkPaperSize *size,
 			    GKeyFile     *key_file,
-			    const gchar  *group_name)
+			    const bchar  *group_name)
 {
   const char *name, *ppd_name, *display_name;
 

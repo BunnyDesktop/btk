@@ -73,7 +73,7 @@ useful to implementors of Batk interfaces for custom widgets.</p>
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bail-libbail-util-BailMisc.html#bail-misc-get-index-at-point-in-layout" title="bail_misc_get_index_at_point_in_layout ()">bail_misc_get_index_at_point_in_layout</a> <span class="c_punctuation">()</span>
@@ -119,7 +119,7 @@ Batk interfaces for custom widgets.</p>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
 bail_misc_add_attribute (<em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="type">BatkAttributeSet</span></a> *attrib_set</code></em>,
                          <em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkText.html#BatkTextAttribute"><span class="type">BatkTextAttribute</span></a> attr</code></em>,
-                         <em class="parameter"><code><span class="type">gchar</span> *value</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bchar</span> *value</code></em>);</pre>
 <p>Creates an <a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttribute"><span class="type">BatkAttribute</span></a> from <em class="parameter"><code>attr</code></em>
  and <em class="parameter"><code>value</code></em>
 , and adds it
@@ -163,10 +163,10 @@ to <em class="parameter"><code>attrib_set</code></em>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
 bail_misc_layout_get_run_attributes (<em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="type">BatkAttributeSet</span></a> *attrib_set</code></em>,
                                      <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
-                                     <em class="parameter"><code><span class="type">gchar</span> *text</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> *start_offset</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> *end_offset</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bchar</span> *text</code></em>,
+                                     <em class="parameter"><code><span class="type">bint</span> offset</code></em>,
+                                     <em class="parameter"><code><span class="type">bint</span> *start_offset</code></em>,
+                                     <em class="parameter"><code><span class="type">bint</span> *end_offset</code></em>);</pre>
 <p>Adds the attributes for the run starting at offset to the specified
 attribute set.</p>
 <div class="refsect3">
@@ -263,12 +263,12 @@ bail_misc_get_default_attributes (<em class="parameter"><code><a href="/usr/shar
 bail_misc_get_extents_from_bango_rectangle
                                (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
                                 <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> *char_rect</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> x_layout</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> y_layout</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *y</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> x_layout</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> y_layout</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *x</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *y</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *width</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *height</code></em>,
                                 <em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkUtil.html#BatkCoordType"><span class="type">BatkCoordType</span></a> coords</code></em>);</pre>
 <p>Gets the extents of <em class="parameter"><code>char_rect</code></em>
  in device coordinates,
@@ -343,14 +343,14 @@ BangoLayout that contains the BangoRectangle, relative to <em class="parameter">
 <hr>
 <div class="refsect2">
 <a name="bail-misc-get-index-at-point-in-layout"></a><h3>bail_misc_get_index_at_point_in_layout ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bail_misc_get_index_at_point_in_layout
                                (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
                                 <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> x_layout</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> y_layout</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> x_layout</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> y_layout</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                                 <em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkUtil.html#BatkCoordType"><span class="type">BatkCoordType</span></a> coords</code></em>);</pre>
 <p>Gets the byte offset at the specified <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
@@ -424,10 +424,10 @@ in a
 <a name="bail-misc-get-origins"></a><h3>bail_misc_get_origins ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bail_misc_get_origins (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *x_window</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *y_window</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *x_toplevel</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *y_toplevel</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> *x_window</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> *y_window</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> *x_toplevel</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> *y_toplevel</code></em>);</pre>
 <p>Gets the origin of the widget window, and the origin of the
 widgets top-level window.</p>
 <div class="refsect3">
@@ -514,9 +514,9 @@ and adds it to the AttributeSet.</p>
 <a name="bail-misc-buffer-get-run-attributes"></a><h3>bail_misc_buffer_get_run_attributes ()</h3>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
 bail_misc_buffer_get_run_attributes (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkTextBuffer.html#BtkTextBuffer-struct"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> *start_offset</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> *end_offset</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bint</span> offset</code></em>,
+                                     <em class="parameter"><code><span class="type">bint</span> *start_offset</code></em>,
+                                     <em class="parameter"><code><span class="type">bint</span> *end_offset</code></em>);</pre>
 <p>Creates an BatkAttributeSet which contains the attributes for the 
 run starting at offset.</p>
 <div class="refsect3">

@@ -37,22 +37,22 @@ static void btk_dial_size_request             (BtkWidget        *widget,
                                                BtkRequisition   *requisition);
 static void btk_dial_size_allocate            (BtkWidget        *widget,
                                                BtkAllocation    *allocation);
-static gboolean btk_dial_expose               (BtkWidget        *widget,
+static bboolean btk_dial_expose               (BtkWidget        *widget,
                                                BdkEventExpose   *event);
-static gboolean btk_dial_button_press         (BtkWidget        *widget,
+static bboolean btk_dial_button_press         (BtkWidget        *widget,
                                                BdkEventButton   *event);
-static gboolean btk_dial_button_release       (BtkWidget        *widget,
+static bboolean btk_dial_button_release       (BtkWidget        *widget,
                                                BdkEventButton   *event);
-static gboolean btk_dial_motion_notify        (BtkWidget        *widget,
+static bboolean btk_dial_motion_notify        (BtkWidget        *widget,
                                                BdkEventMotion   *event);
-static gboolean btk_dial_timer                (BtkDial          *dial);
+static bboolean btk_dial_timer                (BtkDial          *dial);
 
-static void btk_dial_update_mouse             (BtkDial *dial, gint x, gint y);
+static void btk_dial_update_mouse             (BtkDial *dial, bint x, bint y);
 static void btk_dial_update                   (BtkDial *dial);
 static void btk_dial_adjustment_changed       (BtkAdjustment    *adjustment,
-						gpointer          data);
+						bpointer          data);
 static void btk_dial_adjustment_value_changed (BtkAdjustment    *adjustment,
-						gpointer          data);
+						bpointer          data);
 
 /* Local data */
 
@@ -183,7 +183,7 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   if (dial->adjustment)
     {
-      g_signal_handlers_disconnect_by_func (BTK_OBJECT (dial->adjustment), NULL, (gpointer) dial);
+      g_signal_handlers_disconnect_by_func (BTK_OBJECT (dial->adjustment), NULL, (bpointer) dial);
       g_object_unref (BTK_OBJECT (dial->adjustment));
     }
 
@@ -192,10 +192,10 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   g_signal_connect (B_OBJECT (adjustment), "changed",
 		    G_CALLBACK (btk_dial_adjustment_changed),
-		    (gpointer) dial);
+		    (bpointer) dial);
   g_signal_connect (B_OBJECT (adjustment), "value_changed",
 		    G_CALLBACK (btk_dial_adjustment_value_changed),
-		    (gpointer) dial);
+		    (bpointer) dial);
 
   dial->old_value = adjustment->value;
   dial->old_lower = adjustment->lower;
@@ -209,7 +209,7 @@ btk_dial_realize (BtkWidget *widget)
 {
   BtkDial *dial;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BTK_IS_DIAL (widget));
@@ -273,19 +273,19 @@ btk_dial_size_allocate (BtkWidget     *widget,
   dial->pointer_width = dial->radius / 5;
 }
 
-static gboolean
+static bboolean
 btk_dial_expose( BtkWidget      *widget,
 		 BdkEventExpose *event )
 {
   BtkDial *dial;
   BdkPoint points[6];
-  gdouble s,c;
-  gdouble theta, last, increment;
+  bdouble s,c;
+  bdouble theta, last, increment;
   BtkStyle      *blankstyle;
-  gint xc, yc;
-  gint upper, lower;
-  gint tick_length;
-  gint i, inc;
+  bint xc, yc;
+  bint upper, lower;
+  bint tick_length;
+  bint i, inc;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -364,7 +364,7 @@ btk_dial_expose( BtkWidget      *widget,
 
   for (i = 0; i <= inc; i++)
     {
-      theta = ((gfloat)i*M_PI / (18*inc/24.) - M_PI/6.);
+      theta = ((bfloat)i*M_PI / (18*inc/24.) - M_PI/6.);
 
       if ((theta - last) < (increment))
 	continue;     
@@ -414,12 +414,12 @@ btk_dial_expose( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_button_press( BtkWidget      *widget,
 		       BdkEventButton *event )
 {
   BtkDial *dial;
-  gint dx, dy;
+  bint dx, dy;
   double s, c;
   double d_parallel;
   double d_perpendicular;
@@ -458,7 +458,7 @@ btk_dial_button_press( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_button_release( BtkWidget      *widget,
                          BdkEventButton *event )
 {
@@ -487,13 +487,13 @@ btk_dial_button_release( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_motion_notify( BtkWidget      *widget,
                         BdkEventMotion *event )
 {
   BtkDial *dial;
   BdkModifierType mods;
-  gint x, y, mask;
+  bint x, y, mask;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -532,7 +532,7 @@ btk_dial_motion_notify( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_timer( BtkDial *dial )
 {
   g_return_val_if_fail (dial != NULL, FALSE);
@@ -545,10 +545,10 @@ btk_dial_timer( BtkDial *dial )
 }
 
 static void
-btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
+btk_dial_update_mouse( BtkDial *dial, bint x, bint y )
 {
-  gint xc, yc;
-  gfloat old_value;
+  bint xc, yc;
+  bfloat old_value;
 
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -588,7 +588,7 @@ btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
 
 	      dial->timer = bdk_threads_add_timeout (SCROLL_DELAY_LENGTH,
 					   (GSourceFunc) btk_dial_timer,
-					   (gpointer) dial);
+					   (bpointer) dial);
 	    }
 	}
     }
@@ -597,7 +597,7 @@ btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
 static void
 btk_dial_update (BtkDial *dial)
 {
-  gfloat new_value;
+  bfloat new_value;
   
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -624,7 +624,7 @@ btk_dial_update (BtkDial *dial)
 
 static void
 btk_dial_adjustment_changed (BtkAdjustment *adjustment,
-			      gpointer       data)
+			      bpointer       data)
 {
   BtkDial *dial;
 
@@ -647,7 +647,7 @@ btk_dial_adjustment_changed (BtkAdjustment *adjustment,
 
 static void
 btk_dial_adjustment_value_changed (BtkAdjustment *adjustment,
-				    gpointer       data)
+				    bpointer       data)
 {
   BtkDial *dial;
 

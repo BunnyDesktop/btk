@@ -49,8 +49,8 @@
       <example>
 	<title>Testing the number of screen on the current display</title>
 	<programlisting><!--
--->gint num_screen = 0;
-gchar *displayname = NULL;
+-->bint num_screen = 0;
+bchar *displayname = NULL;
 BdkScreen **screen_list;
 BdkDisplay *display;
 
@@ -76,7 +76,7 @@ else
       <example>
 	<title>Opening a second display</title>
 	<programlisting><!--
--->gchar *second_screen_name;
+-->bchar *second_screen_name;
 BdkDisplay *second_display;
 BdkScreen *second_screen;
 BtkWidget *window;

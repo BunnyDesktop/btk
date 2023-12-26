@@ -55,12 +55,12 @@ struct _BdkDrawableImplQuartzClass
 
   /* vtable */
   CGContextRef (*get_context) (BdkDrawable* drawable,
-			       gboolean     antialias);
+			       bboolean     antialias);
 };
 
 GType        bdk_drawable_impl_quartz_get_type   (void);
 CGContextRef bdk_quartz_drawable_get_context     (BdkDrawable  *drawable, 
-						  gboolean      antialias);
+						  bboolean      antialias);
 void         bdk_quartz_drawable_release_context (BdkDrawable  *drawable, 
 						  CGContextRef  context);
 

@@ -144,7 +144,7 @@ btk_printer_cups_new (const char      *name,
 		      BtkPrintBackend *backend)
 {
   BObject *result;
-  gboolean accepts_pdf;
+  bboolean accepts_pdf;
   BtkPrinterCups *printer;
 
 #if (CUPS_VERSION_MAJOR == 1 && CUPS_VERSION_MINOR >= 2) || CUPS_VERSION_MAJOR > 1
@@ -178,10 +178,10 @@ btk_printer_cups_get_ppd (BtkPrinterCups *printer)
   return printer->ppd_file;
 }
 
-const gchar *
+const bchar *
 btk_printer_cups_get_ppd_name (BtkPrinterCups  *printer)
 {
-  const gchar *result;
+  const bchar *result;
 
   result = printer->ppd_name;
 

@@ -13,8 +13,8 @@ static void rotate_book( BtkButton   *button,
 static void tabsborder_book( BtkButton   *button,
                              BtkNotebook *notebook )
 {
-    gint tval = FALSE;
-    gint bval = FALSE;
+    bint tval = FALSE;
+    bint bval = FALSE;
     if (notebook->show_tabs == 0)
 	    tval = TRUE;
     if (notebook->show_border == 0)
@@ -28,7 +28,7 @@ static void tabsborder_book( BtkButton   *button,
 static void remove_book( BtkButton   *button,
                          BtkNotebook *notebook )
 {
-    gint page;
+    bint page;
 
     page = btk_notebook_get_current_page (notebook);
     btk_notebook_remove_page (notebook, page);
@@ -37,9 +37,9 @@ static void remove_book( BtkButton   *button,
     btk_widget_queue_draw (BTK_WIDGET (notebook));
 }
 
-static gboolean delete( BtkWidget *widget,
+static bboolean delete( BtkWidget *widget,
                         BtkWidget *event,
-                        gpointer   data )
+                        bpointer   data )
 {
     btk_main_quit ();
     return FALSE;

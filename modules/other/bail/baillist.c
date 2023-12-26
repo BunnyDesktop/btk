@@ -30,21 +30,21 @@ static void         bail_list_class_init            (BailListClass  *klass);
 static void         bail_list_init                  (BailList       *list);
 
 static void         bail_list_initialize            (BatkObject      *accessible,
-                                                     gpointer        data);
+                                                     bpointer        data);
 
-static gint         bail_list_get_index_in_parent   (BatkObject      *accessible);
+static bint         bail_list_get_index_in_parent   (BatkObject      *accessible);
 
 static void         batk_selection_interface_init    (BatkSelectionIface *iface);
-static gboolean     bail_list_add_selection         (BatkSelection   *selection,
-                                                     gint           i);
-static gboolean     bail_list_clear_selection       (BatkSelection   *selection);
+static bboolean     bail_list_add_selection         (BatkSelection   *selection,
+                                                     bint           i);
+static bboolean     bail_list_clear_selection       (BatkSelection   *selection);
 static BatkObject*   bail_list_ref_selection         (BatkSelection   *selection,
-                                                     gint           i);
-static gint         bail_list_get_selection_count   (BatkSelection   *selection);
-static gboolean     bail_list_is_child_selected     (BatkSelection   *selection,
-                                                     gint           i);
-static gboolean     bail_list_remove_selection      (BatkSelection   *selection,
-                                                     gint           i);
+                                                     bint           i);
+static bint         bail_list_get_selection_count   (BatkSelection   *selection);
+static bboolean     bail_list_is_child_selected     (BatkSelection   *selection,
+                                                     bint           i);
+static bboolean     bail_list_remove_selection      (BatkSelection   *selection,
+                                                     bint           i);
 
 
 G_DEFINE_TYPE_WITH_CODE (BailList, bail_list, BAIL_TYPE_CONTAINER,
@@ -66,14 +66,14 @@ bail_list_init (BailList *list)
 
 static void
 bail_list_initialize (BatkObject *accessible,
-                      gpointer  data)
+                      bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_list_parent_class)->initialize (accessible, data);
 
   accessible->role = BATK_ROLE_LIST;
 }
 
-static gint
+static bint
 bail_list_get_index_in_parent (BatkObject *accessible)
 {
   /*
@@ -103,9 +103,9 @@ batk_selection_interface_init (BatkSelectionIface *iface)
    */
 }
 
-static gboolean
+static bboolean
 bail_list_add_selection (BatkSelection   *selection,
-                         gint           i)
+                         bint           i)
 {
   BtkList *list;
   BtkWidget *widget;
@@ -123,7 +123,7 @@ bail_list_add_selection (BatkSelection   *selection,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 bail_list_clear_selection (BatkSelection *selection)
 {
   BtkList *list;
@@ -144,7 +144,7 @@ bail_list_clear_selection (BatkSelection *selection)
 
 static BatkObject*
 bail_list_ref_selection (BatkSelection *selection,
-                         gint         i)
+                         bint         i)
 {
   BtkList *list;
   GList *g_list;
@@ -179,7 +179,7 @@ bail_list_ref_selection (BatkSelection *selection,
   return obj;
 }
 
-static gint
+static bint
 bail_list_get_selection_count (BatkSelection *selection)
 {
   BtkList *list;
@@ -200,14 +200,14 @@ bail_list_get_selection_count (BatkSelection *selection)
   return g_list_length (g_list);;
 }
 
-static gboolean
+static bboolean
 bail_list_is_child_selected (BatkSelection *selection,
-                             gint         i)
+                             bint         i)
 {
   BtkList *list;
   GList *g_list;
   BtkWidget *item;
-  gint j;
+  bint j;
   BtkWidget *widget;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
@@ -231,9 +231,9 @@ bail_list_is_child_selected (BatkSelection *selection,
   return (j == i);
 }
 
-static gboolean
+static bboolean
 bail_list_remove_selection (BatkSelection   *selection,
-                             gint           i)
+                             bint           i)
 {
   if (batk_selection_is_child_selected (selection, i))
     batk_selection_clear_selection (selection);

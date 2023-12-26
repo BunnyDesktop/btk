@@ -259,7 +259,7 @@ msgstr "TN_Av_Páx"
 #: ../bdk/keyname-table.h:3971
 msgctxt "keyboard label"
 msgid "KP_Next"
-msgstr "TN_Seguinte"
+msgstr "TN_Sebuinte"
 
 #: ../bdk/keyname-table.h:3972
 msgctxt "keyboard label"
@@ -2536,7 +2536,7 @@ msgstr "_Avanzar"
 #: ../btk/btkstock.c:381
 msgctxt "Stock label, media"
 msgid "_Next"
-msgstr "_Seguinte"
+msgstr "_Sebuinte"
 
 #. Media label, as in "pause music"
 #: ../btk/btkstock.c:383
@@ -4902,7 +4902,7 @@ msgstr ""
 #~ msgstr "Produciuse un fallo ao ler o GIF: %s"
 
 #~ msgid "Failed to skip the next %d bytes with seek()."
-#~ msgstr "Produciuse un fallo ao saltar os seguintes %d bytes con seek()."
+#~ msgstr "Produciuse un fallo ao saltar os sebuintes %d bytes con seek()."
 
 #~ msgid "Failed to allocate QTIF context structure."
 #~ msgstr "Produciuse un fallo na asignación do contexto QTIF."

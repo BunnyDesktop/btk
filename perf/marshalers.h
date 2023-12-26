@@ -10,19 +10,19 @@ B_BEGIN_DECLS
 extern
 void _btk_marshal_OBJECT__VOID (GClosure     *closure,
                                 BValue       *return_value,
-                                guint         n_param_values,
+                                buint         n_param_values,
                                 const BValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 /* VOID:ENUM,OBJECT,DOUBLE (./marshalers.list:2) */
 extern
 void _btk_marshal_VOID__ENUM_OBJECT_DOUBLE (GClosure     *closure,
                                             BValue       *return_value,
-                                            guint         n_param_values,
+                                            buint         n_param_values,
                                             const BValue *param_values,
-                                            gpointer      invocation_hint,
-                                            gpointer      marshal_data);
+                                            bpointer      invocation_hint,
+                                            bpointer      marshal_data);
 
 
 B_END_DECLS

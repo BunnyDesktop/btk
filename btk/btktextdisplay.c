@@ -303,7 +303,7 @@ btk_text_renderer_draw_shape (BangoRenderer   *renderer,
     }
   else if (BDK_IS_PIXBUF (attr->data))
     {
-      gint width, height;
+      bint width, height;
       BdkRectangle pixbuf_rect, draw_rect;
       BdkPixbuf *pixbuf;
       
@@ -426,8 +426,8 @@ get_selected_clip (BtkTextRenderer    *text_renderer,
                    int                 start_index,
                    int                 end_index)
 {
-  gint *ranges;
-  gint n_ranges, i;
+  bint *ranges;
+  bint n_ranges, i;
   BdkRebunnyion *clip_rebunnyion = bdk_rebunnyion_new ();
   BdkRebunnyion *tmp_rebunnyion;
 
@@ -468,9 +468,9 @@ render_para (BtkTextRenderer    *text_renderer,
   BangoRectangle layout_logical;
   int screen_width;
   BdkGC *selection_gc, *fg_gc;
-  gint state;
+  bint state;
   
-  gboolean first = TRUE;
+  bboolean first = TRUE;
 
   iter = bango_layout_get_iter (layout);
 
@@ -498,7 +498,7 @@ render_para (BtkTextRenderer    *text_renderer,
       int first_y, last_y;
       BangoRectangle line_rect;
       int baseline;
-      gboolean at_last_line;
+      bboolean at_last_line;
       
       bango_layout_iter_get_line_extents (iter, NULL, &line_rect);
       baseline = bango_layout_iter_get_baseline (iter);
@@ -711,11 +711,11 @@ render_para (BtkTextRenderer    *text_renderer,
 
 static void
 on_renderer_display_closed (BdkDisplay       *display,
-                            gboolean          is_error,
+                            bboolean          is_error,
 			    BtkTextRenderer  *text_renderer)
 {
   g_signal_handlers_disconnect_by_func (text_renderer->screen,
-					(gpointer)on_renderer_display_closed,
+					(bpointer)on_renderer_display_closed,
 					text_renderer);
   g_object_set_data (B_OBJECT (text_renderer->screen), I_("btk-text-renderer"), NULL);
 }
@@ -751,23 +751,23 @@ btk_text_layout_draw (BtkTextLayout *layout,
 		      BdkGC       *cursor_gc,
                       /* Location of the drawable
                          in layout coordinates */
-                      gint x_offset,
-                      gint y_offset,
+                      bint x_offset,
+                      bint y_offset,
                       /* Rebunnyion of the layout to
                          render */
-                      gint x,
-                      gint y,
-                      gint width,
-                      gint height,
+                      bint x,
+                      bint y,
+                      bint width,
+                      bint height,
                       /* widgets to expose */
                       GList **widgets)
 {
   BdkRectangle clip;
-  gint current_y;
+  bint current_y;
   GSList *cursor_list;
   BtkTextRenderer *text_renderer;
   BtkTextIter selection_start, selection_end;
-  gboolean have_selection = FALSE;
+  bboolean have_selection = FALSE;
   GSList *line_list;
   GSList *tmp_list;
   GList *tmp_widgets;
@@ -808,10 +808,10 @@ btk_text_layout_draw (BtkTextLayout *layout,
   while (tmp_list != NULL)
     {
       BtkTextLineDisplay *line_display;
-      gint selection_start_index = -1;
-      gint selection_end_index = -1;
-      gboolean have_strong;
-      gboolean have_weak;
+      bint selection_start_index = -1;
+      bint selection_end_index = -1;
+      bboolean have_strong;
+      bboolean have_weak;
 
       BtkTextLine *line = tmp_list->data;
 
@@ -824,7 +824,7 @@ btk_text_layout_draw (BtkTextLayout *layout,
           if (have_selection)
             {
               BtkTextIter line_start, line_end;
-              gint byte_count;
+              bint byte_count;
               
               btk_text_layout_get_iter_at_line (layout,
                                                 &line_start,

@@ -28,10 +28,10 @@ enum {
   PACK_ALTERNATE
 };
 
-static gpointer GROUP_A = "GROUP_A";
-static gpointer GROUP_B = "GROUP_B";
+static bpointer GROUP_A = "GROUP_A";
+static bpointer GROUP_B = "GROUP_B";
 
-gchar *tabs1 [] = {
+bchar *tabs1 [] = {
   "aaaaaaaaaa",
   "bbbbbbbbbb",
   "cccccccccc",
@@ -39,7 +39,7 @@ gchar *tabs1 [] = {
   NULL
 };
 
-gchar *tabs2 [] = {
+bchar *tabs2 [] = {
   "1",
   "2",
   "3",
@@ -48,13 +48,13 @@ gchar *tabs2 [] = {
   NULL
 };
 
-gchar *tabs3 [] = {
+bchar *tabs3 [] = {
   "foo",
   "bar",
   NULL
 };
 
-gchar *tabs4 [] = {
+bchar *tabs4 [] = {
   "beer",
   "water",
   "lemonade",
@@ -70,9 +70,9 @@ static const BtkTargetEntry button_targets[] = {
 static BtkNotebook*
 window_creation_function (BtkNotebook *source_notebook,
 			  BtkWidget   *child,
-			  gint         x,
-			  gint         y,
-			  gpointer     data)
+			  bint         x,
+			  bint         y,
+			  bpointer     data)
 {
   BtkWidget *window, *notebook;
 
@@ -94,7 +94,7 @@ window_creation_function (BtkNotebook *source_notebook,
 }
 
 static void
-on_page_reordered (BtkNotebook *notebook, BtkWidget *child, guint page_num, gpointer data)
+on_page_reordered (BtkNotebook *notebook, BtkWidget *child, buint page_num, bpointer data)
 {
   g_print ("page %d reordered\n", page_num);
 }
@@ -102,10 +102,10 @@ on_page_reordered (BtkNotebook *notebook, BtkWidget *child, guint page_num, gpoi
 static void
 on_notebook_drag_begin (BtkWidget      *widget,
 			BdkDragContext *context,
-			gpointer        data)
+			bpointer        data)
 {
   BdkPixbuf *pixbuf;
-  guint page_num;
+  buint page_num;
 
   page_num = btk_notebook_get_current_page (BTK_NOTEBOOK (widget));
 
@@ -123,12 +123,12 @@ on_notebook_drag_begin (BtkWidget      *widget,
 static void
 on_button_drag_data_received (BtkWidget        *widget,
 			      BdkDragContext   *context,
-			      gint              x,
-			      gint              y,
+			      bint              x,
+			      bint              y,
 			      BtkSelectionData *data,
-			      guint             info,
-			      guint             time,
-			      gpointer          user_data)
+			      buint             info,
+			      buint             time,
+			      bpointer          user_data)
 {
   BtkWidget *source, *tab_label;
   BtkWidget **child;
@@ -143,13 +143,13 @@ on_button_drag_data_received (BtkWidget        *widget,
 }
 
 static BtkWidget*
-create_notebook (gchar           **labels,
-		 gpointer          group,
-		 gint              packing,
+create_notebook (bchar           **labels,
+		 bpointer          group,
+		 bint              packing,
 		 BtkPositionType   pos)
 {
   BtkWidget *notebook, *title, *page;
-  gint count = 0;
+  bint count = 0;
 
   notebook = btk_notebook_new ();
   g_signal_connect (notebook, "create-window",
@@ -187,13 +187,13 @@ create_notebook (gchar           **labels,
 }
 
 static BtkWidget*
-create_notebook_with_notebooks (gchar           **labels,
-			        gpointer          group,
-			        gint              packing,
+create_notebook_with_notebooks (bchar           **labels,
+			        bpointer          group,
+			        bint              packing,
 			        BtkPositionType   pos)
 {
   BtkWidget *notebook, *title, *page;
-  gint count = 0;
+  bint count = 0;
 
   notebook = btk_notebook_new ();
   g_signal_connect (notebook, "create-window",
@@ -248,8 +248,8 @@ create_trash_button (void)
   return button;
 }
 
-gint
-main (gint argc, gchar *argv[])
+bint
+main (bint argc, bchar *argv[])
 {
   BtkWidget *window, *table;
 

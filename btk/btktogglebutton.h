@@ -52,9 +52,9 @@ struct _BtkToggleButton
 {
   BtkButton button;
 
-  guint GSEAL (active) : 1;
-  guint GSEAL (draw_indicator) : 1;
-  guint GSEAL (inconsistent) : 1;
+  buint GSEAL (active) : 1;
+  buint GSEAL (draw_indicator) : 1;
+  buint GSEAL (inconsistent) : 1;
 };
 
 struct _BtkToggleButtonClass
@@ -74,18 +74,18 @@ struct _BtkToggleButtonClass
 GType      btk_toggle_button_get_type          (void) B_GNUC_CONST;
 
 BtkWidget* btk_toggle_button_new               (void);
-BtkWidget* btk_toggle_button_new_with_label    (const gchar     *label);
-BtkWidget* btk_toggle_button_new_with_mnemonic (const gchar     *label);
+BtkWidget* btk_toggle_button_new_with_label    (const bchar     *label);
+BtkWidget* btk_toggle_button_new_with_mnemonic (const bchar     *label);
 void       btk_toggle_button_set_mode          (BtkToggleButton *toggle_button,
-                                                gboolean         draw_indicator);
-gboolean   btk_toggle_button_get_mode          (BtkToggleButton *toggle_button);
+                                                bboolean         draw_indicator);
+bboolean   btk_toggle_button_get_mode          (BtkToggleButton *toggle_button);
 void       btk_toggle_button_set_active        (BtkToggleButton *toggle_button,
-                                                gboolean         is_active);
-gboolean   btk_toggle_button_get_active        (BtkToggleButton *toggle_button);
+                                                bboolean         is_active);
+bboolean   btk_toggle_button_get_active        (BtkToggleButton *toggle_button);
 void       btk_toggle_button_toggled           (BtkToggleButton *toggle_button);
 void       btk_toggle_button_set_inconsistent  (BtkToggleButton *toggle_button,
-                                                gboolean         setting);
-gboolean   btk_toggle_button_get_inconsistent  (BtkToggleButton *toggle_button);
+                                                bboolean         setting);
+bboolean   btk_toggle_button_get_inconsistent  (BtkToggleButton *toggle_button);
 
 
 #ifndef BTK_DISABLE_DEPRECATED

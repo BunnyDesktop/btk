@@ -47,7 +47,7 @@ struct _BdkScreen
 {
   BObject parent_instance;
 
-  guint GSEAL (closed) : 1;
+  buint GSEAL (closed) : 1;
 
   BdkGC *GSEAL (normal_gcs[32]);
   BdkGC *GSEAL (exposure_gcs[32]);
@@ -76,44 +76,44 @@ BdkColormap *bdk_screen_get_rgb_colormap      (BdkScreen   *screen);
 BdkVisual *  bdk_screen_get_rgb_visual        (BdkScreen   *screen);
 BdkColormap *bdk_screen_get_rgba_colormap     (BdkScreen   *screen);
 BdkVisual *  bdk_screen_get_rgba_visual       (BdkScreen   *screen);
-gboolean     bdk_screen_is_composited	      (BdkScreen   *screen);
+bboolean     bdk_screen_is_composited	      (BdkScreen   *screen);
 
 BdkWindow *  bdk_screen_get_root_window       (BdkScreen   *screen);
 BdkDisplay * bdk_screen_get_display           (BdkScreen   *screen);
-gint         bdk_screen_get_number            (BdkScreen   *screen);
-gint         bdk_screen_get_width             (BdkScreen   *screen);
-gint         bdk_screen_get_height            (BdkScreen   *screen);
-gint         bdk_screen_get_width_mm          (BdkScreen   *screen);
-gint         bdk_screen_get_height_mm         (BdkScreen   *screen);
+bint         bdk_screen_get_number            (BdkScreen   *screen);
+bint         bdk_screen_get_width             (BdkScreen   *screen);
+bint         bdk_screen_get_height            (BdkScreen   *screen);
+bint         bdk_screen_get_width_mm          (BdkScreen   *screen);
+bint         bdk_screen_get_height_mm         (BdkScreen   *screen);
 
 GList *      bdk_screen_list_visuals          (BdkScreen   *screen);
 GList *      bdk_screen_get_toplevel_windows  (BdkScreen   *screen);
-gchar *      bdk_screen_make_display_name     (BdkScreen   *screen);
+bchar *      bdk_screen_make_display_name     (BdkScreen   *screen);
 
-gint          bdk_screen_get_n_monitors        (BdkScreen *screen);
-gint          bdk_screen_get_primary_monitor   (BdkScreen *screen);
+bint          bdk_screen_get_n_monitors        (BdkScreen *screen);
+bint          bdk_screen_get_primary_monitor   (BdkScreen *screen);
 void          bdk_screen_get_monitor_geometry  (BdkScreen *screen,
-						gint       monitor_num,
+						bint       monitor_num,
 						BdkRectangle *dest);
-gint          bdk_screen_get_monitor_at_point  (BdkScreen *screen,
-						gint       x,
-						gint       y);
-gint          bdk_screen_get_monitor_at_window (BdkScreen *screen,
+bint          bdk_screen_get_monitor_at_point  (BdkScreen *screen,
+						bint       x,
+						bint       y);
+bint          bdk_screen_get_monitor_at_window (BdkScreen *screen,
 						BdkWindow *window);
-gint          bdk_screen_get_monitor_width_mm  (BdkScreen *screen,
-                                                gint       monitor_num);
-gint          bdk_screen_get_monitor_height_mm (BdkScreen *screen,
-                                                gint       monitor_num);
-gchar *       bdk_screen_get_monitor_plug_name (BdkScreen *screen,
-                                                gint       monitor_num);
+bint          bdk_screen_get_monitor_width_mm  (BdkScreen *screen,
+                                                bint       monitor_num);
+bint          bdk_screen_get_monitor_height_mm (BdkScreen *screen,
+                                                bint       monitor_num);
+bchar *       bdk_screen_get_monitor_plug_name (BdkScreen *screen,
+                                                bint       monitor_num);
 
 void          bdk_screen_broadcast_client_message  (BdkScreen       *screen,
 						    BdkEvent        *event);
 
 BdkScreen *bdk_screen_get_default (void);
 
-gboolean   bdk_screen_get_setting (BdkScreen   *screen,
-				   const gchar *name,
+bboolean   bdk_screen_get_setting (BdkScreen   *screen,
+				   const bchar *name,
 				   BValue      *value);
 
 void                        bdk_screen_set_font_options (BdkScreen                  *screen,
@@ -121,8 +121,8 @@ void                        bdk_screen_set_font_options (BdkScreen              
 const bairo_font_options_t *bdk_screen_get_font_options (BdkScreen                  *screen);
 
 void    bdk_screen_set_resolution (BdkScreen *screen,
-				   gdouble    dpi);
-gdouble bdk_screen_get_resolution (BdkScreen *screen);
+				   bdouble    dpi);
+bdouble bdk_screen_get_resolution (BdkScreen *screen);
 
 BdkWindow *bdk_screen_get_active_window (BdkScreen *screen);
 GList     *bdk_screen_get_window_stack  (BdkScreen *screen);

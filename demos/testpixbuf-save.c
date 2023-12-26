@@ -6,7 +6,7 @@
 #include <btk/btk.h>
 
 static void
-compare_pixbufs (BdkPixbuf *pixbuf, BdkPixbuf *compare, const gchar *file_type)
+compare_pixbufs (BdkPixbuf *pixbuf, BdkPixbuf *compare, const bchar *file_type)
 {
         if ((bdk_pixbuf_get_width (pixbuf) !=
              bdk_pixbuf_get_width (compare)) ||
@@ -22,16 +22,16 @@ compare_pixbufs (BdkPixbuf *pixbuf, BdkPixbuf *compare, const gchar *file_type)
                          "saved %s file differs from copy in memory\n",
                          file_type);
         } else {
-                guchar *orig_pixels;
-                guchar *compare_pixels;
-                gint    orig_rowstride;
-                gint    compare_rowstride;
-                gint    width;
-                gint    height;
-                gint    bytes_per_pixel;
-                gint    x, y;
-                guchar *p1, *p2;
-                gint    count = 0;
+                buchar *orig_pixels;
+                buchar *compare_pixels;
+                bint    orig_rowstride;
+                bint    compare_rowstride;
+                bint    width;
+                bint    height;
+                bint    bytes_per_pixel;
+                bint    x, y;
+                buchar *p1, *p2;
+                bint    count = 0;
 
                 orig_pixels = bdk_pixbuf_get_pixels (pixbuf);
                 compare_pixels = bdk_pixbuf_get_pixels (compare);
@@ -67,22 +67,22 @@ compare_pixbufs (BdkPixbuf *pixbuf, BdkPixbuf *compare, const gchar *file_type)
         }
 }
 
-static gboolean
-save_to_loader (const gchar *buf, gsize count, GError **err, gpointer data)
+static bboolean
+save_to_loader (const bchar *buf, bsize count, GError **err, bpointer data)
 {
         BdkPixbufLoader *loader = data;
 
-        return bdk_pixbuf_loader_write (loader, (const guchar *)buf, count, err);
+        return bdk_pixbuf_loader_write (loader, (const buchar *)buf, count, err);
 }
 
 static BdkPixbuf *
-buffer_to_pixbuf (const gchar *buf, gsize count, GError **err)
+buffer_to_pixbuf (const bchar *buf, bsize count, GError **err)
 {
         BdkPixbufLoader *loader;
         BdkPixbuf *pixbuf;
 
         loader = bdk_pixbuf_loader_new ();
-        if (bdk_pixbuf_loader_write (loader, (const guchar *)buf, count, err) &&
+        if (bdk_pixbuf_loader_write (loader, (const buchar *)buf, count, err) &&
             bdk_pixbuf_loader_close (loader, err)) {
                 pixbuf = g_object_ref (bdk_pixbuf_loader_get_pixbuf (loader));
                 g_object_unref (loader);
@@ -105,13 +105,13 @@ do_compare (BdkPixbuf *pixbuf, BdkPixbuf *compare, GError *err)
 }
 
 static void
-keypress_check (BtkWidget *widget, BdkEventKey *evt, gpointer data)
+keypress_check (BtkWidget *widget, BdkEventKey *evt, bpointer data)
 {
         BdkPixbuf *pixbuf;
         BtkDrawingArea *da = (BtkDrawingArea*)data;
         GError *err = NULL;
-        gchar *buffer;
-        gsize count;
+        bchar *buffer;
+        bsize count;
         BdkPixbufLoader *loader;
 
         pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (da), "pixbuf");
@@ -301,14 +301,14 @@ keypress_check (BtkWidget *widget, BdkEventKey *evt, gpointer data)
 
 
 static int
-close_app (BtkWidget *widget, gpointer data)
+close_app (BtkWidget *widget, bpointer data)
 {
         btk_main_quit ();
         return TRUE;
 }
 
 static int
-expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
+expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, bpointer data)
 {
         BdkPixbuf *pixbuf;
         bairo_t *cr;
@@ -327,7 +327,7 @@ expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
 }
 
 static int
-configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
+configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, bpointer data)
 {
         BdkPixbuf *pixbuf;
                            

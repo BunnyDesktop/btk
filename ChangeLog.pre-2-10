@@ -4770,7 +4770,7 @@ Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 2006-03-22  Michael Natterer  <mitch@imendio.com>
 
 	* btk/btktextbuffer.h (enum BtkTextBufferTargetInfo): count down
-	from G_MAXUINT to avoid clashes with application-added DND
+	from B_MAXUINT to avoid clashes with application-added DND
 	targets.
 
 	* btk/btktextview.c (btk_text_view_init): set an empty
@@ -5125,8 +5125,8 @@ Thu Mar  9 14:29:43 2006  Tim Janik  <timj@btk.org>
 	Cancel drags when the grabs get broken.  Fixes bug #333056:
 
 	* btk/btkdnd.c (btk_drag_selection_received): The time argument is
-	a guint, not guint32.
-	(btk_drag_source_event_cb): Return gboolean, not gint.
+	a buint, not buint32.
+	(btk_drag_source_event_cb): Return bboolean, not bint.
 	(btk_drag_anim_timeout): Likewise.
 	(btk_drag_motion_cb): Likewise.
 	(btk_drag_key_cb): Likewise.
@@ -6365,7 +6365,7 @@ Tue Jan 17 19:27:59 2006  Tim Janik  <timj@imendio.com>
 2006-01-05  Johan Dahlin  <jdahlin@async.com.br>
 
 	* btk/btkprogressbar.c: Set minimum for activity-step property to 0
-	instead of -G_MAXUINT.
+	instead of -B_MAXUINT.
 	
 2006-01-05  Matthias Clasen  <mclasen@redhat.com>
 
@@ -7066,11 +7066,11 @@ Tue Dec  6 10:32:17 2005  Tim Janik  <timj@btk.org>
 	
 2005-11-24  Michael Natterer  <mitch@imendio.com>
 
-	* btk/btktoolbar.h (struct _BtkToolbar): changed two private guint
-	that used to hold signal handler IDs to two guint of padding.
+	* btk/btktoolbar.h (struct _BtkToolbar): changed two private buint
+	that used to hold signal handler IDs to two buint of padding.
 
 	* btk/btktoolbar.c (struct _BtkToolbarPrivate): added them as
-	gulong here.
+	bulong here.
 
 	(btk_toolbar_screen_changed): changed accordingly.
 
@@ -8976,7 +8976,7 @@ Thu Sep 15 15:27:55 2005  Tim Janik  <timj@imendio.com>
 	value of the ui property. (#314532, Yong Wang)
 
 	* bdk/x11/bdkproperty-x11.c (bdk_property_get): Don't warn
-	when G_MAXLONG is passed as length.  
+	when B_MAXLONG is passed as length.  
 
 2005-08-26  Matthias Clasen  <mclasen@redhat.com>
 

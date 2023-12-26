@@ -57,7 +57,7 @@
 /* ---------------------------------------------------------------------------------------------------- */
 /* these functions are based on code from libwnck (LGPLv2) */
 
-static gboolean get_window_list   (Display   *xdisplay,
+static bboolean get_window_list   (Display   *xdisplay,
                                    Window     xwindow,
                                    Atom       atom,
                                    Window   **windows,
@@ -67,21 +67,21 @@ static char*    get_utf8_property (Display   *xdisplay,
                                    Window     xwindow,
                                    Atom       atom);
 
-static gboolean get_cardinal      (Display   *xdisplay,
+static bboolean get_cardinal      (Display   *xdisplay,
                                    Window     xwindow,
                                    Atom       atom,
                                    int       *val);
 
-static gboolean read_rgb_icon     (Display   *xdisplay,
+static bboolean read_rgb_icon     (Display   *xdisplay,
                                    Window     xwindow,
                                    int        ideal_width,
                                    int        ideal_height,
                                    int       *width,
                                    int       *height,
-                                   guchar   **pixdata);
+                                   buchar   **pixdata);
 
 
-static gboolean
+static bboolean
 get_cardinal (Display *xdisplay,
               Window   xwindow,
               Atom     atom,
@@ -89,9 +89,9 @@ get_cardinal (Display *xdisplay,
 {
   Atom type;
   int format;
-  gulong nitems;
-  gulong bytes_after;
-  gulong *num;
+  bulong nitems;
+  bulong bytes_after;
+  bulong *num;
   int err, result;
 
   *val = 0;
@@ -101,7 +101,7 @@ get_cardinal (Display *xdisplay,
   result = XGetWindowProperty (xdisplay,
                                xwindow,
                                atom,
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, XA_CARDINAL, &type, &format, &nitems,
                                &bytes_after, (void*)&num);
   XSync (xdisplay, False);
@@ -131,9 +131,9 @@ get_utf8_property (Display *xdisplay,
 {
   Atom type;
   int format;
-  gulong nitems;
-  gulong bytes_after;
-  gchar *val;
+  bulong nitems;
+  bulong bytes_after;
+  bchar *val;
   int err, result;
   char *retval;
   Atom utf8_string;
@@ -146,10 +146,10 @@ get_utf8_property (Display *xdisplay,
   result = XGetWindowProperty (xdisplay,
                                xwindow,
                                atom,
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, utf8_string,
                                &type, &format, &nitems,
-                               &bytes_after, (guchar **)&val);
+                               &bytes_after, (buchar **)&val);
   XSync (xdisplay, False);
   err = bdk_error_trap_pop ();
 
@@ -181,9 +181,9 @@ get_utf8_property (Display *xdisplay,
   return retval;
 }
 
-static gboolean
-find_largest_sizes (gulong *data,
-                    gulong  nitems,
+static bboolean
+find_largest_sizes (bulong *data,
+                    bulong  nitems,
                     int    *width,
                     int    *height)
 {
@@ -193,7 +193,7 @@ find_largest_sizes (gulong *data,
   while (nitems > 0)
     {
       int w, h;
-      gboolean replace;
+      bboolean replace;
 
       replace = FALSE;
 
@@ -216,18 +216,18 @@ find_largest_sizes (gulong *data,
   return TRUE;
 }
 
-static gboolean
-find_best_size (gulong  *data,
-                gulong   nitems,
+static bboolean
+find_best_size (bulong  *data,
+                bulong   nitems,
                 int      ideal_width,
                 int      ideal_height,
                 int     *width,
                 int     *height,
-                gulong **start)
+                bulong **start)
 {
   int best_w;
   int best_h;
-  gulong *best_start;
+  bulong *best_start;
   int max_width, max_height;
 
   *width = 0;
@@ -249,7 +249,7 @@ find_best_size (gulong  *data,
   while (nitems > 0)
     {
       int w, h;
-      gboolean replace;
+      bboolean replace;
 
       replace = FALSE;
 
@@ -313,22 +313,22 @@ find_best_size (gulong  *data,
 }
 
 static void
-argbdata_to_pixdata (gulong  *argb_data,
+argbdata_to_pixdata (bulong  *argb_data,
                      int      len,
-                     guchar **pixdata)
+                     buchar **pixdata)
 {
-  guchar *p;
+  buchar *p;
   int i;
 
-  *pixdata = g_new (guchar, len * 4);
+  *pixdata = g_new (buchar, len * 4);
   p = *pixdata;
 
   /* One could speed this up a lot. */
   i = 0;
   while (i < len)
     {
-      guint argb;
-      guint rgba;
+      buint argb;
+      buint rgba;
 
       argb = argb_data[i];
       rgba = (argb << 8) | (argb >> 24);
@@ -346,22 +346,22 @@ argbdata_to_pixdata (gulong  *argb_data,
     }
 }
 
-static gboolean
+static bboolean
 read_rgb_icon (Display   *xdisplay,
                Window     xwindow,
                int        ideal_width,
                int        ideal_height,
                int       *width,
                int       *height,
-               guchar   **pixdata)
+               buchar   **pixdata)
 {
   Atom type;
   int format;
-  gulong nitems;
-  gulong bytes_after;
+  bulong nitems;
+  bulong bytes_after;
   int result, err;
-  gulong *data;
-  gulong *best;
+  bulong *data;
+  bulong *best;
   int w, h;
 
   bdk_error_trap_push ();
@@ -370,7 +370,7 @@ read_rgb_icon (Display   *xdisplay,
   result = XGetWindowProperty (xdisplay,
                                xwindow,
                                bdk_x11_get_xatom_by_name ("_NET_WM_ICON"),
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, XA_CARDINAL, &type, &format, &nitems,
                                &bytes_after, (void*)&data);
 
@@ -406,13 +406,13 @@ read_rgb_icon (Display   *xdisplay,
 }
 
 static void
-free_pixels (guchar *pixels, gpointer data)
+free_pixels (buchar *pixels, bpointer data)
 {
   g_free (pixels);
 }
 
 static BdkPixbuf*
-scaled_from_pixdata (guchar *pixdata,
+scaled_from_pixdata (buchar *pixdata,
                      int     w,
                      int     h,
                      int     new_w,
@@ -467,7 +467,7 @@ scaled_from_pixdata (guchar *pixdata,
   return dest;
 }
 
-static gboolean
+static bboolean
 get_window_list (Display  *xdisplay,
                  Window    xwindow,
                  Atom      atom,
@@ -476,8 +476,8 @@ get_window_list (Display  *xdisplay,
 {
   Atom type;
   int format;
-  gulong nitems;
-  gulong bytes_after;
+  bulong nitems;
+  bulong bytes_after;
   Window *data;
   int err, result;
 
@@ -489,7 +489,7 @@ get_window_list (Display  *xdisplay,
   result = XGetWindowProperty (xdisplay,
                                xwindow,
                                atom,
-                               0, G_MAXLONG,
+                               0, B_MAXLONG,
                                False, XA_WINDOW, &type, &format, &nitems,
                                &bytes_after, (void*)&data);
   XSync (xdisplay, False);
@@ -519,7 +519,7 @@ get_window_list (Display  *xdisplay,
 
 struct _BtkMountOperationLookupContext
 {
-  /* Hash from pid (gint) -> XID (gint)
+  /* Hash from pid (bint) -> XID (bint)
    *
    * Note that XIDs are at most 27 bits - however, also note that sizeof(XID) == 8 on
    * x86_64 - that's just xlib brokenness. So it's safe to stuff the XID into a pointer.
@@ -533,8 +533,8 @@ _btk_mount_operation_lookup_context_get (BdkDisplay *display)
 {
   BtkMountOperationLookupContext *context;
   Window *mapping;
-  gint mapping_length;
-  gint n;
+  bint mapping_length;
+  bint n;
 
   context = g_new0 (BtkMountOperationLookupContext, 1);
 
@@ -551,7 +551,7 @@ _btk_mount_operation_lookup_context_get (BdkDisplay *display)
                    &mapping_length);
   for (n = 0; n < mapping_length; n++)
     {
-      gint pid;
+      bint pid;
 
       if (!get_cardinal (BDK_DISPLAY_XDISPLAY (context->display),
                          mapping[n],
@@ -561,8 +561,8 @@ _btk_mount_operation_lookup_context_get (BdkDisplay *display)
         continue;
 
       g_hash_table_insert (context->pid_to_window,
-                           GINT_TO_POINTER (pid),
-                           GINT_TO_POINTER ((gint) mapping[n]));
+                           BINT_TO_POINTER (pid),
+                           BINT_TO_POINTER ((bint) mapping[n]));
     }
   g_free (mapping);
 
@@ -584,10 +584,10 @@ static GPid
 pid_get_parent (GPid pid)
 {
   GPid ppid;
-  gchar **tokens;
-  gchar *stat_filename;
-  gchar *stat_contents;
-  gsize stat_len;
+  bchar **tokens;
+  bchar *stat_filename;
+  bchar *stat_contents;
+  bsize stat_len;
 
   ppid = 0;
   tokens = NULL;
@@ -604,7 +604,7 @@ pid_get_parent (GPid pid)
                            &stat_len,
                            NULL))
     {
-      guint n;
+      buint n;
 
       tokens = g_strsplit (stat_contents, "\n", 0);
 
@@ -612,7 +612,7 @@ pid_get_parent (GPid pid)
         {
           if (g_str_has_prefix (tokens[n], "PPid:"))
             {
-              gchar *endp;
+              bchar *endp;
 
               endp = NULL;
               ppid = strtoll (tokens[n] + sizeof "PPid:" - 1, &endp, 10);
@@ -637,16 +637,16 @@ pid_get_parent (GPid pid)
   return ppid;
 }
 
-static gchar *
+static bchar *
 pid_get_env (GPid         pid,
-             const gchar *key)
+             const bchar *key)
 {
-  gchar *ret;
-  gchar *env_filename;
-  gchar *env;
-  gsize env_len;
-  gsize key_len;
-  gchar *end;
+  bchar *ret;
+  bchar *env_filename;
+  bchar *env;
+  bsize env_len;
+  bsize key_len;
+  bchar *end;
 
   ret = NULL;
 
@@ -658,7 +658,7 @@ pid_get_env (GPid         pid,
                            &env_len,
                            NULL))
     {
-      guint n;
+      buint n;
 
       /* /proc/<pid>/environ in Linux is split at '\0' points, g_strsplit() can't handle that... */
       n = 0;
@@ -672,7 +672,7 @@ pid_get_env (GPid         pid,
               ret = g_strdup (env + n + key_len + 1);
 
               /* skip invalid UTF-8 */
-              if (!g_utf8_validate (ret, -1, (const gchar **) &end))
+              if (!g_utf8_validate (ret, -1, (const bchar **) &end))
                 *end = '\0';
               break;
             }
@@ -688,14 +688,14 @@ pid_get_env (GPid         pid,
   return ret;
 }
 
-static gchar *
+static bchar *
 pid_get_command_line (GPid pid)
 {
-  gchar *cmdline_filename;
-  gchar *cmdline_contents;
-  gsize cmdline_len;
-  guint n;
-  gchar *end;
+  bchar *cmdline_filename;
+  bchar *cmdline_contents;
+  bsize cmdline_len;
+  buint n;
+  bchar *end;
 
   cmdline_contents = NULL;
 
@@ -714,7 +714,7 @@ pid_get_command_line (GPid pid)
     }
 
   /* skip invalid UTF-8 */
-  if (!g_utf8_validate (cmdline_contents, -1, (const gchar **) &end))
+  if (!g_utf8_validate (cmdline_contents, -1, (const bchar **) &end))
       *end = '\0';
 
  out:
@@ -734,14 +734,14 @@ pid_get_parent (GPid pid)
   return 0;
 }
 
-static gchar *
+static bchar *
 pid_get_env (GPid         pid,
-             const gchar *key)
+             const bchar *key)
 {
   return NULL;
 }
 
-static gchar *
+static bchar *
 pid_get_command_line (GPid pid)
 {
   return NULL;
@@ -751,26 +751,26 @@ pid_get_command_line (GPid pid)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static gchar *
+static bchar *
 get_name_for_window_with_pid (BtkMountOperationLookupContext *context,
                               GPid                            pid)
 {
   Window window;
   Window windowid_window;
-  gchar *ret;
+  bchar *ret;
 
   ret = NULL;
 
-  window = GPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, GINT_TO_POINTER (pid)));
+  window = BPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, BINT_TO_POINTER (pid)));
   if (window == None)
     {
-      gchar *windowid_value;
+      bchar *windowid_value;
 
       /* check for $WINDOWID (set by terminals) and see if we can get the title that way */
       windowid_value = pid_get_env (pid, "WINDOWID");
       if (windowid_value != NULL)
         {
-          gchar *endp;
+          bchar *endp;
 
           endp = NULL;
           windowid_window = (Window) g_ascii_strtoll (windowid_value, &endp, 10);
@@ -790,7 +790,7 @@ get_name_for_window_with_pid (BtkMountOperationLookupContext *context,
               if (pid == 0)
                 break;
 
-              window = GPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, GINT_TO_POINTER (pid)));
+              window = BPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, BINT_TO_POINTER (pid)));
               if (window != None)
                 break;
             }
@@ -818,14 +818,14 @@ get_name_for_window_with_pid (BtkMountOperationLookupContext *context,
 static BdkPixbuf *
 get_pixbuf_for_window_with_pid (BtkMountOperationLookupContext *context,
                                 GPid                            pid,
-                                gint                            size_pixels)
+                                bint                            size_pixels)
 {
   Window window;
   BdkPixbuf *ret;
 
   ret = NULL;
 
-  window = GPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, GINT_TO_POINTER (pid)));
+  window = BPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, BINT_TO_POINTER (pid)));
   if (window == None)
     {
       /* otherwise, check for parents */
@@ -835,7 +835,7 @@ get_pixbuf_for_window_with_pid (BtkMountOperationLookupContext *context,
           if (pid == 0)
             break;
 
-          window = GPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, GINT_TO_POINTER (pid)));
+          window = BPOINTER_TO_INT (g_hash_table_lookup (context->pid_to_window, BINT_TO_POINTER (pid)));
           if (window != None)
             break;
         }
@@ -844,9 +844,9 @@ get_pixbuf_for_window_with_pid (BtkMountOperationLookupContext *context,
 
   if (window != None)
     {
-      gint    width;
-      gint    height;
-      guchar *pixdata;
+      bint    width;
+      bint    height;
+      buchar *pixdata;
 
       if (read_rgb_icon (BDK_DISPLAY_XDISPLAY (context->display),
                          window,
@@ -866,7 +866,7 @@ get_pixbuf_for_window_with_pid (BtkMountOperationLookupContext *context,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static const gchar *well_known_commands[] =
+static const bchar *well_known_commands[] =
 {
   /* translators: this string is a name for the 'less' command */
   "less", N_("Terminal Pager"),
@@ -877,12 +877,12 @@ static const gchar *well_known_commands[] =
   NULL,
 };
 
-gboolean
+bboolean
 _btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
                                   GPid                            pid,
-                                  gint                            size_pixels,
-                                  gchar                         **out_name,
-                                  gchar                         **out_command_line,
+                                  bint                            size_pixels,
+                                  bchar                         **out_name,
+                                  bchar                         **out_command_line,
                                   BdkPixbuf                     **out_pixbuf)
 {
   g_return_val_if_fail (out_name != NULL && *out_name == NULL, FALSE);
@@ -911,9 +911,9 @@ _btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
   if (*out_name == NULL && *out_command_line != NULL &&
       strlen (*out_command_line) > 0 && (*out_command_line)[0] != ' ')
     {
-      guint n;
-      gchar *s;
-      gchar *p;
+      buint n;
+      bchar *s;
+      bchar *p;
 
       /* find the first character after the first argument */
       s = strchr (*out_command_line, ' ');
@@ -949,11 +949,11 @@ _btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
   return TRUE;
 }
 
-gboolean
+bboolean
 _btk_mount_operation_kill_process (GPid      pid,
                                    GError  **error)
 {
-  gboolean ret;
+  bboolean ret;
 
   ret = TRUE;
 

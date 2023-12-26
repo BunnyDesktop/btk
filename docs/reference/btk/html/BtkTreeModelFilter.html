@@ -44,7 +44,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="BtkTreeModelFilter.html#BtkTreeModelFilterVisibleFunc" title="BtkTreeModelFilterVisibleFunc ()">*BtkTreeModelFilterVisibleFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -100,7 +100,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeModelFilter.html#btk-tree-model-filter-convert-child-iter-to-iter" title="btk_tree_model_filter_convert_child_iter_to_iter ()">btk_tree_model_filter_convert_child_iter_to_iter</a> <span class="c_punctuation">()</span>
@@ -210,10 +210,10 @@ BtkTreeModelFilter implements
 <a name="BtkTreeModelFilter.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BtkTreeModelFilterVisibleFunc"></a><h3>BtkTreeModelFilterVisibleFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 <span class="c_punctuation">(</span>*BtkTreeModelFilterVisibleFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                                  <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -222,8 +222,8 @@ BtkTreeModelFilter implements
 <span class="c_punctuation">(</span>*BtkTreeModelFilterModifyFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
                                  <em class="parameter"><code><span class="type">BValue</span> *value</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> column</code></em>,
-                                 <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bint</span> column</code></em>,
+                                 <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -271,7 +271,7 @@ and <em class="parameter"><code>root</code></em>
 btk_tree_model_filter_set_visible_func
                                (<em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html" title="BtkTreeModelFilter"><span class="type">BtkTreeModelFilter</span></a> *filter</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html#BtkTreeModelFilterVisibleFunc" title="BtkTreeModelFilterVisibleFunc ()"><span class="type">BtkTreeModelFilterVisibleFunc</span></a> func</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                 <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Sets the visible function used when filtering the <em class="parameter"><code>filter</code></em>
  to be <em class="parameter"><code>func</code></em>
@@ -306,14 +306,14 @@ rows, like in the example below.</p>
 14
 15
 16</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">gboolean</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">bboolean</span>
 <span class="nf">visible_func</span> <span class="p">(</span><span class="n">BtkTreeModel</span> <span class="o">*</span><span class="n">model</span><span class="p">,</span>
               <span class="n">BtkTreeIter</span>  <span class="o">*</span><span class="n">iter</span><span class="p">,</span>
-              <span class="n">gpointer</span>      <span class="n">data</span><span class="p">)</span>
+              <span class="n">bpointer</span>      <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="cm">/* Visible if row is non-empty and first column is &quot;HI&quot; */</span>
-  <span class="n">gchar</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
-  <span class="n">gboolean</span> <span class="n">visible</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
+  <span class="n">bchar</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+  <span class="n">bboolean</span> <span class="n">visible</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">;</span>
 
   <span class="n">btk_tree_model_get</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">iter</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span> <span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="s">&quot;HI&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -367,10 +367,10 @@ rows, like in the example below.</p>
 <a name="btk-tree-model-filter-set-modify-func"></a><h3>btk_tree_model_filter_set_modify_func ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_model_filter_set_modify_func (<em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html" title="BtkTreeModelFilter"><span class="type">BtkTreeModelFilter</span></a> *filter</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> n_columns</code></em>,
+                                       <em class="parameter"><code><span class="type">bint</span> n_columns</code></em>,
                                        <em class="parameter"><code><span class="type">GType</span> *types</code></em>,
                                        <em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html#BtkTreeModelFilterModifyFunc" title="BtkTreeModelFilterModifyFunc ()"><span class="type">BtkTreeModelFilterModifyFunc</span></a> func</code></em>,
-                                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                       <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                        <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>With the <em class="parameter"><code>n_columns</code></em>
  and <em class="parameter"><code>types</code></em>
@@ -435,7 +435,7 @@ modify function.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_model_filter_set_visible_column
                                (<em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html" title="BtkTreeModelFilter"><span class="type">BtkTreeModelFilter</span></a> *filter</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> column</code></em>);</pre>
 <p>Sets <em class="parameter"><code>column</code></em>
  of the child_model to be the column where <em class="parameter"><code>filter</code></em>
  should
@@ -459,7 +459,7 @@ if not.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>column</p></td>
-<td class="parameter_description"><p>A <span class="type">gint</span> which is the column containing the visible information.</p></td>
+<td class="parameter_description"><p>A <span class="type">bint</span> which is the column containing the visible information.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -499,7 +499,7 @@ btk_tree_model_filter_get_model (<em class="parameter"><code><a class="link" hre
 <hr>
 <div class="refsect2">
 <a name="btk-tree-model-filter-convert-child-iter-to-iter"></a><h3>btk_tree_model_filter_convert_child_iter_to_iter ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_model_filter_convert_child_iter_to_iter
                                (<em class="parameter"><code><a class="link" href="BtkTreeModelFilter.html" title="BtkTreeModelFilter"><span class="type">BtkTreeModelFilter</span></a> *filter</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *filter_iter</code></em>,

@@ -150,20 +150,20 @@ typedef enum {
 
 struct _ThemePixbuf
 {
-  gchar     *filename;
+  bchar     *filename;
   BdkPixbuf *pixbuf;
-  gboolean   stretch;
-  gint       border_left;
-  gint       border_right;
-  gint       border_bottom;
-  gint       border_top;
-  guint      hints[3][3];
+  bboolean   stretch;
+  bint       border_left;
+  bint       border_right;
+  bint       border_bottom;
+  bint       border_top;
+  buint      hints[3][3];
 };
 
 struct _ThemeMatchData
 {
-  guint            function;	/* Mandatory */
-  gchar           *detail;
+  buint            function;	/* Mandatory */
+  bchar           *detail;
 
   ThemeMatchFlags  flags;
 
@@ -179,7 +179,7 @@ struct _ThemeMatchData
 
 struct _ThemeImage
 {
-  guint           refcount;
+  buint           refcount;
 
   ThemePixbuf    *background;
   ThemePixbuf    *overlay;
@@ -187,7 +187,7 @@ struct _ThemeImage
   ThemePixbuf    *gap;
   ThemePixbuf    *gap_end;
   
-  gchar           recolorable;
+  bchar           recolorable;
 
   ThemeMatchData  match_data;
 };
@@ -200,22 +200,22 @@ B_GNUC_INTERNAL void         theme_pixbuf_set_filename (ThemePixbuf  *theme_pb,
 					const char   *filename);
 B_GNUC_INTERNAL BdkPixbuf *  theme_pixbuf_get_pixbuf   (ThemePixbuf  *theme_pb);
 B_GNUC_INTERNAL void         theme_pixbuf_set_border   (ThemePixbuf  *theme_pb,
-					gint          left,
-					gint          right,
-					gint          top,
-					gint          bottom);
+					bint          left,
+					bint          right,
+					bint          top,
+					bint          bottom);
 B_GNUC_INTERNAL void         theme_pixbuf_set_stretch  (ThemePixbuf  *theme_pb,
-					gboolean      stretch);
+					bboolean      stretch);
 B_GNUC_INTERNAL void         theme_pixbuf_render       (ThemePixbuf  *theme_pb,
 					BdkWindow    *window,
 					BdkBitmap    *mask,
 					BdkRectangle *clip_rect,
-					guint         component_mask,
-					gboolean      center,
-					gint          dest_x,
-					gint          dest_y,
-					gint          dest_width,
-					gint          dest_height);
+					buint         component_mask,
+					bboolean      center,
+					bint          dest_x,
+					bint          dest_y,
+					bint          dest_width,
+					bint          dest_height);
 
 
 

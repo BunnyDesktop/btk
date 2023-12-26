@@ -50,7 +50,7 @@ struct _BtkFileFilter
 {
   BtkObject parent_instance;
   
-  gchar *name;
+  bchar *name;
   GSList *rules;
 
   BtkFileFilterFlags needed;
@@ -62,12 +62,12 @@ struct _FilterRule
   BtkFileFilterFlags needed;
   
   union {
-    gchar *pattern;
-    gchar *mime_type;
+    bchar *pattern;
+    bchar *mime_type;
     GSList *pixbuf_formats;
     struct {
       BtkFileFilterFunc func;
-      gpointer data;
+      bpointer data;
       GDestroyNotify notify;
     } custom;
   } u;
@@ -167,7 +167,7 @@ btk_file_filter_new (void)
  **/
 void
 btk_file_filter_set_name (BtkFileFilter *filter,
-			  const gchar   *name)
+			  const bchar   *name)
 {
   g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   
@@ -188,7 +188,7 @@ btk_file_filter_set_name (BtkFileFilter *filter,
  * 
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_file_filter_get_name (BtkFileFilter *filter)
 {
   g_return_val_if_fail (BTK_IS_FILE_FILTER (filter), NULL);
@@ -215,7 +215,7 @@ file_filter_add_rule (BtkFileFilter *filter,
  **/
 void
 btk_file_filter_add_mime_type (BtkFileFilter *filter,
-			       const gchar   *mime_type)
+			       const bchar   *mime_type)
 {
   FilterRule *rule;
   
@@ -241,7 +241,7 @@ btk_file_filter_add_mime_type (BtkFileFilter *filter,
  **/
 void
 btk_file_filter_add_pattern (BtkFileFilter *filter,
-			     const gchar   *pattern)
+			     const bchar   *pattern)
 {
   FilterRule *rule;
   
@@ -302,7 +302,7 @@ void
 btk_file_filter_add_custom (BtkFileFilter         *filter,
 			    BtkFileFilterFlags     needed,
 			    BtkFileFilterFunc      func,
-			    gpointer               data,
+			    bpointer               data,
 			    GDestroyNotify         notify)
 {
   FilterRule *rule;
@@ -360,7 +360,7 @@ btk_file_filter_get_needed (BtkFileFilter *filter)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_file_filter_filter (BtkFileFilter           *filter,
 			const BtkFileFilterInfo *filter_info)
 {
@@ -378,8 +378,8 @@ btk_file_filter_filter (BtkFileFilter           *filter,
 	case FILTER_RULE_MIME_TYPE:
           if (filter_info->mime_type != NULL)
             {
-              gchar *filter_content_type, *rule_content_type;
-              gboolean match;
+              bchar *filter_content_type, *rule_content_type;
+              bboolean match;
 
               filter_content_type = g_content_type_from_mime_type (filter_info->mime_type);
               rule_content_type = g_content_type_from_mime_type (rule->u.mime_type);
@@ -406,7 +406,7 @@ btk_file_filter_filter (BtkFileFilter           *filter,
 	    for (list = rule->u.pixbuf_formats; list; list = list->next)
 	      {
 		int i;
-		gchar **mime_types;
+		bchar **mime_types;
 
 		mime_types = bdk_pixbuf_format_get_mime_types (list->data);
 

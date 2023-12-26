@@ -1271,7 +1271,7 @@ typedef struct
 G_LOCK_DEFINE_STATIC (yes_or_no);
 static volatile int yes_or_no = YES_IT_IS;
 
-void destroy(BtkWidget *widget, gpointer data)
+void destroy(BtkWidget *widget, bpointer data)
 {
   btk_main_quit();
 }
@@ -1279,7 +1279,7 @@ void destroy(BtkWidget *widget, gpointer data)
 void *argument_thread(void *args)
 {
   yes_or_no_args *data = (yes_or_no_args *)args;
-  gboolean say_something;
+  bboolean say_something;
 
   for(;;)
     {
@@ -1556,17 +1556,17 @@ void sigchld_handler(int num)
   sigprocmask(SIG_UNBLOCK, &amp;set, &amp;oldset);
 }
 
-gint delete_event(BtkWidget *widget, BdkEvent *event, gpointer data)
+bint delete_event(BtkWidget *widget, BdkEvent *event, bpointer data)
 {
   return(FALSE);
 }
 
-void destroy(BtkWidget *widget, gpointer data)
+void destroy(BtkWidget *widget, bpointer data)
 {
   btk_main_quit();
 }
 
-void fork_me(BtkWidget *widget, gpointer data)
+void fork_me(BtkWidget *widget, bpointer data)
 {
   pid_t pid;
 
@@ -1737,8 +1737,8 @@ Window xwin = BDK_WINDOW_XWINDOW (BTK_WIDGET (my_window)->window);
 <para>Define a signal handler:</para>
 
 <programlisting role="C">
-gint
-signal_handler_event(BtkWidget *widget, BdkEventButton *event, gpointer func_data)
+bint
+signal_handler_event(BtkWidget *widget, BdkEventButton *event, bpointer func_data)
 {
   if (BTK_IS_BUTTON(widget) &&
        (event->type==BDK_2BUTTON_PRESS ||
@@ -1835,9 +1835,9 @@ be declared as:</para>
 
 
 <programlisting role="C">
-gint delete_event_handler (BtkWidget   *widget,
+bint delete_event_handler (BtkWidget   *widget,
                            BdkEventAny *event,
-                           gpointer     data);
+                           bpointer     data);
 </programlisting>
 
 </sect1>
@@ -1891,7 +1891,7 @@ handled in the same way as other signals.</para>
 <para>Tim Janik posted this code snippet:</para>
 
 <programlisting role="C">
-static guint signal_user_action = 0;
+static buint signal_user_action = 0;
 
 signal_user_action =
   btk_object_class_user_signal_new (btk_type_class (BTK_TYPE_WIDGET),
@@ -1903,7 +1903,7 @@ signal_user_action =
 
 void
 btk_widget_user_action (BtkWidget *widget,
-                        gpointer   act_data)
+                        bpointer   act_data)
 {
   g_return_if_fail (BTK_IS_WIDGET (widget));
 
@@ -1912,7 +1912,7 @@ btk_widget_user_action (BtkWidget *widget,
 </programlisting>
 
 <para>If you want your new signal to have more than the
-classical gpointer parameter, you'll have to play with BTK+
+classical bpointer parameter, you'll have to play with BTK+
 marshallers.</para>
 
 </sect1>
@@ -2011,9 +2011,9 @@ common way to do this, as it provides a powerful interface to
 connect objects and data.</para>
 
 <programlisting role="C">
-void g_object_set_data(BObject *object, const gchar *key, gpointer data);
+void g_object_set_data(BObject *object, const bchar *key, bpointer data);
 
-gpointer g_object_get_data(BObject *object, const gchar *key);
+bpointer g_object_get_data(BObject *object, const bchar *key);
 </programlisting>
 
 <para>Since a short example is better than any lengthy speech:</para>
@@ -2022,8 +2022,8 @@ gpointer g_object_get_data(BObject *object, const gchar *key);
 struct my_struct	p1,p2,*result;
 BtkWidget		*w;
 
-g_object_set_data(B_OBJECT(w),"p1 data",(gpointer)&amp;p1);
-g_object_set_data(B_OBJECT(w),"p2 data",(gpointer)&amp;p2);
+g_object_set_data(B_OBJECT(w),"p1 data",(bpointer)&amp;p1);
+g_object_set_data(B_OBJECT(w),"p2 data",(bpointer)&amp;p2);
 
 result = g_object_get_data(B_OBJECT(w),"p1 data");
 </programlisting>
@@ -2160,11 +2160,11 @@ definition of these functions are:</para>
 
 <programlisting role="C">
 void btk_widget_set_size_request (BtkWidget *widget,
-                                  gint       width,
-                                  gint       height);
+                                  bint       width,
+                                  bint       height);
 
 void btk_window_set_resizable (BtkWindow *window,
-                               gboolean   resizable);
+                               bboolean   resizable);
 
 </programlisting>
 
@@ -2180,7 +2180,7 @@ directory of the BTK+ distribution implements a popup menu
 with this technique:</para>
 
 <programlisting role="C">
-static gint button_press (BtkWidget *widget, BdkEvent *event)
+static bint button_press (BtkWidget *widget, BdkEvent *event)
 {
 
     if (event->type == BDK_BUTTON_PRESS) {
@@ -2221,14 +2221,14 @@ functions be declared const?</title>
 <para>For example:</para>
 
 <programlisting role="C">
-gint btk_clist_prepend (BtkCList *clist,
-                        gchar    *text[]);
+bint btk_clist_prepend (BtkCList *clist,
+                        bchar    *text[]);
 </programlisting>
 
-<para>Answer: No, while a type "gchar*" (pointer to char) can
-automatically be cast into "const gchar*" (pointer to const
-char), this does not apply for "gchar *[]" (array of an
-unspecified number of pointers to char) into "const gchar *[]"
+<para>Answer: No, while a type "bchar*" (pointer to char) can
+automatically be cast into "const bchar*" (pointer to const
+char), this does not apply for "bchar *[]" (array of an
+unspecified number of pointers to char) into "const bchar *[]"
 (array of an unspecified number of pointers to const char).</para>
 
 <para>The type qualifier "const" may be subject to automatic
@@ -2362,7 +2362,7 @@ typedef struct _GList GList;
 
 struct _GList
 {
-  gpointer data;
+  bpointer data;
   GList *next;
   GList *prev;
 };
@@ -2429,15 +2429,15 @@ this:</para>
 
 <programlisting role="C">
 {
-        gchar           *list_items[]={
+        bchar           *list_items[]={
                                 "Item0",
                                 "Item1",
                                 "foo",
                                 "last Item",
                         };
-        guint           nlist_items=sizeof(list_items)/sizeof(list_items[0]);
+        buint           nlist_items=sizeof(list_items)/sizeof(list_items[0]);
         BtkWidget       *list_item;
-        guint           i;
+        buint           i;
 
         list=btk_list_new();
         btk_list_set_selection_mode(BTK_LIST(list), BTK_SELECTION_MULTIPLE);
@@ -2447,7 +2447,7 @@ this:</para>
         for (i = 0; i < nlist_items; i++)
         {
                 list_item=btk_list_item_new_with_label(list_items[i]);
-                btk_object_set_user_data(BTK_OBJECT(list_item), (gpointer)i);
+                btk_object_set_user_data(BTK_OBJECT(list_item), (bpointer)i);
                 btk_container_add(BTK_CONTAINER(list), list_item);
                 btk_widget_show(list_item);
         }
@@ -2465,7 +2465,7 @@ this:</para>
         printf("Selected Items: ");
         while (items) {
                 if (BTK_IS_LIST_ITEM(items->data))
-                        printf("%d ", (guint) 
+                        printf("%d ", (buint) 
                 btk_object_get_user_data(items->data));
                 items=items->next;
         }
@@ -2519,7 +2519,7 @@ btk_entry_set_editable() function:</para>
 
 <programlisting role="C">
       void btk_entry_set_editable(BtkEntry *entry, 
-                                  gboolean editable);
+                                  bboolean editable);
 </programlisting>
 
 <para>Set the editable parameter to FALSE to disable typing
@@ -2657,7 +2657,7 @@ BtkMenuItem with:</para>
       /* do stuff with child */
       if (BTK_IS_LABEL (child))
       {
-        gchar *text;
+        bchar *text;
     
         btk_label_get (BTK_LABEL (child), &amp;text);
         g_print ("menu item text: %s\n", text);
@@ -2712,8 +2712,8 @@ it. If you want to do this, you should use:</para>
 
 <programlisting role="C">
 void btk_misc_set_alignment (BtkMisc *misc,
-                             gfloat xalign,
-                             gfloat yalign);
+                             bfloat xalign,
+                             bfloat yalign);
 </programlisting>
 
 <para>where the <literal>xalign</literal> and
@@ -2826,7 +2826,7 @@ following lines limit the number of chars in the entry to
 
 <programlisting role="C">
   /* The algorithms here will work as long as, the text size (a
-   * multiple of 2), fits into a guint16 but we specify a shorter
+   * multiple of 2), fits into a buint16 but we specify a shorter
    * maximum length so that if the user pastes a very long text, there
    * is not a long hang from the slow X_LOCALE functions.  */
 
@@ -2876,14 +2876,14 @@ which BtkEntry is derived.</para>
 #include &lt;btk/btk.h&gt;
 
 void insert_text_handler (BtkEntry    *entry,
-                          const gchar *text,
-                          gint         length,
-                          gint        *position,
-                          gpointer     data)
+                          const bchar *text,
+                          bint         length,
+                          bint        *position,
+                          bpointer     data)
 {
   BtkEditable *editable = BTK_EDITABLE(entry);
   int i, count=0;
-  gchar *result = g_new (gchar, length);
+  bchar *result = g_new (bchar, length);
 
   for (i=0; i < length; i++) {
     if (!isalpha(text[i]))
@@ -3111,7 +3111,7 @@ like this:</para>
   /* the pixel value indicates the index in the colormap of the color.
    * it is simply a combination of the RGB values we set earlier
    */
-  color->pixel = (gulong)(red*65536 + green*256 + blue);
+  color->pixel = (bulong)(red*65536 + green*256 + blue);
 
   /* However, the pixel valule is only truly valid on 24-bit (TrueColor)
    * displays. Therefore, this call is required so that BDK and X can
@@ -3183,7 +3183,7 @@ typedef struct _GList GList;
 
 struct _GList
 {
-  gpointer data;
+  bpointer data;
   GList *next;
   GList *prev;
 };
@@ -3194,19 +3194,19 @@ struct _GList
 <programlisting role="C">
 GList   *list = NULL;
 GList   *listrunner;
-gint    array[] = { 1, 2, 3, 4, 5, 6 };
-gint    pos;
-gint    *value;
+bint    array[] = { 1, 2, 3, 4, 5, 6 };
+bint    pos;
+bint    *value;
 
 /* add data to the list */
 for (pos=0;pos < sizeof array; pos++) {
-  list = g_list_append(list, (gpointer)&amp;array[pos]);
+  list = g_list_append(list, (bpointer)&amp;array[pos]);
 }
 
 /* run through the list */
 listrunner = g_list_first(list);
 while (listrunner) {
-  value = (gint *)listrunner->data;
+  value = (bint *)listrunner->data;
   printf("%d\n", *value);
   listrunner = g_list_next(listrunner);
 }
@@ -3254,7 +3254,7 @@ again, before making any external calls): </quote></para>
 <programlisting role="C">
 GAllocator *allocator;
 GList *list = NULL;
-guint i;
+buint i;
 
 /* set a new allocation pool for GList nodes */
 allocator = g_allocator_new ("list heap", 1024);
@@ -3345,7 +3345,7 @@ comments.</para>
 #include &lt;bunnylib.h&gt;
 
 /* some test text to be fed into the scanner */
-static const gchar *test_text =
+static const bchar *test_text =
 ( "ping = 5;\n"
   "/* slide in some \n"
   " * comments, just for the\n"
@@ -3367,8 +3367,8 @@ enum {
 
 /* symbol array */
 static const struct {
-  gchar *symbol_name;
-  guint  symbol_token;
+  bchar *symbol_name;
+  buint  symbol_token;
 } symbols[] = {
   { "ping", SYMBOL_PING, },
   { "pong", SYMBOL_PONG, },
@@ -3376,15 +3376,15 @@ static const struct {
   { NULL, 0, },
 }, *symbol_p = symbols;
 
-static gfloat ping = 0;
-static gfloat pong = 0;
-static gfloat zonk = 0;
+static bfloat ping = 0;
+static bfloat pong = 0;
+static bfloat zonk = 0;
 
-static guint
+static buint
 parse_symbol (GScanner *scanner)
 {
-  guint symbol;
-  gboolean negate = FALSE;
+  buint symbol;
+  bboolean negate = FALSE;
 
   /* expect a valid symbol */
   g_scanner_get_next_token (scanner);
@@ -3441,7 +3441,7 @@ int
 main (int argc, char *argv[])
 {
   GScanner *scanner;
-  guint expected_token;
+  buint expected_token;
 
   scanner = g_scanner_new (NULL);
 
@@ -3459,7 +3459,7 @@ main (int argc, char *argv[])
     {
       g_scanner_add_symbol (scanner,
                             symbol_p->symbol_name,
-                            GINT_TO_POINTER (symbol_p->symbol_token));
+                            BINT_TO_POINTER (symbol_p->symbol_token));
       symbol_p++;
     }
 

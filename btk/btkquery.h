@@ -51,23 +51,23 @@ struct _BtkQueryClass
 };
 
 GType     _btk_query_get_type       (void);
-gboolean  _btk_query_enabled        (void);
+bboolean  _btk_query_enabled        (void);
 
 BtkQuery* _btk_query_new            (void);
 
-gchar*    _btk_query_get_text       (BtkQuery    *query);
+bchar*    _btk_query_get_text       (BtkQuery    *query);
 void      _btk_query_set_text       (BtkQuery    *query, 
-				     const gchar *text);
+				     const bchar *text);
 
-gchar*    _btk_query_get_location   (BtkQuery    *query);
+bchar*    _btk_query_get_location   (BtkQuery    *query);
 void      _btk_query_set_location   (BtkQuery    *query, 
-				     const gchar *uri);
+				     const bchar *uri);
 
 GList*    _btk_query_get_mime_types (BtkQuery    *query);
 void      _btk_query_set_mime_types (BtkQuery    *query, 
 				     GList       *mime_types);
 void      _btk_query_add_mime_type  (BtkQuery    *query, 
-				     const gchar *mime_type);
+				     const bchar *mime_type);
 
 B_END_DECLS
 

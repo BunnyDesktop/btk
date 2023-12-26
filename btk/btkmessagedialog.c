@@ -104,20 +104,20 @@ struct _BtkMessageDialogPrivate
 {
   BtkWidget *message_area; /* vbox for the primary and secondary labels, and any extra content from the caller */
   BtkWidget *secondary_label;
-  guint message_type : 3;
-  guint has_primary_markup : 1;
-  guint has_secondary_text : 1;
+  buint message_type : 3;
+  buint has_primary_markup : 1;
+  buint has_secondary_text : 1;
 };
 
 static void btk_message_dialog_style_set  (BtkWidget             *widget,
                                            BtkStyle              *prev_style);
 
 static void btk_message_dialog_set_property (BObject          *object,
-					     guint             prop_id,
+					     buint             prop_id,
 					     const BValue     *value,
 					     BParamSpec       *pspec);
 static void btk_message_dialog_get_property (BObject          *object,
-					     guint             prop_id,
+					     buint             prop_id,
 					     BValue           *value,
 					     BParamSpec       *pspec);
 static void btk_message_dialog_add_buttons  (BtkMessageDialog *message_dialog,
@@ -125,7 +125,7 @@ static void btk_message_dialog_add_buttons  (BtkMessageDialog *message_dialog,
 static void      btk_message_dialog_buildable_interface_init     (BtkBuildableIface *iface);
 static BObject * btk_message_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
                                                                   BtkBuilder    *builder,
-                                                                  const gchar   *childname);
+                                                                  const bchar   *childname);
 
 
 enum {
@@ -158,7 +158,7 @@ btk_message_dialog_buildable_interface_init (BtkBuildableIface *iface)
 static BObject *
 btk_message_dialog_buildable_get_internal_child (BtkBuildable *buildable,
                                                  BtkBuilder   *builder,
-                                                 const gchar  *childname)
+                                                 const bchar  *childname)
 {
   if (strcmp (childname, "message_area") == 0)
     return B_OBJECT (btk_message_dialog_get_message_area (BTK_MESSAGE_DIALOG (buildable)));
@@ -186,7 +186,7 @@ btk_message_dialog_class_init (BtkMessageDialogClass *class)
                                                              P_("Image/label border"),
                                                              P_("Width of border around the label and image in the message dialog"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              12,
                                                              BTK_PARAM_READABLE));
   /**
@@ -390,7 +390,7 @@ btk_message_dialog_init (BtkMessageDialog *dialog)
 static void
 setup_primary_label_font (BtkMessageDialog *dialog)
 {
-  gint size;
+  bint size;
   BangoFontDescription *font_desc;
   BtkMessageDialogPrivate *priv;
 
@@ -415,7 +415,7 @@ setup_type (BtkMessageDialog *dialog,
 	    BtkMessageType    type)
 {
   BtkMessageDialogPrivate *priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
-  const gchar *stock_id = NULL;
+  const bchar *stock_id = NULL;
   BatkObject *batk_obj;
  
   priv->message_type = type;
@@ -466,7 +466,7 @@ setup_type (BtkMessageDialog *dialog,
 
 static void 
 btk_message_dialog_set_property (BObject      *object,
-				 guint         prop_id,
+				 buint         prop_id,
 				 const BValue *value,
 				 BParamSpec   *pspec)
 {
@@ -500,7 +500,7 @@ btk_message_dialog_set_property (BObject      *object,
       break;
     case PROP_SECONDARY_TEXT:
       {
-	const gchar *txt = b_value_get_string (value);
+	const bchar *txt = b_value_get_string (value);
 	
 	if (btk_label_get_use_markup (BTK_LABEL (priv->secondary_label)))
 	  btk_label_set_markup (BTK_LABEL (priv->secondary_label), txt);
@@ -536,7 +536,7 @@ btk_message_dialog_set_property (BObject      *object,
 
 static void 
 btk_message_dialog_get_property (BObject     *object,
-				 guint        prop_id,
+				 buint        prop_id,
 				 BValue      *value,
 				 BParamSpec  *pspec)
 {
@@ -605,12 +605,12 @@ btk_message_dialog_new (BtkWindow     *parent,
                         BtkDialogFlags flags,
                         BtkMessageType type,
                         BtkButtonsType buttons,
-                        const gchar   *message_format,
+                        const bchar   *message_format,
                         ...)
 {
   BtkWidget *widget;
   BtkDialog *dialog;
-  gchar* msg = NULL;
+  bchar* msg = NULL;
   va_list args;
 
   g_return_val_if_fail (parent == NULL || BTK_IS_WINDOW (parent), NULL);
@@ -696,12 +696,12 @@ btk_message_dialog_new_with_markup (BtkWindow     *parent,
                                     BtkDialogFlags flags,
                                     BtkMessageType type,
                                     BtkButtonsType buttons,
-                                    const gchar   *message_format,
+                                    const bchar   *message_format,
                                     ...)
 {
   BtkWidget *widget;
   va_list args;
-  gchar *msg = NULL;
+  bchar *msg = NULL;
 
   g_return_val_if_fail (parent == NULL || BTK_IS_WINDOW (parent), NULL);
 
@@ -791,7 +791,7 @@ btk_message_dialog_get_image (BtkMessageDialog *dialog)
  **/
 void
 btk_message_dialog_set_markup (BtkMessageDialog *message_dialog,
-                               const gchar      *str)
+                               const bchar      *str)
 {
   BtkMessageDialogPrivate *priv;
 
@@ -818,11 +818,11 @@ btk_message_dialog_set_markup (BtkMessageDialog *message_dialog,
  **/
 void
 btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
-                                          const gchar      *message_format,
+                                          const bchar      *message_format,
                                           ...)
 {
   va_list args;
-  gchar *msg = NULL;
+  bchar *msg = NULL;
   BtkMessageDialogPrivate *priv;
 
   g_return_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog));
@@ -871,7 +871,7 @@ btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
  * to escape it.
 
  * <informalexample><programlisting>
- * gchar *msg;
+ * bchar *msg;
  *  
  * msg = g_markup_printf_escaped (message_format, ...);
  * btk_message_dialog_format_secondary_markup (message_dialog, "&percnt;s", msg);
@@ -882,11 +882,11 @@ btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
  **/
 void
 btk_message_dialog_format_secondary_markup (BtkMessageDialog *message_dialog,
-                                            const gchar      *message_format,
+                                            const bchar      *message_format,
                                             ...)
 {
   va_list args;
-  gchar *msg = NULL;
+  bchar *msg = NULL;
   BtkMessageDialogPrivate *priv;
 
   g_return_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog));
@@ -1012,9 +1012,9 @@ btk_message_dialog_style_set (BtkWidget *widget,
                               BtkStyle  *prev_style)
 {
   BtkMessageDialog *dialog = BTK_MESSAGE_DIALOG (widget);
-  gboolean use_separator;
+  bboolean use_separator;
   BtkWidget *parent;
-  gint border_width;
+  bint border_width;
 
   parent = BTK_WIDGET (BTK_MESSAGE_DIALOG (widget)->image->parent);
 

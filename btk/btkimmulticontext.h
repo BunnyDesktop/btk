@@ -49,7 +49,7 @@ struct _BtkIMMulticontext
 
   BtkIMMulticontextPrivate *GSEAL (priv);
 
-  gchar *GSEAL (context_id);
+  bchar *GSEAL (context_id);
 };
 
 struct _BtkIMMulticontextClass

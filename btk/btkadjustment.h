@@ -52,12 +52,12 @@ struct _BtkAdjustment
 {
   BtkObject parent_instance;
 
-  gdouble GSEAL (lower);
-  gdouble GSEAL (upper);
-  gdouble GSEAL (value);
-  gdouble GSEAL (step_increment);
-  gdouble GSEAL (page_increment);
-  gdouble GSEAL (page_size);
+  bdouble GSEAL (lower);
+  bdouble GSEAL (upper);
+  bdouble GSEAL (value);
+  bdouble GSEAL (step_increment);
+  bdouble GSEAL (page_increment);
+  bdouble GSEAL (page_size);
 };
 
 struct _BtkAdjustmentClass
@@ -76,45 +76,45 @@ struct _BtkAdjustmentClass
 
 
 GType	   btk_adjustment_get_type		(void) B_GNUC_CONST;
-BtkObject* btk_adjustment_new			(gdouble	  value,
-						 gdouble	  lower,
-						 gdouble	  upper,
-						 gdouble	  step_increment,
-						 gdouble	  page_increment,
-						 gdouble	  page_size);
+BtkObject* btk_adjustment_new			(bdouble	  value,
+						 bdouble	  lower,
+						 bdouble	  upper,
+						 bdouble	  step_increment,
+						 bdouble	  page_increment,
+						 bdouble	  page_size);
 
 void	   btk_adjustment_changed		(BtkAdjustment	 *adjustment);
 void	   btk_adjustment_value_changed		(BtkAdjustment	 *adjustment);
 void	   btk_adjustment_clamp_page		(BtkAdjustment	 *adjustment,
-						 gdouble	  lower,
-						 gdouble	  upper);
+						 bdouble	  lower,
+						 bdouble	  upper);
 
-gdouble	   btk_adjustment_get_value		(BtkAdjustment   *adjustment);
+bdouble	   btk_adjustment_get_value		(BtkAdjustment   *adjustment);
 void	   btk_adjustment_set_value		(BtkAdjustment	 *adjustment,
-						 gdouble	  value);
-gdouble    btk_adjustment_get_lower             (BtkAdjustment   *adjustment);
+						 bdouble	  value);
+bdouble    btk_adjustment_get_lower             (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_lower             (BtkAdjustment   *adjustment,
-                                                 gdouble          lower);
-gdouble    btk_adjustment_get_upper             (BtkAdjustment   *adjustment);
+                                                 bdouble          lower);
+bdouble    btk_adjustment_get_upper             (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_upper             (BtkAdjustment   *adjustment,
-                                                 gdouble          upper);
-gdouble    btk_adjustment_get_step_increment    (BtkAdjustment   *adjustment);
+                                                 bdouble          upper);
+bdouble    btk_adjustment_get_step_increment    (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_step_increment    (BtkAdjustment   *adjustment,
-                                                 gdouble          step_increment);
-gdouble    btk_adjustment_get_page_increment    (BtkAdjustment   *adjustment);
+                                                 bdouble          step_increment);
+bdouble    btk_adjustment_get_page_increment    (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_page_increment    (BtkAdjustment   *adjustment,
-                                                 gdouble          page_increment);
-gdouble    btk_adjustment_get_page_size         (BtkAdjustment   *adjustment);
+                                                 bdouble          page_increment);
+bdouble    btk_adjustment_get_page_size         (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_page_size         (BtkAdjustment   *adjustment,
-                                                 gdouble          page_size);
+                                                 bdouble          page_size);
 
 void       btk_adjustment_configure             (BtkAdjustment   *adjustment,
-                                                 gdouble          value,
-						 gdouble          lower,
-						 gdouble          upper,
-						 gdouble          step_increment,
-						 gdouble          page_increment,
-						 gdouble          page_size);
+                                                 bdouble          value,
+						 bdouble          lower,
+						 bdouble          upper,
+						 bdouble          step_increment,
+						 bdouble          page_increment,
+						 bdouble          page_size);
 
 B_END_DECLS
 

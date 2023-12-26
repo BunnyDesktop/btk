@@ -32,14 +32,14 @@
 #include "bdkprivate.h"
 #include "bdkalias.h"
 
-guint               _bdk_debug_flags = 0;
-gint                _bdk_error_code = 0;
-gint                _bdk_error_warnings = TRUE;
+buint               _bdk_debug_flags = 0;
+bint                _bdk_error_code = 0;
+bint                _bdk_error_warnings = TRUE;
 GList              *_bdk_default_filters = NULL;
-gchar              *_bdk_display_name = NULL;
-gint                _bdk_screen_number = -1;
-gchar              *_bdk_display_arg_name = NULL;
-gboolean            _bdk_native_windows = FALSE;
+bchar              *_bdk_display_name = NULL;
+bint                _bdk_screen_number = -1;
+bchar              *_bdk_display_arg_name = NULL;
+bboolean            _bdk_native_windows = FALSE;
 
 GSList             *_bdk_displays = NULL;
 

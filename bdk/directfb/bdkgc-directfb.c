@@ -53,9 +53,9 @@ static void bdk_directfb_gc_set_values (BdkGC           *gc,
                                         BdkGCValues     *values,
                                         BdkGCValuesMask  values_mask);
 static void bdk_directfb_gc_set_dashes (BdkGC           *gc,
-                                        gint             dash_offset,
-                                        gint8            dash_list[],
-                                        gint             n);
+                                        bint             dash_offset,
+                                        bint8            dash_list[],
+                                        bint             n);
 
 
 static void bdk_gc_directfb_finalize   (BObject            *object);
@@ -299,9 +299,9 @@ bdk_directfb_gc_set_values (BdkGC           *gc,
 
 static void
 bdk_directfb_gc_set_dashes (BdkGC *gc,
-                            gint   dash_offset,
-                            gint8  dash_list[],
-                            gint   n)
+                            bint   dash_offset,
+                            bint8  dash_list[],
+                            bint   n)
 {
   g_warning ("bdk_directfb_gc_set_dashes not implemented");
 }
@@ -323,7 +323,7 @@ gc_unset_clip_mask (BdkGC *gc)
 void
 _bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
                                    const BdkRebunnyion *rebunnyion,
-                                   gboolean         reset_origin)
+                                   bboolean         reset_origin)
 {
   BdkGCDirectFB *data;
 

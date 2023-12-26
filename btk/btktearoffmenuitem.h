@@ -52,7 +52,7 @@ struct _BtkTearoffMenuItem
 {
   BtkMenuItem menu_item;
 
-  guint GSEAL (torn_off) : 1;
+  buint GSEAL (torn_off) : 1;
 };
 
 struct _BtkTearoffMenuItemClass

@@ -25,7 +25,7 @@
 static void         bail_separator_class_init            (BailSeparatorClass  *klass);
 static void         bail_separator_init                  (BailSeparator       *accessible);
 static void         bail_separator_initialize            (BatkObject           *accessible,
-                                                          gpointer             data);
+                                                          bpointer             data);
 static BatkStateSet* bail_separator_ref_state_set	 (BatkObject	      *accessible);
 
 G_DEFINE_TYPE (BailSeparator, bail_separator, BAIL_TYPE_WIDGET)
@@ -46,7 +46,7 @@ bail_separator_init (BailSeparator *accessible)
 
 static void
 bail_separator_initialize (BatkObject *accessible,
-                           gpointer  data)
+                           bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_separator_parent_class)->initialize (accessible, data);
 

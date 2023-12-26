@@ -10,8 +10,8 @@ static BtkWidget *window = NULL;
 static BtkWidget *menu = NULL;
 static BtkWidget *notebook = NULL;
 
-static guint search_progress_id = 0;
-static guint finish_search_id = 0;
+static buint search_progress_id = 0;
+static buint finish_search_id = 0;
 
 static void
 show_find_button (void)
@@ -25,8 +25,8 @@ show_cancel_button (void)
   btk_notebook_set_current_page (BTK_NOTEBOOK (notebook), 1);
 }
 
-static gboolean
-search_progress (gpointer data)
+static bboolean
+search_progress (bpointer data)
 {
   btk_entry_progress_pulse (BTK_ENTRY (data));
 
@@ -39,7 +39,7 @@ search_progress_done (BtkEntry *entry)
   btk_entry_set_progress_fraction (entry, 0.0);
 }
 
-static gboolean
+static bboolean
 finish_search (BtkButton *button)
 {
   show_find_button ();
@@ -49,8 +49,8 @@ finish_search (BtkButton *button)
   return FALSE;
 }
 
-static gboolean
-start_search_feedback (gpointer data)
+static bboolean
+start_search_feedback (bpointer data)
 {
   search_progress_id = g_timeout_add_full (G_PRIORITY_DEFAULT, 100,
                                            (GSourceFunc)search_progress, data,
@@ -70,7 +70,7 @@ start_search (BtkButton *button,
 
 static void
 stop_search (BtkButton *button,
-             gpointer   data)
+             bpointer   data)
 {
   g_source_remove (finish_search_id);
   finish_search (button);
@@ -161,9 +161,9 @@ create_search_menu (BtkWidget *entry)
 
 static void
 icon_press_cb (BtkEntry       *entry,
-               gint            position,
+               bint            position,
                BdkEventButton *event,
-               gpointer        data)
+               bpointer        data)
 {
   if (position == BTK_ENTRY_ICON_PRIMARY)
     btk_menu_popup (BTK_MENU (menu), NULL, NULL, NULL, NULL,
@@ -177,7 +177,7 @@ text_changed_cb (BtkEntry   *entry,
                  BParamSpec *pspec,
                  BtkWidget  *button)
 {
-  gboolean has_text;
+  bboolean has_text;
 
   has_text = btk_entry_get_text_length (entry) > 0;
   btk_entry_set_icon_sensitive (entry,
@@ -212,11 +212,11 @@ search_entry_destroyed (BtkWidget  *widget)
 static void
 entry_populate_popup (BtkEntry *entry,
                       BtkMenu  *menu,
-                      gpointer user_data)
+                      bpointer user_data)
 {
   BtkWidget *item;
   BtkWidget *search_menu;
-  gboolean has_text;
+  bboolean has_text;
 
   has_text = btk_entry_get_text_length (entry) > 0;
 

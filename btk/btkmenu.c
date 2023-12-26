@@ -70,21 +70,21 @@ struct _BtkMenuAttachData
 
 struct _BtkMenuPrivate 
 {
-  gint x;
-  gint y;
-  gboolean initially_pushed_in;
+  bint x;
+  bint y;
+  bboolean initially_pushed_in;
 
   /* info used for the table */
-  guint *heights;
-  gint heights_length;
+  buint *heights;
+  bint heights_length;
 
-  gint monitor_num;
+  bint monitor_num;
 
   /* Cached layout information */
-  gint n_rows;
-  gint n_columns;
+  bint n_rows;
+  bint n_columns;
 
-  gchar *title;
+  bchar *title;
 
   /* Arrow states */
   BtkStateType lower_arrow_state;
@@ -96,23 +96,23 @@ struct _BtkMenuPrivate
   int navigation_width;
   int navigation_height;
 
-  guint have_layout           : 1;
-  guint seen_item_enter       : 1;
-  guint have_position         : 1;
-  guint ignore_button_release : 1;
-  guint no_toggle_size        : 1;
+  buint have_layout           : 1;
+  buint seen_item_enter       : 1;
+  buint have_position         : 1;
+  buint ignore_button_release : 1;
+  buint no_toggle_size        : 1;
 };
 
 typedef struct
 {
-  gint left_attach;
-  gint right_attach;
-  gint top_attach;
-  gint bottom_attach;
-  gint effective_left_attach;
-  gint effective_right_attach;
-  gint effective_top_attach;
-  gint effective_bottom_attach;
+  bint left_attach;
+  bint right_attach;
+  bint top_attach;
+  bint bottom_attach;
+  bint effective_left_attach;
+  bint effective_right_attach;
+  bint effective_top_attach;
+  bint effective_bottom_attach;
 } AttachInfo;
 
 enum {
@@ -141,21 +141,21 @@ enum {
 };
 
 static void     btk_menu_set_property      (BObject          *object,
-					    guint             prop_id,
+					    buint             prop_id,
 					    const BValue     *value,
 					    BParamSpec       *pspec);
 static void     btk_menu_get_property      (BObject          *object,
-					    guint             prop_id,
+					    buint             prop_id,
 					    BValue           *value,
 					    BParamSpec       *pspec);
 static void     btk_menu_set_child_property(BtkContainer     *container,
                                             BtkWidget        *child,
-                                            guint             property_id,
+                                            buint             property_id,
                                             const BValue     *value,
                                             BParamSpec       *pspec);
 static void     btk_menu_get_child_property(BtkContainer     *container,
                                             BtkWidget        *child,
-                                            guint             property_id,
+                                            buint             property_id,
                                             BValue           *value,
                                             BParamSpec       *pspec);
 static void     btk_menu_destroy           (BtkObject        *object);
@@ -168,31 +168,31 @@ static void     btk_menu_size_allocate     (BtkWidget        *widget,
 static void     btk_menu_paint             (BtkWidget        *widget,
 					    BdkEventExpose   *expose);
 static void     btk_menu_show              (BtkWidget        *widget);
-static gboolean btk_menu_expose            (BtkWidget        *widget,
+static bboolean btk_menu_expose            (BtkWidget        *widget,
 					    BdkEventExpose   *event);
-static gboolean btk_menu_key_press         (BtkWidget        *widget,
+static bboolean btk_menu_key_press         (BtkWidget        *widget,
 					    BdkEventKey      *event);
-static gboolean btk_menu_scroll            (BtkWidget        *widget,
+static bboolean btk_menu_scroll            (BtkWidget        *widget,
 					    BdkEventScroll   *event);
-static gboolean btk_menu_button_press      (BtkWidget        *widget,
+static bboolean btk_menu_button_press      (BtkWidget        *widget,
 					    BdkEventButton   *event);
-static gboolean btk_menu_button_release    (BtkWidget        *widget,
+static bboolean btk_menu_button_release    (BtkWidget        *widget,
 					    BdkEventButton   *event);
-static gboolean btk_menu_motion_notify     (BtkWidget        *widget,
+static bboolean btk_menu_motion_notify     (BtkWidget        *widget,
 					    BdkEventMotion   *event);
-static gboolean btk_menu_enter_notify      (BtkWidget        *widget,
+static bboolean btk_menu_enter_notify      (BtkWidget        *widget,
 					    BdkEventCrossing *event);
-static gboolean btk_menu_leave_notify      (BtkWidget        *widget,
+static bboolean btk_menu_leave_notify      (BtkWidget        *widget,
 					    BdkEventCrossing *event);
 static void     btk_menu_scroll_to         (BtkMenu          *menu,
-					    gint              offset);
+					    bint              offset);
 static void     btk_menu_grab_notify       (BtkWidget        *widget,
-					    gboolean          was_grabbed);
+					    bboolean          was_grabbed);
 
 static void     btk_menu_stop_scrolling         (BtkMenu  *menu);
 static void     btk_menu_remove_scroll_timeout  (BtkMenu  *menu);
-static gboolean btk_menu_scroll_timeout         (gpointer  data);
-static gboolean btk_menu_scroll_timeout_initial (gpointer  data);
+static bboolean btk_menu_scroll_timeout         (bpointer  data);
+static bboolean btk_menu_scroll_timeout_initial (bpointer  data);
 static void     btk_menu_start_scrolling        (BtkMenu  *menu);
 
 static void     btk_menu_scroll_item_visible (BtkMenuShell    *menu_shell,
@@ -201,31 +201,31 @@ static void     btk_menu_select_item       (BtkMenuShell     *menu_shell,
 					    BtkWidget        *menu_item);
 static void     btk_menu_real_insert       (BtkMenuShell     *menu_shell,
 					    BtkWidget        *child,
-					    gint              position);
+					    bint              position);
 static void     btk_menu_scrollbar_changed (BtkAdjustment    *adjustment,
 					    BtkMenu          *menu);
 static void     btk_menu_handle_scrolling  (BtkMenu          *menu,
-					    gint	      event_x,
-					    gint	      event_y,
-					    gboolean          enter,
-                                            gboolean          motion);
+					    bint	      event_x,
+					    bint	      event_y,
+					    bboolean          enter,
+                                            bboolean          motion);
 static void     btk_menu_set_tearoff_hints (BtkMenu          *menu,
-					    gint             width);
+					    bint             width);
 static void     btk_menu_style_set         (BtkWidget        *widget,
 					    BtkStyle         *previous_style);
-static gboolean btk_menu_focus             (BtkWidget        *widget,
+static bboolean btk_menu_focus             (BtkWidget        *widget,
 					    BtkDirectionType direction);
-static gint     btk_menu_get_popup_delay   (BtkMenuShell     *menu_shell);
+static bint     btk_menu_get_popup_delay   (BtkMenuShell     *menu_shell);
 static void     btk_menu_move_current      (BtkMenuShell     *menu_shell,
                                             BtkMenuDirectionType direction);
 static void     btk_menu_real_move_scroll  (BtkMenu          *menu,
 					    BtkScrollType     type);
 
 static void     btk_menu_stop_navigating_submenu       (BtkMenu          *menu);
-static gboolean btk_menu_stop_navigating_submenu_cb    (gpointer          user_data);
-static gboolean btk_menu_navigating_submenu            (BtkMenu          *menu,
-							gint              event_x,
-							gint              event_y);
+static bboolean btk_menu_stop_navigating_submenu_cb    (bpointer          user_data);
+static bboolean btk_menu_navigating_submenu            (BtkMenu          *menu,
+							bint              event_x,
+							bint              event_y);
 static void     btk_menu_set_submenu_navigation_rebunnyion (BtkMenu          *menu,
 							BtkMenuItem      *menu_item,
 							BdkEventCrossing *event);
@@ -234,10 +234,10 @@ static void btk_menu_deactivate	    (BtkMenuShell      *menu_shell);
 static void btk_menu_show_all       (BtkWidget         *widget);
 static void btk_menu_hide_all       (BtkWidget         *widget);
 static void btk_menu_position       (BtkMenu           *menu,
-                                     gboolean           set_scroll_offset);
+                                     bboolean           set_scroll_offset);
 static void btk_menu_reparent       (BtkMenu           *menu, 
 				     BtkWidget         *new_parent, 
-				     gboolean           unrealize);
+				     bboolean           unrealize);
 static void btk_menu_remove         (BtkContainer      *menu,
 				     BtkWidget         *widget);
 
@@ -246,14 +246,14 @@ static void btk_menu_update_title   (BtkMenu           *menu);
 static void       menu_grab_transfer_window_destroy (BtkMenu *menu);
 static BdkWindow *menu_grab_transfer_window_get     (BtkMenu *menu);
 
-static gboolean btk_menu_real_can_activate_accel (BtkWidget *widget,
-                                                  guint      signal_id);
+static bboolean btk_menu_real_can_activate_accel (BtkWidget *widget,
+                                                  buint      signal_id);
 static void _btk_menu_refresh_accel_paths (BtkMenu *menu,
-					   gboolean group_changed);
+					   bboolean group_changed);
 
-static const gchar attach_data_key[] = "btk-menu-attach-data";
+static const bchar attach_data_key[] = "btk-menu-attach-data";
 
-static guint menu_signals[LAST_SIGNAL] = { 0 };
+static buint menu_signals[LAST_SIGNAL] = { 0 };
 
 static BtkMenuPrivate *
 btk_menu_get_private (BtkMenu *menu)
@@ -294,7 +294,7 @@ get_attach_info (BtkWidget *child)
   return ai;
 }
 
-static gboolean
+static bboolean
 is_grid_attached (AttachInfo *ai)
 {
   return (ai->left_attach >= 0 &&
@@ -312,10 +312,10 @@ menu_ensure_layout (BtkMenu *menu)
     {
       BtkMenuShell *menu_shell = BTK_MENU_SHELL (menu);
       GList *l;
-      gchar *row_occupied;
-      gint current_row;
-      gint max_right_attach;      
-      gint max_bottom_attach;
+      bchar *row_occupied;
+      bint current_row;
+      bint max_right_attach;      
+      bint max_bottom_attach;
 
       /* Find extents of gridded portion
        */
@@ -345,7 +345,7 @@ menu_ensure_layout (BtkMenu *menu)
 
 	  if (is_grid_attached (ai))
 	    {
-	      gint i;
+	      bint i;
 
 	      for (i = ai->top_attach; i < ai->bottom_attach; i++)
 		row_occupied[i] = TRUE;
@@ -390,7 +390,7 @@ menu_ensure_layout (BtkMenu *menu)
 }
 
 
-static gint
+static bint
 btk_menu_get_n_columns (BtkMenu *menu)
 {
   BtkMenuPrivate *priv = btk_menu_get_private (menu);
@@ -400,7 +400,7 @@ btk_menu_get_n_columns (BtkMenu *menu)
   return priv->n_columns;
 }
 
-static gint
+static bint
 btk_menu_get_n_rows (BtkMenu *menu)
 {
   BtkMenuPrivate *priv = btk_menu_get_private (menu);
@@ -504,7 +504,7 @@ btk_menu_class_init (BtkMenuClass *class)
                                    g_param_spec_int ("active",
 				                     P_("Active"),
 						     P_("The currently selected menu item"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -589,7 +589,7 @@ btk_menu_class_init (BtkMenuClass *class)
                                    g_param_spec_int ("monitor",
 				                     P_("Monitor"),
 						     P_("The monitor the menu will be popped up on"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
 
   btk_widget_class_install_style_property (widget_class,
@@ -597,7 +597,7 @@ btk_menu_class_init (BtkMenuClass *class)
 							     P_("Vertical Padding"),
 							     P_("Extra space at the top and bottom of the menu"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     1,
 							     BTK_PARAM_READABLE));
 
@@ -627,7 +627,7 @@ btk_menu_class_init (BtkMenuClass *class)
                                                              P_("Horizontal Padding"),
                                                              P_("Extra space at the left and right edges of the menu"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              0,
                                                              BTK_PARAM_READABLE));
 
@@ -635,8 +635,8 @@ btk_menu_class_init (BtkMenuClass *class)
 					   g_param_spec_int ("vertical-offset",
 							     P_("Vertical Offset"),
 							     P_("When the menu is a submenu, position it this number of pixels offset vertically"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     0,
 							     BTK_PARAM_READABLE));
 
@@ -644,8 +644,8 @@ btk_menu_class_init (BtkMenuClass *class)
 					   g_param_spec_int ("horizontal-offset",
 							     P_("Horizontal Offset"),
 							     P_("When the menu is a submenu, position it this number of pixels offset horizontally"),
-							     G_MININT,
-							     G_MAXINT,
+							     B_MININT,
+							     B_MAXINT,
 							     -2,
 							     BTK_PARAM_READABLE));
 
@@ -805,7 +805,7 @@ btk_menu_class_init (BtkMenuClass *class)
 
 static void
 btk_menu_set_property (BObject      *object,
-		       guint         prop_id,
+		       buint         prop_id,
 		       const BValue *value,
 		       BParamSpec   *pspec)
 {
@@ -855,7 +855,7 @@ btk_menu_set_property (BObject      *object,
 
 static void
 btk_menu_get_property (BObject     *object,
-		       guint        prop_id,
+		       buint        prop_id,
 		       BValue      *value,
 		       BParamSpec  *pspec)
 {
@@ -896,7 +896,7 @@ btk_menu_get_property (BObject     *object,
 static void
 btk_menu_set_child_property (BtkContainer *container,
                              BtkWidget    *child,
-                             guint         property_id,
+                             buint         property_id,
                              const BValue *value,
                              BParamSpec   *pspec)
 {
@@ -929,7 +929,7 @@ btk_menu_set_child_property (BtkContainer *container,
 static void
 btk_menu_get_child_property (BtkContainer *container,
                              BtkWidget    *child,
-                             guint         property_id,
+                             buint         property_id,
                              BValue       *value,
                              BParamSpec   *pspec)
 {
@@ -956,12 +956,12 @@ btk_menu_get_child_property (BtkContainer *container,
     }
 }
 
-static gboolean
+static bboolean
 btk_menu_window_event (BtkWidget *window,
 		       BdkEvent  *event,
 		       BtkWidget *menu)
 {
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   g_object_ref (window);
   g_object_ref (menu);
@@ -1245,7 +1245,7 @@ btk_menu_detach (BtkMenu *menu)
   g_object_set_data (B_OBJECT (menu), I_(attach_data_key), NULL);
   
   g_signal_handlers_disconnect_by_func (data->attach_widget,
-					(gpointer) attach_widget_screen_changed,
+					(bpointer) attach_widget_screen_changed,
 					menu);
 
   if (data->detacher)
@@ -1300,7 +1300,7 @@ btk_menu_new (void)
 static void
 btk_menu_real_insert (BtkMenuShell *menu_shell,
 		      BtkWidget    *child,
-		      gint          position)
+		      bint          position)
 {
   BtkMenu *menu = BTK_MENU (menu_shell);
   AttachInfo *ai = get_attach_info (child);
@@ -1322,7 +1322,7 @@ static void
 btk_menu_tearoff_bg_copy (BtkMenu *menu)
 {
   BtkWidget *widget;
-  gint width, height;
+  bint width, height;
 
   widget = BTK_WIDGET (menu);
 
@@ -1359,10 +1359,10 @@ btk_menu_tearoff_bg_copy (BtkMenu *menu)
     }
 }
 
-static gboolean
+static bboolean
 popup_grab_on_window (BdkWindow *window,
-		      guint32    activate_time,
-		      gboolean   grab_keyboard)
+		      buint32    activate_time,
+		      bboolean   grab_keyboard)
 {
   if ((bdk_pointer_grab (window, TRUE,
 			 BDK_BUTTON_PRESS_MASK | BDK_BUTTON_RELEASE_MASK |
@@ -1418,16 +1418,16 @@ btk_menu_popup (BtkMenu		    *menu,
 		BtkWidget	    *parent_menu_shell,
 		BtkWidget	    *parent_menu_item,
 		BtkMenuPositionFunc  func,
-		gpointer	     data,
-		guint		     button,
-		guint32		     activate_time)
+		bpointer	     data,
+		buint		     button,
+		buint32		     activate_time)
 {
   BtkWidget *widget;
   BtkWidget *xgrab_shell;
   BtkWidget *parent;
   BdkEvent *current_event;
   BtkMenuShell *menu_shell;
-  gboolean grab_keyboard;
+  bboolean grab_keyboard;
   BtkMenuPrivate *priv;
   BtkWidget *parent_toplevel;
 
@@ -1447,7 +1447,7 @@ btk_menu_popup (BtkMenu		    *menu,
   xgrab_shell = NULL;
   while (parent)
     {
-      gboolean viewable = TRUE;
+      bboolean viewable = TRUE;
       BtkWidget *tmp = parent;
       
       while (tmp)
@@ -1589,7 +1589,7 @@ btk_menu_popup (BtkMenu		    *menu,
   /* if no item is selected, select the first one */
   if (!menu_shell->active_menu_item)
     {
-      gboolean touchscreen_mode;
+      bboolean touchscreen_mode;
 
       g_object_get (btk_widget_get_settings (BTK_WIDGET (menu)),
                     "btk-touchscreen-mode", &touchscreen_mode,
@@ -1610,7 +1610,7 @@ btk_menu_popup (BtkMenu		    *menu,
 
   if (parent_menu_shell)
     {
-      gboolean keyboard_mode;
+      bboolean keyboard_mode;
 
       keyboard_mode = _btk_menu_shell_get_keyboard_mode (BTK_MENU_SHELL (parent_menu_shell));
       _btk_menu_shell_set_keyboard_mode (menu_shell, keyboard_mode);
@@ -1740,7 +1740,7 @@ btk_menu_get_active (BtkMenu *menu)
 
 void
 btk_menu_set_active (BtkMenu *menu,
-		     guint    index)
+		     buint    index)
 {
   BtkWidget *child;
   GList *tmp_list;
@@ -1800,9 +1800,9 @@ btk_menu_get_accel_group (BtkMenu *menu)
   return menu->accel_group;
 }
 
-static gboolean
+static bboolean
 btk_menu_real_can_activate_accel (BtkWidget *widget,
-                                  guint      signal_id)
+                                  buint      signal_id)
 {
   /* Menu items chain here to figure whether they can activate their
    * accelerators.  Unlike ordinary widgets, menus allow accel
@@ -1845,14 +1845,14 @@ btk_menu_real_can_activate_accel (BtkWidget *widget,
  */
 void
 btk_menu_set_accel_path (BtkMenu     *menu,
-			 const gchar *accel_path)
+			 const bchar *accel_path)
 {
   g_return_if_fail (BTK_IS_MENU (menu));
   if (accel_path)
     g_return_if_fail (accel_path[0] == '<' && strchr (accel_path, '/')); /* simplistic check */
 
-  /* FIXME: accel_path should be defined as const gchar* */
-  menu->accel_path = (gchar*)g_intern_string (accel_path);
+  /* FIXME: accel_path should be defined as const bchar* */
+  menu->accel_path = (bchar*)g_intern_string (accel_path);
   if (menu->accel_path)
     _btk_menu_refresh_accel_paths (menu, FALSE);
 }
@@ -1867,7 +1867,7 @@ btk_menu_set_accel_path (BtkMenu     *menu,
  *
  * Since: 2.14
  */
-const gchar*
+const bchar*
 btk_menu_get_accel_path (BtkMenu *menu)
 {
   g_return_val_if_fail (BTK_IS_MENU (menu), NULL);
@@ -1877,12 +1877,12 @@ btk_menu_get_accel_path (BtkMenu *menu)
 
 typedef struct {
   BtkMenu *menu;
-  gboolean group_changed;
+  bboolean group_changed;
 } AccelPropagation;
 
 static void
 refresh_accel_paths_foreach (BtkWidget *widget,
-			     gpointer   data)
+			     bpointer   data)
 {
   AccelPropagation *prop = data;
 
@@ -1895,7 +1895,7 @@ refresh_accel_paths_foreach (BtkWidget *widget,
 
 static void
 _btk_menu_refresh_accel_paths (BtkMenu  *menu,
-			       gboolean  group_changed)
+			       bboolean  group_changed)
 {
   g_return_if_fail (BTK_IS_MENU (menu));
 
@@ -1932,7 +1932,7 @@ btk_menu_scrollbar_changed (BtkAdjustment *adjustment,
 
 static void
 btk_menu_set_tearoff_hints (BtkMenu *menu,
-			    gint     width)
+			    bint     width)
 {
   BdkGeometry geometry_hints;
   
@@ -1962,7 +1962,7 @@ btk_menu_update_title (BtkMenu *menu)
 {
   if (menu->tearoff_window)
     {
-      const gchar *title;
+      const bchar *title;
       BtkWidget *attach_widget;
 
       title = btk_menu_get_title (menu);
@@ -2013,9 +2013,9 @@ tearoff_window_destroyed (BtkWidget *widget,
 
 void       
 btk_menu_set_tearoff_state (BtkMenu  *menu,
-			    gboolean  torn_off)
+			    bboolean  torn_off)
 {
-  gint width, height;
+  bint width, height;
   
   g_return_if_fail (BTK_IS_MENU (menu));
 
@@ -2130,7 +2130,7 @@ btk_menu_set_tearoff_state (BtkMenu  *menu,
  *
  * Return value: %TRUE if the menu is currently torn off.
  **/
-gboolean
+bboolean
 btk_menu_get_tearoff_state (BtkMenu *menu)
 {
   g_return_val_if_fail (BTK_IS_MENU (menu), FALSE);
@@ -2150,7 +2150,7 @@ btk_menu_get_tearoff_state (BtkMenu *menu)
  **/
 void
 btk_menu_set_title (BtkMenu     *menu,
-		    const gchar *title)
+		    const bchar *title)
 {
   BtkMenuPrivate *priv;
   char *old_title;
@@ -2177,7 +2177,7 @@ btk_menu_set_title (BtkMenu     *menu,
  * title set on it. This string is owned by the widget and should
  * not be modified or freed.
  **/
-const gchar *
+const bchar *
 btk_menu_get_title (BtkMenu *menu)
 {
   BtkMenuPrivate *priv;
@@ -2192,7 +2192,7 @@ btk_menu_get_title (BtkMenu *menu)
 void
 btk_menu_reorder_child (BtkMenu   *menu,
                         BtkWidget *child,
-                        gint       position)
+                        bint       position)
 {
   BtkMenuShell *menu_shell;
 
@@ -2228,7 +2228,7 @@ static void
 get_arrows_border (BtkMenu   *menu,
                    BtkBorder *border)
 {
-  guint scroll_arrow_height;
+  buint scroll_arrow_height;
   BtkArrowPlacement arrow_placement;
 
   btk_widget_style_get (BTK_WIDGET (menu),
@@ -2263,13 +2263,13 @@ static void
 btk_menu_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BtkMenu *menu;
   BtkWidget *child;
   GList *children;
-  guint vertical_padding;
-  guint horizontal_padding;
+  buint vertical_padding;
+  buint horizontal_padding;
   BtkBorder arrow_border;
 
   g_return_if_fail (BTK_IS_MENU (widget));
@@ -2346,7 +2346,7 @@ btk_menu_realize (BtkWidget *widget)
   bdk_window_show (menu->view_window);
 }
 
-static gboolean 
+static bboolean 
 btk_menu_focus (BtkWidget       *widget,
                 BtkDirectionType direction)
 {
@@ -2365,7 +2365,7 @@ menu_grab_transfer_window_get (BtkMenu *menu)
   if (!window)
     {
       BdkWindowAttr attributes;
-      gint attributes_mask;
+      bint attributes_mask;
       
       attributes.x = -100;
       attributes.y = -100;
@@ -2424,15 +2424,15 @@ static void
 btk_menu_size_request (BtkWidget      *widget,
 		       BtkRequisition *requisition)
 {
-  gint i;
+  bint i;
   BtkMenu *menu;
   BtkMenuShell *menu_shell;
   BtkWidget *child;
   GList *children;
-  guint max_toggle_size;
-  guint max_accel_width;
-  guint vertical_padding;
-  guint horizontal_padding;
+  buint max_toggle_size;
+  buint max_accel_width;
+  buint vertical_padding;
+  buint horizontal_padding;
   BtkRequisition child_requisition;
   BtkMenuPrivate *priv;
   
@@ -2450,15 +2450,15 @@ btk_menu_size_request (BtkWidget      *widget,
   max_accel_width = 0;
   
   g_free (priv->heights);
-  priv->heights = g_new0 (guint, btk_menu_get_n_rows (menu));
+  priv->heights = g_new0 (buint, btk_menu_get_n_rows (menu));
   priv->heights_length = btk_menu_get_n_rows (menu);
 
   children = menu_shell->children;
   while (children)
     {
-      gint part;
-      gint toggle_size;
-      gint l, r, t, b;
+      bint part;
+      bint toggle_size;
+      bint l, r, t, b;
 
       child = children->data;
       children = children->next;
@@ -2498,8 +2498,8 @@ btk_menu_size_request (BtkWidget      *widget,
       btk_menu_get_n_columns (menu) == 1 &&
       !priv->no_toggle_size)
     {
-      guint toggle_spacing;
-      guint indicator_size;
+      buint toggle_spacing;
+      buint indicator_size;
 
       btk_style_get (widget->style,
                      BTK_TYPE_CHECK_MENU_ITEM,
@@ -2545,10 +2545,10 @@ btk_menu_size_allocate (BtkWidget     *widget,
   BtkRequisition child_requisition;
   BtkMenuPrivate *priv;
   GList *children;
-  gint x, y;
-  gint width, height;
-  guint vertical_padding;
-  guint horizontal_padding;
+  bint x, y;
+  bint width, height;
+  buint vertical_padding;
+  buint horizontal_padding;
   
   g_return_if_fail (BTK_IS_MENU (widget));
   g_return_if_fail (allocation != NULL);
@@ -2602,7 +2602,7 @@ btk_menu_size_allocate (BtkWidget     *widget,
 
   if (menu_shell->children)
     {
-      gint base_width = width / btk_menu_get_n_columns (menu);
+      bint base_width = width / btk_menu_get_n_columns (menu);
 
       children = menu_shell->children;
       while (children)
@@ -2612,14 +2612,14 @@ btk_menu_size_allocate (BtkWidget     *widget,
 
 	  if (btk_widget_get_visible (child))
 	    {
-              gint i;
-	      gint l, r, t, b;
+              bint i;
+	      bint l, r, t, b;
 
 	      get_effective_child_attach (child, &l, &r, &t, &b);
 
               if (btk_widget_get_direction (BTK_WIDGET (menu)) == BTK_TEXT_DIR_RTL)
                 {
-                  guint tmp;
+                  buint tmp;
 		  tmp = btk_menu_get_n_columns (menu) - l;
 		  l = btk_menu_get_n_columns (menu) - r;
                   r = tmp;
@@ -2649,8 +2649,8 @@ btk_menu_size_allocate (BtkWidget     *widget,
       /* Resize the item window */
       if (btk_widget_get_realized (widget))
 	{
-          gint i;
-          gint width, height;
+          bint i;
+          bint width, height;
 
           height = 0;
 	  for (i = 0; i < btk_menu_get_n_rows (menu); i++)
@@ -2680,7 +2680,7 @@ btk_menu_size_allocate (BtkWidget     *widget,
 	      if (menu->tearoff_adjustment->value + menu->tearoff_adjustment->page_size >
 		  menu->tearoff_adjustment->upper)
 		{
-		  gint value;
+		  bint value;
 		  value = menu->tearoff_adjustment->upper - menu->tearoff_adjustment->page_size;
 		  if (value < 0)
 		    value = 0;
@@ -2704,12 +2704,12 @@ get_arrows_visible_area (BtkMenu      *menu,
                          BdkRectangle *border,
                          BdkRectangle *upper,
                          BdkRectangle *lower,
-                         gint         *arrow_space)
+                         bint         *arrow_space)
 {
   BtkWidget *widget = BTK_WIDGET (menu);
-  guint vertical_padding;
-  guint horizontal_padding;
-  gint scroll_arrow_height;
+  buint vertical_padding;
+  buint horizontal_padding;
+  bint scroll_arrow_height;
   BtkArrowPlacement arrow_placement;
 
   btk_widget_style_get (widget,
@@ -2780,7 +2780,7 @@ btk_menu_paint (BtkWidget      *widget,
   BdkRectangle border;
   BdkRectangle upper;
   BdkRectangle lower;
-  gint arrow_space;
+  bint arrow_space;
   
   g_return_if_fail (BTK_IS_MENU (widget));
 
@@ -2791,8 +2791,8 @@ btk_menu_paint (BtkWidget      *widget,
 
   if (event->window == widget->window)
     {
-      gfloat arrow_scaling;
-      gint arrow_size;
+      bfloat arrow_scaling;
+      bint arrow_size;
 
       btk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
       arrow_size = arrow_scaling * arrow_space;
@@ -2854,7 +2854,7 @@ btk_menu_paint (BtkWidget      *widget,
     }
   else if (event->window == menu->bin_window)
     {
-      gint y = -border.y + menu->scroll_offset;
+      bint y = -border.y + menu->scroll_offset;
 
       if (!menu->tearoff_active)
         {
@@ -2874,7 +2874,7 @@ btk_menu_paint (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_menu_expose (BtkWidget	*widget,
 		 BdkEventExpose *event)
 {
@@ -2901,13 +2901,13 @@ btk_menu_show (BtkWidget *widget)
   BTK_WIDGET_CLASS (btk_menu_parent_class)->show (widget);
 }
 
-static gboolean
+static bboolean
 btk_menu_button_scroll (BtkMenu        *menu,
                         BdkEventButton *event)
 {
   if (menu->upper_arrow_prelight || menu->lower_arrow_prelight)
     {
-      gboolean touchscreen_mode;
+      bboolean touchscreen_mode;
 
       g_object_get (btk_widget_get_settings (BTK_WIDGET (menu)),
                     "btk-touchscreen-mode", &touchscreen_mode,
@@ -2925,17 +2925,17 @@ btk_menu_button_scroll (BtkMenu        *menu,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 pointer_in_menu_window (BtkWidget *widget,
-                        gdouble    x_root,
-                        gdouble    y_root)
+                        bdouble    x_root,
+                        bdouble    y_root)
 {
   BtkMenu *menu = BTK_MENU (widget);
 
   if (btk_widget_get_mapped (menu->toplevel))
     {
       BtkMenuShell *menu_shell;
-      gint          window_x, window_y;
+      bint          window_x, window_y;
 
       bdk_window_get_position (menu->toplevel->window, &window_x, &window_y);
 
@@ -2953,7 +2953,7 @@ pointer_in_menu_window (BtkWidget *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_menu_button_press (BtkWidget      *widget,
                        BdkEventButton *event)
 {
@@ -2979,7 +2979,7 @@ btk_menu_button_press (BtkWidget      *widget,
   return BTK_WIDGET_CLASS (btk_menu_parent_class)->button_press_event (widget, event);
 }
 
-static gboolean
+static bboolean
 btk_menu_button_release (BtkWidget      *widget,
 			 BdkEventButton *event)
 {
@@ -3019,11 +3019,11 @@ btk_menu_button_release (BtkWidget      *widget,
   return BTK_WIDGET_CLASS (btk_menu_parent_class)->button_release_event (widget, event);
 }
 
-static const gchar *
+static const bchar *
 get_accel_path (BtkWidget *menu_item,
-		gboolean  *locked)
+		bboolean  *locked)
 {
-  const gchar *path;
+  const bchar *path;
   BtkWidget *label;
   GClosure *accel_closure;
   BtkAccelGroup *accel_group;    
@@ -3057,16 +3057,16 @@ get_accel_path (BtkWidget *menu_item,
   return path;
 }
 
-static gboolean
+static bboolean
 btk_menu_key_press (BtkWidget	*widget,
 		    BdkEventKey *event)
 {
   BtkMenuShell *menu_shell;
   BtkMenu *menu;
-  gboolean delete = FALSE;
-  gboolean can_change_accels;
-  gchar *accel = NULL;
-  guint accel_key, accel_mods;
+  bboolean delete = FALSE;
+  bboolean can_change_accels;
+  bchar *accel = NULL;
+  buint accel_key, accel_mods;
   BdkModifierType consumed_modifiers;
   BdkDisplay *display;
   
@@ -3090,7 +3090,7 @@ btk_menu_key_press (BtkWidget	*widget,
 
   if (accel && *accel)
     {
-      guint keyval = 0;
+      buint keyval = 0;
       BdkModifierType mods = 0;
       
       btk_accelerator_parse (accel, &keyval, &mods);
@@ -3150,8 +3150,8 @@ btk_menu_key_press (BtkWidget	*widget,
       (delete || btk_accelerator_valid (accel_key, accel_mods)))
     {
       BtkWidget *menu_item = menu_shell->active_menu_item;
-      gboolean locked, replace_accels = TRUE;
-      const gchar *path;
+      bboolean locked, replace_accels = TRUE;
+      const bchar *path;
 
       path = get_accel_path (menu_item, &locked);
       if (!path || locked)
@@ -3164,7 +3164,7 @@ btk_menu_key_press (BtkWidget	*widget,
 	}
       else
 	{
-	  gboolean changed;
+	  bboolean changed;
 
 	  /* For the keys that act to delete the current setting, we delete
 	   * the current setting if there is one, otherwise, we set the
@@ -3197,12 +3197,12 @@ btk_menu_key_press (BtkWidget	*widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 check_threshold (BtkWidget *widget,
-                 gint       start_x,
-                 gint       start_y,
-                 gint       x,
-                 gint       y)
+                 bint       start_x,
+                 bint       start_y,
+                 bint       x,
+                 bint       y)
 {
 #define THRESHOLD 8
   
@@ -3211,10 +3211,10 @@ check_threshold (BtkWidget *widget,
     ABS (start_y - y) > THRESHOLD;
 }
 
-static gboolean
+static bboolean
 definitely_within_item (BtkWidget *widget,
-                        gint       x,
-                        gint       y)
+                        bint       x,
+                        bint       y)
 {
   BdkWindow *window = BTK_MENU_ITEM (widget)->event_window;
   int w, h;
@@ -3229,7 +3229,7 @@ definitely_within_item (BtkWidget *widget,
     check_threshold (widget, 0, h - 1, x, y);
 }
 
-static gboolean
+static bboolean
 btk_menu_has_navigation_triangle (BtkMenu *menu)
 {
   BtkMenuPrivate *priv;
@@ -3239,7 +3239,7 @@ btk_menu_has_navigation_triangle (BtkMenu *menu)
   return priv->navigation_height && priv->navigation_width;
 }
 
-static gboolean
+static bboolean
 btk_menu_motion_notify (BtkWidget      *widget,
                         BdkEventMotion *event)
 {
@@ -3247,7 +3247,7 @@ btk_menu_motion_notify (BtkWidget      *widget,
   BtkMenu *menu;
   BtkMenuShell *menu_shell;
 
-  gboolean need_enter;
+  bboolean need_enter;
 
   if (BTK_IS_MENU (widget))
     {
@@ -3304,7 +3304,7 @@ btk_menu_motion_notify (BtkWidget      *widget,
       /* The menu is now sensitive to enter events on its items, but
        * was previously sensitive.  So we fake an enter event.
        */
-      gint width, height;
+      bint width, height;
       
       menu_shell->ignore_enter = FALSE; 
       
@@ -3314,7 +3314,7 @@ btk_menu_motion_notify (BtkWidget      *widget,
 	  event->y >= 0 && event->y < height)
 	{
 	  BdkEvent *send_event = bdk_event_new (BDK_ENTER_NOTIFY);
-	  gboolean result;
+	  bboolean result;
 
 	  send_event->crossing.window = g_object_ref (event->window);
 	  send_event->crossing.time = event->time;
@@ -3341,11 +3341,11 @@ btk_menu_motion_notify (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 get_double_arrows (BtkMenu *menu)
 {
   BtkMenuPrivate   *priv = btk_menu_get_private (menu);
-  gboolean          double_arrows;
+  bboolean          double_arrows;
   BtkArrowPlacement arrow_placement;
 
   btk_widget_style_get (BTK_WIDGET (menu),
@@ -3362,12 +3362,12 @@ get_double_arrows (BtkMenu *menu)
 
 static void
 btk_menu_scroll_by (BtkMenu *menu, 
-		    gint     step)
+		    bint     step)
 {
   BtkWidget *widget;
-  gint offset;
-  gint view_width, view_height;
-  gboolean double_arrows;
+  bint offset;
+  bint view_width, view_height;
+  bboolean double_arrows;
   BtkBorder arrow_border;
   
   widget = BTK_WIDGET (menu);
@@ -3417,10 +3417,10 @@ btk_menu_scroll_by (BtkMenu *menu,
 
 static void
 btk_menu_do_timeout_scroll (BtkMenu  *menu,
-                            gboolean  touchscreen_mode)
+                            bboolean  touchscreen_mode)
 {
-  gboolean upper_visible;
-  gboolean lower_visible;
+  bboolean upper_visible;
+  bboolean lower_visible;
 
   upper_visible = menu->upper_arrow_visible;
   lower_visible = menu->lower_arrow_visible;
@@ -3440,11 +3440,11 @@ btk_menu_do_timeout_scroll (BtkMenu  *menu,
     }
 }
 
-static gboolean
-btk_menu_scroll_timeout (gpointer data)
+static bboolean
+btk_menu_scroll_timeout (bpointer data)
 {
   BtkMenu  *menu;
-  gboolean  touchscreen_mode;
+  bboolean  touchscreen_mode;
 
   menu = BTK_MENU (data);
 
@@ -3457,12 +3457,12 @@ btk_menu_scroll_timeout (gpointer data)
   return TRUE;
 }
 
-static gboolean
-btk_menu_scroll_timeout_initial (gpointer data)
+static bboolean
+btk_menu_scroll_timeout_initial (bpointer data)
 {
   BtkMenu  *menu;
-  guint     timeout;
-  gboolean  touchscreen_mode;
+  buint     timeout;
+  bboolean  touchscreen_mode;
 
   menu = BTK_MENU (data);
 
@@ -3485,8 +3485,8 @@ btk_menu_scroll_timeout_initial (gpointer data)
 static void
 btk_menu_start_scrolling (BtkMenu *menu)
 {
-  guint    timeout;
-  gboolean touchscreen_mode;
+  buint    timeout;
+  bboolean touchscreen_mode;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (menu)),
                 "btk-timeout-repeat", &timeout,
@@ -3500,7 +3500,7 @@ btk_menu_start_scrolling (BtkMenu *menu)
                                               menu);
 }
 
-static gboolean
+static bboolean
 btk_menu_scroll (BtkWidget	*widget,
 		 BdkEventScroll *event)
 {
@@ -3526,11 +3526,11 @@ get_arrows_sensitive_area (BtkMenu      *menu,
                            BdkRectangle *upper,
                            BdkRectangle *lower)
 {
-  gint width, height;
-  gint border;
-  guint vertical_padding;
-  gint win_x, win_y;
-  gint scroll_arrow_height;
+  bint width, height;
+  bint border;
+  buint vertical_padding;
+  bint win_x, win_y;
+  bint scroll_arrow_height;
   BtkArrowPlacement arrow_placement;
 
   width = bdk_window_get_width (BTK_WIDGET (menu)->window);
@@ -3608,18 +3608,18 @@ get_arrows_sensitive_area (BtkMenu      *menu,
 
 static void
 btk_menu_handle_scrolling (BtkMenu *menu,
-			   gint     x,
-			   gint     y,
-			   gboolean enter,
-                           gboolean motion)
+			   bint     x,
+			   bint     y,
+			   bboolean enter,
+                           bboolean motion)
 {
   BtkMenuShell *menu_shell;
   BtkMenuPrivate *priv;
   BdkRectangle rect;
-  gboolean in_arrow;
-  gboolean scroll_fast = FALSE;
-  gint top_x, top_y;
-  gboolean touchscreen_mode;
+  bboolean in_arrow;
+  bboolean scroll_fast = FALSE;
+  bint top_x, top_y;
+  bboolean touchscreen_mode;
 
   priv = btk_menu_get_private (menu);
 
@@ -3650,7 +3650,7 @@ btk_menu_handle_scrolling (BtkMenu *menu,
 
   if (priv->upper_arrow_state != BTK_STATE_INSENSITIVE)
     {
-      gboolean arrow_pressed = FALSE;
+      bboolean arrow_pressed = FALSE;
 
       if (menu->upper_arrow_visible && !menu->tearoff_active)
         {
@@ -3758,7 +3758,7 @@ btk_menu_handle_scrolling (BtkMenu *menu,
 
   if (priv->lower_arrow_state != BTK_STATE_INSENSITIVE)
     {
-      gboolean arrow_pressed = FALSE;
+      bboolean arrow_pressed = FALSE;
 
       if (menu->lower_arrow_visible && !menu->tearoff_active)
         {
@@ -3850,12 +3850,12 @@ btk_menu_handle_scrolling (BtkMenu *menu,
     }
 }
 
-static gboolean
+static bboolean
 btk_menu_enter_notify (BtkWidget        *widget,
 		       BdkEventCrossing *event)
 {
   BtkWidget *menu_item;
-  gboolean   touchscreen_mode;
+  bboolean   touchscreen_mode;
 
   if (event->mode == BDK_CROSSING_BTK_GRAB ||
       event->mode == BDK_CROSSING_BTK_UNGRAB ||
@@ -3924,7 +3924,7 @@ btk_menu_enter_notify (BtkWidget        *widget,
   return BTK_WIDGET_CLASS (btk_menu_parent_class)->enter_notify_event (widget, event); 
 }
 
-static gboolean
+static bboolean
 btk_menu_leave_notify (BtkWidget        *widget,
 		       BdkEventCrossing *event)
 {
@@ -3999,8 +3999,8 @@ btk_menu_stop_navigating_submenu (BtkMenu *menu)
 /* When the timeout is elapsed, the navigation rebunnyion is destroyed
  * and the menuitem under the pointer (if any) is selected.
  */
-static gboolean
-btk_menu_stop_navigating_submenu_cb (gpointer user_data)
+static bboolean
+btk_menu_stop_navigating_submenu_cb (bpointer user_data)
 {
   BtkMenu *menu = user_data;
   BdkWindow *child_window;
@@ -4028,10 +4028,10 @@ btk_menu_stop_navigating_submenu_cb (gpointer user_data)
   return FALSE; 
 }
 
-static gboolean
+static bboolean
 btk_menu_navigating_submenu (BtkMenu *menu,
-			     gint     event_x,
-			     gint     event_y)
+			     bint     event_x,
+			     bint     event_y)
 {
   BtkMenuPrivate *priv;
   int width, height;
@@ -4081,12 +4081,12 @@ btk_menu_set_submenu_navigation_rebunnyion (BtkMenu          *menu,
 					BtkMenuItem      *menu_item,
 					BdkEventCrossing *event)
 {
-  gint submenu_left = 0;
-  gint submenu_right = 0;
-  gint submenu_top = 0;
-  gint submenu_bottom = 0;
-  gint width = 0;
-  gint height = 0;
+  bint submenu_left = 0;
+  bint submenu_right = 0;
+  bint submenu_top = 0;
+  bint submenu_bottom = 0;
+  bint width = 0;
+  bint height = 0;
   BtkWidget *event_widget;
   BtkMenuPrivate *priv;
 
@@ -4109,7 +4109,7 @@ btk_menu_set_submenu_navigation_rebunnyion (BtkMenu          *menu,
   
   if (event->x >= 0 && event->x < width)
     {
-      gint popdown_delay;
+      bint popdown_delay;
       
       btk_menu_stop_navigating_submenu (menu);
 
@@ -4178,14 +4178,14 @@ btk_menu_deactivate (BtkMenuShell *menu_shell)
 
 static void
 btk_menu_position (BtkMenu  *menu,
-                   gboolean  set_scroll_offset)
+                   bboolean  set_scroll_offset)
 {
   BtkWidget *widget;
   BtkRequisition requisition;
   BtkMenuPrivate *private;
-  gint x, y;
-  gint scroll_offset;
-  gint menu_height;
+  bint x, y;
+  bint scroll_offset;
+  bint menu_height;
   BdkScreen *screen;
   BdkScreen *pointer_screen;
   BdkRectangle monitor;
@@ -4237,12 +4237,12 @@ btk_menu_position (BtkMenu  *menu,
     }
   else
     {
-      gint space_left, space_right, space_above, space_below;
-      gint needed_width;
-      gint needed_height;
-      gint xthickness = widget->style->xthickness;
-      gint ythickness = widget->style->ythickness;
-      gboolean rtl = (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL);
+      bint space_left, space_right, space_above, space_below;
+      bint needed_width;
+      bint needed_height;
+      bint xthickness = widget->style->xthickness;
+      bint ythickness = widget->style->ythickness;
+      bboolean rtl = (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL);
 
       /* The placement of popup menus horizontally works like this (with
        * RTL in parentheses)
@@ -4426,7 +4426,7 @@ btk_menu_remove_scroll_timeout (BtkMenu *menu)
 static void
 btk_menu_stop_scrolling (BtkMenu *menu)
 {
-  gboolean touchscreen_mode;
+  bboolean touchscreen_mode;
 
   btk_menu_remove_scroll_timeout (menu);
 
@@ -4443,16 +4443,16 @@ btk_menu_stop_scrolling (BtkMenu *menu)
 
 static void
 btk_menu_scroll_to (BtkMenu *menu,
-		    gint    offset)
+		    bint    offset)
 {
   BtkWidget *widget;
-  gint x, y;
-  gint view_width, view_height;
-  gint border_width;
-  gint menu_height;
-  guint vertical_padding;
-  guint horizontal_padding;
-  gboolean double_arrows;
+  bint x, y;
+  bint view_width, view_height;
+  bint border_width;
+  bint menu_height;
+  buint vertical_padding;
+  buint horizontal_padding;
+  bboolean double_arrows;
   BtkBorder arrow_border;
   
   widget = BTK_WIDGET (menu);
@@ -4558,7 +4558,7 @@ btk_menu_scroll_to (BtkMenu *menu,
     }
   else if (!menu->tearoff_active)
     {
-      gboolean last_visible;
+      bboolean last_visible;
 
       last_visible = menu->upper_arrow_visible;
       menu->upper_arrow_visible = offset > 0;
@@ -4617,18 +4617,18 @@ btk_menu_scroll_to (BtkMenu *menu,
   menu->scroll_offset = offset;
 }
 
-static gboolean
+static bboolean
 compute_child_offset (BtkMenu   *menu,
 		      BtkWidget *menu_item,
-		      gint      *offset,
-		      gint      *height,
-		      gboolean  *is_last_child)
+		      bint      *offset,
+		      bint      *height,
+		      bboolean  *is_last_child)
 {
   BtkMenuPrivate *priv = btk_menu_get_private (menu);
-  gint item_top_attach;
-  gint item_bottom_attach;
-  gint child_offset = 0;
-  gint i;
+  bint item_top_attach;
+  bint item_bottom_attach;
+  bint child_offset = 0;
+  bint i;
 
   get_effective_child_attach (menu_item, NULL, NULL,
 			      &item_top_attach, &item_bottom_attach);
@@ -4660,11 +4660,11 @@ btk_menu_scroll_item_visible (BtkMenuShell *menu_shell,
 			      BtkWidget    *menu_item)
 {
   BtkMenu *menu;
-  gint child_offset, child_height;
-  gint width, height;
-  gint y;
-  gint arrow_height;
-  gboolean last_child = 0;
+  bint child_offset, child_height;
+  bint width, height;
+  bint y;
+  bint arrow_height;
+  bboolean last_child = 0;
   
   menu = BTK_MENU (menu_shell);
 
@@ -4676,8 +4676,8 @@ btk_menu_scroll_item_visible (BtkMenuShell *menu_shell,
   if (compute_child_offset (menu, menu_item,
 			    &child_offset, &child_height, &last_child))
     {
-      guint vertical_padding;
-      gboolean double_arrows;
+      buint vertical_padding;
+      bboolean double_arrows;
       
       y = menu->scroll_offset;
       width = bdk_window_get_width (BTK_WIDGET (menu)->window);
@@ -4777,11 +4777,11 @@ btk_menu_select_item (BtkMenuShell *menu_shell,
 static void 
 btk_menu_reparent (BtkMenu   *menu,
                    BtkWidget *new_parent,
-                   gboolean   unrealize)
+                   bboolean   unrealize)
 {
   BtkObject *object = BTK_OBJECT (menu);
   BtkWidget *widget = BTK_WIDGET (menu);
-  gboolean was_floating = g_object_is_floating (object);
+  bboolean was_floating = g_object_is_floating (object);
 
   g_object_ref_sink (object);
 
@@ -4869,10 +4869,10 @@ btk_menu_set_screen (BtkMenu   *menu,
 void
 btk_menu_attach (BtkMenu   *menu,
                  BtkWidget *child,
-                 guint      left_attach,
-                 guint      right_attach,
-                 guint      top_attach,
-                 guint      bottom_attach)
+                 buint      left_attach,
+                 buint      right_attach,
+                 buint      top_attach,
+                 buint      bottom_attach)
 {
   BtkMenuShell *menu_shell;
   
@@ -4911,10 +4911,10 @@ btk_menu_attach (BtkMenu   *menu,
     }
 }
 
-static gint
+static bint
 btk_menu_get_popup_delay (BtkMenuShell *menu_shell)
 {
-  gint popup_delay;
+  bint popup_delay;
 
   g_object_get (btk_widget_get_settings (BTK_WIDGET (menu_shell)),
 		"btk-menu-popup-delay", &popup_delay,
@@ -4938,7 +4938,7 @@ find_child_containing (BtkMenuShell *menu_shell,
 
   for (list = menu_shell->children; list; list = list->next)
     {
-      gint l, r, t, b;
+      bint l, r, t, b;
 
       if (!_btk_menu_item_is_selectable (list->data))
         continue;
@@ -4958,8 +4958,8 @@ btk_menu_move_current (BtkMenuShell         *menu_shell,
                        BtkMenuDirectionType  direction)
 {
   BtkMenu *menu = BTK_MENU (menu_shell);
-  gint i;
-  gint l, r, t, b;
+  bint i;
+  bint l, r, t, b;
   BtkWidget *match = NULL;
 
   if (btk_widget_get_direction (BTK_WIDGET (menu_shell)) == BTK_TEXT_DIR_RTL)
@@ -5065,13 +5065,13 @@ btk_menu_move_current (BtkMenuShell         *menu_shell,
   BTK_MENU_SHELL_CLASS (btk_menu_parent_class)->move_current (menu_shell, direction);
 }
 
-static gint
+static bint
 get_visible_size (BtkMenu *menu)
 {
   BtkWidget *widget = BTK_WIDGET (menu);
   BtkContainer *container = BTK_CONTAINER (menu);
   
-  gint menu_height = (widget->allocation.height
+  bint menu_height = (widget->allocation.height
 		      - 2 * (container->border_width
 			     + widget->style->ythickness));
 
@@ -5092,14 +5092,14 @@ get_visible_size (BtkMenu *menu)
  */
 static BtkWidget *
 child_at (BtkMenu *menu,
-	  gint     y)
+	  bint     y)
 {
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (menu);
   BtkWidget *child = NULL;
-  gint child_offset = 0;
+  bint child_offset = 0;
   GList *children;
-  gint menu_height;
-  gint lower, upper;		/* Onscreen bounds */
+  bint menu_height;
+  bint lower, upper;		/* Onscreen bounds */
 
   menu_height = get_visible_size (menu);
   lower = menu->scroll_offset;
@@ -5131,10 +5131,10 @@ child_at (BtkMenu *menu,
   return child;
 }
 
-static gint
+static bint
 get_menu_height (BtkMenu *menu)
 {
-  gint height;
+  bint height;
   BtkWidget *widget = BTK_WIDGET (menu);
 
   height = widget->requisition.height;
@@ -5156,8 +5156,8 @@ static void
 btk_menu_real_move_scroll (BtkMenu       *menu,
 			   BtkScrollType  type)
 {
-  gint page_size = get_visible_size (menu);
-  gint end_position = get_menu_height (menu);
+  bint page_size = get_visible_size (menu);
+  bint end_position = get_menu_height (menu);
   BtkMenuShell *menu_shell = BTK_MENU_SHELL (menu);
   
   switch (type)
@@ -5165,11 +5165,11 @@ btk_menu_real_move_scroll (BtkMenu       *menu,
     case BTK_SCROLL_PAGE_UP:
     case BTK_SCROLL_PAGE_DOWN:
       {
-	gint old_offset;
-        gint new_offset;
-	gint child_offset = 0;
-	gboolean old_upper_arrow_visible;
-	gint step;
+	bint old_offset;
+        bint new_offset;
+	bint child_offset = 0;
+	bboolean old_upper_arrow_visible;
+	bint step;
 
 	if (type == BTK_SCROLL_PAGE_UP)
 	  step = - page_size;
@@ -5178,7 +5178,7 @@ btk_menu_real_move_scroll (BtkMenu       *menu,
 
 	if (menu_shell->active_menu_item)
 	  {
-	    gint child_height;
+	    bint child_height;
 	    
 	    compute_child_offset (menu, menu_shell->active_menu_item,
 				  &child_offset, &child_height, NULL);
@@ -5197,7 +5197,7 @@ btk_menu_real_move_scroll (BtkMenu       *menu,
 	if (menu_shell->active_menu_item)
 	  {
 	    BtkWidget *new_child;
-	    gboolean new_upper_arrow_visible = menu->upper_arrow_visible && !menu->tearoff_active;
+	    bboolean new_upper_arrow_visible = menu->upper_arrow_visible && !menu->tearoff_active;
             BtkBorder arrow_border;
 
 	    get_arrows_border (menu, &arrow_border);
@@ -5252,7 +5252,7 @@ btk_menu_real_move_scroll (BtkMenu       *menu,
  **/
 void
 btk_menu_set_monitor (BtkMenu *menu,
-		      gint     monitor_num)
+		      bint     monitor_num)
 {
   BtkMenuPrivate *priv;
   g_return_if_fail (BTK_IS_MENU (menu));
@@ -5273,7 +5273,7 @@ btk_menu_set_monitor (BtkMenu *menu,
  *
  * Since: 2.14
  **/
-gint
+bint
 btk_menu_get_monitor (BtkMenu *menu)
 {
   BtkMenuPrivate *priv;
@@ -5308,7 +5308,7 @@ btk_menu_get_for_attach_widget (BtkWidget *widget)
 
 static void
 btk_menu_grab_notify (BtkWidget *widget,
-		      gboolean   was_grabbed)
+		      bboolean   was_grabbed)
 {
   BtkWidget *toplevel;
   BtkWindowGroup *group;
@@ -5337,10 +5337,10 @@ btk_menu_grab_notify (BtkWidget *widget,
  */
 void
 btk_menu_set_reserve_toggle_size (BtkMenu  *menu,
-                                  gboolean  reserve_toggle_size)
+                                  bboolean  reserve_toggle_size)
 {
   BtkMenuPrivate *priv = btk_menu_get_private (menu);
-  gboolean no_toggle_size;
+  bboolean no_toggle_size;
   
   no_toggle_size = !reserve_toggle_size;
 
@@ -5363,7 +5363,7 @@ btk_menu_set_reserve_toggle_size (BtkMenu  *menu,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_menu_get_reserve_toggle_size (BtkMenu *menu)
 {
   BtkMenuPrivate *priv = btk_menu_get_private (menu);

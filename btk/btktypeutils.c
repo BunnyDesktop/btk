@@ -72,11 +72,11 @@ btk_type_unique (BtkType            parent_type,
  *
  * Deprecated: 2.14: Use g_type_class_peek() or g_type_class_ref() instead.
  **/
-gpointer
+bpointer
 btk_type_class (BtkType type)
 {
   static GQuark quark_static_class = 0;
-  gpointer class;
+  bpointer class;
 
   if (!B_TYPE_IS_ENUM (type) && !B_TYPE_IS_FLAGS (type))
     g_return_val_if_fail (B_TYPE_IS_OBJECT (type), NULL);
@@ -106,10 +106,10 @@ btk_type_class (BtkType type)
   return class;
 }
 
-gpointer
+bpointer
 btk_type_new (BtkType type)
 {
-  gpointer object;
+  bpointer object;
 
   g_return_val_if_fail (BTK_TYPE_IS_OBJECT (type), NULL);
 
@@ -121,7 +121,7 @@ btk_type_new (BtkType type)
 void
 btk_type_init (GTypeDebugFlags debug_flags)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
   
   if (!initialized)
     {
@@ -179,7 +179,7 @@ btk_type_flags_get_values (BtkType flags_type)
 
 BtkEnumValue*
 btk_type_enum_find_value (BtkType      enum_type,
-			  const gchar *value_name)
+			  const bchar *value_name)
 {
   BtkEnumValue *value;
   GEnumClass *class;
@@ -197,7 +197,7 @@ btk_type_enum_find_value (BtkType      enum_type,
 
 BtkFlagValue*
 btk_type_flags_find_value (BtkType      flags_type,
-			   const gchar *value_name)
+			   const bchar *value_name)
 {
   BtkFlagValue *value;
   GFlagsClass *class;

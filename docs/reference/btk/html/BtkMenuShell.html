@@ -125,7 +125,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenuShell.html#btk-menu-shell-get-take-focus" title="btk_menu_shell_get_take_focus ()">btk_menu_shell_get_take_focus</a> <span class="c_punctuation">()</span>
@@ -143,7 +143,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenuShell.html#BtkMenuShell--take-focus" title="The “take-focus” property">take-focus</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -189,7 +189,7 @@
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkMenuShell.html#BtkMenuShell-move-selected" title="The “move-selected” signal">move-selected</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -267,7 +267,7 @@ btk_menu_shell_prepend (<em class="parameter"><code><a class="link" href="BtkMen
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_shell_insert (<em class="parameter"><code><a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell</code></em>,
                        <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -287,7 +287,7 @@ btk_menu_shell_select_item (<em class="parameter"><code><a class="link" href="Bt
 <a name="btk-menu-shell-select-first"></a><h3>btk_menu_shell_select_first ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_shell_select_first (<em class="parameter"><code><a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> search_sensitive</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> search_sensitive</code></em>);</pre>
 <p>Select the first visible or selectable child of the menu shell;
 don't select tearoff items unless the only item is a tearoff
 item.</p>
@@ -331,7 +331,7 @@ btk_menu_shell_deselect (<em class="parameter"><code><a class="link" href="BtkMe
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_shell_activate_item (<em class="parameter"><code><a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *menu_item</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> force_deactivate</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> force_deactivate</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -361,7 +361,7 @@ btk_menu_shell_cancel (<em class="parameter"><code><a class="link" href="BtkMenu
 <a name="btk-menu-shell-set-take-focus"></a><h3>btk_menu_shell_set_take_focus ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_shell_set_take_focus (<em class="parameter"><code><a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell</code></em>,
-                               <em class="parameter"><code><span class="type">gboolean</span> take_focus</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bboolean</span> take_focus</code></em>);</pre>
 <p>If <em class="parameter"><code>take_focus</code></em>
  is <code class="literal">TRUE</code> (the default) the menu shell will take the keyboard 
 focus so that it will receive all keyboard events which is needed to enable
@@ -413,7 +413,7 @@ guaranteed that they will work.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-shell-get-take-focus"></a><h3>btk_menu_shell_get_take_focus ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_menu_shell_get_take_focus (<em class="parameter"><code><a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the menu shell will take the keyboard focus on popup.</p>
 <div class="refsect3">
@@ -485,7 +485,7 @@ btk_menu_shell_get_take_focus (<em class="parameter"><code><a class="link" href=
 <a name="BtkMenuShell.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkMenuShell--take-focus"></a><h3>The <code class="literal">“take-focus”</code> property</h3>
-<pre class="programlisting">  “take-focus”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “take-focus”               <span class="type">bboolean</span></pre>
 <p>A boolean that determines whether the menu and its submenus grab the
 keyboard focus. See <a class="link" href="BtkMenuShell.html#btk-menu-shell-set-take-focus" title="btk_menu_shell_set_take_focus ()"><code class="function">btk_menu_shell_set_take_focus()</code></a> and
 <a class="link" href="BtkMenuShell.html#btk-menu-shell-get-take-focus" title="btk_menu_shell_get_take_focus ()"><code class="function">btk_menu_shell_get_take_focus()</code></a>.</p>
@@ -501,8 +501,8 @@ keyboard focus. See <a class="link" href="BtkMenuShell.html#btk-menu-shell-set-t
 <a name="BtkMenuShell-activate-current"></a><h3>The <code class="literal">“activate-current”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menushell,
-               <span class="type">gboolean</span>      arg1,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bboolean</span>      arg1,
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -510,7 +510,7 @@ user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><sp
 <a name="BtkMenuShell-cancel"></a><h3>The <code class="literal">“cancel”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menushell,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -519,7 +519,7 @@ user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><sp
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a>    *menushell,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkDirectionType" title="enum BtkDirectionType"><span class="type">BtkDirectionType</span></a> arg1,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -527,7 +527,7 @@ user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><sp
 <a name="BtkMenuShell-deactivate"></a><h3>The <code class="literal">“deactivate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menushell,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -537,7 +537,7 @@ user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><sp
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>    *child,
                <span class="type">int</span>           position,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::insert signal is emitted when a new <a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> is added to
 a <a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a>.  A separate signal is used instead of
 BtkContainer::add because of the need for an additional position
@@ -584,16 +584,16 @@ parameter.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a>        *menushell,
                <a class="link" href="BtkMenuShell.html#BtkMenuDirectionType" title="enum BtkMenuDirectionType"><span class="type">BtkMenuDirectionType</span></a> arg1,
-               <span class="type">gpointer</span>             user_data)</pre>
+               <span class="type">bpointer</span>             user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkMenuShell-move-selected"></a><h3>The <code class="literal">“move-selected”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menu_shell,
                <span class="type">int</span>           distance,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::move-selected signal is emitted to move the selection to
 another item.</p>
 <div class="refsect3">
@@ -635,7 +635,7 @@ another item.</p>
 <a name="BtkMenuShell-selection-done"></a><h3>The <code class="literal">“selection-done”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenuShell.html" title="BtkMenuShell"><span class="type">BtkMenuShell</span></a> *menushell,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

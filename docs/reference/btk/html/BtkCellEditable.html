@@ -80,7 +80,7 @@
 <col width="200px" class="properties_flags">
 </colgroup>
 <tbody><tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCellEditable.html#BtkCellEditable--editing-canceled" title="The “editing-canceled” property">editing-canceled</a></td>
 <td class="property_flags">Read / Write</td>
 </tr></tbody>
@@ -260,7 +260,7 @@ btk_cell_editable_remove_widget (<em class="parameter"><code><a class="link" hre
 <a name="BtkCellEditable.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkCellEditable--editing-canceled"></a><h3>The <code class="literal">“editing-canceled”</code> property</h3>
-<pre class="programlisting">  “editing-canceled”         <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “editing-canceled”         <span class="type">bboolean</span></pre>
 <p>Indicates whether editing on the cell has been canceled.</p>
 <p>Owner: BtkCellEditable</p>
 <p>Flags: Read / Write</p>
@@ -274,7 +274,7 @@ btk_cell_editable_remove_widget (<em class="parameter"><code><a class="link" hre
 <a name="BtkCellEditable-editing-done"></a><h3>The <code class="literal">“editing-done”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCellEditable.html" title="BtkCellEditable"><span class="type">BtkCellEditable</span></a> *cell_editable,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>This signal is a sign for the cell renderer to update its
 value from the <em class="parameter"><code>cell_editable</code></em>
 .</p>
@@ -312,7 +312,7 @@ for emitting BtkCellEditable::editing-done.</p>
 <a name="BtkCellEditable-remove-widget"></a><h3>The <code class="literal">“remove-widget”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCellEditable.html" title="BtkCellEditable"><span class="type">BtkCellEditable</span></a> *cell_editable,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>This signal is meant to indicate that the cell is finished
 editing, and the widget may now be destroyed.</p>
 <p>Implementations of <a class="link" href="BtkCellEditable.html" title="BtkCellEditable"><span class="type">BtkCellEditable</span></a> are responsible for

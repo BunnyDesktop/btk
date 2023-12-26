@@ -38,7 +38,7 @@ struct _BailArrow
 {
   BailWidget parent;
 
-  gchar*     image_description;
+  bchar*     image_description;
 };
 
 GType bail_arrow_get_type (void);

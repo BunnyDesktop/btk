@@ -54,7 +54,7 @@ struct _BtkGammaCurve
   BtkWidget *GSEAL (curve);
   BtkWidget *GSEAL (button[5]);	/* spline, linear, free, gamma, reset */
 
-  gfloat GSEAL (gamma);
+  bfloat GSEAL (gamma);
   BtkWidget *GSEAL (gamma_dialog);
   BtkWidget *GSEAL (gamma_text);
 };

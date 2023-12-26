@@ -28,15 +28,15 @@ static void         bail_scrolled_window_class_init     (BailScrolledWindowClass
 static void         bail_scrolled_window_init           (BailScrolledWindow       *window);
 static void         bail_scrolled_window_real_initialize
                                                         (BatkObject     *obj,
-                                                         gpointer      data);
+                                                         bpointer      data);
 
-static gint         bail_scrolled_window_get_n_children (BatkObject     *object);
+static bint         bail_scrolled_window_get_n_children (BatkObject     *object);
 static BatkObject*   bail_scrolled_window_ref_child      (BatkObject     *obj,
-                                                         gint          child);
+                                                         bint          child);
 static void         bail_scrolled_window_scrollbar_visibility_changed 
                                                         (BObject       *object,
                                                          BParamSpec    *pspec,
-                                                         gpointer      user_data);
+                                                         bpointer      user_data);
 
 G_DEFINE_TYPE (BailScrolledWindow, bail_scrolled_window, BAIL_TYPE_CONTAINER)
 
@@ -57,7 +57,7 @@ bail_scrolled_window_init (BailScrolledWindow *window)
 
 static void
 bail_scrolled_window_real_initialize (BatkObject *obj,
-                                      gpointer  data)
+                                      bpointer  data)
 {
   BtkScrolledWindow *window;
 
@@ -74,13 +74,13 @@ bail_scrolled_window_real_initialize (BatkObject *obj,
   obj->role = BATK_ROLE_SCROLL_PANE;
 }
 
-static gint
+static bint
 bail_scrolled_window_get_n_children (BatkObject *object)
 {
   BtkWidget *widget;
   BtkScrolledWindow *btk_window;
   GList *children;
-  gint n_children;
+  bint n_children;
  
   widget = BTK_ACCESSIBLE (object)->widget;
   if (widget == NULL)
@@ -106,12 +106,12 @@ bail_scrolled_window_get_n_children (BatkObject *object)
 
 static BatkObject *
 bail_scrolled_window_ref_child (BatkObject *obj, 
-                                gint      child)
+                                bint      child)
 {
   BtkWidget *widget;
   BtkScrolledWindow *btk_window;
   GList *children, *tmp_list;
-  gint n_children;
+  bint n_children;
   BatkObject  *accessible = NULL;
 
   g_return_val_if_fail (child >= 0, NULL);
@@ -154,18 +154,18 @@ bail_scrolled_window_ref_child (BatkObject *obj,
 static void
 bail_scrolled_window_scrollbar_visibility_changed (BObject    *object,
                                                    BParamSpec *pspec,
-                                                   gpointer   user_data)
+                                                   bpointer   user_data)
 {
   if (!strcmp (pspec->name, "visible"))
     {
-      gint index;
-      gint n_children;
-      gboolean child_added = FALSE;
+      bint index;
+      bint n_children;
+      bboolean child_added = FALSE;
       GList *children;
       BatkObject *child;
       BtkScrolledWindow *btk_window;
       BailScrolledWindow *bail_window = BAIL_SCROLLED_WINDOW (user_data);
-      gchar *signal_name;
+      bchar *signal_name;
 
       btk_window = BTK_SCROLLED_WINDOW (BTK_ACCESSIBLE (user_data)->widget);
       if (btk_window == NULL)
@@ -174,14 +174,14 @@ bail_scrolled_window_scrollbar_visibility_changed (BObject    *object,
       index = n_children = g_list_length (children);
       g_list_free (children);
 
-      if ((gpointer) object == (gpointer) (btk_window->hscrollbar))
+      if ((bpointer) object == (bpointer) (btk_window->hscrollbar))
         {
           if (btk_window->hscrollbar_visible)
             child_added = TRUE;
 
           child = btk_widget_get_accessible (btk_window->hscrollbar);
         }
-      else if ((gpointer) object == (gpointer) (btk_window->vscrollbar))
+      else if ((bpointer) object == (bpointer) (btk_window->vscrollbar))
         {
           if (btk_window->vscrollbar_visible)
             child_added = TRUE;

@@ -62,7 +62,7 @@ bdk_pixbuf_render_threshold_alpha (BdkPixbuf *pixbuf,
   BdkGC *gc;
   BdkColor color;
   int x, y;
-  guchar *p;
+  buchar *p;
   int start, start_status;
   int status;
 

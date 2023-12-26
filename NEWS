@@ -5835,7 +5835,7 @@ Overview of Changes from BTK+ 2.3.5 to BTK+ 2.3.6
  - Reroot pathbar inside home directory, use icons [Jonathan]
  - Make the user actually select a file before hitting OK [Federico]
  - Fix folder mode to not have tree [Jonathan]
- - Add gboolean return values to operations that can fail [Federico]
+ - Add bboolean return values to operations that can fail [Federico]
  - Improve internal error handling [Morten Welinder, Federico]
  - Bug fixes [Federico, Jonathan, Morten, Anders Carlsson, Damon,
    Alex Larsson]
@@ -7674,7 +7674,7 @@ What is new in BTK+ 1.1.2:
 
 * Btk+ is now featuring runtime loading of dynamic modules via the
   --btk-modules= command line switch. such modules have to export a
-  G_MODULE_EXPORT void btk_module_init (gint *argc, gchar ***argv);
+  G_MODULE_EXPORT void btk_module_init (bint *argc, bchar ***argv);
   function which will be invoked to initialize the module. since such
   modules may create new widget types, they are always resident.
 * The tutorial has been updated again.

@@ -82,7 +82,7 @@ struct _BtkFontSelection
   BangoFontFamily *GSEAL (family);	/* Current family */
   BangoFontFace *GSEAL (face);		/* Current face */
   
-  gint GSEAL (size);
+  bint GSEAL (size);
   
   BdkFont *GSEAL (font);		/* Cache for bdk_font_selection_get_font, so we can preserve
                                          * refcounting behavior
@@ -120,8 +120,8 @@ struct _BtkFontSelectionDialog
   /* If the user changes the width of the dialog, we turn auto-shrink off.
    * (Unused now, autoshrink doesn't mean anything anymore -Yosh)
    */
-  gint GSEAL (dialog_width);
-  gboolean GSEAL (auto_resize);
+  bint GSEAL (dialog_width);
+  bboolean GSEAL (auto_resize);
 };
 
 struct _BtkFontSelectionDialogClass
@@ -153,18 +153,18 @@ BangoFontFamily *
              btk_font_selection_get_family        (BtkFontSelection *fontsel);
 BangoFontFace *
              btk_font_selection_get_face          (BtkFontSelection *fontsel);
-gint         btk_font_selection_get_size          (BtkFontSelection *fontsel);
-gchar*       btk_font_selection_get_font_name     (BtkFontSelection *fontsel);
+bint         btk_font_selection_get_size          (BtkFontSelection *fontsel);
+bchar*       btk_font_selection_get_font_name     (BtkFontSelection *fontsel);
 
 #ifndef BTK_DISABLE_DEPRECATED
 BdkFont*     btk_font_selection_get_font          (BtkFontSelection *fontsel);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-gboolean     btk_font_selection_set_font_name     (BtkFontSelection *fontsel,
-                                                   const gchar      *fontname);
-const gchar* btk_font_selection_get_preview_text  (BtkFontSelection *fontsel);
+bboolean     btk_font_selection_set_font_name     (BtkFontSelection *fontsel,
+                                                   const bchar      *fontname);
+const bchar* btk_font_selection_get_preview_text  (BtkFontSelection *fontsel);
 void         btk_font_selection_set_preview_text  (BtkFontSelection *fontsel,
-                                                   const gchar      *text);
+                                                   const bchar      *text);
 
 /*****************************************************************************
  * BtkFontSelectionDialog functions.
@@ -173,7 +173,7 @@ void         btk_font_selection_set_preview_text  (BtkFontSelection *fontsel,
  *****************************************************************************/
 
 GType	   btk_font_selection_dialog_get_type	       (void) B_GNUC_CONST;
-BtkWidget *btk_font_selection_dialog_new	       (const gchar            *title);
+BtkWidget *btk_font_selection_dialog_new	       (const bchar            *title);
 
 BtkWidget *btk_font_selection_dialog_get_ok_button     (BtkFontSelectionDialog *fsd);
 #ifndef BTK_DISABLE_DEPRECATED
@@ -187,7 +187,7 @@ BtkWidget *btk_font_selection_dialog_get_font_selection (BtkFontSelectionDialog 
    have been loaded OK. You should call btk_font_selection_dialog_get_font()
    to see if it has been loaded OK.
    You should g_free() the returned font name after you're done with it. */
-gchar*	   btk_font_selection_dialog_get_font_name     (BtkFontSelectionDialog *fsd);
+bchar*	   btk_font_selection_dialog_get_font_name     (BtkFontSelectionDialog *fsd);
 
 #ifndef BTK_DISABLE_DEPRECATED
 /* This will return the current BdkFont, or NULL if none is selected or there
@@ -200,18 +200,18 @@ BdkFont*   btk_font_selection_dialog_get_font	       (BtkFontSelectionDialog *fs
    Font Description font name (anything else will be ignored), e.g.
    "-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*" 
    It returns TRUE on success. */
-gboolean   btk_font_selection_dialog_set_font_name     (BtkFontSelectionDialog *fsd,
-                                                        const gchar	       *fontname);
+bboolean   btk_font_selection_dialog_set_font_name     (BtkFontSelectionDialog *fsd,
+                                                        const bchar	       *fontname);
 
 /* This returns the text in the preview entry. You should copy the returned
    text if you need it. */
-const gchar*
+const bchar*
           btk_font_selection_dialog_get_preview_text   (BtkFontSelectionDialog *fsd);
 
 /* This sets the text in the preview entry. It will be copied by the entry,
    so there's no need to g_strdup() it first. */
 void	  btk_font_selection_dialog_set_preview_text   (BtkFontSelectionDialog *fsd,
-                                                        const gchar	       *text);
+                                                        const bchar	       *text);
 
 
 B_END_DECLS

@@ -54,18 +54,18 @@ struct _BtkFileChooserDialogClass
 };
 
 GType      btk_file_chooser_dialog_get_type         (void) B_GNUC_CONST;
-BtkWidget *btk_file_chooser_dialog_new              (const gchar          *title,
+BtkWidget *btk_file_chooser_dialog_new              (const bchar          *title,
 						     BtkWindow            *parent,
 						     BtkFileChooserAction  action,
-						     const gchar          *first_button_text,
+						     const bchar          *first_button_text,
 						     ...) B_GNUC_NULL_TERMINATED;
 
 #ifndef BTK_DISABLE_DEPRECATED
-BtkWidget *btk_file_chooser_dialog_new_with_backend (const gchar          *title,
+BtkWidget *btk_file_chooser_dialog_new_with_backend (const bchar          *title,
 						     BtkWindow            *parent,
 						     BtkFileChooserAction  action,
-						     const gchar          *backend,
-						     const gchar          *first_button_text,
+						     const bchar          *backend,
+						     const bchar          *first_button_text,
 						     ...) B_GNUC_NULL_TERMINATED;
 #endif /* BTK_DISABLE_DEPRECATED */
 

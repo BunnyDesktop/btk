@@ -73,7 +73,7 @@ typedef struct {
   /* Dragging mode */
   DragMode mode;
 
-  guint focus_on_ring : 1;
+  buint focus_on_ring : 1;
   
 } HSVPrivate;
 
@@ -96,22 +96,22 @@ static void     btk_hsv_size_request   (BtkWidget        *widget,
 					BtkRequisition   *requisition);
 static void     btk_hsv_size_allocate  (BtkWidget        *widget,
 					BtkAllocation    *allocation);
-static gint     btk_hsv_button_press   (BtkWidget        *widget,
+static bint     btk_hsv_button_press   (BtkWidget        *widget,
 					BdkEventButton   *event);
-static gint     btk_hsv_button_release (BtkWidget        *widget,
+static bint     btk_hsv_button_release (BtkWidget        *widget,
 					BdkEventButton   *event);
-static gint     btk_hsv_motion         (BtkWidget        *widget,
+static bint     btk_hsv_motion         (BtkWidget        *widget,
 					BdkEventMotion   *event);
-static gint     btk_hsv_expose         (BtkWidget        *widget,
+static bint     btk_hsv_expose         (BtkWidget        *widget,
 					BdkEventExpose   *event);
-static gboolean btk_hsv_grab_broken    (BtkWidget          *widget,
+static bboolean btk_hsv_grab_broken    (BtkWidget          *widget,
 					BdkEventGrabBroken *event);
-static gboolean btk_hsv_focus          (BtkWidget        *widget,
+static bboolean btk_hsv_focus          (BtkWidget        *widget,
 					BtkDirectionType  direction);
 static void     btk_hsv_move           (BtkHSV           *hsv,
 					BtkDirectionType  dir);
 
-static guint hsv_signals[LAST_SIGNAL];
+static buint hsv_signals[LAST_SIGNAL];
 
 G_DEFINE_TYPE (BtkHSV, btk_hsv, BTK_TYPE_WIDGET)
 
@@ -331,8 +331,8 @@ btk_hsv_size_request (BtkWidget      *widget,
 {
   BtkHSV *hsv = BTK_HSV (widget);
   HSVPrivate *priv = hsv->priv;
-  gint focus_width;
-  gint focus_pad;
+  bint focus_width;
+  bint focus_pad;
 
   btk_widget_style_get (widget,
 			"focus-line-width", &focus_width,
@@ -371,12 +371,12 @@ btk_hsv_size_allocate (BtkWidget     *widget,
 
 /* Converts from HSV to RGB */
 static void
-hsv_to_rgb (gdouble *h,
-	    gdouble *s,
-	    gdouble *v)
+hsv_to_rgb (bdouble *h,
+	    bdouble *s,
+	    bdouble *v)
 {
-  gdouble hue, saturation, value;
-  gdouble f, p, q, t;
+  bdouble hue, saturation, value;
+  bdouble f, p, q, t;
   
   if (*s == 0.0)
     {
@@ -444,14 +444,14 @@ hsv_to_rgb (gdouble *h,
 
 /* Converts from RGB to HSV */
 static void
-rgb_to_hsv (gdouble *r,
-	    gdouble *g,
-	    gdouble *b)
+rgb_to_hsv (bdouble *r,
+	    bdouble *g,
+	    bdouble *b)
 {
-  gdouble red, green, blue;
-  gdouble h, s, v;
-  gdouble min, max;
-  gdouble delta;
+  bdouble red, green, blue;
+  bdouble h, s, v;
+  bdouble min, max;
+  bdouble delta;
   
   red = *r;
   green = *g;
@@ -520,18 +520,18 @@ rgb_to_hsv (gdouble *r,
 /* Computes the vertices of the saturation/value triangle */
 static void
 compute_triangle (BtkHSV *hsv,
-		  gint   *hx,
-		  gint   *hy,
-		  gint   *sx,
-		  gint   *sy,
-		  gint   *vx,
-		  gint   *vy)
+		  bint   *hx,
+		  bint   *hy,
+		  bint   *sx,
+		  bint   *sy,
+		  bint   *vx,
+		  bint   *vy)
 {
   HSVPrivate *priv;
-  gdouble center_x;
-  gdouble center_y;
-  gdouble inner, outer;
-  gdouble angle;
+  bdouble center_x;
+  bdouble center_y;
+  bdouble inner, outer;
+  bdouble angle;
 
   priv = hsv->priv;
 
@@ -550,16 +550,16 @@ compute_triangle (BtkHSV *hsv,
 }
 
 /* Computes whether a point is inside the hue ring */
-static gboolean
+static bboolean
 is_in_ring (BtkHSV *hsv,
-	    gdouble x,
-	    gdouble y)
+	    bdouble x,
+	    bdouble y)
 {
   HSVPrivate *priv;
-  gdouble dx, dy, dist;
-  gdouble center_x;
-  gdouble center_y;
-  gdouble inner, outer;
+  bdouble dx, dy, dist;
+  bdouble center_x;
+  bdouble center_y;
+  bdouble inner, outer;
 
   priv = hsv->priv;
 
@@ -578,10 +578,10 @@ is_in_ring (BtkHSV *hsv,
 /* Computes a saturation/value pair based on the mouse coordinates */
 static void
 compute_sv (BtkHSV  *hsv,
-	    gdouble  x,
-	    gdouble  y,
-	    gdouble *s,
-	    gdouble *v)
+	    bdouble  x,
+	    bdouble  y,
+	    bdouble *s,
+	    bdouble *v)
 {
   int ihx, ihy, isx, isy, ivx, ivy;
   double hx, hy, sx, sy, vx, vy;
@@ -662,10 +662,10 @@ compute_sv (BtkHSV  *hsv,
 }
 
 /* Computes whether a point is inside the saturation/value triangle */
-static gboolean
+static bboolean
 is_in_triangle (BtkHSV *hsv,
-		gdouble x,
-		gdouble y)
+		bdouble x,
+		bdouble y)
 {
   int hx, hy, sx, sy, vx, vy;
   double det, s, v;
@@ -683,8 +683,8 @@ is_in_triangle (BtkHSV *hsv,
 /* Computes a value based on the mouse coordinates */
 static double
 compute_v (BtkHSV *hsv,
-	   gdouble x,
-	   gdouble y)
+	   bdouble x,
+	   bdouble y)
 {
   double center_x;
   double center_y;
@@ -707,7 +707,7 @@ compute_v (BtkHSV *hsv,
 
 static void
 set_cross_grab (BtkHSV *hsv,
-		guint32 time)
+		buint32 time)
 {
   HSVPrivate *priv;
   BdkCursor *cursor;
@@ -726,7 +726,7 @@ set_cross_grab (BtkHSV *hsv,
   bdk_cursor_unref (cursor);
 }
 
-static gboolean 
+static bboolean 
 btk_hsv_grab_broken (BtkWidget          *widget,
 		     BdkEventGrabBroken *event)
 {
@@ -741,7 +741,7 @@ btk_hsv_grab_broken (BtkWidget          *widget,
 }
 
 /* Button_press_event handler for the HSV color selector */
-static gint
+static bint
 btk_hsv_button_press (BtkWidget      *widget,
 		      BdkEventButton *event)
 {
@@ -776,7 +776,7 @@ btk_hsv_button_press (BtkWidget      *widget,
   
   if (is_in_triangle (hsv, x, y))
     {
-      gdouble s, v;
+      bdouble s, v;
       
       priv->mode = DRAG_SV;
       set_cross_grab (hsv, event->time);
@@ -794,14 +794,14 @@ btk_hsv_button_press (BtkWidget      *widget,
 }
 
 /* Button_release_event handler for the HSV color selector */
-static gint
+static bint
 btk_hsv_button_release (BtkWidget      *widget,
 			BdkEventButton *event)
 {
   BtkHSV *hsv;
   HSVPrivate *priv;
   DragMode mode;
-  gdouble x, y;
+  bdouble x, y;
   
   hsv = BTK_HSV (widget);
   priv = hsv->priv;
@@ -835,7 +835,7 @@ btk_hsv_button_release (BtkWidget      *widget,
 }
 
 /* Motion_notify_event handler for the HSV color selector */
-static gint
+static bint
 btk_hsv_motion (BtkWidget      *widget,
 		BdkEventMotion *event)
 {
@@ -880,27 +880,27 @@ btk_hsv_motion (BtkWidget      *widget,
 static void
 paint_ring (BtkHSV      *hsv,
 	    bairo_t     *cr,
-	    gint         x,
-	    gint         y,
-	    gint         width,
-	    gint         height)
+	    bint         x,
+	    bint         y,
+	    bint         width,
+	    bint         height)
 {
   BtkWidget *widget = BTK_WIDGET (hsv);
   HSVPrivate *priv;
   int xx, yy;
-  gdouble dx, dy, dist;
-  gdouble center_x;
-  gdouble center_y;
-  gdouble inner, outer;
-  guint32 *buf, *p;
-  gdouble angle;
-  gdouble hue;
-  gdouble r, g, b;
+  bdouble dx, dy, dist;
+  bdouble center_x;
+  bdouble center_y;
+  bdouble inner, outer;
+  buint32 *buf, *p;
+  bdouble angle;
+  bdouble hue;
+  bdouble r, g, b;
   bairo_surface_t *source;
   bairo_t *source_cr;
-  gint stride;
-  gint focus_width;
-  gint focus_pad;
+  bint stride;
+  bint focus_width;
+  bint focus_pad;
 
   btk_widget_style_get (widget,
 			"focus-line-width", &focus_width,
@@ -918,7 +918,7 @@ paint_ring (BtkHSV      *hsv,
   /* Create an image initialized with the ring colors */
   
   stride = bairo_format_stride_for_width (BAIRO_FORMAT_RGB24, width);
-  buf = g_new (guint32, height * stride / 4);
+  buf = g_new (buint32, height * stride / 4);
   
   for (yy = 0; yy < height; yy++)
     {
@@ -1002,12 +1002,12 @@ paint_ring (BtkHSV      *hsv,
 
 /* Converts an HSV triplet to an integer RGB triplet */
 static void
-get_color (gdouble h,
-	   gdouble s,
-	   gdouble v,
-	   gint   *r,
-	   gint   *g,
-	   gint   *b)
+get_color (bdouble h,
+	   bdouble s,
+	   bdouble v,
+	   bint   *r,
+	   bint   *g,
+	   bint   *b)
 {
   hsv_to_rgb (&h, &s, &v);
   
@@ -1031,27 +1031,27 @@ get_color (gdouble h,
 static void
 paint_triangle (BtkHSV      *hsv,
 		bairo_t     *cr,
-		gint         x,
-		gint         y,
-		gint         width,
-		gint         height)
+		bint         x,
+		bint         y,
+		bint         width,
+		bint         height)
 {
   BtkWidget *widget = BTK_WIDGET (hsv);
   HSVPrivate *priv;
-  gint hx, hy, sx, sy, vx, vy; /* HSV vertices */
-  gint x1, y1, r1, g1, b1; /* First vertex in scanline order */
-  gint x2, y2, r2, g2, b2; /* Second vertex */
-  gint x3, y3, r3, g3, b3; /* Third vertex */
-  gint t;
-  guint32 *buf, *p, c;
-  gint xl, xr, rl, rr, gl, gr, bl, br; /* Scanline data */
-  gint xx, yy;
-  gint x_interp, y_interp;
-  gint x_start, x_end;
+  bint hx, hy, sx, sy, vx, vy; /* HSV vertices */
+  bint x1, y1, r1, g1, b1; /* First vertex in scanline order */
+  bint x2, y2, r2, g2, b2; /* Second vertex */
+  bint x3, y3, r3, g3, b3; /* Third vertex */
+  bint t;
+  buint32 *buf, *p, c;
+  bint xl, xr, rl, rr, gl, gr, bl, br; /* Scanline data */
+  bint xx, yy;
+  bint x_interp, y_interp;
+  bint x_start, x_end;
   bairo_surface_t *source;
-  gdouble r, g, b;
-  gchar *detail;
-  gint stride;
+  bdouble r, g, b;
+  bchar *detail;
+  bint stride;
   
   priv = hsv->priv;
   
@@ -1101,7 +1101,7 @@ paint_triangle (BtkHSV      *hsv,
   /* Shade the triangle */
 
   stride = bairo_format_stride_for_width (BAIRO_FORMAT_RGB24, width);
-  buf = g_new (guint32, height * stride / 4);
+  buf = g_new (buint32, height * stride / 4);
   
   for (yy = 0; yy < height; yy++)
     {
@@ -1216,8 +1216,8 @@ paint_triangle (BtkHSV      *hsv,
   if (btk_widget_has_focus (widget) &&
       !priv->focus_on_ring)
     {
-      gint focus_width;
-      gint focus_pad;
+      bint focus_width;
+      bint focus_pad;
 
       btk_widget_style_get (widget,
 			    "focus-line-width", &focus_width,
@@ -1239,17 +1239,17 @@ paint_triangle (BtkHSV      *hsv,
 static void
 paint (BtkHSV      *hsv,
        bairo_t     *cr,
-       gint         x,
-       gint         y,
-       gint         width,
-       gint         height)
+       bint         x,
+       bint         y,
+       bint         width,
+       bint         height)
 {
   paint_ring (hsv, cr, x, y, width, height);
   paint_triangle (hsv, cr, x, y, width, height);
 }
 
 /* Expose_event handler for the HSV color selector */
-static gint
+static bint
 btk_hsv_expose (BtkWidget      *widget,
 		BdkEventExpose *event)
 {
@@ -1293,7 +1293,7 @@ btk_hsv_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_hsv_focus (BtkWidget       *widget,
                BtkDirectionType dir)
 {
@@ -1381,9 +1381,9 @@ btk_hsv_new (void)
  */
 void
 btk_hsv_set_color (BtkHSV *hsv,
-		   gdouble h,
-		   gdouble s,
-		   gdouble v)
+		   bdouble h,
+		   bdouble s,
+		   bdouble v)
 {
   HSVPrivate *priv;
   
@@ -1449,8 +1449,8 @@ btk_hsv_get_color (BtkHSV *hsv,
  */
 void
 btk_hsv_set_metrics (BtkHSV *hsv,
-		     gint    size,
-		     gint    ring_width)
+		     bint    size,
+		     bint    ring_width)
 {
   HSVPrivate *priv;
   int same_size;
@@ -1485,8 +1485,8 @@ btk_hsv_set_metrics (BtkHSV *hsv,
  */
 void
 btk_hsv_get_metrics (BtkHSV *hsv,
-		     gint   *size,
-		     gint   *ring_width)
+		     bint   *size,
+		     bint   *ring_width)
 {
   HSVPrivate *priv;
   
@@ -1516,7 +1516,7 @@ btk_hsv_get_metrics (BtkHSV *hsv,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_hsv_is_adjusting (BtkHSV *hsv)
 {
   HSVPrivate *priv;
@@ -1544,12 +1544,12 @@ btk_hsv_is_adjusting (BtkHSV *hsv)
  * Since: 2.14
  */
 void
-btk_hsv_to_rgb (gdouble  h,
-		gdouble  s,
-		gdouble  v,
-		gdouble *r,
-		gdouble *g,
-		gdouble *b)
+btk_hsv_to_rgb (bdouble  h,
+		bdouble  s,
+		bdouble  v,
+		bdouble *r,
+		bdouble *g,
+		bdouble *b)
 {
   g_return_if_fail (h >= 0.0 && h <= 1.0);
   g_return_if_fail (s >= 0.0 && s <= 1.0);
@@ -1583,12 +1583,12 @@ btk_hsv_to_rgb (gdouble  h,
  * Since: 2.14
  */
 void
-btk_rgb_to_hsv (gdouble  r,
-		gdouble  g,
-		gdouble  b,
-		gdouble *h,
-		gdouble *s,
-		gdouble *v)
+btk_rgb_to_hsv (bdouble  r,
+		bdouble  g,
+		bdouble  b,
+		bdouble *h,
+		bdouble *s,
+		bdouble *v)
 {
   g_return_if_fail (r >= 0.0 && r <= 1.0);
   g_return_if_fail (g >= 0.0 && g <= 1.0);
@@ -1611,9 +1611,9 @@ btk_hsv_move (BtkHSV          *hsv,
               BtkDirectionType dir)
 {
   HSVPrivate *priv;
-  gdouble hue, sat, val;
-  gint hx, hy, sx, sy, vx, vy; /* HSV vertices */
-  gint x, y; /* position in triangle */
+  bdouble hue, sat, val;
+  bint hx, hy, sx, sy, vx, vy; /* HSV vertices */
+  bint x, y; /* position in triangle */
   
   priv = hsv->priv;
 

@@ -29,12 +29,12 @@ B_BEGIN_DECLS
 void btk_decorated_window_init                 (BtkWindow   *window);
 void btk_decorated_window_calculate_frame_size (BtkWindow   *window);
 void btk_decorated_window_set_title            (BtkWindow   *window,
-						const gchar *title);
+						const bchar *title);
 void btk_decorated_window_move_resize_window   (BtkWindow   *window,
-						gint         x,
-						gint         y,
-						gint         width,
-						gint         height);
+						bint         x,
+						bint         y,
+						bint         width,
+						bint         height);
 
 B_END_DECLS
 

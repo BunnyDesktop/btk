@@ -46,13 +46,13 @@ struct _BtkFileChooserIface
 
   /* Methods
    */
-  gboolean       (*set_current_folder) 	   (BtkFileChooser    *chooser,
+  bboolean       (*set_current_folder) 	   (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
   GFile *        (*get_current_folder) 	   (BtkFileChooser    *chooser);
   void           (*set_current_name)   	   (BtkFileChooser    *chooser,
-					    const gchar       *name);
-  gboolean       (*select_file)        	   (BtkFileChooser    *chooser,
+					    const bchar       *name);
+  bboolean       (*select_file)        	   (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
   void           (*unselect_file)      	   (BtkFileChooser    *chooser,
@@ -67,10 +67,10 @@ struct _BtkFileChooserIface
   void           (*remove_filter)      	   (BtkFileChooser    *chooser,
 					    BtkFileFilter     *filter);
   GSList *       (*list_filters)       	   (BtkFileChooser    *chooser);
-  gboolean       (*add_shortcut_folder)    (BtkFileChooser    *chooser,
+  bboolean       (*add_shortcut_folder)    (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
-  gboolean       (*remove_shortcut_folder) (BtkFileChooser    *chooser,
+  bboolean       (*remove_shortcut_folder) (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
   GSList *       (*list_shortcut_folders)  (BtkFileChooser    *chooser);
@@ -85,10 +85,10 @@ struct _BtkFileChooserIface
 };
 
 BtkFileSystem *_btk_file_chooser_get_file_system         (BtkFileChooser    *chooser);
-gboolean       _btk_file_chooser_add_shortcut_folder     (BtkFileChooser    *chooser,
+bboolean       _btk_file_chooser_add_shortcut_folder     (BtkFileChooser    *chooser,
 							  GFile             *folder,
 							  GError           **error);
-gboolean       _btk_file_chooser_remove_shortcut_folder  (BtkFileChooser    *chooser,
+bboolean       _btk_file_chooser_remove_shortcut_folder  (BtkFileChooser    *chooser,
 							  GFile             *folder,
 							  GError           **error);
 GSList *       _btk_file_chooser_list_shortcut_folder_files (BtkFileChooser *chooser);
@@ -102,7 +102,7 @@ struct _BtkFileChooserDialogPrivate
   char *file_system;
 
   /* for use with BtkFileChooserEmbed */
-  gboolean response_requested;
+  bboolean response_requested;
 };
 
 
@@ -184,7 +184,7 @@ struct _BtkFileChooserDefault
   BtkWidget *browse_select_a_folder_label;
   BtkWidget *browse_select_a_folder_icon;
 
-  gulong toplevel_unmapped_id;
+  bulong toplevel_unmapped_id;
 
   BtkFileSystemModel *browse_files_model;
   char *browse_files_last_selected_name;
@@ -201,7 +201,7 @@ struct _BtkFileChooserDefault
   /* OPERATION_MODE_RECENT */
   BtkRecentManager *recent_manager;
   BtkFileSystemModel *recent_model;
-  guint load_recent_id;
+  buint load_recent_id;
 
   BtkWidget *filter_combo_hbox;
   BtkWidget *filter_combo;
@@ -236,7 +236,7 @@ struct _BtkFileChooserDefault
 
   LoadState load_state;
   ReloadState reload_state;
-  guint load_timeout_id;
+  buint load_timeout_id;
 
   OperationMode operation_mode;
 
@@ -249,8 +249,8 @@ struct _BtkFileChooserDefault
   int num_shortcuts;
   int num_bookmarks;
 
-  gulong volumes_changed_id;
-  gulong bookmarks_changed_id;
+  bulong volumes_changed_id;
+  bulong bookmarks_changed_id;
 
   GFile *current_volume_file;
   GFile *current_folder;
@@ -265,15 +265,15 @@ struct _BtkFileChooserDefault
   GSource *edited_idle;
   char *edited_new_text;
 
-  gulong settings_signal_id;
+  bulong settings_signal_id;
   int icon_size;
 
   GSource *focus_entry_idle;
 
-  gulong toplevel_set_focus_id;
+  bulong toplevel_set_focus_id;
   BtkWidget *toplevel_last_focus_widget;
 
-  gint sort_column;
+  bint sort_column;
   BtkSortType sort_order;
 
 #if 0
@@ -283,24 +283,24 @@ struct _BtkFileChooserDefault
 
   /* Flags */
 
-  guint local_only : 1;
-  guint preview_widget_active : 1;
-  guint use_preview_label : 1;
-  guint select_multiple : 1;
-  guint show_hidden : 1;
-  guint do_overwrite_confirmation : 1;
-  guint list_sort_ascending : 1;
-  guint changing_folder : 1;
-  guint shortcuts_current_folder_active : 1;
-  guint has_cwd : 1;
-  guint has_home : 1;
-  guint has_desktop : 1;
-  guint has_search : 1;
-  guint show_size_column : 1;
-  guint create_folders : 1;
+  buint local_only : 1;
+  buint preview_widget_active : 1;
+  buint use_preview_label : 1;
+  buint select_multiple : 1;
+  buint show_hidden : 1;
+  buint do_overwrite_confirmation : 1;
+  buint list_sort_ascending : 1;
+  buint changing_folder : 1;
+  buint shortcuts_current_folder_active : 1;
+  buint has_cwd : 1;
+  buint has_home : 1;
+  buint has_desktop : 1;
+  buint has_search : 1;
+  buint show_size_column : 1;
+  buint create_folders : 1;
 
 #if 0
-  guint shortcuts_drag_outside : 1;
+  buint shortcuts_drag_outside : 1;
 #endif
 };
 

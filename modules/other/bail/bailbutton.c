@@ -30,119 +30,119 @@
 static void                  bail_button_class_init       (BailButtonClass *klass);
 static void                  bail_button_init             (BailButton      *button);
 
-static const gchar*          bail_button_get_name         (BatkObject       *obj);
-static gint                  bail_button_get_n_children   (BatkObject       *obj);
+static const bchar*          bail_button_get_name         (BatkObject       *obj);
+static bint                  bail_button_get_n_children   (BatkObject       *obj);
 static BatkObject*            bail_button_ref_child        (BatkObject       *obj,
-                                                           gint            i);
+                                                           bint            i);
 static BatkStateSet*          bail_button_ref_state_set    (BatkObject       *obj);
 static void                  bail_button_notify_label_btk (BObject         *obj,
                                                            BParamSpec      *pspec,
-                                                           gpointer        data);
+                                                           bpointer        data);
 static void                  bail_button_label_map_btk    (BtkWidget       *widget,
-                                                           gpointer        data);
+                                                           bpointer        data);
 
 static void                  bail_button_real_initialize  (BatkObject       *obj,
-                                                           gpointer        data);
+                                                           bpointer        data);
 static void                  bail_button_finalize         (BObject        *object);
 static void                  bail_button_init_textutil    (BailButton     *button,
                                                            BtkWidget      *label);
 
 static void                  bail_button_pressed_enter_handler  (BtkWidget       *widget);
 static void                  bail_button_released_leave_handler (BtkWidget       *widget);
-static gint                  bail_button_real_add_btk           (BtkContainer    *container,
+static bint                  bail_button_real_add_btk           (BtkContainer    *container,
                                                                  BtkWidget       *widget,
-                                                                 gpointer        data);
+                                                                 bpointer        data);
 
 
 static void                  batk_action_interface_init  (BatkActionIface *iface);
-static gboolean              bail_button_do_action      (BatkAction      *action,
-                                                         gint           i);
-static gboolean              idle_do_action             (gpointer       data);
-static gint                  bail_button_get_n_actions  (BatkAction      *action);
-static const gchar*          bail_button_get_description(BatkAction      *action,
-                                                         gint           i);
-static const gchar*          bail_button_get_keybinding (BatkAction      *action,
-                                                         gint           i);
-static const gchar*          bail_button_action_get_name(BatkAction      *action,
-                                                         gint           i);
-static gboolean              bail_button_set_description(BatkAction      *action,
-                                                         gint           i,
-                                                         const gchar    *desc);
-static void                  bail_button_notify_label_weak_ref (gpointer data,
+static bboolean              bail_button_do_action      (BatkAction      *action,
+                                                         bint           i);
+static bboolean              idle_do_action             (bpointer       data);
+static bint                  bail_button_get_n_actions  (BatkAction      *action);
+static const bchar*          bail_button_get_description(BatkAction      *action,
+                                                         bint           i);
+static const bchar*          bail_button_get_keybinding (BatkAction      *action,
+                                                         bint           i);
+static const bchar*          bail_button_action_get_name(BatkAction      *action,
+                                                         bint           i);
+static bboolean              bail_button_set_description(BatkAction      *action,
+                                                         bint           i,
+                                                         const bchar    *desc);
+static void                  bail_button_notify_label_weak_ref (bpointer data,
                                                                 BObject  *obj);
-static void                  bail_button_notify_weak_ref       (gpointer data,
+static void                  bail_button_notify_weak_ref       (bpointer data,
                                                                 BObject  *obj);
 
 
 /* BatkImage.h */
 static void                  batk_image_interface_init   (BatkImageIface  *iface);
-static const gchar*          bail_button_get_image_description
+static const bchar*          bail_button_get_image_description
                                                         (BatkImage       *image);
 static void	             bail_button_get_image_position
                                                         (BatkImage       *image,
-                                                         gint	        *x,
-                                                         gint	        *y,
+                                                         bint	        *x,
+                                                         bint	        *y,
                                                          BatkCoordType   coord_type);
 static void                  bail_button_get_image_size (BatkImage       *image,
-                                                         gint           *width,
-                                                         gint           *height);
-static gboolean              bail_button_set_image_description 
+                                                         bint           *width,
+                                                         bint           *height);
+static bboolean              bail_button_set_image_description 
                                                         (BatkImage       *image,
-                                                         const gchar    *description);
+                                                         const bchar    *description);
 
 /* batktext.h */ 
 static void	  batk_text_interface_init	   (BatkTextIface	*iface);
 
-static gchar*	  bail_button_get_text		   (BatkText	      *text,
-                                                    gint	      start_pos,
-						    gint	      end_pos);
+static bchar*	  bail_button_get_text		   (BatkText	      *text,
+                                                    bint	      start_pos,
+						    bint	      end_pos);
 static gunichar	  bail_button_get_character_at_offset(BatkText	      *text,
-						    gint	      offset);
-static gchar*     bail_button_get_text_before_offset(BatkText	      *text,
- 						    gint	      offset,
+						    bint	      offset);
+static bchar*     bail_button_get_text_before_offset(BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_button_get_text_at_offset   (BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_button_get_text_at_offset   (BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_button_get_text_after_offset(BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_button_get_text_after_offset(BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gint	  bail_button_get_character_count  (BatkText	      *text);
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bint	  bail_button_get_character_count  (BatkText	      *text);
 static void bail_button_get_character_extents      (BatkText	      *text,
-						    gint 	      offset,
-		                                    gint 	      *x,
-                    		   	            gint 	      *y,
-                                		    gint 	      *width,
-                                     		    gint 	      *height,
+						    bint 	      offset,
+		                                    bint 	      *x,
+                    		   	            bint 	      *y,
+                                		    bint 	      *width,
+                                     		    bint 	      *height,
 			        		    BatkCoordType      coords);
-static gint bail_button_get_offset_at_point        (BatkText           *text,
-                                                    gint              x,
-                                                    gint              y,
+static bint bail_button_get_offset_at_point        (BatkText           *text,
+                                                    bint              x,
+                                                    bint              y,
 			                            BatkCoordType      coords);
 static BatkAttributeSet* bail_button_get_run_attributes 
                                                    (BatkText           *text,
-              					    gint 	      offset,
-                                                    gint 	      *start_offset,
-					            gint	      *end_offset);
+              					    bint 	      offset,
+                                                    bint 	      *start_offset,
+					            bint	      *end_offset);
 static BatkAttributeSet* bail_button_get_default_attributes
                                                    (BatkText           *text);
 static BtkImage*             get_image_from_button      (BtkWidget      *button);
 static BtkWidget*            get_label_from_button      (BtkWidget      *button,
-                                                         gint           index,
-                                                         gboolean       allow_many);
-static gint                  get_n_labels_from_button   (BtkWidget      *button);
+                                                         bint           index,
+                                                         bboolean       allow_many);
+static bint                  get_n_labels_from_button   (BtkWidget      *button);
 static void                  set_role_for_button        (BatkObject      *accessible,
                                                          BtkWidget      *button);
 
-static gint                  get_n_attached_menus       (BtkWidget      *widget);
+static bint                  get_n_attached_menus       (BtkWidget      *widget);
 static BtkWidget*            get_nth_attached_menu      (BtkWidget      *widget,
-                                                         gint           index);
+                                                         bint           index);
 
 G_DEFINE_TYPE_WITH_CODE (BailButton, bail_button, BAIL_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
@@ -182,10 +182,10 @@ bail_button_init (BailButton *button)
   button->textutil = NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_button_get_name (BatkObject *obj)
 {
-  const gchar* name = NULL;
+  const bchar* name = NULL;
 
   g_return_val_if_fail (BAIL_IS_BUTTON (obj), NULL);
 
@@ -231,13 +231,13 @@ bail_button_get_name (BatkObject *obj)
  * A DownArrow in a BtkToggltButton whose parent is not a ColorCombo
  * has press as default action.
  */
-static gboolean
+static bboolean
 bail_button_is_default_press (BtkWidget *widget)
 {
   BtkWidget  *child;
   BtkWidget  *parent;
-  gboolean ret = FALSE;
-  const gchar *parent_type_name;
+  bboolean ret = FALSE;
+  const bchar *parent_type_name;
 
   child = BTK_BIN (widget)->child;
   if (BTK_IS_ARROW (child) &&
@@ -257,7 +257,7 @@ bail_button_is_default_press (BtkWidget *widget)
 
 static void
 bail_button_real_initialize (BatkObject *obj,
-                             gpointer   data)
+                             bpointer   data)
 {
   BailButton *button = BAIL_BUTTON (obj);
   BtkWidget  *label;
@@ -304,7 +304,7 @@ bail_button_real_initialize (BatkObject *obj,
 
 static void
 bail_button_label_map_btk (BtkWidget *widget,
-                           gpointer data)
+                           bpointer data)
 {
   BailButton *button; 
 
@@ -315,7 +315,7 @@ bail_button_label_map_btk (BtkWidget *widget,
 static void
 bail_button_notify_label_btk (BObject           *obj,
                               BParamSpec        *pspec,
-                              gpointer           data)
+                              bpointer           data)
 {
   BatkObject* batk_obj = BATK_OBJECT (data);
   BtkLabel *label;
@@ -323,7 +323,7 @@ bail_button_notify_label_btk (BObject           *obj,
 
   if (strcmp (pspec->name, "label") == 0)
     {
-      const gchar* label_text;
+      const bchar* label_text;
 
       label = BTK_LABEL (obj);
 
@@ -347,7 +347,7 @@ bail_button_notify_label_btk (BObject           *obj,
 }
 
 static void
-bail_button_notify_weak_ref (gpointer data, BObject* obj)
+bail_button_notify_weak_ref (bpointer data, BObject* obj)
 {
   BtkLabel *label = NULL;
 
@@ -368,7 +368,7 @@ bail_button_notify_weak_ref (gpointer data, BObject* obj)
 }
 
 static void
-bail_button_notify_label_weak_ref (gpointer data, BObject* obj)
+bail_button_notify_label_weak_ref (bpointer data, BObject* obj)
 {
   BtkLabel *label = NULL;
   BailButton *button = NULL;
@@ -388,7 +388,7 @@ static void
 bail_button_init_textutil (BailButton  *button,
                            BtkWidget   *label)
 {
-  const gchar *label_text;
+  const bchar *label_text;
 
   if (button->textutil)
     g_object_unref (button->textutil);
@@ -405,17 +405,17 @@ bail_button_init_textutil (BailButton  *button,
                     button);     
 }
 
-static gint
+static bint
 bail_button_real_add_btk (BtkContainer *container,
                           BtkWidget    *widget,
-                          gpointer     data)
+                          bpointer     data)
 {
   BtkLabel *label;
   BailButton *button;
 
   if (BTK_IS_LABEL (widget))
     {
-      const gchar* label_text;
+      const bchar* label_text;
 
       label = BTK_LABEL (widget);
 
@@ -444,13 +444,13 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_button_set_description;
 }
 
-static gboolean
+static bboolean
 bail_button_do_action (BatkAction *action,
-                       gint      i)
+                       bint      i)
 {
   BtkWidget *widget;
   BailButton *button;
-  gboolean return_value = TRUE;
+  bboolean return_value = TRUE;
 
   widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
@@ -473,7 +473,7 @@ bail_button_do_action (BatkAction *action,
 	{
 	  button->action_queue = g_queue_new ();
 	}
-      g_queue_push_head (button->action_queue, GINT_TO_POINTER(i));
+      g_queue_push_head (button->action_queue, BINT_TO_POINTER(i));
       if (!button->action_idle_handler)
 	button->action_idle_handler = bdk_threads_add_idle (idle_do_action, button);
       break;
@@ -484,8 +484,8 @@ bail_button_do_action (BatkAction *action,
   return return_value; 
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BtkButton *button; 
   BtkWidget *widget;
@@ -518,7 +518,7 @@ idle_do_action (gpointer data)
   button = BTK_BUTTON (widget); 
   while (!g_queue_is_empty (bail_button->action_queue)) 
     {
-      gint action_number = GPOINTER_TO_INT(g_queue_pop_head (bail_button->action_queue));
+      bint action_number = BPOINTER_TO_INT(g_queue_pop_head (bail_button->action_queue));
       if (bail_button->default_is_press)
         {
           if (action_number == 0)
@@ -581,18 +581,18 @@ idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 bail_button_get_n_actions (BatkAction *action)
 {
   return 3;
 }
 
-static const gchar*
+static const bchar*
 bail_button_get_description (BatkAction *action,
-                             gint      i)
+                             bint      i)
 {
   BailButton *button;
-  const gchar *return_value;
+  const bchar *return_value;
 
   button = BAIL_BUTTON (action);
 
@@ -621,12 +621,12 @@ bail_button_get_description (BatkAction *action,
   return return_value; 
 }
 
-static const gchar*
+static const bchar*
 bail_button_get_keybinding (BatkAction *action,
-                            gint      i)
+                            bint      i)
 {
   BailButton *button;
-  gchar *return_value = NULL;
+  bchar *return_value = NULL;
 
   button = BAIL_BUTTON (action);
   if (button->default_is_press)
@@ -645,7 +645,7 @@ bail_button_get_keybinding (BatkAction *action,
          */
         BtkWidget *widget;
         BtkWidget *label;
-        guint key_val; 
+        buint key_val; 
 
         widget = BTK_ACCESSIBLE (button)->widget;
         if (widget == NULL)
@@ -669,7 +669,7 @@ bail_button_get_keybinding (BatkAction *action,
             BatkRelationSet *set;
             BatkRelation *relation;
             GPtrArray *target;
-            gpointer target_object;
+            bpointer target_object;
 
             set = batk_object_ref_relation_set (BATK_OBJECT (action));
             if (set)
@@ -705,11 +705,11 @@ bail_button_get_keybinding (BatkAction *action,
   return return_value; 
 }
 
-static const gchar*
+static const bchar*
 bail_button_action_get_name (BatkAction *action,
-                             gint      i)
+                             bint      i)
 {
-  const gchar *return_value;
+  const bchar *return_value;
   BailButton *button;
 
   button = BAIL_BUTTON (action);
@@ -754,13 +754,13 @@ bail_button_action_get_name (BatkAction *action,
   return return_value; 
 }
 
-static gboolean
+static bboolean
 bail_button_set_description (BatkAction      *action,
-                             gint           i,
-                             const gchar    *desc)
+                             bint           i,
+                             const bchar    *desc)
 {
   BailButton *button;
-  gchar **value;
+  bchar **value;
 
   button = BAIL_BUTTON (action);
 
@@ -796,11 +796,11 @@ bail_button_set_description (BatkAction      *action,
     return FALSE;
 }
 
-static gint
+static bint
 bail_button_get_n_children (BatkObject* obj)
 {
   BtkWidget *widget;
-  gint n_children;
+  bint n_children;
 
   g_return_val_if_fail (BAIL_IS_BUTTON (obj), 0);
 
@@ -827,7 +827,7 @@ bail_button_get_n_children (BatkObject* obj)
 
 static BatkObject*
 bail_button_ref_child (BatkObject *obj,
-                       gint      i)
+                       bint      i)
 {
   BtkWidget *widget;
   BtkWidget *child_widget;
@@ -968,7 +968,7 @@ get_image_from_button (BtkWidget *button)
   return image;
 }
 
-static const gchar*
+static const bchar*
 bail_button_get_image_description (BatkImage *image) {
 
   BtkWidget *widget;
@@ -996,8 +996,8 @@ bail_button_get_image_description (BatkImage *image) {
 
 static void
 bail_button_get_image_position (BatkImage     *image,
-                                gint	     *x,
-                                gint	     *y,
+                                bint	     *x,
+                                bint	     *y,
                                 BatkCoordType coord_type)
 {
   BtkWidget *widget;
@@ -1011,8 +1011,8 @@ bail_button_get_image_position (BatkImage     *image,
     /*
      * State is defunct
      */
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
       return;
     }
 
@@ -1025,15 +1025,15 @@ bail_button_get_image_position (BatkImage     *image,
     }
   else
     {
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
     }
 }
 
 static void
 bail_button_get_image_size (BatkImage *image,
-                            gint     *width,
-                            gint     *height)
+                            bint     *width,
+                            bint     *height)
 {
   BtkWidget *widget;
   BtkImage  *button_image;
@@ -1065,9 +1065,9 @@ bail_button_get_image_size (BatkImage *image,
     }
 }
 
-static gboolean
+static bboolean
 bail_button_set_image_description (BatkImage    *image,
-                                   const gchar *description)
+                                   const bchar *description)
 {
   BtkWidget *widget;
   BtkImage  *button_image;
@@ -1109,15 +1109,15 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_button_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_button_get_text (BatkText *text,
-                      gint    start_pos,
-                      gint    end_pos)
+                      bint    start_pos,
+                      bint    end_pos)
 {
   BtkWidget *widget;
   BtkWidget  *label;
   BailButton *button;
-  const gchar *label_text;
+  const bchar *label_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -1144,12 +1144,12 @@ bail_button_get_text (BatkText *text,
   }
 }
 
-static gchar*
+static bchar*
 bail_button_get_text_before_offset (BatkText         *text,
-				    gint            offset,
+				    bint            offset,
 				    BatkTextBoundary boundary_type,
-				    gint            *start_offset,
-				    gint            *end_offset)
+				    bint            *start_offset,
+				    bint            *end_offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
@@ -1176,12 +1176,12 @@ bail_button_get_text_before_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset); 
 }
 
-static gchar*
+static bchar*
 bail_button_get_text_at_offset (BatkText         *text,
-			        gint            offset,
+			        bint            offset,
 			        BatkTextBoundary boundary_type,
- 			        gint            *start_offset,
-			        gint            *end_offset)
+ 			        bint            *start_offset,
+			        bint            *end_offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
@@ -1208,12 +1208,12 @@ bail_button_get_text_at_offset (BatkText         *text,
                               boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_button_get_text_after_offset (BatkText         *text,
-				   gint            offset,
+				   bint            offset,
 				   BatkTextBoundary boundary_type,
-				   gint            *start_offset,
-				   gint            *end_offset)
+				   bint            *start_offset,
+				   bint            *end_offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
@@ -1242,7 +1242,7 @@ bail_button_get_text_after_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset);
 }
 
-static gint
+static bint
 bail_button_get_character_count (BatkText *text)
 {
   BtkWidget *widget;
@@ -1263,18 +1263,18 @@ bail_button_get_character_count (BatkText *text)
 
 static void
 bail_button_get_character_extents (BatkText      *text,
-				   gint         offset,
-		                   gint         *x,
-                    		   gint 	*y,
-                                   gint 	*width,
-                                   gint 	*height,
+				   bint         offset,
+		                   bint         *x,
+                    		   bint 	*y,
+                                   bint 	*width,
+                                   bint 	*height,
 			           BatkCoordType coords)
 {
   BtkWidget *widget;
   BtkWidget *label;
   BangoRectangle char_rect;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
  
   widget = BTK_ACCESSIBLE (text)->widget;
 
@@ -1296,16 +1296,16 @@ bail_button_get_character_extents (BatkText      *text,
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
-static gint 
+static bint 
 bail_button_get_offset_at_point (BatkText      *text,
-                                 gint         x,
-                                 gint         y,
+                                 bint         x,
+                                 bint         y,
 			         BatkCoordType coords)
 { 
   BtkWidget *widget;
   BtkWidget *label;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -1335,9 +1335,9 @@ bail_button_get_offset_at_point (BatkText      *text,
 
 static BatkAttributeSet*
 bail_button_get_run_attributes (BatkText        *text,
-                                gint 	      offset,
-                                gint 	      *start_offset,
-	                        gint	      *end_offset)
+                                bint 	      offset,
+                                bint 	      *start_offset,
+	                        bint	      *end_offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
@@ -1373,7 +1373,7 @@ bail_button_get_run_attributes (BatkText        *text,
 
   at_set = bail_misc_layout_get_run_attributes (at_set,
                                                 btk_label_get_layout (BTK_LABEL (label)),
-                                                (gchar *) btk_label_get_text (BTK_LABEL (label)),
+                                                (bchar *) btk_label_get_text (BTK_LABEL (label)),
                                                 offset,
                                                 start_offset,
                                                 end_offset);
@@ -1405,12 +1405,12 @@ bail_button_get_default_attributes (BatkText        *text)
 
 static gunichar 
 bail_button_get_character_at_offset (BatkText	         *text,
-                                     gint	         offset)
+                                     bint	         offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
-  const gchar *string;
-  gchar *index;
+  const bchar *string;
+  bchar *index;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -1456,8 +1456,8 @@ bail_button_finalize (BObject            *object)
 
 static BtkWidget*
 find_label_child (BtkContainer *container,
-                  gint         *index,
-                  gboolean     allow_many)
+                  bint         *index,
+                  bboolean     allow_many)
 {
   GList *children, *tmp_list;
   BtkWidget *child;
@@ -1532,8 +1532,8 @@ find_label_child (BtkContainer *container,
 
 static BtkWidget*
 get_label_from_button (BtkWidget *button,
-                       gint      index,
-                       gboolean  allow_many)
+                       bint      index,
+                       bboolean  allow_many)
 {
   BtkWidget *child;
 
@@ -1554,7 +1554,7 @@ get_label_from_button (BtkWidget *button,
 
 static void
 count_labels (BtkContainer *container,
-              gint         *n_labels)
+              bint         *n_labels)
 {
   GList *children, *tmp_list;
  
@@ -1586,11 +1586,11 @@ count_labels (BtkContainer *container,
   g_list_free (children);
 }
 
-static gint
+static bint
 get_n_labels_from_button (BtkWidget *button)
 {
   BtkWidget *child;
-  gint n_labels;
+  bint n_labels;
 
   n_labels = 0;
 
@@ -1631,7 +1631,7 @@ set_role_for_button (BatkObject *accessible,
   accessible->role =  role;
 }
 
-static gint
+static bint
 get_n_attached_menus (BtkWidget  *widget)
 {
   GList *list_menus;
@@ -1648,7 +1648,7 @@ get_n_attached_menus (BtkWidget  *widget)
 
 static BtkWidget*
 get_nth_attached_menu (BtkWidget  *widget,
-                       gint       index)
+                       bint       index)
 {
   BtkWidget *attached_menu;
   GList *list_menus;

@@ -27,7 +27,7 @@
 static void	 bail_clist_cell_class_init        (BailCListCellClass *klass);
 static void	 bail_clist_cell_init              (BailCListCell      *cell);
 
-static const gchar* bail_clist_cell_get_name (BatkObject *accessible);
+static const bchar* bail_clist_cell_get_name (BatkObject *accessible);
 
 G_DEFINE_TYPE (BailCListCell, bail_clist_cell, BAIL_TYPE_CELL)
 
@@ -62,7 +62,7 @@ bail_clist_cell_new (void)
   return batk_object;
 }
 
-static const gchar*
+static const bchar*
 bail_clist_cell_get_name (BatkObject *accessible)
 {
   if (accessible->name)
@@ -76,8 +76,8 @@ bail_clist_cell_get_name (BatkObject *accessible)
       BtkWidget* widget = cell->widget;
       BtkCellType cell_type;
       BtkCList *clist;
-      gchar *text = NULL;
-      gint row, column;
+      bchar *text = NULL;
+      bint row, column;
 
       if (widget == NULL)
         /*

@@ -190,7 +190,7 @@ btk_list_item_new (<em class="parameter"><code><span class="type">void</span></c
 <div class="refsect2">
 <a name="btk-list-item-new-with-label"></a><h3>btk_list_item_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_list_item_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_list_item_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_list_item_new_with_label</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -222,7 +222,7 @@ btk_list_item_deselect (<em class="parameter"><code><a class="link" href="BtkLis
 <a name="BtkListItem-end-selection"></a><h3>The <code class="literal">“end-selection”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -232,8 +232,8 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a>  *listitem,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
                <span class="type">float</span>         arg2,
-               <span class="type">gboolean</span>      arg3,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bboolean</span>      arg3,
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -243,7 +243,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a>  *listitem,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
                <span class="type">float</span>         arg2,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -253,7 +253,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a>  *listitem,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
                <span class="type">float</span>         arg2,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -261,7 +261,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-select-all"></a><h3>The <code class="literal">“select-all”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -269,7 +269,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-start-selection"></a><h3>The <code class="literal">“start-selection”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -277,7 +277,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-toggle-add-mode"></a><h3>The <code class="literal">“toggle-add-mode”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -285,7 +285,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-toggle-focus-row"></a><h3>The <code class="literal">“toggle-focus-row”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -293,7 +293,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-undo-selection"></a><h3>The <code class="literal">“undo-selection”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
@@ -301,7 +301,7 @@ user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span
 <a name="BtkListItem-unselect-all"></a><h3>The <code class="literal">“unselect-all”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkListItem.html" title="BtkListItem"><span class="type">BtkListItem</span></a> *listitem,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 </div>

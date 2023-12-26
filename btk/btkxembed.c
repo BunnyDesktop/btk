@@ -29,11 +29,11 @@ typedef struct _BtkXEmbedMessage BtkXEmbedMessage;
 
 struct _BtkXEmbedMessage
 {
-  glong      message;
-  glong      detail;
-  glong      data1;
-  glong      data2;
-  guint32    time;
+  blong      message;
+  blong      detail;
+  blong      data1;
+  blong      data2;
+  buint32    time;
 };
 
 static GSList *current_messages;
@@ -98,7 +98,7 @@ _btk_xembed_set_focus_wrapped (void)
  * 
  * Return value: %TRUE if the focus sequence has wrapped around.
  **/
-gboolean
+bboolean
 _btk_xembed_get_focus_wrapped (void)
 {
   BtkXEmbedMessage *message;
@@ -109,7 +109,7 @@ _btk_xembed_get_focus_wrapped (void)
   return (message->data1 & XEMBED_FOCUS_WRAPAROUND) != 0;
 }
 
-static guint32
+static buint32
 btk_xembed_get_time (void)
 {
   if (current_messages)
@@ -135,9 +135,9 @@ btk_xembed_get_time (void)
 void
 _btk_xembed_send_message (BdkWindow        *recipient,
 			  XEmbedMessageType message,
-			  glong             detail,
-			  glong             data1,
-			  glong             data2)
+			  blong             detail,
+			  blong             data1,
+			  blong             data2)
 {
   BdkDisplay *display;
   XClientMessageEvent xclient;
@@ -184,9 +184,9 @@ _btk_xembed_send_message (BdkWindow        *recipient,
 void
 _btk_xembed_send_focus_message (BdkWindow        *recipient,
 				XEmbedMessageType message,
-				glong             detail)
+				blong             detail)
 {
-  gulong flags = 0;
+  bulong flags = 0;
 
   if (!recipient)
     return;

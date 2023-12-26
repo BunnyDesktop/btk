@@ -42,7 +42,7 @@ _bdk_input_init(BdkDisplay *display)
   _bdk_input_common_init (display, FALSE);
 }
 
-gboolean
+bboolean
 bdk_device_set_mode (BdkDevice      *device,
 		     BdkInputMode    mode)
 {
@@ -87,7 +87,7 @@ bdk_input_check_proximity (BdkDisplay *display)
 {
   BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
   GList *tmp_list = display_impl->input_devices;
-  gint new_proximity = 0;
+  bint new_proximity = 0;
 
   while (tmp_list && !new_proximity)
     {
@@ -152,7 +152,7 @@ _bdk_input_configure_event (XConfigureEvent *xevent,
 {
   BdkWindowObject *priv = (BdkWindowObject *)window;
   BdkInputWindow *input_window;
-  gint root_x, root_y;
+  bint root_x, root_y;
 
   input_window = priv->input_window;
   if (input_window != NULL)
@@ -165,13 +165,13 @@ _bdk_input_configure_event (XConfigureEvent *xevent,
 
 void
 _bdk_input_crossing_event (BdkWindow *window,
-			   gboolean enter)
+			   bboolean enter)
 {
   BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
   BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
   BdkWindowObject *priv = (BdkWindowObject *)window;
   BdkInputWindow *input_window;
-  gint root_x, root_y;
+  bint root_x, root_y;
 
   if (enter)
     {
@@ -256,7 +256,7 @@ get_input_event_type (BdkDevicePrivate *bdkdev,
 }
 
 
-gboolean
+bboolean
 _bdk_input_other_event (BdkEvent *event,
 			XEvent *xevent,
 			BdkWindow *event_window)
@@ -324,22 +324,22 @@ _bdk_input_other_event (BdkEvent *event,
   return _bdk_input_common_event_selected(event, window, bdkdev);
 }
 
-gint
+bint
 _bdk_input_grab_pointer (BdkWindow      *window,
 			 BdkWindow      *native_window, /* This is the toplevel */
-			 gint            owner_events,
+			 bint            owner_events,
 			 BdkEventMask    event_mask,
 			 BdkWindow *     confine_to,
-			 guint32         time)
+			 buint32         time)
 {
   BdkInputWindow *input_window;
   BdkWindowObject *priv, *impl_window;
-  gboolean need_ungrab;
+  bboolean need_ungrab;
   BdkDevicePrivate *bdkdev;
   GList *tmp_list;
   XEventClass event_classes[BDK_MAX_DEVICE_CLASSES];
-  gint num_classes;
-  gint result;
+  bint num_classes;
+  bint result;
   BdkDisplayX11 *display_impl  = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
 
   tmp_list = display_impl->input_windows;
@@ -415,7 +415,7 @@ _bdk_input_grab_pointer (BdkWindow      *window,
 
 void
 _bdk_input_ungrab_pointer (BdkDisplay *display,
-			   guint32 time)
+			   buint32 time)
 {
   BdkInputWindow *input_window = NULL; /* Quiet GCC */
   BdkDevicePrivate *bdkdev;

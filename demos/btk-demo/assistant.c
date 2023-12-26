@@ -11,10 +11,10 @@
 static BtkWidget *assistant = NULL;
 static BtkWidget *progress_bar = NULL;
 
-static gboolean
-apply_changes_gradually (gpointer data)
+static bboolean
+apply_changes_gradually (bpointer data)
 {
-  gdouble fraction;
+  bdouble fraction;
 
   /* Work, work, work... */
   fraction = btk_progress_bar_get_fraction (BTK_PROGRESS_BAR (progress_bar));
@@ -34,14 +34,14 @@ apply_changes_gradually (gpointer data)
 }
 
 static void
-on_assistant_apply (BtkWidget *widget, gpointer data)
+on_assistant_apply (BtkWidget *widget, bpointer data)
 {
   /* Start a timer to simulate changes taking a few seconds to apply. */
   g_timeout_add (100, apply_changes_gradually, NULL);
 }
 
 static void
-on_assistant_close_cancel (BtkWidget *widget, gpointer data)
+on_assistant_close_cancel (BtkWidget *widget, bpointer data)
 {
   BtkWidget **assistant = (BtkWidget **) data;
 
@@ -50,10 +50,10 @@ on_assistant_close_cancel (BtkWidget *widget, gpointer data)
 }
 
 static void
-on_assistant_prepare (BtkWidget *widget, BtkWidget *page, gpointer data)
+on_assistant_prepare (BtkWidget *widget, BtkWidget *page, bpointer data)
 {
-  gint current_page, n_pages;
-  gchar *title;
+  bint current_page, n_pages;
+  bchar *title;
 
   current_page = btk_assistant_get_current_page (BTK_ASSISTANT (widget));
   n_pages = btk_assistant_get_n_pages (BTK_ASSISTANT (widget));
@@ -71,12 +71,12 @@ on_assistant_prepare (BtkWidget *widget, BtkWidget *page, gpointer data)
 }
 
 static void
-on_entry_changed (BtkWidget *widget, gpointer data)
+on_entry_changed (BtkWidget *widget, bpointer data)
 {
   BtkAssistant *assistant = BTK_ASSISTANT (data);
   BtkWidget *current_page;
-  gint page_number;
-  const gchar *text;
+  bint page_number;
+  const bchar *text;
 
   page_number = btk_assistant_get_current_page (assistant);
   current_page = btk_assistant_get_nth_page (assistant, page_number);

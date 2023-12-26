@@ -38,9 +38,9 @@ struct _BailMenuItem
 {
   BailItem parent;
 
-  gchar    *click_keybinding;
-  gchar    *click_description;
-  guint    action_idle_handler;
+  bchar    *click_keybinding;
+  bchar    *click_description;
+  buint    action_idle_handler;
 };
 
 GType bail_menu_item_get_type (void);

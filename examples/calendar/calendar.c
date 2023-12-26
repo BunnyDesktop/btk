@@ -28,7 +28,7 @@
 
 typedef struct _CalendarData {
   BtkWidget *flag_checkboxes[5];
-  gboolean  settings[5];
+  bboolean  settings[5];
   BtkWidget *font_dialog;
   BtkWidget *window;
   BtkWidget *prev2_sig;
@@ -51,10 +51,10 @@ enum {
 
 static void calendar_date_to_string( CalendarData *data,
                                      char         *buffer,
-                                     gint          buff_len )
+                                     bint          buff_len )
 {
   GDate date;
-  guint year, month, day;
+  buint year, month, day;
 
   btk_calendar_get_date (BTK_CALENDAR (data->window),
 			 &year, &month, &day);
@@ -66,7 +66,7 @@ static void calendar_date_to_string( CalendarData *data,
 static void calendar_set_signal_strings( char         *sig_str,
                                          CalendarData *data )
 {
-  const gchar *prev_sig;
+  const bchar *prev_sig;
 
   prev_sig = btk_label_get_text (BTK_LABEL (data->prev_sig));
   btk_label_set_text (BTK_LABEL (data->prev2_sig), prev_sig);
@@ -98,7 +98,7 @@ static void calendar_day_selected_double_click ( BtkWidget    *widget,
                                                  CalendarData *data )
 {
   char buffer[256] = "day_selected_double_click: ";
-  guint day;
+  buint day;
 
   calendar_date_to_string (data, buffer + 27, 256 - 27);
   calendar_set_signal_strings (buffer, data);
@@ -152,8 +152,8 @@ static void calendar_next_year( BtkWidget    *widget,
 
 static void calendar_set_flags( CalendarData *calendar )
 {
-  gint i;
-  gint options = 0;
+  bint i;
+  bint options = 0;
   for (i = 0;i < 5; i++)
     if (calendar->settings[i])
       {
@@ -166,8 +166,8 @@ static void calendar_set_flags( CalendarData *calendar )
 static void calendar_toggle_flag( BtkWidget    *toggle,
                                   CalendarData *calendar)
 {
-  gint i;
-  gint j;
+  bint i;
+  bint j;
   j = 0;
   for (i = 0; i < 5; i++)
     if (calendar->flag_checkboxes[i] == toggle)
@@ -245,7 +245,7 @@ static void create_calendar( void )
   BtkWidget *label;
   BtkWidget *bbox;
   static CalendarData calendar_data;
-  gint i;
+  bint i;
 
   struct {
     char *label;

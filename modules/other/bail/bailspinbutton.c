@@ -28,7 +28,7 @@
 static void      bail_spin_button_class_init        (BailSpinButtonClass *klass);
 static void      bail_spin_button_init              (BailSpinButton *button);
 static void      bail_spin_button_real_initialize   (BatkObject      *obj,
-                                                     gpointer       data);
+                                                     bpointer       data);
 static void      bail_spin_button_finalize          (BObject        *object);
 
 static void      batk_value_interface_init           (BatkValueIface  *iface);
@@ -44,10 +44,10 @@ static void      bail_spin_button_get_minimum_value (BatkValue       *obj,
                                                      BValue         *value);
 static void      bail_spin_button_get_minimum_increment (BatkValue       *obj,
                                                          BValue         *value);
-static gboolean  bail_spin_button_set_current_value (BatkValue       *obj,
+static bboolean  bail_spin_button_set_current_value (BatkValue       *obj,
                                                      const BValue   *value);
 static void      bail_spin_button_value_changed     (BtkAdjustment  *adjustment,
-                                                     gpointer       data);
+                                                     bpointer       data);
         
 G_DEFINE_TYPE_WITH_CODE (BailSpinButton, bail_spin_button, BAIL_TYPE_ENTRY,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
@@ -75,7 +75,7 @@ bail_spin_button_init (BailSpinButton *button)
 
 static void
 bail_spin_button_real_initialize (BatkObject *obj,
-                                  gpointer  data)
+                                  bpointer  data)
 {
   BailSpinButton *spin_button = BAIL_SPIN_BUTTON (obj);
   BtkSpinButton *btk_spin_button;
@@ -183,7 +183,7 @@ bail_spin_button_get_minimum_increment (BatkValue *obj, BValue *value)
   batk_value_get_minimum_increment (BATK_VALUE (spin_button->adjustment), value);
 }
 
-static gboolean  
+static bboolean  
 bail_spin_button_set_current_value (BatkValue       *obj,
                                     const BValue   *value)
 {
@@ -253,7 +253,7 @@ bail_spin_button_real_notify_btk (BObject    *obj,
 
 static void
 bail_spin_button_value_changed (BtkAdjustment    *adjustment,
-                                gpointer         data)
+                                bpointer         data)
 {
   BailSpinButton *spin_button;
 

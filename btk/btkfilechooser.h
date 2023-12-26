@@ -121,27 +121,27 @@ void                 btk_file_chooser_set_action          (BtkFileChooser       
 							   BtkFileChooserAction  action);
 BtkFileChooserAction btk_file_chooser_get_action          (BtkFileChooser       *chooser);
 void                 btk_file_chooser_set_local_only      (BtkFileChooser       *chooser,
-							   gboolean              local_only);
-gboolean             btk_file_chooser_get_local_only      (BtkFileChooser       *chooser);
+							   bboolean              local_only);
+bboolean             btk_file_chooser_get_local_only      (BtkFileChooser       *chooser);
 void                 btk_file_chooser_set_select_multiple (BtkFileChooser       *chooser,
-							   gboolean              select_multiple);
-gboolean             btk_file_chooser_get_select_multiple (BtkFileChooser       *chooser);
+							   bboolean              select_multiple);
+bboolean             btk_file_chooser_get_select_multiple (BtkFileChooser       *chooser);
 void                 btk_file_chooser_set_show_hidden     (BtkFileChooser       *chooser,
-							   gboolean              show_hidden);
-gboolean             btk_file_chooser_get_show_hidden     (BtkFileChooser       *chooser);
+							   bboolean              show_hidden);
+bboolean             btk_file_chooser_get_show_hidden     (BtkFileChooser       *chooser);
 
 void                 btk_file_chooser_set_do_overwrite_confirmation (BtkFileChooser *chooser,
-								     gboolean        do_overwrite_confirmation);
-gboolean             btk_file_chooser_get_do_overwrite_confirmation (BtkFileChooser *chooser);
+								     bboolean        do_overwrite_confirmation);
+bboolean             btk_file_chooser_get_do_overwrite_confirmation (BtkFileChooser *chooser);
 
 void                 btk_file_chooser_set_create_folders  (BtkFileChooser       *chooser,
-							  gboolean               create_folders);
-gboolean             btk_file_chooser_get_create_folders (BtkFileChooser *chooser);
+							  bboolean               create_folders);
+bboolean             btk_file_chooser_get_create_folders (BtkFileChooser *chooser);
 
 /* Suggested name for the Save-type actions
  */
 void     btk_file_chooser_set_current_name   (BtkFileChooser *chooser,
-					      const gchar    *name);
+					      const bchar    *name);
 
 /* Filename manipulation
  */
@@ -160,47 +160,47 @@ void     btk_file_chooser_set_current_name   (BtkFileChooser *chooser,
 #define btk_file_chooser_list_shortcut_folders btk_file_chooser_list_shortcut_folders_utf8
 #endif
 
-gchar *  btk_file_chooser_get_filename       (BtkFileChooser *chooser);
-gboolean btk_file_chooser_set_filename       (BtkFileChooser *chooser,
+bchar *  btk_file_chooser_get_filename       (BtkFileChooser *chooser);
+bboolean btk_file_chooser_set_filename       (BtkFileChooser *chooser,
 					      const char     *filename);
-gboolean btk_file_chooser_select_filename    (BtkFileChooser *chooser,
+bboolean btk_file_chooser_select_filename    (BtkFileChooser *chooser,
 					      const char     *filename);
 void     btk_file_chooser_unselect_filename  (BtkFileChooser *chooser,
 					      const char     *filename);
 void     btk_file_chooser_select_all         (BtkFileChooser *chooser);
 void     btk_file_chooser_unselect_all       (BtkFileChooser *chooser);
 GSList * btk_file_chooser_get_filenames      (BtkFileChooser *chooser);
-gboolean btk_file_chooser_set_current_folder (BtkFileChooser *chooser,
-					      const gchar    *filename);
-gchar *  btk_file_chooser_get_current_folder (BtkFileChooser *chooser);
+bboolean btk_file_chooser_set_current_folder (BtkFileChooser *chooser,
+					      const bchar    *filename);
+bchar *  btk_file_chooser_get_current_folder (BtkFileChooser *chooser);
 
 
 /* URI manipulation
  */
-gchar *  btk_file_chooser_get_uri                (BtkFileChooser *chooser);
-gboolean btk_file_chooser_set_uri                (BtkFileChooser *chooser,
+bchar *  btk_file_chooser_get_uri                (BtkFileChooser *chooser);
+bboolean btk_file_chooser_set_uri                (BtkFileChooser *chooser,
 						  const char     *uri);
-gboolean btk_file_chooser_select_uri             (BtkFileChooser *chooser,
+bboolean btk_file_chooser_select_uri             (BtkFileChooser *chooser,
 						  const char     *uri);
 void     btk_file_chooser_unselect_uri           (BtkFileChooser *chooser,
 						  const char     *uri);
 GSList * btk_file_chooser_get_uris               (BtkFileChooser *chooser);
-gboolean btk_file_chooser_set_current_folder_uri (BtkFileChooser *chooser,
-						  const gchar    *uri);
-gchar *  btk_file_chooser_get_current_folder_uri (BtkFileChooser *chooser);
+bboolean btk_file_chooser_set_current_folder_uri (BtkFileChooser *chooser,
+						  const bchar    *uri);
+bchar *  btk_file_chooser_get_current_folder_uri (BtkFileChooser *chooser);
 
 /* GFile manipulation */
 GFile *  btk_file_chooser_get_file                (BtkFileChooser  *chooser);
-gboolean btk_file_chooser_set_file                (BtkFileChooser  *chooser,
+bboolean btk_file_chooser_set_file                (BtkFileChooser  *chooser,
                                                    GFile           *file,
                                                    GError         **error);
-gboolean btk_file_chooser_select_file             (BtkFileChooser  *chooser,
+bboolean btk_file_chooser_select_file             (BtkFileChooser  *chooser,
                                                    GFile           *file,
                                                    GError         **error);
 void     btk_file_chooser_unselect_file           (BtkFileChooser  *chooser,
                                                    GFile           *file);
 GSList * btk_file_chooser_get_files               (BtkFileChooser  *chooser);
-gboolean btk_file_chooser_set_current_folder_file (BtkFileChooser  *chooser,
+bboolean btk_file_chooser_set_current_folder_file (BtkFileChooser  *chooser,
                                                    GFile           *file,
                                                    GError         **error);
 GFile *  btk_file_chooser_get_current_folder_file (BtkFileChooser  *chooser);
@@ -211,11 +211,11 @@ void       btk_file_chooser_set_preview_widget        (BtkFileChooser *chooser,
 						       BtkWidget      *preview_widget);
 BtkWidget *btk_file_chooser_get_preview_widget        (BtkFileChooser *chooser);
 void       btk_file_chooser_set_preview_widget_active (BtkFileChooser *chooser,
-						       gboolean        active);
-gboolean   btk_file_chooser_get_preview_widget_active (BtkFileChooser *chooser);
+						       bboolean        active);
+bboolean   btk_file_chooser_get_preview_widget_active (BtkFileChooser *chooser);
 void       btk_file_chooser_set_use_preview_label     (BtkFileChooser *chooser,
-						       gboolean        use_label);
-gboolean   btk_file_chooser_get_use_preview_label     (BtkFileChooser *chooser);
+						       bboolean        use_label);
+bboolean   btk_file_chooser_get_use_preview_label     (BtkFileChooser *chooser);
 
 char  *btk_file_chooser_get_preview_filename (BtkFileChooser *chooser);
 char  *btk_file_chooser_get_preview_uri      (BtkFileChooser *chooser);
@@ -243,18 +243,18 @@ BtkFileFilter *btk_file_chooser_get_filter (BtkFileChooser *chooser);
 
 /* Per-application shortcut folders */
 
-gboolean btk_file_chooser_add_shortcut_folder    (BtkFileChooser *chooser,
+bboolean btk_file_chooser_add_shortcut_folder    (BtkFileChooser *chooser,
 						  const char     *folder,
 						  GError        **error);
-gboolean btk_file_chooser_remove_shortcut_folder (BtkFileChooser *chooser,
+bboolean btk_file_chooser_remove_shortcut_folder (BtkFileChooser *chooser,
 						  const char     *folder,
 						  GError        **error);
 GSList *btk_file_chooser_list_shortcut_folders   (BtkFileChooser *chooser);
 
-gboolean btk_file_chooser_add_shortcut_folder_uri    (BtkFileChooser *chooser,
+bboolean btk_file_chooser_add_shortcut_folder_uri    (BtkFileChooser *chooser,
 						      const char     *uri,
 						      GError        **error);
-gboolean btk_file_chooser_remove_shortcut_folder_uri (BtkFileChooser *chooser,
+bboolean btk_file_chooser_remove_shortcut_folder_uri (BtkFileChooser *chooser,
 						      const char     *uri,
 						      GError        **error);
 GSList *btk_file_chooser_list_shortcut_folder_uris   (BtkFileChooser *chooser);

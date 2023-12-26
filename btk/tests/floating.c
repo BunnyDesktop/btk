@@ -19,7 +19,7 @@
 #undef BTK_DISABLE_DEPRECATED
 #include "../btk/btk.h"
 
-static gboolean destroyed = FALSE;
+static bboolean destroyed = FALSE;
 static void
 destroy (void)
 {

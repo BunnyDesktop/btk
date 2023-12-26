@@ -135,7 +135,7 @@ Release notes for 2.12
   since 2.6 anyway.
 
 * The BtkTextBufferTargetInfo enumeration values have been changed from
-  G_MAXUINT-0, G_MAXUINT-1, G_MAXUINT-2, etc, to -1, -2, -3 to stay within
+  B_MAXUINT-0, B_MAXUINT-1, B_MAXUINT-2, etc, to -1, -2, -3 to stay within
   ANSI C limits.
 
 * A change in the handling of _NET_WM_USER_TIME properties on toplevel

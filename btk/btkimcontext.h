@@ -60,20 +60,20 @@ struct _BtkIMContextClass
   void     (*preedit_start)        (BtkIMContext *context);
   void     (*preedit_end)          (BtkIMContext *context);
   void     (*preedit_changed)      (BtkIMContext *context);
-  void     (*commit)               (BtkIMContext *context, const gchar *str);
-  gboolean (*retrieve_surrounding) (BtkIMContext *context);
-  gboolean (*delete_surrounding)   (BtkIMContext *context,
-				    gint          offset,
-				    gint          n_chars);
+  void     (*commit)               (BtkIMContext *context, const bchar *str);
+  bboolean (*retrieve_surrounding) (BtkIMContext *context);
+  bboolean (*delete_surrounding)   (BtkIMContext *context,
+				    bint          offset,
+				    bint          n_chars);
 
   /* Virtual functions */
   void     (*set_client_window)   (BtkIMContext   *context,
 				   BdkWindow      *window);
   void     (*get_preedit_string)  (BtkIMContext   *context,
-				   gchar         **str,
+				   bchar         **str,
 				   BangoAttrList **attrs,
-				   gint           *cursor_pos);
-  gboolean (*filter_keypress)     (BtkIMContext   *context,
+				   bint           *cursor_pos);
+  bboolean (*filter_keypress)     (BtkIMContext   *context,
 			           BdkEventKey    *event);
   void     (*focus_in)            (BtkIMContext   *context);
   void     (*focus_out)           (BtkIMContext   *context);
@@ -81,14 +81,14 @@ struct _BtkIMContextClass
   void     (*set_cursor_location) (BtkIMContext   *context,
 				   BdkRectangle   *area);
   void     (*set_use_preedit)     (BtkIMContext   *context,
-				   gboolean        use_preedit);
+				   bboolean        use_preedit);
   void     (*set_surrounding)     (BtkIMContext   *context,
-				   const gchar    *text,
-				   gint            len,
-				   gint            cursor_index);
-  gboolean (*get_surrounding)     (BtkIMContext   *context,
-				   gchar         **text,
-				   gint           *cursor_index);
+				   const bchar    *text,
+				   bint            len,
+				   bint            cursor_index);
+  bboolean (*get_surrounding)     (BtkIMContext   *context,
+				   bchar         **text,
+				   bint           *cursor_index);
   /*< private >*/
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -104,10 +104,10 @@ GType    btk_im_context_get_type            (void) B_GNUC_CONST;
 void     btk_im_context_set_client_window   (BtkIMContext       *context,
 					     BdkWindow          *window);
 void     btk_im_context_get_preedit_string  (BtkIMContext       *context,
-					     gchar             **str,
+					     bchar             **str,
 					     BangoAttrList     **attrs,
-					     gint               *cursor_pos);
-gboolean btk_im_context_filter_keypress     (BtkIMContext       *context,
+					     bint               *cursor_pos);
+bboolean btk_im_context_filter_keypress     (BtkIMContext       *context,
 					     BdkEventKey        *event);
 void     btk_im_context_focus_in            (BtkIMContext       *context);
 void     btk_im_context_focus_out           (BtkIMContext       *context);
@@ -115,17 +115,17 @@ void     btk_im_context_reset               (BtkIMContext       *context);
 void     btk_im_context_set_cursor_location (BtkIMContext       *context,
 					     const BdkRectangle *area);
 void     btk_im_context_set_use_preedit     (BtkIMContext       *context,
-					     gboolean            use_preedit);
+					     bboolean            use_preedit);
 void     btk_im_context_set_surrounding     (BtkIMContext       *context,
-					     const gchar        *text,
-					     gint                len,
-					     gint                cursor_index);
-gboolean btk_im_context_get_surrounding     (BtkIMContext       *context,
-					     gchar             **text,
-					     gint               *cursor_index);
-gboolean btk_im_context_delete_surrounding  (BtkIMContext       *context,
-					     gint                offset,
-					     gint                n_chars);
+					     const bchar        *text,
+					     bint                len,
+					     bint                cursor_index);
+bboolean btk_im_context_get_surrounding     (BtkIMContext       *context,
+					     bchar             **text,
+					     bint               *cursor_index);
+bboolean btk_im_context_delete_surrounding  (BtkIMContext       *context,
+					     bint                offset,
+					     bint                n_chars);
 
 B_END_DECLS
 

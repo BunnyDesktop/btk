@@ -28,7 +28,7 @@ B_BEGIN_DECLS
 
 NSSet   *_btk_quartz_target_list_to_pasteboard_types    (BtkTargetList *target_list);
 NSSet   *_btk_quartz_target_entries_to_pasteboard_types (const BtkTargetEntry *targets,
-							 guint                 n_targets);
+							 buint                 n_targets);
 
 GList   *_btk_quartz_pasteboard_types_to_atom_list (NSArray  *array);
 

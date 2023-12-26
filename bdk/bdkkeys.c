@@ -37,7 +37,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BdkKeymap, bdk_keymap, B_TYPE_OBJECT)
 
@@ -129,12 +129,12 @@ bdk_keymap_init (BdkKeymap *keymap)
  *
  **/
 void
-bdk_keyval_convert_case (guint symbol,
-			 guint *lower,
-			 guint *upper)
+bdk_keyval_convert_case (buint symbol,
+			 buint *lower,
+			 buint *upper)
 {
-  guint xlower = symbol;
-  guint xupper = symbol;
+  buint xlower = symbol;
+  buint xupper = symbol;
 
   /* Check for directly encoded 24-bit UCS characters: */
   if ((symbol & 0xff000000) == 0x01000000)
@@ -254,32 +254,32 @@ bdk_keyval_convert_case (guint symbol,
 }
 #endif
 
-guint
-bdk_keyval_to_upper (guint keyval)
+buint
+bdk_keyval_to_upper (buint keyval)
 {
-  guint result;
+  buint result;
   
   bdk_keyval_convert_case (keyval, NULL, &result);
 
   return result;
 }
 
-guint
-bdk_keyval_to_lower (guint keyval)
+buint
+bdk_keyval_to_lower (buint keyval)
 {
-  guint result;
+  buint result;
   
   bdk_keyval_convert_case (keyval, &result, NULL);
 
   return result;
 }
 
-gboolean
-bdk_keyval_is_upper (guint keyval)
+bboolean
+bdk_keyval_is_upper (buint keyval)
 {
   if (keyval)
     {
-      guint upper_val = 0;
+      buint upper_val = 0;
       
       bdk_keyval_convert_case (keyval, NULL, &upper_val);
       return upper_val == keyval;
@@ -287,12 +287,12 @@ bdk_keyval_is_upper (guint keyval)
   return FALSE;
 }
 
-gboolean
-bdk_keyval_is_lower (guint keyval)
+bboolean
+bdk_keyval_is_lower (buint keyval)
 {
   if (keyval)
     {
-      guint lower_val = 0;
+      buint lower_val = 0;
       
       bdk_keyval_convert_case (keyval, &lower_val, NULL);
       return lower_val == keyval;

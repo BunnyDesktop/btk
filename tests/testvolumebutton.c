@@ -21,8 +21,8 @@
 
 static void
 value_changed (BtkWidget *button,
-               gdouble volume,
-               gpointer user_data)
+               bdouble volume,
+               bpointer user_data)
 {
   g_message ("volume changed to %f", volume);
 }
@@ -46,14 +46,14 @@ toggle_orientation (BtkWidget *button,
 
 static void
 response_cb (BtkDialog *dialog,
-             gint       arg1,
-             gpointer   user_data)
+             bint       arg1,
+             bpointer   user_data)
 {
   btk_widget_destroy (BTK_WIDGET (dialog));
 }
 
-static gboolean
-show_error (gpointer data)
+static bboolean
+show_error (bpointer data)
 {
   BtkWindow *window = (BtkWindow *) data;
   BtkWidget *dialog;

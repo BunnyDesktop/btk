@@ -51,30 +51,30 @@ struct _BtkPreview
 {
   BtkWidget widget;
 
-  guchar *buffer;
-  guint16 buffer_width;
-  guint16 buffer_height;
+  buchar *buffer;
+  buint16 buffer_width;
+  buint16 buffer_height;
 
-  guint16 bpp;
-  guint16 rowstride;
+  buint16 bpp;
+  buint16 rowstride;
 
   BdkRgbDither dither;
 
-  guint type : 1;
-  guint expand : 1;
+  buint type : 1;
+  buint expand : 1;
 };
 
 struct _BtkPreviewInfo
 {
-  guchar *lookup;
+  buchar *lookup;
 
-  gdouble gamma;
+  bdouble gamma;
 };
 
 union _BtkDitherInfo
 {
-  gushort s[2];
-  guchar c[4];
+  bushort s[2];
+  buchar c[4];
 };
 
 struct _BtkPreviewClass
@@ -90,32 +90,32 @@ GType           btk_preview_get_type           (void) B_GNUC_CONST;
 void            btk_preview_uninit             (void);
 BtkWidget*      btk_preview_new                (BtkPreviewType   type);
 void            btk_preview_size               (BtkPreview      *preview,
-						gint             width,
-						gint             height);
+						bint             width,
+						bint             height);
 void            btk_preview_put                (BtkPreview      *preview,
 						BdkWindow       *window,
 						BdkGC           *gc,
-						gint             srcx,
-						gint             srcy,
-						gint             destx,
-						gint             desty,
-						gint             width,
-						gint             height);
+						bint             srcx,
+						bint             srcy,
+						bint             destx,
+						bint             desty,
+						bint             width,
+						bint             height);
 void            btk_preview_draw_row           (BtkPreview      *preview,
-						guchar          *data,
-						gint             x,
-						gint             y,
-						gint             w);
+						buchar          *data,
+						bint             x,
+						bint             y,
+						bint             w);
 void            btk_preview_set_expand         (BtkPreview      *preview,
-						gboolean         expand);
+						bboolean         expand);
 
 void            btk_preview_set_gamma          (double           gamma_);
-void            btk_preview_set_color_cube     (guint            nred_shades,
-						guint            ngreen_shades,
-						guint            nblue_shades,
-						guint            ngray_shades);
-void            btk_preview_set_install_cmap   (gint             install_cmap);
-void            btk_preview_set_reserved       (gint             nreserved);
+void            btk_preview_set_color_cube     (buint            nred_shades,
+						buint            ngreen_shades,
+						buint            nblue_shades,
+						buint            ngray_shades);
+void            btk_preview_set_install_cmap   (bint             install_cmap);
+void            btk_preview_set_reserved       (bint             nreserved);
 void            btk_preview_set_dither         (BtkPreview      *preview,
 						BdkRgbDither     dither);
 BdkVisual*      btk_preview_get_visual         (void);

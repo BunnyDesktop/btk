@@ -62,7 +62,7 @@ get_char (const char **str)
 
 static gunichar
 get_unescaped_char (const char **str,
-		    gboolean    *was_escaped)
+		    bboolean    *was_escaped)
 {
   gunichar c = get_char (str);
 
@@ -76,11 +76,11 @@ get_unescaped_char (const char **str,
 /* Match STRING against the filename pattern PATTERN, returning zero if
    it matches, nonzero if not.  */
 
-static gboolean
+static bboolean
 btk_fnmatch_intern (const char *pattern,
 		    const char *string,
-		    gboolean    component_start,
-		    gboolean    no_leading_period)
+		    bboolean    component_start,
+		    bboolean    no_leading_period)
 {
   const char *p = pattern, *n = string;
   
@@ -163,8 +163,8 @@ btk_fnmatch_intern (const char *pattern,
 	case '[':
 	  {
 	    /* Nonzero if the sense of the character class is inverted.  */
-	    gboolean not;
-	    gboolean was_escaped;
+	    bboolean not;
+	    bboolean was_escaped;
 
 	    if (nc == '\0' || nc == G_DIR_SEPARATOR)
 	      return FALSE;
@@ -249,10 +249,10 @@ btk_fnmatch_intern (const char *pattern,
  *   FNM_NOESCAPE    - set only on windows
  *   FNM_CASEFOLD    - set only on windows
  */
-gboolean
+bboolean
 _btk_fnmatch (const char *pattern,
 	      const char *string,
-	      gboolean no_leading_period)
+	      bboolean no_leading_period)
 {
   return btk_fnmatch_intern (pattern, string, TRUE, no_leading_period);
 }

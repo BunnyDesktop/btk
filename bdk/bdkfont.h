@@ -49,83 +49,83 @@ typedef enum
 struct _BdkFont
 {
   BdkFontType type;
-  gint ascent;
-  gint descent;
+  bint ascent;
+  bint descent;
 };
 
 GType    bdk_font_get_type  (void) B_GNUC_CONST;
 
 BdkFont* bdk_font_ref	    (BdkFont        *font);
 void	 bdk_font_unref	    (BdkFont        *font);
-gint	 bdk_font_id	    (const BdkFont  *font);
-gboolean bdk_font_equal	    (const BdkFont  *fonta,
+bint	 bdk_font_id	    (const BdkFont  *font);
+bboolean bdk_font_equal	    (const BdkFont  *fonta,
 			     const BdkFont  *fontb);
 
 BdkFont *bdk_font_load_for_display             (BdkDisplay           *display,
-						const gchar          *font_name);
+						const bchar          *font_name);
 BdkFont *bdk_fontset_load_for_display          (BdkDisplay           *display,
-						const gchar          *fontset_name);
+						const bchar          *fontset_name);
 BdkFont *bdk_font_from_description_for_display (BdkDisplay           *display,
 						BangoFontDescription *font_desc);
 
 #ifndef BDK_DISABLE_DEPRECATED
 
 #ifndef BDK_MULTIHEAD_SAFE
-BdkFont* bdk_font_load             (const gchar          *font_name);
-BdkFont* bdk_fontset_load          (const gchar          *fontset_name);
+BdkFont* bdk_font_load             (const bchar          *font_name);
+BdkFont* bdk_fontset_load          (const bchar          *fontset_name);
 BdkFont* bdk_font_from_description (BangoFontDescription *font_desc);
 #endif
 
-gint	 bdk_string_width   (BdkFont        *font,
-			     const gchar    *string);
-gint	 bdk_text_width	    (BdkFont        *font,
-			     const gchar    *text,
-			     gint            text_length);
-gint	 bdk_text_width_wc  (BdkFont        *font,
+bint	 bdk_string_width   (BdkFont        *font,
+			     const bchar    *string);
+bint	 bdk_text_width	    (BdkFont        *font,
+			     const bchar    *text,
+			     bint            text_length);
+bint	 bdk_text_width_wc  (BdkFont        *font,
 			     const BdkWChar *text,
-			     gint            text_length);
-gint	 bdk_char_width	    (BdkFont        *font,
-			     gchar           character);
-gint	 bdk_char_width_wc  (BdkFont        *font,
+			     bint            text_length);
+bint	 bdk_char_width	    (BdkFont        *font,
+			     bchar           character);
+bint	 bdk_char_width_wc  (BdkFont        *font,
 			     BdkWChar        character);
-gint	 bdk_string_measure (BdkFont        *font,
-			     const gchar    *string);
-gint	 bdk_text_measure   (BdkFont        *font,
-			     const gchar    *text,
-			     gint            text_length);
-gint	 bdk_char_measure   (BdkFont        *font,
-			     gchar           character);
-gint	 bdk_string_height  (BdkFont        *font,
-			     const gchar    *string);
-gint	 bdk_text_height    (BdkFont        *font,
-			     const gchar    *text,
-			     gint            text_length);
-gint	 bdk_char_height    (BdkFont        *font,
-			     gchar           character);
+bint	 bdk_string_measure (BdkFont        *font,
+			     const bchar    *string);
+bint	 bdk_text_measure   (BdkFont        *font,
+			     const bchar    *text,
+			     bint            text_length);
+bint	 bdk_char_measure   (BdkFont        *font,
+			     bchar           character);
+bint	 bdk_string_height  (BdkFont        *font,
+			     const bchar    *string);
+bint	 bdk_text_height    (BdkFont        *font,
+			     const bchar    *text,
+			     bint            text_length);
+bint	 bdk_char_height    (BdkFont        *font,
+			     bchar           character);
 
 void     bdk_text_extents   (BdkFont     *font,
-			     const gchar *text,
-			     gint         text_length,
-			     gint        *lbearing,
-			     gint        *rbearing,
-			     gint        *width,
-			     gint        *ascent,
-			     gint        *descent);
+			     const bchar *text,
+			     bint         text_length,
+			     bint        *lbearing,
+			     bint        *rbearing,
+			     bint        *width,
+			     bint        *ascent,
+			     bint        *descent);
 void    bdk_text_extents_wc (BdkFont        *font,
 			     const BdkWChar *text,
-			     gint            text_length,
-			     gint           *lbearing,
-			     gint           *rbearing,
-			     gint           *width,
-			     gint           *ascent,
-			     gint           *descent);
+			     bint            text_length,
+			     bint           *lbearing,
+			     bint           *rbearing,
+			     bint           *width,
+			     bint           *ascent,
+			     bint           *descent);
 void     bdk_string_extents (BdkFont     *font,
-			     const gchar *string,
-			     gint        *lbearing,
-			     gint        *rbearing,
-			     gint        *width,
-			     gint        *ascent,
-			     gint        *descent);
+			     const bchar *string,
+			     bint        *lbearing,
+			     bint        *rbearing,
+			     bint        *width,
+			     bint        *ascent,
+			     bint        *descent);
 
 BdkDisplay * bdk_font_get_display (BdkFont *font);
 

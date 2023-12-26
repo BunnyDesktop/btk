@@ -56,10 +56,10 @@ struct _BdkGCX11
   
   GC xgc;
   BdkScreen *screen;
-  guint16 dirty_mask;
-  guint have_clip_rebunnyion : 1;
-  guint have_clip_mask : 1;
-  guint depth : 8;
+  buint16 dirty_mask;
+  buint have_clip_rebunnyion : 1;
+  buint have_clip_mask : 1;
+  buint depth : 8;
 };
 
 struct _BdkGCX11Class
@@ -72,8 +72,8 @@ struct _BdkCursorPrivate
   BdkCursor cursor;
   Cursor xcursor;
   BdkDisplay *display;
-  gchar *name;
-  guint serial;
+  bchar *name;
+  buint serial;
 };
 
 struct _BdkVisualPrivate
@@ -87,18 +87,18 @@ struct _BdkVisualPrivate
 
 void _bdk_xid_table_insert (BdkDisplay *display,
 			    XID        *xid,
-			    gpointer    data);
+			    bpointer    data);
 void _bdk_xid_table_remove (BdkDisplay *display,
 			    XID         xid);
-gint _bdk_send_xevent      (BdkDisplay *display,
+bint _bdk_send_xevent      (BdkDisplay *display,
 			    Window      window,
-			    gboolean    propagate,
-			    glong       event_mask,
+			    bboolean    propagate,
+			    blong       event_mask,
 			    XEvent     *event_send);
 
 GType _bdk_gc_x11_get_type (void);
 
-gboolean _bdk_x11_have_render           (BdkDisplay *display);
+bboolean _bdk_x11_have_render           (BdkDisplay *display);
 
 BdkGC *_bdk_x11_gc_new                  (BdkDrawable     *drawable,
 					 BdkGCValues     *values,
@@ -106,73 +106,73 @@ BdkGC *_bdk_x11_gc_new                  (BdkDrawable     *drawable,
 
 BdkImage *_bdk_x11_copy_to_image       (BdkDrawable *drawable,
 					BdkImage    *image,
-					gint         src_x,
-					gint         src_y,
-					gint         dest_x,
-					gint         dest_y,
-					gint         width,
-					gint         height);
+					bint         src_x,
+					bint         src_y,
+					bint         dest_x,
+					bint         dest_y,
+					bint         width,
+					bint         height);
 Pixmap   _bdk_x11_image_get_shm_pixmap (BdkImage    *image);
 
 /* Routines from bdkgeometry-x11.c */
 void _bdk_window_move_resize_child (BdkWindow     *window,
-                                    gint           x,
-                                    gint           y,
-                                    gint           width,
-                                    gint           height);
+                                    bint           x,
+                                    bint           y,
+                                    bint           width,
+                                    bint           height);
 void _bdk_window_process_expose    (BdkWindow     *window,
-                                    gulong         serial,
+                                    bulong         serial,
                                     BdkRectangle  *area);
 
-gboolean _bdk_x11_window_queue_antiexpose  (BdkWindow *window,
+bboolean _bdk_x11_window_queue_antiexpose  (BdkWindow *window,
 					    BdkRebunnyion *area);
 void     _bdk_x11_window_queue_translation (BdkWindow *window,
 					    BdkGC     *gc,
 					    BdkRebunnyion *area,
-					    gint       dx,
-					    gint       dy);
+					    bint       dx,
+					    bint       dy);
 
 void     _bdk_selection_window_destroyed   (BdkWindow            *window);
-gboolean _bdk_selection_filter_clear_event (XSelectionClearEvent *event);
+bboolean _bdk_selection_filter_clear_event (XSelectionClearEvent *event);
 
 BdkRebunnyion* _xwindow_get_shape              (Display *xdisplay,
                                             Window window,
-                                            gint shape_type);
+                                            bint shape_type);
 
 void     _bdk_rebunnyion_get_xrectangles       (const BdkRebunnyion      *rebunnyion,
-                                            gint                  x_offset,
-                                            gint                  y_offset,
+                                            bint                  x_offset,
+                                            bint                  y_offset,
                                             XRectangle          **rects,
-                                            gint                 *n_rects);
+                                            bint                 *n_rects);
 
-gboolean _bdk_moveresize_handle_event   (XEvent     *event);
-gboolean _bdk_moveresize_configure_done (BdkDisplay *display,
+bboolean _bdk_moveresize_handle_event   (XEvent     *event);
+bboolean _bdk_moveresize_configure_done (BdkDisplay *display,
 					 BdkWindow  *window);
 
 void _bdk_keymap_state_changed    (BdkDisplay      *display,
 				   XEvent          *event);
 void _bdk_keymap_keys_changed     (BdkDisplay      *display);
-gint _bdk_x11_get_group_for_state (BdkDisplay      *display,
+bint _bdk_x11_get_group_for_state (BdkDisplay      *display,
 				   BdkModifierType  state);
 void _bdk_keymap_add_virtual_modifiers_compat (BdkKeymap       *keymap,
                                                BdkModifierType *modifiers);
-gboolean _bdk_keymap_key_is_modifier   (BdkKeymap       *keymap,
-					guint            keycode);
+bboolean _bdk_keymap_key_is_modifier   (BdkKeymap       *keymap,
+					buint            keycode);
 
 GC _bdk_x11_gc_flush (BdkGC *gc);
 
 void _bdk_x11_initialize_locale (void);
 
 void _bdk_xgrab_check_unmap        (BdkWindow *window,
-				    gulong     serial);
+				    bulong     serial);
 void _bdk_xgrab_check_destroy      (BdkWindow *window);
 
-gboolean _bdk_x11_display_is_root_window (BdkDisplay *display,
+bboolean _bdk_x11_display_is_root_window (BdkDisplay *display,
 					  Window      xroot_window);
 
 void _bdk_x11_precache_atoms (BdkDisplay          *display,
-			      const gchar * const *atom_names,
-			      gint                 n_atoms);
+			      const bchar * const *atom_names,
+			      bint                 n_atoms);
 
 void _bdk_x11_events_init_screen   (BdkScreen *screen);
 void _bdk_x11_events_uninit_screen (BdkScreen *screen);
@@ -191,16 +191,16 @@ BangoRenderer *_bdk_x11_renderer_get (BdkDrawable *drawable,
 void _bdk_x11_cursor_update_theme (BdkCursor *cursor);
 void _bdk_x11_cursor_display_finalize (BdkDisplay *display);
 
-gboolean _bdk_x11_get_xft_setting (BdkScreen   *screen,
-				   const gchar *name,
+bboolean _bdk_x11_get_xft_setting (BdkScreen   *screen,
+				   const bchar *name,
 				   BValue      *value);
 
 extern BdkDrawableClass  _bdk_x11_drawable_class;
-extern gboolean	         _bdk_use_xshm;
+extern bboolean	         _bdk_use_xshm;
 extern const int         _bdk_nenvent_masks;
 extern const int         _bdk_event_mask_table[];
 extern BdkAtom		 _bdk_selection_property;
-extern gboolean          _bdk_synchronize;
+extern bboolean          _bdk_synchronize;
 
 #define BDK_PIXMAP_SCREEN(pix)	      (BDK_DRAWABLE_IMPL_X11 (((BdkPixmapObject *)pix)->impl)->screen)
 #define BDK_PIXMAP_DISPLAY(pix)       (BDK_SCREEN_X11 (BDK_PIXMAP_SCREEN (pix))->display)

@@ -43,7 +43,7 @@
 struct _BtkRadioActionPrivate 
 {
   GSList *group;
-  gint    value;
+  bint    value;
 };
 
 enum 
@@ -62,11 +62,11 @@ enum
 
 static void btk_radio_action_finalize     (BObject *object);
 static void btk_radio_action_set_property (BObject         *object,
-				           guint            prop_id,
+				           buint            prop_id,
 				           const BValue    *value,
 				           BParamSpec      *pspec);
 static void btk_radio_action_get_property (BObject         *object,
-				           guint            prop_id,
+				           buint            prop_id,
 				           BValue          *value,
 				           BParamSpec      *pspec);
 static void btk_radio_action_activate     (BtkAction *action);
@@ -75,7 +75,7 @@ static BtkWidget *create_menu_item        (BtkAction *action);
 
 G_DEFINE_TYPE (BtkRadioAction, btk_radio_action, BTK_TYPE_TOGGLE_ACTION)
 
-static guint         radio_action_signals[LAST_SIGNAL] = { 0 };
+static buint         radio_action_signals[LAST_SIGNAL] = { 0 };
 
 static void
 btk_radio_action_class_init (BtkRadioActionClass *klass)
@@ -110,8 +110,8 @@ btk_radio_action_class_init (BtkRadioActionClass *klass)
 				   g_param_spec_int ("value",
 						     P_("The value"),
 						     P_("The value returned by btk_radio_action_get_current_value() when this action is the current action of its group."),
-						     G_MININT,
-						     G_MAXINT,
+						     B_MININT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -143,8 +143,8 @@ btk_radio_action_class_init (BtkRadioActionClass *klass)
                                    g_param_spec_int ("current-value",
 						     P_("The current value"),
 						     P_("The value property of the currently active member of the group to which this action belongs."),
-						     G_MININT,
-						     G_MAXINT,
+						     B_MININT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -199,11 +199,11 @@ btk_radio_action_init (BtkRadioAction *action)
  * Since: 2.4
  */
 BtkRadioAction *
-btk_radio_action_new (const gchar *name,
-		      const gchar *label,
-		      const gchar *tooltip,
-		      const gchar *stock_id,
-		      gint value)
+btk_radio_action_new (const bchar *name,
+		      const bchar *label,
+		      const bchar *tooltip,
+		      const bchar *stock_id,
+		      bint value)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
@@ -241,7 +241,7 @@ btk_radio_action_finalize (BObject *object)
 
 static void
 btk_radio_action_set_property (BObject         *object,
-			       guint            prop_id,
+			       buint            prop_id,
 			       const BValue    *value,
 			       BParamSpec      *pspec)
 {
@@ -280,7 +280,7 @@ btk_radio_action_set_property (BObject         *object,
 
 static void
 btk_radio_action_get_property (BObject    *object,
-			       guint       prop_id,
+			       buint       prop_id,
 			       BValue     *value,
 			       BParamSpec *pspec)
 {
@@ -467,7 +467,7 @@ btk_radio_action_set_group (BtkRadioAction *action,
  *
  * Since: 2.4
  **/
-gint
+bint
 btk_radio_action_get_current_value (BtkRadioAction *action)
 {
   GSList *slist;
@@ -500,7 +500,7 @@ btk_radio_action_get_current_value (BtkRadioAction *action)
  **/
 void
 btk_radio_action_set_current_value (BtkRadioAction *action,
-                                    gint            current_value)
+                                    bint            current_value)
 {
   GSList *slist;
 

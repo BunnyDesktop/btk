@@ -73,17 +73,17 @@ struct _BtkToggleActionClass
 };
 
 GType            btk_toggle_action_get_type          (void) B_GNUC_CONST;
-BtkToggleAction *btk_toggle_action_new               (const gchar     *name,
-                                                      const gchar     *label,
-                                                      const gchar     *tooltip,
-                                                      const gchar     *stock_id);
+BtkToggleAction *btk_toggle_action_new               (const bchar     *name,
+                                                      const bchar     *label,
+                                                      const bchar     *tooltip,
+                                                      const bchar     *stock_id);
 void             btk_toggle_action_toggled           (BtkToggleAction *action);
 void             btk_toggle_action_set_active        (BtkToggleAction *action,
-                                                      gboolean         is_active);
-gboolean         btk_toggle_action_get_active        (BtkToggleAction *action);
+                                                      bboolean         is_active);
+bboolean         btk_toggle_action_get_active        (BtkToggleAction *action);
 void             btk_toggle_action_set_draw_as_radio (BtkToggleAction *action,
-                                                      gboolean         draw_as_radio);
-gboolean         btk_toggle_action_get_draw_as_radio (BtkToggleAction *action);
+                                                      bboolean         draw_as_radio);
+bboolean         btk_toggle_action_get_draw_as_radio (BtkToggleAction *action);
 
 
 B_END_DECLS

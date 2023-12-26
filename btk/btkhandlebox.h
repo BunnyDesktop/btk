@@ -60,18 +60,18 @@ struct _BtkHandleBox
   BdkWindow      *GSEAL (bin_window);	/* parent window for children */
   BdkWindow      *GSEAL (float_window);
   BtkShadowType   GSEAL (shadow_type);
-  guint           GSEAL (handle_position) : 2;
-  guint           GSEAL (float_window_mapped) : 1;
-  guint           GSEAL (child_detached) : 1;
-  guint           GSEAL (in_drag) : 1;
-  guint           GSEAL (shrink_on_detach) : 1;
+  buint           GSEAL (handle_position) : 2;
+  buint           GSEAL (float_window_mapped) : 1;
+  buint           GSEAL (child_detached) : 1;
+  buint           GSEAL (in_drag) : 1;
+  buint           GSEAL (shrink_on_detach) : 1;
 
   signed int      GSEAL (snap_edge : 3); /* -1 == unset */
 
   /* Variables used during a drag
    */
-  gint            GSEAL (deskoff_x); /* Offset between root relative coords */
-  gint            GSEAL (deskoff_y); /* and deskrelative coords             */
+  bint            GSEAL (deskoff_x); /* Offset between root relative coords */
+  bint            GSEAL (deskoff_y); /* and deskrelative coords             */
 
   BtkAllocation   GSEAL (attach_allocation);
   BtkAllocation   GSEAL (float_allocation);
@@ -105,7 +105,7 @@ BtkPositionType btk_handle_box_get_handle_position(BtkHandleBox    *handle_box);
 void          btk_handle_box_set_snap_edge        (BtkHandleBox    *handle_box,
 						   BtkPositionType  edge);
 BtkPositionType btk_handle_box_get_snap_edge      (BtkHandleBox    *handle_box);
-gboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
+bboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
 
 B_END_DECLS
 

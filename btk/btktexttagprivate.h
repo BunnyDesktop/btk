@@ -37,9 +37,9 @@ typedef struct _BtkTextBTreeNode BtkTextBTreeNode;
 */
 void _btk_text_attributes_fill_from_tags   (BtkTextAttributes   *values,
                                             BtkTextTag         **tags,
-                                            guint                n_tags);
+                                            buint                n_tags);
 void _btk_text_tag_array_sort              (BtkTextTag         **tag_array_p,
-                                            guint                len);
+                                            buint                len);
 
 /* ensure colors are allocated, etc. for drawing */
 void                _btk_text_attributes_realize   (BtkTextAttributes *values,
@@ -51,7 +51,7 @@ void                _btk_text_attributes_unrealize (BtkTextAttributes *values,
                                                     BdkColormap       *cmap,
                                                     BdkVisual         *visual);
 
-gboolean _btk_text_tag_affects_size               (BtkTextTag *tag);
-gboolean _btk_text_tag_affects_nonsize_appearance (BtkTextTag *tag);
+bboolean _btk_text_tag_affects_size               (BtkTextTag *tag);
+bboolean _btk_text_tag_affects_nonsize_appearance (BtkTextTag *tag);
 
 #endif

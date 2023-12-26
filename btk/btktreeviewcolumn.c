@@ -67,14 +67,14 @@ struct _BtkTreeViewColumnCellInfo
   BtkCellRenderer *cell;
   GSList *attributes;
   BtkTreeCellDataFunc func;
-  gpointer func_data;
+  bpointer func_data;
   GDestroyNotify destroy;
-  gint requested_width;
-  gint real_width;
-  guint expand : 1;
-  guint pack : 1;
-  guint has_focus : 1;
-  guint in_editing_mode : 1;
+  bint requested_width;
+  bint real_width;
+  buint expand : 1;
+  buint pack : 1;
+  buint has_focus : 1;
+  buint in_editing_mode : 1;
 };
 
 /* Type methods */
@@ -82,11 +82,11 @@ static void btk_tree_view_column_cell_layout_init              (BtkCellLayoutIfa
 
 /* BObject methods */
 static void btk_tree_view_column_set_property                  (BObject                 *object,
-								guint                    prop_id,
+								buint                    prop_id,
 								const BValue            *value,
 								BParamSpec              *pspec);
 static void btk_tree_view_column_get_property                  (BObject                 *object,
-								guint                    prop_id,
+								buint                    prop_id,
 								BValue                  *value,
 								BParamSpec              *pspec);
 static void btk_tree_view_column_finalize                      (BObject                 *object);
@@ -94,25 +94,25 @@ static void btk_tree_view_column_finalize                      (BObject         
 /* BtkCellLayout implementation */
 static void btk_tree_view_column_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell,
-                                                                 gboolean               expand);
+                                                                 bboolean               expand);
 static void btk_tree_view_column_cell_layout_pack_end           (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell,
-                                                                 gboolean               expand);
+                                                                 bboolean               expand);
 static void btk_tree_view_column_cell_layout_clear              (BtkCellLayout         *cell_layout);
 static void btk_tree_view_column_cell_layout_add_attribute      (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell,
-                                                                 const gchar           *attribute,
-                                                                 gint                   column);
+                                                                 const bchar           *attribute,
+                                                                 bint                   column);
 static void btk_tree_view_column_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell,
                                                                  BtkCellLayoutDataFunc  func,
-                                                                 gpointer               func_data,
+                                                                 bpointer               func_data,
                                                                  GDestroyNotify         destroy);
 static void btk_tree_view_column_cell_layout_clear_attributes   (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell);
 static void btk_tree_view_column_cell_layout_reorder            (BtkCellLayout         *cell_layout,
                                                                  BtkCellRenderer       *cell,
-                                                                 gint                   position);
+                                                                 bint                   position);
 static GList *btk_tree_view_column_cell_layout_get_cells        (BtkCellLayout         *cell_layout);
 
 /* Button handling code */
@@ -120,14 +120,14 @@ static void btk_tree_view_column_create_button                 (BtkTreeViewColum
 static void btk_tree_view_column_update_button                 (BtkTreeViewColumn       *tree_column);
 
 /* Button signal handlers */
-static gint btk_tree_view_column_button_event                  (BtkWidget               *widget,
+static bint btk_tree_view_column_button_event                  (BtkWidget               *widget,
 								BdkEvent                *event,
-								gpointer                 data);
+								bpointer                 data);
 static void btk_tree_view_column_button_clicked                (BtkWidget               *widget,
-								gpointer                 data);
-static gboolean btk_tree_view_column_mnemonic_activate         (BtkWidget *widget,
-					                        gboolean   group_cycling,
-								gpointer   data);
+								bpointer                 data);
+static bboolean btk_tree_view_column_mnemonic_activate         (BtkWidget *widget,
+					                        bboolean   group_cycling,
+								bpointer   data);
 
 /* Property handlers */
 static void btk_tree_view_model_sort_column_changed            (BtkTreeSortable         *sortable,
@@ -135,7 +135,7 @@ static void btk_tree_view_model_sort_column_changed            (BtkTreeSortable 
 
 /* Internal functions */
 static void btk_tree_view_column_sort                          (BtkTreeViewColumn       *tree_column,
-								gpointer                 data);
+								bpointer                 data);
 static void btk_tree_view_column_setup_sort_column_id_callback (BtkTreeViewColumn       *tree_column);
 static void btk_tree_view_column_set_attributesv               (BtkTreeViewColumn       *tree_column,
 								BtkCellRenderer         *cell_renderer,
@@ -155,7 +155,7 @@ static void btk_tree_view_column_clear_attributes_by_info      (BtkTreeViewColum
 /* BtkBuildable implementation */
 static void btk_tree_view_column_buildable_init                 (BtkBuildableIface     *iface);
 
-static guint tree_column_signals[LAST_SIGNAL] = { 0 };
+static buint tree_column_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkTreeViewColumn, btk_tree_view_column, BTK_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_CELL_LAYOUT,
@@ -208,7 +208,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
 						     P_("Width"),
 						     P_("Current width of the column"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READABLE));
   g_object_class_install_property (object_class,
@@ -217,7 +217,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
 						     P_("Spacing"),
 						     P_("Space which is inserted between cells"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
   g_object_class_install_property (object_class,
@@ -235,7 +235,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
                                                      P_("Fixed Width"),
                                                      P_("Current fixed width of the column"),
                                                      1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      1, /* not useful */
                                                      BTK_PARAM_READWRITE));
 
@@ -245,7 +245,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
                                                      P_("Minimum Width"),
                                                      P_("Minimum allowed width of the column"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -255,7 +255,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
                                                      P_("Maximum Width"),
                                                      P_("Maximum allowed width of the column"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -341,7 +341,7 @@ btk_tree_view_column_class_init (BtkTreeViewColumnClass *class)
                                                      P_("Sort column ID"),
                                                      P_("Logical sort column ID this column sorts on when selected for sorting"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 }
@@ -430,7 +430,7 @@ btk_tree_view_column_finalize (BObject *object)
 
 static void
 btk_tree_view_column_set_property (BObject         *object,
-                                   guint            prop_id,
+                                   buint            prop_id,
                                    const BValue    *value,
                                    BParamSpec      *pspec)
 {
@@ -528,7 +528,7 @@ btk_tree_view_column_set_property (BObject         *object,
 
 static void
 btk_tree_view_column_get_property (BObject         *object,
-                                   guint            prop_id,
+                                   buint            prop_id,
                                    BValue          *value,
                                    BParamSpec      *pspec)
 {
@@ -635,7 +635,7 @@ btk_tree_view_column_get_property (BObject         *object,
 static void
 btk_tree_view_column_cell_layout_pack_start (BtkCellLayout   *cell_layout,
                                              BtkCellRenderer *cell,
-                                             gboolean         expand)
+                                             bboolean         expand)
 {
   BtkTreeViewColumn *column;
   BtkTreeViewColumnCellInfo *cell_info;
@@ -659,7 +659,7 @@ btk_tree_view_column_cell_layout_pack_start (BtkCellLayout   *cell_layout,
 static void
 btk_tree_view_column_cell_layout_pack_end (BtkCellLayout   *cell_layout,
                                            BtkCellRenderer *cell,
-                                           gboolean         expand)
+                                           bboolean         expand)
 {
   BtkTreeViewColumn *column;
   BtkTreeViewColumnCellInfo *cell_info;
@@ -703,8 +703,8 @@ btk_tree_view_column_cell_layout_clear (BtkCellLayout *cell_layout)
 static void
 btk_tree_view_column_cell_layout_add_attribute (BtkCellLayout   *cell_layout,
                                                 BtkCellRenderer *cell,
-                                                const gchar     *attribute,
-                                                gint             column)
+                                                const bchar     *attribute,
+                                                bint             column)
 {
   BtkTreeViewColumn *tree_column;
   BtkTreeViewColumnCellInfo *info;
@@ -715,7 +715,7 @@ btk_tree_view_column_cell_layout_add_attribute (BtkCellLayout   *cell_layout,
   info = btk_tree_view_column_get_cell_info (tree_column, cell);
   g_return_if_fail (info != NULL);
 
-  info->attributes = b_slist_prepend (info->attributes, GINT_TO_POINTER (column));
+  info->attributes = b_slist_prepend (info->attributes, BINT_TO_POINTER (column));
   info->attributes = b_slist_prepend (info->attributes, g_strdup (attribute));
 
   if (tree_column->tree_view)
@@ -726,7 +726,7 @@ static void
 btk_tree_view_column_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
                                                      BtkCellRenderer       *cell,
                                                      BtkCellLayoutDataFunc  func,
-                                                     gpointer               func_data,
+                                                     bpointer               func_data,
                                                      GDestroyNotify         destroy)
 {
   BtkTreeViewColumn *column;
@@ -772,7 +772,7 @@ btk_tree_view_column_cell_layout_clear_attributes (BtkCellLayout    *cell_layout
 static void
 btk_tree_view_column_cell_layout_reorder (BtkCellLayout   *cell_layout,
                                           BtkCellRenderer *cell,
-                                          gint             position)
+                                          bint             position)
 {
   GList *link;
   BtkTreeViewColumn *column;
@@ -886,7 +886,7 @@ btk_tree_view_column_create_button (BtkTreeViewColumn *tree_column)
 static void 
 btk_tree_view_column_update_button (BtkTreeViewColumn *tree_column)
 {
-  gint sort_column_id = -1;
+  bint sort_column_id = -1;
   BtkWidget *hbox;
   BtkWidget *alignment;
   BtkWidget *arrow;
@@ -955,7 +955,7 @@ btk_tree_view_column_update_button (BtkTreeViewColumn *tree_column)
 
   if (tree_column->show_sort_indicator)
     {
-      gboolean alternative;
+      bboolean alternative;
 
       g_object_get (btk_widget_get_settings (tree_column->tree_view),
 		    "btk-alternative-sort-arrows", &alternative,
@@ -1063,10 +1063,10 @@ btk_tree_view_column_update_button (BtkTreeViewColumn *tree_column)
 /* Button signal handlers
  */
 
-static gint
+static bint
 btk_tree_view_column_button_event (BtkWidget *widget,
 				   BdkEvent  *event,
-				   gpointer   data)
+				   bpointer   data)
 {
   BtkTreeViewColumn *column = (BtkTreeViewColumn *) data;
 
@@ -1093,8 +1093,8 @@ btk_tree_view_column_button_event (BtkWidget *widget,
       (btk_drag_check_threshold (widget,
 				 column->drag_x,
 				 column->drag_y,
-				 (gint) ((BdkEventMotion *)event)->x,
-				 (gint) ((BdkEventMotion *)event)->y)))
+				 (bint) ((BdkEventMotion *)event)->x,
+				 (bint) ((BdkEventMotion *)event)->y)))
     {
       column->maybe_reordered = FALSE;
       _btk_tree_view_column_start_drag (BTK_TREE_VIEW (column->tree_view), column);
@@ -1121,15 +1121,15 @@ btk_tree_view_column_button_event (BtkWidget *widget,
 
 
 static void
-btk_tree_view_column_button_clicked (BtkWidget *widget, gpointer data)
+btk_tree_view_column_button_clicked (BtkWidget *widget, bpointer data)
 {
   g_signal_emit_by_name (data, "clicked");
 }
 
-static gboolean
+static bboolean
 btk_tree_view_column_mnemonic_activate (BtkWidget *widget,
-					gboolean   group_cycling,
-					gpointer   data)
+					bboolean   group_cycling,
+					bpointer   data)
 {
   BtkTreeViewColumn *column = (BtkTreeViewColumn *)data;
 
@@ -1150,7 +1150,7 @@ static void
 btk_tree_view_model_sort_column_changed (BtkTreeSortable   *sortable,
 					 BtkTreeViewColumn *column)
 {
-  gint sort_column_id;
+  bint sort_column_id;
   BtkSortType order;
 
   if (btk_tree_sortable_get_sort_column_id (sortable,
@@ -1175,12 +1175,12 @@ btk_tree_view_model_sort_column_changed (BtkTreeSortable   *sortable,
 
 static void
 btk_tree_view_column_sort (BtkTreeViewColumn *tree_column,
-			   gpointer           data)
+			   bpointer           data)
 {
-  gint sort_column_id;
+  bint sort_column_id;
   BtkSortType order;
-  gboolean has_sort_column;
-  gboolean has_default_sort_func;
+  bboolean has_sort_column;
+  bboolean has_default_sort_func;
 
   g_return_if_fail (tree_column->tree_view != NULL);
 
@@ -1232,7 +1232,7 @@ btk_tree_view_column_setup_sort_column_id_callback (BtkTreeViewColumn *tree_colu
   if (BTK_IS_TREE_SORTABLE (model) &&
       tree_column->sort_column_id != -1)
     {
-      gint real_sort_column_id;
+      bint real_sort_column_id;
       BtkSortType real_order;
 
       if (tree_column->sort_column_changed_signal == 0)
@@ -1266,8 +1266,8 @@ _btk_tree_view_column_realize_button (BtkTreeViewColumn *column)
 {
   BtkTreeView *tree_view;
   BdkWindowAttr attr;
-  guint attributes_mask;
-  gboolean rtl;
+  buint attributes_mask;
+  bboolean rtl;
 
   tree_view = (BtkTreeView *)column->tree_view;
   rtl = (btk_widget_get_direction (BTK_WIDGET (tree_view)) == BTK_TEXT_DIR_RTL);
@@ -1375,7 +1375,7 @@ _btk_tree_view_column_unset_tree_view (BtkTreeViewColumn *column)
   column->button = NULL;
 }
 
-gboolean
+bboolean
 _btk_tree_view_column_has_editable_cell (BtkTreeViewColumn *column)
 {
   GList *list;
@@ -1401,10 +1401,10 @@ _btk_tree_view_column_get_edited_cell (BtkTreeViewColumn *column)
   return NULL;
 }
 
-gint
+bint
 _btk_tree_view_column_count_special_cells (BtkTreeViewColumn *column)
 {
-  gint i = 0;
+  bint i = 0;
   GList *list;
 
   for (list = column->cell_list; list; list = list->next)
@@ -1422,10 +1422,10 @@ _btk_tree_view_column_count_special_cells (BtkTreeViewColumn *column)
 
 BtkCellRenderer *
 _btk_tree_view_column_get_cell_at_pos (BtkTreeViewColumn *column,
-				       gint               x)
+				       bint               x)
 {
   GList *list;
-  gint current_x = 0;
+  bint current_x = 0;
 
   list = btk_tree_view_column_cell_first (column);
   for (; list; list = btk_tree_view_column_cell_next (column, list))
@@ -1489,7 +1489,7 @@ btk_tree_view_column_new (void)
  * Return value: A newly created #BtkTreeViewColumn.
  **/
 BtkTreeViewColumn *
-btk_tree_view_column_new_with_attributes (const gchar     *title,
+btk_tree_view_column_new_with_attributes (const bchar     *title,
 					  BtkCellRenderer *cell,
 					  ...)
 {
@@ -1533,7 +1533,7 @@ btk_tree_view_column_get_cell_info (BtkTreeViewColumn *tree_column,
 void
 btk_tree_view_column_pack_start (BtkTreeViewColumn *tree_column,
 				 BtkCellRenderer   *cell,
-				 gboolean           expand)
+				 bboolean           expand)
 {
   btk_cell_layout_pack_start (BTK_CELL_LAYOUT (tree_column), cell, expand);
 }
@@ -1551,7 +1551,7 @@ btk_tree_view_column_pack_start (BtkTreeViewColumn *tree_column,
 void
 btk_tree_view_column_pack_end (BtkTreeViewColumn  *tree_column,
 			       BtkCellRenderer    *cell,
-			       gboolean            expand)
+			       bboolean            expand)
 {
   btk_cell_layout_pack_end (BTK_CELL_LAYOUT (tree_column), cell, expand);
 }
@@ -1620,8 +1620,8 @@ btk_tree_view_column_get_cell_renderers (BtkTreeViewColumn *tree_column)
 void
 btk_tree_view_column_add_attribute (BtkTreeViewColumn *tree_column,
 				    BtkCellRenderer   *cell_renderer,
-				    const gchar       *attribute,
-				    gint               column)
+				    const bchar       *attribute,
+				    bint               column)
 {
   btk_cell_layout_add_attribute (BTK_CELL_LAYOUT (tree_column),
                                  cell_renderer, attribute, column);
@@ -1632,18 +1632,18 @@ btk_tree_view_column_set_attributesv (BtkTreeViewColumn *tree_column,
 				      BtkCellRenderer   *cell_renderer,
 				      va_list            args)
 {
-  gchar *attribute;
-  gint column;
+  bchar *attribute;
+  bint column;
 
-  attribute = va_arg (args, gchar *);
+  attribute = va_arg (args, bchar *);
 
   btk_tree_view_column_clear_attributes (tree_column, cell_renderer);
   
   while (attribute != NULL)
     {
-      column = va_arg (args, gint);
+      column = va_arg (args, bint);
       btk_tree_view_column_add_attribute (tree_column, cell_renderer, attribute, column);
-      attribute = va_arg (args, gchar *);
+      attribute = va_arg (args, bchar *);
     }
 }
 
@@ -1693,7 +1693,7 @@ void
 btk_tree_view_column_set_cell_data_func (BtkTreeViewColumn   *tree_column,
 					 BtkCellRenderer     *cell_renderer,
 					 BtkTreeCellDataFunc  func,
-					 gpointer             func_data,
+					 bpointer             func_data,
 					 GDestroyNotify       destroy)
 {
   btk_cell_layout_set_cell_data_func (BTK_CELL_LAYOUT (tree_column),
@@ -1729,7 +1729,7 @@ btk_tree_view_column_clear_attributes (BtkTreeViewColumn *tree_column,
  **/
 void
 btk_tree_view_column_set_spacing (BtkTreeViewColumn *tree_column,
-				  gint               spacing)
+				  bint               spacing)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (spacing >= 0);
@@ -1750,7 +1750,7 @@ btk_tree_view_column_set_spacing (BtkTreeViewColumn *tree_column,
  * 
  * Return value: the spacing of @tree_column.
  **/
-gint
+bint
 btk_tree_view_column_get_spacing (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), 0);
@@ -1769,7 +1769,7 @@ btk_tree_view_column_get_spacing (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_visible (BtkTreeViewColumn *tree_column,
-				  gboolean           visible)
+				  bboolean           visible)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -1796,7 +1796,7 @@ btk_tree_view_column_set_visible (BtkTreeViewColumn *tree_column,
  * Return value: whether the column is visible or not.  If it is visible, then
  * the tree will show the column.
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_visible (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -1816,7 +1816,7 @@ btk_tree_view_column_get_visible (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_resizable (BtkTreeViewColumn *tree_column,
-				    gboolean           resizable)
+				    bboolean           resizable)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -1843,7 +1843,7 @@ btk_tree_view_column_set_resizable (BtkTreeViewColumn *tree_column,
  * 
  * Return value: %TRUE, if the @tree_column can be resized.
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_resizable (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -1912,7 +1912,7 @@ btk_tree_view_column_get_sizing (BtkTreeViewColumn *tree_column)
  * 
  * Return value: The current width of @tree_column.
  **/
-gint
+bint
 btk_tree_view_column_get_width (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), 0);
@@ -1933,7 +1933,7 @@ btk_tree_view_column_get_width (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_fixed_width (BtkTreeViewColumn *tree_column,
-				      gint               fixed_width)
+				      bint               fixed_width)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (fixed_width > 0);
@@ -1960,7 +1960,7 @@ btk_tree_view_column_set_fixed_width (BtkTreeViewColumn *tree_column,
  * 
  * Return value: the fixed width of the column
  **/
-gint
+bint
 btk_tree_view_column_get_fixed_width (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), 0);
@@ -1978,7 +1978,7 @@ btk_tree_view_column_get_fixed_width (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_min_width (BtkTreeViewColumn *tree_column,
-				    gint               min_width)
+				    bint               min_width)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (min_width >= -1);
@@ -2018,7 +2018,7 @@ btk_tree_view_column_set_min_width (BtkTreeViewColumn *tree_column,
  * 
  * Return value: The minimum width of the @tree_column.
  **/
-gint
+bint
 btk_tree_view_column_get_min_width (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), -1);
@@ -2038,7 +2038,7 @@ btk_tree_view_column_get_min_width (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_max_width (BtkTreeViewColumn *tree_column,
-				    gint               max_width)
+				    bint               max_width)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (max_width >= -1);
@@ -2078,7 +2078,7 @@ btk_tree_view_column_set_max_width (BtkTreeViewColumn *tree_column,
  * 
  * Return value: The maximum width of the @tree_column.
  **/
-gint
+bint
 btk_tree_view_column_get_max_width (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), -1);
@@ -2114,9 +2114,9 @@ btk_tree_view_column_clicked (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_title (BtkTreeViewColumn *tree_column,
-				const gchar       *title)
+				const bchar       *title)
 {
-  gchar *new_title;
+  bchar *new_title;
   
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2137,7 +2137,7 @@ btk_tree_view_column_set_title (BtkTreeViewColumn *tree_column,
  * Return value: the title of the column. This string should not be
  * modified or freed.
  **/
-const gchar *
+const bchar *
 btk_tree_view_column_get_title (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), NULL);
@@ -2159,7 +2159,7 @@ btk_tree_view_column_get_title (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_expand (BtkTreeViewColumn *tree_column,
-				 gboolean           expand)
+				 bboolean           expand)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2195,7 +2195,7 @@ btk_tree_view_column_set_expand (BtkTreeViewColumn *tree_column,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_expand (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -2213,7 +2213,7 @@ btk_tree_view_column_get_expand (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_clickable (BtkTreeViewColumn *tree_column,
-                                    gboolean           clickable)
+                                    bboolean           clickable)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2234,7 +2234,7 @@ btk_tree_view_column_set_clickable (BtkTreeViewColumn *tree_column,
  * 
  * Return value: %TRUE if user can click the column header.
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_clickable (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -2297,7 +2297,7 @@ btk_tree_view_column_get_widget (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_alignment (BtkTreeViewColumn *tree_column,
-                                    gfloat             xalign)
+                                    bfloat             xalign)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2320,7 +2320,7 @@ btk_tree_view_column_set_alignment (BtkTreeViewColumn *tree_column,
  * 
  * Return value: The current alignent of @tree_column.
  **/
-gfloat
+bfloat
 btk_tree_view_column_get_alignment (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), 0.5);
@@ -2338,7 +2338,7 @@ btk_tree_view_column_get_alignment (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_reorderable (BtkTreeViewColumn *tree_column,
-				      gboolean           reorderable)
+				      bboolean           reorderable)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2361,7 +2361,7 @@ btk_tree_view_column_set_reorderable (BtkTreeViewColumn *tree_column,
  * 
  * Return value: %TRUE if the @tree_column can be reordered by the user.
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_reorderable (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -2380,7 +2380,7 @@ btk_tree_view_column_get_reorderable (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_sort_column_id (BtkTreeViewColumn *tree_column,
-					 gint               sort_column_id)
+					 bint               sort_column_id)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (sort_column_id >= -1);
@@ -2437,7 +2437,7 @@ btk_tree_view_column_set_sort_column_id (BtkTreeViewColumn *tree_column,
  * Return value: the current @sort_column_id for this column, or -1 if
  *               this column can't be used for sorting.
  **/
-gint
+bint
 btk_tree_view_column_get_sort_column_id (BtkTreeViewColumn *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), 0);
@@ -2458,7 +2458,7 @@ btk_tree_view_column_get_sort_column_id (BtkTreeViewColumn *tree_column)
  **/
 void
 btk_tree_view_column_set_sort_indicator (BtkTreeViewColumn     *tree_column,
-                                         gboolean               setting)
+                                         bboolean               setting)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2480,7 +2480,7 @@ btk_tree_view_column_set_sort_indicator (BtkTreeViewColumn     *tree_column,
  * 
  * Return value: whether the sort indicator arrow is displayed
  **/
-gboolean
+bboolean
 btk_tree_view_column_get_sort_indicator  (BtkTreeViewColumn     *tree_column)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
@@ -2552,8 +2552,8 @@ void
 btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
 					 BtkTreeModel      *tree_model,
 					 BtkTreeIter       *iter,
-					 gboolean           is_expander,
-					 gboolean           is_expanded)
+					 bboolean           is_expander,
+					 bboolean           is_expanded)
 {
   GSList *list;
   BValue value = { 0, };
@@ -2582,9 +2582,9 @@ btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
       while (list && list->next)
 	{
 	  btk_tree_model_get_value (tree_model, iter,
-				    GPOINTER_TO_INT (list->next->data),
+				    BPOINTER_TO_INT (list->next->data),
 				    &value);
-	  g_object_set_property (cell, (gchar *) list->data, &value);
+	  g_object_set_property (cell, (bchar *) list->data, &value);
 	  b_value_unset (&value);
 	  list = list->next->next;
 	}
@@ -2611,14 +2611,14 @@ btk_tree_view_column_cell_set_cell_data (BtkTreeViewColumn *tree_column,
 void
 btk_tree_view_column_cell_get_size (BtkTreeViewColumn  *tree_column,
 				    const BdkRectangle *cell_area,
-				    gint               *x_offset,
-				    gint               *y_offset,
-				    gint               *width,
-				    gint               *height)
+				    bint               *x_offset,
+				    bint               *y_offset,
+				    bint               *width,
+				    bint               *height)
 {
   GList *list;
-  gboolean first_cell = TRUE;
-  gint focus_line_width;
+  bboolean first_cell = TRUE;
+  bint focus_line_width;
 
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
 
@@ -2632,9 +2632,9 @@ btk_tree_view_column_cell_get_size (BtkTreeViewColumn  *tree_column,
   for (list = tree_column->cell_list; list; list = list->next)
     {
       BtkTreeViewColumnCellInfo *info = (BtkTreeViewColumnCellInfo *) list->data;
-      gboolean visible;
-      gint new_height = 0;
-      gint new_width = 0;
+      bboolean visible;
+      bint new_height = 0;
+      bint new_width = 0;
       g_object_get (info->cell, "visible", &visible, NULL);
 
       if (visible == FALSE)
@@ -2673,40 +2673,40 @@ enum {
   CELL_ACTION_EVENT
 };
 
-static gboolean
+static bboolean
 btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
 					  BdkWindow          *window,
 					  const BdkRectangle *background_area,
 					  const BdkRectangle *cell_area,
-					  guint               flags,
-					  gint                action,
+					  buint               flags,
+					  bint                action,
 					  const BdkRectangle *expose_area,     /* RENDER */
 					  BdkRectangle       *focus_rectangle, /* FOCUS  */
 					  BtkCellEditable   **editable_widget, /* EVENT  */
 					  BdkEvent           *event,           /* EVENT  */
-					  gchar              *path_string)     /* EVENT  */
+					  bchar              *path_string)     /* EVENT  */
 {
   GList *list;
   BdkRectangle real_cell_area;
   BdkRectangle real_background_area;
   BdkRectangle real_expose_area = *cell_area;
-  gint depth = 0;
-  gint expand_cell_count = 0;
-  gint full_requested_width = 0;
-  gint extra_space;
-  gint min_x, min_y, max_x, max_y;
-  gint focus_line_width;
-  gint special_cells;
-  gint horizontal_separator;
-  gboolean cursor_row = FALSE;
-  gboolean first_cell = TRUE;
-  gboolean rtl;
+  bint depth = 0;
+  bint expand_cell_count = 0;
+  bint full_requested_width = 0;
+  bint extra_space;
+  bint min_x, min_y, max_x, max_y;
+  bint focus_line_width;
+  bint special_cells;
+  bint horizontal_separator;
+  bboolean cursor_row = FALSE;
+  bboolean first_cell = TRUE;
+  bboolean rtl;
   /* If we have rtl text, we need to transform our areas */
   BdkRectangle rtl_cell_area;
   BdkRectangle rtl_background_area;
 
-  min_x = G_MAXINT;
-  min_y = G_MAXINT;
+  min_x = B_MAXINT;
+  min_y = B_MAXINT;
   max_x = 0;
   max_y = 0;
 
@@ -2716,7 +2716,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
   if (special_cells > 1 && action == CELL_ACTION_FOCUS)
     {
       BtkTreeViewColumnCellInfo *info = NULL;
-      gboolean found_has_focus = FALSE;
+      bboolean found_has_focus = FALSE;
 
       /* one should have focus */
       for (list = tree_column->cell_list; list; list = list->next)
@@ -2844,7 +2844,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
       /* FOCUS */
       else if (action == CELL_ACTION_FOCUS)
 	{
-	  gint x_offset, y_offset, width, height;
+	  bint x_offset, y_offset, width, height;
 
 	  btk_cell_renderer_get_size (info->cell,
 				      tree_column->tree_view,
@@ -2877,7 +2877,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
       /* EVENT */
       else if (action == CELL_ACTION_EVENT)
 	{
-	  gboolean try_event = FALSE;
+	  bboolean try_event = FALSE;
 
 	  if (event)
 	    {
@@ -2902,7 +2902,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
 
 	  if (try_event)
 	    {
-	      gboolean visible, mode;
+	      bboolean visible, mode;
 
 	      g_object_get (info->cell,
 			    "visible", &visible,
@@ -3009,7 +3009,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
       /* FOCUS */
       else if (action == CELL_ACTION_FOCUS)
 	{
-	  gint x_offset, y_offset, width, height;
+	  bint x_offset, y_offset, width, height;
 
 	  btk_cell_renderer_get_size (info->cell,
 				      tree_column->tree_view,
@@ -3042,7 +3042,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
       /* EVENT */
       else if (action == CELL_ACTION_EVENT)
         {
-	  gboolean try_event = FALSE;
+	  bboolean try_event = FALSE;
 
 	  if (event)
 	    {
@@ -3067,7 +3067,7 @@ btk_tree_view_column_cell_process_action (BtkTreeViewColumn  *tree_column,
 
 	  if (try_event)
 	    {
-	      gboolean visible, mode;
+	      bboolean visible, mode;
 
 	      g_object_get (info->cell,
 			    "visible", &visible,
@@ -3159,7 +3159,7 @@ _btk_tree_view_column_cell_render (BtkTreeViewColumn  *tree_column,
 				   const BdkRectangle *background_area,
 				   const BdkRectangle *cell_area,
 				   const BdkRectangle *expose_area,
-				   guint               flags)
+				   buint               flags)
 {
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (background_area != NULL);
@@ -3176,14 +3176,14 @@ _btk_tree_view_column_cell_render (BtkTreeViewColumn  *tree_column,
 					    NULL, NULL, NULL, NULL);
 }
 
-gboolean
+bboolean
 _btk_tree_view_column_cell_event (BtkTreeViewColumn  *tree_column,
 				  BtkCellEditable   **editable_widget,
 				  BdkEvent           *event,
-				  gchar              *path_string,
+				  bchar              *path_string,
 				  const BdkRectangle *background_area,
 				  const BdkRectangle *cell_area,
-				  guint               flags)
+				  buint               flags)
 {
   g_return_val_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column), FALSE);
 
@@ -3342,14 +3342,14 @@ btk_tree_view_column_cell_prev (BtkTreeViewColumn *tree_column,
   return NULL;
 }
 
-gboolean
+bboolean
 _btk_tree_view_column_cell_focus (BtkTreeViewColumn *tree_column,
-				  gint               direction,
-				  gboolean           left,
-				  gboolean           right)
+				  bint               direction,
+				  bboolean           left,
+				  bboolean           right)
 {
-  gint count;
-  gboolean rtl;
+  bint count;
+  bboolean rtl;
 
   count = _btk_tree_view_column_count_special_cells (tree_column);
   rtl = btk_widget_get_direction (BTK_WIDGET (tree_column->tree_view)) == BTK_TEXT_DIR_RTL;
@@ -3471,9 +3471,9 @@ _btk_tree_view_column_cell_draw_focus (BtkTreeViewColumn  *tree_column,
 				       const BdkRectangle *background_area,
 				       const BdkRectangle *cell_area,
 				       const BdkRectangle *expose_area,
-				       guint               flags)
+				       buint               flags)
 {
-  gint focus_line_width;
+  bint focus_line_width;
   BtkStateType cell_state;
   
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
@@ -3535,7 +3535,7 @@ _btk_tree_view_column_cell_draw_focus (BtkTreeViewColumn  *tree_column,
  * 
  * Return value: %TRUE, if any of the cells packed into the @tree_column are currently visible
  **/
-gboolean
+bboolean
 btk_tree_view_column_cell_is_visible (BtkTreeViewColumn *tree_column)
 {
   GList *list;
@@ -3568,7 +3568,7 @@ btk_tree_view_column_focus_cell (BtkTreeViewColumn *tree_column,
 				 BtkCellRenderer   *cell)
 {
   GList *list;
-  gboolean found_cell = FALSE;
+  bboolean found_cell = FALSE;
 
   g_return_if_fail (BTK_IS_TREE_VIEW_COLUMN (tree_column));
   g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
@@ -3604,7 +3604,7 @@ btk_tree_view_column_focus_cell (BtkTreeViewColumn *tree_column,
 
 void
 _btk_tree_view_column_cell_set_dirty (BtkTreeViewColumn *tree_column,
-				      gboolean           install_handler)
+				      bboolean           install_handler)
 {
   GList *list;
 
@@ -3653,13 +3653,13 @@ _btk_tree_view_column_stop_editing (BtkTreeViewColumn *tree_column)
 void
 _btk_tree_view_column_get_neighbor_sizes (BtkTreeViewColumn *column,
 					  BtkCellRenderer   *cell,
-					  gint              *left,
-					  gint              *right)
+					  bint              *left,
+					  bint              *right)
 {
   GList *list;
   BtkTreeViewColumnCellInfo *info;
-  gint l, r;
-  gboolean rtl;
+  bint l, r;
+  bboolean rtl;
 
   l = r = 0;
 
@@ -3710,15 +3710,15 @@ _btk_tree_view_column_get_neighbor_sizes (BtkTreeViewColumn *column,
  * 
  * Return value: %TRUE if @cell belongs to @tree_column.
  */
-gboolean
+bboolean
 btk_tree_view_column_cell_get_position (BtkTreeViewColumn *tree_column,
 					BtkCellRenderer   *cell_renderer,
-					gint              *start_pos,
-					gint              *width)
+					bint              *start_pos,
+					bint              *width)
 {
   GList *list;
-  gint current_x = 0;
-  gboolean found_cell = FALSE;
+  bint current_x = 0;
+  bboolean found_cell = FALSE;
   BtkTreeViewColumnCellInfo *cellinfo = NULL;
 
   list = btk_tree_view_column_cell_first (tree_column);

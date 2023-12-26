@@ -38,7 +38,7 @@ struct _BailPixmap
 {
   BailWidget parent;
 
-  gchar*     image_description;
+  bchar*     image_description;
 
 };
 

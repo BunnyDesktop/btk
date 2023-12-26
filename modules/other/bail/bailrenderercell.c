@@ -55,9 +55,9 @@ bail_renderer_cell_finalize (BObject  *object)
   B_OBJECT_CLASS (bail_renderer_cell_parent_class)->finalize (object);
 }
 
-gboolean
+bboolean
 bail_renderer_cell_update_cache (BailRendererCell *cell, 
-                                 gboolean         emit_change_signal)
+                                 bboolean         emit_change_signal)
 {
   BailRendererCellClass *class = BAIL_RENDERER_CELL_GET_CLASS(cell);
   if (class->update_cache)

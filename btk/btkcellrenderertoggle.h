@@ -45,9 +45,9 @@ struct _BtkCellRendererToggle
   BtkCellRenderer parent;
 
   /*< private >*/
-  guint GSEAL (active) : 1;
-  guint GSEAL (activatable) : 1;
-  guint GSEAL (radio) : 1;
+  buint GSEAL (active) : 1;
+  buint GSEAL (activatable) : 1;
+  buint GSEAL (radio) : 1;
 };
 
 struct _BtkCellRendererToggleClass
@@ -55,7 +55,7 @@ struct _BtkCellRendererToggleClass
   BtkCellRendererClass parent_class;
 
   void (* toggled) (BtkCellRendererToggle *cell_renderer_toggle,
-		    const gchar                 *path);
+		    const bchar                 *path);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -67,17 +67,17 @@ struct _BtkCellRendererToggleClass
 GType            btk_cell_renderer_toggle_get_type       (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_toggle_new            (void);
 
-gboolean         btk_cell_renderer_toggle_get_radio      (BtkCellRendererToggle *toggle);
+bboolean         btk_cell_renderer_toggle_get_radio      (BtkCellRendererToggle *toggle);
 void             btk_cell_renderer_toggle_set_radio      (BtkCellRendererToggle *toggle,
-                                                          gboolean               radio);
+                                                          bboolean               radio);
 
-gboolean        btk_cell_renderer_toggle_get_active      (BtkCellRendererToggle *toggle);
+bboolean        btk_cell_renderer_toggle_get_active      (BtkCellRendererToggle *toggle);
 void            btk_cell_renderer_toggle_set_active      (BtkCellRendererToggle *toggle,
-                                                          gboolean               setting);
+                                                          bboolean               setting);
 
-gboolean        btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle);
+bboolean        btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle);
 void            btk_cell_renderer_toggle_set_activatable (BtkCellRendererToggle *toggle,
-                                                          gboolean               setting);
+                                                          bboolean               setting);
 
 
 B_END_DECLS

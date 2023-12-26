@@ -4,14 +4,14 @@
 /* This is a callback function. The data arguments are ignored
  * in this example. More on callbacks below. */
 static void hello( BtkWidget *widget,
-                   gpointer   data )
+                   bpointer   data )
 {
     g_print ("Hello World\n");
 }
 
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     /* If you return FALSE in the "delete_event" signal handler,
      * BTK will emit the "destroy" signal. Returning TRUE means
@@ -29,7 +29,7 @@ static gboolean delete_event( BtkWidget *widget,
 
 /* Another callback */
 static void destroy( BtkWidget *widget,
-                     gpointer   data )
+                     bpointer   data )
 {
     btk_main_quit ();
 }

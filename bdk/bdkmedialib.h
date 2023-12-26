@@ -36,7 +36,7 @@
 
 B_BEGIN_DECLS
 
-gboolean _bdk_use_medialib (void);
+bboolean _bdk_use_medialib (void);
 
 B_END_DECLS
 

@@ -7,18 +7,18 @@ static void _print_states (BatkObject *obj);
 static void _check_children (BatkObject *obj);
 static void _check_relation (BatkObject *obj);
 static void _create_event_watcher (void);
-static void _focus_handler (BatkObject *obj, gboolean focus_in);
-static gboolean _children_changed (GSignalInvocationHint *ihint,
-                                   guint                  n_param_values,
+static void _focus_handler (BatkObject *obj, bboolean focus_in);
+static bboolean _children_changed (GSignalInvocationHint *ihint,
+                                   buint                  n_param_values,
                                    const BValue          *param_values,
-                                   gpointer               data);
+                                   bpointer               data);
 
-static guint id;
+static buint id;
 
 static void _print_states (BatkObject *obj)
 {
   BatkStateSet *state_set;
-  gint i;
+  bint i;
 
   state_set = batk_object_ref_state_set (obj);
 
@@ -26,7 +26,7 @@ static void _print_states (BatkObject *obj)
   for (i = 0; i < 64; i++)
     {
        BatkStateType one_state;
-       const gchar *name;
+       const bchar *name;
 
        if (batk_state_set_contains_state (state_set, i))
          {
@@ -44,10 +44,10 @@ static void _print_states (BatkObject *obj)
 
 static void _print_type (BatkObject *obj)
 {
-  const gchar * typename = NULL;
-  const gchar * name = NULL;
+  const bchar * typename = NULL;
+  const bchar * name = NULL;
   BatkRole role;
-  static gboolean in_print_type = FALSE;
+  static bboolean in_print_type = FALSE;
    
   if (BTK_IS_ACCESSIBLE (obj))
     {
@@ -66,7 +66,7 @@ static void _print_type (BatkObject *obj)
 
   if (BATK_IS_COMPONENT (obj))
     {
-      gint x, y, width, height;
+      bint x, y, width, height;
       BatkStateSet *states;
 
       _print_states (obj);
@@ -89,7 +89,7 @@ static void _print_type (BatkObject *obj)
           if (batk_state_set_contains_state (states, BATK_STATE_SHOWING) &&
               BATK_IS_TEXT (obj))
             {
-              gint offset;
+              bint offset;
 
               batk_text_get_character_extents (BATK_TEXT (obj), 1, 
                                               &x, &y, &width, &height, 
@@ -139,7 +139,7 @@ static void _print_accessible (BatkObject *obj)
   BatkObject* parent_batk;
   BatkObject* ref_obj;
   BatkRole    role;
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   if (first_time)
     {
@@ -199,7 +199,7 @@ static void _print_accessible (BatkObject *obj)
 static void _check_relation (BatkObject *obj)
 {
   BatkRelationSet* relation_set = batk_object_ref_relation_set (obj);
-  gint n_relations, i;
+  bint n_relations, i;
 
   g_return_if_fail (relation_set);
 
@@ -217,7 +217,7 @@ static void _check_relation (BatkObject *obj)
 
 static void _check_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
   BatkLayer layer;
   BatkRole role;
 
@@ -267,16 +267,16 @@ static void _check_children (BatkObject *obj)
   g_print ("End Check Children\n");
 }
 
-static gboolean
+static bboolean
 _children_changed (GSignalInvocationHint *ihint,
-                   guint                  n_param_values,
+                   buint                  n_param_values,
                    const BValue          *param_values,
-                   gpointer               data)
+                   bpointer               data)
 {
   BObject *object;
-  guint index;
-  gpointer target;
-  const gchar *target_name = "NotBatkObject";
+  buint index;
+  bpointer target;
+  const bchar *target_name = "NotBatkObject";
 
   object = b_value_get_object (param_values + 0);
   index = b_value_get_uint (param_values + 1);
@@ -322,14 +322,14 @@ _create_event_watcher (void)
 }
 
 static void 
-_focus_handler (BatkObject *obj, gboolean focus_in)
+_focus_handler (BatkObject *obj, bboolean focus_in)
 {
   g_print ("In _focus_handler focus_in: %s\n", focus_in ? "true" : "false"); 
   _print_type (obj);
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testobject Module loaded\n");
 

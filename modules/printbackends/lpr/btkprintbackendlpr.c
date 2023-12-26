@@ -75,14 +75,14 @@ static void                 lpr_printer_prepare_for_print         (BtkPrinter   
 								   BtkPageSetup            *page_setup);
 static bairo_surface_t *    lpr_printer_create_bairo_surface      (BtkPrinter              *printer,
 								   BtkPrintSettings        *settings,
-								   gdouble                  width,
-								   gdouble                  height,
+								   bdouble                  width,
+								   bdouble                  height,
 								   BUNNYIOChannel              *cache_io);
 static void                 btk_print_backend_lpr_print_stream    (BtkPrintBackend         *print_backend,
 								   BtkPrintJob             *job,
 								   BUNNYIOChannel              *data_io,
 								   BtkPrintJobCompleteFunc  callback,
-								   gpointer                 user_data,
+								   bpointer                 user_data,
 								   GDestroyNotify           dnotify);
 
 static void
@@ -169,7 +169,7 @@ _bairo_write (void                *closure,
               unsigned int         length)
 {
   BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
-  gsize written;
+  bsize written;
   GError *error;
 
   error = NULL;
@@ -179,7 +179,7 @@ _bairo_write (void                *closure,
 
   while (length > 0) 
     {
-      g_io_channel_write_chars (io, (const gchar*)data, length, &written, &error);
+      g_io_channel_write_chars (io, (const bchar*)data, length, &written, &error);
 
       if (error != NULL)
 	{
@@ -203,8 +203,8 @@ _bairo_write (void                *closure,
 static bairo_surface_t *
 lpr_printer_create_bairo_surface (BtkPrinter       *printer,
 				  BtkPrintSettings *settings,
-				  gdouble           width, 
-				  gdouble           height,
+				  bdouble           width, 
+				  bdouble           height,
 				  BUNNYIOChannel       *cache_io)
 {
   bairo_surface_t *surface;
@@ -222,7 +222,7 @@ typedef struct {
   BtkPrintBackend *backend;
   BtkPrintJobCompleteFunc callback;
   BtkPrintJob *job;
-  gpointer user_data;
+  bpointer user_data;
   GDestroyNotify dnotify;
 
   BUNNYIOChannel *in;
@@ -231,7 +231,7 @@ typedef struct {
 static void
 lpr_print_cb (BtkPrintBackendLpr *print_backend,
               GError             *error,
-              gpointer            user_data)
+              bpointer            user_data)
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
@@ -254,13 +254,13 @@ lpr_print_cb (BtkPrintBackendLpr *print_backend,
   g_free (ps);
 }
 
-static gboolean
+static bboolean
 lpr_write (BUNNYIOChannel   *source,
            BUNNYIOCondition  con,
-           gpointer      user_data)
+           bpointer      user_data)
 {
-  gchar buf[_LPR_MAX_CHUNK_SIZE];
-  gsize bytes_read;
+  bchar buf[_LPR_MAX_CHUNK_SIZE];
+  bsize bytes_read;
   GError *error;
   BUNNYIOStatus status;
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
@@ -276,7 +276,7 @@ lpr_write (BUNNYIOChannel   *source,
 
   if (status != G_IO_STATUS_ERROR)
     {
-      gsize bytes_written;
+      bsize bytes_written;
 
       g_io_channel_write_chars (ps->in,
                                 buf, 
@@ -316,15 +316,15 @@ btk_print_backend_lpr_print_stream (BtkPrintBackend        *print_backend,
 				    BtkPrintJob            *job,
 				    BUNNYIOChannel             *data_io,
 				    BtkPrintJobCompleteFunc callback,
-				    gpointer                user_data,
+				    bpointer                user_data,
 				    GDestroyNotify          dnotify)
 {
   GError *print_error = NULL;
   _PrintStreamData *ps;
   BtkPrintSettings *settings;
-  gint argc;
-  gint in_fd;
-  gchar **argv = NULL;
+  bint argc;
+  bint in_fd;
+  bchar **argv = NULL;
   const char *cmd_line;
 
   settings = btk_print_job_get_settings (job);

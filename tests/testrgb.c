@@ -43,7 +43,7 @@
 #include "btk/btk.h"
 
 static void
-quit_func (BtkWidget *widget, gpointer dummy)
+quit_func (BtkWidget *widget, bpointer dummy)
 {
   btk_main_quit ();
 }
@@ -55,17 +55,17 @@ quit_func (BtkWidget *widget, gpointer dummy)
 static void
 testrgb_rgb_test (BtkWidget *drawing_area)
 {
-  guchar *buf;
-  gint i, j;
-  gint offset;
-  guchar val;
-  gdouble start_time, total_time;
-  gint x, y;
-  gboolean dither;
+  buchar *buf;
+  bint i, j;
+  bint offset;
+  buchar val;
+  bdouble start_time, total_time;
+  bint x, y;
+  bboolean dither;
   int dith_max;
   GTimer *timer;
   BdkPixbuf *pixbuf;
-  gboolean to_pixmap;
+  bboolean to_pixmap;
   
   buf = g_malloc (WIDTH * HEIGHT * 8);
 
@@ -195,7 +195,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
     {
       for (x = 0; x < WIDTH; x++)
 	{
-	  guchar gray;
+	  buchar gray;
 
 	  gray = (x * 255) / (WIDTH - 1);
 	  buf[y * WIDTH * 3 + x * 3] = gray;
@@ -207,7 +207,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
     {
       for (x = 0; x < WIDTH; x++)
 	{
-	  guchar gray;
+	  buchar gray;
 
 	  gray = (x * 255) / (WIDTH - 1);
 	  buf[y * WIDTH * 3 + x * 3] = 0;
@@ -219,7 +219,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
     {
       for (x = 0; x < WIDTH; x++)
 	{
-	  guchar gray;
+	  buchar gray;
 
 	  gray = (x * 255) / (WIDTH - 1);
 	  buf[y * WIDTH * 3 + x * 3] = 0;
@@ -231,7 +231,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
     {
       for (x = 0; x < WIDTH; x++)
 	{
-	  guchar gray;
+	  buchar gray;
 
 	  gray = 112 + (x * 31) / (WIDTH - 1);
 	  buf[y * WIDTH * 3 + x * 3] = gray;
@@ -243,7 +243,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
     {
       for (x = 0; x < WIDTH; x++)
 	{
-	  guchar gray;
+	  buchar gray;
 
 	  gray = (x * 255) / (WIDTH - 1);
 	  buf[y * WIDTH * 3 + x * 3] = gray;
@@ -257,7 +257,7 @@ testrgb_rgb_test (BtkWidget *drawing_area)
       for (x = 0; x < WIDTH; x++)
 	{
 	  int cindex;
-	  guchar gray;
+	  buchar gray;
 
 	  cindex = (x * 16) / WIDTH;
 	  gray = cindex < 3 ? 0 :

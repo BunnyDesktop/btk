@@ -2493,23 +2493,23 @@ Thu Feb  7 10:53:12 2002  Owen Taylor  <otaylor@redhat.com>
 2002-02-07 Padraig O'Briain <padraig.obriain@sun.com>
 
 	* btk/btkwidget.[ch]:
-	Change show_help signal to return gboolean instead of void. This
+	Change show_help signal to return bboolean instead of void. This
 	allows the keypress which invokes the signal to be propagated to the
 	focus widgets ancestors if not handled by the focus widget.
 	
 	* btk/btktoolips.[ch]
-	Change _btk_tooltips_show_tip () to return a gboolean indicating
+	Change _btk_tooltips_show_tip () to return a bboolean indicating
 	whether widget has tooltip to display.
 	
 2002-02-07 Padraig O'Briain <padraig.obriain@sun.com>
 
 	* btk/btkwidget.[ch]:
-	Change popup_menu signal to return gboolean instead of void. This
+	Change popup_menu signal to return bboolean instead of void. This
 	allows the keypress which invokes the signal to be propagated to the
 	focus widgets ancestors if not handled by the focus widget.
 
 	* btk/btkcolorsel.c btk/btkentry.c btk/btktextview.c:
-	Change signature of popup_menu signal handler to return gboolean
+	Change signature of popup_menu signal handler to return bboolean
 	instead of void and return TRUE in the signal handler
 
 2002-02-07  Anders Carlsson  <andersca@gnu.org>
@@ -3470,7 +3470,7 @@ Sat Jan 19 20:49:41 2002  Kristian Rietveld  <kris@btk.org>
 Sat Jan 19 08:47:41 2002  Jeff Garzik  <jgarzik@mandrakesoft.com>
 
 	* bdk/linux-fb/bdkproperty-fb.c (bdk_atom_name):
-	Wrap case values in GPOINTER_TO_UINT().  Fixes build with gcc 3.x.
+	Wrap case values in BPOINTER_TO_UINT().  Fixes build with gcc 3.x.
 
 	* btk/btkmain.c:  Include sys/types.h if G_OS_UNIX.
 	Fixes build with gcc 3.x and -ansi.
@@ -4957,8 +4957,8 @@ Tue Dec  4 21:46:13 2001  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 2001-12-04  Manish Singh  <yosh@gimp.org>
 
 	* btk/btkmain.c
-	* btk/queryimmodules.c: g_module_symbol takes a gpointer *, not just
-        a gpointer.
+	* btk/queryimmodules.c: g_module_symbol takes a bpointer *, not just
+        a bpointer.
 
 	* btk/btkwidget.c (btk_widget_push_composite_child): minor cosmetic
 	correction to docs.
@@ -5589,7 +5589,7 @@ Tue Nov 20 21:25:08 2001  Tim Janik  <timj@btk.org>
 	(_btk_accel_map_remove_group): (un-)register accel groups, with
 	accel paths for correct propagation.
 	(btk_accel_map_add_entry): return void.
-	(btk_accel_map_lookup): return gboolean instead of GQuark.
+	(btk_accel_map_lookup): return bboolean instead of GQuark.
 	
 	* btk/btkitemfactory.c (btk_item_factory_add_foreign): always
 	set accel_path on widgets.
@@ -5609,11 +5609,11 @@ Tue Nov 20 21:25:08 2001  Tim Janik  <timj@btk.org>
 Tue Nov 20 23:01:01 2001  Kristian Rietveld  <kristian@planet.nl>
 
 	* btk/btktreemodel.c (btk_tree_row_reference_unref_path):
-	replace gboolean free_last in the function parameters with
-	gint depth. Changes to reflect new situation.
+	replace bboolean free_last in the function parameters with
+	bint depth. Changes to reflect new situation.
 
 	* btk/btktreemodel.c (btk_tree_row_reference_unref_path_helper):
-	replace gboolean free_last, with gint depth, add gint current_depth.
+	replace bboolean free_last, with bint depth, add bint current_depth.
 	Changes to reflect new situation.
 
 	* btk/btktreemodel.c (btk_tree_row_ref_deleted_callback): changes
@@ -6248,7 +6248,7 @@ Mon Nov 12 19:33:52 2001  Owen Taylor  <otaylor@redhat.com>
 	window resizing process (WM_GETMINMAXINFO) takes all of them into 
 	account
 
-	* bdk/win32/bdkfont-win32.c : make bdk_font_equal return a gboolean
+	* bdk/win32/bdkfont-win32.c : make bdk_font_equal return a bboolean
 
 	* bdk/win32/bdkvisual-win32.c : register BdkVisual with 
 	sizeof (BdkVisualPrivate)
@@ -6659,7 +6659,7 @@ Thu Nov  1 19:11:35 2001  Jonathan Blandford  <jrb@redhat.com>
 
 Thu Nov  1 16:54:00 2001  Owen Taylor  <otaylor@redhat.com>
 
-	* btk/btktypeutils.h: Make BtkFunction return boolean, not gint.
+	* btk/btktypeutils.h: Make BtkFunction return boolean, not bint.
 	(Daniel Elstner).
 
 Thu Nov  1 16:20:56 2001  Owen Taylor  <otaylor@redhat.com>
@@ -6725,7 +6725,7 @@ Wed Oct 31 18:23:47 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkselection.[ch] btk/{btkentry.c, btkfilesel.c,
 	btkoldeditable.c, btktextbuffer.c, btktextview.c}: 
-	Fix set_text to take a gchar, not a guchar, and to have 
+	Fix set_text to take a bchar, not a buchar, and to have 
 	a len argument.
 
 Wed Oct 31 15:31:13 2001  Manish Singh  <yosh@gimp.org>
@@ -6794,9 +6794,9 @@ Wed Oct 31 14:05:17 2001  Jonathan Blandford  <jrb@redhat.com>
 2001-10-31  Murray Cumming  <murrayc@usa.net>
 
 	* btk/cellrenderertext.h: "edited" default signal handler
-	gchar* args are now const.
+	bchar* args are now const.
 	btk/cellrenderertoggle.h: "toggled" default signal handler
-	gchar* arg is now const.
+	bchar* arg is now const.
 	Also changed other signal handlers for "edited" and "toggled" to
 	have the same signature.
 
@@ -7085,10 +7085,10 @@ Fri Oct 26 20:55:57 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/btksizegroup.c (btk_size_group_set_mode): Remove
 	a dot in the documentation. Fixes bug #62632.
 
-	* bdk/x11/bdkmain-x11.c: Replace int and guint with
-	long and gulong in some places to make the code 64-bit
+	* bdk/x11/bdkmain-x11.c: Replace int and buint with
+	long and bulong in some places to make the code 64-bit
 	clean.
-	(_bdk_windowing_init_check): Replace gint with gulong.
+	(_bdk_windowing_init_check): Replace bint with bulong.
 	This patch was made by George Lebl and fixes bug #62113.
 
 	* tests/testbtk.c (create_range_controls): Don't set a 
@@ -7130,7 +7130,7 @@ Fri Oct 26 18:27:11 2001  Kristian Rietveld  <kristian@planet.nl>
 	* btk/btkbutton.[ch]
 	* btk/btkdnd.c: fixed inline comments
 	
-	* btk/btkgamma.c: btk_entry_get_text() returns a const gchar.
+	* btk/btkgamma.c: btk_entry_get_text() returns a const bchar.
 
 2001-10-26  Hans Breuer  <hans@breuer.org>
 
@@ -7187,8 +7187,8 @@ Thu Oct 25 16:27:29 2001  Jonathan Blandford  <jrb@redhat.com>
 	well.
 
 	* btk/btktexttag.c (btk_text_tag_class_init): the valid range for
-	the 'indent' property is G_MININT to G_MAXINT.  Don't use
-	-G_MAXINT for the minimum of the 'rise' property, use G_MININT
+	the 'indent' property is B_MININT to B_MAXINT.  Don't use
+	-B_MAXINT for the minimum of the 'rise' property, use B_MININT
 	instead.
 
 2001-10-24  Anders Carlsson  <andersca@gnu.org>
@@ -8485,7 +8485,7 @@ Thu Sep 20 18:00:56 2001  Kristian Rietveld  <kristian@planet.nl>
 
 	(create_list), (create_ctree), (create_notebook),
 	(create_progress_bar): changed OptionMenuItem arrays into
-	gchar * arrays. Removed "Extended" item where used.
+	bchar * arrays. Removed "Extended" item where used.
 
 	Fixes bug #59885
 
@@ -9017,7 +9017,7 @@ Fri Sep  7 18:50:59 2001  Owen Taylor  <otaylor@redhat.com>
 
 2001-09-07  Havoc Pennington  <hp@redhat.com>
 
-	* btk/btktextiter.c: add some lame code to handle G_MININT, fixes 
+	* btk/btktextiter.c: add some lame code to handle B_MININT, fixes 
 	#57424
 
 Fri Sep  7 18:17:47 2001  Owen Taylor  <otaylor@redhat.com>
@@ -9301,7 +9301,7 @@ Sun Sep  2 23:19:07 2001  Kristian Rietveld  <kristian@planet.nl>
 	fix for bug #59222.
 
 	* btk/btktreeview.c (btk_tree_view_search_equal_func): add
-	gpointer search_data argument to function definition and
+	bpointer search_data argument to function definition and
 	prototype, to match BtkTreeViewSearchEqualFunc typedef.
 
 Sat Sep  1 21:57:27 2001  Kristian Rietveld  <kristian@planet.nl>
@@ -9998,7 +9998,7 @@ Fri Aug 10 16:55:53 2001  Tim Janik  <timj@btk.org>
 	* btk/btklayout.c: add x/y child properties
 
 	* btk/btkfixed.c: add x/y child properties, and get rid of 
-	uses of "gint16"
+	uses of "bint16"
 
 	* tests/testbtk.c (create_window_sizing): lots of tweaks to window
 	sizing test
@@ -12226,7 +12226,7 @@ Tue May 29 17:40:29 2001  Owen Taylor  <otaylor@redhat.com>
 Sun May 20 20:07:35 2001  Tim Janik  <timj@btk.org>
 
 	* btk/btksignal.[hc] (btk_signal_connect_full): make hanlder id a
-	gulong as in GSignal.
+	bulong as in GSignal.
 
 Fri May 25 19:04:17 2001  Jonathan Blandford  <jrb@redhat.com>
 
@@ -13193,7 +13193,7 @@ Mon Apr 23 18:57:03 2001  Jonathan Blandford  <jrb@redhat.com>
 2001-04-20  Alexander Larsson  <alexl@redhat.com>
 
 	* btk/btkcolorsel.[ch]:
-	API Change. Take BdkColor arguments instead of gdouble *.
+	API Change. Take BdkColor arguments instead of bdouble *.
 	Leave the old btk_color_selection_set_color for compatibility,
 	but marked deprecated.
 	Do correct rounding when converting RGB <-> HSV.
@@ -13299,7 +13299,7 @@ Wed Apr 18 12:15:52 2001  Owen Taylor  <otaylor@redhat.com>
 	number of casts.
 
 	* bdk/x11/bdkwindow-x11.h (struct _BdkXPositionInfo): Use
-	guint for 1 bit bit fields, not gboolean.
+	buint for 1 bit bit fields, not bboolean.
 
 Wed Apr 18 10:04:23 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -14053,11 +14053,11 @@ Mon Mar 26 14:42:59 2001  Owen Taylor  <otaylor@redhat.com>
 	(palette_new): 
 	(mouse_press): 
 	(get_screen_color): 
-	fixed return type (void to gboolean), return TRUE,
+	fixed return type (void to bboolean), return TRUE,
 	added BTK_SIGNAL_FUNC cast
 
 	* btk/btkcombo.c (btk_combo_popup_button_press): fixed return type
-	(void to gboolean), and return TRUE
+	(void to bboolean), and return TRUE
 	(btk_combo_button_release): changed return value to TRUE after
 	btk_grab_add on combo->popwin
 
@@ -14097,7 +14097,7 @@ Mon Mar 26 14:42:59 2001  Owen Taylor  <otaylor@redhat.com>
 	
 	* btk/btktreeitem.c (btk_tree_item_button_press): return TRUE if button
 	and sensitive
-	(btk_tree_item_subtree_button_click): changed type to gint, and return
+	(btk_tree_item_subtree_button_click): changed type to bint, and return
 	TRUE if sensitive
 
 	* btk/btktooltips.c (btk_tooltips_event_handler): deactivate implies 
@@ -14386,14 +14386,14 @@ Fri Mar 16 18:01:17 2001  Jonathan Blandford  <jrb@redhat.com>
 
 2001-03-16  Havoc Pennington  <hp@redhat.com>
 
-	* btk/btkwidget.h (struct _BtkWidgetAuxInfo): change to use gint
-	instead of gint16, to avoid overflow issues, since sizes > 16-bit
+	* btk/btkwidget.h (struct _BtkWidgetAuxInfo): change to use bint
+	instead of bint16, to avoid overflow issues, since sizes > 16-bit
 	are now allowed.
 
 2001-03-16  Havoc Pennington  <hp@redhat.com>
 
 	* Applied patch from Nils Barth (bug # 51041) to 
-	replace "gint" with "gboolean" and 0/1 with TRUE/FALSE
+	replace "bint" with "bboolean" and 0/1 with TRUE/FALSE
 	in various places.
 
 2001-03-15  Havoc Pennington  <hp@redhat.com>
@@ -15946,10 +15946,10 @@ Tue Feb 13 13:16:09 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* btk/Makefile.am, btk/btk.h: Add BtkImageMenuItem
 	
-	* btk/btkmenuitem.h: Use "gint" not "guint16" for toggle size
+	* btk/btkmenuitem.h: Use "bint" not "buint16" for toggle size
 	request and allocation
 
-	* btk/btkmenu.c (btk_menu_size_request): use gint not guint16
+	* btk/btkmenu.c (btk_menu_size_request): use bint not buint16
 
 	* btk/btkcheckmenuitem.c
 	(btk_check_menu_item_toggle_size_request): ditto
@@ -16319,7 +16319,7 @@ Fri Feb  2 15:09:51 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/fnmatch.c (FOLD): Fix problem with passing signed
 	chars to isupper() / tolower(). (#567)
 
-	* examples/packer/pack.c: Add GINT_TO_POINTER, GPOINTER_TO_INT
+	* examples/packer/pack.c: Add BINT_TO_POINTER, BPOINTER_TO_INT
 	to clear up 64-bit warnings. (#567)
 
 Fri Feb  2 12:26:50 2001  Owen Taylor  <otaylor@redhat.com>
@@ -17443,7 +17443,7 @@ Fri Jan  5 16:16:29 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/btktreeviewcolumn.h (struct _BtkTreeViewColumn): rename
 	"size" field to "width" finishes bug 40061
 
-	* btk/btkcellrenderer.h: Use BtkCellRendererState instead of guint
+	* btk/btkcellrenderer.h: Use BtkCellRendererState instead of buint
 	for bitfields, bug 40268
 
 2001-01-04  Havoc Pennington  <hp@redhat.com>
@@ -17666,12 +17666,12 @@ Tue Jan  2 16:23:05 2001  Owen Taylor  <otaylor@redhat.com>
 	fields private	
 
 	* btk/btktreemodel.c (btk_tree_model_get_flags): return
-	BtkTreeModelFlags, not a guint
-	(btk_tree_path_prev): return gboolean not gint
-	(btk_tree_path_up): return gboolean not gint
+	BtkTreeModelFlags, not a buint
+	(btk_tree_path_prev): return bboolean not bint
+	(btk_tree_path_up): return bboolean not bint
 
 	* btk/btktreemodel.h (struct _BtkTreeModelIface): make get_flags
-	return BtkTreeModelFlags, not a guint
+	return BtkTreeModelFlags, not a buint
 
 	* btk/btktreemodelsort.c (btk_tree_model_sort_finalize): check
 	that child model is non-null before unrefing it
@@ -19083,7 +19083,7 @@ Tue Nov 21 14:17:51 GMT 2000  Tony Gale <gale@btk.org>
 	* btk/btkwidget.c: Documented a bunch of functions in here
 	(btk_widget_realize): Warn if you try to realize
 	a widget with no parent that isn't a toplevel
-	(btk_widget_intersect): return a gboolean
+	(btk_widget_intersect): return a bboolean
 
 2000-11-20  Havoc Pennington  <hp@redhat.com>
 
@@ -22491,7 +22491,7 @@ Mon Jul  3 14:24:16 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/bdkinput.h bdk/x11/bdkinput*: Major revision;
 	allow for arbitrary number of axes, namespace everything
-	as bdk_device_*. Replace guint32 deviceid with BdkDevice *
+	as bdk_device_*. Replace buint32 deviceid with BdkDevice *
 	everywhere.
 
 	* bdk/x11/{bdkmain-x11.c,bdkevent-x11.c,bdkinput*}: 
@@ -22805,7 +22805,7 @@ Wed Jun 21 16:38:13 2000  Owen Taylor  <otaylor@redhat.com>
 
 2000-06-21  Havoc Pennington  <hp@redhat.com>
 
-	* btk/btktextiter.h: Use gunichar instead of gint when appropriate
+	* btk/btktextiter.h: Use gunichar instead of bint when appropriate
 	in the interfaces
 
 	* btk/btktexttypes.c: Remove UTF functions, use bunnylib 
@@ -22992,8 +22992,8 @@ Wed Jun 21 11:41:43 2000  Owen Taylor  <otaylor@redhat.com>
 	* bdk/x11/bdkgc-x11.c: Implement a subclass of BdkGC that's
 	specific to X, and returned by the create_gc virtual method
 	of BdkDrawableImplX11. 
-	(bdk_x11_gc_set_dashes): Change this to take an array of gint8
-	rather than gchar, this was also changed in the BdkGC vtable.
+	(bdk_x11_gc_set_dashes): Change this to take an array of bint8
+	rather than bchar, this was also changed in the BdkGC vtable.
 	(bdk_x11_gc_values_to_xvalues): If BdkGCValues is NULL, or the
 	mask is 0, return immediately, instead of checking every flag.
 	This is faster, and keeps us from segfaulting if values is NULL
@@ -24728,12 +24728,12 @@ Fri Feb 11 02:19:32 2000  Tim Janik  <timj@btk.org>
 	* btk/btkhpaned.c (btk_hpaned_size_allocate): 
 	* btk/btkvpaned.c (btk_vpaned_size_allocate): 
 	* btk/btkpaned.c (btk_paned_compute_position): had to squeeze some
-	more guint wrap-around bugs before going to bed.
+	more buint wrap-around bugs before going to bed.
 
 Thu Feb 10 16:16:35 2000  Tim Janik  <timj@btk.org>
 
 	* btk/btkspinbutton.c (btk_spin_button_size_allocate): guard against
-	guint wrap arounds in allocation.width.
+	buint wrap arounds in allocation.width.
 
 	* btk/btktable.c (btk_table_size_allocate_pass1): repeat shrinking
 	process untill we fit the allocation given.
@@ -24843,25 +24843,25 @@ Sat Jan 29 10:11:56 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/bdkim.c (bdk_im_ready): return boolean
 
-	* bdk/bdkgc.c (bdk_gc_set_exposures): gboolean arg
+	* bdk/bdkgc.c (bdk_gc_set_exposures): bboolean arg
 
-	* bdk/bdkfont.c (bdk_font_equal): return gboolean (mild
+	* bdk/bdkfont.c (bdk_font_equal): return bboolean (mild
 	bunnylib clash, should fix bunnylib)
 
-	* bdk/bdkevents.c (bdk_set_show_events): take gboolean arg
-	(bdk_get_show_events): return gboolean, and canonicalize 
+	* bdk/bdkevents.c (bdk_set_show_events): take bboolean arg
+	(bdk_get_show_events): return bboolean, and canonicalize 
 	to TRUE/FALSE
 
-	* bdk/bdkcolor.c (bdk_colormap_new): gboolean flag whether the
+	* bdk/bdkcolor.c (bdk_colormap_new): bboolean flag whether the
 	colormap is private
-	(bdk_colors_alloc): gboolean whether to be contiguous
-	(bdk_color_equal): return gboolean since we are a predicate
+	(bdk_colors_alloc): bboolean whether to be contiguous
+	(bdk_color_equal): return bboolean since we are a predicate
 	and not a qsort() (this looks semi-wrong due to bunnylib breakage,
 	IMO bunnylib should be fixed)
 	
-	* bdk/bdk.c (bdk_set_use_xshm): take gboolean arg
-	(bdk_get_use_xshm): return gboolean
-	(bdk_pointer_is_grabbed): return gboolean
+	* bdk/bdk.c (bdk_set_use_xshm): take bboolean arg
+	(bdk_get_use_xshm): return bboolean
+	(bdk_pointer_is_grabbed): return bboolean
 
 	* bdk/bdk.h: Change prototypes to match all the above changes,
 	and re-run ebtk-format-protos as required.
@@ -25031,12 +25031,12 @@ Sat Jan 22 12:40:48 2000  Owen Taylor  <otaylor@redhat.com>
 
 Fri Jan 21 18:32:43 2000  Owen Taylor  <otaylor@redhat.com>
 
-	* btk/btkaspectframe.h (struct _BtkAspectFrame): s/gint/gboolean/.
+	* btk/btkaspectframe.h (struct _BtkAspectFrame): s/bint/bboolean/.
 
 Fri Jan 21 16:24:08 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/bdkgc.c (bdk_gc_set_dashes): Change from
-	  bdk_gc_set_dashes to take gint8 instead of gchar to
+	  bdk_gc_set_dashes to take bint8 instead of bchar to
 	  make it clearer that it is _not_ a NULL terminated string.
 
 	* bdk/bdk.h bdk/bdkfont.c bdk/bdkgc.c bdk/bdkselection.c
@@ -25383,7 +25383,7 @@ Wed Feb  2 11:58:05 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkfilesel.c: Use the g_filename_to_utf8 and
 	g_filename_from_utf8 functions (which were added a moment ago to
-	GLib). Some cleanups: Use gbooleans. Use GStrings instead of fixed
+	GLib). Some cleanups: Use bbooleans. Use GStrings instead of fixed
 	size buffers.
 
 	btk_file_selection_get_filename returns the filename in the C
@@ -25792,7 +25792,7 @@ Fri Sep 24 00:51:45 1999  Tim Janik  <timj@btk.org>
 Sun Sep 19 18:13:31 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkselection.[ch]: Make the data argument
-	const guchar *.
+	const buchar *.
 
 Sat Sep 18 21:27:40 1999  Owen Taylor  <otaylor@redhat.com>
 
@@ -25805,7 +25805,7 @@ Fri Sep 17 09:57:15 1999  Tim Janik  <timj@btk.org>
 	* btk/btkwidget.c (btk_widget_set_sensitive): 
 	* btk/btknotebook.c (btk_notebook_set_scrollable): 
 	* btk/btknotebook.c (btk_notebook_set_show_border): 
-	* btk/btkclist.c (btk_notebook_set_show_border): make gboolean args
+	* btk/btkclist.c (btk_notebook_set_show_border): make bboolean args
 	in prototypes and implementations consistent (Tomas Ogren).
 
 	* btk/btklayout.c (btk_layout_remove): unset BTK_IS_OFFSCREEN flag
@@ -26120,7 +26120,7 @@ Wed Sep  1 10:38:37 1999  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkwindow.c (btk_window_move_resize): Spelling fix.
 
 	* btk/btkwindow.c (btk_window_constrain_size): cleanups,
-	change back to G_MAXINT.
+	change back to B_MAXINT.
 
 Wed Sep  1 06:54:59 1999  Tim Janik  <timj@btk.org>
 
@@ -26132,7 +26132,7 @@ Wed Sep  1 06:54:59 1999  Tim Janik  <timj@btk.org>
 	(btk_window_constrain_size): major cleanups to the code.
 	if (flags & BDK_HINT_BASE_SIZE) use geometry's base width and height
 	for the base size, instead of the minimums. use 32767 as max width
-	and height (like in btkwindow.c) instead of G_MAXINT.
+	and height (like in btkwindow.c) instead of B_MAXINT.
 
 Wed Sep  1 04:41:25 1999  Tim Janik  <timj@btk.org>
 
@@ -26271,7 +26271,7 @@ Thu Aug 26 14:14:42 1999  Tim Janik  <timj@btk.org>
 	* btk/btkwindow.c (btk_window_realize): if the widget hasn't been
 	allocated yet (happens if the user realizes the window prematurely),
 	size request and allocate it.
-	(btk_window_size_allocate): guard against guint underflows.
+	(btk_window_size_allocate): guard against buint underflows.
 
 Wed Aug 25 19:01:36 1999  Lars Hamann  <lars@btk.org>
 
@@ -26450,8 +26450,8 @@ Wed Jul 21 08:21:40 1999  Tim Janik  <timj@btk.org>
 Tue Jul 20 23:29:48 1999  Tim Janik  <timj@btk.org>
 
 	* btk/btknotebook.c (btk_notebook_page_allocate): convert allocation->
-	width/height to (gint) before calculations and check against < 0 to
-	avoid guint wraparounds.
+	width/height to (bint) before calculations and check against < 0 to
+	avoid buint wraparounds.
 
 Sun Jul 18 00:35:49 1999  Tim Janik  <timj@btk.org>
 
@@ -26805,8 +26805,8 @@ Sat Mar 27 23:32:13 1999  Tim Janik  <timj@btk.org>
 
 	* btk/btkobject.[hc]: implemented btk_object_get() in terms of
 	btk_object_arg_get() and btk_arg_to_valueloc(), floats are collected
-	as gfloat*, uchars are collected as guchar*, ints are collected as
-	gint*, etc...
+	as bfloat*, uchars are collected as buchar*, ints are collected as
+	bint*, etc...
 
 Mon Mar 29 17:45:47 1999  Owen Taylor  <otaylor@redhat.com>
 
@@ -26838,7 +26838,7 @@ Thu Mar 25 12:38:31 1999  Tim Janik  <timj@btk.org>
 	left/right as well (btk-michael-980726-0.patch.gz).
 
 	* btk/btklabel.[hc]: bunch of miscellaneous cleanups, such as s/0/NULL/
-	for pointer values, use gchar instead of char. fixed uline allocation
+	for pointer values, use bchar instead of char. fixed uline allocation
 	leaks, changed the allocation pattern so we use G_ALLOC_AND_FREE mem
 	chunks instead of G_ALLOC_ONLY.
 	(btk_label_size_request): always alter requisition as passed and leave
@@ -27559,7 +27559,7 @@ Sat Sep 18 22:24:15 1999  Owen Taylor  <otaylor@redhat.com>
 
 Fri Sep 17 09:57:15 1999  Tim Janik  <timj@btk.org>
 
-	* bdk/bdk.h, bdk/bdkcolor.c: make return types (gint or gboolean)
+	* bdk/bdk.h, bdk/bdkcolor.c: make return types (bint or bboolean)
 	for prototypes and function implementations consistent (reported
 	by Tomas Ogren).
 
@@ -27697,7 +27697,7 @@ Wed May  5 22:51:06 1999  Owen Taylor  <otaylor@redhat.com>
 Wed May  5 22:24:21 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/bdkwindow.c (bdk_window_set_geometry_hints): Change
-	G_MAXINT to 2^16 to alleviate overflow problems in
+	B_MAXINT to 2^16 to alleviate overflow problems in
 	various window managers.
 
 Wed Apr 21 00:42:08 1999  Owen Taylor  <otaylor@redhat.com>
@@ -27911,20 +27911,20 @@ Mon Sep 20 13:17:39 1999  Pablo Saratxaga <pablo@mandrakesoft.com>
 	* btk/makefile.msc: Correct path to libintl.
 
 	Thanks to Tomi Ollila and Bernd Herd: Fix some inconsistencies in
-	use of gint vs. int, and gint vs. gboolean in headers and
+	use of bint vs. int, and bint vs. bboolean in headers and
 	definitions. Use BtkType for the *_get_type functions. Note that
 	these changes preserve binary compatibility.
 
 	* bdk/bdk.c
 	* bdk/win32/bdk.c
-	* bdk/bdk.h: Fix inconsistencies: gint vs int.
+	* bdk/bdk.h: Fix inconsistencies: bint vs int.
 
 	* btk/btkmain.c
 	* btk/btkclist.c
 	* btk/btkmenufactory.c
 	* btk/btknotebook.c
-	* btk/btkwidget.c: Fix inconsistencies, also gint
-	vs. gboolean.
+	* btk/btkwidget.c: Fix inconsistencies, also bint
+	vs. bboolean.
 
 	* btk/btkcolorsel.[ch]
 	* btk/btkcombo.[ch]
@@ -27962,7 +27962,7 @@ Mon Sep 20 13:17:39 1999  Pablo Saratxaga <pablo@mandrakesoft.com>
 	* btk/btklabel.h (btk_label_get_type)
 	* btk/btktipsquery.c (btk_tips_query_get_type)
 	* btk/btktypeutils.h (btk_type_name): : Use BtkType
-	in a couple of places, not guint.
+	in a couple of places, not buint.
 
 Fri Sep 10 21:31:00 CEST 1999 Pablo Saratxaga <pablo@mandrakesoft.com>
 
@@ -28521,7 +28521,7 @@ Wed Mar 10 00:11:32 1999  Tim Janik  <timj@btk.org>
         and would be hard to get going at all. instead we keep a list of
         BtkItemFactoryItem items on the factory (BtkItemFactoryItems are
         persistant throughout a program's life time).
-        also, i removed the static const gchar *key_* variables, and made
+        also, i removed the static const bchar *key_* variables, and made
         them inline strings (they weren't actually used anyways).
         (btk_item_factory_add_item): update ifactory->items.
         (btk_item_factory_destroy): destroy ifactory->items (and remove
@@ -28718,7 +28718,7 @@ Sun Mar  7 18:46:37 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
 Sun Mar  7 11:43:34 1999  ape@spacetec.no  (Asbjorn Pettersen)
 
 	* btk/btkthemes.c (btk_theme_engine_get): Add OS/2 changes.
-	Added function gen_8_3_dll_name(gchar *name, gchar *fullname).
+	Added function gen_8_3_dll_name(bchar *name, bchar *fullname).
 
 Fri Mar  5 09:12:24 1999  ape@lrdpf.spacetec.no  (Asbjorn Pettersen)
 

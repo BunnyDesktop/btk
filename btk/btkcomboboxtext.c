@@ -75,18 +75,18 @@
  */
 
 static void     btk_combo_box_text_buildable_interface_init     (BtkBuildableIface *iface);
-static gboolean btk_combo_box_text_buildable_custom_tag_start   (BtkBuildable     *buildable,
+static bboolean btk_combo_box_text_buildable_custom_tag_start   (BtkBuildable     *buildable,
 								 BtkBuilder       *builder,
 								 BObject          *child,
-								 const gchar      *tagname,
+								 const bchar      *tagname,
 								 GMarkupParser    *parser,
-								 gpointer         *data);
+								 bpointer         *data);
 
 static void     btk_combo_box_text_buildable_custom_finished    (BtkBuildable     *buildable,
 								 BtkBuilder       *builder,
 								 BObject          *child,
-								 const gchar      *tagname,
-								 gpointer          user_data);
+								 const bchar      *tagname,
+								 bpointer          user_data);
 
 static BtkBuildableIface *buildable_parent_iface = NULL;
 
@@ -96,7 +96,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkComboBoxText, btk_combo_box_text, BTK_TYPE_COMBO_BOX
 
 static BObject *
 btk_combo_box_text_constructor (GType                  type,
-                                guint                  n_construct_properties,
+                                buint                  n_construct_properties,
                                 BObjectConstructParam *construct_properties)
 {
   BObject            *object;
@@ -149,25 +149,25 @@ btk_combo_box_text_buildable_interface_init (BtkBuildableIface *iface)
 typedef struct {
   BtkBuilder    *builder;
   BObject       *object;
-  const gchar   *domain;
+  const bchar   *domain;
 
-  gchar         *context;
-  gchar         *string;
-  guint          translatable : 1;
+  bchar         *context;
+  bchar         *string;
+  buint          translatable : 1;
 
-  guint          is_text : 1;
+  buint          is_text : 1;
 } ItemParserData;
 
 static void
 item_start_element (GMarkupParseContext *context,
-		    const gchar         *element_name,
-		    const gchar        **names,
-		    const gchar        **values,
-		    gpointer             user_data,
+		    const bchar         *element_name,
+		    const bchar        **names,
+		    const bchar        **values,
+		    bpointer             user_data,
 		    GError             **error)
 {
   ItemParserData *data = (ItemParserData*)user_data;
-  guint i;
+  buint i;
 
   if (strcmp (element_name, "item") == 0)
     {
@@ -177,7 +177,7 @@ item_start_element (GMarkupParseContext *context,
 	{
 	  if (strcmp (names[i], "translatable") == 0)
 	    {
-	      gboolean bval;
+	      bboolean bval;
 
 	      if (!_btk_builder_boolean_from_string (values[i], &bval,
 						     error))
@@ -199,13 +199,13 @@ item_start_element (GMarkupParseContext *context,
 
 static void
 item_text (GMarkupParseContext *context,
-	   const gchar         *text,
-	   gsize                text_len,
-	   gpointer             user_data,
+	   const bchar         *text,
+	   bsize                text_len,
+	   bpointer             user_data,
 	   GError             **error)
 {
   ItemParserData *data = (ItemParserData*)user_data;
-  gchar *string;
+  bchar *string;
 
   if (!data->is_text)
     return;
@@ -214,7 +214,7 @@ item_text (GMarkupParseContext *context,
 
   if (data->translatable && text_len)
     {
-      gchar *translated;
+      bchar *translated;
 
       /* FIXME: This will not use the domain set in the .ui file,
        * since the parser is not telling the builder about the domain.
@@ -232,8 +232,8 @@ item_text (GMarkupParseContext *context,
 
 static void
 item_end_element (GMarkupParseContext *context,
-		  const gchar         *element_name,
-		  gpointer             user_data,
+		  const bchar         *element_name,
+		  bpointer             user_data,
 		  GError             **error)
 {
   ItemParserData *data = (ItemParserData*)user_data;
@@ -257,13 +257,13 @@ static const GMarkupParser item_parser =
     item_text
   };
 
-static gboolean
+static bboolean
 btk_combo_box_text_buildable_custom_tag_start (BtkBuildable     *buildable,
 					       BtkBuilder       *builder,
 					       BObject          *child,
-					       const gchar      *tagname,
+					       const bchar      *tagname,
 					       GMarkupParser    *parser,
-					       gpointer         *data)
+					       bpointer         *data)
 {
   if (buildable_parent_iface->custom_tag_start (buildable, builder, child, 
 						tagname, parser, data))
@@ -288,8 +288,8 @@ static void
 btk_combo_box_text_buildable_custom_finished (BtkBuildable *buildable,
 					      BtkBuilder   *builder,
 					      BObject      *child,
-					      const gchar  *tagname,
-					      gpointer      user_data)
+					      const bchar  *tagname,
+					      bpointer      user_data)
 {
   ItemParserData *data;
 
@@ -354,12 +354,12 @@ btk_combo_box_text_new_with_entry (void)
  */
 void
 btk_combo_box_text_append_text (BtkComboBoxText *combo_box,
-                                const gchar     *text)
+                                const bchar     *text)
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint text_column;
-  gint column_type;
+  bint text_column;
+  bint column_type;
 
   g_return_if_fail (BTK_IS_COMBO_BOX_TEXT (combo_box));
   g_return_if_fail (text != NULL);
@@ -392,13 +392,13 @@ btk_combo_box_text_append_text (BtkComboBoxText *combo_box,
  */
 void
 btk_combo_box_text_insert_text (BtkComboBoxText *combo_box,
-                                gint             position,
-                                const gchar     *text)
+                                bint             position,
+                                const bchar     *text)
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint text_column;
-  gint column_type;
+  bint text_column;
+  bint column_type;
 
   g_return_if_fail (BTK_IS_COMBO_BOX_TEXT (combo_box));
   g_return_if_fail (position >= 0);
@@ -425,12 +425,12 @@ btk_combo_box_text_insert_text (BtkComboBoxText *combo_box,
  */
 void
 btk_combo_box_text_prepend_text (BtkComboBoxText *combo_box,
-                                 const gchar     *text)
+                                 const bchar     *text)
 {
   BtkListStore *store;
   BtkTreeIter iter;
-  gint text_column;
-  gint column_type;
+  bint text_column;
+  bint column_type;
 
   g_return_if_fail (BTK_IS_COMBO_BOX_TEXT (combo_box));
   g_return_if_fail (text != NULL);
@@ -457,7 +457,7 @@ btk_combo_box_text_prepend_text (BtkComboBoxText *combo_box,
  */
 void
 btk_combo_box_text_remove (BtkComboBoxText *combo_box,
-                           gint             position)
+                           bint             position)
 {
   BtkTreeModel *model;
   BtkListStore *store;
@@ -488,11 +488,11 @@ btk_combo_box_text_remove (BtkComboBoxText *combo_box,
  *
  * Since: 2.24
  */
-gchar *
+bchar *
 btk_combo_box_text_get_active_text (BtkComboBoxText *combo_box)
 {
   BtkTreeIter iter;
-  gchar *text = NULL;
+  bchar *text = NULL;
 
   g_return_val_if_fail (BTK_IS_COMBO_BOX_TEXT (combo_box), NULL);
 
@@ -506,8 +506,8 @@ btk_combo_box_text_get_active_text (BtkComboBoxText *combo_box)
   else if (btk_combo_box_get_active_iter (BTK_COMBO_BOX (combo_box), &iter))
     {
       BtkTreeModel *model;
-      gint text_column;
-      gint column_type;
+      bint text_column;
+      bint column_type;
 
       model = btk_combo_box_get_model (BTK_COMBO_BOX (combo_box));
       g_return_val_if_fail (BTK_IS_LIST_STORE (model), NULL);

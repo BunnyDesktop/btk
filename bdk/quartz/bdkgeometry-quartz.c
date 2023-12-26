@@ -26,8 +26,8 @@ void
 _bdk_quartz_window_queue_translation (BdkWindow *window,
 				      BdkGC     *gc,
                                       BdkRebunnyion *area,
-                                      gint       dx,
-                                      gint       dy)
+                                      bint       dx,
+                                      bint       dy)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkWindowImplQuartz *impl = (BdkWindowImplQuartz *)private->impl;
@@ -57,7 +57,7 @@ _bdk_quartz_window_queue_translation (BdkWindow *window,
   bdk_rebunnyion_destroy (intersection);
 }
 
-gboolean
+bboolean
 _bdk_quartz_window_queue_antiexpose (BdkWindow *window,
                                      BdkRebunnyion *area)
 {

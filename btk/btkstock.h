@@ -41,18 +41,18 @@ typedef struct _BtkStockItem BtkStockItem;
 
 struct _BtkStockItem
 {
-  gchar *stock_id;
-  gchar *label;
+  bchar *stock_id;
+  bchar *label;
   BdkModifierType modifier;
-  guint keyval;
-  gchar *translation_domain;
+  buint keyval;
+  bchar *translation_domain;
 };
 
 void     btk_stock_add        (const BtkStockItem  *items,
-                               guint                n_items);
+                               buint                n_items);
 void     btk_stock_add_static (const BtkStockItem  *items,
-                               guint                n_items);
-gboolean btk_stock_lookup     (const gchar         *stock_id,
+                               buint                n_items);
+bboolean btk_stock_lookup     (const bchar         *stock_id,
                                BtkStockItem        *item);
 
 /* Should free the list (and free each string in it also).
@@ -63,9 +63,9 @@ GSList*  btk_stock_list_ids  (void);
 BtkStockItem *btk_stock_item_copy (const BtkStockItem *item);
 void          btk_stock_item_free (BtkStockItem       *item);
 
-void          btk_stock_set_translate_func (const gchar      *domain,
+void          btk_stock_set_translate_func (const bchar      *domain,
 					    BtkTranslateFunc  func,
-					    gpointer          data,
+					    bpointer          data,
 					    GDestroyNotify    notify);
 
 /* Stock IDs (not all are stock items; some are images only) */

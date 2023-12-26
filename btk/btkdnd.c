@@ -89,8 +89,8 @@ struct _BtkDragSourceSite
   BdkColormap       *colormap;	         /* Colormap for drag icon */
 
   /* Stored button press information to detect drag beginning */
-  gint               state;
-  gint               x, y;
+  bint               state;
+  bint               x, y;
 };
   
 struct _BtkDragSourceInfo 
@@ -103,26 +103,26 @@ struct _BtkDragSourceInfo
   BtkWidget         *fallback_icon; /* Window for drag used on other screens */
   BtkWidget         *ipc_widget;  /* BtkInvisible for grab, message passing */
   BdkCursor         *cursor;	  /* Cursor for drag */
-  gint hot_x, hot_y;		  /* Hot spot for drag */
-  gint button;			  /* mouse button starting drag */
+  bint hot_x, hot_y;		  /* Hot spot for drag */
+  bint button;			  /* mouse button starting drag */
 
   BtkDragStatus      status;	  /* drag status */
   BdkEvent          *last_event;  /* pending event */
 
-  gint               start_x, start_y; /* Initial position */
-  gint               cur_x, cur_y;     /* Current Position */
+  bint               start_x, start_y; /* Initial position */
+  bint               cur_x, cur_y;     /* Current Position */
   BdkScreen         *cur_screen;       /* Current screen for pointer */
 
-  guint32            grab_time;   /* timestamp for initial grab */
+  buint32            grab_time;   /* timestamp for initial grab */
   GList             *selections;  /* selections we've claimed */
   
   BtkDragDestInfo   *proxy_dest;  /* Set if this is a proxy drag */
 
-  guint              update_idle;      /* Idle function to update the drag */
-  guint              drop_timeout;     /* Timeout for aborting drop */
-  guint              destroy_icon : 1; /* If true, destroy icon_window
+  buint              update_idle;      /* Idle function to update the drag */
+  buint              drop_timeout;     /* Timeout for aborting drop */
+  buint              destroy_icon : 1; /* If true, destroy icon_window
       				        */
-  guint              have_grab : 1;    /* Do we still have the pointer grab
+  buint              have_grab : 1;    /* Do we still have the pointer grab
 				        */
   BdkPixbuf         *icon_pixbuf;
   BdkCursor         *drag_cursors[6];
@@ -135,10 +135,10 @@ struct _BtkDragDestSite
   BdkDragAction      actions;
   BdkWindow         *proxy_window;
   BdkDragProtocol    proxy_protocol;
-  guint              do_proxy : 1;
-  guint              proxy_coords : 1;
-  guint              have_drag : 1;
-  guint              track_motion : 1;
+  buint              do_proxy : 1;
+  buint              proxy_coords : 1;
+  buint              have_drag : 1;
+  buint              track_motion : 1;
 };
   
 struct _BtkDragDestInfo 
@@ -147,13 +147,13 @@ struct _BtkDragDestInfo
   BdkDragContext    *context;	   /* Drag context */
   BtkDragSourceInfo *proxy_source; /* Set if this is a proxy drag */
   BtkSelectionData  *proxy_data;   /* Set while retrieving proxied data */
-  guint              dropped : 1;     /* Set after we receive a drop */
-  guint32            proxy_drop_time; /* Timestamp for proxied drop */
-  guint              proxy_drop_wait : 1; /* Set if we are waiting for a
+  buint              dropped : 1;     /* Set after we receive a drop */
+  buint32            proxy_drop_time; /* Timestamp for proxied drop */
+  buint              proxy_drop_wait : 1; /* Set if we are waiting for a
 					   * status reply before sending
 					   * a proxied drop on.
 					   */
-  gint               drop_x, drop_y; /* Position of drop */
+  bint               drop_x, drop_y; /* Position of drop */
 };
 
 #define DROP_ABORT_TIME 300000
@@ -166,15 +166,15 @@ struct _BtkDragDestInfo
 struct _BtkDragAnim 
 {
   BtkDragSourceInfo *info;
-  gint step;
-  gint n_steps;
+  bint step;
+  bint n_steps;
 };
 
-typedef gboolean (* BtkDragDestCallback) (BtkWidget      *widget,
+typedef bboolean (* BtkDragDestCallback) (BtkWidget      *widget,
                                           BdkDragContext *context,
-                                          gint            x,
-                                          gint            y,
-                                          guint32         time);
+                                          bint            x,
+                                          bint            y,
+                                          buint32         time);
 
 /* Enumeration for some targets we handle internally */
 
@@ -189,12 +189,12 @@ enum {
 static BdkPixmap   *default_icon_pixmap = NULL;
 static BdkPixmap   *default_icon_mask = NULL;
 static BdkColormap *default_icon_colormap = NULL;
-static gint         default_icon_hot_x;
-static gint         default_icon_hot_y;
+static bint         default_icon_hot_x;
+static bint         default_icon_hot_y;
 
 /* Forward declarations */
 static void          btk_drag_get_event_actions (BdkEvent        *event, 
-					         gint             button,
+					         bint             button,
 					         BdkDragAction    actions,
 					         BdkDragAction   *suggested_action,
 					         BdkDragAction   *possible_actions);
@@ -206,104 +206,104 @@ static BtkWidget    *btk_drag_get_ipc_widget            (BtkWidget *widget);
 static BtkWidget    *btk_drag_get_ipc_widget_for_screen (BdkScreen *screen);
 static void          btk_drag_release_ipc_widget (BtkWidget      *widget);
 
-static gboolean      btk_drag_highlight_expose   (BtkWidget      *widget,
+static bboolean      btk_drag_highlight_expose   (BtkWidget      *widget,
 					  	  BdkEventExpose *event,
-						  gpointer        data);
+						  bpointer        data);
 
 static void     btk_drag_selection_received     (BtkWidget        *widget,
 						 BtkSelectionData *selection_data,
-						 guint             time,
-						 gpointer          data);
-static gboolean btk_drag_find_widget            (BtkWidget        *widget,
+						 buint             time,
+						 bpointer          data);
+static bboolean btk_drag_find_widget            (BtkWidget        *widget,
                                                  BdkDragContext   *context,
                                                  BtkDragDestInfo  *info,
-                                                 gint              x,
-                                                 gint              y,
-                                                 guint32           time,
+                                                 bint              x,
+                                                 bint              y,
+                                                 buint32           time,
                                                  BtkDragDestCallback callback);
 static void     btk_drag_proxy_begin            (BtkWidget        *widget,
 						 BtkDragDestInfo  *dest_info,
-						 guint32           time);
+						 buint32           time);
 static void     btk_drag_dest_realized          (BtkWidget        *widget);
 static void     btk_drag_dest_hierarchy_changed (BtkWidget        *widget,
 						 BtkWidget        *previous_toplevel);
-static void     btk_drag_dest_site_destroy      (gpointer          data);
+static void     btk_drag_dest_site_destroy      (bpointer          data);
 static void     btk_drag_dest_leave             (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 guint             time);
-static gboolean btk_drag_dest_motion            (BtkWidget        *widget,
+						 buint             time);
+static bboolean btk_drag_dest_motion            (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
-						 guint             time);
-static gboolean btk_drag_dest_drop              (BtkWidget        *widget,
+						 bint              x,
+						 bint              y,
+						 buint             time);
+static bboolean btk_drag_dest_drop              (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
-						 guint             time);
+						 bint              x,
+						 bint              y,
+						 buint             time);
 
 static BtkDragDestInfo *  btk_drag_get_dest_info     (BdkDragContext *context,
-						      gboolean        create);
+						      bboolean        create);
 static BtkDragSourceInfo *btk_drag_get_source_info   (BdkDragContext *context,
-						      gboolean        create);
+						      bboolean        create);
 static void               btk_drag_clear_source_info (BdkDragContext *context);
 
 static void btk_drag_source_check_selection    (BtkDragSourceInfo *info, 
 					        BdkAtom            selection,
-					        guint32            time);
+					        buint32            time);
 static void btk_drag_source_release_selections (BtkDragSourceInfo *info,
-						guint32            time);
+						buint32            time);
 static void btk_drag_drop                      (BtkDragSourceInfo *info,
-						guint32            time);
+						buint32            time);
 static void btk_drag_drop_finished             (BtkDragSourceInfo *info,
 						BtkDragResult      result,
-						guint              time);
+						buint              time);
 static void btk_drag_cancel                    (BtkDragSourceInfo *info,
 						BtkDragResult      result,
-						guint32            time);
+						buint32            time);
 
-static gboolean btk_drag_source_event_cb       (BtkWidget         *widget,
+static bboolean btk_drag_source_event_cb       (BtkWidget         *widget,
 						BdkEvent          *event,
-						gpointer           data);
-static void btk_drag_source_site_destroy       (gpointer           data);
+						bpointer           data);
+static void btk_drag_source_site_destroy       (bpointer           data);
 static void btk_drag_selection_get             (BtkWidget         *widget, 
 						BtkSelectionData  *selection_data,
-						guint              sel_info,
-						guint32            time,
-						gpointer           data);
-static gboolean btk_drag_anim_timeout          (gpointer           data);
+						buint              sel_info,
+						buint32            time,
+						bpointer           data);
+static bboolean btk_drag_anim_timeout          (bpointer           data);
 static void btk_drag_remove_icon               (BtkDragSourceInfo *info);
 static void btk_drag_source_info_destroy       (BtkDragSourceInfo *info);
 static void btk_drag_add_update_idle           (BtkDragSourceInfo *info);
 
 static void btk_drag_update                    (BtkDragSourceInfo *info,
 						BdkScreen         *screen,
-						gint               x_root,
-						gint               y_root,
+						bint               x_root,
+						bint               y_root,
 						BdkEvent          *event);
-static gboolean btk_drag_motion_cb             (BtkWidget         *widget, 
+static bboolean btk_drag_motion_cb             (BtkWidget         *widget, 
 					        BdkEventMotion    *event, 
-					        gpointer           data);
-static gboolean btk_drag_key_cb                (BtkWidget         *widget, 
+					        bpointer           data);
+static bboolean btk_drag_key_cb                (BtkWidget         *widget, 
 					        BdkEventKey       *event, 
-					        gpointer           data);
-static gboolean btk_drag_grab_broken_event_cb  (BtkWidget          *widget,
+					        bpointer           data);
+static bboolean btk_drag_grab_broken_event_cb  (BtkWidget          *widget,
 						BdkEventGrabBroken *event,
-						gpointer            data);
+						bpointer            data);
 static void     btk_drag_grab_notify_cb        (BtkWidget         *widget,
-						gboolean           was_grabbed,
-						gpointer           data);
-static gboolean btk_drag_button_release_cb     (BtkWidget         *widget, 
+						bboolean           was_grabbed,
+						bpointer           data);
+static bboolean btk_drag_button_release_cb     (BtkWidget         *widget, 
 					        BdkEventButton    *event, 
-					        gpointer           data);
-static gboolean btk_drag_abort_timeout         (gpointer           data);
+					        bpointer           data);
+static bboolean btk_drag_abort_timeout         (bpointer           data);
 
 static void     set_icon_stock_pixbuf          (BdkDragContext    *context,
-						const gchar       *stock_id,
+						const bchar       *stock_id,
 						BdkPixbuf         *pixbuf,
-						gint               hot_x,
-						gint               hot_y,
-						gboolean           force_window);
+						bint               hot_x,
+						bint               hot_y,
+						bboolean           force_window);
 
 /************************
  * Cursor and Icon data *
@@ -311,8 +311,8 @@ static void     set_icon_stock_pixbuf          (BdkDragContext    *context,
 
 static struct {
   BdkDragAction action;
-  const gchar  *name;
-  const guint8 *data;
+  const bchar  *name;
+  const buint8 *data;
   BdkPixbuf    *pixbuf;
   BdkCursor    *cursor;
 } drag_cursors[] = {
@@ -324,7 +324,7 @@ static struct {
   { 0              ,  "dnd-none", dnd_cursor_none, NULL, NULL },
 };
 
-static const gint n_drag_cursors = sizeof (drag_cursors) / sizeof (drag_cursors[0]);
+static const bint n_drag_cursors = sizeof (drag_cursors) / sizeof (drag_cursors[0]);
 
 /*********************
  * Utility functions *
@@ -332,15 +332,15 @@ static const gint n_drag_cursors = sizeof (drag_cursors) / sizeof (drag_cursors[
 
 static void
 set_can_change_screen (BtkWidget *widget,
-		       gboolean   can_change_screen)
+		       bboolean   can_change_screen)
 {
   can_change_screen = can_change_screen != FALSE;
   
   g_object_set_data (B_OBJECT (widget), I_("btk-dnd-can-change-screen"),
-		     GUINT_TO_POINTER (can_change_screen));
+		     BUINT_TO_POINTER (can_change_screen));
 }
 
-static gboolean
+static bboolean
 get_can_change_screen (BtkWidget *widget)
 {
   return g_object_get_data (B_OBJECT (widget), "btk-dnd-can-change-screen") != NULL;
@@ -414,7 +414,7 @@ btk_drag_get_ipc_widget (BtkWidget *widget)
 static BdkFilterReturn
 root_key_filter (BdkXEvent *xevent,
                  BdkEvent  *event,
-                 gpointer   data)
+                 bpointer   data)
 {
   XEvent *ev = (XEvent *)xevent;
 
@@ -426,8 +426,8 @@ root_key_filter (BdkXEvent *xevent,
 }
 
 typedef struct {
-  gint keysym;
-  gint modifiers;
+  bint keysym;
+  bint modifiers;
 } GrabKey;
 
 static GrabKey grab_keys[] = {
@@ -456,11 +456,11 @@ static GrabKey grab_keys[] = {
 
 static void
 grab_dnd_keys (BtkWidget *widget,
-               guint32    time)
+               buint32    time)
 {
-  guint i;
+  buint i;
   BdkWindow *window, *root;
-  gint keycode;
+  bint keycode;
 
   window = widget->window;
   root = bdk_screen_get_root_window (btk_widget_get_screen (widget));
@@ -483,21 +483,21 @@ grab_dnd_keys (BtkWidget *widget,
   bdk_flush ();
   bdk_error_trap_pop ();
 
-  bdk_window_add_filter (NULL, root_key_filter, (gpointer) BDK_WINDOW_XID (window));
+  bdk_window_add_filter (NULL, root_key_filter, (bpointer) BDK_WINDOW_XID (window));
 }
 
 static void
 ungrab_dnd_keys (BtkWidget *widget,
-                 guint32    time)
+                 buint32    time)
 {
-  guint i;
+  buint i;
   BdkWindow *window, *root;
-  gint keycode;
+  bint keycode;
 
   window = widget->window;
   root = bdk_screen_get_root_window (btk_widget_get_screen (widget));
 
-  bdk_window_remove_filter (NULL, root_key_filter, (gpointer) BDK_WINDOW_XID (window));
+  bdk_window_remove_filter (NULL, root_key_filter, (bpointer) BDK_WINDOW_XID (window));
 
   bdk_error_trap_push ();
 
@@ -519,14 +519,14 @@ ungrab_dnd_keys (BtkWidget *widget,
 
 static void
 grab_dnd_keys (BtkWidget *widget,
-               guint32    time)
+               buint32    time)
 {
   bdk_keyboard_grab (widget->window, FALSE, time);
 }
 
 static void
 ungrab_dnd_keys (BtkWidget *widget,
-                 guint32    time)
+                 buint32    time)
 {
   bdk_display_keyboard_ungrab (btk_widget_get_display (widget), time);
 }
@@ -558,10 +558,10 @@ btk_drag_release_ipc_widget (BtkWidget *widget)
 		     drag_widgets);
 }
 
-static guint32
+static buint32
 btk_drag_get_event_time (BdkEvent *event)
 {
-  guint32 tm = BDK_CURRENT_TIME;
+  buint32 tm = BDK_CURRENT_TIME;
   
   if (event)
     switch (event->type)
@@ -597,7 +597,7 @@ btk_drag_get_event_time (BdkEvent *event)
 
 static void
 btk_drag_get_event_actions (BdkEvent *event, 
-			    gint button, 
+			    bint button, 
 			    BdkDragAction  actions,
 			    BdkDragAction *suggested_action,
 			    BdkDragAction *possible_actions)
@@ -693,12 +693,12 @@ btk_drag_get_event_actions (BdkEvent *event,
     }
 }
 
-static gboolean
+static bboolean
 btk_drag_can_use_rgba_cursor (BdkDisplay *display, 
-			      gint        width,
-			      gint        height)
+			      bint        width,
+			      bint        height)
 {
-  guint max_width, max_height;
+  buint max_width, max_height;
   
   if (!bdk_display_supports_cursor_color (display))
     return FALSE;
@@ -723,7 +723,7 @@ btk_drag_get_cursor (BdkDisplay        *display,
 		     BdkDragAction      action,
 		     BtkDragSourceInfo *info)
 {
-  gint i;
+  bint i;
 
   /* reconstruct the cursors for each new drag (thus !info),
    * to catch cursor theme changes 
@@ -763,12 +763,12 @@ btk_drag_get_cursor (BdkDisplay        *display,
 
   if (info && info->icon_pixbuf) 
     {
-      gint cursor_width, cursor_height;
-      gint icon_width, icon_height;
-      gint width, height;
+      bint cursor_width, cursor_height;
+      bint icon_width, icon_height;
+      bint width, height;
       BdkPixbuf *cursor_pixbuf, *pixbuf;
-      gint hot_x, hot_y;
-      gint icon_x, icon_y, ref_x, ref_y;
+      bint hot_x, hot_y;
+      bint icon_x, icon_y, ref_x, ref_y;
 
       if (info->drag_cursors[i] != NULL)
         {
@@ -817,9 +817,9 @@ btk_drag_get_cursor (BdkDisplay        *display,
            */ 
 	  for (j = 0; j < 10; j++)
 	    {
-	      const gchar *opt;
-	      gchar key[32];
-	      gchar **toks;
+	      const bchar *opt;
+	      bchar key[32];
+	      bchar **toks;
 	      BtkAnchorType icon_anchor;
 
 	      g_snprintf (key, 32, "comment%d", j);
@@ -924,7 +924,7 @@ static void
 btk_drag_update_cursor (BtkDragSourceInfo *info)
 {
   BdkCursor *cursor;
-  gint i;
+  bint i;
 
   if (!info->have_grab)
     return;
@@ -970,7 +970,7 @@ void
 btk_drag_get_data (BtkWidget      *widget,
 		   BdkDragContext *context,
 		   BdkAtom         target,
-		   guint32         time)
+		   buint32         time)
 {
   BtkWidget *selection_widget;
 
@@ -1043,9 +1043,9 @@ btk_drag_get_source_widget (BdkDragContext *context)
 
 void 
 btk_drag_finish (BdkDragContext *context,
-		 gboolean        success,
-		 gboolean        del,
-		 guint32         time)
+		 bboolean        success,
+		 bboolean        del,
+		 buint32         time)
 {
   BdkAtom target = BDK_NONE;
 
@@ -1093,12 +1093,12 @@ btk_drag_finish (BdkDragContext *context,
  *   results:
  *************************************************************/
 
-static gboolean
+static bboolean
 btk_drag_highlight_expose (BtkWidget      *widget,
 			   BdkEventExpose *event,
-			   gpointer        data)
+			   bpointer        data)
 {
-  gint x, y, width, height;
+  bint x, y, width, height;
   
   if (btk_widget_is_drawable (widget))
     {
@@ -1247,9 +1247,9 @@ btk_drag_dest_set_internal (BtkWidget       *widget,
  * static void
  * drag_motion (BtkWidget *widget,
  *              BdkDragContext *context,
- *              gint x,
- *              gint y,
- *              guint time)
+ *              bint x,
+ *              bint y,
+ *              buint time)
  * {
  *   BdkModifierType mask;
  *
@@ -1266,7 +1266,7 @@ void
 btk_drag_dest_set (BtkWidget            *widget,
 		   BtkDestDefaults       flags,
 		   const BtkTargetEntry *targets,
-		   gint                  n_targets,
+		   bint                  n_targets,
 		   BdkDragAction         actions)
 {
   BtkDragDestSite *site;
@@ -1306,7 +1306,7 @@ void
 btk_drag_dest_set_proxy (BtkWidget      *widget,
 			 BdkWindow      *proxy_window,
 			 BdkDragProtocol protocol,
-			 gboolean        use_coordinates)
+			 bboolean        use_coordinates)
 {
   BtkDragDestSite *site;
   
@@ -1513,7 +1513,7 @@ btk_drag_dest_add_uri_targets (BtkWidget *widget)
  **/
 void
 btk_drag_dest_set_track_motion (BtkWidget *widget,
-				gboolean   track_motion)
+				bboolean   track_motion)
 {
   BtkDragDestSite *site;
 
@@ -1537,7 +1537,7 @@ btk_drag_dest_set_track_motion (BtkWidget *widget,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_drag_dest_get_track_motion (BtkWidget *widget)
 {
   BtkDragDestSite *site;
@@ -1594,8 +1594,8 @@ _btk_drag_dest_handle_event (BtkWidget *toplevel,
     case BDK_DRAG_MOTION:
     case BDK_DROP_START:
       {
-	gint tx, ty;
-        gboolean found;
+	bint tx, ty;
+        bboolean found;
 
 	if (event->type == BDK_DROP_START)
 	  {
@@ -1705,7 +1705,7 @@ btk_drag_dest_find_target (BtkWidget      *widget,
       tmp_source = bdk_drag_context_list_targets (context);
       while (tmp_source)
 	{
-	  if (tmp_source->data == GUINT_TO_POINTER (pair->target))
+	  if (tmp_source->data == BUINT_TO_POINTER (pair->target))
 	    {
 	      if ((!(pair->flags & BTK_TARGET_SAME_APP) || source_widget) &&
 		  (!(pair->flags & BTK_TARGET_SAME_WIDGET) || (source_widget == widget)) &&
@@ -1726,8 +1726,8 @@ btk_drag_dest_find_target (BtkWidget      *widget,
 static void
 btk_drag_selection_received (BtkWidget        *widget,
 			     BtkSelectionData *selection_data,
-			     guint             time,
-			     gpointer          data)
+			     buint             time,
+			     bpointer          data)
 {
   BdkDragContext *context;
   BtkDragDestInfo *info;
@@ -1767,7 +1767,7 @@ btk_drag_selection_received (BtkWidget        *widget,
 
       if (site && site->target_list)
 	{
-	  guint target_info;
+	  buint target_info;
 
 	  if (btk_target_list_find (site->target_list, 
 				    selection_data->target,
@@ -1819,13 +1819,13 @@ btk_drag_selection_received (BtkWidget        *widget,
  *     DRAG_MOTION and DROP_START events.
  *************************************************************/
 
-static gboolean
+static bboolean
 btk_drag_find_widget (BtkWidget           *widget,
                       BdkDragContext      *context,
                       BtkDragDestInfo     *info,
-                      gint                 x,
-                      gint                 y,
-                      guint32              time,
+                      bint                 x,
+                      bint                 y,
+                      buint32              time,
                       BtkDragDestCallback  callback)
 {
   if (!btk_widget_get_mapped (widget) ||
@@ -1844,7 +1844,7 @@ btk_drag_find_widget (BtkWidget           *widget,
     {
       BtkWidget *parent;
       GList *hierarchy = NULL;
-      gboolean found = FALSE;
+      bboolean found = FALSE;
 
       if (!btk_widget_get_mapped (widget) ||
           !btk_widget_get_sensitive (widget))
@@ -1891,7 +1891,7 @@ btk_drag_find_widget (BtkWidget           *widget,
            * hierarchy, so also protect againt that
            */
           if (parent)
-            g_object_add_weak_pointer (B_OBJECT (parent), (gpointer *) &parent);
+            g_object_add_weak_pointer (B_OBJECT (parent), (bpointer *) &parent);
         }
 
       g_list_foreach (hierarchy, (GFunc) g_object_unref, NULL);
@@ -1901,7 +1901,7 @@ btk_drag_find_widget (BtkWidget           *widget,
         return TRUE;
 
       if (parent)
-        g_object_remove_weak_pointer (B_OBJECT (parent), (gpointer *) &parent);
+        g_object_remove_weak_pointer (B_OBJECT (parent), (bpointer *) &parent);
       else
         return FALSE;
 
@@ -1917,7 +1917,7 @@ btk_drag_find_widget (BtkWidget           *widget,
 static void
 btk_drag_proxy_begin (BtkWidget       *widget,
 		      BtkDragDestInfo *dest_info,
-		      guint32          time)
+		      buint32          time)
 {
   BtkDragSourceInfo *source_info;
   GList *tmp_list;
@@ -1960,7 +1960,7 @@ btk_drag_proxy_begin (BtkWidget       *widget,
 }
 
 static void
-btk_drag_dest_info_destroy (gpointer data)
+btk_drag_dest_info_destroy (bpointer data)
 {
   BtkDragDestInfo *info = data;
 
@@ -1969,7 +1969,7 @@ btk_drag_dest_info_destroy (gpointer data)
 
 static BtkDragDestInfo *
 btk_drag_get_dest_info (BdkDragContext *context,
-			gboolean        create)
+			bboolean        create)
 {
   BtkDragDestInfo *info;
   static GQuark info_quark = 0;
@@ -1997,7 +1997,7 @@ static GQuark dest_info_quark = 0;
 
 static BtkDragSourceInfo *
 btk_drag_get_source_info (BdkDragContext *context,
-			  gboolean        create)
+			  bboolean        create)
 {
   BtkDragSourceInfo *info;
   if (!dest_info_quark)
@@ -2040,7 +2040,7 @@ btk_drag_dest_hierarchy_changed (BtkWidget *widget,
 }
 
 static void
-btk_drag_dest_site_destroy (gpointer data)
+btk_drag_dest_site_destroy (bpointer data)
 {
   BtkDragDestSite *site = data;
 
@@ -2059,7 +2059,7 @@ btk_drag_dest_site_destroy (gpointer data)
 static void  
 btk_drag_dest_leave (BtkWidget      *widget,
 		     BdkDragContext *context,
-		     guint           time)
+		     buint           time)
 {
   BtkDragDestSite *site;
 
@@ -2092,16 +2092,16 @@ btk_drag_dest_leave (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_drag_dest_motion (BtkWidget	     *widget,
 		      BdkDragContext *context,
-		      gint            x,
-		      gint            y,
-		      guint           time)
+		      bint            x,
+		      bint            y,
+		      buint           time)
 {
   BtkDragDestSite *site;
   BdkDragAction action = 0;
-  gboolean retval;
+  bboolean retval;
 
   site = g_object_get_data (B_OBJECT (widget), "btk-drag-dest");
   g_return_val_if_fail (site != NULL, FALSE);
@@ -2162,7 +2162,7 @@ btk_drag_dest_motion (BtkWidget	     *widget,
 	action = bdk_drag_context_get_suggested_action (context);
       else
 	{
-	  gint i;
+	  bint i;
 	  
 	  for (i = 0; i < 8; i++)
 	    {
@@ -2200,12 +2200,12 @@ btk_drag_dest_motion (BtkWidget	     *widget,
   return (site->flags & BTK_DEST_DEFAULT_MOTION) ? TRUE : retval;
 }
 
-static gboolean
+static bboolean
 btk_drag_dest_drop (BtkWidget	     *widget,
 		    BdkDragContext   *context,
-		    gint              x,
-		    gint              y,
-		    guint             time)
+		    bint              x,
+		    bint              y,
+		    buint             time)
 {
   BtkDragDestSite *site;
   BtkDragDestInfo *info;
@@ -2281,7 +2281,7 @@ btk_drag_dest_drop (BtkWidget	     *widget,
     }
   else
     {
-      gboolean retval;
+      bboolean retval;
 
       if (site->flags & BTK_DEST_DEFAULT_DROP)
 	{
@@ -2315,13 +2315,13 @@ btk_drag_begin_internal (BtkWidget         *widget,
 			 BtkDragSourceSite *site,
 			 BtkTargetList     *target_list,
 			 BdkDragAction      actions,
-			 gint               button,
+			 bint               button,
 			 BdkEvent          *event)
 {
   BtkDragSourceInfo *info;
   GList *targets = NULL;
   GList *tmp_list;
-  guint32 time = BDK_CURRENT_TIME;
+  buint32 time = BDK_CURRENT_TIME;
   BdkDragAction possible_actions, suggested_action;
   BdkDragContext *context;
   BtkWidget *ipc_widget;
@@ -2364,7 +2364,7 @@ btk_drag_begin_internal (BtkWidget         *widget,
     {
       BtkTargetPair *pair = tmp_list->data;
       targets = g_list_prepend (targets, 
-				GINT_TO_POINTER (pair->target));
+				BINT_TO_POINTER (pair->target));
       tmp_list = tmp_list->prev;
     }
 
@@ -2542,7 +2542,7 @@ BdkDragContext *
 btk_drag_begin (BtkWidget         *widget,
 		BtkTargetList     *targets,
 		BdkDragAction      actions,
-		gint               button,
+		bint               button,
 		BdkEvent          *event)
 {
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
@@ -2569,7 +2569,7 @@ void
 btk_drag_source_set (BtkWidget            *widget,
 		     BdkModifierType       start_button_mask,
 		     const BtkTargetEntry *targets,
-		     gint                  n_targets,
+		     bint                  n_targets,
 		     BdkDragAction         actions)
 {
   BtkDragSourceSite *site;
@@ -2895,7 +2895,7 @@ btk_drag_source_set_icon_pixbuf (BtkWidget   *widget,
  **/
 void 
 btk_drag_source_set_icon_stock (BtkWidget   *widget,
-				const gchar *stock_id)
+				const bchar *stock_id)
 {
   BtkDragSourceSite *site;
 
@@ -2923,7 +2923,7 @@ btk_drag_source_set_icon_stock (BtkWidget   *widget,
  **/
 void 
 btk_drag_source_set_icon_name (BtkWidget   *widget,
-			       const gchar *icon_name)
+			       const bchar *icon_name)
 {
   BtkDragSourceSite *site;
 
@@ -2942,8 +2942,8 @@ btk_drag_source_set_icon_name (BtkWidget   *widget,
 static void
 btk_drag_get_icon (BtkDragSourceInfo *info,
 		   BtkWidget        **icon_window,
-		   gint              *hot_x,
-		   gint              *hot_y)
+		   bint              *hot_x,
+		   bint              *hot_y)
 {
   if (get_can_change_screen (info->icon_window))
     btk_window_set_screen (BTK_WINDOW (info->icon_window),
@@ -2953,8 +2953,8 @@ btk_drag_get_icon (BtkDragSourceInfo *info,
     {
       if (!info->fallback_icon)
 	{
-	  gint save_hot_x, save_hot_y;
-	  gboolean save_destroy_icon;
+	  bint save_hot_x, save_hot_y;
+	  bboolean save_destroy_icon;
 	  BtkWidget *save_icon_window;
 	  
 	  /* HACK to get the appropriate icon
@@ -3016,7 +3016,7 @@ btk_drag_update_icon (BtkDragSourceInfo *info)
   if (info->icon_window)
     {
       BtkWidget *icon_window;
-      gint hot_x, hot_y;
+      bint hot_x, hot_y;
   
       btk_drag_get_icon (info, &icon_window, &hot_x, &hot_y);
       
@@ -3034,9 +3034,9 @@ btk_drag_update_icon (BtkDragSourceInfo *info)
 static void 
 btk_drag_set_icon_window (BdkDragContext *context,
 			  BtkWidget      *widget,
-			  gint            hot_x,
-			  gint            hot_y,
-			  gboolean        destroy_on_release)
+			  bint            hot_x,
+			  bint            hot_y,
+			  bboolean        destroy_on_release)
 {
   BtkDragSourceInfo *info;
 
@@ -3084,8 +3084,8 @@ btk_drag_set_icon_window (BdkDragContext *context,
 void 
 btk_drag_set_icon_widget (BdkDragContext    *context,
 			  BtkWidget         *widget,
-			  gint               hot_x,
-			  gint               hot_y)
+			  bint               hot_x,
+			  bint               hot_y)
 {
   g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (BTK_IS_WIDGET (widget));
@@ -3116,14 +3116,14 @@ icon_window_realize (BtkWidget *window,
 
 static void
 set_icon_stock_pixbuf (BdkDragContext    *context,
-		       const gchar       *stock_id,
+		       const bchar       *stock_id,
 		       BdkPixbuf         *pixbuf,
-		       gint               hot_x,
-		       gint               hot_y,
-		       gboolean           force_window)
+		       bint               hot_x,
+		       bint               hot_y,
+		       bboolean           force_window)
 {
   BtkWidget *window;
-  gint width, height;
+  bint width, height;
   BdkScreen *screen;
   BdkDisplay *display;
 
@@ -3206,8 +3206,8 @@ set_icon_stock_pixbuf (BdkDragContext    *context,
 void 
 btk_drag_set_icon_pixbuf  (BdkDragContext *context,
 			   BdkPixbuf      *pixbuf,
-			   gint            hot_x,
-			   gint            hot_y)
+			   bint            hot_x,
+			   bint            hot_y)
 {
   g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (BDK_IS_PIXBUF (pixbuf));
@@ -3227,9 +3227,9 @@ btk_drag_set_icon_pixbuf  (BdkDragContext *context,
  **/
 void 
 btk_drag_set_icon_stock  (BdkDragContext *context,
-			  const gchar    *stock_id,
-			  gint            hot_x,
-			  gint            hot_y)
+			  const bchar    *stock_id,
+			  bint            hot_x,
+			  bint            hot_y)
 {
   g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (stock_id != NULL);
@@ -3257,12 +3257,12 @@ btk_drag_set_icon_pixmap (BdkDragContext    *context,
 			  BdkColormap       *colormap,
 			  BdkPixmap         *pixmap,
 			  BdkBitmap         *mask,
-			  gint               hot_x,
-			  gint               hot_y)
+			  bint               hot_x,
+			  bint               hot_y)
 {
   BtkWidget *window;
   BdkScreen *screen;
-  gint width, height;
+  bint width, height;
       
   g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (BDK_IS_COLORMAP (colormap));
@@ -3316,15 +3316,15 @@ btk_drag_set_icon_pixmap (BdkDragContext    *context,
  **/
 void 
 btk_drag_set_icon_name (BdkDragContext *context,
-			const gchar    *icon_name,
-			gint            hot_x,
-			gint            hot_y)
+			const bchar    *icon_name,
+			bint            hot_x,
+			bint            hot_y)
 {
   BdkScreen *screen;
   BtkSettings *settings;
   BtkIconTheme *icon_theme;
   BdkPixbuf *pixbuf;
-  gint width, height, icon_size;
+  bint width, height, icon_size;
 
   g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (icon_name != NULL);
@@ -3392,8 +3392,8 @@ void
 btk_drag_set_default_icon (BdkColormap   *colormap,
 			   BdkPixmap     *pixmap,
 			   BdkBitmap     *mask,
-			   gint           hot_x,
-			   gint           hot_y)
+			   bint           hot_x,
+			   bint           hot_y)
 {
   g_return_if_fail (BDK_IS_COLORMAP (colormap));
   g_return_if_fail (BDK_IS_PIXMAP (pixmap));
@@ -3459,7 +3459,7 @@ _btk_drag_source_handle_event (BtkWidget *widget,
 	      {
 		if (info->proxy_dest->proxy_drop_wait)
 		  {
-		    gboolean result = bdk_drag_context_get_selected_action (context) != 0;
+		    bboolean result = bdk_drag_context_get_selected_action (context) != 0;
 		    
 		    /* Aha - we can finally pass the MOTIF DROP on... */
 		    bdk_drop_reply (info->proxy_dest->context, result, info->proxy_dest->proxy_drop_time);
@@ -3516,7 +3516,7 @@ _btk_drag_source_handle_event (BtkWidget *widget,
 static void
 btk_drag_source_check_selection (BtkDragSourceInfo *info, 
 				 BdkAtom            selection,
-				 guint32            time)
+				 buint32            time)
 {
   GList *tmp_list;
 
@@ -3533,7 +3533,7 @@ btk_drag_source_check_selection (BtkDragSourceInfo *info,
 				       selection,
 				       time);
   info->selections = g_list_prepend (info->selections,
-				     GUINT_TO_POINTER (selection));
+				     BUINT_TO_POINTER (selection));
 
   tmp_list = info->target_list->list;
   while (tmp_list)
@@ -3578,9 +3578,9 @@ btk_drag_source_check_selection (BtkDragSourceInfo *info,
 static void
 btk_drag_drop_finished (BtkDragSourceInfo *info,
 			BtkDragResult      result,
-			guint              time)
+			buint              time)
 {
-  gboolean success;
+  bboolean success;
 
   success = (result == BTK_DRAG_RESULT_SUCCESS);
   btk_drag_source_release_selections (info, time); 
@@ -3631,7 +3631,7 @@ btk_drag_drop_finished (BtkDragSourceInfo *info,
 
 static void
 btk_drag_source_release_selections (BtkDragSourceInfo *info,
-				    guint32            time)
+				    buint32            time)
 {
   BdkDisplay *display = btk_widget_get_display (info->widget);
   GList *tmp_list = info->selections;
@@ -3659,7 +3659,7 @@ btk_drag_source_release_selections (BtkDragSourceInfo *info,
 
 static void
 btk_drag_drop (BtkDragSourceInfo *info, 
-	       guint32            time)
+	       buint32            time)
 {
   if (bdk_drag_context_get_protocol (info->context) == BDK_DRAG_PROTO_ROOTWIN)
     {
@@ -3712,13 +3712,13 @@ btk_drag_drop (BtkDragSourceInfo *info,
  * Source side callbacks.
  */
 
-static gboolean
+static bboolean
 btk_drag_source_event_cb (BtkWidget      *widget,
 			  BdkEvent       *event,
-			  gpointer        data)
+			  bpointer        data)
 {
   BtkDragSourceSite *site;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   site = (BtkDragSourceSite *)data;
 
   switch (event->type)
@@ -3772,7 +3772,7 @@ btk_drag_source_event_cb (BtkWidget      *widget,
 }
 
 static void 
-btk_drag_source_site_destroy (gpointer data)
+btk_drag_source_site_destroy (bpointer data)
 {
   BtkDragSourceSite *site = data;
 
@@ -3786,13 +3786,13 @@ btk_drag_source_site_destroy (gpointer data)
 static void
 btk_drag_selection_get (BtkWidget        *widget, 
 			BtkSelectionData *selection_data,
-			guint             sel_info,
-			guint32           time,
-			gpointer          data)
+			buint             sel_info,
+			buint32           time,
+			bpointer          data)
 {
   BtkDragSourceInfo *info = data;
   static BdkAtom null_atom = BDK_NONE;
-  guint target_info;
+  buint target_info;
 
   if (!null_atom)
     null_atom = bdk_atom_intern_static_string ("NULL");
@@ -3844,12 +3844,12 @@ btk_drag_selection_get (BtkWidget        *widget,
     }
 }
 
-static gboolean
-btk_drag_anim_timeout (gpointer data)
+static bboolean
+btk_drag_anim_timeout (bpointer data)
 {
   BtkDragAnim *anim = data;
-  gint x, y;
-  gboolean retval;
+  bint x, y;
+  bboolean retval;
 
   if (anim->step == anim->n_steps)
     {
@@ -3867,7 +3867,7 @@ btk_drag_anim_timeout (gpointer data)
       if (anim->info->icon_window)
 	{
 	  BtkWidget *icon_window;
-	  gint hot_x, hot_y;
+	  bint hot_x, hot_y;
 	  
 	  btk_drag_get_icon (anim->info, &icon_window, &hot_x, &hot_y);	  
 	  btk_window_move (BTK_WINDOW (icon_window), 
@@ -3906,7 +3906,7 @@ btk_drag_remove_icon (BtkDragSourceInfo *info)
 static void
 btk_drag_source_info_destroy (BtkDragSourceInfo *info)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < n_drag_cursors; i++)
     {
@@ -3969,8 +3969,8 @@ btk_drag_source_info_destroy (BtkDragSourceInfo *info)
   g_free (info);
 }
 
-static gboolean
-btk_drag_update_idle (gpointer data)
+static bboolean
+btk_drag_update_idle (bpointer data)
 {
   BtkDragSourceInfo *info = data;
   BdkWindow *dest_window;
@@ -3979,7 +3979,7 @@ btk_drag_update_idle (gpointer data)
 
   BdkDragAction action;
   BdkDragAction possible_actions;
-  guint32 time;
+  buint32 time;
 
   info->update_idle = 0;
     
@@ -4044,8 +4044,8 @@ btk_drag_add_update_idle (BtkDragSourceInfo *info)
 static void
 btk_drag_update (BtkDragSourceInfo *info,
 		 BdkScreen         *screen,
-		 gint               x_root,
-		 gint               y_root,
+		 bint               x_root,
+		 bint               y_root,
 		 BdkEvent          *event)
 {
   info->cur_screen = screen;
@@ -4073,7 +4073,7 @@ btk_drag_update (BtkDragSourceInfo *info,
  *************************************************************/
 
 static void
-btk_drag_end (BtkDragSourceInfo *info, guint32 time)
+btk_drag_end (BtkDragSourceInfo *info, buint32 time)
 {
   BtkWidget *source_widget = info->widget;
   BdkDisplay *display = btk_widget_get_display (source_widget);
@@ -4155,7 +4155,7 @@ btk_drag_end (BtkDragSourceInfo *info, guint32 time)
  *************************************************************/
 
 static void
-btk_drag_cancel (BtkDragSourceInfo *info, BtkDragResult result, guint32 time)
+btk_drag_cancel (BtkDragSourceInfo *info, BtkDragResult result, buint32 time)
 {
   btk_drag_end (info, time);
   bdk_drag_abort (info->context, time);
@@ -4170,14 +4170,14 @@ btk_drag_cancel (BtkDragSourceInfo *info, BtkDragResult result, guint32 time)
  *   results:
  *************************************************************/
 
-static gboolean
+static bboolean
 btk_drag_motion_cb (BtkWidget      *widget, 
 		    BdkEventMotion *event, 
-		    gpointer        data)
+		    bpointer        data)
 {
   BtkDragSourceInfo *info = (BtkDragSourceInfo *)data;
   BdkScreen *screen;
-  gint x_root, y_root;
+  bint x_root, y_root;
 
   if (event->is_hint)
     {
@@ -4206,15 +4206,15 @@ btk_drag_motion_cb (BtkWidget      *widget,
 #define BIG_STEP 20
 #define SMALL_STEP 1
 
-static gboolean
+static bboolean
 btk_drag_key_cb (BtkWidget         *widget, 
 		 BdkEventKey       *event, 
-		 gpointer           data)
+		 bpointer           data)
 {
   BtkDragSourceInfo *info = (BtkDragSourceInfo *)data;
   BdkModifierType state;
   BdkWindow *root_window;
-  gint dx, dy;
+  bint dx, dy;
 
   dx = dy = 0;
   state = event->state & btk_accelerator_get_default_mod_mask ();
@@ -4283,10 +4283,10 @@ btk_drag_key_cb (BtkWidget         *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_drag_grab_broken_event_cb (BtkWidget          *widget,
 			       BdkEventGrabBroken *event,
-			       gpointer            data)
+			       bpointer            data)
 {
   BtkDragSourceInfo *info = (BtkDragSourceInfo *)data;
 
@@ -4305,8 +4305,8 @@ btk_drag_grab_broken_event_cb (BtkWidget          *widget,
 
 static void
 btk_drag_grab_notify_cb (BtkWidget        *widget,
-			 gboolean          was_grabbed,
-			 gpointer          data)
+			 bboolean          was_grabbed,
+			 bpointer          data)
 {
   BtkDragSourceInfo *info = (BtkDragSourceInfo *)data;
 
@@ -4329,10 +4329,10 @@ btk_drag_grab_notify_cb (BtkWidget        *widget,
  *   results:
  *************************************************************/
 
-static gboolean
+static bboolean
 btk_drag_button_release_cb (BtkWidget      *widget, 
 			    BdkEventButton *event, 
-			    gpointer        data)
+			    bpointer        data)
 {
   BtkDragSourceInfo *info = (BtkDragSourceInfo *)data;
 
@@ -4353,11 +4353,11 @@ btk_drag_button_release_cb (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
-btk_drag_abort_timeout (gpointer data)
+static bboolean
+btk_drag_abort_timeout (bpointer data)
 {
   BtkDragSourceInfo *info = data;
-  guint32 time = BDK_CURRENT_TIME;
+  buint32 time = BDK_CURRENT_TIME;
 
   if (info->proxy_dest)
     time = info->proxy_dest->proxy_drop_time;
@@ -4382,14 +4382,14 @@ btk_drag_abort_timeout (gpointer data)
  *
  * Return Value: %TRUE if the drag threshold has been passed.
  **/
-gboolean
+bboolean
 btk_drag_check_threshold (BtkWidget *widget,
-			  gint       start_x,
-			  gint       start_y,
-			  gint       current_x,
-			  gint       current_y)
+			  bint       start_x,
+			  bint       start_y,
+			  bint       current_x,
+			  bint       current_y)
 {
-  gint drag_threshold;
+  bint drag_threshold;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 

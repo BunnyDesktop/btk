@@ -49,15 +49,15 @@
 #define EPSILON (1e-10)
 
 
-static gboolean	cb_query_tooltip (BtkWidget       *button,
-                                  gint             x,
-                                  gint             y,
-                                  gboolean         keyboard_mode,
+static bboolean	cb_query_tooltip (BtkWidget       *button,
+                                  bint             x,
+                                  bint             y,
+                                  bboolean         keyboard_mode,
                                   BtkTooltip      *tooltip,
-                                  gpointer         user_data);
+                                  bpointer         user_data);
 static void	cb_value_changed (BtkVolumeButton *button,
-                                  gdouble          value,
-                                  gpointer         user_data);
+                                  bdouble          value,
+                                  bpointer         user_data);
 
 G_DEFINE_TYPE (BtkVolumeButton, btk_volume_button, BTK_TYPE_SCALE_BUTTON)
 
@@ -133,17 +133,17 @@ btk_volume_button_new (void)
   return BTK_WIDGET (button);
 }
 
-static gboolean
+static bboolean
 cb_query_tooltip (BtkWidget  *button,
-		  gint        x,
-		  gint        y,
-		  gboolean    keyboard_mode,
+		  bint        x,
+		  bint        y,
+		  bboolean    keyboard_mode,
 		  BtkTooltip *tooltip,
-		  gpointer    user_data)
+		  bpointer    user_data)
 {
   BtkScaleButton *scale_button = BTK_SCALE_BUTTON (button);
   BtkAdjustment *adj;
-  gdouble val;
+  bdouble val;
   char *str;
   BatkImage *image;
 
@@ -182,7 +182,7 @@ cb_query_tooltip (BtkWidget  *button,
 }
 
 static void
-cb_value_changed (BtkVolumeButton *button, gdouble value, gpointer user_data)
+cb_value_changed (BtkVolumeButton *button, bdouble value, bpointer user_data)
 {
   btk_widget_trigger_tooltip_query (BTK_WIDGET (button));
 }

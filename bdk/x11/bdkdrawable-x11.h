@@ -78,14 +78,14 @@ struct _BdkDrawableImplX11Class
 
 GType _bdk_drawable_impl_x11_get_type (void);
 
-void  _bdk_x11_convert_to_format      (guchar           *src_buf,
-                                       gint              src_rowstride,
-                                       guchar           *dest_buf,
-                                       gint              dest_rowstride,
+void  _bdk_x11_convert_to_format      (buchar           *src_buf,
+                                       bint              src_rowstride,
+                                       buchar           *dest_buf,
+                                       bint              dest_rowstride,
                                        BdkX11FormatType  dest_format,
                                        BdkByteOrder      dest_byteorder,
-                                       gint              width,
-                                       gint              height);
+                                       bint              width,
+                                       bint              height);
 
 /* Note that the following take BdkDrawableImplX11, not the wrapper drawable */
 void _bdk_x11_drawable_finish           (BdkDrawable  *drawable);

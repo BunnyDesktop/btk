@@ -132,7 +132,7 @@ bdk_display_list_devices (BdkDisplay *dpy)
   return _bdk_input_devices;
 }
 
-const gchar *
+const bchar *
 bdk_device_get_name (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), NULL);
@@ -156,7 +156,7 @@ bdk_device_get_mode (BdkDevice *device)
   return device->mode;
 }
 
-gboolean
+bboolean
 bdk_device_get_has_cursor (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), FALSE);
@@ -173,8 +173,8 @@ bdk_device_set_source (BdkDevice *device,
 
 void
 bdk_device_get_key (BdkDevice       *device,
-                    guint            index,
-                    guint           *keyval,
+                    buint            index,
+                    buint           *keyval,
                     BdkModifierType *modifiers)
 {
   g_return_if_fail (BDK_IS_DEVICE (device));
@@ -193,8 +193,8 @@ bdk_device_get_key (BdkDevice       *device,
 
 void
 bdk_device_set_key (BdkDevice      *device,
-		    guint           index,
-		    guint           keyval,
+		    buint           index,
+		    buint           keyval,
 		    BdkModifierType modifiers)
 {
   g_return_if_fail (device != NULL);
@@ -206,7 +206,7 @@ bdk_device_set_key (BdkDevice      *device,
 
 BdkAxisUse
 bdk_device_get_axis_use (BdkDevice *device,
-                         guint      index)
+                         buint      index)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), BDK_AXIS_IGNORE);
   g_return_val_if_fail (index < device->num_axes, BDK_AXIS_IGNORE);
@@ -214,7 +214,7 @@ bdk_device_get_axis_use (BdkDevice *device,
   return device->axes[index].use;
 }
 
-gint
+bint
 bdk_device_get_n_keys (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -222,7 +222,7 @@ bdk_device_get_n_keys (BdkDevice *device)
   return device->num_keys;
 }
 
-gint
+bint
 bdk_device_get_n_axes (BdkDevice *device)
 {
   g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
@@ -232,7 +232,7 @@ bdk_device_get_n_axes (BdkDevice *device)
 
 void
 bdk_device_set_axis_use (BdkDevice   *device,
-                         guint        index,
+                         buint        index,
                          BdkAxisUse   use)
 {
 #if 0
@@ -274,10 +274,10 @@ bdk_device_set_axis_use (BdkDevice   *device,
 static void
 bdk_input_set_device_state (BdkDevice *device,
                             BdkModifierType mask,
-                            gdouble *axes)
+                            bdouble *axes)
 {
   BdkDevicePrivate *priv;
-  gint i;
+  bint i;
 
   if (device != _bdk_core_pointer)
     {
@@ -292,15 +292,15 @@ bdk_input_set_device_state (BdkDevice *device,
 void
 bdk_device_get_state (BdkDevice       *device,
                       BdkWindow       *window,
-                      gdouble         *axes,
+                      bdouble         *axes,
                       BdkModifierType *mask)
 {
   BdkDevicePrivate *priv;
-  gint i;
+  bint i;
 
   if (device == _bdk_core_pointer)
     {
-      gint x_int, y_int;
+      bint x_int, y_int;
 
       bdk_window_get_pointer (window, &x_int, &y_int, mask);
 
@@ -325,9 +325,9 @@ bdk_device_get_state (BdkDevice       *device,
 
 void 
 bdk_device_free_history (BdkTimeCoord **events,
-			 gint           n_events)
+			 bint           n_events)
 {
-  gint i;
+  bint i;
   
   for (i = 0; i < n_events; i++)
     g_free (events[i]);
@@ -335,13 +335,13 @@ bdk_device_free_history (BdkTimeCoord **events,
   g_free (events);
 }
 
-gboolean
+bboolean
 bdk_device_get_history  (BdkDevice         *device,
 			 BdkWindow         *window,
-			 guint32            start,
-			 guint32            stop,
+			 buint32            start,
+			 buint32            stop,
 			 BdkTimeCoord    ***events,
-			 gint              *n_events)
+			 bint              *n_events)
 {
   g_return_val_if_fail (window != NULL, FALSE);
   g_return_val_if_fail (BDK_WINDOW_IS_QUARTZ (window), FALSE);
@@ -353,7 +353,7 @@ bdk_device_get_history  (BdkDevice         *device,
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_device_set_mode (BdkDevice   *device,
                      BdkInputMode mode)
 {
@@ -368,13 +368,13 @@ bdk_device_set_mode (BdkDevice   *device,
   return FALSE;
 }
 
-gint
+bint
 _bdk_input_enable_window (BdkWindow *window, BdkDevicePrivate *bdkdev)
 {
   return TRUE;
 }
 
-gint
+bint
 _bdk_input_disable_window (BdkWindow *window, BdkDevicePrivate *bdkdev)
 {
   return TRUE;
@@ -400,7 +400,7 @@ _bdk_input_window_find(BdkWindow *window)
    cases */
 
 void
-bdk_input_set_extension_events (BdkWindow *window, gint mask,
+bdk_input_set_extension_events (BdkWindow *window, bint mask,
 				BdkExtensionMode mode)
 {
   BdkWindowObject *window_private;
@@ -503,7 +503,7 @@ _bdk_input_init (void)
   _bdk_quartz_pen->keys = NULL;
 
   priv = (BdkDevicePrivate *)_bdk_quartz_pen;
-  priv->last_axes_state = g_malloc_n (_bdk_quartz_pen->num_axes, sizeof (gdouble));
+  priv->last_axes_state = g_malloc_n (_bdk_quartz_pen->num_axes, sizeof (bdouble));
 
   _bdk_input_devices = g_list_append (_bdk_input_devices, _bdk_quartz_pen);
 
@@ -518,7 +518,7 @@ _bdk_input_init (void)
   _bdk_quartz_cursor->keys = NULL;
 
   priv = (BdkDevicePrivate *)_bdk_quartz_cursor;
-  priv->last_axes_state = g_malloc_n (_bdk_quartz_cursor->num_axes, sizeof (gdouble));
+  priv->last_axes_state = g_malloc_n (_bdk_quartz_cursor->num_axes, sizeof (bdouble));
 
   _bdk_input_devices = g_list_append (_bdk_input_devices, _bdk_quartz_cursor);
 
@@ -533,7 +533,7 @@ _bdk_input_init (void)
   _bdk_quartz_eraser->keys = NULL;
 
   priv = (BdkDevicePrivate *)_bdk_quartz_eraser;
-  priv->last_axes_state = g_malloc_n (_bdk_quartz_eraser->num_axes, sizeof (gdouble));
+  priv->last_axes_state = g_malloc_n (_bdk_quartz_eraser->num_axes, sizeof (bdouble));
 
   _bdk_input_devices = g_list_append (_bdk_input_devices, _bdk_quartz_eraser);
 
@@ -570,10 +570,10 @@ _bdk_input_exit (void)
   g_list_free (_bdk_input_windows);
 }
 
-gboolean
-bdk_device_get_axis (BdkDevice *device, gdouble *axes, BdkAxisUse use, gdouble *value)
+bboolean
+bdk_device_get_axis (BdkDevice *device, bdouble *axes, BdkAxisUse use, bdouble *value)
 {
-  gint i;
+  bint i;
   
   g_return_val_if_fail (device != NULL, FALSE);
 
@@ -593,7 +593,7 @@ bdk_device_get_axis (BdkDevice *device, gdouble *axes, BdkAxisUse use, gdouble *
 
 void
 _bdk_input_window_crossing (BdkWindow *window,
-                            gboolean   enter)
+                            bboolean   enter)
 {
 }
 
@@ -627,16 +627,16 @@ _bdk_input_quartz_tablet_proximity (NSPointingDeviceType deviceType)
  *
  * Return value: %TRUE if an extended input event was generated.
  */
-gboolean
+bboolean
 _bdk_input_fill_quartz_input_event (BdkEvent *event,
                                     NSEvent  *nsevent,
                                     BdkEvent *input_event)
 {
-  gdouble *axes;
-  gint x, y;
-  gint x_target, y_target;
-  gdouble x_root, y_root;
-  gint state;
+  bdouble *axes;
+  bint x, y;
+  bint x_target, y_target;
+  bdouble x_root, y_root;
+  bint state;
   BdkInputWindow *iw;
   BdkWindow *target_window;
   BdkScreenQuartz *screen_quartz;
@@ -696,7 +696,7 @@ _bdk_input_fill_quartz_input_event (BdkEvent *event,
    */
   _bdk_display->ignore_core_events = TRUE;
 
-  axes = g_malloc_n (N_INPUT_DEVICE_AXES, sizeof (gdouble));
+  axes = g_malloc_n (N_INPUT_DEVICE_AXES, sizeof (bdouble));
 
   bdk_window_get_origin (target_window, &x_target, &y_target);
 

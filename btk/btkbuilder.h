@@ -85,53 +85,53 @@ struct _BtkBuilderClass
 
 typedef void (*BtkBuilderConnectFunc) (BtkBuilder    *builder,
 				       BObject       *object,
-				       const gchar   *signal_name,
-				       const gchar   *handler_name,
+				       const bchar   *signal_name,
+				       const bchar   *handler_name,
 				       BObject       *connect_object,
 				       GConnectFlags  flags,
-				       gpointer       user_data);
+				       bpointer       user_data);
 
 GType        btk_builder_get_type                (void) B_GNUC_CONST;
 BtkBuilder*  btk_builder_new                     (void);
 
-guint        btk_builder_add_from_file           (BtkBuilder    *builder,
-                                                  const gchar   *filename,
+buint        btk_builder_add_from_file           (BtkBuilder    *builder,
+                                                  const bchar   *filename,
                                                   GError       **error);
-guint        btk_builder_add_from_string         (BtkBuilder    *builder,
-                                                  const gchar   *buffer,
-                                                  gsize          length,
+buint        btk_builder_add_from_string         (BtkBuilder    *builder,
+                                                  const bchar   *buffer,
+                                                  bsize          length,
                                                   GError       **error);
-guint        btk_builder_add_objects_from_file   (BtkBuilder    *builder,
-                                                  const gchar   *filename,
-                                                  gchar        **object_ids,
+buint        btk_builder_add_objects_from_file   (BtkBuilder    *builder,
+                                                  const bchar   *filename,
+                                                  bchar        **object_ids,
                                                   GError       **error);
-guint        btk_builder_add_objects_from_string (BtkBuilder    *builder,
-                                                  const gchar   *buffer,
-                                                  gsize          length,
-                                                  gchar        **object_ids,
+buint        btk_builder_add_objects_from_string (BtkBuilder    *builder,
+                                                  const bchar   *buffer,
+                                                  bsize          length,
+                                                  bchar        **object_ids,
                                                   GError       **error);
 BObject*     btk_builder_get_object              (BtkBuilder    *builder,
-                                                  const gchar   *name);
+                                                  const bchar   *name);
 GSList*      btk_builder_get_objects             (BtkBuilder    *builder);
 void         btk_builder_connect_signals         (BtkBuilder    *builder,
-						  gpointer       user_data);
+						  bpointer       user_data);
 void         btk_builder_connect_signals_full    (BtkBuilder    *builder,
                                                   BtkBuilderConnectFunc func,
-						  gpointer       user_data);
+						  bpointer       user_data);
 void         btk_builder_set_translation_domain  (BtkBuilder   	*builder,
-                                                  const gchar  	*domain);
-const gchar* btk_builder_get_translation_domain  (BtkBuilder   	*builder);
+                                                  const bchar  	*domain);
+const bchar* btk_builder_get_translation_domain  (BtkBuilder   	*builder);
 GType        btk_builder_get_type_from_name      (BtkBuilder   	*builder,
                                                   const char   	*type_name);
 
-gboolean     btk_builder_value_from_string       (BtkBuilder    *builder,
+bboolean     btk_builder_value_from_string       (BtkBuilder    *builder,
 						  BParamSpec   	*pspec,
-                                                  const gchar  	*string,
+                                                  const bchar  	*string,
                                                   BValue       	*value,
 						  GError       **error);
-gboolean     btk_builder_value_from_string_type  (BtkBuilder    *builder,
+bboolean     btk_builder_value_from_string_type  (BtkBuilder    *builder,
 						  GType        	 type,
-                                                  const gchar  	*string,
+                                                  const bchar  	*string,
                                                   BValue       	*value,
 						  GError       **error);
 

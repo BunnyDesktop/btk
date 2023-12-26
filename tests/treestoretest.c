@@ -23,7 +23,7 @@
 #include <string.h>
 
 BtkTreeStore *base_model;
-static gint node_count = 0;
+static bint node_count = 0;
 
 static void
 selection_changed (BtkTreeSelection *selection,
@@ -38,8 +38,8 @@ selection_changed (BtkTreeSelection *selection,
 static void
 node_set (BtkTreeIter *iter)
 {
-  gint n;
-  gchar *str;
+  bint n;
+  bchar *str;
 
   str = g_strdup_printf ("Row (<span color=\"red\">%d</span>)", node_count++);
   btk_tree_store_set (base_model, iter, 0, str, -1);
@@ -128,7 +128,7 @@ iter_insert_with_values (BtkWidget *button, BtkTreeView *tree_view)
   BtkTreeIter iter;
   BtkTreeIter selected;
   BtkTreeModel *model = btk_tree_view_get_model (tree_view);
-  gchar *str1, *str2;
+  bchar *str1, *str2;
 
   entry = g_object_get_data (B_OBJECT (button), "user_data");
   str1 = g_strdup_printf ("Row (<span color=\"red\">%d</span>)", node_count++);
@@ -279,7 +279,7 @@ iter_append (BtkWidget *button, BtkTreeView *tree_view)
 }
 
 static void
-make_window (gint view_type)
+make_window (bint view_type)
 {
   BtkWidget *window;
   BtkWidget *vbox;

@@ -9,7 +9,7 @@ BtkWidget *selection_widget;
 
 /* Callback when the user toggles the selection */
 static void selection_toggled( BtkWidget *widget,
-                               gint      *have_selection )
+                               bint      *have_selection )
 {
   if (BTK_TOGGLE_BUTTON (widget)->active)
     {
@@ -36,9 +36,9 @@ static void selection_toggled( BtkWidget *widget,
 }
 
 /* Called when another application claims the selection */
-static gboolean selection_clear( BtkWidget         *widget,
+static bboolean selection_clear( BtkWidget         *widget,
                                  BdkEventSelection *event,
-                                 gint              *have_selection )
+                                 bint              *have_selection )
 {
   *have_selection = FALSE;
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (selection_button), FALSE);
@@ -49,11 +49,11 @@ static gboolean selection_clear( BtkWidget         *widget,
 /* Supplies the current time as the selection. */
 static void selection_handle( BtkWidget        *widget,
                               BtkSelectionData *selection_data,
-                              guint             info,
-                              guint             time_stamp,
-                              gpointer          data )
+                              buint             info,
+                              buint             time_stamp,
+                              bpointer          data )
 {
-  gchar *timestr;
+  bchar *timestr;
   time_t current_time;
 
   current_time = time (NULL);

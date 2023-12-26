@@ -29,9 +29,9 @@ static const char * xpm_data[] = {
 
 /* when invoked (via signal delete_event), terminates the application.
  */
-gint close_application( BtkWidget *widget,
+bint close_application( BtkWidget *widget,
                         BdkEvent  *event,
-                        gpointer   data )
+                        bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -41,7 +41,7 @@ gint close_application( BtkWidget *widget,
 /* is invoked when the button is clicked.  It just prints a message.
  */
 void button_clicked( BtkWidget *widget,
-                     gpointer   data ) {
+                     bpointer   data ) {
     g_print ("button clicked\n");
 }
 
@@ -67,7 +67,7 @@ int main( int   argc,
     style = btk_widget_get_style (window);
     pixmap = bdk_pixmap_create_from_xpm_d (window->window,  &mask,
                                            &style->bg[BTK_STATE_NORMAL],
-                                           (gchar **)xpm_data);
+                                           (bchar **)xpm_data);
 
     /* a pixmap widget to contain the pixmap */
     pixmapwid = btk_image_new_from_pixmap (pixmap, mask);

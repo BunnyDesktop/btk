@@ -41,7 +41,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#bdk-rectangle-intersect" title="bdk_rectangle_intersect ()">bdk_rectangle_intersect</a> <span class="c_punctuation">()</span>
@@ -113,7 +113,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#bdk-rebunnyion-empty" title="bdk_rebunnyion_empty ()">bdk_rebunnyion_empty</a> <span class="c_punctuation">()</span>
@@ -121,7 +121,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#bdk-rebunnyion-equal" title="bdk_rebunnyion_equal ()">bdk_rebunnyion_equal</a> <span class="c_punctuation">()</span>
@@ -129,7 +129,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#bdk-rebunnyion-rect-equal" title="bdk_rebunnyion_rect_equal ()">bdk_rebunnyion_rect_equal</a> <span class="c_punctuation">()</span>
@@ -137,7 +137,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#bdk-rebunnyion-point-in" title="bdk_rebunnyion_point_in ()">bdk_rebunnyion_point_in</a> <span class="c_punctuation">()</span>
@@ -273,7 +273,7 @@
 <a name="bdk2-Points-Rectangles-and-Rebunnyions.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="bdk-rectangle-intersect"></a><h3>bdk_rectangle_intersect ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rectangle_intersect (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle" title="struct BdkRectangle"><span class="type">BdkRectangle</span></a> *src1</code></em>,
                          <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle" title="struct BdkRectangle"><span class="type">BdkRectangle</span></a> *src2</code></em>,
                          <em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle" title="struct BdkRectangle"><span class="type">BdkRectangle</span></a> *dest</code></em>);</pre>
@@ -387,7 +387,7 @@ bdk_rebunnyion_new (<em class="parameter"><code><span class="type">void</span></
 <a name="bdk-rebunnyion-polygon"></a><h3>bdk_rebunnyion_polygon ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="returnvalue">BdkRebunnyion</span></a> *
 bdk_rebunnyion_polygon (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint" title="struct BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> n_points</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> n_points</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkFillRule" title="enum BdkFillRule"><span class="type">BdkFillRule</span></a> fill_rule</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_rebunnyion_polygon</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
@@ -543,7 +543,7 @@ bdk_rebunnyion_get_clipbox (<em class="parameter"><code>const <a class="link" hr
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_rebunnyion_get_rectangles (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
                            <em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle" title="struct BdkRectangle"><span class="type">BdkRectangle</span></a> **rectangles</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *n_rectangles</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bint</span> *n_rectangles</code></em>);</pre>
 <p>Obtains the area covered by the rebunnyion as a list of rectangles.
 The array returned in <em class="parameter"><code>rectangles</code></em>
  must be freed with <code class="function">g_free()</code>.</p>
@@ -578,7 +578,7 @@ The array returned in <em class="parameter"><code>rectangles</code></em>
 <hr>
 <div class="refsect2">
 <a name="bdk-rebunnyion-empty"></a><h3>bdk_rebunnyion_empty ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rebunnyion_empty (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>);</pre>
 <p>Finds out if the <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> is empty.</p>
 <div class="refsect3">
@@ -605,7 +605,7 @@ is empty.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-rebunnyion-equal"></a><h3>bdk_rebunnyion_equal ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rebunnyion_equal (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion1</code></em>,
                   <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion2</code></em>);</pre>
 <p>Finds out if the two rebunnyions are the same.</p>
@@ -641,7 +641,7 @@ are equal.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-rebunnyion-rect-equal"></a><h3>bdk_rebunnyion_rect_equal ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rebunnyion_rect_equal (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
                        <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle" title="struct BdkRectangle"><span class="type">BdkRectangle</span></a> *rectangle</code></em>);</pre>
 <div class="warning">
@@ -683,7 +683,7 @@ are equal.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-rebunnyion-point-in"></a><h3>bdk_rebunnyion_point_in ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rebunnyion_point_in (<em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
                      <em class="parameter"><code><span class="type">int</span> x</code></em>,
                      <em class="parameter"><code><span class="type">int</span> y</code></em>);</pre>
@@ -762,8 +762,8 @@ outside, or partly inside the <a class="link" href="bdk2-Points-Rectangles-and-R
 <a name="bdk-rebunnyion-offset"></a><h3>bdk_rebunnyion_offset ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_rebunnyion_offset (<em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> dx</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> dy</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> dx</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> dy</code></em>);</pre>
 <p>Moves a rebunnyion the specified distance.</p>
 <div class="refsect3">
 <a name="bdk-rebunnyion-offset.parameters"></a><h4>Parameters</h4>
@@ -798,8 +798,8 @@ bdk_rebunnyion_offset (<em class="parameter"><code><a class="link" href="bdk2-Po
 <a name="bdk-rebunnyion-shrink"></a><h3>bdk_rebunnyion_shrink ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_rebunnyion_shrink (<em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> dx</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> dy</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> dx</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> dy</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_rebunnyion_shrink</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>There is no replacement for this function.</p>
@@ -1020,7 +1020,7 @@ or the other of the two sources but not in both.</p>
 <a name="BdkSpanFunc"></a><h3>BdkSpanFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BdkSpanFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkSpan" title="struct BdkSpan"><span class="type">BdkSpan</span></a> *span</code></em>,
-                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <div class="warning"><p><code class="literal">BdkSpanFunc</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -1030,9 +1030,9 @@ or the other of the two sources but not in both.</p>
 bdk_rebunnyion_spans_intersect_foreach (<em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="type">BdkRebunnyion</span></a> *rebunnyion</code></em>,
                                     <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkSpan" title="struct BdkSpan"><span class="type">BdkSpan</span></a> *spans</code></em>,
                                     <em class="parameter"><code><span class="type">int</span> n_spans</code></em>,
-                                    <em class="parameter"><code><span class="type">gboolean</span> sorted</code></em>,
+                                    <em class="parameter"><code><span class="type">bboolean</span> sorted</code></em>,
                                     <em class="parameter"><code><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkSpanFunc" title="BdkSpanFunc ()"><span class="type">BdkSpanFunc</span></a> function</code></em>,
-                                    <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_rebunnyion_spans_intersect_foreach</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>There is no replacement.</p>
@@ -1092,8 +1092,8 @@ is sorted wrt. the y coordinate</p></td>
 <div class="refsect2">
 <a name="BdkPoint"></a><h3>struct BdkPoint</h3>
 <pre class="programlisting">struct BdkPoint {
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 </pre>
 </div>
@@ -1101,10 +1101,10 @@ is sorted wrt. the y coordinate</p></td>
 <div class="refsect2">
 <a name="BdkRectangle"></a><h3>struct BdkRectangle</h3>
 <pre class="programlisting">struct BdkRectangle {
-  gint x;
-  gint y;
-  gint width;
-  gint height;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
 };
 </pre>
 </div>
@@ -1175,9 +1175,9 @@ is sorted wrt. the y coordinate</p></td>
 <div class="refsect2">
 <a name="BdkSpan"></a><h3>struct BdkSpan</h3>
 <pre class="programlisting">struct BdkSpan {
-  gint x;
-  gint y;
-  gint width;
+  bint x;
+  bint y;
+  bint width;
 };
 </pre>
 </div>

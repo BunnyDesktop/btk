@@ -69,7 +69,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolButton.html#btk-tool-button-get-label" title="btk_tool_button_get_label ()">btk_tool_button_get_label</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolButton.html#btk-tool-button-get-use-underline" title="btk_tool_button_get_use_underline ()">btk_tool_button_get_use_underline</a> <span class="c_punctuation">()</span>
@@ -100,7 +100,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolButton.html#btk-tool-button-get-stock-id" title="btk_tool_button_get_stock_id ()">btk_tool_button_get_stock_id</a> <span class="c_punctuation">()</span>
@@ -115,7 +115,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolButton.html#btk-tool-button-get-icon-name" title="btk_tool_button_get_icon_name ()">btk_tool_button_get_icon_name</a> <span class="c_punctuation">()</span>
@@ -196,7 +196,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolButton.html#BtkToolButton--use-underline" title="The “use-underline” property">use-underline</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -280,7 +280,7 @@ BtkToolButton implements
 <a name="btk-tool-button-new"></a><h3>btk_tool_button_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
 btk_tool_button_new (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *icon_widget</code></em>,
-                     <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                     <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkToolButton.html" title="BtkToolButton"><code class="literal">BtkToolButton</code></a> using <em class="parameter"><code>icon_widget</code></em>
  as icon and <em class="parameter"><code>label</code></em>
  as
@@ -317,7 +317,7 @@ label.</p>
 <div class="refsect2">
 <a name="btk-tool-button-new-from-stock"></a><h3>btk_tool_button_new_from_stock ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
-btk_tool_button_new_from_stock (<em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+btk_tool_button_new_from_stock (<em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> containing the image and text from a
 stock item. Some stock ids have preprocessor macros like <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-OK:CAPS" title="BTK_STOCK_OK"><span class="type">BTK_STOCK_OK</span></a>
 and <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-APPLY:CAPS" title="BTK_STOCK_APPLY"><span class="type">BTK_STOCK_APPLY</span></a>.</p>
@@ -349,7 +349,7 @@ and <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-APPLY:CAPS" title="BTK
 <a name="btk-tool-button-set-label"></a><h3>btk_tool_button_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_button_set_label (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets <em class="parameter"><code>label</code></em>
  as the label used for the tool button. The "label" property
 only has an effect if not overridden by a non-<code class="literal">NULL</code> "label_widget" property.
@@ -384,7 +384,7 @@ is determined by the "stock_id" property. If the "stock_id" property is also
 <hr>
 <div class="refsect2">
 <a name="btk-tool-button-get-label"></a><h3>btk_tool_button_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_tool_button_get_label (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>);</pre>
 <p>Returns the label used by the tool button, or <code class="literal">NULL</code> if the tool button
 doesn't have a label. or uses a the label from a stock item. The returned
@@ -415,7 +415,7 @@ string is owned by BTK+, and must not be modified or freed.</p>
 <a name="btk-tool-button-set-use-underline"></a><h3>btk_tool_button_set_use_underline ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_button_set_use_underline (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> use_underline</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> use_underline</code></em>);</pre>
 <p>If set, an underline in the label property indicates that the next character
 should be used for the mnemonic accelerator key in the overflow menu. For
 example, if the label property is "_Open" and <em class="parameter"><code>use_underline</code></em>
@@ -451,7 +451,7 @@ only affects the menu item on the overflow menu.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-tool-button-get-use-underline"></a><h3>btk_tool_button_get_use_underline ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tool_button_get_use_underline (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>);</pre>
 <p>Returns whether underscores in the label property are used as mnemonics
 on menu items on the overflow menu. See <a class="link" href="BtkToolButton.html#btk-tool-button-set-use-underline" title="btk_tool_button_set_use_underline ()"><code class="function">btk_tool_button_set_use_underline()</code></a>.</p>
@@ -482,7 +482,7 @@ mnemonics on menu items on the overflow menu.</p>
 <a name="btk-tool-button-set-stock-id"></a><h3>btk_tool_button_set_stock_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_button_set_stock_id (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Sets the name of the stock item. See <a class="link" href="BtkToolButton.html#btk-tool-button-new-from-stock" title="btk_tool_button_new_from_stock ()"><code class="function">btk_tool_button_new_from_stock()</code></a>.
 The stock_id property only has an effect if not
 overridden by non-<code class="literal">NULL</code> "label" and "icon_widget" properties.</p>
@@ -513,7 +513,7 @@ overridden by non-<code class="literal">NULL</code> "label" and "icon_widget" pr
 <hr>
 <div class="refsect2">
 <a name="btk-tool-button-get-stock-id"></a><h3>btk_tool_button_get_stock_id ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_tool_button_get_stock_id (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>);</pre>
 <p>Returns the name of the stock item. See <a class="link" href="BtkToolButton.html#btk-tool-button-set-stock-id" title="btk_tool_button_set_stock_id ()"><code class="function">btk_tool_button_set_stock_id()</code></a>.
 The returned string is owned by BTK+ and must not be freed or modifed.</p>
@@ -544,7 +544,7 @@ The returned string is owned by BTK+ and must not be freed or modifed.</p>
 <a name="btk-tool-button-set-icon-name"></a><h3>btk_tool_button_set_icon_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_button_set_icon_name (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>);</pre>
 <p>Sets the icon for the tool button from a named themed icon.
 See the docs for <a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> for more details.
 The "icon_name" property only has an effect if not
@@ -577,7 +577,7 @@ properties.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-tool-button-get-icon-name"></a><h3>btk_tool_button_get_icon_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_tool_button_get_icon_name (<em class="parameter"><code><a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *button</code></em>);</pre>
 <p>Returns the name of the themed icon for the tool button,
 see <a class="link" href="BtkToolButton.html#btk-tool-button-set-icon-name" title="btk_tool_button_set_icon_name ()"><code class="function">btk_tool_button_set_icon_name()</code></a>.</p>
@@ -802,7 +802,7 @@ This property only has an effect if not overridden by "label",
 <hr>
 <div class="refsect2">
 <a name="BtkToolButton--use-underline"></a><h3>The <code class="literal">“use-underline”</code> property</h3>
-<pre class="programlisting">  “use-underline”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-underline”            <span class="type">bboolean</span></pre>
 <p>If set, an underline in the label property indicates that the next character should be used for the mnemonic accelerator key in the overflow menu.</p>
 <p>Owner: BtkToolButton</p>
 <p>Flags: Read / Write</p>
@@ -827,7 +827,7 @@ This property only has an effect if not overridden by "label",
 <a name="BtkToolButton-clicked"></a><h3>The <code class="literal">“clicked”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkToolButton.html" title="BtkToolButton"><span class="type">BtkToolButton</span></a> *toolbutton,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>This signal is emitted when the tool button is clicked with the mouse
 or activated with the keyboard.</p>
 <div class="refsect3">

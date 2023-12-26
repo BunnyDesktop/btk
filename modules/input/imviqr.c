@@ -60,7 +60,7 @@ viqr_register_type (GTypeModule *module)
 				 &object_info, 0);
 }
 
-static guint16 viqr_compose_seqs[] = {
+static buint16 viqr_compose_seqs[] = {
   BDK_A,                   0,                0, 0, 0, 'A',
   BDK_A,                   BDK_apostrophe,   0, 0, 0, 0xc1,
   BDK_A,  BDK_parenleft,   0,                0, 0,    0x102,
@@ -273,7 +273,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "viqr") == 0)
     return g_object_new (type_viqr_translit, NULL);

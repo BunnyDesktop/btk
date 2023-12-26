@@ -31,31 +31,31 @@
 B_BEGIN_DECLS
 
 #ifndef BDK_DISABLE_DEPRECATED
-gboolean bdk_spawn_on_screen              (BdkScreen             *screen,
-					   const gchar           *working_directory,
-					   gchar                **argv,
-					   gchar                **envp,
+bboolean bdk_spawn_on_screen              (BdkScreen             *screen,
+					   const bchar           *working_directory,
+					   bchar                **argv,
+					   bchar                **envp,
 					   GSpawnFlags            flags,
 					   GSpawnChildSetupFunc   child_setup,
-					   gpointer               user_data,
-					   gint                  *child_pid,
+					   bpointer               user_data,
+					   bint                  *child_pid,
 					   GError               **error);
 
-gboolean bdk_spawn_on_screen_with_pipes   (BdkScreen             *screen,
-					   const gchar           *working_directory,
-					   gchar                **argv,
-					   gchar                **envp,
+bboolean bdk_spawn_on_screen_with_pipes   (BdkScreen             *screen,
+					   const bchar           *working_directory,
+					   bchar                **argv,
+					   bchar                **envp,
 					   GSpawnFlags            flags,
 					   GSpawnChildSetupFunc   child_setup,
-					   gpointer               user_data,
-					   gint                  *child_pid,
-					   gint                  *standard_input,
-					   gint                  *standard_output,
-					   gint                  *standard_error,
+					   bpointer               user_data,
+					   bint                  *child_pid,
+					   bint                  *standard_input,
+					   bint                  *standard_output,
+					   bint                  *standard_error,
 					   GError               **error);
 
-gboolean bdk_spawn_command_line_on_screen (BdkScreen             *screen,
-					   const gchar           *command_line,
+bboolean bdk_spawn_command_line_on_screen (BdkScreen             *screen,
+					   const bchar           *command_line,
 					   GError               **error);
 #endif
 

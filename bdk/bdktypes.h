@@ -75,7 +75,7 @@ typedef struct _BdkSpan	              BdkSpan;
  * is not the same as BdkWChar. For instance
  * on Win32, wchar_t is unsigned short.
  */
-typedef guint32			    BdkWChar;
+typedef buint32			    BdkWChar;
 
 typedef struct _BdkAtom            *BdkAtom;
 
@@ -85,16 +85,16 @@ typedef struct _BdkAtom            *BdkAtom;
 #ifdef BDK_NATIVE_WINDOW_POINTER
 #define BDK_GPOINTER_TO_NATIVE_WINDOW(p) ((BdkNativeWindow) (p))
 #else
-#define BDK_GPOINTER_TO_NATIVE_WINDOW(p) GPOINTER_TO_UINT(p)
+#define BDK_GPOINTER_TO_NATIVE_WINDOW(p) BPOINTER_TO_UINT(p)
 #endif
 
-#define _BDK_MAKE_ATOM(val) ((BdkAtom)GUINT_TO_POINTER(val))
+#define _BDK_MAKE_ATOM(val) ((BdkAtom)BUINT_TO_POINTER(val))
 #define BDK_NONE            _BDK_MAKE_ATOM (0)
 
 #ifdef BDK_NATIVE_WINDOW_POINTER
-typedef gpointer BdkNativeWindow;
+typedef bpointer BdkNativeWindow;
 #else
-typedef guint32 BdkNativeWindow;
+typedef buint32 BdkNativeWindow;
 #endif
  
 /* Forward declarations of commonly used types
@@ -181,43 +181,43 @@ typedef enum
   BDK_GRAB_FROZEN          = 4
 } BdkGrabStatus;
 
-typedef void (*BdkInputFunction) (gpointer	    data,
-				  gint		    source,
+typedef void (*BdkInputFunction) (bpointer	    data,
+				  bint		    source,
 				  BdkInputCondition condition);
 
 #ifndef BDK_DISABLE_DEPRECATED
 
-typedef void (*BdkDestroyNotify) (gpointer data);
+typedef void (*BdkDestroyNotify) (bpointer data);
 
 #endif /* BDK_DISABLE_DEPRECATED */
 
 struct _BdkPoint
 {
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 struct _BdkRectangle
 {
-  gint x;
-  gint y;
-  gint width;
-  gint height;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
 };
 
 struct _BdkSegment
 {
-  gint x1;
-  gint y1;
-  gint x2;
-  gint y2;
+  bint x1;
+  bint y1;
+  bint x2;
+  bint y2;
 };
 
 struct _BdkSpan
 {
-  gint x;
-  gint y;
-  gint width;
+  bint x;
+  bint y;
+  bint width;
 };
 
 B_END_DECLS

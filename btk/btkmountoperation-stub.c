@@ -43,18 +43,18 @@ _btk_mount_operation_lookup_context_free (BtkMountOperationLookupContext *contex
 {
 }
 
-gboolean
+bboolean
 _btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
                                   GPid                            pid,
-                                  gint                            size_pixels,
-                                  gchar                         **out_name,
-                                  gchar                         **out_command_line,
+                                  bint                            size_pixels,
+                                  bchar                         **out_name,
+                                  bchar                         **out_command_line,
                                   BdkPixbuf                     **out_pixbuf)
 {
   return FALSE;
 }
 
-gboolean
+bboolean
 _btk_mount_operation_kill_process (GPid      pid,
                                    GError  **error)
 {

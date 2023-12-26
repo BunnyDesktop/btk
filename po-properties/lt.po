@@ -3,10 +3,10 @@
 # Gediminas Paulauskas <menesis@delfi.lt>, 2000-2004.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
 # Žygimantas Beručka <uid0@akl.lt>, 2004-2007, 2010.
-# Gintautas Miliauskas <gintas@akl.lt>, 2006, 2007.
+# Gintautas Miliauskas <bintas@akl.lt>, 2006, 2007.
 # Mantas Kriaučiūnas <mantas@akl.lt>, 2006-2007.
 # Rimas Kudelis <rq@akl.lt>, 2008, 2010.
-# Gintautas Miliauskas <gintautas@miliauskas.lt>, 2009.
+# Gintautas Miliauskas <bintautas@miliauskas.lt>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
@@ -511,8 +511,8 @@ msgid ""
 "Horizontal position of child in available space. 0.0 is left aligned, 1.0 is "
 "right aligned"
 msgstr ""
-"Horizontali susijusio objekto padėtis turimoje erdvėje. 0.0 - išlygintas "
-"kairėje, 1.0 - išlygintas dešinėje"
+"Horizontali susijusio objekto padėtis turimoje erdvėje. 0.0 - išlybintas "
+"kairėje, 1.0 - išlybintas dešinėje"
 
 #: btk/btkalignment.c:119
 msgid "Vertical alignment"
@@ -5244,7 +5244,7 @@ msgid ""
 "inverted compared to the default (where down means ascending)"
 msgstr ""
 "Ar rikiavimo indikatorių sąrašo ir medžio rodiniuose kryptis apversta "
-"palyginti su įprasta (kur rodyklė žemyn reiškia didėjimo tvarką)"
+"palybinti su įprasta (kur rodyklė žemyn reiškia didėjimo tvarką)"
 
 #: btk/btksettings.c:486
 msgid "Show the 'Input Methods' menu"

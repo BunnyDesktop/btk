@@ -65,7 +65,7 @@ struct _BtkSettingsValue
   /* origin should be something like "filename:linenumber" for rc files,
    * or e.g. "XProperty" for other sources
    */
-  gchar *origin;
+  bchar *origin;
 
   /* valid types are LONG, DOUBLE and STRING corresponding to the token parsed,
    * or a GSTRING holding an unparsed statement
@@ -86,49 +86,49 @@ void		btk_settings_install_property_parser (BParamSpec         *pspec,
 						      BtkRcPropertyParser parser);
 
 /* --- precoded parsing functions --- */
-gboolean btk_rc_property_parse_color       (const BParamSpec *pspec,
+bboolean btk_rc_property_parse_color       (const BParamSpec *pspec,
 					    const GString    *gstring,
 					    BValue           *property_value);
-gboolean btk_rc_property_parse_enum        (const BParamSpec *pspec,
+bboolean btk_rc_property_parse_enum        (const BParamSpec *pspec,
 					    const GString    *gstring,
 					    BValue           *property_value);
-gboolean btk_rc_property_parse_flags       (const BParamSpec *pspec,
+bboolean btk_rc_property_parse_flags       (const BParamSpec *pspec,
 					    const GString    *gstring,
 					    BValue           *property_value);
-gboolean btk_rc_property_parse_requisition (const BParamSpec *pspec,
+bboolean btk_rc_property_parse_requisition (const BParamSpec *pspec,
 					    const GString    *gstring,
 					    BValue           *property_value);
-gboolean btk_rc_property_parse_border      (const BParamSpec *pspec,
+bboolean btk_rc_property_parse_border      (const BParamSpec *pspec,
 					    const GString    *gstring,
 					    BValue           *property_value);
 
 /*< private >*/
 void		btk_settings_set_property_value	 (BtkSettings	*settings,
-						  const gchar	*name,
+						  const bchar	*name,
 						  const BtkSettingsValue *svalue);
 void		btk_settings_set_string_property (BtkSettings	*settings,
-						  const gchar	*name,
-						  const gchar	*v_string,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  const bchar	*v_string,
+						  const bchar   *origin);
 void		btk_settings_set_long_property	 (BtkSettings	*settings,
-						  const gchar	*name,
-						  glong		 v_long,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  blong		 v_long,
+						  const bchar   *origin);
 void		btk_settings_set_double_property (BtkSettings	*settings,
-						  const gchar	*name,
-						  gdouble	 v_double,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  bdouble	 v_double,
+						  const bchar   *origin);
 
 
 /* implementation details */
 void _btk_settings_set_property_value_from_rc (BtkSettings            *settings,
-					       const gchar            *name,
+					       const bchar            *name,
 					       const BtkSettingsValue *svalue);
 void _btk_settings_reset_rc_values            (BtkSettings            *settings);
 
 void                _btk_settings_handle_event        (BdkEventSetting    *event);
 BtkRcPropertyParser _btk_rc_property_parser_from_type (GType               type);
-gboolean	    _btk_settings_parse_convert       (BtkRcPropertyParser parser,
+bboolean	    _btk_settings_parse_convert       (BtkRcPropertyParser parser,
 						       const BValue       *src_value,
 						       BParamSpec         *pspec,
 						       BValue	          *dest_value);

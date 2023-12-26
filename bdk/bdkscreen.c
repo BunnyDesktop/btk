@@ -32,11 +32,11 @@
 static void bdk_screen_dispose      (BObject        *object);
 static void bdk_screen_finalize     (BObject        *object);
 static void bdk_screen_set_property (BObject        *object,
-				     guint           prop_id,
+				     buint           prop_id,
 				     const BValue   *value,
 				     BParamSpec     *pspec);
 static void bdk_screen_get_property (BObject        *object,
-				     guint           prop_id,
+				     buint           prop_id,
 				     BValue         *value,
 				     BParamSpec     *pspec);
 
@@ -55,7 +55,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BdkScreen, bdk_screen, B_TYPE_OBJECT)
 
@@ -82,8 +82,8 @@ bdk_screen_class_init (BdkScreenClass *klass)
 				   g_param_spec_double ("resolution",
 							P_("Font resolution"),
 							P_("The resolution for fonts on the screen"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							-1.0,
 							G_PARAM_READWRITE|G_PARAM_STATIC_NAME|
 							G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
@@ -159,7 +159,7 @@ static void
 bdk_screen_dispose (BObject *object)
 {
   BdkScreen *screen = BDK_SCREEN (object);
-  gint i;
+  bint i;
 
   for (i = 0; i < 32; ++i)
     {
@@ -205,14 +205,14 @@ _bdk_screen_close (BdkScreen *screen)
 /* Fallback used when the monitor "at" a point or window
  * doesn't exist.
  */
-static gint
+static bint
 get_nearest_monitor (BdkScreen *screen,
-		     gint       x,
-		     gint       y)
+		     bint       x,
+		     bint       y)
 {
-  gint num_monitors, i;
-  gint nearest_dist = G_MAXINT;
-  gint nearest_monitor = 0;
+  bint num_monitors, i;
+  bint nearest_dist = B_MAXINT;
+  bint nearest_monitor = 0;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
 
@@ -221,7 +221,7 @@ get_nearest_monitor (BdkScreen *screen,
   for (i = 0; i < num_monitors; i++)
     {
       BdkRectangle monitor;
-      gint dist_x, dist_y, dist;
+      bint dist_x, dist_y, dist;
       
       bdk_screen_get_monitor_geometry (screen, i, &monitor);
 
@@ -263,12 +263,12 @@ get_nearest_monitor (BdkScreen *screen,
  *
  * Since: 2.2
  **/
-gint 
+bint 
 bdk_screen_get_monitor_at_point (BdkScreen *screen,
-				 gint       x,
-				 gint       y)
+				 bint       x,
+				 bint       y)
 {
-  gint num_monitors, i;
+  bint num_monitors, i;
   
   g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
 
@@ -303,11 +303,11 @@ bdk_screen_get_monitor_at_point (BdkScreen *screen,
  *
  * Since: 2.2
  **/
-gint 
+bint 
 bdk_screen_get_monitor_at_window (BdkScreen      *screen,
 				  BdkWindow	 *window)
 {
-  gint num_monitors, i, area = 0, screen_num = -1;
+  bint num_monitors, i, area = 0, screen_num = -1;
   BdkRectangle win_rect;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
@@ -345,7 +345,7 @@ bdk_screen_get_monitor_at_window (BdkScreen      *screen,
  * 
  * Return value: the width of the default screen in pixels.
  **/
-gint
+bint
 bdk_screen_width (void)
 {
   return bdk_screen_get_width (bdk_screen_get_default ());
@@ -358,7 +358,7 @@ bdk_screen_width (void)
  * 
  * Return value: the height of the default screen in pixels.
  **/
-gint
+bint
 bdk_screen_height (void)
 {
   return bdk_screen_get_height (bdk_screen_get_default ());
@@ -373,7 +373,7 @@ bdk_screen_height (void)
  * Return value: the width of the default screen in millimeters,
  * though it is not always correct.
  **/
-gint
+bint
 bdk_screen_width_mm (void)
 {
   return bdk_screen_get_width_mm (bdk_screen_get_default ());
@@ -388,7 +388,7 @@ bdk_screen_width_mm (void)
  * Return value: the height of the default screen in millimeters,
  * though it is not always correct.
  **/
-gint
+bint
 bdk_screen_height_mm (void)
 {
   return bdk_screen_get_height_mm (bdk_screen_get_default ());
@@ -462,7 +462,7 @@ bdk_screen_get_font_options (BdkScreen *screen)
  **/
 void
 bdk_screen_set_resolution (BdkScreen *screen,
-			   gdouble    dpi)
+			   bdouble    dpi)
 {
   g_return_if_fail (BDK_IS_SCREEN (screen));
 
@@ -489,7 +489,7 @@ bdk_screen_set_resolution (BdkScreen *screen,
  *
  * Since: 2.10
  **/
-gdouble
+bdouble
 bdk_screen_get_resolution (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), -1.0);
@@ -499,7 +499,7 @@ bdk_screen_get_resolution (BdkScreen *screen)
 
 static void
 bdk_screen_get_property (BObject      *object,
-			 guint         prop_id,
+			 buint         prop_id,
 			 BValue       *value,
 			 BParamSpec   *pspec)
 {
@@ -508,7 +508,7 @@ bdk_screen_get_property (BObject      *object,
   switch (prop_id)
     {
     case PROP_FONT_OPTIONS:
-      b_value_set_pointer (value, (gpointer) bdk_screen_get_font_options (screen));
+      b_value_set_pointer (value, (bpointer) bdk_screen_get_font_options (screen));
       break;
     case PROP_RESOLUTION:
       b_value_set_double (value, bdk_screen_get_resolution (screen));
@@ -521,7 +521,7 @@ bdk_screen_get_property (BObject      *object,
 
 static void
 bdk_screen_set_property (BObject      *object,
-			 guint         prop_id,
+			 buint         prop_id,
 			 const BValue *value,
 			 BParamSpec   *pspec)
 {

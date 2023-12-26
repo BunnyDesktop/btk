@@ -65,8 +65,8 @@ struct _BtkMenuToolButtonClass
 
 GType         btk_menu_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem  *btk_menu_tool_button_new            (BtkWidget   *icon_widget,
-                                                   const gchar *label);
-BtkToolItem  *btk_menu_tool_button_new_from_stock (const gchar *stock_id);
+                                                   const bchar *label);
+BtkToolItem  *btk_menu_tool_button_new_from_stock (const bchar *stock_id);
 
 void          btk_menu_tool_button_set_menu       (BtkMenuToolButton *button,
                                                    BtkWidget         *menu);
@@ -75,14 +75,14 @@ BtkWidget    *btk_menu_tool_button_get_menu       (BtkMenuToolButton *button);
 #ifndef BTK_DISABLE_DEPRECATED
 void          btk_menu_tool_button_set_arrow_tooltip (BtkMenuToolButton *button,
                                                       BtkTooltips       *tooltips,
-                                                      const gchar       *tip_text,
-                                                      const gchar       *tip_private);
+                                                      const bchar       *tip_text,
+                                                      const bchar       *tip_private);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 void          btk_menu_tool_button_set_arrow_tooltip_text   (BtkMenuToolButton *button,
-							     const gchar       *text);
+							     const bchar       *text);
 void          btk_menu_tool_button_set_arrow_tooltip_markup (BtkMenuToolButton *button,
-							     const gchar       *markup);
+							     const bchar       *markup);
 
 B_END_DECLS
 

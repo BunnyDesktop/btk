@@ -18,9 +18,9 @@ static BtkWidget *window = NULL;
 
 typedef struct
 {
-  gint   number;
-  gchar *product;
-  gint   yummy;
+  bint   number;
+  bchar *product;
+  bint   yummy;
 }
 Item;
 
@@ -76,7 +76,7 @@ add_items (void)
 static BtkTreeModel *
 create_items_model (void)
 {
-  gint i = 0;
+  bint i = 0;
   BtkListStore *model;
   BtkTreeIter iter;
 
@@ -111,7 +111,7 @@ static BtkTreeModel *
 create_numbers_model (void)
 {
 #define N_NUMBERS 10
-  gint i = 0;
+  bint i = 0;
   BtkListStore *model;
   BtkTreeIter iter;
 
@@ -139,7 +139,7 @@ create_numbers_model (void)
 }
 
 static void
-add_item (BtkWidget *button, gpointer data)
+add_item (BtkWidget *button, bpointer data)
 {
   Item foo;
   BtkTreeIter iter;
@@ -161,7 +161,7 @@ add_item (BtkWidget *button, gpointer data)
 }
 
 static void
-remove_item (BtkWidget *widget, gpointer data)
+remove_item (BtkWidget *widget, bpointer data)
 {
   BtkTreeIter iter;
   BtkTreeView *treeview = (BtkTreeView *)data;
@@ -170,7 +170,7 @@ remove_item (BtkWidget *widget, gpointer data)
 
   if (btk_tree_selection_get_selected (selection, NULL, &iter))
     {
-      gint i;
+      bint i;
       BtkTreePath *path;
 
       path = btk_tree_model_get_path (model, &iter);
@@ -183,13 +183,13 @@ remove_item (BtkWidget *widget, gpointer data)
     }
 }
 
-static gboolean
+static bboolean
 separator_row (BtkTreeModel *model,
                BtkTreeIter  *iter,
-               gpointer      data)
+               bpointer      data)
 {
   BtkTreePath *path;
-  gint idx;
+  bint idx;
 
   path = btk_tree_model_get_path (model, iter);
   idx = btk_tree_path_get_indices (path)[0];
@@ -202,8 +202,8 @@ separator_row (BtkTreeModel *model,
 static void
 editing_started (BtkCellRenderer *cell,
                  BtkCellEditable *editable,
-                 const gchar     *path,
-                 gpointer         data)
+                 const bchar     *path,
+                 bpointer         data)
 {
   btk_combo_box_set_row_separator_func (BTK_COMBO_BOX (editable), 
                                         separator_row, NULL, NULL);
@@ -211,15 +211,15 @@ editing_started (BtkCellRenderer *cell,
 
 static void
 cell_edited (BtkCellRendererText *cell,
-             const gchar         *path_string,
-             const gchar         *new_text,
-             gpointer             data)
+             const bchar         *path_string,
+             const bchar         *new_text,
+             bpointer             data)
 {
   BtkTreeModel *model = (BtkTreeModel *)data;
   BtkTreePath *path = btk_tree_path_new_from_string (path_string);
   BtkTreeIter iter;
 
-  gint column = GPOINTER_TO_INT (g_object_get_data (B_OBJECT (cell), "column"));
+  bint column = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (cell), "column"));
 
   btk_tree_model_get_iter (model, &iter, path);
 
@@ -227,7 +227,7 @@ cell_edited (BtkCellRendererText *cell,
     {
     case COLUMN_ITEM_NUMBER:
       {
-        gint i;
+        bint i;
 
         i = btk_tree_path_get_indices (path)[0];
         g_array_index (articles, Item, i).number = atoi (new_text);
@@ -239,8 +239,8 @@ cell_edited (BtkCellRendererText *cell,
 
     case COLUMN_ITEM_PRODUCT:
       {
-        gint i;
-        gchar *old_text;
+        bint i;
+        bchar *old_text;
 
         btk_tree_model_get (model, &iter, column, &old_text, -1);
         g_free (old_text);
@@ -277,7 +277,7 @@ add_columns (BtkTreeView  *treeview,
                     G_CALLBACK (cell_edited), items_model);
   g_signal_connect (renderer, "editing-started",
                     G_CALLBACK (editing_started), NULL);
-  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_NUMBER));
+  g_object_set_data (B_OBJECT (renderer), "column", BINT_TO_POINTER (COLUMN_ITEM_NUMBER));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Number", renderer,
@@ -291,7 +291,7 @@ add_columns (BtkTreeView  *treeview,
                 NULL);
   g_signal_connect (renderer, "edited",
                     G_CALLBACK (cell_edited), items_model);
-  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_PRODUCT));
+  g_object_set_data (B_OBJECT (renderer), "column", BINT_TO_POINTER (COLUMN_ITEM_PRODUCT));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Product", renderer,
@@ -300,7 +300,7 @@ add_columns (BtkTreeView  *treeview,
 
   /* yummy column */
   renderer = btk_cell_renderer_progress_new ();
-  g_object_set_data (B_OBJECT (renderer), "column", GINT_TO_POINTER (COLUMN_ITEM_YUMMY));
+  g_object_set_data (B_OBJECT (renderer), "column", BINT_TO_POINTER (COLUMN_ITEM_YUMMY));
 
   btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (treeview),
                                                -1, "Yummy", renderer,

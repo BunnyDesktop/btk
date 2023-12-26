@@ -28,10 +28,10 @@
 #include "bdkscreen-quartz.h"
 #include "bdkinputprivate.h"
 
-static gpointer parent_class;
+static bpointer parent_class;
 
 static GSList   *update_nswindows;
-static gboolean  in_process_all_updates = FALSE;
+static bboolean  in_process_all_updates = FALSE;
 
 static GSList *main_window_stack;
 
@@ -39,8 +39,8 @@ static GSList *main_window_stack;
 
 typedef struct
 {
-  gint            x, y;
-  gint            width, height;
+  bint            x, y;
+  bint            width, height;
   BdkWMDecoration decor;
 } FullscreenSavedGeometry;
 
@@ -57,7 +57,7 @@ static FullscreenSavedGeometry *get_fullscreen_geometry (BdkWindow *window);
 
 static void bdk_window_impl_iface_init (BdkWindowImplIface *iface);
 
-gboolean
+bboolean
 bdk_quartz_window_is_quartz (BdkWindow *window)
 {
   return BDK_WINDOW_IS_QUARTZ (window);
@@ -89,7 +89,7 @@ bdk_quartz_window_get_nswindow (BdkWindow *window)
 
 static CGContextRef
 bdk_window_impl_quartz_get_context (BdkDrawable *drawable,
-				    gboolean     antialias)
+				    bboolean     antialias)
 {
   BdkDrawableImplQuartz *drawable_impl = BDK_DRAWABLE_IMPL_QUARTZ (drawable);
   BdkWindowImplQuartz *window_impl = BDK_WINDOW_IMPL_QUARTZ (drawable);
@@ -126,7 +126,7 @@ bdk_window_impl_quartz_get_context (BdkDrawable *drawable,
       CGRect rect;
       CGRect *cg_rects;
       BdkRectangle *rects;
-      gint n_rects, i;
+      bint n_rects, i;
 
       bdk_rebunnyion_get_rectangles (window_impl->paint_clip_rebunnyion,
                                  &rects, &n_rects);
@@ -240,7 +240,7 @@ bdk_window_impl_quartz_begin_paint_rebunnyion (BdkPaintable    *paintable,
   BdkRectangle *rects = NULL;
   BdkPixmap *bg_pixmap;
   BdkRebunnyion *clipped_and_offset_rebunnyion;
-  gboolean free_clipped_and_offset_rebunnyion = TRUE;
+  bboolean free_clipped_and_offset_rebunnyion = TRUE;
 
   bg_pixmap = private->bg_pixmap;
 
@@ -273,7 +273,7 @@ bdk_window_impl_quartz_begin_paint_rebunnyion (BdkPaintable    *paintable,
     {
       CGContextRef cg_context;
       CGColorRef color;
-      gint i;
+      bint i;
 
       cg_context = bdk_quartz_drawable_get_context (BDK_DRAWABLE (impl), FALSE);
 
@@ -566,7 +566,7 @@ _bdk_window_impl_get_type (void)
   return _bdk_window_impl_quartz_get_type ();
 }
 
-static const gchar *
+static const bchar *
 get_default_title (void)
 {
   const char *title;
@@ -580,11 +580,11 @@ get_default_title (void)
 
 static void
 get_ancestor_coordinates_from_child (BdkWindow *child_window,
-				     gint       child_x,
-				     gint       child_y,
+				     bint       child_x,
+				     bint       child_y,
 				     BdkWindow *ancestor_window, 
-				     gint      *ancestor_x, 
-				     gint      *ancestor_y)
+				     bint      *ancestor_x, 
+				     bint      *ancestor_y)
 {
   BdkWindowObject *child_private = BDK_WINDOW_OBJECT (child_window);
   BdkWindowObject *ancestor_private = BDK_WINDOW_OBJECT (ancestor_window);
@@ -602,13 +602,13 @@ get_ancestor_coordinates_from_child (BdkWindow *child_window,
 }
 
 void
-_bdk_quartz_window_debug_highlight (BdkWindow *window, gint number)
+_bdk_quartz_window_debug_highlight (BdkWindow *window, bint number)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
-  gint x, y;
-  gint gx, gy;
+  bint x, y;
+  bint gx, gy;
   BdkWindow *toplevel;
-  gint tx, ty;
+  bint tx, ty;
   static NSWindow *debug_window[10];
   static NSRect old_rect[10];
   NSRect rect;
@@ -688,7 +688,7 @@ _bdk_quartz_window_debug_highlight (BdkWindow *window, gint number)
   [debug_window[number] orderFront:nil];
 }
 
-gboolean
+bboolean
 _bdk_quartz_window_is_ancestor (BdkWindow *ancestor,
                                 BdkWindow *window)
 {
@@ -703,10 +703,10 @@ _bdk_quartz_window_is_ancestor (BdkWindow *ancestor,
 
 /* See notes on top of bdkscreen-quartz.c */
 void
-_bdk_quartz_window_bdk_xy_to_xy (gint  bdk_x,
-                                 gint  bdk_y,
-                                 gint *ns_x,
-                                 gint *ns_y)
+_bdk_quartz_window_bdk_xy_to_xy (bint  bdk_x,
+                                 bint  bdk_y,
+                                 bint *ns_x,
+                                 bint *ns_y)
 {
   BdkScreenQuartz *screen_quartz = BDK_SCREEN_QUARTZ (_bdk_screen);
 
@@ -718,10 +718,10 @@ _bdk_quartz_window_bdk_xy_to_xy (gint  bdk_x,
 }
 
 void
-_bdk_quartz_window_xy_to_bdk_xy (gint  ns_x,
-                                 gint  ns_y,
-                                 gint *bdk_x,
-                                 gint *bdk_y)
+_bdk_quartz_window_xy_to_bdk_xy (bint  ns_x,
+                                 bint  ns_y,
+                                 bint *bdk_x,
+                                 bint *bdk_y)
 {
   BdkScreenQuartz *screen_quartz = BDK_SCREEN_QUARTZ (_bdk_screen);
 
@@ -734,8 +734,8 @@ _bdk_quartz_window_xy_to_bdk_xy (gint  ns_x,
 
 void
 _bdk_quartz_window_nspoint_to_bdk_xy (NSPoint  point,
-                                      gint    *x,
-                                      gint    *y)
+                                      bint    *x,
+                                      bint    *y)
 {
   _bdk_quartz_window_xy_to_bdk_xy (point.x, point.y,
                                    x, y);
@@ -743,10 +743,10 @@ _bdk_quartz_window_nspoint_to_bdk_xy (NSPoint  point,
 
 static BdkWindow *
 find_child_window_helper (BdkWindow *window,
-			  gint       x,
-			  gint       y,
-			  gint       x_offset,
-			  gint       y_offset)
+			  bint       x,
+			  bint       y,
+			  bint       x_offset,
+			  bint       y_offset)
 {
   BdkWindowImplQuartz *impl;
   GList *l;
@@ -818,8 +818,8 @@ find_child_window_helper (BdkWindow *window,
  */
 BdkWindow *
 _bdk_quartz_window_find_child (BdkWindow *window,
-			       gint       x,
-			       gint       y)
+			       bint       x,
+			       bint       y)
 {
   BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
 
@@ -873,7 +873,7 @@ _bdk_quartz_window_did_resign_main (BdkWindow *window)
 }
 
 static NSScreen *
-get_nsscreen_for_point (gint x, gint y)
+get_nsscreen_for_point (bint x, bint y)
 {
   int i;
   NSArray *screens;
@@ -907,7 +907,7 @@ _bdk_window_impl_new (BdkWindow     *window,
 		      BdkVisual     *visual,
 		      BdkEventMask   event_mask,
 		      BdkWindowAttr *attributes,
-		      gint           attributes_mask)
+		      bint           attributes_mask)
 {
   BdkWindowObject *private;
   BdkWindowImplQuartz *impl;
@@ -1164,8 +1164,8 @@ _bdk_windowing_window_init (void)
 
 static void
 _bdk_quartz_window_destroy (BdkWindow *window,
-                            gboolean   recursing,
-                            gboolean   foreign_destroy)
+                            bboolean   recursing,
+                            bboolean   foreign_destroy)
 {
   BdkWindowObject *private;
   BdkWindowImplQuartz *impl;
@@ -1212,11 +1212,11 @@ _bdk_windowing_window_destroy_foreign (BdkWindow *window)
  * note that already_mapped is not used yet, see the x11 backend.
 */
 static void
-bdk_window_quartz_show (BdkWindow *window, gboolean already_mapped)
+bdk_window_quartz_show (BdkWindow *window, bboolean already_mapped)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
-  gboolean focus_on_map;
+  bboolean focus_on_map;
 
   BDK_QUARTZ_ALLOC_POOL;
 
@@ -1227,7 +1227,7 @@ bdk_window_quartz_show (BdkWindow *window, gboolean already_mapped)
 
   if (impl->toplevel && WINDOW_IS_TOPLEVEL (window))
     {
-      gboolean make_key;
+      bboolean make_key;
 
       make_key = (private->accept_focus && focus_on_map &&
                   private->window_type != BDK_WINDOW_TEMP);
@@ -1346,10 +1346,10 @@ bdk_window_quartz_withdraw (BdkWindow *window)
 
 static void
 move_resize_window_internal (BdkWindow *window,
-			     gint       x,
-			     gint       y,
-			     gint       width,
-			     gint       height)
+			     bint       x,
+			     bint       y,
+			     bint       width,
+			     bint       height)
 {
   BdkWindowObject *private = (BdkWindowObject *)window;
   BdkWindowImplQuartz *impl;
@@ -1418,7 +1418,7 @@ move_resize_window_internal (BdkWindow *window,
     {
       NSRect content_rect;
       NSRect frame_rect;
-      gint gx, gy;
+      bint gx, gy;
 
       _bdk_quartz_window_bdk_xy_to_xy (private->x, private->y + private->height,
                                        &gx, &gy);
@@ -1459,8 +1459,8 @@ move_resize_window_internal (BdkWindow *window,
           if (!bdk_rebunnyion_empty (expose_rebunnyion))
             {
               BdkRectangle* rects;
-              gint n_rects;
-              gint n;
+              bint n_rects;
+              bint n;
 
               if (scroll_rect.width != 0 && scroll_rect.height != 0)
                 {
@@ -1496,8 +1496,8 @@ move_resize_window_internal (BdkWindow *window,
 
 static inline void
 window_quartz_move (BdkWindow *window,
-                    gint       x,
-                    gint       y)
+                    bint       x,
+                    bint       y)
 {
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -1509,8 +1509,8 @@ window_quartz_move (BdkWindow *window,
 
 static inline void
 window_quartz_resize (BdkWindow *window,
-                      gint       width,
-                      gint       height)
+                      bint       width,
+                      bint       height)
 {
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -1527,10 +1527,10 @@ window_quartz_resize (BdkWindow *window,
 
 static inline void
 window_quartz_move_resize (BdkWindow *window,
-                           gint       x,
-                           gint       y,
-                           gint       width,
-                           gint       height)
+                           bint       x,
+                           bint       y,
+                           bint       width,
+                           bint       height)
 {
   if (width < 1)
     width = 1;
@@ -1542,11 +1542,11 @@ window_quartz_move_resize (BdkWindow *window,
 
 static void
 bdk_window_quartz_move_resize (BdkWindow *window,
-                               gboolean   with_move,
-                               gint       x,
-                               gint       y,
-                               gint       width,
-                               gint       height)
+                               bboolean   with_move,
+                               bint       x,
+                               bint       y,
+                               bint       width,
+                               bint       height)
 {
   if (with_move && (width < 0 && height < 0))
     window_quartz_move (window, x, y);
@@ -1562,11 +1562,11 @@ bdk_window_quartz_move_resize (BdkWindow *window,
 /* FIXME: This might need fixing (reparenting didn't work before client-side
  * windows either).
  */
-static gboolean
+static bboolean
 bdk_window_quartz_reparent (BdkWindow *window,
                             BdkWindow *new_parent,
-                            gint       x,
-                            gint       y)
+                            bint       x,
+                            bint       y)
 {
   BdkWindowObject *private, *old_parent_private, *new_parent_private;
   BdkWindowImplQuartz *impl, *old_parent_impl, *new_parent_impl;
@@ -1725,10 +1725,10 @@ bdk_window_quartz_lower (BdkWindow *window)
 static void
 bdk_window_quartz_restack_toplevel (BdkWindow *window,
 				    BdkWindow *sibling,
-				    gboolean   above)
+				    bboolean   above)
 {
   BdkWindowImplQuartz *impl;
-  gint sibling_num;
+  bint sibling_num;
 
   impl = BDK_WINDOW_IMPL_QUARTZ (((BdkWindowObject *)sibling)->impl);
   sibling_num = [impl->toplevel windowNumber];
@@ -1781,11 +1781,11 @@ bdk_window_quartz_set_cursor (BdkWindow *window,
 
 static void
 bdk_window_quartz_get_geometry (BdkWindow *window,
-                                gint      *x,
-                                gint      *y,
-                                gint      *width,
-                                gint      *height,
-                                gint      *depth)
+                                bint      *x,
+                                bint      *y,
+                                bint      *width,
+                                bint      *height,
+                                bint      *depth)
 {
   BdkWindowImplQuartz *impl;
   BdkWindowObject *private;
@@ -1857,12 +1857,12 @@ bdk_window_quartz_get_geometry (BdkWindow *window,
       *depth = bdk_drawable_get_depth (window);
 }
 
-static gint
+static bint
 bdk_window_quartz_get_root_coords (BdkWindow *window,
-                                   gint       x,
-                                   gint       y,
-                                   gint      *root_x,
-                                   gint      *root_y)
+                                   bint       x,
+                                   bint       y,
+                                   bint      *root_x,
+                                   bint      *root_y)
 {
   BdkWindowObject *private;
   int tmp_x = 0, tmp_y = 0;
@@ -1923,18 +1923,18 @@ bdk_window_quartz_get_root_coords (BdkWindow *window,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 bdk_window_quartz_get_deskrelative_origin (BdkWindow *window,
-                                           gint      *x,
-                                           gint      *y)
+                                           bint      *x,
+                                           bint      *y)
 {
   return bdk_window_get_origin (window, x, y);
 }
 
 void
 bdk_window_get_root_origin (BdkWindow *window,
-			    gint      *x,
-			    gint      *y)
+			    bint      *x,
+			    bint      *y)
 {
   BdkRectangle rect;
 
@@ -1953,14 +1953,14 @@ bdk_window_get_root_origin (BdkWindow *window,
 /* Returns coordinates relative to the passed in window. */
 static BdkWindow *
 bdk_window_quartz_get_pointer_helper (BdkWindow       *window,
-                                      gint            *x,
-                                      gint            *y,
+                                      bint            *x,
+                                      bint            *y,
                                       BdkModifierType *mask)
 {
   BdkWindowObject *toplevel;
   BdkWindowObject *private;
   NSPoint point;
-  gint x_tmp, y_tmp;
+  bint x_tmp, y_tmp;
   BdkWindow *found_window;
 
   g_return_val_if_fail (window == NULL || BDK_IS_WINDOW (window), NULL);
@@ -2013,10 +2013,10 @@ bdk_window_quartz_get_pointer_helper (BdkWindow       *window,
   return found_window;
 }
 
-static gboolean
+static bboolean
 bdk_window_quartz_get_pointer (BdkWindow       *window,
-                               gint            *x,
-                               gint            *y,
+                               bint            *x,
+                               bint            *y,
                                BdkModifierType *mask)
 {
   return bdk_window_quartz_get_pointer_helper (window, x, y, mask) != NULL;
@@ -2026,8 +2026,8 @@ bdk_window_quartz_get_pointer (BdkWindow       *window,
 void
 _bdk_windowing_get_pointer (BdkDisplay       *display,
                             BdkScreen       **screen,
-                            gint             *x,
-                            gint             *y,
+                            bint             *x,
+                            bint             *y,
                             BdkModifierType  *mask)
 {
   g_return_if_fail (display == _bdk_display);
@@ -2039,8 +2039,8 @@ _bdk_windowing_get_pointer (BdkDisplay       *display,
 void
 bdk_display_warp_pointer (BdkDisplay *display,
 			  BdkScreen  *screen,
-			  gint        x,
-			  gint        y)
+			  bint        x,
+			  bint        y)
 {
   CGDisplayMoveCursorToPoint (CGMainDisplayID (), CGPointMake (x, y));
 }
@@ -2048,13 +2048,13 @@ bdk_display_warp_pointer (BdkDisplay *display,
 /* Returns coordinates relative to the found window. */
 BdkWindow *
 _bdk_windowing_window_at_pointer (BdkDisplay      *display,
-				  gint            *win_x,
-				  gint            *win_y,
+				  bint            *win_x,
+				  bint            *win_y,
                                   BdkModifierType *mask,
-				  gboolean         get_toplevel)
+				  bboolean         get_toplevel)
 {
   BdkWindow *found_window;
-  gint x, y;
+  bint x, y;
   BdkModifierType tmp_mask = 0;
 
   found_window = bdk_window_quartz_get_pointer_helper (_bdk_root,
@@ -2130,7 +2130,7 @@ bdk_window_quartz_set_events (BdkWindow       *window,
 
 void
 bdk_window_set_urgency_hint (BdkWindow *window,
-			     gboolean   urgent)
+			     bboolean   urgent)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2229,7 +2229,7 @@ bdk_window_set_geometry_hints (BdkWindow         *window,
 
 void
 bdk_window_set_title (BdkWindow   *window,
-		      const gchar *title)
+		      const bchar *title)
 {
   BdkWindowImplQuartz *impl;
 
@@ -2251,7 +2251,7 @@ bdk_window_set_title (BdkWindow   *window,
 
 void          
 bdk_window_set_role (BdkWindow   *window,
-		     const gchar *role)
+		     const bchar *role)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       WINDOW_IS_TOPLEVEL (window))
@@ -2316,8 +2316,8 @@ bdk_window_set_transient_for (BdkWindow *window,
 static void
 bdk_window_quartz_shape_combine_rebunnyion (BdkWindow       *window,
                                         const BdkRebunnyion *shape,
-                                        gint             x,
-                                        gint             y)
+                                        bint             x,
+                                        bint             y)
 {
   /* FIXME: Implement */
 }
@@ -2325,22 +2325,22 @@ bdk_window_quartz_shape_combine_rebunnyion (BdkWindow       *window,
 static void
 bdk_window_quartz_input_shape_combine_rebunnyion (BdkWindow       *window,
                                               const BdkRebunnyion *shape_rebunnyion,
-                                              gint             offset_x,
-                                              gint             offset_y)
+                                              bint             offset_x,
+                                              bint             offset_y)
 {
   /* FIXME: Implement */
 }
 
 void
 bdk_window_set_override_redirect (BdkWindow *window,
-				  gboolean override_redirect)
+				  bboolean override_redirect)
 {
   /* FIXME: Implement */
 }
 
 void
 bdk_window_set_accept_focus (BdkWindow *window,
-			     gboolean accept_focus)
+			     bboolean accept_focus)
 {
   BdkWindowObject *private;
 
@@ -2349,9 +2349,9 @@ bdk_window_set_accept_focus (BdkWindow *window,
   private->accept_focus = accept_focus != FALSE;
 }
 
-static gboolean 
+static bboolean 
 bdk_window_quartz_set_static_gravities (BdkWindow *window,
-                                        gboolean   use_static)
+                                        bboolean   use_static)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2363,7 +2363,7 @@ bdk_window_quartz_set_static_gravities (BdkWindow *window,
 
 void
 bdk_window_set_focus_on_map (BdkWindow *window,
-			     gboolean focus_on_map)
+			     bboolean focus_on_map)
 {
   BdkWindowObject *private;
 
@@ -2383,14 +2383,14 @@ bdk_window_set_icon (BdkWindow *window,
 
 void          
 bdk_window_set_icon_name (BdkWindow   *window, 
-			  const gchar *name)
+			  const bchar *name)
 {
   /* FIXME: Implement */
 }
 
 void
 bdk_window_focus (BdkWindow *window,
-                  guint32    timestamp)
+                  buint32    timestamp)
 {
   BdkWindowObject *private;
   BdkWindowImplQuartz *impl;
@@ -2413,18 +2413,18 @@ bdk_window_focus (BdkWindow *window,
 
 void
 bdk_window_set_hints (BdkWindow *window,
-		      gint       x,
-		      gint       y,
-		      gint       min_width,
-		      gint       min_height,
-		      gint       max_width,
-		      gint       max_height,
-		      gint       flags)
+		      bint       x,
+		      bint       y,
+		      bint       min_width,
+		      bint       min_height,
+		      bint       max_width,
+		      bint       max_height,
+		      bint       flags)
 {
   /* FIXME: Implement */
 }
 
-static gint
+static bint
 window_type_hint_to_level (BdkWindowTypeHint hint)
 {
   /*  the order in this switch statement corresponds to the actual
@@ -2465,7 +2465,7 @@ window_type_hint_to_level (BdkWindowTypeHint hint)
   return NSNormalWindowLevel;
 }
 
-static gboolean
+static bboolean
 window_type_hint_to_shadow (BdkWindowTypeHint hint)
 {
   switch (hint)
@@ -2495,7 +2495,7 @@ window_type_hint_to_shadow (BdkWindowTypeHint hint)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 window_type_hint_to_hides_on_deactivate (BdkWindowTypeHint hint)
 {
   switch (hint)
@@ -2549,7 +2549,7 @@ bdk_window_get_type_hint (BdkWindow *window)
 
 void
 bdk_window_set_modal_hint (BdkWindow *window,
-			   gboolean   modal)
+			   bboolean   modal)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2560,7 +2560,7 @@ bdk_window_set_modal_hint (BdkWindow *window,
 
 void
 bdk_window_set_skip_taskbar_hint (BdkWindow *window,
-				  gboolean   skips_taskbar)
+				  bboolean   skips_taskbar)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2571,7 +2571,7 @@ bdk_window_set_skip_taskbar_hint (BdkWindow *window,
 
 void
 bdk_window_set_skip_pager_hint (BdkWindow *window,
-				gboolean   skips_pager)
+				bboolean   skips_pager)
 {
   if (BDK_WINDOW_DESTROYED (window) ||
       !WINDOW_IS_TOPLEVEL (window))
@@ -2583,10 +2583,10 @@ bdk_window_set_skip_pager_hint (BdkWindow *window,
 void
 bdk_window_begin_resize_drag (BdkWindow     *window,
                               BdkWindowEdge  edge,
-                              gint           button,
-                              gint           root_x,
-                              gint           root_y,
-                              guint32        timestamp)
+                              bint           button,
+                              bint           root_x,
+                              bint           root_y,
+                              buint32        timestamp)
 {
   BdkWindowObject *private;
   BdkWindowImplQuartz *impl;
@@ -2616,10 +2616,10 @@ bdk_window_begin_resize_drag (BdkWindow     *window,
 
 void
 bdk_window_begin_move_drag (BdkWindow *window,
-                            gint       button,
-                            gint       root_x,
-                            gint       root_y,
-                            guint32    timestamp)
+                            bint       button,
+                            bint       root_x,
+                            bint       root_y,
+                            buint32    timestamp)
 {
   BdkWindowObject *private;
   BdkWindowImplQuartz *impl;
@@ -2805,7 +2805,7 @@ bdk_window_set_decorations (BdkWindow       *window,
   BDK_QUARTZ_RELEASE_POOL;
 }
 
-gboolean
+bboolean
 bdk_window_get_decorations (BdkWindow       *window,
 			    BdkWMDecoration *decorations)
 {
@@ -2843,7 +2843,7 @@ bdk_window_set_functions (BdkWindow    *window,
   /* FIXME: Implement */
 }
 
-gboolean
+bboolean
 _bdk_windowing_window_queue_antiexpose (BdkWindow  *window,
 					BdkRebunnyion  *area)
 {
@@ -3078,11 +3078,11 @@ bdk_window_unfullscreen (BdkWindow *window)
 }
 
 void
-bdk_window_set_keep_above (BdkWindow *window, gboolean setting)
+bdk_window_set_keep_above (BdkWindow *window, bboolean setting)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;
   BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
-  gint level;
+  bint level;
 
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -3097,11 +3097,11 @@ bdk_window_set_keep_above (BdkWindow *window, gboolean setting)
 }
 
 void
-bdk_window_set_keep_below (BdkWindow *window, gboolean setting)
+bdk_window_set_keep_below (BdkWindow *window, bboolean setting)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;
   BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
-  gint level;
+  bint level;
 
   g_return_if_fail (BDK_IS_WINDOW (window));
 
@@ -3184,7 +3184,7 @@ _bdk_windowing_window_beep (BdkWindow *window)
 
 void
 bdk_window_set_opacity (BdkWindow *window,
-			gdouble    opacity)
+			bdouble    opacity)
 {
   BdkWindowObject *private = (BdkWindowObject *) window;
   BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
@@ -3205,7 +3205,7 @@ bdk_window_set_opacity (BdkWindow *window,
 }
 
 void
-_bdk_windowing_window_set_composited (BdkWindow *window, gboolean composited)
+_bdk_windowing_window_set_composited (BdkWindow *window, bboolean composited)
 {
 }
 
